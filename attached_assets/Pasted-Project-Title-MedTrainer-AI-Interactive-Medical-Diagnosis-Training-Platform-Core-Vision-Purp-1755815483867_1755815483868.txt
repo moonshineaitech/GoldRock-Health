@@ -1,0 +1,159 @@
+Project Title: MedTrainer AI - Interactive Medical Diagnosis Training Platform
+
+Core Vision & Purpose
+Create a professional-grade medical education platform that simulates real patient interactions for medical students, residents, and practicing physicians. The platform should feel like a premium medical education tool used by top medical schools, with the polish and user experience of a YCombinator-funded startup.
+
+Technical Architecture Requirements
+Frontend Stack:
+
+React 18 + TypeScript + Vite
+shadcn/ui component library with Tailwind CSS
+Wouter for client-side routing
+TanStack Query v5 for data fetching
+Framer Motion for animations
+React Hook Form with Zod validation
+Backend Stack:
+
+Express.js with TypeScript
+PostgreSQL database with Drizzle ORM
+RESTful API architecture
+Session-based state management
+External Integrations:
+
+ElevenLabs API for text-to-speech voice synthesis
+Web Speech API for voice input (browser-native)
+Database Schema & Content
+Medical Cases Table Structure:
+
+id, name, age, difficulty (1-3), symptoms[], history[], responses{}, correctDiagnosis, specialty
+Minimum 60+ cases across these specialties:
+Cardiology, Neurology, Endocrinology, Gastroenterology, Oncology
+Psychiatry, Infectious Disease, Dermatology, Orthopedics, Gynecology
+Urology, ENT, Ophthalmology, Pulmonology, Hematology
+Rheumatology, Nephrology, Emergency Medicine, Pediatrics
+Progress Tracking:
+
+User progress with timestamps, scores, completed cases
+Diagnostic accuracy tracking
+Achievement system for gamification
+Core Features & User Journey
+1. Landing Page (Professional Homepage):
+
+Hero section with "MedTrainer AI" branding
+Gradient backgrounds (slate-50 to indigo-100)
+Feature highlights: Voice Interactions, AI-Powered Cases, Progress Tracking
+Live statistics dashboard showing total cases available
+Achievement cards with hover animations and glassmorphism effects
+Professional CTA buttons leading to training
+2. Training Case Selection Page (/training):
+
+Grid layout of all available cases
+Each case card shows: patient name, age, difficulty level, chief complaints preview
+Search functionality by patient name, symptoms, or diagnosis
+Filter by difficulty level (Foundation/Clinical/Expert)
+Difficulty badges with color coding (green/amber/rose)
+Professional card design with hover animations
+3. Interactive Game Interface (/game/:id):
+
+Patient Information Panel:
+
+Patient demographics and basic info
+Chief complaints section with distinctive styling
+Medical history section
+Case selection dropdown for switching patients
+Chat Interface:
+
+THREE INPUT MODES:
+Dropdown Questions: Pre-written clinical questions
+Text Input: Custom typed questions
+Voice Input: Speech-to-text for natural conversation
+Patient responses via ElevenLabs voice synthesis
+Chat history with question tracking
+Progress indicator showing interview completion
+Diagnostic Submission:
+
+Modal dialog for submitting final diagnosis
+Feedback system with educational explanations
+Score calculation based on efficiency and accuracy
+Voice Integration Requirements
+ElevenLabs Integration:
+
+Convert all patient responses to natural speech
+Use professional, warm voice that sounds like a real patient
+Handle medical terminology correctly
+Streaming audio playback
+Web Speech API Integration:
+
+Real-time speech-to-text conversion
+Microphone permission handling
+Visual feedback during recording
+Error handling for unsupported browsers
+UI/UX Design Standards
+Design Philosophy:
+
+Professional medical software aesthetic
+YCombinator startup polish and attention to detail
+Modern gradient backgrounds and glassmorphism effects
+Consistent use of indigo/purple color palette
+Smooth animations and micro-interactions
+Component Standards:
+
+Cards with subtle shadows and hover effects
+Backdrop blur effects on overlays
+Professional typography hierarchy
+Consistent spacing and layout grid
+Responsive design for mobile/tablet/desktop
+Visual Hierarchy:
+
+Clear navigation with breadcrumbs
+Progress indicators throughout user journey
+Status badges for difficulty levels
+Interactive elements with proper hover states
+Loading states and error handling
+Routing Structure
+/ (Home) → /training (Case Selection) → /game/:id (Interactive Case)
+Navigation Flow:
+
+Home page introduces platform and shows statistics
+Training page allows case selection and filtering
+Game page handles individual case interactions
+Proper back navigation and case switching
+Key Technical Implementation Details
+Question Response System:
+
+Smart response matching for custom questions
+Fallback responses for unrecognized questions
+Context-aware answer generation
+Medical accuracy in all responses
+Progress Tracking:
+
+Real-time progress bars during case interview
+Question count tracking
+Time-based metrics
+Achievement unlocking system
+Error Handling:
+
+Graceful API failure handling
+Voice permission error states
+Network connectivity issues
+Invalid case ID handling
+Performance Requirements
+Fast case loading with query caching
+Optimized voice file streaming
+Responsive UI with minimal loading states
+Efficient database queries
+Mobile-optimized performance
+Educational Value Features
+Realistic medical scenarios with accurate terminology
+Progressive difficulty from basic to expert level
+Comprehensive feedback explaining correct diagnoses
+Case variety representing real clinical diversity
+Evidence-based medical content
+Professional Polish Details
+Consistent loading animations
+Professional medical iconography
+Smooth page transitions
+Hover effects and micro-interactions
+Typography that matches medical software standards
+Color psychology appropriate for healthcare
+This platform should feel like a premium medical education tool that could be used by Harvard Medical School or Johns Hopkins, with the modern UX polish of a successful tech startup. Every interaction should reinforce the professional, educational nature while remaining engaging and interactive.
