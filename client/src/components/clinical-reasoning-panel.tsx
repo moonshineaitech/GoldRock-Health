@@ -43,7 +43,8 @@ export function ClinicalReasoningPanel({
         body: JSON.stringify({ questionsAsked }),
         headers: { 'Content-Type': 'application/json' }
       });
-      setReasoning(response);
+      const data = await response.json();
+      setReasoning(data);
     } catch (error) {
       console.error('Error loading clinical reasoning:', error);
     } finally {

@@ -14,9 +14,9 @@ import {
   RotateCcw, 
   Stethoscope,
   TestTubeDiagonal,
-  List,
-  ClipboardCheck
+  List
 } from "lucide-react";
+import { DiagnosisModal } from "./diagnosis-modal";
 import type { MedicalCase } from "@shared/schema";
 
 interface ChatInterfaceProps {
@@ -73,7 +73,11 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
 
   const askQuestionMutation = useMutation({
     mutationFn: async (question: string) => {
-      const response = await apiRequest("POST", `/api/cases/${medicalCase.id}/ask`, { question });
+      const response = await apiRequest(`/api/cases/${medicalCase.id}/ask`, {
+        method: 'POST',
+        body: JSON.stringify({ question }),
+        headers: { 'Content-Type': 'application/json' }
+      });
       return response.json();
     },
     onSuccess: (data) => {
@@ -108,10 +112,14 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
 
   const submitDiagnosisMutation = useMutation({
     mutationFn: async (diagnosis: { diagnosis: string; confidence: number }) => {
-      const response = await apiRequest("POST", `/api/cases/${medicalCase.id}/diagnose`, {
-        ...diagnosis,
-        questionsAsked: messages.filter(m => m.type === "doctor").length,
-        timeElapsed: Math.floor((Date.now() - startTime) / 1000)
+      const response = await apiRequest(`/api/cases/${medicalCase.id}/diagnose`, {
+        method: 'POST',
+        body: JSON.stringify({
+          ...diagnosis,
+          questionsAsked: messages.filter(m => m.type === "doctor").map(m => m.content),
+          timeElapsed: Math.floor((Date.now() - startTime) / 1000)
+        }),
+        headers: { 'Content-Type': 'application/json' }
       });
       return response.json();
     },
@@ -336,22 +344,12 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             </Button>
           )}
           
-          <Button 
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2"
-            onClick={() => {
-              const diagnosis = prompt("Enter your diagnosis:");
-              const confidence = prompt("Confidence level (1-5):");
-              if (diagnosis && confidence) {
-                submitDiagnosisMutation.mutate({
-                  diagnosis,
-                  confidence: parseInt(confidence)
-                });
-              }
+          <DiagnosisModal 
+            onSubmit={(diagnosis, confidence) => {
+              submitDiagnosisMutation.mutate({ diagnosis, confidence });
             }}
-          >
-            <ClipboardCheck className="h-4 w-4" />
-            <span className="font-medium">Diagnose</span>
-          </Button>
+            isLoading={submitDiagnosisMutation.isPending}
+          />
         </div>
 
         {/* Voice Recording Indicator */}
