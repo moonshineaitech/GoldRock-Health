@@ -111,7 +111,14 @@ export function MobileBottomNav() {
                   <Icon 
                     className="h-5 w-5 mb-1"
                     style={{
-                      color: active ? item.color.replace('text-', '#') : '#9CA3AF'
+                      color: active ? (
+                        item.color === 'text-blue-600' ? '#2563EB' :
+                        item.color === 'text-purple-600' ? '#9333EA' :
+                        item.color === 'text-green-600' ? '#16A34A' :
+                        item.color === 'text-orange-600' ? '#EA580C' :
+                        item.color === 'text-indigo-600' ? '#4F46E5' :
+                        '#6366F1'
+                      ) : '#9CA3AF'
                     }}
                   />
                   {active && (
@@ -125,7 +132,14 @@ export function MobileBottomNav() {
                 <motion.span 
                   className="text-xs font-medium leading-none truncate"
                   animate={{
-                    color: active ? item.color.replace('text-', '#') : '#9CA3AF',
+                    color: active ? (
+                      item.color === 'text-blue-600' ? '#2563EB' :
+                      item.color === 'text-purple-600' ? '#9333EA' :
+                      item.color === 'text-green-600' ? '#16A34A' :
+                      item.color === 'text-orange-600' ? '#EA580C' :
+                      item.color === 'text-indigo-600' ? '#4F46E5' :
+                      '#6366F1'
+                    ) : '#9CA3AF',
                     fontWeight: active ? 600 : 500,
                     scale: active ? 1.05 : 1
                   }}

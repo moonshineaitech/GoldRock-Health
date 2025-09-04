@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Navigation } from "@/components/navigation";
-import { CaseCard } from "@/components/case-card";
+import { motion } from "framer-motion";
+import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import { AICaseGenerator } from "@/components/ai-case-generator";
 import { useMedicalCases } from "@/hooks/use-medical-cases";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, BookOpen, Clock, Star, ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 
 const specialties = [
   "All Specialties",
@@ -44,114 +44,225 @@ export default function Training() {
   const { data: cases, isLoading, error } = useMedicalCases(filters);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50">
-      <Navigation />
-      
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="flex justify-between items-start mb-6">
-              <div className="text-left">
-                <h1 className="text-4xl font-bold text-slate-900 mb-4">Choose Your Training Case</h1>
-                <p className="text-xl text-slate-600 max-w-3xl">
-                  Select from our comprehensive library of medical cases across 19 specialties. 
-                  Each case is designed to challenge your diagnostic skills and clinical reasoning.
-                </p>
-              </div>
-              <AICaseGenerator onCaseGenerated={(caseId) => {
-                // Refresh cases when new one is generated
-                window.location.reload();
-              }} />
+    <MobileLayout title="Training Cases" showBottomNav={true}>
+      {/* AI Generator Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <MobileCard className="mb-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <h3 className="font-semibold text-purple-900 mb-1">Generate New Cases</h3>
+              <p className="text-sm text-purple-700">Create unlimited practice scenarios with AI</p>
+            </div>
+            <AICaseGenerator onCaseGenerated={(caseId) => {
+              window.location.reload();
+            }} />
+          </div>
+        </MobileCard>
+      </motion.div>
+
+      {/* Mobile Search and Filters */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <MobileCard className="mb-6">
+          <div className="space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input 
+                placeholder="Search cases..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl"
+                data-testid="input-search"
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <Select value={specialty} onValueChange={setSpecialty}>
+                <SelectTrigger className="rounded-xl border-gray-200" data-testid="select-specialty">
+                  <SelectValue placeholder="Specialty" />
+                </SelectTrigger>
+                <SelectContent>
+                  {specialties.map(spec => (
+                    <SelectItem key={spec} value={spec}>{spec}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              
+              <Select value={difficulty} onValueChange={setDifficulty}>
+                <SelectTrigger className="rounded-xl border-gray-200" data-testid="select-difficulty">
+                  <SelectValue placeholder="Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  {difficulties.map(diff => (
+                    <SelectItem key={diff.value || "all"} value={diff.value || "all"}>{diff.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
+        </MobileCard>
+      </motion.div>
 
-          {/* Search and Filter Controls */}
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-8">
-            <div className="flex flex-col lg:flex-row gap-4">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
-                  <Input 
-                    placeholder="Search by patient name, symptoms, or diagnosis..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="pl-12 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                  />
-                </div>
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex flex-col items-center justify-center py-12">
+          <motion.div 
+            className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+          <p className="text-gray-600 mt-4 text-sm">Loading medical cases...</p>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <MobileCard className="border-red-200 bg-red-50">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <i className="fas fa-exclamation-triangle text-red-600"></i>
               </div>
-              <div className="flex gap-3">
-                <Select value={specialty} onValueChange={setSpecialty}>
-                  <SelectTrigger className="w-48 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {specialties.map(spec => (
-                      <SelectItem key={spec} value={spec}>{spec}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                
-                <Select value={difficulty} onValueChange={setDifficulty}>
-                  <SelectTrigger className="w-40 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
-                    <SelectValue placeholder="All Levels" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {difficulties.map(diff => (
-                      <SelectItem key={diff.value || "all"} value={diff.value || "all"}>{diff.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <p className="text-red-600 font-medium">Failed to load cases</p>
+              <p className="text-red-500 text-sm mt-1">Please try again</p>
             </div>
-          </div>
+          </MobileCard>
+        </motion.div>
+      )}
 
-          {/* Loading State */}
-          {isLoading && (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-              <p className="text-slate-600">Loading medical cases...</p>
-            </div>
-          )}
-
-          {/* Error State */}
-          {error && (
-            <div className="text-center py-12">
-              <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
-                <p className="text-red-700">Failed to load medical cases. Please try again.</p>
-              </div>
-            </div>
-          )}
-
-          {/* Case Cards Grid */}
-          {cases && (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {cases.map((medicalCase) => (
-                  <CaseCard key={medicalCase.id} medicalCase={medicalCase} />
-                ))}
-              </div>
-
-              {cases.length === 0 && (
-                <div className="text-center py-12">
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 max-w-md mx-auto">
-                    <Filter className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-                    <p className="text-slate-600">No cases found matching your criteria.</p>
-                    <p className="text-slate-500 text-sm mt-2">Try adjusting your search or filters.</p>
+      {/* Mobile Cases List */}
+      {cases && cases.length > 0 && (
+        <div className="space-y-4">
+          {cases.map((medicalCase, index) => (
+            <motion.div
+              key={medicalCase.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.4 }}
+            >
+              <MobileCard className="p-5" data-testid={`case-card-${medicalCase.id}`}>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+                        <i className="fas fa-heart text-red-600 text-sm"></i>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 text-base leading-tight">
+                          {medicalCase.name}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          {medicalCase.age}-year-old {medicalCase.gender}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-3">
+                      <p className="text-sm font-medium text-gray-800 mb-1">Chief Complaint</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {medicalCase.chiefComplaint}
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 flex-wrap mb-4">
+                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-lg text-xs font-medium">
+                        {medicalCase.specialty}
+                      </span>
+                      <span className={`px-2 py-1 rounded-lg text-xs font-medium ${
+                        medicalCase.difficulty === 1 ? 'bg-green-100 text-green-800' :
+                        medicalCase.difficulty === 2 ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {medicalCase.difficulty === 1 ? 'Foundation' :
+                         medicalCase.difficulty === 2 ? 'Clinical' : 'Expert'}
+                      </span>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {medicalCase.estimatedDuration}m
+                      </div>
+                      <div className="flex items-center text-xs text-yellow-600">
+                        <Star className="h-3 w-3 mr-1" />
+                        {medicalCase.rating}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )}
-
-              {cases.length > 0 && (
-                <div className="text-center mt-12">
-                  <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all duration-300">
-                    Load More Cases
-                  </Button>
-                </div>
-              )}
-            </>
+                
+                <Link href={`/game/${medicalCase.id}`}>
+                  <MobileButton 
+                    className="w-full"
+                    data-testid={`button-start-case-${medicalCase.id}`}
+                  >
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    Start Case
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </MobileButton>
+                </Link>
+              </MobileCard>
+            </motion.div>
+          ))}
+          
+          {/* Load More Button */}
+          {cases.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: cases.length * 0.1 + 0.2, duration: 0.4 }}
+              className="pt-4"
+            >
+              <MobileButton 
+                variant="secondary" 
+                className="w-full"
+                data-testid="button-load-more"
+              >
+                Load More Cases
+              </MobileButton>
+            </motion.div>
           )}
         </div>
-      </section>
-    </div>
+      )}
+
+      {/* Empty State */}
+      {cases && cases.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <MobileCard className="text-center py-8">
+            <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Search className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-2">No cases found</h3>
+            <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+              Try adjusting your search criteria or browse different specialties
+            </p>
+            <MobileButton 
+              variant="secondary"
+              onClick={() => {
+                setSearch("");
+                setSpecialty("All Specialties");
+                setDifficulty("");
+              }}
+              data-testid="button-clear-filters"
+            >
+              <Filter className="h-4 w-4 mr-2" />
+              Clear Filters
+            </MobileButton>
+          </MobileCard>
+        </motion.div>
+      )}
+    </MobileLayout>
   );
 }
