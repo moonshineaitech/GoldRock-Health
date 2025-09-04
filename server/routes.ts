@@ -22,6 +22,18 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize medical cases on startup
   await medicalCasesService.initializeCases();
+  
+  // Initialize medical images on startup
+  const { MedicalImageService } = await import("./services/medicalImageData");
+  await MedicalImageService.initializeImages();
+  
+  // Initialize board exams on startup
+  const { BoardExamService } = await import("./services/boardExamData");
+  await BoardExamService.initializeExams();
+  
+  // Initialize clinical decision trees on startup
+  const { ClinicalDecisionTreeService } = await import("./services/clinicalDecisionTreeData");
+  await ClinicalDecisionTreeService.initializeTrees();
 
   // Auth middleware
   await setupAuth(app);
@@ -951,6 +963,347 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: 'Failed to fetch difficulty levels' });
     }
   });
+
+  // Medical Images routes
+  app.get('/api/medical-images', async (req, res) => {
+    try {
+      const { imageType, difficulty, bodyRegion, search } = req.query;
+      const filters = {
+        imageType: imageType as string,
+        difficulty: difficulty ? parseInt(difficulty as string) : undefined,
+        bodyRegion: bodyRegion as string,
+        search: search as string,
+      };
+      
+      const images = await storage.getMedicalImages(filters);
+      res.json(images);
+    } catch (error) {
+      console.error('Error fetching medical images:', error);
+      res.status(500).json({ message: 'Failed to fetch medical images' });
+    }
+  });
+
+  app.get('/api/medical-images/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const image = await storage.getMedicalImage(id);
+      
+      if (!image) {
+        return res.status(404).json({ message: 'Medical image not found' });
+      }
+      
+      res.json(image);
+    } catch (error) {
+      console.error('Error fetching medical image:', error);
+      res.status(500).json({ message: 'Failed to fetch medical image' });
+    }
+  });
+
+  // Image Analysis Progress routes
+  app.get('/api/image-analysis-progress', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const progress = await storage.getImageAnalysisProgress(userId);
+      res.json(progress);
+    } catch (error) {
+      console.error('Error fetching image analysis progress:', error);
+      res.status(500).json({ message: 'Failed to fetch image analysis progress' });
+    }
+  });
+
+  app.post('/api/image-analysis-progress', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { imageId, findings, diagnosis, confidence } = req.body;
+
+      // Calculate accuracy based on findings
+      const image = await storage.getMedicalImage(imageId);
+      if (!image) {
+        return res.status(404).json({ message: 'Medical image not found' });
+      }
+
+      const keyFindings = image.keyFindings || [];
+      const correctFindings = findings.filter((f: any) => 
+        keyFindings.some((kf: any) => 
+          Math.abs(f.x - kf.x) < 10 && 
+          Math.abs(f.y - kf.y) < 10
+        )
+      );
+      
+      const accuracy = keyFindings.length > 0 
+        ? (correctFindings.length / keyFindings.length) * 100 
+        : 0;
+
+      // Calculate score based on accuracy, confidence, and findings
+      const baseScore = Math.round(accuracy * 0.6 + confidence * 10 * 0.3 + findings.length * 5 * 0.1);
+      const score = Math.min(100, Math.max(0, baseScore));
+
+      const progressData = {
+        userId,
+        imageId,
+        findingsIdentified: findings,
+        diagnosis,
+        confidence,
+        accuracy: parseFloat(accuracy.toFixed(2)),
+        score,
+        completed: true,
+        completedAt: new Date(),
+      };
+
+      const progress = await storage.createImageAnalysisProgress(progressData);
+      
+      // Check for achievements
+      await checkImageAnalysisAchievements(userId, progress, accuracy);
+      
+      res.json(progress);
+    } catch (error) {
+      console.error('Error creating image analysis progress:', error);
+      res.status(500).json({ message: 'Failed to save image analysis progress' });
+    }
+  });
+
+  // Study Groups routes
+  app.get('/api/study-groups', isAuthenticated, async (req: any, res) => {
+    try {
+      const { specialty, search } = req.query;
+      const filters = {
+        specialty: specialty as string,
+        search: search as string,
+      };
+      
+      const groups = await storage.getStudyGroups(filters);
+      res.json(groups);
+    } catch (error) {
+      console.error('Error fetching study groups:', error);
+      res.status(500).json({ message: 'Failed to fetch study groups' });
+    }
+  });
+
+  app.post('/api/study-groups', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const groupData = { ...req.body, creatorId: userId };
+      
+      const group = await storage.createStudyGroup(groupData);
+      
+      // Add creator as admin member
+      await storage.addStudyGroupMember({
+        groupId: group.id,
+        userId,
+        role: 'admin',
+      });
+      
+      res.json(group);
+    } catch (error) {
+      console.error('Error creating study group:', error);
+      res.status(500).json({ message: 'Failed to create study group' });
+    }
+  });
+
+  app.post('/api/study-groups/:groupId/join', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { groupId } = req.params;
+      const { inviteCode } = req.body;
+      
+      const group = await storage.getStudyGroup(groupId);
+      if (!group) {
+        return res.status(404).json({ message: 'Study group not found' });
+      }
+      
+      // Check if group is private and requires invite code
+      if (group.isPrivate && group.inviteCode !== inviteCode) {
+        return res.status(403).json({ message: 'Invalid invite code' });
+      }
+      
+      // Check if group is full
+      if (group.currentMembers >= group.maxMembers) {
+        return res.status(400).json({ message: 'Study group is full' });
+      }
+      
+      const member = await storage.addStudyGroupMember({
+        groupId,
+        userId,
+        role: 'member',
+      });
+      
+      res.json(member);
+    } catch (error) {
+      console.error('Error joining study group:', error);
+      res.status(500).json({ message: 'Failed to join study group' });
+    }
+  });
+
+  // Board Exams routes
+  app.get('/api/board-exams', async (req, res) => {
+    try {
+      const { examType, specialty, difficulty } = req.query;
+      const filters = {
+        examType: examType as string,
+        specialty: specialty as string,
+        difficulty: difficulty ? parseInt(difficulty as string) : undefined,
+      };
+      
+      const exams = await storage.getBoardExams(filters);
+      res.json(exams);
+    } catch (error) {
+      console.error('Error fetching board exams:', error);
+      res.status(500).json({ message: 'Failed to fetch board exams' });
+    }
+  });
+
+  app.get('/api/board-exams/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const exam = await storage.getBoardExam(id);
+      
+      if (!exam) {
+        return res.status(404).json({ message: 'Board exam not found' });
+      }
+      
+      res.json(exam);
+    } catch (error) {
+      console.error('Error fetching board exam:', error);
+      res.status(500).json({ message: 'Failed to fetch board exam' });
+    }
+  });
+
+  app.post('/api/board-exam-attempts', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const attemptData = { ...req.body, userId };
+      
+      const attempt = await storage.createBoardExamAttempt(attemptData);
+      res.json(attempt);
+    } catch (error) {
+      console.error('Error creating board exam attempt:', error);
+      res.status(500).json({ message: 'Failed to create board exam attempt' });
+    }
+  });
+
+  // Clinical Decision Trees routes
+  app.get('/api/clinical-decision-trees', async (req, res) => {
+    try {
+      const { specialty, difficulty, category } = req.query;
+      const filters = {
+        specialty: specialty as string,
+        difficulty: difficulty ? parseInt(difficulty as string) : undefined,
+        category: category as string,
+      };
+      
+      const trees = await storage.getClinicalDecisionTrees(filters);
+      res.json(trees);
+    } catch (error) {
+      console.error('Error fetching clinical decision trees:', error);
+      res.status(500).json({ message: 'Failed to fetch clinical decision trees' });
+    }
+  });
+
+  app.get('/api/clinical-decision-trees/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const tree = await storage.getClinicalDecisionTree(id);
+      
+      if (!tree) {
+        return res.status(404).json({ message: 'Clinical decision tree not found' });
+      }
+      
+      res.json(tree);
+    } catch (error) {
+      console.error('Error fetching clinical decision tree:', error);
+      res.status(500).json({ message: 'Failed to fetch clinical decision tree' });
+    }
+  });
+
+  app.get('/api/decision-tree-progress', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const progress = await storage.getDecisionTreeProgress(userId);
+      res.json(progress);
+    } catch (error) {
+      console.error('Error fetching decision tree progress:', error);
+      res.status(500).json({ message: 'Failed to fetch decision tree progress' });
+    }
+  });
+
+  app.post('/api/decision-tree-progress', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const progressData = { ...req.body, userId };
+      
+      const progress = await storage.createDecisionTreeProgress(progressData);
+      
+      // Check for achievements
+      await checkDecisionTreeAchievements(userId, progress);
+      
+      res.json(progress);
+    } catch (error) {
+      console.error('Error creating decision tree progress:', error);
+      res.status(500).json({ message: 'Failed to save decision tree progress' });
+    }
+  });
+
+  // Helper function to check for achievements
+  async function checkImageAnalysisAchievements(userId: string, progress: any, accuracy: number) {
+    try {
+      const userProgress = await storage.getImageAnalysisProgress(userId);
+      const completedCount = userProgress.filter((p: any) => p.completed).length;
+      
+      // Check for various achievement criteria
+      const achievementChecks = [
+        { id: 'first_image_analysis', criteria: () => completedCount === 1 },
+        { id: 'image_analysis_streak_5', criteria: () => completedCount === 5 },
+        { id: 'image_analysis_streak_10', criteria: () => completedCount === 10 },
+        { id: 'radiology_expert', criteria: () => completedCount === 25 },
+        { id: 'perfect_image_analysis', criteria: () => accuracy === 100 },
+        { id: 'image_analysis_master', criteria: () => {
+          const recentProgress = userProgress.slice(-10);
+          return recentProgress.length === 10 && 
+                 recentProgress.every((p: any) => (p.accuracy || 0) >= 90);
+        }},
+      ];
+      
+      for (const check of achievementChecks) {
+        if (check.criteria()) {
+          await storage.unlockAchievement(userId, check.id);
+        }
+      }
+    } catch (error) {
+      console.error('Error checking achievements:', error);
+    }
+  }
+
+  // Helper function to check for decision tree achievements
+  async function checkDecisionTreeAchievements(userId: string, progress: any) {
+    try {
+      const userProgress = await storage.getDecisionTreeProgress(userId);
+      const completedCount = userProgress.filter((p: any) => p.completed).length;
+      const optimalPaths = userProgress.filter((p: any) => p.isOptimalPath).length;
+      
+      // Check for various achievement criteria
+      const achievementChecks = [
+        { id: 'first_decision_tree', criteria: () => completedCount === 1 },
+        { id: 'decision_tree_streak_5', criteria: () => completedCount === 5 },
+        { id: 'clinical_reasoning_expert', criteria: () => completedCount === 15 },
+        { id: 'optimal_path_master', criteria: () => optimalPaths >= 10 },
+        { id: 'perfect_clinical_reasoning', criteria: () => progress.isOptimalPath && progress.score >= 90 },
+        { id: 'emergency_protocols_master', criteria: () => {
+          const emergencyTrees = userProgress.filter((p: any) => 
+            p.specialty === 'Emergency Medicine' && p.isOptimalPath
+          );
+          return emergencyTrees.length >= 3;
+        }},
+      ];
+      
+      for (const check of achievementChecks) {
+        if (check.criteria()) {
+          await storage.unlockAchievement(userId, check.id);
+        }
+      }
+    } catch (error) {
+      console.error('Error checking achievements:', error);
+    }
+  }
 
   const httpServer = createServer(app);
   return httpServer;

@@ -11,6 +11,10 @@ import Training from "@/pages/training";
 import Game from "@/pages/game";
 import AIGenerator from "@/pages/ai-generator";
 import Achievements from "@/pages/achievements";
+import ImageAnalysis from "@/pages/image-analysis";
+import StudyGroups from "@/pages/study-groups";
+import BoardExamPrep from "@/pages/board-exam-prep";
+import ClinicalDecisionTrees from "@/pages/clinical-decision-trees";
 import Premium from "@/pages/premium";
 import NotFound from "@/pages/not-found";
 
@@ -53,6 +57,10 @@ function Router() {
       <Route path="/game" component={Game} />
       <Route path="/game/:id" component={Game} />
       <Route path="/achievements" component={Achievements} />
+      <Route path="/image-analysis" component={ImageAnalysis} />
+      <Route path="/study-groups" component={StudyGroups} />
+      <Route path="/board-exam-prep" component={BoardExamPrep} />
+      <Route path="/clinical-decision-trees" component={ClinicalDecisionTrees} />
       <Route path="/premium" component={Premium} />
       <Route path="/walkthrough" component={Walkthrough} />
       <Route component={NotFound} />

@@ -206,6 +206,462 @@ export const platformStats = pgTable("platform_stats", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Medical Images Table for Radiology Training
+export const medicalImages = pgTable("medical_images", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  caseId: varchar("case_id").references(() => medicalCases.id),
+  imageType: varchar("image_type", { length: 20 }).notNull(), // xray, ct, mri, ultrasound
+  bodyRegion: varchar("body_region", { length: 50 }).notNull(), // chest, abdomen, head, etc.
+  imageUrl: text("image_url").notNull(),
+  thumbnailUrl: text("thumbnail_url"),
+  title: text("title").notNull(),
+  description: text("description"),
+  modality: varchar("modality", { length: 20 }).notNull(), // CT, MRI, X-ray, etc.
+  difficulty: integer("difficulty").notNull(), // 1-3
+  keyFindings: jsonb("key_findings").$type<{
+    finding: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    explanation: string;
+    severity: "normal" | "mild" | "moderate" | "severe";
+  }[]>().default([]),
+  distractors: jsonb("distractors").$type<{
+    finding: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    explanation: string;
+  }[]>().default([]),
+  correctDiagnosis: text("correct_diagnosis").notNull(),
+  learningObjectives: jsonb("learning_objectives").$type<string[]>().default([]),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Image Analysis Progress Table
+export const imageAnalysisProgress = pgTable("image_analysis_progress", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  imageId: varchar("image_id").notNull().references(() => medicalImages.id),
+  timeElapsed: integer("time_elapsed").default(0), // seconds
+  findingsIdentified: jsonb("findings_identified").$type<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    userDescription: string;
+    confidence: number; // 1-5
+  }[]>().default([]),
+  diagnosis: text("diagnosis"),
+  confidence: integer("confidence"), // 1-5
+  accuracy: decimal("accuracy", { precision: 5, scale: 2 }),
+  completed: boolean("completed").default(false),
+  score: integer("score").default(0),
+  feedback: text("feedback"),
+  hintsUsed: integer("hints_used").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+// Study Groups Table
+export const studyGroups = pgTable("study_groups", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  description: text("description"),
+  creatorId: varchar("creator_id").notNull().references(() => users.id),
+  institutionName: varchar("institution_name"),
+  maxMembers: integer("max_members").default(20),
+  currentMembers: integer("current_members").default(1),
+  isPrivate: boolean("is_private").default(false),
+  inviteCode: varchar("invite_code", { length: 10 }),
+  specialty: varchar("specialty", { length: 50 }),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  settings: jsonb("settings").$type<{
+    allowCaseSharing: boolean;
+    allowVideoChat: boolean;
+    competitiveMode: boolean;
+    weeklyChallenges: boolean;
+  }>().default({
+    allowCaseSharing: true,
+    allowVideoChat: false,
+    competitiveMode: false,
+    weeklyChallenges: true,
+  }),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Study Group Members Table
+export const studyGroupMembers = pgTable("study_group_members", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  groupId: varchar("group_id").notNull().references(() => studyGroups.id),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  role: varchar("role", { length: 20 }).default("member"), // admin, moderator, member
+  joinedAt: timestamp("joined_at").defaultNow(),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+});
+
+// Group Challenges Table
+export const groupChallenges = pgTable("group_challenges", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  groupId: varchar("group_id").notNull().references(() => studyGroups.id),
+  title: text("title").notNull(),
+  description: text("description"),
+  challengeType: varchar("challenge_type", { length: 30 }).notNull(), // case_competition, speed_diagnosis, accuracy_challenge
+  caseIds: jsonb("case_ids").$type<string[]>().default([]),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  maxParticipants: integer("max_participants"),
+  prizes: jsonb("prizes").$type<{
+    place: number;
+    title: string;
+    points: number;
+    badge?: string;
+  }[]>().default([]),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Mentorship Program Table
+export const mentorships = pgTable("mentorships", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  mentorId: varchar("mentor_id").notNull().references(() => users.id),
+  menteeId: varchar("mentee_id").notNull().references(() => users.id),
+  specialty: varchar("specialty", { length: 50 }),
+  status: varchar("status", { length: 20 }).default("active"), // active, paused, completed
+  mentorProfile: jsonb("mentor_profile").$type<{
+    yearsExperience: number;
+    currentPosition: string;
+    institution: string;
+    specializations: string[];
+    bio: string;
+    hourlyRate?: number;
+    availability: string[];
+  }>(),
+  sessionFrequency: varchar("session_frequency", { length: 20 }), // weekly, biweekly, monthly
+  totalSessions: integer("total_sessions").default(0),
+  lastSessionAt: timestamp("last_session_at"),
+  notes: text("notes"),
+  startedAt: timestamp("started_at").defaultNow(),
+  endedAt: timestamp("ended_at"),
+});
+
+// Mentorship Sessions Table
+export const mentorshipSessions = pgTable("mentorship_sessions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  mentorshipId: varchar("mentorship_id").notNull().references(() => mentorships.id),
+  scheduledAt: timestamp("scheduled_at").notNull(),
+  duration: integer("duration").default(60), // minutes
+  sessionType: varchar("session_type", { length: 30 }).default("case_review"), // case_review, career_guidance, skill_building
+  caseIds: jsonb("case_ids").$type<string[]>().default([]),
+  meetingLink: text("meeting_link"),
+  status: varchar("status", { length: 20 }).default("scheduled"), // scheduled, completed, cancelled, no_show
+  mentorNotes: text("mentor_notes"),
+  menteeNotes: text("mentee_notes"),
+  rating: integer("rating"), // 1-5, filled by mentee
+  feedback: text("feedback"),
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+// Board Exam Preparation Table
+export const boardExams = pgTable("board_exams", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  examType: varchar("exam_type", { length: 30 }).notNull(), // usmle_step1, usmle_step2, usmle_step3, specialty_boards
+  specialty: varchar("specialty", { length: 50 }), // internal_medicine, surgery, etc.
+  title: text("title").notNull(),
+  description: text("description"),
+  totalQuestions: integer("total_questions").notNull(),
+  timeLimit: integer("time_limit").notNull(), // minutes
+  passingScore: integer("passing_score").notNull(),
+  difficulty: integer("difficulty").notNull(), // 1-3
+  questionIds: jsonb("question_ids").$type<string[]>().default([]),
+  topics: jsonb("topics").$type<string[]>().default([]),
+  isOfficial: boolean("is_official").default(false),
+  createdBy: varchar("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Board Exam Questions Table
+export const boardExamQuestions = pgTable("board_exam_questions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  examId: varchar("exam_id").references(() => boardExams.id),
+  questionText: text("question_text").notNull(),
+  questionType: varchar("question_type", { length: 20 }).default("multiple_choice"), // multiple_choice, case_based, image_based
+  imageUrl: text("image_url"),
+  options: jsonb("options").$type<{
+    letter: string;
+    text: string;
+    isCorrect: boolean;
+  }[]>().default([]),
+  correctAnswer: varchar("correct_answer", { length: 5 }).notNull(),
+  explanation: text("explanation").notNull(),
+  difficulty: integer("difficulty").notNull(), // 1-3
+  topic: varchar("topic", { length: 100 }).notNull(),
+  subtopic: varchar("subtopic", { length: 100 }),
+  keywords: jsonb("keywords").$type<string[]>().default([]),
+  references: jsonb("references").$type<string[]>().default([]),
+  timeToAnswer: integer("time_to_answer").default(90), // seconds
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Board Exam Attempts Table
+export const boardExamAttempts = pgTable("board_exam_attempts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  examId: varchar("exam_id").notNull().references(() => boardExams.id),
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  timeElapsed: integer("time_elapsed").default(0), // seconds
+  questionsAnswered: integer("questions_answered").default(0),
+  correctAnswers: integer("correct_answers").default(0),
+  score: integer("score").default(0),
+  percentage: decimal("percentage", { precision: 5, scale: 2 }).default("0.00"),
+  passed: boolean("passed").default(false),
+  answers: jsonb("answers").$type<{
+    questionId: string;
+    selectedAnswer: string;
+    isCorrect: boolean;
+    timeSpent: number;
+  }[]>().default([]),
+  weakAreas: jsonb("weak_areas").$type<string[]>().default([]),
+  status: varchar("status", { length: 20 }).default("in_progress"), // in_progress, completed, abandoned
+});
+
+// Lab Values & Diagnostics Table
+export const labValues = pgTable("lab_values", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  caseId: varchar("case_id").references(() => medicalCases.id),
+  testName: text("test_name").notNull(),
+  category: varchar("category", { length: 50 }).notNull(), // chemistry, hematology, microbiology, etc.
+  normalRange: text("normal_range").notNull(),
+  units: varchar("units", { length: 20 }),
+  patientValue: text("patient_value").notNull(),
+  isAbnormal: boolean("is_abnormal").notNull(),
+  criticalValue: boolean("critical_value").default(false),
+  trendingData: jsonb("trending_data").$type<{
+    date: string;
+    value: string;
+    normal: boolean;
+  }[]>().default([]),
+  clinicalSignificance: text("clinical_significance"),
+  interpretation: text("interpretation").notNull(),
+  followUpRecommendations: jsonb("follow_up_recommendations").$type<string[]>().default([]),
+  costInfo: jsonb("cost_info").$type<{
+    cost: number;
+    frequency: string;
+    alternatives: string[];
+  }>(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Clinical Decision Trees/Algorithms Table
+export const clinicalAlgorithms = pgTable("clinical_algorithms", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  specialty: varchar("specialty", { length: 50 }).notNull(),
+  condition: text("condition").notNull(),
+  description: text("description"),
+  algorithmSteps: jsonb("algorithm_steps").$type<{
+    id: string;
+    step: string;
+    condition: string;
+    action: string;
+    nextSteps: string[];
+    isDecisionPoint: boolean;
+    evidenceLevel: "A" | "B" | "C" | "D";
+    references: string[];
+  }[]>().default([]),
+  flowchartData: jsonb("flowchart_data").$type<{
+    nodes: Array<{
+      id: string;
+      type: "start" | "decision" | "action" | "end";
+      position: { x: number; y: number };
+      data: { label: string; condition?: string };
+    }>;
+    edges: Array<{
+      id: string;
+      source: string;
+      target: string;
+      label?: string;
+    }>;
+  }>(),
+  difficulty: integer("difficulty").notNull(), // 1-3
+  estimatedTime: integer("estimated_time").default(15), // minutes
+  tags: jsonb("tags").$type<string[]>().default([]),
+  isActive: boolean("is_active").default(true),
+  createdBy: varchar("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Clinical Decision Trees Table (Interactive Branching Algorithms)
+export const clinicalDecisionTrees = pgTable("clinical_decision_trees", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description"),
+  specialty: varchar("specialty", { length: 50 }).notNull(),
+  category: varchar("category", { length: 50 }).notNull(), // diagnosis, treatment, triage, etc.
+  difficulty: integer("difficulty").notNull(), // 1-3
+  estimatedTime: integer("estimated_time").default(10), // minutes
+  rootNodeId: varchar("root_node_id").notNull(),
+  optimalPathLength: integer("optimal_path_length"),
+  nodes: jsonb("nodes").$type<Array<{
+    id: string;
+    type: "decision" | "outcome";
+    title: string;
+    content: string;
+    additionalInfo?: string;
+    options?: Array<{
+      text: string;
+      nextNodeId: string;
+    }>;
+    explanation?: string;
+    isOptimal?: boolean;
+  }>>().default([]),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  learningObjectives: jsonb("learning_objectives").$type<string[]>().default([]),
+  createdBy: varchar("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Decision Tree Progress Table
+export const decisionTreeProgress = pgTable("decision_tree_progress", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  treeId: varchar("tree_id").notNull().references(() => clinicalDecisionTrees.id),
+  pathTaken: jsonb("path_taken").$type<string[]>().default([]),
+  decisions: jsonb("decisions").$type<Record<string, string>>().default({}),
+  finalOutcome: varchar("final_outcome"),
+  timeSpent: integer("time_spent").default(0), // seconds
+  score: integer("score"),
+  isOptimalPath: boolean("is_optimal_path").default(false),
+  completed: boolean("completed").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+// Emergency Medicine Scenarios Table
+export const emergencyScenarios = pgTable("emergency_scenarios", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  scenarioType: varchar("scenario_type", { length: 30 }).notNull(), // trauma, cardiac_arrest, respiratory_failure, etc.
+  acuityLevel: integer("acuity_level").notNull(), // 1-5 (1 = critical, 5 = non-urgent)
+  description: text("description").notNull(),
+  initialPresentation: jsonb("initial_presentation").$type<{
+    chiefComplaint: string;
+    vitals: {
+      bloodPressure: string;
+      heartRate: number;
+      respiratoryRate: number;
+      temperature: number;
+      oxygenSaturation: number;
+      painScore: number;
+    };
+    appearance: string;
+    consciousness: string;
+  }>(),
+  timeConstraints: jsonb("time_constraints").$type<{
+    totalTime: number; // minutes
+    criticalDecisionPoints: Array<{
+      timepoint: number;
+      decision: string;
+      consequences: string;
+    }>;
+  }>(),
+  vitalsProgression: jsonb("vitals_progression").$type<Array<{
+    timepoint: number; // minutes
+    vitals: {
+      bloodPressure: string;
+      heartRate: number;
+      respiratoryRate: number;
+      temperature: number;
+      oxygenSaturation: number;
+    };
+    interventionDependent: boolean;
+  }>>(),
+  availableInterventions: jsonb("available_interventions").$type<Array<{
+    category: string;
+    interventions: Array<{
+      name: string;
+      timeRequired: number;
+      contraindications: string[];
+      effectiveness: number; // 1-5
+    }>;
+  }>>(),
+  correctDiagnosis: text("correct_diagnosis").notNull(),
+  optimalTreatment: jsonb("optimal_treatment").$type<Array<{
+    intervention: string;
+    timing: number; // minutes from start
+    priority: number; // 1-5
+    rationale: string;
+  }>>(),
+  learningObjectives: jsonb("learning_objectives").$type<string[]>().default([]),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  difficulty: integer("difficulty").notNull(), // 1-3
+  estimatedDuration: integer("estimated_duration").default(30), // minutes
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Emergency Scenario Progress Table
+export const emergencyScenarioProgress = pgTable("emergency_scenario_progress", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  scenarioId: varchar("scenario_id").notNull().references(() => emergencyScenarios.id),
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  timeElapsed: integer("time_elapsed").default(0), // seconds
+  interventionsTaken: jsonb("interventions_taken").$type<Array<{
+    intervention: string;
+    timepoint: number; // seconds from start
+    effectiveness: number;
+    wasOptimal: boolean;
+  }>>().default([]),
+  diagnosis: text("diagnosis"),
+  diagnosticAccuracy: decimal("diagnostic_accuracy", { precision: 5, scale: 2 }),
+  treatmentScore: integer("treatment_score").default(0),
+  overallScore: integer("overall_score").default(0),
+  patientOutcome: varchar("patient_outcome", { length: 20 }), // excellent, good, fair, poor, critical
+  feedback: text("feedback"),
+  completed: boolean("completed").default(false),
+});
+
+// Offline Content Packs Table
+export const offlineContentPacks = pgTable("offline_content_packs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description"),
+  packType: varchar("pack_type", { length: 30 }).notNull(), // specialty, difficulty, exam_prep
+  specialty: varchar("specialty", { length: 50 }),
+  difficulty: integer("difficulty"),
+  caseIds: jsonb("case_ids").$type<string[]>().default([]),
+  imageIds: jsonb("image_ids").$type<string[]>().default([]),
+  size: integer("size").notNull(), // MB
+  version: varchar("version", { length: 10 }).default("1.0"),
+  isPremium: boolean("is_premium").default(false),
+  downloadCount: integer("download_count").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// User Offline Downloads Table
+export const userOfflineDownloads = pgTable("user_offline_downloads", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  packId: varchar("pack_id").notNull().references(() => offlineContentPacks.id),
+  downloadedAt: timestamp("downloaded_at").defaultNow(),
+  lastSyncedAt: timestamp("last_synced_at"),
+  isActive: boolean("is_active").default(true),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   progress: many(userProgress),
@@ -229,6 +685,74 @@ export const userProgressRelations = relations(userProgress, ({ one }) => ({
 
 export const achievementsRelations = relations(achievements, ({ many }) => ({
   userAchievements: many(userAchievements),
+}));
+
+export const medicalImagesRelations = relations(medicalImages, ({ one, many }) => ({
+  case: one(medicalCases, {
+    fields: [medicalImages.caseId],
+    references: [medicalCases.id],
+  }),
+  progress: many(imageAnalysisProgress),
+}));
+
+export const imageAnalysisProgressRelations = relations(imageAnalysisProgress, ({ one }) => ({
+  user: one(users, {
+    fields: [imageAnalysisProgress.userId],
+    references: [users.id],
+  }),
+  image: one(medicalImages, {
+    fields: [imageAnalysisProgress.imageId],
+    references: [medicalImages.id],
+  }),
+}));
+
+export const studyGroupsRelations = relations(studyGroups, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [studyGroups.creatorId],
+    references: [users.id],
+  }),
+  members: many(studyGroupMembers),
+  challenges: many(groupChallenges),
+}));
+
+export const studyGroupMembersRelations = relations(studyGroupMembers, ({ one }) => ({
+  group: one(studyGroups, {
+    fields: [studyGroupMembers.groupId],
+    references: [studyGroups.id],
+  }),
+  user: one(users, {
+    fields: [studyGroupMembers.userId],
+    references: [users.id],
+  }),
+}));
+
+export const mentorshipsRelations = relations(mentorships, ({ one, many }) => ({
+  mentor: one(users, {
+    fields: [mentorships.mentorId],
+    references: [users.id],
+  }),
+  mentee: one(users, {
+    fields: [mentorships.menteeId],
+    references: [users.id],
+  }),
+  sessions: many(mentorshipSessions),
+}));
+
+export const boardExamsRelations = relations(boardExams, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [boardExams.createdBy],
+    references: [users.id],
+  }),
+  questions: many(boardExamQuestions),
+  attempts: many(boardExamAttempts),
+}));
+
+export const emergencyScenariosRelations = relations(emergencyScenarios, ({ many }) => ({
+  progress: many(emergencyScenarioProgress),
+}));
+
+export const offlineContentPacksRelations = relations(offlineContentPacks, ({ many }) => ({
+  downloads: many(userOfflineDownloads),
 }));
 
 export const userAchievementsRelations = relations(userAchievements, ({ one }) => ({
@@ -269,6 +793,138 @@ export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+});
+
+// Export types for new tables
+export type MedicalImage = typeof medicalImages.$inferSelect;
+export type InsertMedicalImage = typeof medicalImages.$inferInsert;
+export type ImageAnalysisProgress = typeof imageAnalysisProgress.$inferSelect;
+export type InsertImageAnalysisProgress = typeof imageAnalysisProgress.$inferInsert;
+export type StudyGroup = typeof studyGroups.$inferSelect;
+export type InsertStudyGroup = typeof studyGroups.$inferInsert;
+export type StudyGroupMember = typeof studyGroupMembers.$inferSelect;
+export type InsertStudyGroupMember = typeof studyGroupMembers.$inferInsert;
+export type GroupChallenge = typeof groupChallenges.$inferSelect;
+export type InsertGroupChallenge = typeof groupChallenges.$inferInsert;
+export type Mentorship = typeof mentorships.$inferSelect;
+export type InsertMentorship = typeof mentorships.$inferInsert;
+export type MentorshipSession = typeof mentorshipSessions.$inferSelect;
+export type InsertMentorshipSession = typeof mentorshipSessions.$inferInsert;
+export type BoardExam = typeof boardExams.$inferSelect;
+export type InsertBoardExam = typeof boardExams.$inferInsert;
+export type BoardExamQuestion = typeof boardExamQuestions.$inferSelect;
+export type InsertBoardExamQuestion = typeof boardExamQuestions.$inferInsert;
+export type BoardExamAttempt = typeof boardExamAttempts.$inferSelect;
+export type InsertBoardExamAttempt = typeof boardExamAttempts.$inferInsert;
+export type LabValue = typeof labValues.$inferSelect;
+export type InsertLabValue = typeof labValues.$inferInsert;
+export type ClinicalAlgorithm = typeof clinicalAlgorithms.$inferSelect;
+export type InsertClinicalAlgorithm = typeof clinicalAlgorithms.$inferInsert;
+export type ClinicalDecisionTree = typeof clinicalDecisionTrees.$inferSelect;
+export type InsertClinicalDecisionTree = typeof clinicalDecisionTrees.$inferInsert;
+export type DecisionTreeProgress = typeof decisionTreeProgress.$inferSelect;
+export type InsertDecisionTreeProgress = typeof decisionTreeProgress.$inferInsert;
+export type EmergencyScenario = typeof emergencyScenarios.$inferSelect;
+export type InsertEmergencyScenario = typeof emergencyScenarios.$inferInsert;
+export type EmergencyScenarioProgress = typeof emergencyScenarioProgress.$inferSelect;
+export type InsertEmergencyScenarioProgress = typeof emergencyScenarioProgress.$inferInsert;
+export type OfflineContentPack = typeof offlineContentPacks.$inferSelect;
+export type InsertOfflineContentPack = typeof offlineContentPacks.$inferInsert;
+export type UserOfflineDownload = typeof userOfflineDownloads.$inferSelect;
+export type InsertUserOfflineDownload = typeof userOfflineDownloads.$inferInsert;
+
+// Insert schemas for new tables
+export const insertMedicalImageSchema = createInsertSchema(medicalImages).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertImageAnalysisProgressSchema = createInsertSchema(imageAnalysisProgress).omit({
+  id: true,
+  createdAt: true,
+  completedAt: true,
+});
+
+export const insertStudyGroupSchema = createInsertSchema(studyGroups).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertStudyGroupMemberSchema = createInsertSchema(studyGroupMembers).omit({
+  id: true,
+  joinedAt: true,
+  lastActiveAt: true,
+});
+
+export const insertGroupChallengeSchema = createInsertSchema(groupChallenges).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertMentorshipSchema = createInsertSchema(mentorships).omit({
+  id: true,
+  startedAt: true,
+  endedAt: true,
+});
+
+export const insertMentorshipSessionSchema = createInsertSchema(mentorshipSessions).omit({
+  id: true,
+  createdAt: true,
+  completedAt: true,
+});
+
+export const insertBoardExamSchema = createInsertSchema(boardExams).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertBoardExamQuestionSchema = createInsertSchema(boardExamQuestions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertBoardExamAttemptSchema = createInsertSchema(boardExamAttempts).omit({
+  id: true,
+  startedAt: true,
+  completedAt: true,
+});
+
+export const insertLabValueSchema = createInsertSchema(labValues).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertClinicalAlgorithmSchema = createInsertSchema(clinicalAlgorithms).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertEmergencyScenarioSchema = createInsertSchema(emergencyScenarios).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertEmergencyScenarioProgressSchema = createInsertSchema(emergencyScenarioProgress).omit({
+  id: true,
+  startedAt: true,
+  completedAt: true,
+});
+
+export const insertOfflineContentPackSchema = createInsertSchema(offlineContentPacks).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertUserOfflineDownloadSchema = createInsertSchema(userOfflineDownloads).omit({
+  id: true,
+  downloadedAt: true,
+  lastSyncedAt: true,
 });
 
 // Types

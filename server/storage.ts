@@ -5,6 +5,14 @@ import {
   userAchievements,
   platformStats,
   users,
+  medicalImages,
+  imageAnalysisProgress,
+  studyGroups,
+  studyGroupMembers,
+  boardExams,
+  boardExamAttempts,
+  clinicalDecisionTrees,
+  decisionTreeProgress,
   type MedicalCase, 
   type InsertMedicalCase,
   type UserProgress,
@@ -15,7 +23,23 @@ import {
   type InsertUserAchievement,
   type PlatformStats,
   type User,
-  type UpsertUser
+  type UpsertUser,
+  type MedicalImage,
+  type InsertMedicalImage,
+  type ImageAnalysisProgress,
+  type InsertImageAnalysisProgress,
+  type StudyGroup,
+  type InsertStudyGroup,
+  type StudyGroupMember,
+  type InsertStudyGroupMember,
+  type BoardExam,
+  type InsertBoardExam,
+  type BoardExamAttempt,
+  type InsertBoardExamAttempt,
+  type ClinicalDecisionTree,
+  type InsertClinicalDecisionTree,
+  type DecisionTreeProgress,
+  type InsertDecisionTreeProgress
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count } from "drizzle-orm";
@@ -36,6 +60,34 @@ export interface IStorage {
   createUserProgress(progress: InsertUserProgress): Promise<UserProgress>;
   updateUserProgress(id: string, updates: Partial<InsertUserProgress>): Promise<UserProgress | undefined>;
   getLatestProgress(caseId: string, userId?: string): Promise<UserProgress | undefined>;
+
+  // Medical Images
+  getMedicalImages(filters?: { imageType?: string; difficulty?: number; bodyRegion?: string; search?: string }): Promise<MedicalImage[]>;
+  getMedicalImage(id: string): Promise<MedicalImage | undefined>;
+  createMedicalImage(image: InsertMedicalImage): Promise<MedicalImage>;
+
+  // Image Analysis Progress
+  getImageAnalysisProgress(userId: string): Promise<ImageAnalysisProgress[]>;
+  createImageAnalysisProgress(progress: InsertImageAnalysisProgress): Promise<ImageAnalysisProgress>;
+
+  // Study Groups
+  getStudyGroups(filters?: { specialty?: string; search?: string }): Promise<StudyGroup[]>;
+  getStudyGroup(id: string): Promise<StudyGroup | undefined>;
+  createStudyGroup(group: InsertStudyGroup): Promise<StudyGroup>;
+  addStudyGroupMember(member: InsertStudyGroupMember): Promise<StudyGroupMember>;
+
+  // Board Exams
+  getBoardExams(filters?: { examType?: string; specialty?: string; difficulty?: number }): Promise<BoardExam[]>;
+  getBoardExam(id: string): Promise<BoardExam | undefined>;
+  createBoardExam(exam: InsertBoardExam): Promise<BoardExam>;
+  createBoardExamAttempt(attempt: InsertBoardExamAttempt): Promise<BoardExamAttempt>;
+
+  // Clinical Decision Trees
+  getClinicalDecisionTrees(filters?: { specialty?: string; difficulty?: number; category?: string }): Promise<ClinicalDecisionTree[]>;
+  getClinicalDecisionTree(id: string): Promise<ClinicalDecisionTree | undefined>;
+  createClinicalDecisionTree(tree: InsertClinicalDecisionTree): Promise<ClinicalDecisionTree>;
+  getDecisionTreeProgress(userId: string): Promise<DecisionTreeProgress[]>;
+  createDecisionTreeProgress(progress: InsertDecisionTreeProgress): Promise<DecisionTreeProgress>;
 
   // Achievements
   getAchievements(): Promise<Achievement[]>;
@@ -208,6 +260,173 @@ export class DatabaseStorage implements IStorage {
       const [created] = await db.insert(platformStats).values(stats).returning();
       return created;
     }
+  }
+
+  // Medical Images
+  async getMedicalImages(filters?: { imageType?: string; difficulty?: number; bodyRegion?: string; search?: string }): Promise<MedicalImage[]> {
+    let query = db.select().from(medicalImages);
+    
+    if (filters?.imageType) {
+      query = query.where(eq(medicalImages.imageType, filters.imageType));
+    }
+    
+    if (filters?.difficulty) {
+      query = query.where(eq(medicalImages.difficulty, filters.difficulty));
+    }
+    
+    if (filters?.bodyRegion) {
+      query = query.where(eq(medicalImages.bodyRegion, filters.bodyRegion));
+    }
+    
+    if (filters?.search) {
+      query = query.where(
+        sql`${medicalImages.title} ILIKE ${`%${filters.search}%`} OR 
+            ${medicalImages.description} ILIKE ${`%${filters.search}%`} OR 
+            ${medicalImages.bodyRegion} ILIKE ${`%${filters.search}%`}`
+      );
+    }
+    
+    return await query.orderBy(medicalImages.createdAt);
+  }
+
+  async getMedicalImage(id: string): Promise<MedicalImage | undefined> {
+    const [image] = await db.select().from(medicalImages).where(eq(medicalImages.id, id));
+    return image;
+  }
+
+  async createMedicalImage(image: InsertMedicalImage): Promise<MedicalImage> {
+    const [newImage] = await db.insert(medicalImages).values(image).returning();
+    return newImage;
+  }
+
+  // Image Analysis Progress
+  async getImageAnalysisProgress(userId: string): Promise<ImageAnalysisProgress[]> {
+    return await db
+      .select()
+      .from(imageAnalysisProgress)
+      .where(eq(imageAnalysisProgress.userId, userId))
+      .orderBy(desc(imageAnalysisProgress.createdAt));
+  }
+
+  async createImageAnalysisProgress(progress: InsertImageAnalysisProgress): Promise<ImageAnalysisProgress> {
+    const [newProgress] = await db.insert(imageAnalysisProgress).values(progress).returning();
+    return newProgress;
+  }
+
+  // Study Groups
+  async getStudyGroups(filters?: { specialty?: string; search?: string }): Promise<StudyGroup[]> {
+    let query = db.select().from(studyGroups).where(eq(studyGroups.isPrivate, false));
+    
+    if (filters?.specialty) {
+      query = query.where(eq(studyGroups.specialty, filters.specialty));
+    }
+    
+    if (filters?.search) {
+      query = query.where(
+        sql`${studyGroups.name} ILIKE ${`%${filters.search}%`} OR 
+            ${studyGroups.description} ILIKE ${`%${filters.search}%`}`
+      );
+    }
+    
+    return await query.orderBy(desc(studyGroups.createdAt));
+  }
+
+  async getStudyGroup(id: string): Promise<StudyGroup | undefined> {
+    const [group] = await db.select().from(studyGroups).where(eq(studyGroups.id, id));
+    return group;
+  }
+
+  async createStudyGroup(group: InsertStudyGroup): Promise<StudyGroup> {
+    const [newGroup] = await db.insert(studyGroups).values(group).returning();
+    return newGroup;
+  }
+
+  async addStudyGroupMember(member: InsertStudyGroupMember): Promise<StudyGroupMember> {
+    const [newMember] = await db.insert(studyGroupMembers).values(member).returning();
+    
+    // Update member count
+    await db
+      .update(studyGroups)
+      .set({ currentMembers: sql`${studyGroups.currentMembers} + 1` })
+      .where(eq(studyGroups.id, member.groupId));
+    
+    return newMember;
+  }
+
+  // Board Exams
+  async getBoardExams(filters?: { examType?: string; specialty?: string; difficulty?: number }): Promise<BoardExam[]> {
+    let query = db.select().from(boardExams);
+    
+    if (filters?.examType) {
+      query = query.where(eq(boardExams.examType, filters.examType));
+    }
+    
+    if (filters?.specialty) {
+      query = query.where(eq(boardExams.specialty, filters.specialty));
+    }
+    
+    if (filters?.difficulty) {
+      query = query.where(eq(boardExams.difficulty, filters.difficulty));
+    }
+    
+    return await query.orderBy(desc(boardExams.createdAt));
+  }
+
+  async getBoardExam(id: string): Promise<BoardExam | undefined> {
+    const [exam] = await db.select().from(boardExams).where(eq(boardExams.id, id));
+    return exam;
+  }
+
+  async createBoardExam(exam: InsertBoardExam): Promise<BoardExam> {
+    const [newExam] = await db.insert(boardExams).values(exam).returning();
+    return newExam;
+  }
+
+  async createBoardExamAttempt(attempt: InsertBoardExamAttempt): Promise<BoardExamAttempt> {
+    const [newAttempt] = await db.insert(boardExamAttempts).values(attempt).returning();
+    return newAttempt;
+  }
+
+  // Clinical Decision Trees
+  async getClinicalDecisionTrees(filters?: { specialty?: string; difficulty?: number; category?: string }): Promise<ClinicalDecisionTree[]> {
+    let query = db.select().from(clinicalDecisionTrees);
+    
+    if (filters?.specialty && filters.specialty !== "all") {
+      query = query.where(eq(clinicalDecisionTrees.specialty, filters.specialty));
+    }
+    
+    if (filters?.difficulty) {
+      query = query.where(eq(clinicalDecisionTrees.difficulty, filters.difficulty));
+    }
+    
+    if (filters?.category && filters.category !== "all") {
+      query = query.where(eq(clinicalDecisionTrees.category, filters.category));
+    }
+    
+    return await query.orderBy(desc(clinicalDecisionTrees.createdAt));
+  }
+
+  async getClinicalDecisionTree(id: string): Promise<ClinicalDecisionTree | undefined> {
+    const [tree] = await db.select().from(clinicalDecisionTrees).where(eq(clinicalDecisionTrees.id, id));
+    return tree;
+  }
+
+  async createClinicalDecisionTree(tree: InsertClinicalDecisionTree): Promise<ClinicalDecisionTree> {
+    const [newTree] = await db.insert(clinicalDecisionTrees).values(tree).returning();
+    return newTree;
+  }
+
+  async getDecisionTreeProgress(userId: string): Promise<DecisionTreeProgress[]> {
+    return await db
+      .select()
+      .from(decisionTreeProgress)
+      .where(eq(decisionTreeProgress.userId, userId))
+      .orderBy(desc(decisionTreeProgress.createdAt));
+  }
+
+  async createDecisionTreeProgress(progress: InsertDecisionTreeProgress): Promise<DecisionTreeProgress> {
+    const [newProgress] = await db.insert(decisionTreeProgress).values(progress).returning();
+    return newProgress;
   }
 }
 
