@@ -552,6 +552,137 @@ export class DatabaseStorage implements IStorage {
     const [newProgress] = await db.insert(decisionTreeProgress).values(progress).returning();
     return newProgress;
   }
+
+  // Medical Bill Analyzer implementations
+  async createChatSession(userId: string, billId?: string): Promise<ChatSession> {
+    const sessionData: InsertChatSession = {
+      userId,
+      billId,
+      title: billId ? "Bill Analysis Chat" : "General Medical Bill Assistance",
+      sessionType: billId ? "bill_analysis" : "general",
+    };
+    const [session] = await db.insert(chatSessions).values(sessionData).returning();
+    return session;
+  }
+
+  async getChatSessions(userId: string): Promise<ChatSession[]> {
+    return await db
+      .select()
+      .from(chatSessions)
+      .where(eq(chatSessions.userId, userId))
+      .orderBy(desc(chatSessions.lastMessageAt));
+  }
+
+  async getCurrentChatSession(userId: string): Promise<ChatSession | undefined> {
+    const [session] = await db
+      .select()
+      .from(chatSessions)
+      .where(and(eq(chatSessions.userId, userId), eq(chatSessions.status, "active")))
+      .orderBy(desc(chatSessions.createdAt))
+      .limit(1);
+    
+    if (!session) {
+      // Create a new session if none exists
+      return await this.createChatSession(userId);
+    }
+    
+    return session;
+  }
+
+  async updateChatSession(sessionId: string, updates: Partial<ChatSession>): Promise<ChatSession> {
+    const [session] = await db
+      .update(chatSessions)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(chatSessions.id, sessionId))
+      .returning();
+    return session;
+  }
+
+  async createChatMessage(sessionId: string, role: string, content: string, messageType?: string, metadata?: any): Promise<ChatMessage> {
+    const messageData: InsertChatMessage = {
+      sessionId,
+      role,
+      content,
+      messageType: messageType || "text",
+      metadata: metadata || {},
+    };
+    const [message] = await db.insert(chatMessages).values(messageData).returning();
+    
+    // Update session with latest message timestamp and increment message count
+    await db
+      .update(chatSessions)
+      .set({
+        lastMessageAt: new Date(),
+        totalMessages: sql`${chatSessions.totalMessages} + 1`,
+      })
+      .where(eq(chatSessions.id, sessionId));
+    
+    return message;
+  }
+
+  async getChatMessages(sessionId: string): Promise<ChatMessage[]> {
+    return await db
+      .select()
+      .from(chatMessages)
+      .where(eq(chatMessages.sessionId, sessionId))
+      .orderBy(chatMessages.createdAt);
+  }
+
+  async createMedicalBill(userId: string, billData: InsertMedicalBill): Promise<MedicalBill> {
+    const [bill] = await db.insert(medicalBills).values({ ...billData, userId }).returning();
+    return bill;
+  }
+
+  async getMedicalBills(userId: string): Promise<MedicalBill[]> {
+    return await db
+      .select()
+      .from(medicalBills)
+      .where(eq(medicalBills.userId, userId))
+      .orderBy(desc(medicalBills.createdAt));
+  }
+
+  async getMedicalBill(billId: string, userId: string): Promise<MedicalBill | undefined> {
+    const [bill] = await db
+      .select()
+      .from(medicalBills)
+      .where(and(eq(medicalBills.id, billId), eq(medicalBills.userId, userId)));
+    return bill;
+  }
+
+  async updateMedicalBill(billId: string, updates: Partial<MedicalBill>): Promise<MedicalBill> {
+    const [bill] = await db
+      .update(medicalBills)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(medicalBills.id, billId))
+      .returning();
+    return bill;
+  }
+
+  async createBillAnalysis(billId: string, analysisData: InsertBillAnalysisResult): Promise<BillAnalysisResult> {
+    const [analysis] = await db.insert(billAnalysisResults).values({ ...analysisData, billId }).returning();
+    return analysis;
+  }
+
+  async getBillAnalysis(billId: string): Promise<BillAnalysisResult | undefined> {
+    const [analysis] = await db
+      .select()
+      .from(billAnalysisResults)
+      .where(eq(billAnalysisResults.billId, billId));
+    return analysis;
+  }
+
+  async createReductionStrategy(strategyData: InsertReductionStrategy): Promise<ReductionStrategy> {
+    const [strategy] = await db.insert(reductionStrategies).values(strategyData).returning();
+    return strategy;
+  }
+
+  async getReductionStrategies(billId: string): Promise<ReductionStrategy[]> {
+    return await db
+      .select()
+      .from(reductionStrategies)
+      .where(eq(reductionStrategies.billId, billId))
+      .orderBy(desc(reductionStrategies.priority));
+  }
 }
 
 export const storage = new DatabaseStorage();
