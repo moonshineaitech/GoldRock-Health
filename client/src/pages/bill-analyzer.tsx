@@ -191,24 +191,31 @@ export default function BillAnalyzer() {
   const quickActions = [
     {
       icon: Upload,
-      label: "Upload Bill",
-      desc: "Scan & analyze",
+      label: "Upload Insurance Bill",
+      desc: "AI analysis for cost reduction",
       color: "emerald",
       action: () => fileInputRef.current?.click(),
     },
     {
-      icon: Brain,
-      label: "Ask Question", 
-      desc: "Expert guidance",
-      color: "blue",
-      action: () => setInputMessage("What should I look for on my medical bills?"),
+      icon: AlertTriangle,
+      label: "Assess Medical Bill",
+      desc: "Find billing errors & overcharges",
+      color: "red",
+      action: () => setInputMessage("Help me assess my medical bill to find billing errors and overcharges that I can dispute"),
     },
     {
-      icon: TrendingDown,
-      label: "Check Savings",
-      desc: "Review potential",
-      color: "purple",
-      action: () => setInputMessage("Show me my potential savings"),
+      icon: DollarSign,
+      label: "Negotiate Payment",
+      desc: "Get reduction strategies",
+      color: "green",
+      action: () => setInputMessage("I need help negotiating a payment plan and reducing my medical bills. What strategies work best?"),
+    },
+    {
+      icon: FileText,
+      label: "Generate Appeal Letter",
+      desc: "Professional dispute documents",
+      color: "blue",
+      action: () => setInputMessage("Generate a professional appeal letter to dispute charges on my medical bill and request a reduction"),
     }
   ];
 
@@ -289,11 +296,11 @@ export default function BillAnalyzer() {
                 </h2>
                 
                 <p className="text-sm text-gray-600 mb-6 px-4 leading-relaxed">
-                  I help identify overcharges, find ways to reduce your bills, and generate professional documents to get your money back.
+                  I specialize in finding billing errors, negotiating reductions, and generating professional appeals to slash your medical costs.
                 </p>
                 
                 {/* Compact Quick Actions */}
-                <div className="space-y-3 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-6">
                   {quickActions.map((action, index) => {
                     const IconComponent = action.icon;
                     return (
@@ -304,18 +311,16 @@ export default function BillAnalyzer() {
                         transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
                       >
                         <Card 
-                          className="p-3 cursor-pointer hover:shadow-md transition-all bg-white/80 border-gray-200"
+                          className="p-3 cursor-pointer hover:shadow-md transition-all bg-white/80 border-gray-200 h-20"
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className="flex items-center space-x-3">
-                            <div className={`w-8 h-8 bg-${action.color}-100 rounded-lg flex items-center justify-center`}>
-                              <IconComponent className={`h-4 w-4 text-${action.color}-600`} />
+                          <div className="flex flex-col items-center text-center space-y-1">
+                            <div className={`w-6 h-6 bg-${action.color}-100 rounded-lg flex items-center justify-center`}>
+                              <IconComponent className={`h-3 w-3 text-${action.color}-600`} />
                             </div>
-                            <div className="flex-1 text-left">
-                              <div className="font-medium text-gray-900 text-sm">{action.label}</div>
-                              <div className="text-xs text-gray-600">{action.desc}</div>
-                            </div>
+                            <div className="font-medium text-gray-900 text-xs leading-tight">{action.label}</div>
+                            <div className="text-xs text-gray-500 leading-tight">{action.desc}</div>
                           </div>
                         </Card>
                       </motion.div>
@@ -418,7 +423,7 @@ export default function BillAnalyzer() {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask about your medical bills..."
+                placeholder="Ask how to reduce your medical bills, dispute charges, or negotiate payment..."
                 className="pr-10 h-10 bg-gray-50 border-gray-200 rounded-xl text-sm"
                 disabled={sendMessageMutation.isPending}
                 data-testid="input-message"
