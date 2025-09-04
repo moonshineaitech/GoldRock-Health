@@ -205,10 +205,10 @@ function PremiumMarketing() {
   if (clientSecret && selectedPlan) {
     return (
       <MobileLayout title="Complete Payment" showBottomNav={true}>
-        <div className="space-y-6">
-          <div className="text-center py-4">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Complete Your Subscription</h2>
-            <p className="text-gray-600">Secure payment powered by Stripe</p>
+        <div className="space-y-4">
+          <div className="text-center py-2">
+            <h2 className="text-xl font-semibold text-gray-900 mb-1">Complete Your Subscription</h2>
+            <p className="text-gray-600 text-sm">Secure payment powered by Stripe</p>
           </div>
           <MobileCard>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
@@ -220,139 +220,92 @@ function PremiumMarketing() {
     );
   }
   return (
-    <div className="space-y-6">
-      {/* Hero Section */}
+    <div className="space-y-4">
+      {/* Compact Hero Section */}
       <motion.div 
-        className="text-center py-6"
-        initial={{ opacity: 0, y: 30 }}
+        className="text-center py-3"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.6 }}
       >
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-orange-500/25"
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 0.3,
-            type: "spring",
-            stiffness: 200
-          }}
+          className="w-12 h-12 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-orange-500/25"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
         >
-          <Crown className="h-8 w-8 text-white" />
+          <Crown className="h-6 w-6 text-white" />
         </motion.div>
         
         <motion.h1 
-          className="text-2xl font-bold text-gray-900 mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
+          className="text-xl font-bold text-gray-900 mb-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
         >
           Unlock Premium Features
         </motion.h1>
         
         <motion.p 
-          className="text-base text-gray-600 mb-8 max-w-sm mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
+          className="text-sm text-gray-600 max-w-xs mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.4 }}
         >
-          Take your medical training to the next level with advanced AI-powered features
+          Advanced AI training with unlimited access
         </motion.p>
       </motion.div>
 
-      {/* Features Comparison */}
+      {/* Prominent Pricing with Clear CTA */}
       <motion.div
-        className="space-y-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.9, duration: 0.6 }}
-      >
-        <h2 className="text-xl font-semibold text-gray-900 text-center mb-6">
-          Premium vs Free
-        </h2>
-        
-        {premiumFeatures.map((feature, index) => {
-          const IconComponent = feature.icon;
-          return (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
-            >
-              <MobileCard className="border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50">
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-orange-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                    <IconComponent className="h-5 w-5 text-orange-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900 mb-1">{feature.title}</h3>
-                    <p className="text-sm text-gray-600 mb-3">{feature.description}</p>
-                    <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div className="flex items-center">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
-                        <span className="text-gray-600">Free: {feature.free}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Crown className="h-3 w-3 text-orange-600 mr-2" />
-                        <span className="text-orange-700 font-medium">Premium: {feature.premium}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </MobileCard>
-            </motion.div>
-          );
-        })}
-      </motion.div>
-
-      {/* Pricing Plans */}
-      <motion.div
-        className="space-y-4"
-        initial={{ opacity: 0, y: 30 }}
+        className="space-y-3"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <h2 className="text-xl font-semibold text-gray-900 text-center mb-6">
+        <h2 className="text-lg font-semibold text-gray-900 text-center mb-3">
           Choose Your Plan
         </h2>
         
-        <div className="grid gap-4">
+        <div className="space-y-3">
           {subscriptionPlans.map((plan, index) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.5 + index * 0.1, duration: 0.4 }}
+              transition={{ delay: 0.6 + index * 0.1, duration: 0.3 }}
               className="relative"
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
+                  <div className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
                     Most Popular
                   </div>
                 </div>
               )}
-              <MobileCard className={plan.popular ? "border-orange-300 bg-orange-50 ring-2 ring-orange-200" : ""}>
-                <div className="text-center">
-                  <h3 className="font-semibold text-gray-900 mb-2">{plan.name}</h3>
-                  <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-900">{plan.price}</span>
-                    <span className="text-gray-600">{plan.period}</span>
+              <MobileCard className={plan.popular ? "border-orange-400 bg-gradient-to-br from-orange-50 to-orange-100 ring-2 ring-orange-300 shadow-lg" : "border-gray-200"}>
+                <div className="text-center py-2">
+                  <div className="flex items-center justify-center space-x-4 mb-3">
+                    <div>
+                      <h3 className="font-semibold text-gray-900 text-sm">{plan.name}</h3>
+                      <div className="flex items-baseline justify-center">
+                        <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
+                        <span className="text-gray-600 text-sm ml-1">{plan.period}</span>
+                      </div>
+                      {plan.savings && (
+                        <div className="text-green-600 font-medium text-xs mt-1">{plan.savings}</div>
+                      )}
+                    </div>
                   </div>
-                  {plan.savings && (
-                    <div className="text-green-600 font-medium text-sm mb-4">{plan.savings}</div>
-                  )}
                   <MobileButton 
-                    className={plan.popular ? "bg-orange-600 hover:bg-orange-700" : ""}
-                    size="lg"
+                    className={plan.popular ? "bg-orange-600 hover:bg-orange-700 shadow-lg" : "bg-gray-800 hover:bg-gray-900"}
+                    size="sm"
                     onClick={() => handleSubscribe(plan.name.toLowerCase())}
                     disabled={createSubscription.isPending}
                   >
-                    <Crown className="h-4 w-4 mr-2" />
-                    {createSubscription.isPending ? "Processing..." : "Subscribe Now"}
-                    <ArrowRight className="h-4 w-4 ml-2" />
+                    <Crown className="h-4 w-4 mr-1" />
+                    {createSubscription.isPending ? "Processing..." : "Start Free Trial"}
+                    <ArrowRight className="h-3 w-3 ml-1" />
                   </MobileButton>
                 </div>
               </MobileCard>
@@ -361,32 +314,77 @@ function PremiumMarketing() {
         </div>
       </motion.div>
 
-      {/* Call to Action */}
+      {/* Free Trial Highlight */}
       <motion.div
-        className="text-center py-6"
+        className="text-center py-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 0.6 }}
+        transition={{ delay: 0.9, duration: 0.4 }}
       >
-        <MobileCard className="bg-gradient-to-br from-orange-100 to-amber-100 border-orange-200">
-          <div className="text-center">
-            <Sparkles className="h-8 w-8 text-orange-600 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-2">Start Your 7-Day Free Trial</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Experience all premium features with no commitment
+        <MobileCard className="bg-gradient-to-br from-amber-50 to-orange-50 border-orange-200">
+          <div className="text-center py-2">
+            <Sparkles className="h-6 w-6 text-orange-600 mx-auto mb-2" />
+            <h3 className="font-semibold text-gray-900 mb-1 text-sm">7-Day Free Trial</h3>
+            <p className="text-xs text-gray-600 mb-2">
+              Full access • Cancel anytime • No commitment
             </p>
-            <div className="flex items-center justify-center space-x-4 text-xs text-gray-600">
+            <div className="flex items-center justify-center space-x-3 text-xs text-gray-600">
               <div className="flex items-center">
                 <Check className="h-3 w-3 text-green-600 mr-1" />
-                Cancel anytime
+                <span>No hidden fees</span>
               </div>
               <div className="flex items-center">
                 <Check className="h-3 w-3 text-green-600 mr-1" />
-                No hidden fees
+                <span>Instant access</span>
               </div>
             </div>
           </div>
         </MobileCard>
+      </motion.div>
+
+      {/* Compact Features */}
+      <motion.div
+        className="space-y-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.0, duration: 0.4 }}
+      >
+        <h2 className="text-lg font-semibold text-gray-900 text-center mb-2">
+          What You Get
+        </h2>
+        
+        <div className="grid grid-cols-2 gap-2">
+          {premiumFeatures.map((feature, index) => {
+            const IconComponent = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.1 + index * 0.05, duration: 0.3 }}
+              >
+                <MobileCard className="border-orange-200 bg-gradient-to-br from-orange-50/50 to-amber-50/50 h-full">
+                  <div className="text-center py-2">
+                    <div className="w-8 h-8 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                      <IconComponent className="h-4 w-4 text-orange-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-1 text-xs">{feature.title}</h3>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-center text-xs">
+                        <Crown className="h-3 w-3 text-orange-600 mr-1" />
+                        <span className="text-orange-700 font-medium">{feature.premium}</span>
+                      </div>
+                      <div className="flex items-center justify-center text-xs">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full mr-1"></div>
+                        <span className="text-gray-500">Free: {feature.free}</span>
+                      </div>
+                    </div>
+                  </div>
+                </MobileCard>
+              </motion.div>
+            );
+          })}
+        </div>
       </motion.div>
     </div>
   );
