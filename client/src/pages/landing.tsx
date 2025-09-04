@@ -62,13 +62,6 @@ export default function Landing() {
               <ArrowRight className="h-4 w-4 ml-2" />
             </MobileButton>
           </Link>
-          
-          <Link href="/game">
-            <MobileButton variant="secondary" className="w-full" size="lg">
-              <Zap className="h-5 w-5 mr-2" />
-              Quick Practice
-            </MobileButton>
-          </Link>
         </motion.div>
       </motion.div>
 
