@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { 
   Home,
   BookOpen,
-  Brain,
+  FileText,
   Trophy,
   User,
   Crown
@@ -34,10 +34,10 @@ const navItems: NavItem[] = [
     color: "text-green-600"
   },
   {
-    id: "ai",
-    label: "AI Gen",
-    icon: Brain,
-    path: "/ai-generator",
+    id: "billai",
+    label: "Bill AI",
+    icon: FileText,
+    path: "/bill-analyzer",
     color: "text-purple-600"
   },
   {
