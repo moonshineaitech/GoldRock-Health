@@ -14,7 +14,9 @@ import {
   RotateCcw, 
   Stethoscope,
   TestTubeDiagonal,
-  List
+  List,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { DiagnosisModal } from "./diagnosis-modal";
 import { TestOrderingModal } from "./test-ordering-modal";
@@ -43,6 +45,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showTestOrdering, setShowTestOrdering] = useState(false);
   const [showPhysicalExam, setShowPhysicalExam] = useState(false);
+  const [showQuickQuestions, setShowQuickQuestions] = useState(false);
   const { toast } = useToast();
   
   const { 
@@ -157,6 +160,21 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
       handleSendMessage();
     }
   };
+
+  const handleQuickQuestion = (question: string) => {
+    setCurrentQuestion(question);
+    setShowQuickQuestions(false);
+    askQuestionMutation.mutate(question);
+  };
+
+  const quickQuestions = [
+    "Can you describe the pain in more detail?",
+    "When did the symptoms first start?",
+    "What makes it better or worse?",
+    "Have you experienced this before?",
+    "Are you taking any medications?",
+    "Do you have any allergies?"
+  ];
 
   const playAudio = (audioUrl: string) => {
     // In a real implementation, this would play the audio file
@@ -276,6 +294,42 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
               <span>Order Tests</span>
             </Button>
           </div>
+        </div>
+
+        {/* Quick Questions Dropdown */}
+        <div className="mb-4">
+          <Button
+            variant="outline"
+            onClick={() => setShowQuickQuestions(!showQuickQuestions)}
+            className="w-full flex items-center justify-between py-3 px-4 rounded-2xl border-2 border-gray-200 bg-white hover:bg-gray-50 transition-all duration-200"
+            data-testid="button-quick-questions-toggle"
+          >
+            <div className="flex items-center space-x-2">
+              <List className="h-5 w-5 text-indigo-500" />
+              <span className="font-medium text-gray-700">Quick Questions</span>
+            </div>
+            {showQuickQuestions ? (
+              <ChevronUp className="h-5 w-5 text-gray-400" />
+            ) : (
+              <ChevronDown className="h-5 w-5 text-gray-400" />
+            )}
+          </Button>
+          
+          {showQuickQuestions && (
+            <div className="mt-3 space-y-2 bg-gray-50 rounded-2xl p-4 border-2 border-gray-100">
+              {quickQuestions.map((question, index) => (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  onClick={() => handleQuickQuestion(question)}
+                  className="w-full text-left justify-start py-3 px-4 rounded-xl hover:bg-white hover:shadow-sm transition-all duration-200 text-gray-700 font-normal"
+                  data-testid={`quick-question-${index}`}
+                >
+                  {question}
+                </Button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Main Input */}
