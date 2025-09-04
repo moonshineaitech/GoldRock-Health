@@ -30,43 +30,52 @@ export function MobileHeader({
 
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-100"
-      initial={{ y: -60, opacity: 0 }}
+      className="fixed top-0 left-0 right-0 z-40 backdrop-blur-2xl border-b border-white/20 shadow-xl shadow-black/5"
+      style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+        paddingTop: 'env(safe-area-inset-top)'
+      }}
+      initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div className="flex items-center justify-between h-14 px-4">
+      {/* Premium glass overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 pointer-events-none" />
+      
+      <div className="flex items-center justify-between h-16 px-5 relative">
         {/* Left Section */}
         <div className="flex items-center min-w-0">
           {showBackButton ? (
             <motion.button
               onClick={handleBackClick}
-              className="flex items-center justify-center w-7 h-7 mr-3 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-200"
-              whileTap={{ scale: 0.9 }}
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center justify-center w-9 h-9 mr-4 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
+              whileTap={{ scale: 0.92 }}
+              whileHover={{ scale: 1.08, rotateZ: -2 }}
               data-testid="button-back"
             >
-              <ArrowLeft className="h-3.5 w-3.5 text-gray-600" />
+              <ArrowLeft className="h-4 w-4 text-gray-700" />
             </motion.button>
           ) : (
-            <div className="w-7 h-7 mr-3" />
+            <div className="w-9 h-9 mr-4" />
           )}
         </div>
 
         {/* Center Section - Title */}
-        <motion.h1 
-          className="flex-1 text-base font-semibold text-gray-900 text-center truncate px-2"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.3 }}
+        <motion.div 
+          className="flex-1 text-center px-3"
+          initial={{ opacity: 0, y: 15, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
         >
-          {title}
-        </motion.h1>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent truncate leading-none">
+            {title}
+          </h1>
+          <div className="h-0.5 w-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto mt-1 opacity-60" />
+        </motion.div>
 
         {/* Right Section */}
         <div className="flex items-center min-w-0">
-          {rightAction || <div className="w-7 h-7" />}
+          {rightAction || <div className="w-9 h-9" />}
         </div>
       </div>
     </motion.header>
@@ -129,13 +138,13 @@ export function UserAvatarDropdown() {
   if (!isAuthenticated) {
     return (
       <motion.button
-        className="flex items-center justify-center w-7 h-7 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-200"
-        whileTap={{ scale: 0.9 }}
-        whileHover={{ scale: 1.05 }}
+        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
+        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.08, rotateZ: -2 }}
         onClick={() => window.location.href = "/api/login"}
         data-testid="button-login"
       >
-        <User className="h-3.5 w-3.5 text-gray-600" />
+        <User className="h-4 w-4 text-gray-700" />
       </motion.button>
     );
   }
@@ -147,31 +156,31 @@ export function UserAvatarDropdown() {
   return (
     <div className="relative">
       <motion.button
-        className="flex items-center space-x-1 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-200 p-1"
-        whileTap={{ scale: 0.95 }}
-        whileHover={{ scale: 1.02 }}
+        className="flex items-center space-x-1.5 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300 p-1.5"
+        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.08, rotateZ: 2 }}
         onClick={() => setIsOpen(!isOpen)}
         data-testid="user-avatar-dropdown"
       >
         {/* Avatar */}
-        <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+        <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
           {user?.profileImageUrl ? (
             <img 
               src={user.profileImageUrl} 
               alt="Profile" 
-              className="w-full h-full rounded-lg object-cover"
+              className="w-full h-full rounded-xl object-cover"
             />
           ) : (
-            <span className="text-xs font-medium text-white">{userInitials}</span>
+            <span className="text-xs font-bold text-white tracking-tight">{userInitials}</span>
           )}
         </div>
         
         {/* Dropdown indicator */}
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <ChevronDown className="h-3 w-3 text-gray-500" />
+          <ChevronDown className="h-3.5 w-3.5 text-gray-600" />
         </motion.div>
       </motion.button>
 
@@ -187,36 +196,39 @@ export function UserAvatarDropdown() {
             
             {/* Menu */}
             <motion.div
-              className="absolute right-0 top-full mt-2 w-48 bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200/50 shadow-xl z-50 overflow-hidden"
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ duration: 0.2 }}
+              className="absolute right-0 top-full mt-3 w-52 backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)'
+              }}
+              initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
+              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               {/* User Info */}
-              <div className="p-3 border-b border-gray-100">
+              <div className="p-4 border-b border-white/20">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
                     {user?.profileImageUrl ? (
                       <img 
                         src={user.profileImageUrl} 
                         alt="Profile" 
-                        className="w-full h-full rounded-xl object-cover"
+                        className="w-full h-full rounded-2xl object-cover"
                       />
                     ) : (
-                      <span className="text-sm font-medium text-white">{userInitials}</span>
+                      <span className="text-sm font-bold text-white tracking-tight">{userInitials}</span>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                    <p className="text-sm font-bold text-gray-900 truncate leading-tight">
                       {user?.firstName && user?.lastName 
                         ? `${user.firstName} ${user.lastName}`
                         : user?.email?.split('@')[0] || 'User'
                       }
                     </p>
-                    <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    <p className="text-xs text-gray-600 truncate mt-0.5">{user?.email}</p>
                     {isSubscribed && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 mt-1">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold bg-gradient-to-r from-orange-100 to-amber-100 text-orange-800 mt-2 shadow-sm">
                         <Crown className="w-3 h-3 mr-1" />
                         Premium
                       </span>
@@ -226,30 +238,31 @@ export function UserAvatarDropdown() {
               </div>
 
               {/* Menu Items */}
-              <div className="py-1">
+              <div className="py-2">
                 {menuItems.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
                     <motion.button
                       key={item.label}
-                      className={`w-full flex items-center space-x-3 px-3 py-2 text-sm transition-colors ${
+                      className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-2xl mx-2 my-1 ${
                         item.danger 
-                          ? 'text-red-600 hover:bg-red-50' 
+                          ? 'text-red-600 hover:bg-red-50/80 hover:shadow-sm' 
                           : item.highlight
-                            ? 'text-orange-600 hover:bg-orange-50'
-                            : 'text-gray-700 hover:bg-gray-50'
+                            ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
+                            : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
                       }`}
                       onClick={item.action}
-                      whileHover={{ x: 2 }}
-                      transition={{ duration: 0.1 }}
+                      whileHover={{ x: 4, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.15 }}
                       data-testid={`menu-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                     >
                       <IconComponent className="h-4 w-4 flex-shrink-0" />
                       <span className="flex-1 text-left">{item.label}</span>
                       {item.highlight && (
                         <motion.div
-                          className="w-2 h-2 bg-orange-500 rounded-full"
-                          animate={{ scale: [1, 1.2, 1] }}
+                          className="w-2.5 h-2.5 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full shadow-sm"
+                          animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         />
                       )}

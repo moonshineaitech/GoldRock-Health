@@ -241,6 +241,40 @@
     animation: shimmer 2s ease-in-out infinite;
   }
 
+  @keyframes pulse-glow {
+    0%, 100% { 
+      box-shadow: 0 0 5px rgba(99, 102, 241, 0.3), 0 0 10px rgba(99, 102, 241, 0.2);
+      transform: scale(1);
+    }
+    50% { 
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.4), 0 0 20px rgba(99, 102, 241, 0.3);
+      transform: scale(1.02);
+    }
+  }
+
+  @keyframes breathing {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.05) rotate(1deg); }
+  }
+
+  @keyframes glass-reflection {
+    0% { opacity: 0; transform: translateX(-100%) skewX(-45deg); }
+    50% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(200%) skewX(-45deg); }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .animate-breathing {
+    animation: breathing 4s ease-in-out infinite;
+  }
+
+  .animate-glass-reflection {
+    animation: glass-reflection 3s ease-in-out infinite;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
     text-wrap: balance;
