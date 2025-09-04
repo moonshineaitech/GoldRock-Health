@@ -623,6 +623,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const comprehensiveCase = medicalCasesService.generateComprehensiveCase(safeCase);
         physicalExam = comprehensiveCase.physicalExam || {};
         
+        console.log('Generated Physical Exam Data:');
+        console.log('- Vitals:', JSON.stringify(physicalExam.vitals, null, 2));
+        console.log('- General:', JSON.stringify(physicalExam.general, null, 2));
+        console.log('- Cardiovascular:', JSON.stringify(physicalExam.cardiovascular, null, 2));
+        console.log('- Full physicalExam keys:', Object.keys(physicalExam));
+        
         // Update the case in storage with generated data
         await storage.updateMedicalCase(id, { 
           diagnosticTests: comprehensiveCase.diagnosticTests,

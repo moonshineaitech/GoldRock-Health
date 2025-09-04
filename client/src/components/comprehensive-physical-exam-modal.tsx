@@ -116,6 +116,11 @@ export function ComprehensivePhysicalExamModal({
         method: 'GET'
       });
       const data = await response.json();
+      console.log('Frontend received data:', data);
+      console.log('Physical exam data:', data.physicalExam);
+      console.log('Vitals received:', data.physicalExam?.vitals);
+      console.log('General received:', data.physicalExam?.general);
+      console.log('Cardiovascular received:', data.physicalExam?.cardiovascular);
       setPatientInfo(data.patientInfo);
       setPhysicalExam(data.physicalExam);
     } catch (error) {
