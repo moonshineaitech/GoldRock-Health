@@ -316,9 +316,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/user-achievements', async (req, res) => {
+  app.get('/api/user-achievements', isAuthenticated, async (req: any, res) => {
     try {
-      const userAchievements = await storage.getUserAchievements();
+      const userId = req.user?.claims?.sub;
+      const userAchievements = await storage.getUserAchievements(userId);
       res.json(userAchievements);
     } catch (error) {
       console.error('Error fetching user achievements:', error);
@@ -326,14 +327,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/achievements/:id/unlock', async (req, res) => {
+  app.post('/api/achievements/:id/unlock', isAuthenticated, async (req: any, res) => {
     try {
       const { id } = req.params;
-      const achievement = await storage.unlockAchievement(id);
+      const userId = req.user?.claims?.sub;
+      const achievement = await storage.unlockAchievement(id, userId);
       res.status(201).json(achievement);
     } catch (error) {
       console.error('Error unlocking achievement:', error);
       res.status(500).json({ message: 'Failed to unlock achievement' });
+    }
+  });
+
+  app.get('/api/user-progress-summary', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      
+      // Get user basic info
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Get all user progress records
+      const allProgress = await storage.getUserProgress('', userId);
+      
+      // Get user achievements
+      const userAchievements = await storage.getUserAchievements(userId);
+      
+      // Calculate summary statistics
+      const completedCases = allProgress.filter(p => p.completed).length;
+      const totalAccuracy = allProgress.length > 0 
+        ? allProgress.reduce((sum, p) => sum + (parseFloat(p.accuracy || '0')), 0) / allProgress.length 
+        : 0;
+      const totalScore = allProgress.reduce((sum, p) => sum + (p.score || 0), 0);
+      const totalPoints = userAchievements.reduce((sum: number, ua: any) => sum + (ua.points || 0), 0);
+      
+      // Calculate specialty progress
+      const specialtyProgress: Record<string, { completed: number; accuracy: number }> = {};
+      for (const progress of allProgress.filter(p => p.completed)) {
+        // This would ideally get specialty from the medical case
+        // For now, we'll use a placeholder approach
+        const specialty = 'General'; // You'd need to join with medical cases to get actual specialty
+        if (!specialtyProgress[specialty]) {
+          specialtyProgress[specialty] = { completed: 0, accuracy: 0 };
+        }
+        specialtyProgress[specialty].completed++;
+        specialtyProgress[specialty].accuracy += parseFloat(progress.accuracy || '0');
+      }
+      
+      // Calculate average accuracy per specialty
+      Object.keys(specialtyProgress).forEach(specialty => {
+        if (specialtyProgress[specialty].completed > 0) {
+          specialtyProgress[specialty].accuracy /= specialtyProgress[specialty].completed;
+        }
+      });
+
+      const summary = {
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          profileImageUrl: user.profileImageUrl
+        },
+        stats: {
+          casesCompleted: completedCases,
+          accuracy: Math.round(totalAccuracy * 100) / 100,
+          totalScore,
+          totalPoints,
+          achievementsUnlocked: userAchievements.length,
+          currentStreak: 0, // Would need additional logic to calculate streaks
+          timeSpent: allProgress.reduce((sum, p) => sum + (p.timeElapsed || 0), 0)
+        },
+        specialtyProgress,
+        recentAchievements: userAchievements.slice(0, 5),
+        recentActivity: allProgress.slice(0, 10)
+      };
+
+      res.json(summary);
+    } catch (error) {
+      console.error('Error fetching user progress summary:', error);
+      res.status(500).json({ message: 'Failed to fetch user progress summary' });
     }
   });
 
