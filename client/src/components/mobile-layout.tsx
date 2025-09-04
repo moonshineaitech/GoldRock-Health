@@ -1,4 +1,4 @@
-import { MobileHeader, NotificationButton } from "./mobile-header";
+import { MobileHeader, UserAvatarDropdown } from "./mobile-header";
 import { MobileBottomNav, SafeAreaProvider } from "./mobile-bottom-nav";
 import { TrainingQuickAccess } from "./training-quick-access";
 import { motion } from "framer-motion";
@@ -35,7 +35,7 @@ export function MobileLayout({
         title={title}
         showBackButton={showBackButton}
         onBackClick={onBackClick}
-        rightAction={<NotificationButton />}
+        rightAction={<UserAvatarDropdown />}
       />
       
       <motion.main 
