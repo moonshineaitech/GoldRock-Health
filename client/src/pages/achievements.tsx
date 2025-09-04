@@ -1,86 +1,54 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
-import { AchievementBadge, AchievementUnlockAnimation } from "@/components/achievement-badge";
-import { 
-  medicalSpecialtyAchievements,
-  achievementCategories,
-  getAchievementsByCategory,
-  getEarnedAchievements,
-  getTotalPoints,
-  getAchievementProgress
-} from "@/data/medical-achievements";
+import { AchievementProgressTracker } from "@/components/achievement-progress-tracker";
+import { AchievementNotification, useAchievementNotifications } from "@/components/achievement-notification";
 import { 
   Trophy, 
   Star, 
   Target, 
   TrendingUp, 
   Clock, 
-  BookOpen, 
-  Brain,
   Award,
-  Zap,
-  Heart,
-  Users,
   CheckCircle,
-  Filter,
   Crown
 } from "lucide-react";
 
 export default function Achievements() {
   const [selectedTab, setSelectedTab] = useState("overview");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [showUnlockAnimation, setShowUnlockAnimation] = useState(false);
-  const [newlyUnlockedAchievement, setNewlyUnlockedAchievement] = useState<any>(null);
   const queryClient = useQueryClient();
+  
+  // Use achievement notifications
+  const { currentNotification, isVisible, closeNotification } = useAchievementNotifications();
 
-  // Fetch user progress summary including achievements
-  const { data: userProgressSummary, isLoading: progressLoading } = useQuery({
-    queryKey: ["/api/user-progress-summary"],
+  // Fetch real user stats from backend
+  const { data: userStats, isLoading: statsLoading } = useQuery({
+    queryKey: ["/api/user-stats"],
     retry: false,
   });
 
-  // Fetch user achievements
+  // Fetch user achievements from backend
   const { data: userAchievements = [], isLoading: achievementsLoading } = useQuery({
     queryKey: ["/api/user-achievements"],
     retry: false,
   });
 
-  // Unlock achievement mutation
-  const unlockAchievementMutation = useMutation({
-    mutationFn: async (achievementId: string) => {
-      return await apiRequest("POST", `/api/achievements/${achievementId}/unlock`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/user-achievements"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/user-progress-summary"] });
-    },
+  // Fetch user progress summary
+  const { data: userProgressSummary, isLoading: progressLoading } = useQuery({
+    queryKey: ["/api/user-progress-summary"],
+    retry: false,
   });
 
-  // Merge server data with local achievement definitions
-  const mergedAchievements = medicalSpecialtyAchievements.map(localAchievement => {
-    const serverAchievement = userAchievements.find((ua: any) => 
-      ua.achievement?.title === localAchievement.title || 
-      ua.achievementId === localAchievement.id
-    );
-    
-    return {
-      ...localAchievement,
-      earned: !!serverAchievement,
-      unlockedAt: serverAchievement?.unlockedAt,
-      isNew: serverAchievement?.isNew || false
-    };
-  });
-
-  const userStats = userProgressSummary ? {
-    casesCompleted: userProgressSummary.stats.casesCompleted,
-    accuracy: userProgressSummary.stats.accuracy,
-    streak: userProgressSummary.stats.currentStreak || 4, // Mock streak for now
-    timeSpent: formatTimeSpent(userProgressSummary.stats.timeSpent),
-    rank: getRankFromStats(userProgressSummary.stats),
-    totalPoints: userProgressSummary.stats.totalPoints
+  // Process real user data
+  const processedUserStats = userStats ? {
+    casesCompleted: (userStats as any).totalCasesCompleted || 0,
+    accuracy: Math.round(parseFloat((userStats as any).averageAccuracy || '0')),
+    streak: (userStats as any).currentStreak || 0,
+    timeSpent: formatTimeSpent((userStats as any).totalTimeSpent || 0),
+    rank: getRankFromStats(userStats),
+    totalPoints: (userStats as any).totalPoints || 0
   } : {
     casesCompleted: 0,
     accuracy: 0,
@@ -90,25 +58,15 @@ export default function Achievements() {
     totalPoints: 0
   };
 
+  // Calculate achievement progress from real data
+  const achievementsArray = Array.isArray(userAchievements) ? userAchievements : [];
+  const unlockedAchievements = achievementsArray.filter((ua: any) => ua.isUnlocked);
+  const totalAchievements = achievementsArray.length;
   const achievementProgress = {
-    earned: mergedAchievements.filter(a => a.earned).length,
-    total: mergedAchievements.length,
-    percentage: Math.round((mergedAchievements.filter(a => a.earned).length / mergedAchievements.length) * 100)
+    earned: unlockedAchievements.length,
+    total: totalAchievements,
+    percentage: totalAchievements > 0 ? Math.round((unlockedAchievements.length / totalAchievements) * 100) : 0
   };
-  
-  const filteredAchievements = selectedCategory === 'all' 
-    ? mergedAchievements 
-    : mergedAchievements.filter(achievement => {
-        const categoryMap: Record<string, string> = {
-          "getting-started": "Getting Started",
-          "specialization": "Specialization", 
-          "performance": "Performance",
-          "ai-mastery": "AI Mastery",
-          "community": "Community",
-          "milestones": "Milestones"
-        };
-        return achievement.category === categoryMap[selectedCategory];
-      });
 
   function formatTimeSpent(seconds: number): string {
     const hours = Math.floor(seconds / 3600);
@@ -117,7 +75,9 @@ export default function Achievements() {
   }
 
   function getRankFromStats(stats: any): string {
-    const { casesCompleted, accuracy, totalPoints } = stats;
+    const casesCompleted = (stats as any)?.totalCasesCompleted || 0;
+    const accuracy = parseFloat((stats as any)?.averageAccuracy || '0');
+    const totalPoints = (stats as any)?.totalPoints || 0;
     
     if (casesCompleted >= 100 && accuracy >= 90 && totalPoints >= 2000) {
       return "Expert Physician";
@@ -132,8 +92,8 @@ export default function Achievements() {
     }
   }
 
-  const recentActivity = userProgressSummary?.recentActivity?.map((activity: any, index: number) => {
-    const isAchievement = userProgressSummary.recentAchievements?.some((ach: any) => 
+  const recentActivity = (userProgressSummary as any)?.recentActivity?.map((activity: any) => {
+    const isAchievement = (userProgressSummary as any).recentAchievements?.some((ach: any) => 
       ach.achievement?.title === activity.case
     );
     
@@ -166,19 +126,7 @@ export default function Achievements() {
     return `${diffInWeeks} week${diffInWeeks > 1 ? 's' : ''} ago`;
   }
 
-  const handleAchievementClick = (achievement: any) => {
-    if (achievement.earned && !achievement.isNew) {
-      // Show achievement details or do nothing for already seen achievements
-      return;
-    }
-    
-    if (achievement.isNew) {
-      setNewlyUnlockedAchievement(achievement);
-      setShowUnlockAnimation(true);
-    }
-  };
-
-  if (progressLoading || achievementsLoading) {
+  if (statsLoading || achievementsLoading || progressLoading) {
     return (
       <MobileLayout title="Progress & Achievements" showBottomNav={true}>
         <div className="flex items-center justify-center py-12">
@@ -216,8 +164,8 @@ export default function Achievements() {
             >
               <Trophy className="h-8 w-8 text-white" />
             </motion.div>
-            <h2 className="text-lg font-bold text-indigo-900 mb-1">{userStats.rank}</h2>
-            <p className="text-sm text-indigo-700">{userStats.totalPoints} Total Points</p>
+            <h2 className="text-lg font-bold text-indigo-900 mb-1">{processedUserStats.rank}</h2>
+            <p className="text-sm text-indigo-700">{processedUserStats.totalPoints} Total Points</p>
             <div className="mt-2">
               <div className="flex items-center justify-center space-x-2 text-sm text-indigo-600">
                 <Crown className="w-4 h-4" />
@@ -236,10 +184,10 @@ export default function Achievements() {
           
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: "Cases Completed", value: userStats.casesCompleted, icon: CheckCircle },
-              { label: "Accuracy Rate", value: `${userStats.accuracy}%`, icon: Target },
-              { label: "Current Streak", value: `${userStats.streak} days`, icon: TrendingUp },
-              { label: "Time Spent", value: userStats.timeSpent, icon: Clock }
+              { label: "Cases Completed", value: processedUserStats.casesCompleted, icon: CheckCircle },
+              { label: "Accuracy Rate", value: `${processedUserStats.accuracy}%`, icon: Target },
+              { label: "Current Streak", value: `${processedUserStats.streak} days`, icon: TrendingUp },
+              { label: "Time Spent", value: processedUserStats.timeSpent, icon: Clock }
             ].map((stat, index) => {
               const IconComponent = stat.icon;
               return (
@@ -295,63 +243,8 @@ export default function Achievements() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="space-y-4"
         >
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">Achievement Badges</h3>
-            <button className="p-2 bg-gray-100 rounded-lg">
-              <Filter className="w-4 h-4 text-gray-600" />
-            </button>
-          </div>
-
-          {/* Category Filter */}
-          <div className="flex overflow-x-auto pb-2 space-x-2">
-            {achievementCategories.map((category) => {
-              const IconComponent = category.icon;
-              return (
-                <motion.button
-                  key={category.id}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedCategory === category.id
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                  onClick={() => setSelectedCategory(category.id)}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <IconComponent className="w-4 h-4" />
-                  <span>{category.name}</span>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Achievement Grid */}
-          <div className="grid grid-cols-3 gap-4">
-            <AnimatePresence mode="wait">
-              {filteredAchievements.map((achievement, index) => (
-                <motion.div
-                  key={achievement.id}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ delay: index * 0.05, duration: 0.3 }}
-                >
-                  <AchievementBadge
-                    achievement={achievement}
-                    size="sm"
-                    onClick={() => handleAchievementClick(achievement)}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {filteredAchievements.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              No achievements found in this category.
-            </div>
-          )}
+          <AchievementProgressTracker />
         </motion.div>
       )}
 
@@ -363,7 +256,7 @@ export default function Achievements() {
           className="space-y-4"
         >
           <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
-          {recentActivity.map((activity, index) => (
+          {recentActivity.map((activity: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: -20 }}
@@ -419,13 +312,22 @@ export default function Achievements() {
 
           {/* Quick Actions */}
           <div className="grid grid-cols-2 gap-4">
-            <MobileButton className="h-20" variant="secondary">
+            <MobileButton 
+              className="h-20" 
+              variant="secondary"
+              onClick={() => setSelectedTab("achievements")}
+              data-testid="view-all-badges"
+            >
               <div className="text-center">
                 <Star className="h-5 w-5 mx-auto mb-1" />
                 <span className="text-sm">View All Badges</span>
               </div>
             </MobileButton>
-            <MobileButton className="h-20" variant="secondary">
+            <MobileButton 
+              className="h-20" 
+              variant="secondary"
+              data-testid="leaderboard"
+            >
               <div className="text-center">
                 <Award className="h-5 w-5 mx-auto mb-1" />
                 <span className="text-sm">Leaderboard</span>
@@ -435,19 +337,12 @@ export default function Achievements() {
         </motion.div>
       )}
 
-      {/* Achievement Unlock Animation */}
-      <AnimatePresence>
-        {showUnlockAnimation && newlyUnlockedAchievement && (
-          <AchievementUnlockAnimation
-            achievement={newlyUnlockedAchievement}
-            isVisible={showUnlockAnimation}
-            onClose={() => {
-              setShowUnlockAnimation(false);
-              setNewlyUnlockedAchievement(null);
-            }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Achievement Notifications */}
+      <AchievementNotification
+        achievement={currentNotification}
+        isVisible={isVisible}
+        onClose={closeNotification}
+      />
     </MobileLayout>
   );
 }
