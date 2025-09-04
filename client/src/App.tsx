@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import AuthLanding from "@/pages/auth-landing";
+import Walkthrough from "@/pages/walkthrough";
 import Landing from "@/pages/landing";
 import Training from "@/pages/training";
 import Game from "@/pages/game";
@@ -35,7 +36,15 @@ function Router() {
     return <AuthLanding />;
   }
 
-  // Show main app for authenticated users
+  // Check if user has completed walkthrough
+  const walkthroughCompleted = localStorage.getItem('walkthroughCompleted');
+  
+  // Show walkthrough for first-time users
+  if (!walkthroughCompleted) {
+    return <Walkthrough />;
+  }
+
+  // Show main app for authenticated users who completed walkthrough
   return (
     <Switch>
       <Route path="/" component={Landing} />
@@ -45,6 +54,7 @@ function Router() {
       <Route path="/game/:id" component={Game} />
       <Route path="/achievements" component={Achievements} />
       <Route path="/premium" component={Premium} />
+      <Route path="/walkthrough" component={Walkthrough} />
       <Route component={NotFound} />
     </Switch>
   );
