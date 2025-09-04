@@ -19,6 +19,7 @@ import {
 import { DiagnosisModal } from "./diagnosis-modal";
 import { TestOrderingModal } from "./test-ordering-modal";
 import { ComprehensivePhysicalExamModal } from "./comprehensive-physical-exam-modal";
+import { MobileCard } from "@/components/mobile-layout";
 import type { MedicalCase } from "@shared/schema";
 
 interface ChatInterfaceProps {
@@ -181,9 +182,9 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
   ];
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="w-full flex flex-col mb-4">
       {/* Chat Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
+      <MobileCard className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -199,10 +200,10 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             <span className="text-indigo-100 text-sm">Patient Ready</span>
           </div>
         </div>
-      </div>
+      </MobileCard>
 
       {/* Chat Messages */}
-      <div className="flex-1 p-6 space-y-4 bg-gradient-to-b from-white to-slate-50 overflow-y-auto max-h-96">
+      <MobileCard className="flex-1 p-4 space-y-4 bg-gray-50 overflow-y-auto min-h-[300px] max-h-[400px] mb-4">
         {messages.length === 0 && (
           <div className="text-center py-8">
             <p className="text-slate-500">Start the interview by asking your first question</p>
@@ -259,38 +260,38 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
           </div>
         ))}
         <div ref={messagesEndRef} />
-      </div>
+      </MobileCard>
 
       {/* Input Controls */}
-      <div className="p-4 bg-gradient-to-r from-slate-50 to-indigo-50 border-t border-slate-200">
+      <MobileCard className="p-4">
         {/* Quick Actions */}
-        <div className="mb-3">
-          <div className="flex space-x-2 mb-3">
+        <div className="mb-4">
+          <div className="grid grid-cols-1 gap-3 mb-4">
             <Button 
               variant="outline" 
-              className="flex-1 bg-white border border-slate-200 rounded-xl text-sm hover:bg-slate-50 transition-colors text-left justify-start"
+              className="w-full bg-white border border-gray-200 rounded-xl text-sm hover:bg-gray-50 transition-colors flex items-center justify-center py-3"
               onClick={() => handleQuickQuestion("Tell me more about your symptoms")}
               data-testid="button-quick-questions"
             >
-              <List className="text-slate-400 mr-2 h-4 w-4" />
+              <List className="text-gray-400 mr-2 h-4 w-4" />
               Quick Questions
             </Button>
             <Button 
               variant="outline"
-              className="flex-1 bg-white border border-slate-200 rounded-xl text-sm hover:bg-slate-50 transition-colors text-left justify-start"
+              className="w-full bg-white border border-gray-200 rounded-xl text-sm hover:bg-gray-50 transition-colors flex items-center justify-center py-3"
               onClick={() => setShowPhysicalExam(true)}
               data-testid="button-physical-exam"
             >
-              <Stethoscope className="text-slate-400 mr-2 h-4 w-4" />
+              <Stethoscope className="text-gray-400 mr-2 h-4 w-4" />
               Physical Exam
             </Button>
             <Button 
               variant="outline"
-              className="flex-1 bg-white border border-slate-200 rounded-xl text-sm hover:bg-slate-50 transition-colors text-left justify-start"
+              className="w-full bg-white border border-gray-200 rounded-xl text-sm hover:bg-gray-50 transition-colors flex items-center justify-center py-3"
               onClick={() => setShowTestOrdering(true)}
               data-testid="button-order-tests"
             >
-              <TestTubeDiagonal className="text-slate-400 mr-2 h-4 w-4" />
+              <TestTubeDiagonal className="text-gray-400 mr-2 h-4 w-4" />
               Order Tests
             </Button>
           </div>
@@ -298,14 +299,14 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
 
         {/* Quick Questions Dropdown */}
         {messages.length < 5 && (
-          <div className="mb-3">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="mb-4">
+            <div className="grid grid-cols-1 gap-2">
               {quickQuestions.slice(0, 4).map((question, index) => (
                 <Button
                   key={index}
                   variant="outline"
                   size="sm"
-                  className="text-left justify-start text-xs p-2 h-auto"
+                  className="text-left justify-start text-xs p-3 h-auto"
                   onClick={() => handleQuickQuestion(question)}
                 >
                   {question}
@@ -316,20 +317,20 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
         )}
 
         {/* Main Input */}
-        <div className="flex space-x-3">
-          <div className="flex-1 relative">
+        <div className="space-y-3">
+          <div className="relative">
             <Input 
-              placeholder="Type your question or select from dropdown..."
+              placeholder="Start the interview by asking your first question"
               value={currentQuestion}
               onChange={(e) => setCurrentQuestion(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+              className="w-full pr-12 py-4 text-base rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
               disabled={askQuestionMutation.isPending}
             />
             <Button 
               size="icon"
               variant="ghost"
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-indigo-600"
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-600"
               onClick={handleSendMessage}
               disabled={!currentQuestion.trim() || askQuestionMutation.isPending}
             >
@@ -337,26 +338,31 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             </Button>
           </div>
           
-          {isSupported && (
+          <div className="flex space-x-3">
+            {isSupported && (
+              <Button 
+                className={`flex-1 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 ${
+                  isListening 
+                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white'
+                }`}
+                onClick={handleVoiceToggle}
+                data-testid="button-voice"
+              >
+                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                <span className="font-medium">{isListening ? 'Stop' : 'Voice'}</span>
+              </Button>
+            )}
+            
             <Button 
-              className={`px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2 ${
-                isListening 
-                  ? 'bg-red-500 hover:bg-red-600 text-white' 
-                  : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white'
-              }`}
-              onClick={handleVoiceToggle}
+              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center justify-center space-x-2"
+              onClick={() => {/* TODO: Add diagnosis modal */}}
+              data-testid="button-diagnose"
             >
-              {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-              <span className="font-medium">{isListening ? 'Stop' : 'Voice'}</span>
+              <Send className="h-4 w-4" />
+              <span className="font-medium">Diagnose</span>
             </Button>
-          )}
-          
-          <DiagnosisModal 
-            onSubmit={(diagnosis, confidence) => {
-              submitDiagnosisMutation.mutate({ diagnosis, confidence });
-            }}
-            isLoading={submitDiagnosisMutation.isPending}
-          />
+          </div>
         </div>
 
         {/* Voice Recording Indicator */}
@@ -394,7 +400,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
           isVisible={showPhysicalExam}
           onClose={() => setShowPhysicalExam(false)}
         />
-      </div>
+      </MobileCard>
     </div>
   );
 }

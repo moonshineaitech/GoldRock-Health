@@ -5,6 +5,7 @@ import { DifferentialDiagnosisPanel } from "./differential-diagnosis";
 import { PhysicalExamSimulator } from "./physical-exam-simulator";
 import { ClinicalReasoningPanel } from "./clinical-reasoning-panel";
 import { Button } from "@/components/ui/button";
+import { MobileLayout, MobileCard } from "@/components/mobile-layout";
 import { Brain, Stethoscope, Lightbulb } from "lucide-react";
 import type { MedicalCase } from "@shared/schema";
 
@@ -26,79 +27,74 @@ export function GameInterface({ medicalCase }: GameInterfaceProps) {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-indigo-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Interactive Training Interface</h1>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Experience our multi-modal learning environment with voice interactions, 
-            real-time feedback, and comprehensive patient data.
-          </p>
+    <MobileLayout 
+      title="Patient Interview"
+      subtitle={`${medicalCase.name} • ${medicalCase.specialty} Case`}
+    >
+      {/* Patient Panel */}
+      <PatientPanel 
+        medicalCase={medicalCase} 
+        questionsAsked={questionsAsked}
+        timeElapsed={timeElapsed}
+      />
+      
+      {/* Chat Interface */}
+      <ChatInterface 
+        medicalCase={medicalCase}
+        onQuestionAsked={handleQuestionAsked}
+        onTimeUpdate={setTimeElapsed}
+      />
+      
+      {/* Advanced Learning Tools */}
+      <MobileCard className="p-4 mt-4">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Advanced Learning Tools</h3>
+        <div className="grid grid-cols-1 gap-3">
+          <Button
+            onClick={() => setShowDifferentials(true)}
+            className="flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-700 py-3"
+            data-testid="button-differential-diagnosis"
+          >
+            <Brain className="h-4 w-4" />
+            Differential Diagnosis
+          </Button>
+          <Button
+            onClick={() => setShowPhysicalExam(true)}
+            variant="outline"
+            className="flex items-center justify-center gap-2 w-full py-3"
+            data-testid="button-physical-exam-simulator"
+          >
+            <Stethoscope className="h-4 w-4" />
+            Physical Exam Simulator
+          </Button>
+          <Button
+            onClick={() => setShowClinicalReasoning(true)}
+            variant="outline"
+            className="flex items-center justify-center gap-2 w-full py-3"
+            data-testid="button-clinical-reasoning"
+          >
+            <Lightbulb className="h-4 w-4" />
+            Clinical Reasoning
+          </Button>
         </div>
+      </MobileCard>
 
-        <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
-          <div className="flex flex-col lg:flex-row">
-            <PatientPanel 
-              medicalCase={medicalCase} 
-              questionsAsked={questionsAsked}
-              timeElapsed={timeElapsed}
-            />
-            <ChatInterface 
-              medicalCase={medicalCase}
-              onQuestionAsked={handleQuestionAsked}
-              onTimeUpdate={setTimeElapsed}
-            />
-          </div>
-          
-          {/* Advanced Learning Tools */}
-          <div className="border-t border-slate-200 p-6 bg-gradient-to-r from-indigo-50 to-purple-50">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Advanced Learning Tools</h3>
-            <div className="flex flex-wrap gap-3">
-              <Button
-                onClick={() => setShowDifferentials(true)}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700"
-              >
-                <Brain className="h-4 w-4" />
-                Differential Diagnosis
-              </Button>
-              <Button
-                onClick={() => setShowPhysicalExam(true)}
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <Stethoscope className="h-4 w-4" />
-                Physical Exam Simulator
-              </Button>
-              <Button
-                onClick={() => setShowClinicalReasoning(true)}
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <Lightbulb className="h-4 w-4" />
-                Clinical Reasoning
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Advanced Learning Panels */}
-        <DifferentialDiagnosisPanel
-          caseId={medicalCase.id}
-          isVisible={showDifferentials}
-          onClose={() => setShowDifferentials(false)}
-        />
-        <PhysicalExamSimulator
-          caseId={medicalCase.id}
-          isVisible={showPhysicalExam}
-          onClose={() => setShowPhysicalExam(false)}
-        />
-        <ClinicalReasoningPanel
-          caseId={medicalCase.id}
-          questionsAsked={questionsList}
-          isVisible={showClinicalReasoning}
-          onClose={() => setShowClinicalReasoning(false)}
-        />
-      </div>
-    </section>
+      {/* Advanced Learning Panels */}
+      <DifferentialDiagnosisPanel
+        caseId={medicalCase.id}
+        isVisible={showDifferentials}
+        onClose={() => setShowDifferentials(false)}
+      />
+      <PhysicalExamSimulator
+        caseId={medicalCase.id}
+        isVisible={showPhysicalExam}
+        onClose={() => setShowPhysicalExam(false)}
+      />
+      <ClinicalReasoningPanel
+        caseId={medicalCase.id}
+        questionsAsked={questionsList}
+        isVisible={showClinicalReasoning}
+        onClose={() => setShowClinicalReasoning(false)}
+      />
+    </MobileLayout>
   );
 }
