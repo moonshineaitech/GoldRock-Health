@@ -1445,6 +1445,97 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }
 
+  // Medical Chatbot API - General medical and insurance Q&A
+  app.post('/api/medical-chat', isAuthenticated, async (req: any, res) => {
+    try {
+      const { message } = req.body;
+      const userId = req.user.claims.sub;
+      
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ message: 'Message is required' });
+      }
+
+      let response = "I'm here to help with medical questions and insurance/healthcare billing. Please ask me about symptoms, treatments, or insurance-related concerns.";
+
+      // Use OpenAI for intelligent medical responses if available
+      if (process.env.OPENAI_API_KEY) {
+        try {
+          const prompt = `You are a helpful medical assistant focused on providing information about medical conditions, symptoms, treatments, and insurance/healthcare billing questions. 
+
+IMPORTANT CONSTRAINTS:
+- Only answer questions related to medical/health topics and insurance/healthcare billing
+- Always include appropriate medical disclaimers
+- Recommend consulting healthcare providers for serious concerns
+- Do not provide specific medication dosages or treatment plans
+- Keep responses concise but helpful
+- If asked about non-medical topics, politely redirect to medical/insurance topics
+
+User question: ${message}
+
+Provide a helpful, accurate, and concise response:`;
+
+          const completion = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'gpt-4',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are a medical assistant that helps with health questions and insurance/billing inquiries. Always provide disclaimers and recommend consulting healthcare providers for serious concerns.'
+                },
+                {
+                  role: 'user',
+                  content: prompt
+                }
+              ],
+              max_tokens: 300,
+              temperature: 0.7
+            })
+          });
+
+          const data = await completion.json();
+          if (data.choices && data.choices[0] && data.choices[0].message) {
+            response = data.choices[0].message.content.trim();
+          }
+        } catch (aiError) {
+          console.warn('OpenAI API failed, using fallback response:', aiError);
+          
+          // Fallback responses for common medical/insurance questions
+          const messageLower = message.toLowerCase();
+          if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
+            response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.";
+          } else if (messageLower.includes('insurance') || messageLower.includes('claim') || messageLower.includes('bill')) {
+            response = "For insurance claims, contact your insurance provider directly or check your policy documents. Most insurers have customer service lines and online portals to help with billing questions and claim appeals.";
+          } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
+            response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.";
+          }
+        }
+      } else {
+        // Basic fallback responses without OpenAI
+        const messageLower = message.toLowerCase();
+        if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
+          response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.";
+        } else if (messageLower.includes('insurance') || messageLower.includes('claim') || messageLower.includes('bill')) {
+          response = "For insurance claims, contact your insurance provider directly or check your policy documents. Most insurers have customer service lines and online portals to help with billing questions and claim appeals.";
+        } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
+          response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.";
+        }
+      }
+
+      res.json({
+        response,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Error in medical chat:', error);
+      res.status(500).json({ message: 'Failed to process your question. Please try again.' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
