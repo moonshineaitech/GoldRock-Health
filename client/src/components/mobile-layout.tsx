@@ -10,7 +10,6 @@ interface MobileLayoutProps {
   onBackClick?: () => void;
   showBottomNav?: boolean;
   className?: string;
-  hideChatbot?: boolean;
 }
 
 export function MobileLayout({ 
@@ -19,8 +18,7 @@ export function MobileLayout({
   showBackButton = false,
   onBackClick,
   showBottomNav = true,
-  className = "",
-  hideChatbot = false
+  className = ""
 }: MobileLayoutProps) {
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ 
@@ -66,7 +64,7 @@ export function MobileLayout({
       </motion.main>
       
       {showBottomNav && <MobileBottomNav />}
-      {showBottomNav && !hideChatbot && <MedicalChatbot />}
+      {showBottomNav && <MedicalChatbot />}
       
       {/* Soft Floating Gradient Accent */}
       <div className="fixed bottom-4 left-4 right-4 h-16 bg-gradient-to-r from-cyan-300/8 to-emerald-300/8 rounded-2xl blur-xl pointer-events-none"></div>
