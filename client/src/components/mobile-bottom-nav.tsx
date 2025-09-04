@@ -67,13 +67,13 @@ export function MobileBottomNav() {
 
   return (
     <motion.div 
-      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-xl border-t border-gray-700/50"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100/95 backdrop-blur-xl border-t border-gray-200/50"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="flex items-center justify-around px-3 py-3">
+      <div className="flex items-center justify-around px-2 py-4">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.path);
@@ -81,14 +81,14 @@ export function MobileBottomNav() {
           return (
             <Link key={item.id} href={item.path}>
               <motion.div
-                className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-2xl transition-all duration-300"
+                className="flex flex-col items-center justify-center min-w-0 flex-1 p-3 rounded-3xl transition-all duration-300"
                 whileTap={{ scale: 0.9 }}
                 whileHover={{ scale: 1.02 }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ 
                   y: 0, 
                   opacity: 1,
-                  backgroundColor: active ? "rgba(99, 102, 241, 0.2)" : "rgba(255, 255, 255, 0.05)"
+                  backgroundColor: active ? "rgba(99, 102, 241, 0.15)" : "rgba(255, 255, 255, 0.8)"
                 }}
                 transition={{ 
                   delay: index * 0.1,
@@ -110,16 +110,16 @@ export function MobileBottomNav() {
                   }}
                 >
                   <Icon 
-                    className="h-5 w-5 mb-1"
+                    className="h-7 w-7 mb-2"
                     style={{
                       color: active ? (
-                        item.color === 'text-blue-600' ? '#60A5FA' :
-                        item.color === 'text-purple-600' ? '#A78BFA' :
-                        item.color === 'text-green-600' ? '#34D399' :
-                        item.color === 'text-orange-600' ? '#FB923C' :
-                        item.color === 'text-indigo-600' ? '#818CF8' :
-                        '#818CF8'
-                      ) : '#9CA3AF'
+                        item.color === 'text-blue-600' ? '#3B82F6' :
+                        item.color === 'text-purple-600' ? '#8B5CF6' :
+                        item.color === 'text-green-600' ? '#10B981' :
+                        item.color === 'text-orange-600' ? '#F59E0B' :
+                        item.color === 'text-indigo-600' ? '#6366F1' :
+                        '#6366F1'
+                      ) : '#6B7280'
                     }}
                   />
                   {active && (
@@ -131,16 +131,16 @@ export function MobileBottomNav() {
                   )}
                 </motion.div>
                 <motion.span 
-                  className="text-xs font-medium leading-none truncate"
+                  className="text-sm font-medium leading-none truncate"
                   animate={{
                     color: active ? (
-                      item.color === 'text-blue-600' ? '#60A5FA' :
-                      item.color === 'text-purple-600' ? '#A78BFA' :
-                      item.color === 'text-green-600' ? '#34D399' :
-                      item.color === 'text-orange-600' ? '#FB923C' :
-                      item.color === 'text-indigo-600' ? '#818CF8' :
-                      '#818CF8'
-                    ) : '#D1D5DB',
+                      item.color === 'text-blue-600' ? '#3B82F6' :
+                      item.color === 'text-purple-600' ? '#8B5CF6' :
+                      item.color === 'text-green-600' ? '#10B981' :
+                      item.color === 'text-orange-600' ? '#F59E0B' :
+                      item.color === 'text-indigo-600' ? '#6366F1' :
+                      '#6366F1'
+                    ) : '#374151',
                     fontWeight: active ? 600 : 500,
                     scale: active ? 1.05 : 1
                   }}
