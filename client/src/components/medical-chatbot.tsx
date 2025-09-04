@@ -377,8 +377,8 @@ export function MedicalChatbot() {
                   </div>
                   
                   {/* AI Disclaimer */}
-                  <p className="text-xs text-gray-500 text-center leading-relaxed">
-                    This is experimental generative AI and should not be taken as medical fact. Always consult a qualified healthcare professional for medical advice.
+                  <p className="text-xs text-gray-400 text-center leading-tight opacity-75">
+                    AI-generated. Consult your doctor.
                   </p>
                 </div>
               </div>
