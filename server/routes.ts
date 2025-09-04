@@ -983,6 +983,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Medical Images with path parameters (for frontend compatibility)
+  app.get('/api/medical-images/:imageType/:difficulty', async (req, res) => {
+    try {
+      const { imageType, difficulty } = req.params;
+      const { bodyRegion, search } = req.query;
+      const filters = {
+        imageType: imageType !== 'all' ? imageType : undefined,
+        difficulty: difficulty !== 'all' ? parseInt(difficulty) : undefined,
+        bodyRegion: bodyRegion as string,
+        search: search as string,
+      };
+      
+      const images = await storage.getMedicalImages(filters);
+      res.json(images);
+    } catch (error) {
+      console.error('Error fetching medical images:', error);
+      res.status(500).json({ message: 'Failed to fetch medical images' });
+    }
+  });
+
   app.get('/api/medical-images/:id', async (req, res) => {
     try {
       const { id } = req.params;
@@ -1152,6 +1172,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Board Exams with path parameters (for frontend compatibility)
+  app.get('/api/board-exams/:examType/:specialty/:difficulty', async (req, res) => {
+    try {
+      const { examType, specialty, difficulty } = req.params;
+      const filters = {
+        examType: examType !== 'all' ? examType : undefined,
+        specialty: specialty !== 'all' ? specialty : undefined,
+        difficulty: difficulty !== 'all' ? parseInt(difficulty) : undefined,
+      };
+      
+      const exams = await storage.getBoardExams(filters);
+      res.json(exams);
+    } catch (error) {
+      console.error('Error fetching board exams:', error);
+      res.status(500).json({ message: 'Failed to fetch board exams' });
+    }
+  });
+
   app.get('/api/board-exams/:id', async (req, res) => {
     try {
       const { id } = req.params;
@@ -1189,6 +1227,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         specialty: specialty as string,
         difficulty: difficulty ? parseInt(difficulty as string) : undefined,
         category: category as string,
+      };
+      
+      const trees = await storage.getClinicalDecisionTrees(filters);
+      res.json(trees);
+    } catch (error) {
+      console.error('Error fetching clinical decision trees:', error);
+      res.status(500).json({ message: 'Failed to fetch clinical decision trees' });
+    }
+  });
+
+  // Clinical Decision Trees with path parameters (for frontend compatibility)
+  app.get('/api/clinical-decision-trees/:specialty/:difficulty/:category', async (req, res) => {
+    try {
+      const { specialty, difficulty, category } = req.params;
+      const filters = {
+        specialty: specialty !== 'all' ? specialty : undefined,
+        difficulty: difficulty !== 'all' ? parseInt(difficulty) : undefined,
+        category: category !== 'all' ? category : undefined,
       };
       
       const trees = await storage.getClinicalDecisionTrees(filters);

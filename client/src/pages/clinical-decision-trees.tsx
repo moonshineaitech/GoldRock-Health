@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { MobileLayout, MobileCard } from "@/components/mobile-layout";
 import { 
   Select,
   SelectContent,
@@ -241,49 +242,37 @@ export default function ClinicalDecisionTreesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900" data-testid="clinical-decision-trees-page">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <GitBranch className="w-6 h-6 text-blue-600" />
-                <h1 className="text-xl font-bold">Clinical Decision Trees</h1>
-              </div>
-              <Badge variant="outline" className="text-xs">
-                Interactive Algorithms
-              </Badge>
+    <MobileLayout 
+      title="Decision Trees" 
+      subtitle="Interactive Algorithms"
+      data-testid="clinical-decision-trees-page"
+    >
+      {/* Quick Stats */}
+      <MobileCard className="p-4 mb-6">
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div className="font-semibold text-blue-600 text-lg">{userProgress.length}</div>
+            <div className="text-gray-600 text-sm">Completed</div>
+          </div>
+          <div>
+            <div className="font-semibold text-green-600 text-lg">
+              {userProgress.length > 0 
+                ? Math.round(userProgress.reduce((sum: number, p: DecisionTreeProgress) => sum + (p.score || 0), 0) / userProgress.length)
+                : 0}%
             </div>
-
-            {/* Quick Stats */}
-            <div className="hidden md:flex items-center space-x-6 text-sm">
-              <div className="text-center">
-                <div className="font-semibold text-blue-600">{userProgress.length}</div>
-                <div className="text-gray-600 dark:text-gray-400">Completed</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold text-green-600">
-                  {userProgress.length > 0 
-                    ? Math.round(userProgress.reduce((sum: number, p: DecisionTreeProgress) => sum + (p.score || 0), 0) / userProgress.length)
-                    : 0}%
-                </div>
-                <div className="text-gray-600 dark:text-gray-400">Avg Score</div>
-              </div>
-              <div className="text-center">
-                <div className="font-semibold text-purple-600">
-                  {userProgress.filter((p: DecisionTreeProgress) => p.isOptimalPath).length}
-                </div>
-                <div className="text-gray-600 dark:text-gray-400">Optimal Paths</div>
-              </div>
+            <div className="text-gray-600 text-sm">Avg Score</div>
+          </div>
+          <div>
+            <div className="font-semibold text-purple-600 text-lg">
+              {userProgress.filter((p: DecisionTreeProgress) => p.isOptimalPath).length}
             </div>
+            <div className="text-gray-600 text-sm">Optimal Paths</div>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Filters */}
-        <Card className="p-6 mb-8">
+      </MobileCard>
+      
+      {/* Filters */}
+      <MobileCard className="p-4 mb-6">
           <div className="flex items-center space-x-4 mb-4">
             <Filter className="w-5 h-5 text-gray-600" />
             <h3 className="font-medium">Filter Decision Trees</h3>
@@ -341,24 +330,24 @@ export default function ClinicalDecisionTreesPage() {
               </Select>
             </div>
           </div>
-        </Card>
+        </MobileCard>
 
         {/* Decision Trees Grid */}
         {treesLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-4">
             {[...Array(6)].map((_, i) => (
-              <Card key={i} className="p-6">
+              <MobileCard key={i} className="p-4">
                 <div className="animate-pulse">
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mb-4" />
-                  <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded" />
+                  <div className="h-4 bg-gray-200 rounded mb-2" />
+                  <div className="h-3 bg-gray-200 rounded w-2/3 mb-4" />
+                  <div className="h-16 bg-gray-200 rounded" />
                 </div>
-              </Card>
+              </MobileCard>
             ))}
           </div>
         ) : (
           <AnimatePresence>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-4">
               {filteredTrees.map((tree: ClinicalDecisionTree, index) => {
                 const progress = getUserTreeProgress(tree.id);
                 
@@ -371,7 +360,7 @@ export default function ClinicalDecisionTreesPage() {
                     transition={{ delay: index * 0.1 }}
                     data-testid={`tree-card-${tree.id}`}
                   >
-                    <Card className="p-6 hover:shadow-lg transition-shadow">
+                    <MobileCard className="p-4 hover:shadow-lg transition-shadow">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                           <h3 className="font-semibold text-lg mb-2">{tree.title}</h3>
@@ -463,7 +452,7 @@ export default function ClinicalDecisionTreesPage() {
                           <BookOpen className="w-4 h-4" />
                         </Button>
                       </div>
-                    </Card>
+                    </MobileCard>
                   </motion.div>
                 );
               })}
@@ -473,17 +462,16 @@ export default function ClinicalDecisionTreesPage() {
 
         {/* No Results */}
         {filteredTrees.length === 0 && !treesLoading && (
-          <Card className="p-12 text-center">
+          <MobileCard className="p-8 text-center">
             <GitBranch className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
               No decision trees found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600">
               Try adjusting your filters to see more clinical algorithms
             </p>
-          </Card>
+          </MobileCard>
         )}
-      </div>
 
       {/* Decision Tree Modal */}
       <Dialog open={showTreeDialog} onOpenChange={setShowTreeDialog}>
@@ -616,6 +604,6 @@ export default function ClinicalDecisionTreesPage() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </MobileLayout>
   );
 }

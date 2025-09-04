@@ -31,6 +31,7 @@ import {
   TrendingUp,
   BarChart3
 } from "lucide-react";
+import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import type { MedicalImage, ImageAnalysisProgress } from "@shared/schema";
 
 interface Finding {
@@ -155,113 +156,93 @@ export default function ImageAnalysisPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900" data-testid="image-analysis-page">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Brain className="w-6 h-6 text-blue-600" />
-                <h1 className="text-xl font-bold">Medical Image Analysis</h1>
-              </div>
-              <Badge variant="outline" className="text-xs">
-                Radiology Training
-              </Badge>
-            </div>
+    <MobileLayout title="Medical Image Analysis" showBackButton={true} showBottomNav={true}>
 
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowCompleted(!showCompleted)}
-                data-testid="button-toggle-completed"
-              >
-                {showCompleted ? "Show Available" : "Show Completed"}
-              </Button>
+      {/* Toggle Button */}
+      <MobileCard className="mb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Brain className="w-5 h-5 text-blue-600" />
+            <span className="font-medium text-gray-900">Radiology Training</span>
+          </div>
+          <MobileButton
+            variant="outline"
+            size="sm"
+            onClick={() => setShowCompleted(!showCompleted)}
+            data-testid="button-toggle-completed"
+          >
+            {showCompleted ? "Show Available" : "Show Completed"}
+          </MobileButton>
+        </div>
+      </MobileCard>
+      {/* Mobile Stats Grid */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <MobileCard className="p-4 bg-green-50 border-green-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+              <Target className="h-5 w-5 text-green-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Completed</p>
+              <p className="text-xl font-bold text-gray-900">{completedCount}</p>
             </div>
           </div>
-        </div>
+        </MobileCard>
+
+        <MobileCard className="p-4 bg-blue-50 border-blue-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <TrendingUp className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Avg Accuracy</p>
+              <p className="text-xl font-bold text-gray-900">{Math.round(averageAccuracy)}%</p>
+            </div>
+          </div>
+        </MobileCard>
+
+        <MobileCard className="p-4 bg-purple-50 border-purple-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+              <Clock className="h-5 w-5 text-purple-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Time Spent</p>
+              <p className="text-xl font-bold text-gray-900">{Math.round(totalTimeSpent / 3600)}h</p>
+            </div>
+          </div>
+        </MobileCard>
+
+        <MobileCard className="p-4 bg-orange-50 border-orange-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+              <BarChart3 className="h-5 w-5 text-orange-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Available</p>
+              <p className="text-xl font-bold text-gray-900">{images.length}</p>
+            </div>
+          </div>
+        </MobileCard>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Target className="h-8 w-8 text-green-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Completed</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {completedCount}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <TrendingUp className="h-8 w-8 text-blue-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Avg Accuracy</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {Math.round(averageAccuracy)}%
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Clock className="h-8 w-8 text-purple-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Time Spent</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {Math.round(totalTimeSpent / 3600)}h
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <BarChart3 className="h-8 w-8 text-orange-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Available</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {images.length - completedCount}
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Filters */}
-        <Card className="p-6 mb-8">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search by title, body region, or type..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                  data-testid="input-search"
-                />
-              </div>
-            </div>
-            
+      {/* Mobile Filters */}
+      <MobileCard className="mb-4">
+        <div className="space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Search by title, body region, or type..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl"
+              data-testid="input-search"
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="w-48" data-testid="select-image-type">
+              <SelectTrigger className="rounded-xl border-gray-200" data-testid="select-image-type">
                 <SelectValue placeholder="Image Type" />
               </SelectTrigger>
               <SelectContent>
@@ -274,7 +255,7 @@ export default function ImageAnalysisPage() {
             </Select>
 
             <Select value={filterDifficulty} onValueChange={setFilterDifficulty}>
-              <SelectTrigger className="w-48" data-testid="select-difficulty">
+              <SelectTrigger className="rounded-xl border-gray-200" data-testid="select-difficulty">
                 <SelectValue placeholder="Difficulty" />
               </SelectTrigger>
               <SelectContent>
@@ -285,7 +266,8 @@ export default function ImageAnalysisPage() {
               </SelectContent>
             </Select>
           </div>
-        </Card>
+        </div>
+      </MobileCard>
 
         {/* Image Grid */}
         {imagesLoading || progressLoading ? (
@@ -451,17 +433,16 @@ export default function ImageAnalysisPage() {
         )}
 
         {filteredImages.length === 0 && !imagesLoading && !progressLoading && (
-          <Card className="p-12 text-center">
+          <MobileCard className="p-8 text-center">
             <Brain className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
               No images found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600">
               Try adjusting your filters or search terms
             </p>
-          </Card>
+          </MobileCard>
         )}
-      </div>
-    </div>
+    </MobileLayout>
   );
 }
