@@ -1,8 +1,8 @@
-# MedTrainer AI - Interactive Medical Diagnosis Training Platform
+# GoldRock Health - Interactive Medical Diagnosis Training Platform
 
 ## Overview
 
-MedTrainer AI is a professional-grade medical education platform that simulates real patient interactions for medical students, residents, and practicing physicians. The platform provides voice-enabled AI simulations across 60+ medical cases spanning 19 specialties, offering realistic patient interactions with real-time feedback and comprehensive progress tracking.
+GoldRock Health is a professional-grade medical education platform that simulates real patient interactions for medical students, residents, and practicing physicians. The platform provides voice-enabled AI simulations across 60+ medical cases spanning 19 specialties, offering realistic patient interactions with real-time feedback and comprehensive progress tracking.
 
 ## User Preferences
 

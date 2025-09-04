@@ -33,7 +33,7 @@ interface WalkthroughStep {
 const walkthroughSteps: WalkthroughStep[] = [
   {
     id: "welcome",
-    title: "Welcome to MedTrainer AI",
+    title: "Welcome to GoldRock Health",
     description: "Your personal medical training companion powered by advanced AI",
     icon: Stethoscope,
     content: (
@@ -444,11 +444,11 @@ export default function Walkthrough() {
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm border-b border-gray-200">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-xl flex items-center justify-center">
             <Stethoscope className="h-4 w-4 text-white" />
           </div>
           <div>
-            <h1 className="font-semibold text-gray-900 text-sm">MedTrainer AI</h1>
+            <h1 className="font-semibold text-gray-900 text-sm">GoldRock Health</h1>
             <p className="text-xs text-gray-600">Getting Started</p>
           </div>
         </div>

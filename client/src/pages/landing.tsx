@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 
 export default function Landing() {
   return (
-    <MobileLayout title="MedTrainer AI" showBottomNav={true}>
+    <MobileLayout title="GoldRock Health" showBottomNav={true}>
       {/* Enhanced Mobile Hero Section */}
       <motion.div 
         className="text-center py-8 px-4 relative overflow-hidden"
@@ -25,7 +25,7 @@ export default function Landing() {
         </div>
         
         <motion.div 
-          className="w-20 h-20 bg-gradient-to-br from-indigo-500 via-purple-600 to-blue-700 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-indigo-500/30 relative"
+          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/30 relative"
           initial={{ scale: 0, rotate: -270, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ 
@@ -68,11 +68,11 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.8 }}
         >
-          <h1 className="text-3xl font-black bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4 leading-none tracking-tight">
-            Master Medical Diagnosis
+          <h1 className="text-3xl font-black mb-4 leading-none tracking-tight">
+            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
           </h1>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-6 leading-tight">
-            with AI-Powered Training
+            Master Medical Diagnosis with AI
           </h2>
         </motion.div>
         

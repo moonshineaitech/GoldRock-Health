@@ -16,7 +16,7 @@ export default function AuthLanding() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <motion.div 
-            className="w-20 h-20 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-indigo-500/30"
+            className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-amber-500/30"
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ 
@@ -30,12 +30,12 @@ export default function AuthLanding() {
           </motion.div>
           
           <motion.h1 
-            className="text-3xl font-bold text-gray-900 mb-3"
+            className="text-3xl font-bold mb-3"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            MedTrainer AI
+            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
           </motion.h1>
           
           <motion.p 
