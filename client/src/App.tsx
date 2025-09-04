@@ -7,6 +7,7 @@ import Landing from "@/pages/landing";
 import Training from "@/pages/training";
 import Game from "@/pages/game";
 import NotFound from "@/pages/not-found";
+import { AICaseGenerator } from "@/components/ai-case-generator";
 
 function Router() {
   return (

@@ -68,6 +68,14 @@
   --shadow-2xl: 0px 25px 50px -12px hsla(220, 13%, 13%, 0.25);
   
   --spacing: 0.25rem;
+  
+  /* Mobile-first variables */
+  --mobile-header-height: 3.5rem;
+  --mobile-bottom-nav-height: 5rem;
+  --safe-area-top: env(safe-area-inset-top);
+  --safe-area-bottom: env(safe-area-inset-bottom);
+  --safe-area-left: env(safe-area-inset-left);
+  --safe-area-right: env(safe-area-inset-right);
 }
 
 .dark {
@@ -416,5 +424,105 @@
   .medical-gradient {
     background: hsl(0, 0%, 95%) !important;
     color: hsl(0, 0%, 0%) !important;
+  }
+}
+
+/* Mobile-first styles */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+/* Safe area utilities for iOS */
+.safe-area-pt {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+.safe-area-pb {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-pl {
+  padding-left: max(1rem, env(safe-area-inset-left));
+}
+
+.safe-area-pr {
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+/* Mobile-optimized touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent horizontal scroll on mobile */
+body {
+  overflow-x: hidden;
+}
+
+/* Mobile-first responsive text */
+.text-responsive {
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+.text-responsive-lg {
+  font-size: clamp(1.125rem, 4vw, 1.5rem);
+}
+
+.text-responsive-xl {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+/* Mobile-optimized containers */
+.mobile-container {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .mobile-container {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Mobile glassmorphism */
+.mobile-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile card shadows */
+.mobile-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Mobile-first grid */
+.mobile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .mobile-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
