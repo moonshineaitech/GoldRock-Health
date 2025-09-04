@@ -8,6 +8,7 @@ import Training from "@/pages/training";
 import Game from "@/pages/game";
 import AIGenerator from "@/pages/ai-generator";
 import Achievements from "@/pages/achievements";
+import Premium from "@/pages/premium";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/game" component={Game} />
       <Route path="/game/:id" component={Game} />
       <Route path="/achievements" component={Achievements} />
+      <Route path="/premium" component={Premium} />
       <Route component={NotFound} />
     </Switch>
   );

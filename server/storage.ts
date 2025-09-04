@@ -4,6 +4,7 @@ import {
   achievements, 
   userAchievements,
   platformStats,
+  users,
   type MedicalCase, 
   type InsertMedicalCase,
   type UserProgress,
@@ -12,12 +13,18 @@ import {
   type InsertAchievement,
   type UserAchievement,
   type InsertUserAchievement,
-  type PlatformStats
+  type PlatformStats,
+  type User,
+  type UpsertUser
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count } from "drizzle-orm";
 
 export interface IStorage {
+  // User operations (IMPORTANT) these user operations are mandatory for Replit Auth.
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+
   // Medical Cases
   getMedicalCases(filters?: { specialty?: string; difficulty?: number; search?: string }): Promise<MedicalCase[]>;
   getMedicalCase(id: string): Promise<MedicalCase | undefined>;
@@ -25,15 +32,15 @@ export interface IStorage {
   updateMedicalCase(id: string, updates: Partial<InsertMedicalCase>): Promise<MedicalCase | undefined>;
 
   // User Progress
-  getUserProgress(caseId: string): Promise<UserProgress[]>;
+  getUserProgress(caseId: string, userId?: string): Promise<UserProgress[]>;
   createUserProgress(progress: InsertUserProgress): Promise<UserProgress>;
   updateUserProgress(id: string, updates: Partial<InsertUserProgress>): Promise<UserProgress | undefined>;
-  getLatestProgress(caseId: string): Promise<UserProgress | undefined>;
+  getLatestProgress(caseId: string, userId?: string): Promise<UserProgress | undefined>;
 
   // Achievements
   getAchievements(): Promise<Achievement[]>;
-  getUserAchievements(): Promise<UserAchievement[]>;
-  unlockAchievement(achievementId: string): Promise<UserAchievement>;
+  getUserAchievements(userId?: string): Promise<UserAchievement[]>;
+  unlockAchievement(achievementId: string, userId?: string): Promise<UserAchievement>;
 
   // Platform Statistics
   getPlatformStats(): Promise<PlatformStats | undefined>;
@@ -41,6 +48,27 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
+  // User operations (IMPORTANT) these user operations are mandatory for Replit Auth.
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
+  }
+
   // Medical Cases
   async getMedicalCases(filters?: { specialty?: string; difficulty?: number; search?: string }): Promise<MedicalCase[]> {
     let query = db.select().from(medicalCases);
@@ -84,11 +112,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   // User Progress
-  async getUserProgress(caseId: string): Promise<UserProgress[]> {
+  async getUserProgress(caseId: string, userId?: string): Promise<UserProgress[]> {
+    const conditions = [eq(userProgress.caseId, caseId)];
+    if (userId) {
+      conditions.push(eq(userProgress.userId, userId));
+    }
+    
     return await db
       .select()
       .from(userProgress)
-      .where(eq(userProgress.caseId, caseId))
+      .where(and(...conditions))
       .orderBy(desc(userProgress.createdAt));
   }
 
@@ -106,11 +139,16 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
 
-  async getLatestProgress(caseId: string): Promise<UserProgress | undefined> {
+  async getLatestProgress(caseId: string, userId?: string): Promise<UserProgress | undefined> {
+    const conditions = [eq(userProgress.caseId, caseId)];
+    if (userId) {
+      conditions.push(eq(userProgress.userId, userId));
+    }
+    
     const [progress] = await db
       .select()
       .from(userProgress)
-      .where(eq(userProgress.caseId, caseId))
+      .where(and(...conditions))
       .orderBy(desc(userProgress.createdAt))
       .limit(1);
     return progress;
@@ -121,17 +159,20 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(achievements).orderBy(achievements.createdAt);
   }
 
-  async getUserAchievements(): Promise<UserAchievement[]> {
-    return await db
-      .select()
-      .from(userAchievements)
-      .orderBy(desc(userAchievements.unlockedAt));
+  async getUserAchievements(userId?: string): Promise<UserAchievement[]> {
+    let query = db.select().from(userAchievements);
+    
+    if (userId) {
+      query = query.where(eq(userAchievements.userId, userId));
+    }
+    
+    return await query.orderBy(desc(userAchievements.unlockedAt));
   }
 
-  async unlockAchievement(achievementId: string): Promise<UserAchievement> {
+  async unlockAchievement(achievementId: string, userId?: string): Promise<UserAchievement> {
     const [achievement] = await db
       .insert(userAchievements)
-      .values({ achievementId })
+      .values({ achievementId, userId })
       .returning();
     return achievement;
   }

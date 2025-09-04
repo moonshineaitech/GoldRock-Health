@@ -8,11 +8,148 @@ import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
 import { insertUserProgressSchema } from "@shared/schema";
+import { setupAuth, isAuthenticated } from "./replitAuth";
+import Stripe from "stripe";
 import { z } from "zod";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2025-08-27.basil",
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize medical cases on startup
   await medicalCasesService.initializeCases();
+
+  // Auth middleware
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Stripe payment routes
+  app.post("/api/create-payment-intent", async (req, res) => {
+    try {
+      const { amount } = req.body;
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100), // Convert to cents
+        currency: "usd",
+      });
+      res.json({ clientSecret: paymentIntent.client_secret });
+    } catch (error: any) {
+      res
+        .status(500)
+        .json({ message: "Error creating payment intent: " + error.message });
+    }
+  });
+
+  // Subscription management
+  app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { priceId, planType } = req.body;
+      
+      let user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // If user already has a subscription, return existing
+      if (user.stripeSubscriptionId) {
+        const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
+          expand: ['latest_invoice.payment_intent'],
+        });
+        const invoice = subscription.latest_invoice as any;
+        return res.json({
+          subscriptionId: subscription.id,
+          clientSecret: invoice?.payment_intent?.client_secret,
+        });
+      }
+
+      if (!user.email) {
+        return res.status(400).json({ message: 'No user email on file' });
+      }
+
+      // Create Stripe customer if doesn't exist
+      let customerId = user.stripeCustomerId;
+      if (!customerId) {
+        const customer = await stripe.customers.create({
+          email: user.email,
+          name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+        });
+        customerId = customer.id;
+        
+        // Update user with Stripe customer ID
+        await storage.upsertUser({
+          ...user,
+          stripeCustomerId: customerId,
+        });
+      }
+
+      // Create subscription
+      const subscription = await stripe.subscriptions.create({
+        customer: customerId,
+        items: [{
+          price: priceId || (planType === 'annual' ? 'price_annual' : 'price_monthly'), // You'll need to set these in Stripe
+        }],
+        payment_behavior: 'default_incomplete',
+        expand: ['latest_invoice.payment_intent'],
+      });
+
+      // Update user with subscription info
+      await storage.upsertUser({
+        ...user,
+        stripeCustomerId: customerId,
+        stripeSubscriptionId: subscription.id,
+        subscriptionStatus: 'active',
+        subscriptionPlan: planType || 'monthly',
+      });
+
+      const invoice = subscription.latest_invoice as any;
+      res.json({
+        subscriptionId: subscription.id,
+        clientSecret: invoice?.payment_intent?.client_secret,
+      });
+    } catch (error: any) {
+      console.error('Error creating subscription:', error);
+      res.status(500).json({ message: 'Failed to create subscription: ' + error.message });
+    }
+  });
+
+  // Check subscription status
+  app.get('/api/subscription-status', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const subscriptionStatus = {
+        isSubscribed: user.subscriptionStatus === 'active',
+        plan: user.subscriptionPlan,
+        status: user.subscriptionStatus,
+        endsAt: user.subscriptionEndsAt,
+      };
+
+      res.json(subscriptionStatus);
+    } catch (error) {
+      console.error('Error checking subscription status:', error);
+      res.status(500).json({ message: 'Failed to check subscription status' });
+    }
+  });
 
   // Medical Cases Routes
   app.get('/api/cases', async (req, res) => {

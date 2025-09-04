@@ -6,7 +6,7 @@ import {
   Brain,
   Trophy,
   User,
-  Zap
+  Crown
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -41,10 +41,10 @@ const navItems: NavItem[] = [
     color: "text-purple-600"
   },
   {
-    id: "game",
-    label: "Practice",
-    icon: Zap,
-    path: "/game",
+    id: "premium",
+    label: "Premium",
+    icon: Crown,
+    path: "/premium",
     color: "text-orange-600"
   },
   {

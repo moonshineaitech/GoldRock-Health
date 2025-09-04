@@ -14,6 +14,38 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 
+// Session storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const users = pgTable("users", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  stripeCustomerId: varchar("stripe_customer_id"),
+  stripeSubscriptionId: varchar("stripe_subscription_id"),
+  subscriptionStatus: varchar("subscription_status").default("inactive"), // inactive, active, canceled, past_due
+  subscriptionPlan: varchar("subscription_plan"), // monthly, annual
+  subscriptionEndsAt: timestamp("subscription_ends_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type UpsertUser = typeof users.$inferInsert;
+export type User = typeof users.$inferSelect;
+
 // Medical Cases Table
 export const medicalCases = pgTable("medical_cases", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -85,7 +117,7 @@ export const medicalCases = pgTable("medical_cases", {
       nose: string;
       throat: string;
     };
-  }>().default({}),
+  }>(),
   diagnosticTests: jsonb("diagnostic_tests").$type<{
     available: {
       laboratory: {
@@ -116,7 +148,7 @@ export const medicalCases = pgTable("medical_cases", {
     };
     ordered: string[];
     completed: string[];
-  }>().default({}),
+  }>(),
   labResults: jsonb("lab_results").$type<Record<string, any>>().default({}),
   responses: jsonb("responses").$type<Record<string, string>>().default({}),
   correctDiagnosis: text("correct_diagnosis").notNull(),
@@ -131,6 +163,7 @@ export const medicalCases = pgTable("medical_cases", {
 // User Progress Table
 export const userProgress = pgTable("user_progress", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
   caseId: varchar("case_id").notNull().references(() => medicalCases.id),
   questionsAsked: integer("questions_asked").default(0),
   timeElapsed: integer("time_elapsed").default(0), // seconds
@@ -158,6 +191,7 @@ export const achievements = pgTable("achievements", {
 // User Achievements Table
 export const userAchievements = pgTable("user_achievements", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
   achievementId: varchar("achievement_id").notNull().references(() => achievements.id),
   unlockedAt: timestamp("unlocked_at").defaultNow(),
 });
@@ -173,11 +207,20 @@ export const platformStats = pgTable("platform_stats", {
 });
 
 // Relations
+export const usersRelations = relations(users, ({ many }) => ({
+  progress: many(userProgress),
+  achievements: many(userAchievements),
+}));
+
 export const medicalCasesRelations = relations(medicalCases, ({ many }) => ({
   progress: many(userProgress),
 }));
 
 export const userProgressRelations = relations(userProgress, ({ one }) => ({
+  user: one(users, {
+    fields: [userProgress.userId],
+    references: [users.id],
+  }),
   case: one(medicalCases, {
     fields: [userProgress.caseId],
     references: [medicalCases.id],
@@ -189,6 +232,10 @@ export const achievementsRelations = relations(achievements, ({ many }) => ({
 }));
 
 export const userAchievementsRelations = relations(userAchievements, ({ one }) => ({
+  user: one(users, {
+    fields: [userAchievements.userId],
+    references: [users.id],
+  }),
   achievement: one(achievements, {
     fields: [userAchievements.achievementId],
     references: [achievements.id],
@@ -216,6 +263,12 @@ export const insertAchievementSchema = createInsertSchema(achievements).omit({
 export const insertUserAchievementSchema = createInsertSchema(userAchievements).omit({
   id: true,
   unlockedAt: true,
+});
+
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 // Types
