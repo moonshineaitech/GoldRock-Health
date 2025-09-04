@@ -1,0 +1,27 @@
+{
+  "name": "GoldRock Health - AI Medical Bill Analyzer",
+  "short_name": "GoldRock Health",
+  "description": "AI-powered medical bill analysis to identify overcharges and reduce healthcare costs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10B981",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/goldrock-social.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "health", "finance", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+}
