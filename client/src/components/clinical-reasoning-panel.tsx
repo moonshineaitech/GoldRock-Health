@@ -55,15 +55,32 @@ export function ClinicalReasoningPanel({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div 
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
+      style={{ 
+        zIndex: 9999,
+        paddingTop: 'max(1rem, env(safe-area-inset-top, 0px) + 4rem)'
+      }}
+    >
+      <div 
+        className="bg-white rounded-2xl max-w-4xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          touchAction: 'pan-y'
+        }}
+      >
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
               <Lightbulb className="h-6 w-6 text-indigo-600" />
               <h2 className="text-2xl font-bold text-slate-800">Clinical Reasoning</h2>
             </div>
-            <Button variant="outline" onClick={onClose}>
+            <Button 
+              variant="outline" 
+              onClick={onClose}
+              className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm"
+              style={{ minHeight: '44px', minWidth: '44px' }}
+            >
               Close
             </Button>
           </div>

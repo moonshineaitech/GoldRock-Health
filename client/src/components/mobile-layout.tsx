@@ -27,11 +27,11 @@ export function MobileLayout({
     }}>
       {/* Nostalgic Fruitger Aero Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200/12 to-emerald-200/12 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-gradient-to-r from-blue-200/12 to-teal-200/12 rounded-full blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-200/12 to-cyan-200/12 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
-        <div className="absolute top-3/4 left-1/4 w-72 h-72 bg-gradient-to-r from-sky-200/8 to-blue-200/8 rounded-full blur-3xl animate-float" style={{animationDelay: '4.5s'}}></div>
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-teal-200/10 to-cyan-200/10 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200/8 to-emerald-200/8 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-gradient-to-r from-blue-200/8 to-teal-200/8 rounded-full blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-200/6 to-cyan-200/6 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute top-3/4 left-1/4 w-72 h-72 bg-gradient-to-r from-sky-200/5 to-blue-200/5 rounded-full blur-3xl animate-float" style={{animationDelay: '4.5s'}}></div>
+        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-teal-200/6 to-cyan-200/6 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
       </div>
 
       <MobileHeader 

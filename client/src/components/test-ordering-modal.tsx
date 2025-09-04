@@ -253,7 +253,14 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
 
   return (
     <Dialog open={isVisible} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent 
+        className="sm:max-w-5xl max-h-[85vh] overflow-y-auto"
+        style={{
+          zIndex: 9999,
+          WebkitOverflowScrolling: 'touch',
+          touchAction: 'pan-y'
+        }}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <TestTubeDiagonal className="h-6 w-6 text-indigo-600" />

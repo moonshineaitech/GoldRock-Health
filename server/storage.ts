@@ -14,6 +14,11 @@ import {
   boardExamAttempts,
   clinicalDecisionTrees,
   decisionTreeProgress,
+  medicalBills,
+  billAnalysisResults,
+  reductionStrategies,
+  chatSessions,
+  chatMessages,
   type MedicalCase, 
   type InsertMedicalCase,
   type UserProgress,
@@ -42,7 +47,17 @@ import {
   type ClinicalDecisionTree,
   type InsertClinicalDecisionTree,
   type DecisionTreeProgress,
-  type InsertDecisionTreeProgress
+  type InsertDecisionTreeProgress,
+  type MedicalBill,
+  type InsertMedicalBill,
+  type BillAnalysisResult,
+  type InsertBillAnalysisResult,
+  type ReductionStrategy,
+  type InsertReductionStrategy,
+  type ChatSession,
+  type InsertChatSession,
+  type ChatMessage,
+  type InsertChatMessage
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count } from "drizzle-orm";
@@ -107,6 +122,26 @@ export interface IStorage {
   // Platform Statistics
   getPlatformStats(): Promise<PlatformStats | undefined>;
   updatePlatformStats(): Promise<PlatformStats>;
+  
+  // Medical Bill Analyzer operations
+  createChatSession(userId: string, billId?: string): Promise<ChatSession>;
+  getChatSessions(userId: string): Promise<ChatSession[]>;
+  getCurrentChatSession(userId: string): Promise<ChatSession | undefined>;
+  updateChatSession(sessionId: string, updates: Partial<ChatSession>): Promise<ChatSession>;
+  
+  createChatMessage(sessionId: string, role: string, content: string, messageType?: string, metadata?: any): Promise<ChatMessage>;
+  getChatMessages(sessionId: string): Promise<ChatMessage[]>;
+  
+  createMedicalBill(userId: string, billData: InsertMedicalBill): Promise<MedicalBill>;
+  getMedicalBills(userId: string): Promise<MedicalBill[]>;
+  getMedicalBill(billId: string, userId: string): Promise<MedicalBill | undefined>;
+  updateMedicalBill(billId: string, updates: Partial<MedicalBill>): Promise<MedicalBill>;
+  
+  createBillAnalysis(billId: string, analysisData: InsertBillAnalysisResult): Promise<BillAnalysisResult>;
+  getBillAnalysis(billId: string): Promise<BillAnalysisResult | undefined>;
+  
+  createReductionStrategy(strategyData: InsertReductionStrategy): Promise<ReductionStrategy>;
+  getReductionStrategies(billId: string): Promise<ReductionStrategy[]>;
 }
 
 export class DatabaseStorage implements IStorage {

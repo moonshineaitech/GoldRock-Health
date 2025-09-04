@@ -71,11 +71,6 @@ export const userStats = pgTable("user_stats", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Achievement Types
-export type Achievement = typeof achievements.$inferSelect;
-export type InsertAchievement = typeof achievements.$inferInsert;
-export type UserAchievement = typeof userAchievements.$inferSelect;
-export type InsertUserAchievement = typeof userAchievements.$inferInsert;
 export type UserStats = typeof userStats.$inferSelect;
 export type InsertUserStats = typeof userStats.$inferInsert;
 
@@ -226,7 +221,7 @@ export const achievements = pgTable("achievements", {
     accuracyThreshold?: number;
     timeThreshold?: number; // seconds
     consecutiveDays?: number;
-  }>().default({}),
+  }>(),
   points: integer("points").default(0),
   isHidden: boolean("is_hidden").default(false), // Hidden until prerequisites met
   prerequisites: jsonb("prerequisites").$type<string[]>().default([]), // Achievement IDs required first
@@ -579,6 +574,279 @@ export const clinicalDecisionTrees = pgTable("clinical_decision_trees", {
   createdBy: varchar("created_by").references(() => users.id),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Medical Bills Table - Core bill information uploaded by users
+export const medicalBills = pgTable("medical_bills", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  title: text("title").notNull(), // User-friendly name for the bill
+  providerName: text("provider_name"), // Hospital/clinic name
+  providerAddress: text("provider_address"),
+  serviceDate: timestamp("service_date"),
+  billDate: timestamp("bill_date"),
+  dueDate: timestamp("due_date"),
+  totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
+  insurancePaid: decimal("insurance_paid", { precision: 10, scale: 2 }).default("0.00"),
+  patientResponsibility: decimal("patient_responsibility", { precision: 10, scale: 2 }).notNull(),
+  originalText: text("original_text"), // Raw OCR text from uploaded bill
+  extractedData: jsonb("extracted_data").$type<{
+    patientInfo: {
+      name: string;
+      dateOfBirth?: string;
+      policyNumber?: string;
+      memberId?: string;
+    };
+    insuranceInfo: {
+      company: string;
+      groupNumber?: string;
+      planType?: string;
+    };
+    diagnosticCodes: Array<{
+      code: string;
+      description: string;
+      type: "ICD-10" | "ICD-9" | "CPT" | "HCPCS";
+    }>;
+    lineItems: Array<{
+      description: string;
+      code?: string;
+      quantity: number;
+      unitPrice: number;
+      total: number;
+      dateOfService?: string;
+    }>;
+  }>(),
+  status: varchar("status", { length: 20 }).default("uploaded"), // uploaded, analyzing, analyzed, disputed, resolved
+  analysisStatus: varchar("analysis_status", { length: 20 }).default("pending"), // pending, in_progress, completed, failed
+  fileUrl: text("file_url"), // URL to uploaded bill image/PDF
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Bill Analysis Results - AI analysis findings
+export const billAnalysisResults = pgTable("bill_analysis_results", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  billId: varchar("bill_id").notNull().references(() => medicalBills.id),
+  overallScore: integer("overall_score").notNull(), // 1-100 billing accuracy score
+  potentialSavings: decimal("potential_savings", { precision: 10, scale: 2 }).default("0.00"),
+  confidenceLevel: integer("confidence_level").notNull(), // 1-100 AI confidence
+  analysisDetails: jsonb("analysis_details").$type<{
+    codeAccuracy: {
+      score: number;
+      issues: Array<{
+        code: string;
+        issue: string;
+        severity: "low" | "medium" | "high";
+        potentialSaving: number;
+      }>;
+    };
+    pricingAnalysis: {
+      marketComparison: {
+        percentile: number;
+        averagePrice: number;
+        yourPrice: number;
+      };
+      overcharges: Array<{
+        item: string;
+        chargedAmount: number;
+        fairPrice: number;
+        overchargeAmount: number;
+        explanation: string;
+      }>;
+    };
+    insuranceCoverage: {
+      properlyProcessed: boolean;
+      issues: Array<{
+        description: string;
+        recommendedAction: string;
+        potentialRecovery: number;
+      }>;
+    };
+    duplicateCharges: Array<{
+      description: string;
+      amount: number;
+      dates: string[];
+    }>;
+    unbundlingIssues: Array<{
+      description: string;
+      codes: string[];
+      overchargeAmount: number;
+    }>;
+  }>(),
+  redFlags: jsonb("red_flags").$type<Array<{
+    type: "pricing" | "coding" | "duplicate" | "unbundling" | "insurance" | "timing";
+    description: string;
+    severity: "low" | "medium" | "high" | "critical";
+    evidence: string;
+    recommendedAction: string;
+    potentialSaving: number;
+  }>>().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Reduction Strategies - Specific tactics to reduce bills
+export const reductionStrategies = pgTable("reduction_strategies", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  billId: varchar("bill_id").notNull().references(() => medicalBills.id),
+  analysisId: varchar("analysis_id").notNull().references(() => billAnalysisResults.id),
+  strategyType: varchar("strategy_type", { length: 30 }).notNull(), // dispute_charge, negotiate_payment, insurance_appeal, charity_care, coding_error, price_transparency
+  priority: integer("priority").notNull(), // 1-10 (10 being highest priority)
+  potentialSaving: decimal("potential_saving", { precision: 10, scale: 2 }).notNull(),
+  successProbability: integer("success_probability").notNull(), // 1-100%
+  difficultyLevel: varchar("difficulty_level", { length: 20 }).default("medium"), // easy, medium, hard
+  estimatedTimeRequired: integer("estimated_time_required").default(30), // minutes
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  actionSteps: jsonb("action_steps").$type<Array<{
+    stepNumber: number;
+    action: string;
+    details: string;
+    expectedOutcome: string;
+    timeframe: string;
+  }>>().default([]),
+  requiredDocuments: jsonb("required_documents").$type<string[]>().default([]),
+  contactInfo: jsonb("contact_info").$type<{
+    department: string;
+    phone?: string;
+    email?: string;
+    address?: string;
+    bestTimeToCall?: string;
+    referenceNumbers?: string[];
+  }>(),
+  scriptTemplates: jsonb("script_templates").$type<{
+    phoneScript: string;
+    emailTemplate: string;
+    letterTemplate: string;
+  }>(),
+  legalBasis: text("legal_basis"), // Legal reasoning for the dispute
+  status: varchar("status", { length: 20 }).default("recommended"), // recommended, in_progress, completed, failed
+  implementedAt: timestamp("implemented_at"),
+  resultAmount: decimal("result_amount", { precision: 10, scale: 2 }), // Actual amount saved
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Generated Documents - Letters and forms created for users
+export const generatedDocuments = pgTable("generated_documents", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  billId: varchar("bill_id").notNull().references(() => medicalBills.id),
+  strategyId: varchar("strategy_id").references(() => reductionStrategies.id),
+  documentType: varchar("document_type", { length: 30 }).notNull(), // appeal_letter, dispute_letter, payment_plan_request, charity_care_application, insurance_complaint, state_complaint
+  recipientType: varchar("recipient_type", { length: 20 }).notNull(), // provider, insurance, state_agency, attorney_general
+  title: text("title").notNull(),
+  content: text("content").notNull(), // Generated document content
+  formattedContent: text("formatted_content"), // HTML formatted version
+  recipientInfo: jsonb("recipient_info").$type<{
+    name: string;
+    title?: string;
+    department?: string;
+    address: string;
+    phone?: string;
+    email?: string;
+    faxNumber?: string;
+  }>(),
+  documentMetadata: jsonb("document_metadata").$type<{
+    letterhead: boolean;
+    signature: boolean;
+    attachments: string[];
+    deliveryMethod: "mail" | "email" | "fax" | "portal";
+    urgency: "normal" | "urgent";
+    followUpRequired: boolean;
+    followUpDate?: string;
+  }>(),
+  legalReferences: jsonb("legal_references").$type<Array<{
+    law: string;
+    section: string;
+    description: string;
+    relevance: string;
+  }>>().default([]),
+  status: varchar("status", { length: 20 }).default("draft"), // draft, finalized, sent, delivered, responded
+  generatedAt: timestamp("generated_at").defaultNow(),
+  sentAt: timestamp("sent_at"),
+  responseReceived: timestamp("response_received"),
+  outcome: text("outcome"),
+});
+
+// Medical Codes Database - CPT, ICD-10, HCPCS codes with pricing data
+export const medicalCodes = pgTable("medical_codes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar("code", { length: 20 }).notNull(),
+  codeType: varchar("code_type", { length: 10 }).notNull(), // CPT, ICD-10, HCPCS, DRG
+  description: text("description").notNull(),
+  category: varchar("category", { length: 50 }),
+  averagePrice: decimal("average_price", { precision: 10, scale: 2 }),
+  priceRange: jsonb("price_range").$type<{
+    low: number;
+    high: number;
+    median: number;
+    source: string;
+    lastUpdated: string;
+  }>(),
+  regionalPricing: jsonb("regional_pricing").$type<Record<string, {
+    averagePrice: number;
+    sampleSize: number;
+    lastUpdated: string;
+  }>>().default({}),
+  bundlingRules: jsonb("bundling_rules").$type<{
+    cannotBeBilledWith: string[];
+    mustBeBilledWith: string[];
+    modifiers: Array<{
+      code: string;
+      description: string;
+      priceAdjustment: number;
+    }>;
+  }>(),
+  commonIssues: jsonb("common_issues").$type<Array<{
+    issue: string;
+    description: string;
+    solution: string;
+  }>>().default([]),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Chat Sessions - Conversation history with the AI assistant
+export const chatSessions = pgTable("chat_sessions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  billId: varchar("bill_id").references(() => medicalBills.id), // Optional - if chat is about specific bill
+  title: text("title"), // User-defined or auto-generated session name
+  sessionType: varchar("session_type", { length: 20 }).default("general"), // general, bill_analysis, strategy_discussion, document_review
+  status: varchar("status", { length: 20 }).default("active"), // active, archived, deleted
+  totalMessages: integer("total_messages").default(0),
+  estimatedSavings: decimal("estimated_savings", { precision: 10, scale: 2 }).default("0.00"), // Running total of potential savings discussed
+  lastMessageAt: timestamp("last_message_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Chat Messages - Individual messages in conversations
+export const chatMessages = pgTable("chat_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sessionId: varchar("session_id").notNull().references(() => chatSessions.id),
+  role: varchar("role", { length: 10 }).notNull(), // user, assistant, system
+  content: text("content").notNull(),
+  messageType: varchar("message_type", { length: 20 }).default("text"), // text, bill_upload, analysis_result, strategy_recommendation, document_preview
+  metadata: jsonb("metadata").$type<{
+    billId?: string;
+    analysisId?: string;
+    strategyId?: string;
+    documentId?: string;
+    attachments?: Array<{
+      type: string;
+      url: string;
+      name: string;
+    }>;
+    actionButtons?: Array<{
+      text: string;
+      action: string;
+      data?: any;
+    }>;
+  }>(),
+  tokens: integer("tokens"), // For tracking API usage
+  processingTime: integer("processing_time"), // milliseconds
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Decision Tree Progress Table
@@ -1079,3 +1347,19 @@ export type InsertAchievement = z.infer<typeof insertAchievementSchema>;
 export type UserAchievement = typeof userAchievements.$inferSelect;
 export type InsertUserAchievement = z.infer<typeof insertUserAchievementSchema>;
 export type PlatformStats = typeof platformStats.$inferSelect;
+
+// Medical Bill Analyzer Type exports
+export type MedicalBill = typeof medicalBills.$inferSelect;
+export type InsertMedicalBill = typeof medicalBills.$inferInsert;
+export type BillAnalysisResult = typeof billAnalysisResults.$inferSelect;
+export type InsertBillAnalysisResult = typeof billAnalysisResults.$inferInsert;
+export type ReductionStrategy = typeof reductionStrategies.$inferSelect;
+export type InsertReductionStrategy = typeof reductionStrategies.$inferInsert;
+export type GeneratedDocument = typeof generatedDocuments.$inferSelect;
+export type InsertGeneratedDocument = typeof generatedDocuments.$inferInsert;
+export type MedicalCode = typeof medicalCodes.$inferSelect;
+export type InsertMedicalCode = typeof medicalCodes.$inferInsert;
+export type ChatSession = typeof chatSessions.$inferSelect;
+export type InsertChatSession = typeof chatSessions.$inferInsert;
+export type ChatMessage = typeof chatMessages.$inferSelect;
+export type InsertChatMessage = typeof chatMessages.$inferInsert;

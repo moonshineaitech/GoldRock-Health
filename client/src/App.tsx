@@ -14,6 +14,7 @@ import ImageAnalysis from "@/pages/image-analysis";
 import StudyGroups from "@/pages/study-groups";
 import BoardExamPrep from "@/pages/board-exam-prep";
 import ClinicalDecisionTrees from "@/pages/clinical-decision-trees";
+import BillAnalyzer from "@/pages/bill-analyzer";
 import Premium from "@/pages/premium";
 import NotFound from "@/pages/not-found";
 
@@ -52,6 +53,7 @@ function Router() {
       <Route path="/study-groups" component={StudyGroups} />
       <Route path="/board-exam-prep" component={BoardExamPrep} />
       <Route path="/clinical-decision-trees" component={ClinicalDecisionTrees} />
+      <Route path="/bill-analyzer" component={BillAnalyzer} />
       <Route path="/premium" component={Premium} />
       <Route component={NotFound} />
     </Switch>

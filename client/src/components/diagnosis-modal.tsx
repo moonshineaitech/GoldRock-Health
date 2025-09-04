@@ -53,7 +53,10 @@ export function DiagnosisModal({ onSubmit, isLoading = false }: DiagnosisModalPr
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg md:max-w-2xl max-h-[85vh] overflow-y-auto" style={{
+        zIndex: 9999,
+        WebkitOverflowScrolling: 'touch'
+      }}>
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Brain className="h-5 w-5 text-indigo-600" />
