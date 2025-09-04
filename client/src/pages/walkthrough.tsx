@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MobileButton, MobileCard } from "@/components/mobile-layout";
 import { 
@@ -272,83 +272,104 @@ interface PremiumPopupProps {
 }
 
 function PremiumPopup({ isOpen, onClose, onSubscribe }: PremiumPopupProps) {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
   return (
     <AnimatePresence>
-      {isOpen && (
+      <motion.div 
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
         <motion.div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
+          className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl relative"
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <motion.div 
-            className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl"
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            onClick={(e) => e.stopPropagation()}
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+            aria-label="Close"
           >
-            <div className="text-center">
-              <motion.div 
-                className="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-orange-500/25"
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ duration: 0.6, type: "spring", stiffness: 200 }}
-              >
-                <Crown className="h-8 w-8 text-white" />
-              </motion.div>
-              
-              <h2 className="text-xl font-bold text-gray-900 mb-2">Ready to Go Premium?</h2>
-              <p className="text-gray-600 mb-6">
-                Unlock unlimited AI cases, priority voice synthesis, and advanced analytics
-              </p>
-              
-              <div className="space-y-3 mb-6">
-                <div className="bg-orange-50 rounded-2xl p-4 border border-orange-200">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">$19.99<span className="text-sm font-normal text-gray-600">/month</span></div>
-                    <div className="text-xs text-green-600 font-medium mt-1">7-Day Free Trial</div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  {[
-                    "Unlimited AI Cases",
-                    "Premium Voices", 
-                    "Advanced Analytics",
-                    "Priority Support"
-                  ].map((feature) => (
-                    <div key={feature} className="flex items-center">
-                      <Check className="h-3 w-3 text-green-600 mr-1" />
-                      <span className="text-gray-600">{feature}</span>
-                    </div>
-                  ))}
+            <X className="h-4 w-4 text-gray-600" />
+          </button>
+
+          <div className="text-center">
+            <motion.div 
+              className="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-orange-500/25"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 200 }}
+            >
+              <Crown className="h-8 w-8 text-white" />
+            </motion.div>
+            
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Ready to Go Premium?</h2>
+            <p className="text-gray-600 mb-6">
+              Unlock unlimited AI cases, priority voice synthesis, and advanced analytics
+            </p>
+            
+            <div className="space-y-3 mb-6">
+              <div className="bg-orange-50 rounded-2xl p-4 border border-orange-200">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">$19.99<span className="text-sm font-normal text-gray-600">/month</span></div>
+                  <div className="text-xs text-green-600 font-medium mt-1">7-Day Free Trial</div>
                 </div>
               </div>
               
-              <div className="space-y-3">
-                <MobileButton 
-                  onClick={onSubscribe}
-                  className="w-full bg-orange-600 hover:bg-orange-700 shadow-lg"
-                  size="lg"
-                >
-                  <Crown className="h-4 w-4 mr-2" />
-                  Start Free Trial
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </MobileButton>
-                
-                <button 
-                  onClick={onClose}
-                  className="w-full text-gray-500 hover:text-gray-700 py-2 text-sm font-medium transition-colors"
-                >
-                  Maybe Later
-                </button>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {[
+                  "Unlimited AI Cases",
+                  "Premium Voices", 
+                  "Advanced Analytics",
+                  "Priority Support"
+                ].map((feature) => (
+                  <div key={feature} className="flex items-center">
+                    <Check className="h-3 w-3 text-green-600 mr-1" />
+                    <span className="text-gray-600">{feature}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          </motion.div>
+            
+            <div className="space-y-3">
+              <button
+                onClick={onSubscribe}
+                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-4 rounded-2xl flex items-center justify-center space-x-2 shadow-lg transition-all duration-200 active:scale-95"
+              >
+                <Crown className="h-4 w-4" />
+                <span>Start Free Trial</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              
+              <button 
+                onClick={onClose}
+                className="w-full text-gray-500 hover:text-gray-700 py-3 text-sm font-medium transition-colors active:scale-95"
+              >
+                Continue with Free Version
+              </button>
+            </div>
+          </div>
         </motion.div>
-      )}
+      </motion.div>
     </AnimatePresence>
   );
 }
@@ -362,32 +383,55 @@ export default function Walkthrough() {
   const isLastStep = currentStep === walkthroughSteps.length - 1;
   const isFirstStep = currentStep === 0;
 
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (showPremiumPopup) return; // Don't handle keys when popup is open
+      
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        handleNext();
+      } else if (e.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (e.key === 'Escape') {
+        handleSkip();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [currentStep, showPremiumPopup]);
+
   const handleNext = () => {
+    console.log('Next clicked, current step:', currentStep, 'isLastStep:', isLastStep);
     if (isLastStep) {
       setShowPremiumPopup(true);
     } else {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep(prev => Math.min(prev + 1, walkthroughSteps.length - 1));
     }
   };
 
   const handlePrevious = () => {
+    console.log('Previous clicked, current step:', currentStep);
     if (!isFirstStep) {
-      setCurrentStep(currentStep - 1);
+      setCurrentStep(prev => Math.max(prev - 1, 0));
     }
   };
 
   const handleSkip = () => {
+    console.log('Skip clicked');
     localStorage.setItem('walkthroughCompleted', 'true');
     setLocation('/');
   };
 
   const handleComplete = () => {
+    console.log('Complete clicked');
     localStorage.setItem('walkthroughCompleted', 'true');
     setShowPremiumPopup(false);
     setLocation('/');
   };
 
   const handleSubscribe = () => {
+    console.log('Subscribe clicked');
     localStorage.setItem('walkthroughCompleted', 'true');
     setShowPremiumPopup(false);
     setLocation('/premium');
@@ -408,12 +452,21 @@ export default function Walkthrough() {
             <p className="text-xs text-gray-600">Getting Started</p>
           </div>
         </div>
-        <button 
-          onClick={handleSkip}
-          className="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors"
-        >
-          Skip
-        </button>
+        <div className="flex items-center space-x-2">
+          <button 
+            onClick={handleSkip}
+            className="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors px-3 py-1 rounded-lg hover:bg-gray-100 active:scale-95"
+          >
+            Skip
+          </button>
+          <button
+            onClick={handleSkip}
+            className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors active:scale-95"
+            aria-label="Close walkthrough"
+          >
+            <X className="h-4 w-4 text-gray-600" />
+          </button>
+        </div>
       </div>
 
       {/* Progress Bar */}
@@ -508,35 +561,40 @@ export default function Walkthrough() {
       {/* Navigation */}
       <div className="p-4 bg-white/80 backdrop-blur-sm border-t border-gray-200">
         <div className="flex items-center justify-between space-x-4">
-          <MobileButton
-            variant="secondary"
+          <button
             onClick={handlePrevious}
             disabled={isFirstStep}
-            className={isFirstStep ? "opacity-50" : ""}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-2xl font-medium transition-all active:scale-95 ${
+              isFirstStep 
+                ? 'opacity-50 cursor-not-allowed bg-gray-100 text-gray-400' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+            }`}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Previous
-          </MobileButton>
+            <ArrowLeft className="h-4 w-4" />
+            <span>Previous</span>
+          </button>
           
           <div className="flex space-x-1">
             {walkthroughSteps.map((_, index) => (
-              <div
+              <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentStep ? 'bg-indigo-600' : 
-                  index < currentStep ? 'bg-indigo-300' : 'bg-gray-300'
+                onClick={() => setCurrentStep(index)}
+                className={`w-3 h-3 rounded-full transition-all active:scale-95 ${
+                  index === currentStep ? 'bg-indigo-600 scale-110' : 
+                  index < currentStep ? 'bg-indigo-300' : 'bg-gray-300 hover:bg-gray-400'
                 }`}
+                aria-label={`Go to step ${index + 1}`}
               />
             ))}
           </div>
           
-          <MobileButton
+          <button
             onClick={handleNext}
-            className="bg-indigo-600 hover:bg-indigo-700"
+            className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-medium transition-all active:scale-95"
           >
-            {isLastStep ? 'Complete' : 'Next'}
-            <ArrowRight className="h-4 w-4 ml-2" />
-          </MobileButton>
+            <span>{isLastStep ? 'Complete' : 'Next'}</span>
+            <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
