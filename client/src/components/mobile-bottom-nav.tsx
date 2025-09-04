@@ -66,38 +66,70 @@ export function MobileBottomNav() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-200 safe-area-pb">
-      <div className="flex items-center justify-around px-2 py-2">
-        {navItems.map((item) => {
+    <motion.div 
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-xl border-t border-gray-100 safe-area-pb"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <div className="flex items-center justify-around px-3 py-2">
+        {navItems.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.path);
           
           return (
             <Link key={item.id} href={item.path}>
               <motion.div
-                className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-xl transition-all duration-200"
-                whileTap={{ scale: 0.95 }}
-                animate={{
-                  backgroundColor: active ? "rgba(99, 102, 241, 0.1)" : "transparent"
+                className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-2xl transition-all duration-300"
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.02 }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ 
+                  y: 0, 
+                  opacity: 1,
+                  backgroundColor: active ? "rgba(129, 140, 248, 0.15)" : "rgba(0, 0, 0, 0)"
+                }}
+                transition={{ 
+                  delay: index * 0.1,
+                  duration: 0.4,
+                  backgroundColor: { duration: 0.3 }
                 }}
                 data-testid={`nav-${item.id}`}
               >
                 <motion.div
+                  className="relative"
                   animate={{
-                    scale: active ? 1.1 : 1,
-                    color: active ? item.color : "#6B7280"
+                    scale: active ? 1.15 : 1,
+                    y: active ? -2 : 0
                   }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 400, 
+                    damping: 25 
+                  }}
                 >
-                  <Icon className="h-5 w-5 mb-1" />
+                  <Icon 
+                    className="h-5 w-5 mb-1"
+                    style={{
+                      color: active ? item.color.replace('text-', '#') : '#9CA3AF'
+                    }}
+                  />
+                  {active && (
+                    <motion.div
+                      className="absolute -bottom-1 left-1/2 w-1 h-1 bg-current rounded-full"
+                      layoutId="activeTab"
+                      style={{ x: '-50%' }}
+                    />
+                  )}
                 </motion.div>
                 <motion.span 
                   className="text-xs font-medium leading-none truncate"
                   animate={{
-                    color: active ? item.color : "#6B7280",
-                    fontWeight: active ? 600 : 500
+                    color: active ? item.color.replace('text-', '#') : '#9CA3AF',
+                    fontWeight: active ? 600 : 500,
+                    scale: active ? 1.05 : 1
                   }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.3 }}
                 >
                   {item.label}
                 </motion.span>
@@ -106,14 +138,14 @@ export function MobileBottomNav() {
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 // Add safe area padding utility
 export function SafeAreaProvider({ children }: { children: React.ReactNode }) {
   return (
-    <div className="pb-20 safe-area-pb">
+    <div className="pb-16 safe-area-pb">
       {children}
     </div>
   );
