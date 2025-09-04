@@ -25,7 +25,98 @@ export const medicalCases = pgTable("medical_cases", {
   chiefComplaint: text("chief_complaint").notNull(),
   symptoms: jsonb("symptoms").$type<string[]>().default([]),
   medicalHistory: jsonb("medical_history").$type<Record<string, any>>().default({}),
-  physicalExam: jsonb("physical_exam").$type<Record<string, any>>().default({}),
+  physicalExam: jsonb("physical_exam").$type<{
+    vitals: {
+      bloodPressure: string;
+      heartRate: string;
+      respiratoryRate: string;
+      temperature: string;
+      oxygenSaturation?: string;
+    };
+    general: {
+      appearance: string;
+      distress: string;
+      mobility: string;
+    };
+    cardiovascular: {
+      heartSounds: string;
+      murmurs: string;
+      pulses: string;
+      edema: string;
+      jugularVeinDistension: string;
+    };
+    pulmonary: {
+      inspection: string;
+      palpation: string;
+      percussion: string;
+      auscultation: string;
+    };
+    abdominal: {
+      inspection: string;
+      palpation: string;
+      percussion: string;
+      auscultation: string;
+      organomegaly: string;
+    };
+    neurological: {
+      mentalStatus: string;
+      cranialNerves: string;
+      motor: string;
+      sensory: string;
+      reflexes: string;
+      coordination: string;
+    };
+    musculoskeletal: {
+      inspection: string;
+      palpation: string;
+      rangeOfMotion: string;
+      strength: string;
+    };
+    skin: {
+      color: string;
+      texture: string;
+      lesions: string;
+      rashes: string;
+    };
+    heent: {
+      head: string;
+      eyes: string;
+      ears: string;
+      nose: string;
+      throat: string;
+    };
+  }>().default({}),
+  diagnosticTests: jsonb("diagnostic_tests").$type<{
+    available: {
+      laboratory: {
+        name: string;
+        category: string;
+        indication: string;
+        normalRange: string;
+        result: string;
+        abnormal: boolean;
+        interpretation: string;
+      }[];
+      imaging: {
+        name: string;
+        type: string;
+        indication: string;
+        findings: string;
+        impression: string;
+        abnormal: boolean;
+      }[];
+      procedures: {
+        name: string;
+        type: string;
+        indication: string;
+        findings: string;
+        complications: string;
+        abnormal: boolean;
+      }[];
+    };
+    ordered: string[];
+    completed: string[];
+  }>().default({}),
   labResults: jsonb("lab_results").$type<Record<string, any>>().default({}),
   responses: jsonb("responses").$type<Record<string, string>>().default({}),
   correctDiagnosis: text("correct_diagnosis").notNull(),
@@ -128,6 +219,98 @@ export const insertUserAchievementSchema = createInsertSchema(userAchievements).
 });
 
 // Types
+// Physical Exam Types
+export interface PhysicalExamFindings {
+  vitals: {
+    bloodPressure: string;
+    heartRate: string;
+    respiratoryRate: string;
+    temperature: string;
+    oxygenSaturation?: string;
+  };
+  general: {
+    appearance: string;
+    distress: string;
+    mobility: string;
+  };
+  cardiovascular: {
+    heartSounds: string;
+    murmurs: string;
+    pulses: string;
+    edema: string;
+    jugularVeinDistension: string;
+  };
+  pulmonary: {
+    inspection: string;
+    palpation: string;
+    percussion: string;
+    auscultation: string;
+  };
+  abdominal: {
+    inspection: string;
+    palpation: string;
+    percussion: string;
+    auscultation: string;
+    organomegaly: string;
+  };
+  neurological: {
+    mentalStatus: string;
+    cranialNerves: string;
+    motor: string;
+    sensory: string;
+    reflexes: string;
+    coordination: string;
+  };
+  musculoskeletal: {
+    inspection: string;
+    palpation: string;
+    rangeOfMotion: string;
+    strength: string;
+  };
+  skin: {
+    color: string;
+    texture: string;
+    lesions: string;
+    rashes: string;
+  };
+  heent: {
+    head: string;
+    eyes: string;
+    ears: string;
+    nose: string;
+    throat: string;
+  };
+}
+
+// Diagnostic Test Types
+export interface DiagnosticTest {
+  laboratory: {
+    name: string;
+    category: string;
+    indication: string;
+    normalRange: string;
+    result: string;
+    abnormal: boolean;
+    interpretation: string;
+  }[];
+  imaging: {
+    name: string;
+    type: string;
+    indication: string;
+    findings: string;
+    impression: string;
+    abnormal: boolean;
+  }[];
+  procedures: {
+    name: string;
+    type: string;
+    indication: string;
+    findings: string;
+    complications: string;
+    abnormal: boolean;
+  }[];
+}
+
 export type MedicalCase = typeof medicalCases.$inferSelect;
 export type InsertMedicalCase = z.infer<typeof insertMedicalCaseSchema>;
 export type UserProgress = typeof userProgress.$inferSelect;

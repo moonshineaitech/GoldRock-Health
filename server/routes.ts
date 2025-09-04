@@ -457,6 +457,132 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Diagnostic Test Ordering Routes
+  app.get('/api/cases/:id/available-tests', async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const medicalCase = await storage.getMedicalCase(id);
+      if (!medicalCase) {
+        return res.status(404).json({ message: 'Medical case not found' });
+      }
+
+      const diagnosticTests = medicalCase.diagnosticTests?.available || {
+        laboratory: [],
+        imaging: [],
+        procedures: []
+      };
+
+      res.json(diagnosticTests);
+    } catch (error) {
+      console.error('Error fetching available tests:', error);
+      res.status(500).json({ message: 'Failed to fetch available tests' });
+    }
+  });
+
+  app.post('/api/cases/:id/order-test', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { testName, testType } = req.body;
+      
+      const medicalCase = await storage.getMedicalCase(id);
+      if (!medicalCase) {
+        return res.status(404).json({ message: 'Medical case not found' });
+      }
+
+      const diagnosticTests = medicalCase.diagnosticTests || { available: { laboratory: [], imaging: [], procedures: [] }, ordered: [], completed: [] };
+      
+      // Add test to ordered list if not already ordered
+      if (!diagnosticTests.ordered.includes(testName)) {
+        diagnosticTests.ordered.push(testName);
+        diagnosticTests.completed.push(testName); // For simulation, tests complete immediately
+      }
+
+      // Update the case with ordered tests
+      await storage.updateMedicalCase(id, { diagnosticTests });
+
+      // Find the specific test results
+      const allTests = [
+        ...diagnosticTests.available.laboratory,
+        ...diagnosticTests.available.imaging,
+        ...diagnosticTests.available.procedures
+      ];
+      
+      const orderedTest = allTests.find(test => test.name === testName);
+      
+      res.json({
+        success: true,
+        testName,
+        testType,
+        result: orderedTest,
+        message: `${testName} has been ordered and results are available`
+      });
+    } catch (error) {
+      console.error('Error ordering test:', error);
+      res.status(500).json({ message: 'Failed to order test' });
+    }
+  });
+
+  app.get('/api/cases/:id/test-results', async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const medicalCase = await storage.getMedicalCase(id);
+      if (!medicalCase) {
+        return res.status(404).json({ message: 'Medical case not found' });
+      }
+
+      const diagnosticTests = medicalCase.diagnosticTests || { available: { laboratory: [], imaging: [], procedures: [] }, ordered: [], completed: [] };
+      
+      // Get results for completed tests
+      const allTests = [
+        ...diagnosticTests.available.laboratory,
+        ...diagnosticTests.available.imaging,
+        ...diagnosticTests.available.procedures
+      ];
+      
+      const completedTests = diagnosticTests.completed.map(testName => 
+        allTests.find(test => test.name === testName)
+      ).filter(Boolean);
+
+      res.json({
+        ordered: diagnosticTests.ordered,
+        completed: diagnosticTests.completed,
+        results: completedTests
+      });
+    } catch (error) {
+      console.error('Error fetching test results:', error);
+      res.status(500).json({ message: 'Failed to fetch test results' });
+    }
+  });
+
+  // Enhanced Physical Exam Route (case-specific)
+  app.get('/api/cases/:id/physical-exam-complete', async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const medicalCase = await storage.getMedicalCase(id);
+      if (!medicalCase) {
+        return res.status(404).json({ message: 'Medical case not found' });
+      }
+
+      const physicalExam = medicalCase.physicalExam || {};
+      
+      res.json({
+        patientInfo: {
+          name: medicalCase.name,
+          age: medicalCase.age,
+          gender: medicalCase.gender,
+          chiefComplaint: medicalCase.chiefComplaint
+        },
+        physicalExam
+      });
+    } catch (error) {
+      console.error('Error fetching complete physical exam:', error);
+      res.status(500).json({ message: 'Failed to fetch physical exam' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

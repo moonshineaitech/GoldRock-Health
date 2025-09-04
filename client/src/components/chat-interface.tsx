@@ -17,6 +17,8 @@ import {
   List
 } from "lucide-react";
 import { DiagnosisModal } from "./diagnosis-modal";
+import { TestOrderingModal } from "./test-ordering-modal";
+import { ComprehensivePhysicalExamModal } from "./comprehensive-physical-exam-modal";
 import type { MedicalCase } from "@shared/schema";
 
 interface ChatInterfaceProps {
@@ -38,6 +40,8 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [startTime] = useState(Date.now());
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showTestOrdering, setShowTestOrdering] = useState(false);
+  const [showPhysicalExam, setShowPhysicalExam] = useState(false);
   const { toast } = useToast();
   
   const { 
@@ -266,6 +270,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
               variant="outline" 
               className="flex-1 bg-white border border-slate-200 rounded-xl text-sm hover:bg-slate-50 transition-colors text-left justify-start"
               onClick={() => handleQuickQuestion("Tell me more about your symptoms")}
+              data-testid="button-quick-questions"
             >
               <List className="text-slate-400 mr-2 h-4 w-4" />
               Quick Questions
@@ -273,7 +278,8 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             <Button 
               variant="outline"
               className="flex-1 bg-white border border-slate-200 rounded-xl text-sm hover:bg-slate-50 transition-colors text-left justify-start"
-              onClick={() => handleQuickQuestion("Let me examine you now")}
+              onClick={() => setShowPhysicalExam(true)}
+              data-testid="button-physical-exam"
             >
               <Stethoscope className="text-slate-400 mr-2 h-4 w-4" />
               Physical Exam
@@ -281,7 +287,8 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             <Button 
               variant="outline"
               className="flex-1 bg-white border border-slate-200 rounded-xl text-sm hover:bg-slate-50 transition-colors text-left justify-start"
-              onClick={() => handleQuickQuestion("I'd like to order some tests")}
+              onClick={() => setShowTestOrdering(true)}
+              data-testid="button-order-tests"
             >
               <TestTubeDiagonal className="text-slate-400 mr-2 h-4 w-4" />
               Order Tests
@@ -375,6 +382,18 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             <span className="text-indigo-700 font-medium">Processing question...</span>
           </div>
         )}
+
+        {/* Comprehensive Modals */}
+        <TestOrderingModal
+          caseId={medicalCase.id}
+          isVisible={showTestOrdering}
+          onClose={() => setShowTestOrdering(false)}
+        />
+        <ComprehensivePhysicalExamModal
+          caseId={medicalCase.id}
+          isVisible={showPhysicalExam}
+          onClose={() => setShowPhysicalExam(false)}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,56 @@
 import { storage } from "../storage";
 import { type InsertMedicalCase } from "@shared/schema";
+import { clinicalContentGenerator } from "./clinicalContentGenerator";
 
 export class MedicalCasesService {
+  // Helper method to generate comprehensive clinical content for any case
+  private generateComprehensiveCase(basicCase: {
+    name: string;
+    age: number;
+    gender: string;
+    specialty: string;
+    difficulty: number;
+    chiefComplaint: string;
+    symptoms: string[];
+    medicalHistory: Record<string, any>;
+    physicalExam?: Record<string, any>;
+    correctDiagnosis: string;
+    correctTreatment?: string;
+    learningObjectives: string[];
+    estimatedDuration: number;
+    rating: string;
+    responses?: Record<string, string>;
+  }): InsertMedicalCase {
+    // Generate comprehensive physical exam
+    const comprehensivePhysicalExam = clinicalContentGenerator.generatePhysicalExam(
+      basicCase.correctDiagnosis,
+      basicCase.symptoms,
+      basicCase.age,
+      basicCase.gender,
+      basicCase.specialty
+    );
+
+    // Generate diagnostic tests
+    const diagnosticTests = clinicalContentGenerator.generateDiagnosticTests(
+      basicCase.correctDiagnosis,
+      basicCase.symptoms,
+      basicCase.specialty,
+      basicCase.age,
+      basicCase.gender
+    );
+
+    return {
+      ...basicCase,
+      physicalExam: comprehensivePhysicalExam,
+      diagnosticTests: {
+        available: diagnosticTests,
+        ordered: [],
+        completed: []
+      },
+      responses: basicCase.responses || {}
+    };
+  }
+
   async initializeCases() {
     const existingCases = await storage.getMedicalCases();
     if (existingCases.length > 0) {
@@ -9,9 +58,9 @@ export class MedicalCasesService {
       return;
     }
 
-    console.log('Initializing medical cases database...');
+    console.log('Initializing medical cases database with comprehensive clinical content...');
     
-    const cases: InsertMedicalCase[] = [
+    const basicCases = [
       // CARDIOLOGY CASES (15 cases)
       {
         name: "Robert Chen",
@@ -25,11 +74,6 @@ export class MedicalCasesService {
           hypertension: "2015",
           diabetes: "2018",
           smoking: "Former smoker, quit 2020"
-        },
-        physicalExam: {
-          vitals: { bp: "150/90", hr: "88", rr: "18", temp: "98.6F" },
-          cardiovascular: "S1 S2 present, no murmurs",
-          pulmonary: "Clear bilaterally"
         },
         responses: {
           "describe the pain": "It feels like someone is squeezing my chest, and it gets worse when I try to do physical activities like climbing stairs.",
@@ -55,11 +99,6 @@ export class MedicalCasesService {
           diabetes: "2010",
           hyperlipidemia: "2016",
           familyHistory: "Mother had MI at 65"
-        },
-        physicalExam: {
-          vitals: { bp: "180/100", hr: "105", rr: "22", temp: "98.2F" },
-          cardiovascular: "Tachycardic, S1 S2 present",
-          general: "Diaphoretic, appears uncomfortable"
         },
         responses: {
           "describe the pain": "It's a crushing pain right in the center of my chest. It started suddenly when I woke up and hasn't gotten better.",
@@ -87,11 +126,6 @@ export class MedicalCasesService {
           migraines: "Since teenage years",
           oralContraceptives: "Current use"
         },
-        physicalExam: {
-          vitals: { bp: "140/85", hr: "72", rr: "16", temp: "99.1F" },
-          neurological: "Alert and oriented, neck stiffness present",
-          eyes: "Papilledema noted on fundoscopy"
-        },
         responses: {
           "headache description": "This is different from my usual migraines. It's a constant, throbbing pain that's much worse than normal.",
           "vision changes": "I'm seeing double sometimes, and bright lights really hurt my eyes.",
@@ -118,11 +152,6 @@ export class MedicalCasesService {
           previousSurgery: "None",
           medications: "None",
           allergies: "NKDA"
-        },
-        physicalExam: {
-          vitals: { bp: "120/80", hr: "110", rr: "20", temp: "101.5F" },
-          abdomen: "RLQ tenderness, positive McBurney's point, guarding",
-          general: "Appears ill, lying still"
         },
         responses: {
           "pain location": "It started around my belly button and now it's moved to the lower right side. It's constant and sharp.",
@@ -1538,11 +1567,17 @@ export class MedicalCasesService {
       }
     ];
 
-    // Insert cases in batches to avoid overwhelming the database
-    for (const medicalCase of cases) {
+    // Convert all basic cases to comprehensive ones with full clinical content
+    console.log(`Generating comprehensive clinical content for ${basicCases.length} cases...`);
+    const comprehensiveCases = basicCases.map(basicCase => 
+      this.generateComprehensiveCase(basicCase)
+    );
+
+    // Insert comprehensive cases in batches to avoid overwhelming the database
+    for (const medicalCase of comprehensiveCases) {
       try {
         await storage.createMedicalCase(medicalCase);
-        console.log(`Created case: ${medicalCase.name} - ${medicalCase.specialty}`);
+        console.log(`Created comprehensive case: ${medicalCase.name} - ${medicalCase.specialty} (Physical Exam Systems: ${Object.keys(medicalCase.physicalExam || {}).length}, Diagnostic Tests: ${medicalCase.diagnosticTests?.available?.laboratory?.length || 0} lab tests, ${medicalCase.diagnosticTests?.available?.imaging?.length || 0} imaging studies)`);
       } catch (error) {
         console.error(`Error creating case ${medicalCase.name}:`, error);
       }
