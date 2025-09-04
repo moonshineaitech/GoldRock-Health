@@ -208,7 +208,13 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
       </MobileCard>
 
       {/* Chat Messages */}
-      <MobileCard className="flex-1 p-6 space-y-6 bg-gradient-to-b from-gray-50 to-white overflow-y-auto min-h-[350px] max-h-[450px] mb-4">
+      <MobileCard 
+        className="flex-1 p-6 space-y-6 bg-gradient-to-b from-gray-50 to-white overflow-y-auto min-h-[350px] max-h-[450px] mb-4"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          touchAction: 'pan-y'
+        }}
+      >
         {messages.length === 0 && (
           <div className="text-center py-12">
             <div className="mb-4">

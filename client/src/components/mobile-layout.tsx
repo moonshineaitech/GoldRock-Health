@@ -21,7 +21,10 @@ export function MobileLayout({
   className = ""
 }: MobileLayoutProps) {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ 
+      WebkitOverflowScrolling: 'touch',
+      touchAction: 'manipulation'
+    }}>
       {/* Nostalgic Fruitger Aero Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200/12 to-emerald-200/12 rounded-full blur-3xl animate-float"></div>
@@ -41,8 +44,9 @@ export function MobileLayout({
       <motion.main 
         className={`px-4 relative z-10 ${className}`}
         style={{ 
-          paddingTop: 'calc(3.75rem + env(safe-area-inset-top))',
-          paddingBottom: showBottomNav ? 'calc(4rem + env(safe-area-inset-bottom))' : '1rem'
+          paddingTop: 'calc(3.75rem + env(safe-area-inset-top, 0px))',
+          paddingBottom: showBottomNav ? 'calc(4rem + env(safe-area-inset-bottom, 0px))' : '1rem',
+          WebkitOverflowScrolling: 'touch'
         }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,16 +82,20 @@ export function MobileCard({
   return (
     <motion.div 
       className={`luxury-card backdrop-blur-xl p-6 border border-white/30 shadow-2xl animate-float ${className}`}
-      whileTap={{ scale: 0.96 }}
-      whileHover={{ scale: 1.02, y: -2 }}
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      whileTap={{ scale: 0.98 }}
+      whileHover={{ scale: 1.01, y: -1 }}
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ 
-        duration: 0.5,
-        scale: { duration: 0.2, type: "spring", stiffness: 300 },
-        y: { type: "spring", stiffness: 400, damping: 25 }
+        duration: 0.3,
+        scale: { duration: 0.15, type: "spring", stiffness: 400 },
+        y: { type: "spring", stiffness: 500, damping: 30 }
       }}
       onClick={onClick}
+      style={{ 
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent'
+      }}
       {...(props as any)}
     >
       {children}
@@ -126,18 +134,24 @@ export function MobileButton({
       className={`
         ${variants[variant]} 
         ${sizes[size]} 
-        rounded-2xl font-semibold transition-all duration-300 
+        rounded-2xl font-semibold transition-all duration-200 
         disabled:opacity-50 disabled:cursor-not-allowed
         touch-target
         ${className}
       `}
-      whileTap={{ scale: disabled ? 1 : 0.95 }}
-      whileHover={{ scale: disabled ? 1 : 1.02 }}
-      initial={{ opacity: 0, scale: 0.9 }}
+      whileTap={{ scale: disabled ? 1 : 0.97 }}
+      whileHover={{ scale: disabled ? 1 : 1.01 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
-        scale: { duration: 0.2, type: "spring", stiffness: 300 },
-        opacity: { duration: 0.3 }
+        scale: { duration: 0.15, type: "spring", stiffness: 400 },
+        opacity: { duration: 0.2 }
+      }}
+      style={{
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent',
+        minHeight: '44px', // iOS minimum touch target size
+        minWidth: '44px'
       }}
       disabled={disabled}
       onClick={onClick}

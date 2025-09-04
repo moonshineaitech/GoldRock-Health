@@ -46,16 +46,23 @@ export function useVoice(options: UseVoiceOptions = {}): UseVoiceReturn {
     recognition.interimResults = interimResults;
     recognition.lang = lang;
 
-    // Enhanced medical terminology recognition
-    recognition.grammars = new SpeechGrammarList();
-    const medicalTerms = [
-      'chest pain', 'shortness of breath', 'nausea', 'vomiting', 'headache',
-      'fever', 'fatigue', 'dizziness', 'palpitations', 'syncope',
-      'hypertension', 'diabetes', 'myocardial infarction', 'angina',
-      'pneumonia', 'asthma', 'COPD', 'arrhythmia', 'stroke', 'seizure'
-    ];
-    const grammar = `#JSGF V1.0; grammar medical; public <medical> = ${medicalTerms.join(' | ')};`;
-    recognition.grammars.addFromString(grammar, 1);
+    // Skip grammar list for mobile Safari compatibility
+    // SpeechGrammarList is not supported on Safari iOS
+    try {
+      if ((window as any).SpeechGrammarList && typeof (window as any).SpeechGrammarList !== 'undefined') {
+        recognition.grammars = new (window as any).SpeechGrammarList();
+        const medicalTerms = [
+          'chest pain', 'shortness of breath', 'nausea', 'vomiting', 'headache',
+          'fever', 'fatigue', 'dizziness', 'palpitations', 'syncope',
+          'hypertension', 'diabetes', 'myocardial infarction', 'angina',
+          'pneumonia', 'asthma', 'COPD', 'arrhythmia', 'stroke', 'seizure'
+        ];
+        const grammar = `#JSGF V1.0; grammar medical; public <medical> = ${medicalTerms.join(' | ')};`;
+        recognition.grammars.addFromString(grammar, 1);
+      }
+    } catch (err) {
+      console.log('SpeechGrammarList not supported, continuing without grammar enhancement');
+    }
 
     recognition.onstart = () => {
       setIsListening(true);
