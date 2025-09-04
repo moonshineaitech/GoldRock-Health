@@ -333,7 +333,7 @@ export function MedicalChatbot() {
 
                 {/* Input */}
                 <div className="p-4 border-t border-gray-100">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 mb-3">
                     <div className="flex-1 relative">
                       <input
                         ref={inputRef}
@@ -375,6 +375,11 @@ export function MedicalChatbot() {
                       )}
                     </motion.button>
                   </div>
+                  
+                  {/* AI Disclaimer */}
+                  <p className="text-xs text-gray-500 text-center leading-relaxed">
+                    This is experimental generative AI and should not be taken as medical fact. Always consult a qualified healthcare professional for medical advice.
+                  </p>
                 </div>
               </div>
             </motion.div>
