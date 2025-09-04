@@ -46,6 +46,39 @@ export const users = pgTable("users", {
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
+// User Statistics Table for Achievement Tracking
+export const userStats = pgTable("user_stats", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  totalCasesCompleted: integer("total_cases_completed").default(0),
+  totalPoints: integer("total_points").default(0),
+  currentStreak: integer("current_streak").default(0), // consecutive days
+  longestStreak: integer("longest_streak").default(0),
+  lastActivityDate: timestamp("last_activity_date"),
+  averageAccuracy: decimal("average_accuracy", { precision: 5, scale: 2 }).default("0.00"),
+  averageSpeed: integer("average_speed").default(0), // average seconds per case
+  specialtyStats: jsonb("specialty_stats").$type<Record<string, {
+    casesCompleted: number;
+    averageAccuracy: number;
+    averageSpeed: number;
+    lastCompletedAt: string;
+  }>>().default({}),
+  achievements: jsonb("achievements").$type<{
+    total: number;
+    byRarity: Record<string, number>;
+    byCategory: Record<string, number>;
+  }>().default({ total: 0, byRarity: {}, byCategory: {} }),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Achievement Types
+export type Achievement = typeof achievements.$inferSelect;
+export type InsertAchievement = typeof achievements.$inferInsert;
+export type UserAchievement = typeof userAchievements.$inferSelect;
+export type InsertUserAchievement = typeof userAchievements.$inferInsert;
+export type UserStats = typeof userStats.$inferSelect;
+export type InsertUserStats = typeof userStats.$inferInsert;
+
 // Medical Cases Table
 export const medicalCases = pgTable("medical_cases", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -183,17 +216,34 @@ export const achievements = pgTable("achievements", {
   title: text("title").notNull(),
   description: text("description").notNull(),
   icon: varchar("icon", { length: 50 }).notNull(),
-  criteria: jsonb("criteria").$type<Record<string, any>>().default({}),
+  category: varchar("category", { length: 50 }).notNull(), // Getting Started, Specialization, Performance, Consistency, etc.
+  specialty: varchar("specialty", { length: 50 }), // Cardiology, Neurology, etc.
+  rarity: varchar("rarity", { length: 20 }).default("Common"), // Common, Uncommon, Rare, Epic, Legendary
+  criteria: jsonb("criteria").$type<{
+    type: "casesCompleted" | "accuracy" | "specialty" | "streak" | "speed" | "milestone";
+    target: number;
+    specialty?: string;
+    accuracyThreshold?: number;
+    timeThreshold?: number; // seconds
+    consecutiveDays?: number;
+  }>().default({}),
   points: integer("points").default(0),
+  isHidden: boolean("is_hidden").default(false), // Hidden until prerequisites met
+  prerequisites: jsonb("prerequisites").$type<string[]>().default([]), // Achievement IDs required first
+  tags: jsonb("tags").$type<string[]>().default([]),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
 // User Achievements Table
 export const userAchievements = pgTable("user_achievements", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").references(() => users.id),
+  userId: varchar("user_id").notNull().references(() => users.id),
   achievementId: varchar("achievement_id").notNull().references(() => achievements.id),
-  unlockedAt: timestamp("unlocked_at").defaultNow(),
+  progress: integer("progress").default(0), // Current progress towards achievement
+  isUnlocked: boolean("is_unlocked").default(false),
+  unlockedAt: timestamp("unlocked_at"),
+  notificationSent: boolean("notification_sent").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Platform Statistics Table

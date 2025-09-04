@@ -9,6 +9,7 @@ import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
 import { insertUserProgressSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { AchievementService } from "./services/achievementService";
 import Stripe from "stripe";
 import { z } from "zod";
 
@@ -209,11 +210,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/progress', async (req, res) => {
+  app.post('/api/progress', isAuthenticated, async (req: any, res) => {
     try {
-      const progressData = insertUserProgressSchema.parse(req.body);
+      const userId = req.user?.claims?.sub;
+      const progressData = insertUserProgressSchema.parse({
+        ...req.body,
+        userId
+      });
+      
       const progress = await storage.createUserProgress(progressData);
-      res.status(201).json(progress);
+      
+      // If the case was completed, update stats and check achievements
+      if (progress.completed && progress.accuracy && progress.timeElapsed) {
+        await AchievementService.updateStatsAfterCaseCompletion(
+          userId,
+          progress.caseId,
+          parseFloat(progress.accuracy),
+          progress.timeElapsed
+        );
+        
+        // Check for newly unlocked achievements
+        const newAchievements = await AchievementService.checkAndUnlockAchievements(userId);
+        
+        // Return progress along with any new achievements
+        res.status(201).json({
+          progress,
+          newAchievements: newAchievements.map(na => ({
+            achievement: na.achievement,
+            points: na.achievement.points
+          }))
+        });
+      } else {
+        res.status(201).json({ progress, newAchievements: [] });
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: 'Invalid progress data', errors: error.errors });
@@ -348,6 +377,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error unlocking achievement:', error);
       res.status(500).json({ message: 'Failed to unlock achievement' });
+    }
+  });
+
+  // Update achievement progress
+  app.post('/api/achievements/:id/progress', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const { progress } = req.body;
+      const userId = req.user?.claims?.sub;
+      const achievement = await storage.updateAchievementProgress(userId, id, progress);
+      res.json(achievement);
+    } catch (error) {
+      console.error('Error updating achievement progress:', error);
+      res.status(500).json({ message: 'Failed to update achievement progress' });
+    }
+  });
+
+  // Check and unlock achievements automatically
+  app.post('/api/achievements/check', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      const unlockedAchievements = await AchievementService.checkAndUnlockAchievements(userId);
+      res.json(unlockedAchievements);
+    } catch (error) {
+      console.error('Error checking achievements:', error);
+      res.status(500).json({ message: 'Failed to check achievements' });
+    }
+  });
+
+  // User Statistics Routes
+  app.get('/api/user-stats', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      let userStats = await storage.getUserStats(userId);
+      
+      if (!userStats) {
+        userStats = await storage.initializeUserStats(userId);
+      }
+      
+      res.json(userStats);
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+      res.status(500).json({ message: 'Failed to fetch user statistics' });
+    }
+  });
+
+  app.put('/api/user-stats', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      const updates = req.body;
+      const userStats = await storage.updateUserStats(userId, updates);
+      res.json(userStats);
+    } catch (error) {
+      console.error('Error updating user stats:', error);
+      res.status(500).json({ message: 'Failed to update user statistics' });
     }
   });
 

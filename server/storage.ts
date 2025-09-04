@@ -3,6 +3,7 @@ import {
   userProgress, 
   achievements, 
   userAchievements,
+  userStats,
   platformStats,
   users,
   medicalImages,
@@ -21,6 +22,8 @@ import {
   type InsertAchievement,
   type UserAchievement,
   type InsertUserAchievement,
+  type UserStats,
+  type InsertUserStats,
   type PlatformStats,
   type User,
   type UpsertUser,
@@ -93,6 +96,13 @@ export interface IStorage {
   getAchievements(): Promise<Achievement[]>;
   getUserAchievements(userId?: string): Promise<UserAchievement[]>;
   unlockAchievement(achievementId: string, userId?: string): Promise<UserAchievement>;
+  updateAchievementProgress(userId: string, achievementId: string, progress: number): Promise<UserAchievement>;
+  checkAndUnlockAchievements(userId: string): Promise<UserAchievement[]>;
+  
+  // User Statistics
+  getUserStats(userId: string): Promise<UserStats | undefined>;
+  updateUserStats(userId: string, updates: Partial<InsertUserStats>): Promise<UserStats>;
+  initializeUserStats(userId: string): Promise<UserStats>;
 
   // Platform Statistics
   getPlatformStats(): Promise<PlatformStats | undefined>;
@@ -224,9 +234,88 @@ export class DatabaseStorage implements IStorage {
   async unlockAchievement(achievementId: string, userId?: string): Promise<UserAchievement> {
     const [achievement] = await db
       .insert(userAchievements)
-      .values({ achievementId, userId })
+      .values({ 
+        achievementId, 
+        userId,
+        isUnlocked: true,
+        unlockedAt: new Date()
+      })
+      .onConflictDoUpdate({
+        target: [userAchievements.userId, userAchievements.achievementId],
+        set: {
+          isUnlocked: true,
+          unlockedAt: new Date()
+        }
+      })
       .returning();
     return achievement;
+  }
+
+  async updateAchievementProgress(userId: string, achievementId: string, progress: number): Promise<UserAchievement> {
+    const [achievement] = await db
+      .insert(userAchievements)
+      .values({ 
+        userId,
+        achievementId,
+        progress
+      })
+      .onConflictDoUpdate({
+        target: [userAchievements.userId, userAchievements.achievementId],
+        set: {
+          progress
+        }
+      })
+      .returning();
+    return achievement;
+  }
+
+  async checkAndUnlockAchievements(userId: string): Promise<UserAchievement[]> {
+    // This would contain logic to check user stats against achievement criteria
+    // and unlock achievements automatically. For now, return empty array
+    return [];
+  }
+
+  // User Statistics
+  async getUserStats(userId: string): Promise<UserStats | undefined> {
+    const [stats] = await db.select().from(userStats).where(eq(userStats.userId, userId));
+    return stats;
+  }
+
+  async updateUserStats(userId: string, updates: Partial<InsertUserStats>): Promise<UserStats> {
+    const [stats] = await db
+      .insert(userStats)
+      .values({ 
+        userId,
+        ...updates
+      })
+      .onConflictDoUpdate({
+        target: userStats.userId,
+        set: {
+          ...updates,
+          updatedAt: new Date()
+        }
+      })
+      .returning();
+    return stats;
+  }
+
+  async initializeUserStats(userId: string): Promise<UserStats> {
+    const [stats] = await db
+      .insert(userStats)
+      .values({ 
+        userId,
+        totalCasesCompleted: 0,
+        totalPoints: 0,
+        currentStreak: 0,
+        longestStreak: 0,
+        averageAccuracy: "0.00",
+        averageSpeed: 0,
+        specialtyStats: {},
+        achievements: { total: 0, byRarity: {}, byCategory: {} }
+      })
+      .onConflictDoNothing()
+      .returning();
+    return stats;
   }
 
   // Platform Statistics
