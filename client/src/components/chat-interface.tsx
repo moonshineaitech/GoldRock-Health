@@ -22,6 +22,7 @@ import { DiagnosisModal } from "./diagnosis-modal";
 import { TestOrderingModal } from "./test-ordering-modal";
 import { ComprehensivePhysicalExamModal } from "./comprehensive-physical-exam-modal";
 import { MobileCard } from "@/components/mobile-layout";
+import { motion, AnimatePresence } from "framer-motion";
 import type { MedicalCase } from "@shared/schema";
 
 interface ChatInterfaceProps {
@@ -274,109 +275,218 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
 
       {/* Input Controls */}
       <MobileCard className="p-6">
-        {/* Examination Actions */}
+        {/* Examination Actions with iOS Animations */}
         <div className="mb-6">
           <div className="grid grid-cols-2 gap-4">
-            <Button 
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
-              onClick={() => setShowPhysicalExam(true)}
-              data-testid="button-physical-exam"
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
-              <Stethoscope className="h-5 w-5" />
-              <span>Physical Exam</span>
-            </Button>
-            <Button 
-              className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
-              onClick={() => setShowTestOrdering(true)}
-              data-testid="button-order-tests"
+              <Button 
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
+                onClick={() => setShowPhysicalExam(true)}
+                data-testid="button-physical-exam"
+              >
+                <motion.div
+                  whileHover={{ rotate: 15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
+                  <Stethoscope className="h-5 w-5" />
+                </motion.div>
+                <span>Physical Exam</span>
+              </Button>
+            </motion.div>
+            
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
-              <TestTubeDiagonal className="h-5 w-5" />
-              <span>Order Tests</span>
-            </Button>
+              <Button 
+                className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
+                onClick={() => setShowTestOrdering(true)}
+                data-testid="button-order-tests"
+              >
+                <motion.div
+                  whileHover={{ rotate: 15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
+                  <TestTubeDiagonal className="h-5 w-5" />
+                </motion.div>
+                <span>Order Tests</span>
+              </Button>
+            </motion.div>
           </div>
         </div>
 
-        {/* Quick Questions Dropdown */}
+        {/* Quick Questions Dropdown with iOS Animation */}
         <div className="mb-4">
-          <Button
-            variant="outline"
-            onClick={() => setShowQuickQuestions(!showQuickQuestions)}
-            className="w-full flex items-center justify-between py-3 px-4 rounded-2xl border-2 border-gray-200 bg-white hover:bg-gray-50 transition-all duration-200"
-            data-testid="button-quick-questions-toggle"
+          <motion.div
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            <div className="flex items-center space-x-2">
-              <List className="h-5 w-5 text-indigo-500" />
-              <span className="font-medium text-gray-700">Quick Questions</span>
-            </div>
-            {showQuickQuestions ? (
-              <ChevronUp className="h-5 w-5 text-gray-400" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-gray-400" />
-            )}
-          </Button>
-          
-          {showQuickQuestions && (
-            <div className="mt-3 space-y-2 bg-gray-50 rounded-2xl p-4 border-2 border-gray-100">
-              {quickQuestions.map((question, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  onClick={() => handleQuickQuestion(question)}
-                  className="w-full text-left justify-start py-3 px-4 rounded-xl hover:bg-white hover:shadow-sm transition-all duration-200 text-gray-700 font-normal"
-                  data-testid={`quick-question-${index}`}
+            <Button
+              variant="outline"
+              onClick={() => setShowQuickQuestions(!showQuickQuestions)}
+              className="w-full flex items-center justify-between py-3 px-4 rounded-2xl border-2 border-gray-200 bg-white hover:bg-gray-50 transition-all duration-200 hover:scale-105"
+              data-testid="button-quick-questions-toggle"
+            >
+              <div className="flex items-center space-x-2">
+                <motion.div
+                  animate={{ rotate: showQuickQuestions ? 180 : 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
-                  {question}
-                </Button>
-              ))}
-            </div>
-          )}
+                  <List className="h-5 w-5 text-indigo-500" />
+                </motion.div>
+                <span className="font-medium text-gray-700">Quick Questions</span>
+              </div>
+              <motion.div
+                animate={{ rotate: showQuickQuestions ? 180 : 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                <ChevronDown className="h-5 w-5 text-gray-400" />
+              </motion.div>
+            </Button>
+          </motion.div>
+          
+          <AnimatePresence>
+            {showQuickQuestions && (
+              <motion.div
+                initial={{ opacity: 0, height: 0, y: -10 }}
+                animate={{ opacity: 1, height: "auto", y: 0 }}
+                exit={{ opacity: 0, height: 0, y: -10 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30,
+                  mass: 0.8
+                }}
+                className="overflow-hidden"
+              >
+                <div className="mt-3 space-y-2 bg-gradient-to-br from-gray-50 to-indigo-50 rounded-2xl p-4 border-2 border-gray-100">
+                  {quickQuestions.map((question, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: index * 0.05,
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 25
+                      }}
+                    >
+                      <motion.div
+                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      >
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleQuickQuestion(question)}
+                          className="w-full text-left justify-start py-3 px-4 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 text-gray-700 font-normal border border-transparent hover:border-indigo-200"
+                          data-testid={`quick-question-${index}`}
+                        >
+                          {question}
+                        </Button>
+                      </motion.div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Main Input */}
+        {/* Main Input with Enhanced Animation */}
         <div className="space-y-4">
-          <div className="relative">
+          <motion.div
+            className="relative"
+            whileFocus="focused"
+            variants={{
+              focused: { scale: 1.02 },
+              unfocused: { scale: 1 }
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
             <Input 
               placeholder="Ask your question here..."
               value={currentQuestion}
               onChange={(e) => setCurrentQuestion(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full pr-14 py-5 text-base rounded-2xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-0 shadow-sm transition-all duration-200"
+              className="w-full pr-14 py-5 text-base rounded-2xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-0 focus:shadow-lg transition-all duration-300"
               disabled={askQuestionMutation.isPending}
             />
-            <Button 
-              size="icon"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-md transition-all duration-200"
-              onClick={handleSendMessage}
-              disabled={!currentQuestion.trim() || askQuestionMutation.isPending}
+            <motion.div
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
+              <Button 
+                size="icon"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-md transition-all duration-200"
+                onClick={handleSendMessage}
+                disabled={!currentQuestion.trim() || askQuestionMutation.isPending}
+              >
+                <motion.div
+                  animate={askQuestionMutation.isPending ? { rotate: 360 } : { rotate: 0 }}
+                  transition={askQuestionMutation.isPending ? { duration: 1, repeat: Infinity, ease: "linear" } : {}}
+                >
+                  <Send className="h-4 w-4" />
+                </motion.div>
+              </Button>
+            </motion.div>
+          </motion.div>
           
           <div className="flex space-x-3">
             {isSupported && (
-              <Button 
-                className={`flex-1 py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 ${
-                  isListening 
-                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' 
-                    : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white'
-                }`}
-                onClick={handleVoiceToggle}
-                data-testid="button-voice"
+              <motion.div
+                className="flex-1"
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
-                {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
-                <span className="font-medium">{isListening ? 'Stop Recording' : 'Voice Input'}</span>
-              </Button>
+                <Button 
+                  className={`w-full py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 ${
+                    isListening 
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' 
+                      : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white'
+                  }`}
+                  onClick={handleVoiceToggle}
+                  data-testid="button-voice"
+                >
+                  <motion.div
+                    animate={isListening ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+                    transition={isListening ? { duration: 1, repeat: Infinity } : {}}
+                  >
+                    {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+                  </motion.div>
+                  <span className="font-medium">{isListening ? 'Stop Recording' : 'Voice Input'}</span>
+                </Button>
+              </motion.div>
             )}
             
-            <Button 
-              className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
-              onClick={() => {/* TODO: Add diagnosis modal */}}
-              data-testid="button-diagnose"
+            <motion.div
+              className="flex-1"
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
-              <Send className="h-5 w-5" />
-              <span className="font-medium">Submit Diagnosis</span>
-            </Button>
+              <Button 
+                className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
+                onClick={() => {/* TODO: Add diagnosis modal */}}
+                data-testid="button-diagnose"
+              >
+                <motion.div
+                  whileHover={{ rotate: 15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
+                  <Send className="h-5 w-5" />
+                </motion.div>
+                <span className="font-medium">Submit Diagnosis</span>
+              </Button>
+            </motion.div>
           </div>
         </div>
 
