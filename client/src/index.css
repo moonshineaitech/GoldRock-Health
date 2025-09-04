@@ -18,22 +18,22 @@
   --secondary: hsl(220, 13%, 13%);
   --secondary-foreground: hsl(0, 0%, 100%);
   
-  /* Luxury Glass Morphism Colors */
-  --luxury-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --luxury-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --luxury-accent: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%);
-  --luxury-gold: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  /* Nostalgic Fruitger Aero Colors */
+  --aero-primary: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  --aero-secondary: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --aero-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  --aero-soft: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
   
-  /* Glass Panel Colors */
-  --glass-white: rgba(255, 255, 255, 0.25);
-  --glass-primary: rgba(102, 126, 234, 0.1);
-  --glass-secondary: rgba(118, 75, 162, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.18);
+  /* Soft Glass Panel Colors */
+  --glass-white: rgba(255, 255, 255, 0.7);
+  --glass-primary: rgba(6, 182, 212, 0.08);
+  --glass-secondary: rgba(16, 185, 129, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.3);
   
-  /* Luxury Shadows */
-  --shadow-luxury: 0 20px 40px rgba(102, 126, 234, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
-  --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
-  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  /* Gentle Shadows */
+  --shadow-luxury: 0 20px 40px rgba(6, 182, 212, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+  --shadow-glass: 0 8px 32px rgba(6, 182, 212, 0.12);
+  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
   --muted: hsl(220, 14%, 96%);
   --muted-foreground: hsl(220, 9%, 46%);
   --accent: hsl(238, 100%, 97%);
@@ -148,11 +148,14 @@
   body {
     @apply text-foreground font-sans antialiased;
     background: linear-gradient(135deg, 
-      #667eea 0%, 
-      #764ba2 25%, 
-      #f093fb 50%, 
-      #f5576c 75%, 
-      #4facfe 100%
+      #e6f3ff 0%,
+      #f0f9ff 15%,
+      #ecfdf5 30%,
+      #f0fdf4 45%,
+      #e6fffa 60%,
+      #f0fdfa 75%,
+      #e0f2fe 90%,
+      #f8fafc 100%
     );
     background-attachment: fixed;
     min-height: 100vh;
@@ -174,31 +177,31 @@
 
   .luxury-card {
     background: linear-gradient(145deg, 
-      rgba(255, 255, 255, 0.25) 0%, 
-      rgba(255, 255, 255, 0.1) 100%
+      rgba(255, 255, 255, 0.8) 0%, 
+      rgba(255, 255, 255, 0.6) 100%
     );
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px) saturate(130%);
+    -webkit-backdrop-filter: blur(20px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 1.5rem;
     box-shadow: 
-      0 20px 40px rgba(102, 126, 234, 0.15),
-      0 8px 16px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      0 20px 40px rgba(6, 182, 212, 0.08),
+      0 8px 16px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
 
   .frosted-glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(30px) saturate(150%);
-    -webkit-backdrop-filter: blur(30px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(30px) saturate(130%);
+    -webkit-backdrop-filter: blur(30px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 
-      0 8px 32px rgba(31, 38, 135, 0.37),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      0 8px 32px rgba(6, 182, 212, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
 
   .luxury-text-gradient {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0891b2 0%, #059669 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -217,12 +220,12 @@
 
   @keyframes glow {
     0%, 100% { 
-      box-shadow: 0 0 20px rgba(102, 126, 234, 0.5),
-                  0 0 40px rgba(118, 75, 162, 0.3);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3),
+                  0 0 40px rgba(16, 185, 129, 0.2);
     }
     50% { 
-      box-shadow: 0 0 30px rgba(102, 126, 234, 0.8),
-                  0 0 60px rgba(118, 75, 162, 0.5);
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.5),
+                  0 0 60px rgba(16, 185, 129, 0.3);
     }
   }
 
