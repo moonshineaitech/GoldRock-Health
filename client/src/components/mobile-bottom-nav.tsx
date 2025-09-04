@@ -67,12 +67,13 @@ export function MobileBottomNav() {
 
   return (
     <motion.div 
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-xl border-t border-gray-100 safe-area-pb"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-xl border-t border-gray-700/50"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="flex items-center justify-around px-3 py-2">
+      <div className="flex items-center justify-around px-3 py-3">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.path);
@@ -87,7 +88,7 @@ export function MobileBottomNav() {
                 animate={{ 
                   y: 0, 
                   opacity: 1,
-                  backgroundColor: active ? "rgba(129, 140, 248, 0.15)" : "rgba(0, 0, 0, 0)"
+                  backgroundColor: active ? "rgba(99, 102, 241, 0.2)" : "rgba(255, 255, 255, 0.05)"
                 }}
                 transition={{ 
                   delay: index * 0.1,
@@ -112,12 +113,12 @@ export function MobileBottomNav() {
                     className="h-5 w-5 mb-1"
                     style={{
                       color: active ? (
-                        item.color === 'text-blue-600' ? '#2563EB' :
-                        item.color === 'text-purple-600' ? '#9333EA' :
-                        item.color === 'text-green-600' ? '#16A34A' :
-                        item.color === 'text-orange-600' ? '#EA580C' :
-                        item.color === 'text-indigo-600' ? '#4F46E5' :
-                        '#6366F1'
+                        item.color === 'text-blue-600' ? '#60A5FA' :
+                        item.color === 'text-purple-600' ? '#A78BFA' :
+                        item.color === 'text-green-600' ? '#34D399' :
+                        item.color === 'text-orange-600' ? '#FB923C' :
+                        item.color === 'text-indigo-600' ? '#818CF8' :
+                        '#818CF8'
                       ) : '#9CA3AF'
                     }}
                   />
@@ -133,13 +134,13 @@ export function MobileBottomNav() {
                   className="text-xs font-medium leading-none truncate"
                   animate={{
                     color: active ? (
-                      item.color === 'text-blue-600' ? '#2563EB' :
-                      item.color === 'text-purple-600' ? '#9333EA' :
-                      item.color === 'text-green-600' ? '#16A34A' :
-                      item.color === 'text-orange-600' ? '#EA580C' :
-                      item.color === 'text-indigo-600' ? '#4F46E5' :
-                      '#6366F1'
-                    ) : '#9CA3AF',
+                      item.color === 'text-blue-600' ? '#60A5FA' :
+                      item.color === 'text-purple-600' ? '#A78BFA' :
+                      item.color === 'text-green-600' ? '#34D399' :
+                      item.color === 'text-orange-600' ? '#FB923C' :
+                      item.color === 'text-indigo-600' ? '#818CF8' :
+                      '#818CF8'
+                    ) : '#D1D5DB',
                     fontWeight: active ? 600 : 500,
                     scale: active ? 1.05 : 1
                   }}
@@ -159,7 +160,7 @@ export function MobileBottomNav() {
 // Add safe area padding utility
 export function SafeAreaProvider({ children }: { children: React.ReactNode }) {
   return (
-    <div className="pb-16 safe-area-pb">
+    <div className="pb-20" style={{ paddingBottom: 'calc(5rem + env(safe-area-inset-bottom))' }}>
       {children}
     </div>
   );

@@ -37,7 +37,11 @@ export function MobileLayout({
       />
       
       <motion.main 
-        className={`pt-12 ${showBottomNav ? 'pb-16' : 'pb-4'} px-4 relative z-10 ${className}`}
+        className={`px-4 relative z-10 ${className}`}
+        style={{ 
+          paddingTop: 'calc(3.75rem + env(safe-area-inset-top))',
+          paddingBottom: showBottomNav ? 'calc(5rem + env(safe-area-inset-bottom))' : '1rem'
+        }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ 

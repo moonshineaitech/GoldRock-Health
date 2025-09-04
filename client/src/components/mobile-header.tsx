@@ -27,12 +27,13 @@ export function MobileHeader({
 
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-100 safe-area-pt"
+      className="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-100"
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
-      <div className="flex items-center justify-between h-12 px-4">
+      <div className="flex items-center justify-between h-14 px-4">
         {/* Left Section */}
         <div className="flex items-center min-w-0">
           {showBackButton ? (
