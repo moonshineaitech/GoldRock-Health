@@ -467,11 +467,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: 'Medical case not found' });
       }
 
-      const diagnosticTests = medicalCase.diagnosticTests?.available || {
-        laboratory: [],
-        imaging: [],
-        procedures: []
-      };
+      // If case doesn't have diagnostic tests, generate them on-demand
+      let diagnosticTests = medicalCase.diagnosticTests?.available;
+      if (!diagnosticTests || !diagnosticTests.laboratory || !diagnosticTests.imaging || !diagnosticTests.procedures) {
+        console.log(`Generating diagnostic tests for case: ${medicalCase.name}`);
+        const safeCase = {
+          name: medicalCase.name,
+          age: medicalCase.age,
+          gender: medicalCase.gender,
+          specialty: medicalCase.specialty,
+          difficulty: medicalCase.difficulty,
+          chiefComplaint: medicalCase.chiefComplaint,
+          symptoms: medicalCase.symptoms || [],
+          medicalHistory: medicalCase.medicalHistory || {},
+          physicalExam: medicalCase.physicalExam || {},
+          correctDiagnosis: medicalCase.correctDiagnosis,
+          correctTreatment: medicalCase.correctTreatment,
+          learningObjectives: medicalCase.learningObjectives || [],
+          estimatedDuration: medicalCase.estimatedDuration,
+          rating: medicalCase.rating,
+          responses: medicalCase.responses || {}
+        };
+        const comprehensiveCase = medicalCasesService.generateComprehensiveCase(safeCase);
+        diagnosticTests = comprehensiveCase.diagnosticTests?.available || {
+          laboratory: [],
+          imaging: [],
+          procedures: []
+        };
+        
+        // Update the case in storage with generated data
+        await storage.updateMedicalCase(id, { 
+          diagnosticTests: comprehensiveCase.diagnosticTests,
+          physicalExam: comprehensiveCase.physicalExam
+        });
+      }
 
       res.json(diagnosticTests);
     } catch (error) {
@@ -532,22 +561,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: 'Medical case not found' });
       }
 
-      const diagnosticTests = medicalCase.diagnosticTests || { available: { laboratory: [], imaging: [], procedures: [] }, ordered: [], completed: [] };
+      const diagnosticTests = medicalCase.diagnosticTests || { 
+        available: { laboratory: [], imaging: [], procedures: [] }, 
+        ordered: [], 
+        completed: [] 
+      };
       
-      // Get results for completed tests
+      // Get results for completed tests - ensure available tests exist
       const allTests = [
-        ...diagnosticTests.available.laboratory,
-        ...diagnosticTests.available.imaging,
-        ...diagnosticTests.available.procedures
+        ...(diagnosticTests.available?.laboratory || []),
+        ...(diagnosticTests.available?.imaging || []),
+        ...(diagnosticTests.available?.procedures || [])
       ];
       
-      const completedTests = diagnosticTests.completed.map(testName => 
-        allTests.find(test => test.name === testName)
+      const completedTests = (diagnosticTests.completed || []).map(testName => 
+        allTests.find(test => test && test.name === testName)
       ).filter(Boolean);
 
       res.json({
-        ordered: diagnosticTests.ordered,
-        completed: diagnosticTests.completed,
+        ordered: diagnosticTests.ordered || [],
+        completed: diagnosticTests.completed || [],
         results: completedTests
       });
     } catch (error) {
@@ -566,7 +599,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: 'Medical case not found' });
       }
 
-      const physicalExam = medicalCase.physicalExam || {};
+      // If case doesn't have physical exam data, generate it on-demand
+      let physicalExam = medicalCase.physicalExam;
+      if (!physicalExam || Object.keys(physicalExam).length === 0) {
+        console.log(`Generating physical exam for case: ${medicalCase.name}`);
+        const safeCase = {
+          name: medicalCase.name,
+          age: medicalCase.age,
+          gender: medicalCase.gender,
+          specialty: medicalCase.specialty,
+          difficulty: medicalCase.difficulty,
+          chiefComplaint: medicalCase.chiefComplaint,
+          symptoms: medicalCase.symptoms || [],
+          medicalHistory: medicalCase.medicalHistory || {},
+          physicalExam: medicalCase.physicalExam || {},
+          correctDiagnosis: medicalCase.correctDiagnosis,
+          correctTreatment: medicalCase.correctTreatment,
+          learningObjectives: medicalCase.learningObjectives || [],
+          estimatedDuration: medicalCase.estimatedDuration,
+          rating: medicalCase.rating,
+          responses: medicalCase.responses || {}
+        };
+        const comprehensiveCase = medicalCasesService.generateComprehensiveCase(safeCase);
+        physicalExam = comprehensiveCase.physicalExam || {};
+        
+        // Update the case in storage with generated data
+        await storage.updateMedicalCase(id, { 
+          diagnosticTests: comprehensiveCase.diagnosticTests,
+          physicalExam: comprehensiveCase.physicalExam
+        });
+      }
       
       res.json({
         patientInfo: {

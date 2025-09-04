@@ -2,9 +2,11 @@ import { storage } from "../storage";
 import { type InsertMedicalCase } from "@shared/schema";
 import { clinicalContentGenerator } from "./clinicalContentGenerator";
 
+let medicalCasesServiceInstance: MedicalCasesService;
+
 export class MedicalCasesService {
   // Helper method to generate comprehensive clinical content for any case
-  private generateComprehensiveCase(basicCase: {
+  public generateComprehensiveCase(basicCase: {
     name: string;
     age: number;
     gender: string;
@@ -1592,6 +1594,13 @@ export class MedicalCasesService {
     console.log('Medical cases database initialization complete!');
   }
 
+  static getInstance(): MedicalCasesService {
+    if (!medicalCasesServiceInstance) {
+      medicalCasesServiceInstance = new MedicalCasesService();
+    }
+    return medicalCasesServiceInstance;
+  }
+
   private async initializeAchievements() {
     const achievements = [
       {
@@ -1650,3 +1659,4 @@ export class MedicalCasesService {
 }
 
 export const medicalCasesService = new MedicalCasesService();
+medicalCasesServiceInstance = medicalCasesService;

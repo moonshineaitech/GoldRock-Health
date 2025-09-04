@@ -130,14 +130,16 @@ export function ComprehensivePhysicalExamModal({
     }
   };
 
-  const renderSystemFindings = (title: string, findings: Record<string, string>, Icon: React.ElementType, color: string) => {
-    const hasAbnormalFindings = Object.values(findings).some(finding => 
-      finding.toLowerCase().includes('abnormal') || 
-      finding.toLowerCase().includes('positive') ||
-      finding.toLowerCase().includes('enlarged') ||
-      finding.toLowerCase().includes('decreased') ||
-      finding.toLowerCase().includes('increased') ||
-      finding.toLowerCase().includes('tenderness')
+  const renderSystemFindings = (title: string, findings: Record<string, string> | undefined | null, Icon: React.ElementType, color: string) => {
+    // Handle null/undefined findings gracefully
+    const safeFindings = findings || {};
+    const hasAbnormalFindings = Object.values(safeFindings).some(finding => 
+      finding && finding.toLowerCase().includes('abnormal') || 
+      finding && finding.toLowerCase().includes('positive') ||
+      finding && finding.toLowerCase().includes('enlarged') ||
+      finding && finding.toLowerCase().includes('decreased') ||
+      finding && finding.toLowerCase().includes('increased') ||
+      finding && finding.toLowerCase().includes('tenderness')
     );
 
     return (
@@ -155,16 +157,23 @@ export function ComprehensivePhysicalExamModal({
         </CardHeader>
         <CardContent>
           <div className="grid gap-3">
-            {Object.entries(findings).map(([key, value]) => (
-              <div key={key}>
-                <h5 className="font-medium text-slate-700 mb-1 capitalize">
-                  {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
-                </h5>
-                <p className="text-sm text-slate-600 bg-white p-2 rounded border">
-                  {value}
-                </p>
+            {Object.keys(safeFindings).length === 0 ? (
+              <div className="text-center py-4 text-slate-500">
+                <Icon className={`h-8 w-8 mx-auto mb-2 ${color}`} />
+                <p>Loading examination findings...</p>
               </div>
-            ))}
+            ) : (
+              Object.entries(safeFindings).map(([key, value]) => (
+                <div key={key}>
+                  <h5 className="font-medium text-slate-700 mb-1 capitalize">
+                    {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                  </h5>
+                  <p className="text-sm text-slate-600 bg-white p-2 rounded border">
+                    {value || 'No findings recorded'}
+                  </p>
+                </div>
+              ))
+            )}
           </div>
         </CardContent>
       </Card>
