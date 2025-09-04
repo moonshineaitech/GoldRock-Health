@@ -65,7 +65,7 @@ export default function Landing() {
         </motion.div>
       </motion.div>
 
-      {/* Mobile Features Grid */}
+      {/* Training Modules Grid */}
       <motion.div 
         className="space-y-4 mt-6"
         initial={{ opacity: 0 }}
@@ -78,42 +78,75 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.5 }}
         >
-          What You'll Learn
+          Training Modules
         </motion.h2>
         
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-3">
           {[
-            { icon: BookOpen, title: "60+ Medical Cases", desc: "Comprehensive cases across 19 specialties", color: "blue", delay: 1.3 },
-            { icon: Brain, title: "AI-Powered", desc: "Unlimited case generation with GPT-4", color: "purple", delay: 1.4 },
-            { icon: Trophy, title: "Progress Tracking", desc: "Real-time feedback and achievements", color: "green", delay: 1.5 },
-            { icon: Zap, title: "Voice Enabled", desc: "Natural conversation with AI patients", color: "orange", delay: 1.6 }
-          ].map((feature, index) => {
-            const IconComponent = feature.icon;
+            { 
+              icon: BookOpen, 
+              title: "Patient Simulations", 
+              desc: "60+ interactive medical cases across 19 specialties", 
+              color: "blue", 
+              delay: 1.3,
+              href: "/training"
+            },
+            { 
+              icon: Brain, 
+              title: "Medical Image Analysis", 
+              desc: "X-ray, CT, MRI interpretation training", 
+              color: "purple", 
+              delay: 1.4,
+              href: "/image-analysis"
+            },
+            { 
+              icon: Trophy, 
+              title: "Board Exam Prep", 
+              desc: "USMLE & specialty board practice exams", 
+              color: "green", 
+              delay: 1.5,
+              href: "/board-exam-prep"
+            },
+            { 
+              icon: Zap, 
+              title: "Clinical Decision Trees", 
+              desc: "Interactive diagnostic algorithms", 
+              color: "orange", 
+              delay: 1.6,
+              href: "/clinical-decision-trees"
+            }
+          ].map((module, index) => {
+            const IconComponent = module.icon;
             return (
               <motion.div
-                key={feature.title}
+                key={module.title}
                 initial={{ opacity: 0, y: 30, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ 
-                  delay: feature.delay, 
+                  delay: module.delay, 
                   duration: 0.5,
                   type: "spring",
                   stiffness: 200
                 }}
               >
-                <MobileCard className="h-full">
-                  <div className="text-center">
-                    <motion.div 
-                      className={`w-10 h-10 bg-${feature.color}-100 rounded-2xl flex items-center justify-center mx-auto mb-3`}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <IconComponent className={`h-5 w-5 text-${feature.color}-600`} />
-                    </motion.div>
-                    <h3 className="font-semibold text-gray-900 mb-2 text-sm">{feature.title}</h3>
-                    <p className="text-xs text-gray-600 leading-relaxed">{feature.desc}</p>
-                  </div>
-                </MobileCard>
+                <Link href={module.href}>
+                  <MobileCard className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+                    <div className="flex items-center space-x-4">
+                      <motion.div 
+                        className={`w-12 h-12 bg-${module.color}-100 rounded-2xl flex items-center justify-center`}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <IconComponent className={`h-6 w-6 text-${module.color}-600`} />
+                      </motion.div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 mb-1 text-base">{module.title}</h3>
+                        <p className="text-sm text-gray-600 leading-relaxed">{module.desc}</p>
+                      </div>
+                      <ArrowRight className="h-5 w-5 text-gray-400" />
+                    </div>
+                  </MobileCard>
+                </Link>
               </motion.div>
             );
           })}

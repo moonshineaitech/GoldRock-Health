@@ -1,5 +1,6 @@
 import { MobileHeader, NotificationButton } from "./mobile-header";
 import { MobileBottomNav, SafeAreaProvider } from "./mobile-bottom-nav";
+import { TrainingQuickAccess } from "./training-quick-access";
 import { motion } from "framer-motion";
 
 interface MobileLayoutProps {
@@ -44,6 +45,7 @@ export function MobileLayout({
       </motion.main>
       
       {showBottomNav && <MobileBottomNav />}
+      {showBottomNav && <TrainingQuickAccess />}
     </div>
   );
 }

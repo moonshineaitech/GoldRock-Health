@@ -7,6 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, BookOpen, Clock, Star, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
+import { 
+  Users, 
+  FileImage, 
+  GraduationCap, 
+  GitBranch, 
+  Stethoscope 
+} from "lucide-react";
 
 const specialties = [
   "All Specialties",
@@ -44,24 +51,97 @@ export default function Training() {
   const { data: cases, isLoading, error } = useMedicalCases(filters);
 
   return (
-    <MobileLayout title="Training Cases" showBottomNav={true}>
-      {/* AI Generator Banner */}
+    <MobileLayout title="Medical Training" showBottomNav={true}>
+      {/* Training Modules Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <MobileCard className="mb-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h3 className="font-semibold text-purple-900 mb-1">Generate New Cases</h3>
-              <p className="text-sm text-purple-700">Create unlimited practice scenarios with AI</p>
-            </div>
-            <AICaseGenerator onCaseGenerated={(caseId) => {
-              window.location.reload();
-            }} />
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Training Modules</h2>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            {[
+              {
+                title: "Image Analysis",
+                desc: "X-ray, CT, MRI training",
+                icon: FileImage,
+                color: "blue",
+                href: "/image-analysis"
+              },
+              {
+                title: "Board Exams",
+                desc: "USMLE & specialty prep",
+                icon: GraduationCap,
+                color: "green", 
+                href: "/board-exam-prep"
+              },
+              {
+                title: "Decision Trees",
+                desc: "Clinical algorithms",
+                icon: GitBranch,
+                color: "purple",
+                href: "/clinical-decision-trees"
+              },
+              {
+                title: "Study Groups",
+                desc: "Collaborative learning",
+                icon: Users,
+                color: "orange",
+                href: "/study-groups"
+              }
+            ].map((module, index) => {
+              const IconComponent = module.icon;
+              return (
+                <motion.div
+                  key={module.title}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
+                >
+                  <Link href={module.href}>
+                    <MobileCard className={`bg-${module.color}-50 border-${module.color}-200 hover:shadow-md transition-shadow cursor-pointer`}>
+                      <div className="text-center p-2">
+                        <div className={`w-10 h-10 bg-${module.color}-100 rounded-xl flex items-center justify-center mx-auto mb-2`}>
+                          <IconComponent className={`h-5 w-5 text-${module.color}-600`} />
+                        </div>
+                        <h3 className="font-semibold text-gray-900 text-sm mb-1">{module.title}</h3>
+                        <p className="text-xs text-gray-600">{module.desc}</p>
+                      </div>
+                    </MobileCard>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
-        </MobileCard>
+        </div>
+      </motion.div>
+
+      {/* Patient Simulation Cases Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Patient Simulations</h2>
+            <Stethoscope className="h-5 w-5 text-indigo-600" />
+          </div>
+          
+          {/* AI Generator Banner */}
+          <MobileCard className="mb-4 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <h3 className="font-semibold text-purple-900 mb-1">Generate New Cases</h3>
+                <p className="text-sm text-purple-700">Create unlimited practice scenarios with AI</p>
+              </div>
+              <AICaseGenerator onCaseGenerated={(caseId) => {
+                window.location.reload();
+              }} />
+            </div>
+          </MobileCard>
+        </div>
       </motion.div>
 
       {/* Mobile Search and Filters */}
