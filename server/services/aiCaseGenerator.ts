@@ -81,7 +81,7 @@ export class AICaseGenerator {
     const prompt = this.buildCaseGenerationPrompt(request, ageRange, gender);
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4", // the newest OpenAI model is "gpt-4" which was released August 7, 2025. do not change this unless explicitly requested by the user
+      model: "gpt-4o", // Using gpt-4o which supports JSON response format
       messages: [
         {
           role: "system",
