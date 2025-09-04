@@ -81,18 +81,17 @@ export class AICaseGenerator {
     const prompt = this.buildCaseGenerationPrompt(request, ageRange, gender);
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o", // Using gpt-4o which supports JSON response format
+      model: "gpt-4o", // Using gpt-4o for reliable medical case generation
       messages: [
         {
           role: "system",
-          content: "You are an expert medical educator creating realistic clinical cases for medical training. Generate cases that are clinically accurate, educationally valuable, and appropriate for the specified difficulty level."
+          content: "You are an expert medical educator creating realistic clinical cases for medical training. Generate cases that are clinically accurate, educationally valuable, and appropriate for the specified difficulty level. Always respond with valid JSON only."
         },
         {
           role: "user",
           content: prompt
         }
       ],
-      response_format: { type: "json_object" },
       temperature: 0.8, // Encourage creativity while maintaining medical accuracy
       max_tokens: 2000
     });
@@ -103,13 +102,24 @@ export class AICaseGenerator {
     }
 
     try {
-      const caseData = JSON.parse(generatedContent) as GeneratedCaseData;
+      // Clean the content to extract JSON if there's extra text
+      let jsonContent = generatedContent.trim();
+      
+      // Extract JSON if it's wrapped in code blocks or has extra text
+      const jsonMatch = jsonContent.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        jsonContent = jsonMatch[0];
+      }
+      
+      console.log('Attempting to parse JSON:', jsonContent.substring(0, 200) + '...');
+      const caseData = JSON.parse(jsonContent) as GeneratedCaseData;
       
       // Validate and clean the generated data
       return this.validateAndCleanCaseData(caseData, ageRange, gender);
     } catch (parseError) {
-      console.error('Error parsing GPT-4 response:', parseError);
-      throw new Error('Invalid response format from AI case generator');
+      console.error('Error parsing AI response:', parseError);
+      console.error('Raw content received:', generatedContent);
+      throw new Error(`Invalid response format from AI case generator: ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}`);
     }
   }
 
@@ -130,7 +140,8 @@ export class AICaseGenerator {
 ${request.focusArea ? `- Focus Area: ${request.focusArea}` : ''}
 ${request.learningObjectives?.length ? `- Learning Objectives: ${request.learningObjectives.join(', ')}` : ''}
 
-**Response Format (JSON):**
+**IMPORTANT: Respond ONLY with valid JSON in this exact format:**
+
 {
   "name": "First Last (realistic name)",
   "age": number (within specified range),
@@ -161,7 +172,8 @@ ${request.learningObjectives?.length ? `- Learning Objectives: ${request.learnin
 4. Patient responses should sound natural and conversational
 5. Difficulty should match the complexity level requested
 6. Include 4-6 realistic patient responses for common questions
-7. Estimated duration: Level 1 (15-25 min), Level 2 (20-35 min), Level 3 (30-45 min)`;
+7. Estimated duration: Level 1 (15-25 min), Level 2 (20-35 min), Level 3 (30-45 min)
+8. Return ONLY the JSON object, no other text or formatting`;
   }
 
   private parseAgeRange(ageRange: string): { min: number, max: number } {
