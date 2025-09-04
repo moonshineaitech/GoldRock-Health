@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { CaseCard } from "@/components/case-card";
+import { AICaseGenerator } from "@/components/ai-case-generator";
 import { useMedicalCases } from "@/hooks/use-medical-cases";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -49,11 +50,19 @@ export default function Training() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">Choose Your Training Case</h1>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Select from our comprehensive library of medical cases across 19 specialties. 
-              Each case is designed to challenge your diagnostic skills and clinical reasoning.
-            </p>
+            <div className="flex justify-between items-start mb-6">
+              <div className="text-left">
+                <h1 className="text-4xl font-bold text-slate-900 mb-4">Choose Your Training Case</h1>
+                <p className="text-xl text-slate-600 max-w-3xl">
+                  Select from our comprehensive library of medical cases across 19 specialties. 
+                  Each case is designed to challenge your diagnostic skills and clinical reasoning.
+                </p>
+              </div>
+              <AICaseGenerator onCaseGenerated={(caseId) => {
+                // Refresh cases when new one is generated
+                window.location.reload();
+              }} />
+            </div>
           </div>
 
           {/* Search and Filter Controls */}

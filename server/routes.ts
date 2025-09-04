@@ -6,6 +6,7 @@ import { medicalCasesService } from "./services/medicalCases";
 import { openAIService } from "./services/openai";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
+import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
 import { insertUserProgressSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -623,11 +624,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const comprehensiveCase = medicalCasesService.generateComprehensiveCase(safeCase);
         physicalExam = comprehensiveCase.physicalExam || {};
         
-        console.log('Generated Physical Exam Data:');
-        console.log('- Vitals:', JSON.stringify(physicalExam.vitals, null, 2));
-        console.log('- General:', JSON.stringify(physicalExam.general, null, 2));
-        console.log('- Cardiovascular:', JSON.stringify(physicalExam.cardiovascular, null, 2));
-        console.log('- Full physicalExam keys:', Object.keys(physicalExam));
         
         // Update the case in storage with generated data
         await storage.updateMedicalCase(id, { 
@@ -648,6 +644,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error fetching complete physical exam:', error);
       res.status(500).json({ message: 'Failed to fetch physical exam' });
+    }
+  });
+
+  // AI Case Generation Routes
+  app.post('/api/ai/generate-case', async (req, res) => {
+    try {
+      const request: CaseGenerationRequest = req.body;
+      
+      // Validate request
+      if (!request.specialty || !request.difficulty) {
+        return res.status(400).json({ 
+          message: 'Specialty and difficulty are required' 
+        });
+      }
+
+      console.log(`Generating AI case for ${request.specialty}, difficulty ${request.difficulty}`);
+      const generatedCase = await aiCaseGenerator.generateMedicalCase(request);
+      
+      // Save the generated case to database
+      const savedCase = await storage.createMedicalCase(generatedCase);
+      
+      res.json({
+        success: true,
+        case: savedCase,
+        message: `Successfully generated ${request.specialty} case with AI`
+      });
+    } catch (error) {
+      console.error('Error generating AI case:', error);
+      res.status(500).json({ 
+        message: 'Failed to generate AI case',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  app.post('/api/ai/generate-multiple-cases', async (req, res) => {
+    try {
+      const { request, count = 3 }: { request: CaseGenerationRequest, count?: number } = req.body;
+      
+      if (!request.specialty || !request.difficulty) {
+        return res.status(400).json({ 
+          message: 'Specialty and difficulty are required' 
+        });
+      }
+
+      if (count > 5) {
+        return res.status(400).json({ 
+          message: 'Maximum 5 cases can be generated at once' 
+        });
+      }
+
+      console.log(`Generating ${count} AI cases for ${request.specialty}`);
+      const generatedCases = await aiCaseGenerator.generateMultipleCases(request, count);
+      
+      // Save all generated cases to database
+      const savedCases = [];
+      for (const caseData of generatedCases) {
+        const savedCase = await storage.createMedicalCase(caseData);
+        savedCases.push(savedCase);
+      }
+      
+      res.json({
+        success: true,
+        cases: savedCases,
+        count: savedCases.length,
+        message: `Successfully generated ${savedCases.length} ${request.specialty} cases with AI`
+      });
+    } catch (error) {
+      console.error('Error generating multiple AI cases:', error);
+      res.status(500).json({ 
+        message: 'Failed to generate AI cases',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  app.get('/api/ai/specialties', async (req, res) => {
+    try {
+      const specialties = aiCaseGenerator.getAvailableSpecialties();
+      res.json(specialties);
+    } catch (error) {
+      console.error('Error fetching specialties:', error);
+      res.status(500).json({ message: 'Failed to fetch specialties' });
+    }
+  });
+
+  app.get('/api/ai/difficulty-levels', async (req, res) => {
+    try {
+      const levels = aiCaseGenerator.getDifficultyLevels();
+      res.json(levels);
+    } catch (error) {
+      console.error('Error fetching difficulty levels:', error);
+      res.status(500).json({ message: 'Failed to fetch difficulty levels' });
     }
   });
 
