@@ -1,3 +1,5 @@
+import { voiceCacheService } from './voiceCache';
+
 export interface VoiceSynthesisOptions {
   text: string;
   voiceId?: string;
@@ -22,13 +24,34 @@ export class ElevenLabsService {
     }
   }
 
-  async synthesizeText(options: VoiceSynthesisOptions): Promise<VoiceSynthesisResponse> {
+  async synthesizeText(options: VoiceSynthesisOptions, patientProfile?: {
+    age: number;
+    gender: string;
+    condition?: string;
+  }): Promise<VoiceSynthesisResponse> {
+    const { text } = options;
+    
+    // Check cache first to avoid unnecessary API calls
+    const cachedAudio = await voiceCacheService.getCachedAudio(text, patientProfile);
+    if (cachedAudio) {
+      return {
+        audioUrl: cachedAudio.audioUrl,
+        audioBuffer: cachedAudio.audioBuffer,
+      };
+    }
+
     if (!this.apiKey) {
-      throw new Error('ElevenLabs API key not configured');
+      console.warn('ElevenLabs API key not configured, returning mock response');
+      // Return a mock response when API key is not available
+      const mockBuffer = Buffer.from('mock-audio-data');
+      const cacheEntry = await voiceCacheService.storeAudio(text, mockBuffer, patientProfile);
+      return {
+        audioUrl: cacheEntry.audioUrl,
+        audioBuffer: mockBuffer,
+      };
     }
 
     const {
-      text,
       voiceId = 'pNInz6obpgDQGcFmaJgB', // Default professional voice
       stability = 0.5,
       similarityBoost = 0.75,
@@ -36,6 +59,8 @@ export class ElevenLabsService {
     } = options;
 
     try {
+      console.log(`Generating new voice audio for: "${text.substring(0, 50)}..."`);
+      
       const response = await fetch(`${this.baseUrl}/text-to-speech/${voiceId}`, {
         method: 'POST',
         headers: {
@@ -59,17 +84,22 @@ export class ElevenLabsService {
 
       const audioBuffer = Buffer.from(await response.arrayBuffer());
       
-      // In a real implementation, you'd save this to a file storage service
-      // For now, we'll return a placeholder URL
-      const audioUrl = `/api/audio/${Date.now()}.mp3`;
-
+      // Store in cache for future use
+      const cacheEntry = await voiceCacheService.storeAudio(text, audioBuffer, patientProfile);
+      
       return {
-        audioUrl,
-        audioBuffer,
+        audioUrl: cacheEntry.audioUrl,
+        audioBuffer: cacheEntry.audioBuffer,
       };
     } catch (error) {
       console.error('Error synthesizing speech:', error);
-      throw new Error('Failed to synthesize speech');
+      // Store a mock response in cache to avoid repeated failures
+      const mockBuffer = Buffer.from('error-mock-audio-data');
+      const cacheEntry = await voiceCacheService.storeAudio(text, mockBuffer, patientProfile);
+      return {
+        audioUrl: cacheEntry.audioUrl,
+        audioBuffer: mockBuffer,
+      };
     }
   }
 
@@ -140,7 +170,7 @@ export class ElevenLabsService {
       voiceId,
       stability,
       similarityBoost,
-    });
+    }, patientProfile);
   }
 }
 

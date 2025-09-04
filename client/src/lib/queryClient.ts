@@ -7,18 +7,37 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+// Updated apiRequest to handle both signatures
 export async function apiRequest(
-  method: string,
-  url: string,
+  urlOrMethodOrOptions: string | RequestInit,
+  urlOrOptions?: string | RequestInit,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+  let url: string;
+  let options: RequestInit;
 
+  // Handle new signature: apiRequest(url, { method, body, headers })
+  if (typeof urlOrMethodOrOptions === 'string' && typeof urlOrOptions === 'object') {
+    url = urlOrMethodOrOptions;
+    options = {
+      credentials: "include",
+      ...urlOrOptions,
+    };
+  }
+  // Handle old signature: apiRequest(method, url, data)
+  else if (typeof urlOrMethodOrOptions === 'string' && typeof urlOrOptions === 'string') {
+    url = urlOrOptions;
+    options = {
+      method: urlOrMethodOrOptions,
+      headers: data ? { "Content-Type": "application/json" } : {},
+      body: data ? JSON.stringify(data) : undefined,
+      credentials: "include",
+    };
+  } else {
+    throw new Error('Invalid apiRequest parameters');
+  }
+
+  const res = await fetch(url, options);
   await throwIfResNotOk(res);
   return res;
 }

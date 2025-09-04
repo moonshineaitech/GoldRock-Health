@@ -5,6 +5,7 @@ import { elevenLabsService } from "./services/elevenlabs";
 import { medicalCasesService } from "./services/medicalCases";
 import { openAIService } from "./services/openai";
 import { diagnosticEngine } from "./services/diagnosticEngine";
+import { voiceCacheService } from "./services/voiceCache";
 import { insertUserProgressSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -119,6 +120,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error fetching voices:', error);
       res.status(500).json({ message: 'Failed to fetch available voices' });
+    }
+  });
+
+  // Serve cached voice files
+  app.get('/api/voice-cache/:filename', async (req, res) => {
+    try {
+      const { filename } = req.params;
+      
+      if (!filename.endsWith('.mp3')) {
+        return res.status(400).json({ message: 'Invalid file format' });
+      }
+
+      const audioBuffer = await voiceCacheService.getCachedAudioFile(filename);
+      
+      if (!audioBuffer) {
+        return res.status(404).json({ message: 'Audio file not found' });
+      }
+
+      res.set({
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': audioBuffer.length.toString(),
+        'Cache-Control': 'public, max-age=3600' // Cache for 1 hour
+      });
+      
+      res.send(audioBuffer);
+    } catch (error) {
+      console.error('Error serving cached audio:', error);
+      res.status(500).json({ message: 'Failed to serve audio file' });
     }
   });
 
