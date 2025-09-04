@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 @tailwind base;
@@ -16,6 +17,23 @@
   --primary-foreground: hsl(0, 0%, 100%);
   --secondary: hsl(220, 13%, 13%);
   --secondary-foreground: hsl(0, 0%, 100%);
+  
+  /* Luxury Glass Morphism Colors */
+  --luxury-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --luxury-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --luxury-accent: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%);
+  --luxury-gold: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  
+  /* Glass Panel Colors */
+  --glass-white: rgba(255, 255, 255, 0.25);
+  --glass-primary: rgba(102, 126, 234, 0.1);
+  --glass-secondary: rgba(118, 75, 162, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  
+  /* Luxury Shadows */
+  --shadow-luxury: 0 20px 40px rgba(102, 126, 234, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+  --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
+  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   --muted: hsl(220, 14%, 96%);
   --muted-foreground: hsl(220, 9%, 46%);
   --accent: hsl(238, 100%, 97%);
@@ -128,11 +146,96 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply text-foreground font-sans antialiased;
+    background: linear-gradient(135deg, 
+      #667eea 0%, 
+      #764ba2 25%, 
+      #f093fb 50%, 
+      #f5576c 75%, 
+      #4facfe 100%
+    );
+    background-attachment: fixed;
+    min-height: 100vh;
+    font-family: 'SF Pro Display', 'Inter', system-ui, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Luxury Glass Morphism Classes */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .luxury-card {
+    background: linear-gradient(145deg, 
+      rgba(255, 255, 255, 0.25) 0%, 
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1.5rem;
+    box-shadow: 
+      0 20px 40px rgba(102, 126, 234, 0.15),
+      0 8px 16px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .frosted-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(31, 38, 135, 0.37),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .luxury-text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
+
+  @keyframes glow {
+    0%, 100% { 
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.5),
+                  0 0 40px rgba(118, 75, 162, 0.3);
+    }
+    50% { 
+      box-shadow: 0 0 30px rgba(102, 126, 234, 0.8),
+                  0 0 60px rgba(118, 75, 162, 0.5);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s ease-in-out infinite;
   }
 
   h1, h2, h3, h4, h5, h6 {

@@ -21,7 +21,14 @@ export function MobileLayout({
   className = ""
 }: MobileLayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/50">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Luxury Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-purple-600/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-indigo-600/20 rounded-full blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-400/20 to-cyan-600/20 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
+      </div>
+
       <MobileHeader 
         title={title}
         showBackButton={showBackButton}
@@ -30,7 +37,7 @@ export function MobileLayout({
       />
       
       <motion.main 
-        className={`pt-12 ${showBottomNav ? 'pb-16' : 'pb-4'} px-4 ${className}`}
+        className={`pt-12 ${showBottomNav ? 'pb-16' : 'pb-4'} px-4 relative z-10 ${className}`}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ 
@@ -40,12 +47,17 @@ export function MobileLayout({
         }}
       >
         <SafeAreaProvider>
-          {children}
+          <div className="max-w-md mx-auto space-y-4">
+            {children}
+          </div>
         </SafeAreaProvider>
       </motion.main>
       
       {showBottomNav && <MobileBottomNav />}
       {showBottomNav && <TrainingQuickAccess />}
+      
+      {/* Floating Gradient Accent */}
+      <div className="fixed bottom-4 left-4 right-4 h-16 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl blur-xl pointer-events-none"></div>
     </div>
   );
 }
@@ -59,14 +71,15 @@ export function MobileCard({
 }: React.ComponentProps<"div">) {
   return (
     <motion.div 
-      className={`bg-white/90 backdrop-blur-lg rounded-3xl p-5 border border-white/30 shadow-lg shadow-black/5 ${className}`}
-      whileTap={{ scale: 0.97 }}
-      whileHover={{ scale: 1.01 }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      className={`luxury-card backdrop-blur-xl p-6 border border-white/30 shadow-2xl animate-float ${className}`}
+      whileTap={{ scale: 0.96 }}
+      whileHover={{ scale: 1.02, y: -2 }}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ 
-        duration: 0.4,
-        scale: { duration: 0.15 }
+        duration: 0.5,
+        scale: { duration: 0.2, type: "spring", stiffness: 300 },
+        y: { type: "spring", stiffness: 400, damping: 25 }
       }}
       onClick={onClick}
       {...(props as any)}
@@ -91,9 +104,9 @@ export function MobileButton({
   size?: "sm" | "md" | "lg";
 }) {
   const variants = {
-    primary: "bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white shadow-xl shadow-indigo-500/25",
-    secondary: "bg-white/90 text-gray-800 border border-gray-200/50 shadow-lg shadow-black/5",
-    ghost: "bg-transparent text-gray-700 hover:bg-gray-50"
+    primary: "bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white shadow-xl shadow-indigo-500/25 animate-glow",
+    secondary: "luxury-card text-gray-800 border border-white/30 shadow-2xl",
+    ghost: "frosted-glass text-white hover:bg-white/20"
   };
 
   const sizes = {
