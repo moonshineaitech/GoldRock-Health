@@ -150,10 +150,6 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
     }
   };
 
-  const handleQuickQuestion = (question: string) => {
-    setCurrentQuestion(question);
-    askQuestionMutation.mutate(question);
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -170,16 +166,6 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
     });
   };
 
-  const quickQuestions = [
-    "Can you describe the pain in more detail?",
-    "When did the symptoms first start?",
-    "What makes it better or worse?",
-    "Have you experienced this before?",
-    "Are you taking any medications?",
-    "Do you have any allergies?",
-    "Any family history of similar problems?",
-    "Rate your pain from 1 to 10"
-  ];
 
   return (
     <div className="w-full flex flex-col mb-4">
@@ -203,10 +189,16 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
       </MobileCard>
 
       {/* Chat Messages */}
-      <MobileCard className="flex-1 p-4 space-y-4 bg-gray-50 overflow-y-auto min-h-[300px] max-h-[400px] mb-4">
+      <MobileCard className="flex-1 p-6 space-y-6 bg-gradient-to-b from-gray-50 to-white overflow-y-auto min-h-[350px] max-h-[450px] mb-4">
         {messages.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-slate-500">Start the interview by asking your first question</p>
+          <div className="text-center py-12">
+            <div className="mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Stethoscope className="h-8 w-8 text-indigo-500" />
+              </div>
+            </div>
+            <p className="text-gray-500 text-lg font-medium">Ready to begin the interview</p>
+            <p className="text-gray-400 text-sm mt-2">Ask your first question to start the patient interaction</p>
           </div>
         )}
 
@@ -219,15 +211,15 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
                 </p>
               </div>
             ) : (
-              <div className={`rounded-2xl px-4 py-3 max-w-xs ${
+              <div className={`rounded-3xl px-5 py-4 max-w-[85%] shadow-lg ${
                 message.type === 'doctor' 
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-tr-sm'
-                  : 'bg-white border border-slate-200 rounded-tl-sm shadow-sm'
+                  ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-br-lg ml-8'
+                  : 'bg-white border-2 border-gray-100 text-gray-800 rounded-bl-lg mr-8 shadow-md'
               }`}>
-                <p className={`text-sm ${message.type === 'doctor' ? 'text-white' : 'text-slate-700'}`}>
+                <p className={`text-base leading-relaxed ${message.type === 'doctor' ? 'text-white' : 'text-gray-800'}`}>
                   {message.content}
                 </p>
-                <div className={`flex items-center justify-between mt-2 ${message.type === 'doctor' ? 'justify-end' : 'justify-between'}`}>
+                <div className={`flex items-center justify-between mt-3 ${message.type === 'doctor' ? 'justify-end' : 'justify-between'}`}>
                   {message.type === 'doctor' && message.inputMethod && (
                     <div className="flex items-center space-x-1">
                       {message.inputMethod === 'voice' ? (
@@ -263,74 +255,43 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
       </MobileCard>
 
       {/* Input Controls */}
-      <MobileCard className="p-4">
-        {/* Quick Actions */}
-        <div className="mb-4">
-          <div className="grid grid-cols-1 gap-3 mb-4">
+      <MobileCard className="p-6">
+        {/* Examination Actions */}
+        <div className="mb-6">
+          <div className="grid grid-cols-2 gap-4">
             <Button 
-              variant="outline" 
-              className="w-full bg-white border border-gray-200 rounded-xl text-sm hover:bg-gray-50 transition-colors flex items-center justify-center py-3"
-              onClick={() => handleQuickQuestion("Tell me more about your symptoms")}
-              data-testid="button-quick-questions"
-            >
-              <List className="text-gray-400 mr-2 h-4 w-4" />
-              Quick Questions
-            </Button>
-            <Button 
-              variant="outline"
-              className="w-full bg-white border border-gray-200 rounded-xl text-sm hover:bg-gray-50 transition-colors flex items-center justify-center py-3"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
               onClick={() => setShowPhysicalExam(true)}
               data-testid="button-physical-exam"
             >
-              <Stethoscope className="text-gray-400 mr-2 h-4 w-4" />
-              Physical Exam
+              <Stethoscope className="h-5 w-5" />
+              <span>Physical Exam</span>
             </Button>
             <Button 
-              variant="outline"
-              className="w-full bg-white border border-gray-200 rounded-xl text-sm hover:bg-gray-50 transition-colors flex items-center justify-center py-3"
+              className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
               onClick={() => setShowTestOrdering(true)}
               data-testid="button-order-tests"
             >
-              <TestTubeDiagonal className="text-gray-400 mr-2 h-4 w-4" />
-              Order Tests
+              <TestTubeDiagonal className="h-5 w-5" />
+              <span>Order Tests</span>
             </Button>
           </div>
         </div>
 
-        {/* Quick Questions Dropdown */}
-        {messages.length < 5 && (
-          <div className="mb-4">
-            <div className="grid grid-cols-1 gap-2">
-              {quickQuestions.slice(0, 4).map((question, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  size="sm"
-                  className="text-left justify-start text-xs p-3 h-auto"
-                  onClick={() => handleQuickQuestion(question)}
-                >
-                  {question}
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Main Input */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="relative">
             <Input 
-              placeholder="Start the interview by asking your first question"
+              placeholder="Ask your question here..."
               value={currentQuestion}
               onChange={(e) => setCurrentQuestion(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full pr-12 py-4 text-base rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+              className="w-full pr-14 py-5 text-base rounded-2xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-0 shadow-sm transition-all duration-200"
               disabled={askQuestionMutation.isPending}
             />
             <Button 
               size="icon"
-              variant="ghost"
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-600"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-md transition-all duration-200"
               onClick={handleSendMessage}
               disabled={!currentQuestion.trim() || askQuestionMutation.isPending}
             >
@@ -341,51 +302,43 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
           <div className="flex space-x-3">
             {isSupported && (
               <Button 
-                className={`flex-1 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 ${
+                className={`flex-1 py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 ${
                   isListening 
-                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' 
                     : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white'
                 }`}
                 onClick={handleVoiceToggle}
                 data-testid="button-voice"
               >
-                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                <span className="font-medium">{isListening ? 'Stop' : 'Voice'}</span>
+                {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+                <span className="font-medium">{isListening ? 'Stop Recording' : 'Voice Input'}</span>
               </Button>
             )}
             
             <Button 
-              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center justify-center space-x-2"
+              className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
               onClick={() => {/* TODO: Add diagnosis modal */}}
               data-testid="button-diagnose"
             >
-              <Send className="h-4 w-4" />
-              <span className="font-medium">Diagnose</span>
+              <Send className="h-5 w-5" />
+              <span className="font-medium">Submit Diagnosis</span>
             </Button>
           </div>
         </div>
 
         {/* Voice Recording Indicator */}
         {isListening && (
-          <div className="mt-3 flex items-center justify-center space-x-3 bg-emerald-50 border border-emerald-200 rounded-xl py-3">
-            <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span className="text-emerald-700 font-medium">Recording... Speak your question</span>
-            <Button 
-              size="icon"
-              variant="ghost"
-              className="text-emerald-600 hover:text-emerald-700"
-              onClick={stopListening}
-            >
-              <MicOff className="h-4 w-4" />
-            </Button>
+          <div className="mt-4 flex items-center justify-center space-x-3 bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl py-4 px-6">
+            <div className="w-4 h-4 bg-emerald-500 rounded-full animate-pulse shadow-lg"></div>
+            <span className="text-emerald-700 font-medium text-base">🎤 Recording... Speak your question</span>
           </div>
         )}
 
         {/* Loading State */}
         {askQuestionMutation.isPending && (
-          <div className="mt-3 flex items-center justify-center space-x-3 bg-indigo-50 border border-indigo-200 rounded-xl py-3">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
-            <span className="text-indigo-700 font-medium">Processing question...</span>
+          <div className="mt-4 flex items-center justify-center space-x-3 bg-gradient-to-r from-indigo-50 to-blue-50 border-2 border-indigo-200 rounded-2xl py-4 px-6">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-600"></div>
+            <span className="text-indigo-700 font-medium text-base">✨ Processing your question...</span>
           </div>
         )}
 
