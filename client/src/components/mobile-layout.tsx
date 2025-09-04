@@ -42,7 +42,7 @@ export function MobileLayout({
         className={`px-4 relative z-10 ${className}`}
         style={{ 
           paddingTop: 'calc(3.75rem + env(safe-area-inset-top))',
-          paddingBottom: showBottomNav ? 'calc(5rem + env(safe-area-inset-bottom))' : '1rem'
+          paddingBottom: showBottomNav ? 'calc(4rem + env(safe-area-inset-bottom))' : '1rem'
         }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

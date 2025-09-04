@@ -73,7 +73,7 @@ export function MobileBottomNav() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="flex items-center justify-around px-2 py-4">
+      <div className="flex items-center justify-around px-2 py-2">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.path);
@@ -81,7 +81,7 @@ export function MobileBottomNav() {
           return (
             <Link key={item.id} href={item.path}>
               <motion.div
-                className="flex flex-col items-center justify-center min-w-0 flex-1 p-3 rounded-3xl transition-all duration-300"
+                className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-3xl transition-all duration-300"
                 whileTap={{ scale: 0.9 }}
                 whileHover={{ scale: 1.02 }}
                 initial={{ y: 20, opacity: 0 }}
@@ -110,7 +110,7 @@ export function MobileBottomNav() {
                   }}
                 >
                   <Icon 
-                    className="h-7 w-7 mb-2"
+                    className="h-6 w-6 mb-1"
                     style={{
                       color: active ? (
                         item.color === 'text-blue-600' ? '#3B82F6' :
@@ -160,7 +160,7 @@ export function MobileBottomNav() {
 // Add safe area padding utility
 export function SafeAreaProvider({ children }: { children: React.ReactNode }) {
   return (
-    <div className="pb-20" style={{ paddingBottom: 'calc(5rem + env(safe-area-inset-bottom))' }}>
+    <div className="pb-16" style={{ paddingBottom: 'calc(4rem + env(safe-area-inset-bottom))' }}>
       {children}
     </div>
   );

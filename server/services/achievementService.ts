@@ -303,8 +303,8 @@ export class AchievementService {
 
       // Update overall stats
       const newTotalCases = userStats.totalCasesCompleted + 1;
-      const newAverageAccuracy = ((parseFloat(userStats.averageAccuracy.toString()) * userStats.totalCasesCompleted) + accuracy) / newTotalCases;
-      const newAverageSpeed = ((userStats.averageSpeed * userStats.totalCasesCompleted) + timeElapsed) / newTotalCases;
+      const overallNewAverageAccuracy = ((parseFloat(userStats.averageAccuracy.toString()) * userStats.totalCasesCompleted) + accuracy) / newTotalCases;
+      const overallNewAverageSpeed = ((userStats.averageSpeed * userStats.totalCasesCompleted) + timeElapsed) / newTotalCases;
 
       // Update streak logic
       const today = new Date().toDateString();
@@ -324,8 +324,8 @@ export class AchievementService {
 
       await storage.updateUserStats(userId, {
         totalCasesCompleted: newTotalCases,
-        averageAccuracy: newAverageAccuracy.toString(),
-        averageSpeed: Math.round(newAverageSpeed),
+        averageAccuracy: overallNewAverageAccuracy.toString(),
+        averageSpeed: Math.round(overallNewAverageSpeed),
         currentStreak: newStreak,
         longestStreak: Math.max(userStats.longestStreak, newStreak),
         lastActivityDate: new Date(),

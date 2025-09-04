@@ -58,7 +58,7 @@ export function TrainingQuickAccess() {
       {/* Floating Action Button */}
       <motion.button
         className="fixed right-4 z-40 w-14 h-14 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full shadow-lg flex items-center justify-center"
-        style={{ bottom: 'calc(5.5rem + env(safe-area-inset-bottom))' }}
+        style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom))' }}
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.05 }}
         onClick={() => setIsOpen(!isOpen)}
