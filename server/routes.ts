@@ -1610,58 +1610,6 @@ Respond with ONLY a JSON object:
   });
 
   // Medical Chatbot API - General medical and insurance Q&A
-  // Medical Bill Analysis Chat Endpoint
-  app.post('/api/bill-analysis-chat', isAuthenticated, async (req: any, res) => {
-    try {
-      const { message, conversationHistory = [] } = req.body;
-      const userId = req.user.claims.sub;
-      
-      if (!message || typeof message !== 'string') {
-        return res.status(400).json({ message: 'Message is required' });
-      }
-
-      let response = "I'm here to help you analyze your medical bills and find ways to reduce them. What specific billing issue can I help you with?";
-
-      // Use OpenAI for intelligent bill analysis responses
-      if (process.env.OPENAI_API_KEY) {
-        try {
-          response = await openAIService.generateBillAnalysisResponse(
-            message,
-            conversationHistory
-          );
-        } catch (aiError) {
-          console.warn('OpenAI bill analysis failed, using fallback response:', aiError);
-          
-          // Fallback for bill-related queries
-          const messageLower = message.toLowerCase();
-          if (messageLower.includes('itemized') || messageLower.includes('bill') || messageLower.includes('hospital')) {
-            response = "To get an itemized bill, call your hospital's billing department and request a complete breakdown of all charges with CPT and ICD codes. This is your first step to identifying overcharges.";
-          } else if (messageLower.includes('negotiate') || messageLower.includes('reduce') || messageLower.includes('payment')) {
-            response = "Don't pay immediately - you have 90-120 days before collection. Use this time to negotiate. Request charity care applications and prompt payment discounts. Many patients achieve 40-70% reductions.";
-          } else if (messageLower.includes('error') || messageLower.includes('overcharge') || messageLower.includes('duplicate')) {
-            response = "Common billing errors include duplicate charges, upcoding, unbundled services, and phantom charges. Request an itemized bill and compare against your medical records to identify discrepancies.";
-          }
-        }
-      } else {
-        // Basic fallback responses without OpenAI
-        const messageLower = message.toLowerCase();
-        if (messageLower.includes('itemized') || messageLower.includes('bill') || messageLower.includes('hospital')) {
-          response = "To get an itemized bill, call your hospital's billing department and request a complete breakdown of all charges with CPT and ICD codes. This is your first step to identifying overcharges.";
-        } else if (messageLower.includes('negotiate') || messageLower.includes('reduce') || messageLower.includes('payment')) {
-          response = "Don't pay immediately - you have 90-120 days before collection. Use this time to negotiate. Request charity care applications and prompt payment discounts.";
-        }
-      }
-
-      res.json({
-        response,
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      console.error('Error in bill analysis chat:', error);
-      res.status(500).json({ message: 'Failed to process your question. Please try again.' });
-    }
-  });
-
   app.post('/api/medical-chat', isAuthenticated, async (req: any, res) => {
     try {
       const { message } = req.body;

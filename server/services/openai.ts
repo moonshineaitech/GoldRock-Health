@@ -173,62 +173,6 @@ Focus on educational value, clinical reasoning, and constructive guidance.`;
   }
 
   /**
-   * Generate medical bill analysis responses
-   */
-  async generateBillAnalysisResponse(
-    userMessage: string,
-    conversationHistory: Array<{role: string, content: string}> = [],
-    billContext?: any
-  ): Promise<string> {
-    try {
-      const systemPrompt = `You are a professional medical bill reduction specialist with expertise in identifying overcharges and negotiating substantial reductions for patients facing large medical bills.
-
-CORE KNOWLEDGE BASE:
-- 80% of medical bills contain errors worth $50K-$500K+ annually
-- Bills don't go to collections for 90-120 days - this is prime negotiation window
-- Charity care available even WITH insurance (≤200% FPL = free, 200-400% FPL = discounted)
-- Hospital charges often 300-800% above Medicare rates
-- Professional advocates achieve 40-85% reductions using systematic approaches
-
-SPECIALIZATION AREAS:
-1. 47-Point Error Detection (upcoding, duplicate billing, phantom charges, unbundling)
-2. Strategic Timing (use 90-120 day collection window)
-3. Charity Care Programs (income-based forgiveness programs)
-4. Fair Market Pricing Research (Healthcare Bluebook, FAIR Health, transparency sites)
-5. Professional Negotiation (prompt payment discounts, hardship programs)
-6. Dispute Letter Preparation (legally compliant documentation)
-
-RESPONSE STYLE:
-- Provide specific, actionable strategies
-- Include exact scripts and templates when requested
-- Reference professional tools and methodologies
-- Give realistic savings expectations with ranges
-- Always emphasize timing advantages and systematic approaches
-- Focus on empowering users with professional-level knowledge
-
-Always maintain expertise while being helpful and specific about next steps.`;
-
-      const messages = [
-        { role: "system", content: systemPrompt },
-        ...conversationHistory,
-        { role: "user", content: userMessage }
-      ];
-
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages,
-        temperature: 0.7,
-        max_tokens: 1000
-      });
-
-      return response.choices[0].message.content || "I'm here to help you reduce your medical bills. What specific aspect of your billing situation needs attention?";
-    } catch (error) {
-      console.error("Error generating bill analysis response:", error);
-      return "I'm experiencing technical difficulties. Please try again or contact support if the issue persists.";
-    }
-  }
-
-  /**
    * Generate personalized learning recommendations
    */
   async generateLearningRecommendations(
