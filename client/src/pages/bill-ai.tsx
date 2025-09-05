@@ -301,29 +301,29 @@ export default function BillAI() {
   const quickActions = [
     {
       icon: Upload,
-      label: "Upload Bill Images",
-      desc: "Up to 5 pages for complete analysis",
+      label: "Upload Medical Bill",
+      desc: "Find $1K-$100K+ in savings",
       color: "emerald",
       action: () => fileInputRef.current?.click(),
     },
     {
       icon: AlertTriangle,
-      label: "Find Billing Errors",
-      desc: "Detect common overcharges",
+      label: "Find Overcharges",
+      desc: "Spot billing errors & scams",
       color: "red",
       action: () => setActiveFeature('error-detection'),
     },
     {
       icon: DollarSign,
-      label: "Negotiation Strategy",
-      desc: "Expert reduction tactics",
+      label: "Get Itemized Bill",
+      desc: "Essential first step to savings",
       color: "green",
-      action: () => setActiveFeature('negotiation-script'),
+      action: () => sendMessage("Help me request an itemized bill from my hospital. What should I ask for and how do I get the most detailed breakdown of charges?"),
     },
     {
       icon: FileText,
-      label: "Dispute Letter",
-      desc: "Professional appeals",
+      label: "Appeal & Dispute",
+      desc: "Professional reduction letters",
       color: "blue",
       action: () => setActiveFeature('dispute-letter'),
     }
@@ -331,7 +331,7 @@ export default function BillAI() {
 
   return (
     <MobileLayout 
-      title="Medical Bill AI Expert" 
+      title="Medical Bill AI" 
       showBackButton={true}
       showBottomNav={true}
     >
@@ -447,10 +447,10 @@ export default function BillAI() {
                 </motion.div>
                 
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  AI Medical Bill Expert
+                  Save Thousands on Medical Bills
                 </h3>
                 <p className="text-gray-600 mb-8 text-sm leading-relaxed px-4">
-                  Get expert advice on reducing medical bills, finding overcharges, and negotiating with hospitals. Powered by advanced AI.
+                  I find billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
                 </p>
                 
                 {/* Quick Action Buttons */}
@@ -481,6 +481,19 @@ export default function BillAI() {
                     );
                   })}
                 </div>
+                
+                {/* Security Notice */}
+                <motion.div 
+                  className="mt-8 px-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.0 }}
+                >
+                  <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">
+                    <CheckCircle className="h-4 w-4 text-emerald-600" />
+                    <span>Secure • Private • Exceeds HIPAA Standards</span>
+                  </div>
+                </motion.div>
               </motion.div>
             )}
 
@@ -576,7 +589,7 @@ export default function BillAI() {
               <Input
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Ask about medical bills, overcharges, negotiations..."
+                placeholder="Ask how to find thousands in overcharges..."
                 onKeyPress={handleKeyPress}
                 disabled={isTyping}
                 className="pr-12 rounded-2xl border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
@@ -607,7 +620,7 @@ export default function BillAI() {
           {/* AI Disclaimer */}
           <div className="mt-2 px-1">
             <p className="text-xs text-gray-500 text-center">
-              Powered by generative AI - Always consult with a healthcare professional or billing specialist for medical decisions
+              ⚠️ This is Generative AI - consult a professional
             </p>
           </div>
         </div>
