@@ -348,6 +348,16 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           action: () => onSendMessage("Give me a step-by-step action plan. What are my next steps to reduce this medical bill?")
         },
         {
+          id: 'get-more-info',
+          label: 'Provide More Details',
+          icon: AlertTriangle,
+          description: 'Share additional information',
+          color: 'text-indigo-600',
+          bgColor: 'bg-indigo-100 hover:bg-indigo-200',
+          priority: 'high',
+          action: () => onSendMessage("I'd like to provide more information about my medical bill or situation to get better personalized advice. What additional details would help you provide more targeted recommendations?")
+        },
+        {
           id: 'advanced-strategies',
           label: 'Advanced Strategies',
           icon: Zap,
@@ -456,8 +466,8 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
       </div>
       
       <div className="grid grid-cols-1 gap-2">
-        {/* Show first 4 actions */}
-        {sortedActions.slice(0, 4).map((action, index) => {
+        {/* Show first 5 actions */}
+        {sortedActions.slice(0, 5).map((action, index) => {
           const IconComponent = action.icon;
           return (
             <motion.div
@@ -494,8 +504,8 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           );
         })}
         
-        {/* Show more button if there are more than 4 actions */}
-        {sortedActions.length > 4 && (
+        {/* Show more button if there are more than 5 actions */}
+        {sortedActions.length > 5 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -522,7 +532,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
         
         {/* Advanced actions - only show when expanded */}
         <AnimatePresence>
-          {showAdvanced && sortedActions.slice(4).map((action, index) => {
+          {showAdvanced && sortedActions.slice(5).map((action, index) => {
             const IconComponent = action.icon;
             const isUpgrade = action.id === 'upgrade-premium';
             const isPremiumFeature = !isUpgrade; // Make all advanced features premium-only
