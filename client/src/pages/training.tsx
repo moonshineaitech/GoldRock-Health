@@ -12,7 +12,8 @@ import {
   FileImage, 
   GraduationCap, 
   GitBranch, 
-  Stethoscope 
+  Stethoscope,
+  Trophy
 } from "lucide-react";
 
 const specialties = [
@@ -84,11 +85,11 @@ export default function Training() {
                 href: "/clinical-decision-trees"
               },
               {
-                title: "Study Groups",
-                desc: "Collaborative learning",
-                icon: Users,
-                color: "orange",
-                href: "/study-groups"
+                title: "Progress Tracking",
+                desc: "Badges, awards & stats",
+                icon: Trophy,
+                color: "yellow",
+                href: "/progress"
               }
             ].map((module, index) => {
               const IconComponent = module.icon;

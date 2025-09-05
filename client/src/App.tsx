@@ -10,6 +10,7 @@ import Training from "@/pages/training";
 import Game from "@/pages/game";
 import AIGenerator from "@/pages/ai-generator";
 import Achievements from "@/pages/achievements";
+import Progress from "@/pages/progress";
 import ImageAnalysis from "@/pages/image-analysis";
 import StudyGroups from "@/pages/study-groups";
 import BoardExamPrep from "@/pages/board-exam-prep";
@@ -48,7 +49,7 @@ function Router() {
       <Route path="/ai-generator" component={AIGenerator} />
       <Route path="/game" component={Game} />
       <Route path="/game/:id" component={Game} />
-      <Route path="/achievements" component={Achievements} />
+      <Route path="/progress" component={Progress} />
       <Route path="/image-analysis" component={ImageAnalysis} />
       <Route path="/study-groups" component={StudyGroups} />
       <Route path="/board-exam-prep" component={BoardExamPrep} />

@@ -46,13 +46,6 @@ const navItems: NavItem[] = [
     icon: Crown,
     path: "/premium",
     color: "text-orange-600"
-  },
-  {
-    id: "achievements",
-    label: "Progress",
-    icon: Trophy,
-    path: "/achievements",
-    color: "text-yellow-600"
   }
 ];
 
