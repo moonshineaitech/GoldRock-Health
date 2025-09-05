@@ -226,31 +226,11 @@ export default function BillAnalyzer() {
       showBottomNav={true}
     >
       <div className="flex flex-col h-full">
-        {/* Custom Header with Logo */}
-        <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-4 mb-3">
-          <div className="flex items-center space-x-3">
-            <img src={logoUrl} alt="GoldRock" className="w-10 h-10 rounded-xl shadow-sm" />
-            <div className="flex-1">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Medical Bill AI
-              </h1>
-              <p className="text-sm text-gray-600">AI-powered cost reduction</p>
-            </div>
-            {userBills.length > 0 && (
-              <div className="text-right">
-                <div className="text-xl font-bold text-emerald-600">
-                  {formatCurrency(getEstimatedSavings())}
-                </div>
-                <div className="text-xs text-gray-500">Est. Savings</div>
-              </div>
-            )}
-          </div>
-        </div>
 
         {/* Compact Stats Bar */}
         {userBills.length > 0 && (
           <motion.div 
-            className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 mx-4 rounded-2xl mb-3"
+            className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 mx-4 rounded-2xl mb-4"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -273,34 +253,34 @@ export default function BillAnalyzer() {
         )}
 
         {/* Chat Messages Area */}
-        <div className="flex-1 px-4 overflow-y-auto">
+        <div className="flex-1 px-4 overflow-y-auto mt-4">
           <div className="space-y-4 pb-4">
             {messages.length === 0 && !isLoading && (
               <motion.div 
-                className="text-center py-8"
+                className="text-center py-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
                 <motion.div 
-                  className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-emerald-500/25"
+                  className="w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-emerald-500/25"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                 >
-                  <Sparkles className="text-white h-10 w-10" />
+                  <Sparkles className="text-white h-8 w-8" />
                 </motion.div>
                 
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+                <h2 className="text-xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
                   Welcome to Medical Bill AI!
                 </h2>
                 
-                <p className="text-base text-gray-600 mb-8 px-4 leading-relaxed">
+                <p className="text-sm text-gray-600 mb-6 px-6 leading-relaxed">
                   I specialize in finding billing errors, negotiating reductions, and generating professional appeals to slash your medical costs.
                 </p>
                 
                 {/* Compact Quick Actions */}
-                <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="grid grid-cols-2 gap-3 mb-6">
                   {quickActions.map((action, index) => {
                     const IconComponent = action.icon;
                     return (
@@ -311,16 +291,16 @@ export default function BillAnalyzer() {
                         transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
                       >
                         <Card 
-                          className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 bg-white/90 border-gray-200 h-24 hover:border-emerald-300"
+                          className="p-3 cursor-pointer hover:shadow-lg transition-all duration-300 bg-white/90 border-gray-200 h-28 hover:border-emerald-300"
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className="flex flex-col items-center text-center space-y-2">
-                            <div className={`w-8 h-8 bg-${action.color}-100 rounded-xl flex items-center justify-center shadow-sm`}>
-                              <IconComponent className={`h-4 w-4 text-${action.color}-600`} />
+                          <div className="flex flex-col items-center text-center space-y-1.5">
+                            <div className={`w-7 h-7 bg-${action.color}-100 rounded-xl flex items-center justify-center shadow-sm`}>
+                              <IconComponent className={`h-3.5 w-3.5 text-${action.color}-600`} />
                             </div>
-                            <div className="font-semibold text-gray-900 text-sm leading-tight">{action.label}</div>
-                            <div className="text-xs text-gray-600 leading-tight">{action.desc}</div>
+                            <div className="font-medium text-gray-900 text-xs leading-tight">{action.label}</div>
+                            <div className="text-xs text-gray-600 leading-tight px-1">{action.desc}</div>
                           </div>
                         </Card>
                       </motion.div>
