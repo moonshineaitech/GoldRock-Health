@@ -85,14 +85,12 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
 
     setIsAnalyzing(true);
     try {
-      const result = await apiRequest(`/api/synthetic-patients/${patient.id}/analyze`, {
-        method: "POST",
-        body: {
-          analysisType: selectedAnalysisType,
-          focusAreas,
-          sessionName: `${selectedAnalysisType.replace(/_/g, ' ')} - ${patient.profileName}`
-        }
+      const response = await apiRequest("POST", `/api/synthetic-patients/${patient.id}/analyze`, {
+        analysisType: selectedAnalysisType,
+        focusAreas,
+        sessionName: `${selectedAnalysisType.replace(/_/g, ' ')} - ${patient.profileName}`
       });
+      const result = await response.json();
       setAnalysisResult(result);
       toast({ title: "Analysis complete!", description: "AI diagnostic insights generated successfully." });
     } catch (error) {
