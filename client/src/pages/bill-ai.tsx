@@ -247,6 +247,15 @@ export default function BillAI() {
     // Convert FileList to Array to prevent it from becoming stale
     const fileArray = Array.from(files);
     console.log('Converted to array:', fileArray.length, fileArray.map(f => f.name));
+    
+    // Show processing time warning for multiple files
+    if (files.length > 1) {
+      toast({
+        title: `Uploading ${files.length} Images`,
+        description: `Processing ${files.length} bill images may take 1-2 minutes for comprehensive analysis. Please wait...`,
+      });
+    }
+    
     uploadBillMutation.mutate(fileArray);
     
     // Reset file input
@@ -574,6 +583,13 @@ export default function BillAI() {
             className="hidden"
             data-testid="file-input"
           />
+          
+          {/* AI Disclaimer */}
+          <div className="mt-2 px-1">
+            <p className="text-xs text-gray-500 text-center">
+              Powered by generative AI - Always consult with a healthcare professional or billing specialist for medical decisions
+            </p>
+          </div>
         </div>
       </div>
     </MobileLayout>
