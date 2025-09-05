@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FileText, 
   Phone, 
@@ -18,7 +18,13 @@ import {
   Clock,
   Target,
   Zap,
-  BookOpen
+  BookOpen,
+  ChevronDown,
+  ChevronUp,
+  Crown,
+  Eye,
+  TrendingUp,
+  Briefcase
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -41,6 +47,7 @@ interface SmartActionBubblesProps {
 }
 
 export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGenerateDocument }: SmartActionBubblesProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   
   const getContextualActions = (): SmartAction[] => {
     const baseActions: Record<string, SmartAction[]> = {
@@ -352,13 +359,53 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
         },
         {
           id: 'legal-escalation',
-          label: 'Legal Escalation Path',
+          label: 'Expert Legal Strategy',
           icon: Scale,
           description: 'AI legal guidance & options',
           color: 'text-red-600',
           bgColor: 'bg-red-100 hover:bg-red-200',
           priority: 'medium',
           action: () => onSendMessage("If standard negotiations fail, what are my legal escalation options? Generate a comprehensive legal strategy including regulatory complaints, patient advocates, and legal protections I can invoke.")
+        },
+        {
+          id: 'professional-audit',
+          label: 'Professional Bill Audit',
+          icon: Eye,
+          description: 'Expert-level comprehensive review',
+          color: 'text-indigo-600',
+          bgColor: 'bg-indigo-100 hover:bg-indigo-200',
+          priority: 'medium',
+          action: () => onSendMessage("Perform a professional-level forensic audit of my medical bill like a billing expert would. Look for advanced billing schemes, regulatory violations, and institutional patterns that typical reviews miss.")
+        },
+        {
+          id: 'insider-tactics',
+          label: 'Hospital Insider Tactics',
+          icon: Briefcase,
+          description: 'Industry secrets and loopholes',
+          color: 'text-purple-600',
+          bgColor: 'bg-purple-100 hover:bg-purple-200',
+          priority: 'medium',
+          action: () => onSendMessage("What are the insider tactics and industry secrets that hospital billing departments don't want patients to know? Generate strategies using healthcare industry loopholes and insider knowledge.")
+        },
+        {
+          id: 'multi-bill-analysis',
+          label: 'Multi-Bill Pattern Analysis',
+          icon: TrendingUp,
+          description: 'Detect patterns across all bills',
+          color: 'text-teal-600',
+          bgColor: 'bg-teal-100 hover:bg-teal-200',
+          priority: 'medium',
+          action: () => onSendMessage("Analyze patterns across all my medical bills to identify systematic overcharging, provider-specific billing schemes, and opportunities for bulk disputes or class-action potential.")
+        },
+        {
+          id: 'upgrade-premium',
+          label: 'Upgrade to Premium',
+          icon: Crown,
+          description: 'Unlock unlimited AI analysis',
+          color: 'text-amber-600',
+          bgColor: 'bg-gradient-to-r from-amber-100 to-yellow-100 hover:from-amber-200 hover:to-yellow-200 border-2 border-amber-200',
+          priority: 'low',
+          action: () => onSendMessage("I want to unlock unlimited AI bill analysis, priority support, and advanced features. How can I upgrade to Premium to maximize my medical bill savings?")
         }
       ]
     };
@@ -389,7 +436,8 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
       </div>
       
       <div className="grid grid-cols-1 gap-2">
-        {sortedActions.map((action, index) => {
+        {/* Show first 4 actions */}
+        {sortedActions.slice(0, 4).map((action, index) => {
           const IconComponent = action.icon;
           return (
             <motion.div
@@ -425,6 +473,74 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
             </motion.div>
           );
         })}
+        
+        {/* Show more button if there are more than 4 actions */}
+        {sortedActions.length > 4 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Button
+              variant="ghost"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="w-full p-2 h-auto bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
+            >
+              <div className="flex items-center justify-center gap-2">
+                {showAdvanced ? (
+                  <ChevronUp className="h-4 w-4 text-gray-600" />
+                ) : (
+                  <ChevronDown className="h-4 w-4 text-gray-600" />
+                )}
+                <span className="text-sm font-medium text-gray-700">
+                  {showAdvanced ? 'Show less' : 'Show more advanced options'}
+                </span>
+              </div>
+            </Button>
+          </motion.div>
+        )}
+        
+        {/* Advanced actions - only show when expanded */}
+        <AnimatePresence>
+          {showAdvanced && sortedActions.slice(4).map((action, index) => {
+            const IconComponent = action.icon;
+            const isUpgrade = action.id === 'upgrade-premium';
+            return (
+              <motion.div
+                key={action.id}
+                initial={{ opacity: 0, height: 0, y: -10 }}
+                animate={{ opacity: 1, height: 'auto', y: 0 }}
+                exit={{ opacity: 0, height: 0, y: -10 }}
+                transition={{ duration: 0.3, delay: 0.1 * index }}
+              >
+                <Button
+                  variant="ghost"
+                  onClick={action.action}
+                  className={`w-full justify-start p-3 h-auto ${action.bgColor} ${isUpgrade ? 'border-2' : 'border'} border-gray-200 hover:shadow-sm transition-all duration-200 ${isUpgrade ? 'shadow-md' : ''}`}
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <div className={`p-2 rounded-lg ${isUpgrade ? 'bg-gradient-to-r from-amber-200 to-yellow-200' : 'bg-white/70'}`}>
+                      <IconComponent className={`h-4 w-4 ${action.color}`} />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <div className={`font-medium text-sm ${isUpgrade ? 'text-amber-700' : 'text-gray-900'}`}>
+                        {action.label}
+                      </div>
+                      <div className={`text-xs mt-0.5 ${isUpgrade ? 'text-amber-600' : 'text-gray-600'}`}>
+                        {action.description}
+                      </div>
+                    </div>
+                    {isUpgrade && (
+                      <div className="px-2 py-1 bg-amber-200 text-amber-700 text-xs rounded-full font-medium">
+                        Premium
+                      </div>
+                    )}
+                  </div>
+                </Button>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
       
       <motion.div 
