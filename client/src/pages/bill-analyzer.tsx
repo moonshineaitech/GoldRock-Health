@@ -68,157 +68,92 @@ export default function BillAnalyzer() {
     const lowerMessage = userMessage.toLowerCase();
     
     if (lowerMessage.includes("itemized bill") || lowerMessage.includes("request") || lowerMessage.includes("hospital")) {
-      return `First things first - **don't pay anything yet**. You have 90-120 days before collections, so use this time wisely.
+      return `Good news - you have 90-120 days before bills go to collections, so don't pay anything yet.
 
-**Step 1: Call the billing department**
+Getting an itemized bill is crucial because 80% of medical bills contain errors.
 
-Use this exact script:
+Here's exactly what to say when you call the billing department:
+
 "I need a complete itemized statement for my recent treatment. Please include all procedure codes, dates, and provider information. I need this within 5 business days."
 
-**What to ask for specifically:**
-• CPT procedure codes with descriptions
-• Service dates and times  
-• Provider names and credentials
-• Medication details with quantities
+Make sure you get:
+- CPT procedure codes with descriptions
+- Service dates and times  
+- Provider names
+- Medication details with quantities
 
-**If they say no:**
-"Federal regulations require this documentation. Please connect me with your billing supervisor."
+If they refuse, say: "Federal regulations require this documentation. Please connect me with your billing supervisor."
 
-**Why this matters:**
-80% of bills have errors worth thousands of dollars. The itemized bill shows you exactly where to look.
-
-**What would you like help with next?**
-• Get the phone script for your specific situation
-• Learn what errors to look for once you get the itemized bill
-• Understand your rights if they refuse to provide it`;
+Would you like me to help you with:
+1. What to look for once you get the itemized bill
+2. Scripts for different types of facilities
+3. What to do if they won't provide it`;
     }
     
     if (lowerMessage.includes("billing error") || lowerMessage.includes("overcharge") || lowerMessage.includes("assess") || lowerMessage.includes("find")) {
-      return `Good news: most large medical bills have errors you can get removed.
+      return `I'll help you find errors in your medical bill that you can dispute for significant savings.
 
-**Tell me about your bill:**
-• What's the total amount?
-• What type of care was it for? (surgery, ER visit, tests, etc.)
-• Do you have an itemized bill yet?
+Do you have a copy of your medical bill you can upload? If so, click the upload button above.
 
-**Common errors I'll help you find:**
+If not, I can still help you. Just tell me:
 
-**Duplicate charges** - Same service billed twice
-*Typical savings: $1,500-$15,000*
+1. What's the total amount of your bill?
 
-**Upcoding** - Billed for more expensive procedure than you got
-*Typical savings: $3,000-$25,000*
+2. What type of medical care was this for?
+   - Emergency room visit
+   - Surgery or procedure  
+   - Hospital stay
+   - Lab tests or imaging
+   - Other
 
-**Phantom charges** - Services you never received
-*Typical savings: $800-$12,000*
+Once I know this basic information, I'll walk you through the most common billing errors to look for and exactly how to dispute them.
 
-**Unbundling** - Separate charges for things that should be packaged
-*Typical savings: $2,000-$18,000*
-
-**Next steps:**
-• Share your bill details above
-• I'll walk you through checking for specific errors
-• Give you templates to dispute what we find
-
-What's your bill amount and what was the medical care for?`;
+What's your situation?`;
     }
     
     if (lowerMessage.includes("negotiate") || lowerMessage.includes("payment plan") || lowerMessage.includes("reduce") || lowerMessage.includes("can't afford")) {
-      return `You have several options to reduce your bill. Let's figure out which path is best for you.
+      return `Let's figure out the best way to reduce your medical bill.
 
-**First, what's your situation?**
-• What's your bill amount?
-• What's your household income range?
-• Can you pay a lump sum if you get a discount?
+First, I need to understand your situation:
 
-**Your main options:**
+What's the total amount of your bill?
 
-**1. Charity Care (50-100% forgiveness)**
-For households earning under $60,000-$125,000 (depending on size)
-*Even works if you have insurance*
+What's your approximate household income? 
+(This helps determine if you qualify for charity care programs)
 
-**2. Prompt Payment Discount (15-40% off)**
-If you can pay in full right away
-*Average savings: $2,500-$50,000*
+Can you pay a lump sum if you get a significant discount, or do you need a payment plan?
 
-**3. Payment Plan (0% interest)**
-Spread payments over 24-60 months
-*No interest if you negotiate properly*
+Once I know this, I can guide you to the best option:
 
-**4. Fair Price Challenge**
-If your bill seems too high compared to other hospitals
-*Hospitals often charge 300-800% above fair rates*
+- Charity care programs (can eliminate 50-100% of your bill)
+- Prompt payment discounts (15-40% off for paying in full) 
+- Zero-interest payment plans
+- Challenging unfair pricing
 
-**What would you like to explore first?**
-• Check if you qualify for charity care
-• Get a prompt payment discount script
-• Set up a payment plan
-• Challenge unfair pricing
-
-Tell me your bill amount and income situation, and I'll guide you to the best option.`;
+What's your bill amount and income situation?`;
     }
     
     if (lowerMessage.includes("charity care") || lowerMessage.includes("financial assistance") || lowerMessage.includes("hardship") || lowerMessage.includes("poverty") || lowerMessage.includes("income")) {
-      return `I will guide you through charity care and financial assistance programs that can provide 50-100% bill forgiveness.
+      return `Good news - charity care can eliminate 50-100% of your medical bill, even if you have insurance.
 
-🎯 CRITICAL FACT: Charity care is available EVEN WITH insurance coverage!
+To see if you qualify, I need to know:
 
-ELIGIBILITY GUIDELINES (2024 Federal Poverty Levels):
+1. How many people are in your household?
+2. What's your approximate annual income?
 
-💚 FREE CARE (100% bill forgiveness):
-   • Individual: Income ≤$30,120 (200% FPL)
-   • Family of 2: Income ≤$40,880
-   • Family of 3: Income ≤$51,640  
-   • Family of 4: Income ≤$62,400
+Here are the general eligibility ranges:
 
-💛 DISCOUNTED CARE (25-75% reduction):
-   • Individual: Income $30,121-$60,240 (200-400% FPL)
-   • Family of 2: Income $40,881-$81,760
-   • Family of 3: Income $51,641-$103,280
-   • Family of 4: Income $62,401-$124,800
+FREE CARE (100% forgiveness):
+- Individual making under $30,120/year
+- Family of 4 making under $62,400/year
 
-🆘 HARDSHIP PROGRAMS (Additional eligibility):
-   • When medical bills exceed 20% of annual income
-   • Sudden job loss or income reduction
-   • Major unexpected expenses
-   • Available at higher income levels with documentation
+DISCOUNTED CARE (25-75% off):
+- Individual making $30,121-$60,240/year  
+- Family of 4 making $62,401-$124,800/year
 
-REQUIRED DOCUMENTATION CHECKLIST:
+You might also qualify for hardship programs if your medical bills are more than 20% of your annual income.
 
-✅ Financial Documents (Last 3 months):
-   • Pay stubs or income statements
-   • Bank account statements  
-   • Previous year tax return
-   • Unemployment/disability documentation (if applicable)
-
-✅ Household Information:
-   • Proof of household size (birth certificates, etc.)
-   • Insurance cards and documentation
-   • List of monthly expenses and debts
-
-APPLICATION STRATEGY:
-
-1. Contact hospital financial assistance department immediately
-2. Request application forms (many available online)
-3. Submit complete documentation package
-4. Follow up weekly on application status
-5. If denied, request appeal process and specific denial reasons
-
-PROFESSIONAL SUCCESS TIPS:
-
-📝 APPLICATION SCRIPT:
-"I am requesting information about your charity care and financial assistance programs. My household income qualifies under federal guidelines, and I need immediate help with medical bill forgiveness."
-
-🔄 APPEAL STRATEGY (if initially denied):
-"I am formally appealing this denial. Please provide specific reasons for denial and information about your appeals process. My financial situation clearly meets published eligibility criteria."
-
-SUCCESS METRICS:
-• Initial approval rate: 60-70%
-• Appeal success rate: 85%+ with proper documentation
-• Average processing time: 30-45 days
-• Retroactive application: Usually possible up to 240 days
-
-What is your household size and approximate annual income? I can determine your exact eligibility.`;
+What's your household size and approximate income? I can tell you exactly what programs you qualify for and walk you through the application process.`;
     }
     
     if (lowerMessage.includes("appeal") || lowerMessage.includes("dispute") || lowerMessage.includes("letter") || lowerMessage.includes("professional")) {
@@ -272,56 +207,23 @@ Timeline: 45-75 days for complete resolution
 What specific billing errors have you identified that need to be included in your dispute letter?`;
     }
     
-    // Default response with enhanced Bill Reduction Guide strategies
-    return `I am a medical bill reduction specialist with expertise in identifying overcharges and negotiating substantial reductions for patients facing large medical bills.
+    // Default response 
+    return `I'm here to help you reduce your medical bill. Most people can save thousands of dollars with the right approach.
 
-🎯 KEY INSIGHT: 80% of medical bills contain errors worth $50K-$500K+ in total overcharges annually.
+Let's start with the basics:
 
-CORE SPECIALIZATION AREAS:
+Do you have a medical bill you can upload? If so, use the upload button above.
 
-📊 SYSTEMATIC BILL ANALYSIS (Professional 47-Point Error Detection):
-   • Identifying billing errors using proven methodologies
-   • Cross-referencing charges against medical records  
-   • Detecting upcoding, duplicate billing, phantom charges, and unbundling schemes
-   • Professional advocates find 3-8 errors per bill worth $2,000-$35,000
+If not, I can still help. Just tell me:
 
-⚖️ STRATEGIC TIMING ADVANTAGE:
-   • DON'T PAY IMMEDIATELY - Use your 90-120 day collection window
-   • This delay period is your biggest negotiation advantage
-   • Research, prepare, and negotiate from strength
+What's your situation?
+1. I have a bill that seems too high
+2. I can't afford to pay my medical bill  
+3. I want to request an itemized bill
+4. I need to negotiate a payment plan
+5. I want to dispute billing errors
 
-💰 CHARITY CARE & FINANCIAL ASSISTANCE:
-   • FREE CARE: ≤200% Federal Poverty Level
-   • DISCOUNTED CARE: 200-400% Federal Poverty Level
-   • HARDSHIP PROGRAMS: Bills >20% of annual income
-   • Available even WITH insurance coverage
-
-🔍 FAIR MARKET PRICING RESEARCH:
-   • Healthcare Bluebook for fair price estimates
-   • FAIR Health Consumer for geographic pricing data
-   • Hospital Price Transparency websites (legally required)
-   • Challenge charges 300-800% above Medicare rates
-
-DOCUMENTED SUCCESS RATES:
-
-Emergency department bills: Average 50-90% reduction
-Surgical procedures: Average 40-70% reduction  
-Diagnostic imaging: Average 45-75% reduction
-Inpatient stays: Average 50-85% reduction
-
-IMMEDIATE ACTION WORKFLOW:
-
-1. STOP - Don't pay anything immediately
-2. Request complete itemized bill with CPT/ICD codes
-3. Apply 47-point error detection checklist
-4. Research fair market pricing using transparency tools
-5. Apply for charity care programs (if eligible)
-6. Negotiate using documented errors and pricing research
-7. Get all agreements in writing before payment
-
-The key to substantial reductions is methodical analysis, strategic timing, and professional presentation of documented errors combined with fair market pricing leverage.
-
-What aspect of your medical billing situation requires immediate attention?`;
+Choose what fits your situation, and I'll walk you through the next steps one at a time.`;
   };
 
   // Simple message handling without backend complexity
