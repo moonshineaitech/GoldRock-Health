@@ -510,7 +510,7 @@ export default function BillAI() {
                   {/* Smart Action Bubbles for AI responses */}
                   {message.role === "assistant" && (
                     <SmartActionBubbles
-                      context={activeFeature || 'general'}
+                      context={(activeFeature as 'dispute-letter' | 'negotiation-script' | 'error-detection' | 'billing-rights' | 'claim-appeal') || 'general'}
                       aiResponse={message.content}
                       onSendMessage={sendMessage}
                     />

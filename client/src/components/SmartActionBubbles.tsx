@@ -257,6 +257,49 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           priority: 'medium',
           action: () => onSendMessage("Create a timeline for tracking my insurance appeal process. What are the key milestones and deadlines?")
         }
+      ],
+      
+      'general': [
+        {
+          id: 'generate-dispute',
+          label: 'Generate Dispute Letter',
+          icon: FileText,
+          description: 'Create formal dispute documentation',
+          color: 'text-blue-600',
+          bgColor: 'bg-blue-100 hover:bg-blue-200',
+          priority: 'high',
+          action: () => onSendMessage("Based on this analysis, generate a comprehensive dispute letter I can send to the hospital billing department.")
+        },
+        {
+          id: 'negotiation-help',
+          label: 'Get Negotiation Script',
+          icon: Phone,
+          description: 'Phone call talking points',
+          color: 'text-green-600',
+          bgColor: 'bg-green-100 hover:bg-green-200',
+          priority: 'high',
+          action: () => onSendMessage("Create a phone negotiation script for calling the billing department about these issues. What exactly should I say?")
+        },
+        {
+          id: 'savings-calculation',
+          label: 'Calculate Potential Savings',
+          icon: DollarSign,
+          description: 'Estimate financial impact',
+          color: 'text-emerald-600',
+          bgColor: 'bg-emerald-100 hover:bg-emerald-200',
+          priority: 'medium',
+          action: () => onSendMessage("Calculate the total potential savings from this analysis. What's the maximum amount I could save?")
+        },
+        {
+          id: 'next-steps',
+          label: 'What Should I Do Next?',
+          icon: Target,
+          description: 'Step-by-step action plan',
+          color: 'text-purple-600',
+          bgColor: 'bg-purple-100 hover:bg-purple-200',
+          priority: 'medium',
+          action: () => onSendMessage("Give me a step-by-step action plan. What are my next steps to reduce this medical bill?")
+        }
       ]
     };
 
