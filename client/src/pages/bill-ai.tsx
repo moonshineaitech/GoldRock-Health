@@ -403,7 +403,7 @@ export default function BillAI() {
 
         {/* Chat Messages Area */}
         {!activeFeature && (
-          <div className="flex-1 overflow-y-auto p-2 space-y-4">
+          <div className="flex-1 overflow-y-auto p-2 space-y-4 pb-20">
             {/* Feature Access Buttons */}
             {conversationStarted && (
               <motion.div
@@ -441,21 +441,30 @@ export default function BillAI() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="text-center py-4"
+                className="text-center py-6"
               >
+                {/* Instant Assessment Button */}
                 <motion.div
-                  className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl"
-                  animate={{ 
-                    scale: [1, 1.05, 1],
-                    rotate: [0, 2, -2, 0]
-                  }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
+                  className="mb-4 px-4"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
                 >
-                  <Brain className="h-6 w-6 text-white" />
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl h-14 shadow-lg border-0"
+                    data-testid="instant-assessment-button"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
+                        <Upload className="h-4 w-4 text-white" />
+                      </div>
+                      <div className="text-left flex-1">
+                        <div className="font-bold text-base text-white">Instant Medical Bill Assessment</div>
+                        <div className="text-emerald-100 text-xs">Upload bill • Find overcharges • Save thousands</div>
+                      </div>
+                    </div>
+                  </Button>
                 </motion.div>
                 
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -762,7 +771,7 @@ export default function BillAI() {
         )}
 
         {/* Input Area */}
-        <div className="p-3 border-t border-gray-200 bg-white">
+        <div className="p-3 border-t border-gray-200 bg-white mb-16">
           <div className="flex items-center space-x-2">
             <Button
               onClick={() => fileInputRef.current?.click()}
