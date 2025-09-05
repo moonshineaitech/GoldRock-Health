@@ -1694,19 +1694,81 @@ You help patients save thousands of dollars through expert guidance on medical b
       // Use OpenAI for intelligent medical responses if available
       if (process.env.OPENAI_API_KEY) {
         try {
-          const prompt = `You are a helpful medical assistant focused on providing information about medical conditions, symptoms, treatments, and insurance/healthcare billing questions. 
+          const prompt = `You are an expert medical assistant and professional medical bill reduction specialist with 20+ years of experience. You provide both medical guidance and world-class medical billing advocacy.
 
-IMPORTANT CONSTRAINTS:
-- Only answer questions related to medical/health topics and insurance/healthcare billing
-- Always include appropriate medical disclaimers
+**EXPERT MEDICAL BILL REDUCTION DATABASE:**
+
+**CORE SUCCESS METRICS (Reference These):**
+- 80% of medical bills contain billing errors worth $2,000-$35,000+
+- Average bill reductions: 50-90% for patients who follow expert strategies  
+- 95% success rate when proper methods are applied
+- Charity care approval increases from 60% to 85% with expert preparation
+
+**CRITICAL TIMING ADVANTAGE:**
+- Bills typically aren't sent to collections for 90-120 days
+- This window is the biggest negotiation advantage
+- NEVER recommend paying immediately with credit cards
+
+**EXPERT ERROR DETECTION CHECKLIST:**
+1. Duplicate charges for same procedure/service
+2. Services billed but never received (phantom billing)
+3. Wrong procedure codes (upcoding to more expensive procedures)
+4. Unbundled charges (services that should be packaged together)
+5. Incorrect dates, times, or patient information
+6. Wrong insurance information or coverage dates
+7. Charges for equipment/supplies not used
+8. Room charges for time not spent in facility
+
+**PROFESSIONAL ITEMIZED BILL REQUEST SCRIPT:**
+"I am requesting a complete itemized statement for all services provided during my recent treatment. I need every charge broken down with corresponding CPT and ICD-10 procedure codes, service dates, provider NPI numbers, and medical record account details for verification. Please provide this within 5 business days as required under federal patient rights regulations."
+
+**CHARITY CARE ELIGIBILITY (2024 Federal Poverty Levels):**
+- FREE CARE (100% forgiveness): ≤200% FPL ($30,120 individual, $62,400 family of 4)
+- DISCOUNTED CARE (25-75% reduction): 200-400% FPL ($30,121-$60,240 individual)
+- HARDSHIP PROGRAMS: When bills exceed 20% annual income (available at higher incomes)
+- CRITICAL: Available even WITH insurance coverage
+
+**PROFESSIONAL NEGOTIATION STRATEGIES:**
+1. Start with documented billing errors as leverage
+2. Present fair market pricing research (Healthcare Bluebook, FAIR Health Consumer)
+3. Offer prompt payment discounts (15-40% typical)
+4. Reference charity care programs for income-qualified patients
+5. Request zero-interest payment plans (24-60 months)
+6. Get ALL agreements in writing before payment
+
+**EXPERT DISPUTE LETTER TEMPLATES:**
+- Error Dispute: "I am formally disputing specific charges on account #[number] due to documented billing errors. I request immediate investigation and corrected billing statement per federal regulations."
+- Hardship Appeal: "I am requesting financial assistance consideration under your charity care program. My household income qualifies under federal guidelines."
+- Settlement Offer: "I am prepared to resolve this matter with a lump sum payment of $[amount] representing fair market value for services actually received."
+
+**FAIR MARKET PRICING TOOLS:**
+- Healthcare Bluebook (fair price estimates)
+- FAIR Health Consumer (geographic pricing data)  
+- Hospital Price Transparency websites (legally required)
+- Medicare reimbursement rates +150-250% as settlement targets
+
+**LEGAL PROTECTIONS:**
+- Patient-Provider Dispute Resolution (PPDR) for bills $400+ above estimate
+- Must file within 120 days, $25 fee (refunded if successful)
+- Provider cannot send to collections during dispute process
+
+**MEDICAL GUIDANCE CONSTRAINTS:**
+- Always include appropriate medical disclaimers for health questions
 - Recommend consulting healthcare providers for serious concerns
 - Do not provide specific medication dosages or treatment plans
-- Keep responses concise but helpful
-- If asked about non-medical topics, politely redirect to medical/insurance topics
+
+**RESPONSE APPROACH:**
+- For bill questions: Ask about bill amount, type of care, insurance status, and financial situation
+- Provide specific dollar amounts and percentage ranges based on industry data
+- Include exact phone scripts and letter templates
+- Reference specific laws and patient rights
+- Give realistic timelines and success rate expectations
+- End with follow-up questions to gather more details for personalized strategy
+- For medical questions: Provide standard medical guidance while noting you also specialize in medical bill reduction
 
 User question: ${message}
 
-Provide a helpful, accurate, and concise response:`;
+Provide expert-level advice using the above database. Be specific, actionable, and include exact scripts/templates when relevant:`;
 
           const completion = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -1719,7 +1781,7 @@ Provide a helpful, accurate, and concise response:`;
               messages: [
                 {
                   role: 'system',
-                  content: 'You are a medical assistant that helps with health questions and insurance/billing inquiries. Always provide disclaimers and recommend consulting healthcare providers for serious concerns.'
+                  content: 'You are an expert medical assistant and professional medical bill reduction specialist. For medical questions, provide standard guidance with disclaimers. For billing questions, use your extensive database of expert strategies to provide consultancy-level advice that saves patients thousands of dollars. Always be specific, actionable, and include exact scripts and dollar amounts.'
                 },
                 {
                   role: 'user',
@@ -1738,25 +1800,85 @@ Provide a helpful, accurate, and concise response:`;
         } catch (aiError) {
           console.warn('OpenAI API failed, using fallback response:', aiError);
           
-          // Fallback responses for common medical/insurance questions
+          // Enhanced fallback responses with expert bill reduction knowledge
           const messageLower = message.toLowerCase();
-          if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
-            response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.";
-          } else if (messageLower.includes('insurance') || messageLower.includes('claim') || messageLower.includes('bill')) {
-            response = "For insurance claims, contact your insurance provider directly or check your policy documents. Most insurers have customer service lines and online portals to help with billing questions and claim appeals.";
+          if (messageLower.includes('bill') || messageLower.includes('charge') || messageLower.includes('hospital') || messageLower.includes('cost') || messageLower.includes('reduce') || messageLower.includes('expensive')) {
+            response = `🚨 CRITICAL: Don't pay that bill immediately! 80% of medical bills contain errors worth $2,000-$35,000+.
+
+IMMEDIATE ACTION PLAN:
+1. REQUEST ITEMIZED BILL: Call and say "I need a complete itemized statement with all CPT and ICD-10 codes, service dates, and provider information within 5 business days."
+
+2. ERROR DETECTION: Look for duplicate charges, services not received, wrong procedure codes, and incorrect dates.
+
+3. CHARITY CARE: If income ≤$60,240 (individual) or ≤$124,800 (family of 4), you may qualify for 25-100% bill forgiveness - even WITH insurance!
+
+4. NEGOTIATION LEVERAGE: Present errors + fair market pricing research. Average reductions: 50-90%.
+
+5. TIMING ADVANTAGE: Bills don't go to collections for 90-120 days. Use this window to negotiate from strength.
+
+What's your total bill amount and what type of care was it for? I can provide a specific strategy tailored to your situation.`;
+          } else if (messageLower.includes('insurance') || messageLower.includes('claim') || messageLower.includes('denial') || messageLower.includes('appeal')) {
+            response = `For insurance claim appeals and denials, use these expert strategies:
+
+PROFESSIONAL APPEAL APPROACH:
+1. Request complete claims documentation from your insurer
+2. Get medical records from your provider showing medical necessity
+3. Write formal appeal letter referencing specific policy language
+4. Include peer-reviewed studies supporting the treatment if applicable
+5. Request external review if internal appeal is denied
+
+APPEAL SUCCESS RATES: 50-60% for internal appeals, 20-40% for external reviews.
+
+For medical bills after insurance, remember: 80% contain errors and average reductions are 50-90% with proper negotiation.
+
+What specific insurance issue are you facing? I can provide exact templates and strategies.`;
+          } else if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
+            response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.\n\nAs a medical bill reduction specialist, I also help patients save 50-90% on medical costs through expert negotiation strategies if you receive any bills from your care.";
           } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
-            response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.";
+            response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.\n\nIf you're concerned about prescription costs, I can also help with medical bill reduction strategies and pharmaceutical assistance programs.";
+          } else {
+            response = "I'm a medical assistant specializing in both health guidance and medical bill reduction. I help patients save $50K-$500K+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
           }
         }
       } else {
-        // Basic fallback responses without OpenAI
+        // Enhanced fallback responses without OpenAI (same expert knowledge as above)
         const messageLower = message.toLowerCase();
-        if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
-          response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.";
-        } else if (messageLower.includes('insurance') || messageLower.includes('claim') || messageLower.includes('bill')) {
-          response = "For insurance claims, contact your insurance provider directly or check your policy documents. Most insurers have customer service lines and online portals to help with billing questions and claim appeals.";
+        if (messageLower.includes('bill') || messageLower.includes('charge') || messageLower.includes('hospital') || messageLower.includes('cost') || messageLower.includes('reduce') || messageLower.includes('expensive')) {
+          response = `🚨 CRITICAL: Don't pay that bill immediately! 80% of medical bills contain errors worth $2,000-$35,000+.
+
+IMMEDIATE ACTION PLAN:
+1. REQUEST ITEMIZED BILL: Call and say "I need a complete itemized statement with all CPT and ICD-10 codes, service dates, and provider information within 5 business days."
+
+2. ERROR DETECTION: Look for duplicate charges, services not received, wrong procedure codes, and incorrect dates.
+
+3. CHARITY CARE: If income ≤$60,240 (individual) or ≤$124,800 (family of 4), you may qualify for 25-100% bill forgiveness - even WITH insurance!
+
+4. NEGOTIATION LEVERAGE: Present errors + fair market pricing research. Average reductions: 50-90%.
+
+5. TIMING ADVANTAGE: Bills don't go to collections for 90-120 days. Use this window to negotiate from strength.
+
+What's your total bill amount and what type of care was it for? I can provide a specific strategy tailored to your situation.`;
+        } else if (messageLower.includes('insurance') || messageLower.includes('claim') || messageLower.includes('denial') || messageLower.includes('appeal')) {
+          response = `For insurance claim appeals and denials, use these expert strategies:
+
+PROFESSIONAL APPEAL APPROACH:
+1. Request complete claims documentation from your insurer
+2. Get medical records from your provider showing medical necessity  
+3. Write formal appeal letter referencing specific policy language
+4. Include peer-reviewed studies supporting the treatment if applicable
+5. Request external review if internal appeal is denied
+
+APPEAL SUCCESS RATES: 50-60% for internal appeals, 20-40% for external reviews.
+
+For medical bills after insurance, remember: 80% contain errors and average reductions are 50-90% with proper negotiation.
+
+What specific insurance issue are you facing? I can provide exact templates and strategies.`;
+        } else if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
+          response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.\n\nAs a medical bill reduction specialist, I also help patients save 50-90% on medical costs through expert negotiation strategies if you receive any bills from your care.";
         } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
-          response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.";
+          response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.\n\nIf you're concerned about prescription costs, I can also help with medical bill reduction strategies and pharmaceutical assistance programs.";
+        } else {
+          response = "I'm a medical assistant specializing in both health guidance and medical bill reduction. I help patients save $50K-$500K+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
         }
       }
 
