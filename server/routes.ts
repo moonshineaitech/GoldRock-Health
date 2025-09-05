@@ -1714,8 +1714,7 @@ You help patients save thousands of dollars through expert guidance on medical b
       // Process PDF files
       if (file.mimetype === 'application/pdf') {
         try {
-          const pdfParseModule = await import('pdf-parse');
-          const pdfParse = pdfParseModule.default;
+          const pdfParse = require('pdf-parse');
           const pdfData = await pdfParse(file.buffer);
           billText = pdfData.text;
         } catch (pdfError) {
