@@ -36,7 +36,6 @@ import {
   ClaimAppealGenerator 
 } from "@/components/bill-ai-features";
 import { BillAnalysisLoader } from "@/components/BillAnalysisLoader";
-import { InteractiveSavingsTrivia } from "@/components/InteractiveSavingsTrivia";
 
 interface AIMessage {
   id: string;
@@ -55,9 +54,6 @@ export default function BillAI() {
   const [localMessages, setLocalMessages] = useState<AIMessage[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{current: number, total: number}>({current: 0, total: 0});
-  const [showTrivia, setShowTrivia] = useState(false);
-  const [analysisProgress, setAnalysisProgress] = useState(0);
-  const [currentAnalysisStage, setCurrentAnalysisStage] = useState("Preparing analysis...");
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -151,8 +147,6 @@ export default function BillAI() {
     onSuccess: (data) => {
       setUploadingFiles(false);
       setUploadProgress({current: 0, total: 0});
-      setShowTrivia(false);
-      setAnalysisProgress(0);
       
       if (data.success) {
         // Add user's file upload message first
@@ -195,8 +189,6 @@ export default function BillAI() {
     onError: (error: any) => {
       setUploadingFiles(false);
       setUploadProgress({current: 0, total: 0});
-      setShowTrivia(false);
-      setAnalysisProgress(0);
       toast({
         title: "Upload Failed",
         description: error.response?.data?.message || "Failed to upload bill images. Please try again.",
@@ -257,49 +249,12 @@ export default function BillAI() {
     const fileArray = Array.from(files);
     console.log('Converted to array:', fileArray.length, fileArray.map(f => f.name));
     
-    // Show processing time warning and start trivia for multiple files
+    // Show processing time warning for multiple files
     if (files.length > 1) {
       toast({
         title: `Uploading ${files.length} Images`,
-        description: `Processing ${files.length} bill images may take 1-2 minutes for comprehensive analysis. Enjoy the quiz!`,
+        description: `Processing ${files.length} bill images may take 1-2 minutes for comprehensive analysis. Please wait...`,
       });
-      
-      // Start trivia mode and progress simulation
-      setShowTrivia(true);
-      setAnalysisProgress(0);
-      setCurrentAnalysisStage("Scanning Documents");
-      
-      // Simulate analysis progress for trivia
-      const progressInterval = setInterval(() => {
-        setAnalysisProgress(prev => {
-          const newProgress = prev + (100 / 120); // 120 seconds = ~2 minutes
-          if (newProgress >= 100) {
-            clearInterval(progressInterval);
-            return 100;
-          }
-          return newProgress;
-        });
-      }, 1000);
-      
-      // Update stages periodically
-      const stages = [
-        "Scanning Documents",
-        "Detecting Billing Errors", 
-        "Calculating Overcharges",
-        "Finding Savings Opportunities",
-        "Analyzing Compliance Issues",
-        "Generating Expert Analysis"
-      ];
-      
-      const stageInterval = setInterval(() => {
-        const stageIndex = Math.floor(analysisProgress / (100 / stages.length));
-        if (stageIndex < stages.length) {
-          setCurrentAnalysisStage(stages[stageIndex]);
-        }
-        if (analysisProgress >= 95) {
-          clearInterval(stageInterval);
-        }
-      }, 2000);
     }
     
     uploadBillMutation.mutate(fileArray);
@@ -377,18 +332,10 @@ export default function BillAI() {
       showBottomNav={true}
     >
       <div className="flex flex-col h-full">
-        {/* Loading Animation Overlay - Only for single files or when trivia is disabled */}
+        {/* Loading Animation Overlay */}
         <BillAnalysisLoader 
           fileCount={uploadProgress.total} 
-          isVisible={uploadingFiles && uploadProgress.total > 0 && !showTrivia} 
-        />
-        
-        {/* Interactive Trivia Overlay - For multiple files */}
-        <InteractiveSavingsTrivia
-          isVisible={showTrivia && uploadingFiles}
-          progress={analysisProgress}
-          currentStage={currentAnalysisStage}
-          fileCount={uploadProgress.total}
+          isVisible={uploadingFiles && uploadProgress.total > 0} 
         />
 
         {/* Compact Stats Bar */}
