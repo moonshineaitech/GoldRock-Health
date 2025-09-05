@@ -398,6 +398,26 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           action: () => onSendMessage("Analyze patterns across all my medical bills to identify systematic overcharging, provider-specific billing schemes, and opportunities for bulk disputes or class-action potential.")
         },
         {
+          id: 'rights-advisor',
+          label: 'Rights Advisor',
+          icon: Shield,
+          description: 'Know your billing rights & protections',
+          color: 'text-purple-600',
+          bgColor: 'bg-purple-100 hover:bg-purple-200',
+          priority: 'medium',
+          action: () => onSendMessage("I need guidance on my medical billing rights and legal protections. What rights do I have as a patient regarding billing disputes, and what can I do if a hospital is violating these rights?")
+        },
+        {
+          id: 'insurance-appeal',
+          label: 'Insurance Appeal',
+          icon: FileText,
+          description: 'Appeal denied insurance claims',
+          color: 'text-blue-600',
+          bgColor: 'bg-blue-100 hover:bg-blue-200',
+          priority: 'medium',
+          action: () => onSendMessage("Help me create a comprehensive insurance appeal for denied claims. I need assistance with the appeal process, required documentation, and strategies to get my claim approved.")
+        },
+        {
           id: 'upgrade-premium',
           label: 'Upgrade to Premium',
           icon: Crown,
