@@ -51,7 +51,8 @@ export default function BillAI() {
   const [isTyping, setIsTyping] = useState(false);
   const [conversationStarted, setConversationStarted] = useState(false);
   const [localMessages, setLocalMessages] = useState<AIMessage[]>([]);
-  const [uploadingFile, setUploadingFile] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{current: number, total: number}>({current: 0, total: 0});
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -115,28 +116,33 @@ export default function BillAI() {
     }
   };
 
-  // File upload mutation for Bill AI
+  // Multiple file upload mutation for Bill AI
   const uploadBillMutation = useMutation({
-    mutationFn: async (file: File) => {
+    mutationFn: async (files: FileList) => {
       const formData = new FormData();
-      formData.append("bill", file);
+      
+      // Add all files to FormData
+      for (let i = 0; i < files.length; i++) {
+        formData.append("bills", files[i]);
+      }
       formData.append("sessionId", "bill-ai-session");
       
-      const response = await fetch("/api/upload-bill", {
+      const response = await fetch("/api/upload-bills", {
         method: "POST",
         body: formData,
       });
       return response.json();
     },
     onSuccess: (data) => {
-      setUploadingFile(false);
+      setUploadingFiles(false);
+      setUploadProgress({current: 0, total: 0});
       
       if (data.success) {
         // Add user's file upload message first
         const uploadMessage = {
           id: Date.now().toString(),
           role: "user" as const,
-          content: `📎 Uploaded medical bill for analysis`,
+          content: `📎 Uploaded ${data.fileCount || 1} medical bill image${data.fileCount > 1 ? 's' : ''} for analysis`,
           createdAt: new Date(),
         };
         
@@ -145,8 +151,8 @@ export default function BillAI() {
           id: (Date.now() + 1).toString(),
           role: "assistant" as const,
           content: data.analysis ? 
-            `🔍 **BILL ANALYSIS COMPLETE**\n\n${data.analysis}` :
-            `✅ **BILL UPLOADED SUCCESSFULLY**\n\nYour medical bill has been uploaded and saved. Use the features above to analyze it for billing errors and savings opportunities.`,
+            `🔍 **COMPREHENSIVE BILL ANALYSIS COMPLETE**\n\n${data.analysis}` :
+            `✅ **BILL IMAGES UPLOADED SUCCESSFULLY**\n\nYour medical bill images have been uploaded and saved. Use the features above to analyze them for billing errors and savings opportunities.`,
           createdAt: new Date(),
         };
         
@@ -155,58 +161,73 @@ export default function BillAI() {
         
         // Show success toast
         toast({
-          title: "Bill Uploaded Successfully",
-          description: data.message || "Your bill has been uploaded and is ready for analysis.",
+          title: `${data.fileCount || 1} Bill Image${data.fileCount > 1 ? 's' : ''} Uploaded`,
+          description: data.message || "Your bill images have been uploaded and analyzed.",
         });
         
         // Refetch bills to update the list
         queryClient.invalidateQueries({ queryKey: ["/api/medical-bills"] });
       } else {
-        // This should not happen anymore, but keeping as fallback
         toast({
           title: "Upload Failed",
-          description: data.message || "Failed to upload bill. Please try again.",
+          description: data.message || "Failed to upload bill images. Please try again.",
           variant: "destructive",
         });
       }
     },
     onError: (error: any) => {
-      setUploadingFile(false);
+      setUploadingFiles(false);
+      setUploadProgress({current: 0, total: 0});
       toast({
         title: "Upload Failed",
-        description: error.response?.data?.message || "Failed to upload bill. Please try again.",
+        description: error.response?.data?.message || "Failed to upload bill images. Please try again.",
         variant: "destructive",
       });
     },
   });
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
     
-    // Validate file type - only images allowed for accurate analysis
+    // Validate file count (max 5)
+    if (files.length > 5) {
+      toast({
+        title: "Too Many Files",
+        description: "Please upload up to 5 images maximum. Select your most important bill pages.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Validate each file
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-    if (!allowedTypes.includes(file.type)) {
-      toast({
-        title: "Images Only",
-        description: "Please upload image files only (JPG, PNG, WebP). Take a photo or screenshot of your medical bill.",
-        variant: "destructive",
-      });
-      return;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      if (!allowedTypes.includes(file.type)) {
+        toast({
+          title: "Images Only",
+          description: "Please upload image files only (JPG, PNG, WebP). Take photos or screenshots of your medical bills.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate file size (10MB max per file)
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "File Too Large",
+          description: `File "${file.name}" is too large. Please ensure each image is smaller than 10MB.`,
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
-    // Validate file size (10MB max)
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File Too Large",
-        description: "Please upload a file smaller than 10MB.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setUploadingFile(true);
-    uploadBillMutation.mutate(file);
+    setUploadingFiles(true);
+    setUploadProgress({current: 0, total: files.length});
+    uploadBillMutation.mutate(files);
     
     // Reset file input
     if (fileInputRef.current) {
@@ -246,8 +267,8 @@ export default function BillAI() {
   const quickActions = [
     {
       icon: Upload,
-      label: "Upload Bill Image",
-      desc: "AI analysis for overcharges",
+      label: "Upload Bill Images",
+      desc: "Up to 5 pages for complete analysis",
       color: "emerald",
       action: () => fileInputRef.current?.click(),
     },
@@ -487,12 +508,17 @@ export default function BillAI() {
           <div className="flex items-center space-x-3">
             <Button
               onClick={() => fileInputRef.current?.click()}
-              disabled={isTyping || uploadingFile}
+              disabled={isTyping || uploadingFiles}
               className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl w-12 h-12 p-0 border border-gray-300"
               data-testid="button-attach"
             >
-              {uploadingFile ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+              {uploadingFiles ? (
+                <div className="flex flex-col items-center">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {uploadProgress.total > 0 && (
+                    <span className="text-xs">{uploadProgress.current}/{uploadProgress.total}</span>
+                  )}
+                </div>
               ) : (
                 <Paperclip className="h-5 w-5" />
               )}
@@ -523,6 +549,7 @@ export default function BillAI() {
             ref={fileInputRef}
             type="file"
             accept="image/jpeg,image/jpg,image/png,image/webp"
+            multiple
             onChange={handleFileUpload}
             className="hidden"
             data-testid="file-input"

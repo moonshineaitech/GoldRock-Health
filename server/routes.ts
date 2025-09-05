@@ -27,14 +27,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const upload = multer({
     storage: multer.memoryStorage(),
     limits: {
-      fileSize: 10 * 1024 * 1024, // 10MB limit
+      fileSize: 10 * 1024 * 1024, // 10MB limit per file
+      files: 5, // Maximum 5 files
     },
     fileFilter: (req, file, cb) => {
-      const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
       if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
       } else {
-        cb(new Error("Invalid file type. Only JPEG, PNG, WebP, and PDF files are allowed."));
+        cb(new Error("Invalid file type. Only JPEG, PNG, and WebP image files are allowed."));
       }
     },
   });
@@ -1970,6 +1971,270 @@ Extract every specific detail from the bill including exact account numbers, pat
     } catch (error) {
       console.error('Error uploading bill:', error);
       res.status(500).json({ message: 'Failed to upload and analyze bill. Please try again.' });
+    }
+  });
+
+  // Multiple Bill Images Upload Route - Up to 5 images for comprehensive analysis
+  app.post('/api/upload-bills', isAuthenticated, upload.array('bills', 5), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const files = req.files as Express.Multer.File[];
+      
+      if (!files || files.length === 0) {
+        return res.status(400).json({ message: 'No files uploaded. Please select at least one image.' });
+      }
+
+      // Validate all files are images (PDF support removed)
+      for (const file of files) {
+        if (file.mimetype === 'application/pdf') {
+          return res.status(400).json({ 
+            message: 'PDF files are not supported. Please convert your bills to image format (JPG, PNG, WebP) for accurate analysis.' 
+          });
+        }
+        
+        if (!file.mimetype.startsWith('image/')) {
+          return res.status(400).json({ 
+            message: 'Only image files are supported. Please upload JPG, PNG, or WebP images.' 
+          });
+        }
+      }
+
+      let combinedBillText = '';
+      let analysisData: any = {};
+
+      // Process each image file with OpenAI Vision
+      if (process.env.OPENAI_API_KEY) {
+        const imageAnalyses: string[] = [];
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          try {
+            console.log(`Processing image ${i + 1}/${files.length}: ${file.originalname}`);
+            
+            const base64Image = file.buffer.toString('base64');
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                model: 'gpt-4o',
+                messages: [
+                  {
+                    role: 'user',
+                    content: [
+                      {
+                        type: 'text',
+                        text: `Extract all text and billing information from this medical bill image (Page ${i + 1} of ${files.length}). Include all charges, CPT codes, dates, account numbers, patient information, provider details, and any other billing-related text. Be extremely thorough and accurate.`
+                      },
+                      {
+                        type: 'image_url',
+                        image_url: {
+                          url: `data:${file.mimetype};base64,${base64Image}`
+                        }
+                      }
+                    ]
+                  }
+                ],
+                max_tokens: 2000
+              })
+            });
+
+            const visionData = await response.json();
+            const extractedText = visionData.choices?.[0]?.message?.content || `Unable to extract text from image ${i + 1}`;
+            
+            imageAnalyses.push(`\n\n=== PAGE ${i + 1} (${file.originalname}) ===\n${extractedText}`);
+            
+          } catch (visionError) {
+            console.error(`Vision API error for file ${i + 1}:`, visionError);
+            imageAnalyses.push(`\n\n=== PAGE ${i + 1} (${file.originalname}) ===\nError extracting text from this image. Please ensure the image is clear and try again.`);
+          }
+        }
+
+        // Combine all extracted text
+        combinedBillText = `COMPLETE MEDICAL BILL ANALYSIS - ${files.length} PAGE${files.length > 1 ? 'S' : ''}:\n\n${imageAnalyses.join('')}`;
+
+        // Comprehensive analysis of all pages together
+        try {
+          const comprehensiveAnalysisPrompt = `You are the world's leading medical bill reduction expert analyzing a complete ${files.length}-page medical bill. This is a comprehensive analysis of ALL pages provided.
+
+**COMPLETE BILL CONTENT (${files.length} PAGES):**
+${combinedBillText}
+
+**COMPREHENSIVE EXPERT ANALYSIS REQUIRED (minimum 2000 words for multi-page analysis):**
+
+Since this is a ${files.length}-page medical bill, provide an EXTREMELY detailed forensic analysis that covers ALL pages and cross-references information between pages to identify discrepancies and maximize savings opportunities.
+
+## 1. CROSS-PAGE BILLING ERROR DETECTION
+
+**DUPLICATE CHARGES ACROSS PAGES** (Potential Savings: $2,000-$35,000):
+- Identify duplicate services that appear on multiple pages
+- Cross-reference dates and procedure codes across all pages
+- Calculate precise savings for each cross-page duplicate
+- Document page-to-page inconsistencies in billing
+
+**COMPREHENSIVE UPCODING ANALYSIS** (Potential Savings: $5,000-$75,000):
+- Analyze all CPT codes across every page against actual services
+- Cross-reference severity levels and medical necessity across pages
+- Identify progression inconsistencies between pages
+- Calculate total overcharge amounts with regulatory violations
+
+**MULTI-PAGE UNBUNDLING DETECTION** (Potential Savings: $3,000-$50,000):
+- Identify services spread across pages that should be bundled
+- Reference National Correct Coding Initiative (NCCI) comprehensive edits
+- Document systematic unbundling patterns across the entire bill
+- Calculate maximum bundling savings potential
+
+**PHANTOM CHARGES AND INCONSISTENCIES** (Potential Savings: $1,500-$25,000):
+- Cross-reference services mentioned on different pages for consistency
+- Identify charges that appear without supporting documentation
+- Verify timeline consistency across all pages
+- Document evidence gaps between pages
+
+**COMPREHENSIVE FACILITY ERROR ANALYSIS** (Potential Savings: $2,000-$20,000):
+- Analyze room/facility charges across multiple days and pages
+- Verify service level consistency throughout the bill
+- Identify inappropriate facility fee escalations
+- Cross-reference with Medicare prospective payment rates
+
+## 2. COMPREHENSIVE FINANCIAL OPPORTUNITIES (MULTI-PAGE ANALYSIS)
+
+**TOTAL POTENTIAL SAVINGS BREAKDOWN:**
+- Cross-page duplicate corrections: $[exact calculated amount]
+- Comprehensive upcoding corrections: $[amount across all pages]
+- Multi-page unbundling corrections: $[total bundling savings]
+- Facility and timing errors: $[comprehensive facility savings]
+- **MAXIMUM TOTAL SAVINGS: $[comprehensive total across all pages]**
+
+**ADVANCED MULTI-PAGE CHARITY CARE STRATEGY:**
+- Assess total bill amount across all pages for charity qualification
+- Identify highest-value pages for charity care focus
+- Calculate progressive discount opportunities
+- Document comprehensive financial hardship case
+
+**SOPHISTICATED NEGOTIATION LEVERAGE:**
+- Use cross-page inconsistencies as negotiation leverage
+- Benchmark total charges against regional and Medicare rates
+- Identify quality of care issues evidenced across pages
+- Document comprehensive compliance violations
+
+## 3. DETAILED MULTI-PAGE ACTION PLAN
+
+**COMPREHENSIVE PRIORITY DISPUTE SEQUENCE:**
+1. [Highest cross-page error] - Pages [numbers], Account #[number], Total Amount $[amount]
+2. [Major upcoding across pages] - Pages [numbers], CPT codes [list], Amount $[amount]
+3. [Systematic unbundling] - Pages [numbers], Bundling opportunity $[amount]
+4. [Continue for all significant multi-page errors]
+
+**ENHANCED DOCUMENTATION STRATEGY:**
+- Create cross-page error summary with specific references
+- Document timeline inconsistencies between pages
+- Prepare comprehensive evidence package from all pages
+- Generate page-by-page dispute documentation
+
+**COMPREHENSIVE COMMUNICATION SCRIPTS:**
+"I'm calling about account number [number]. I've conducted a forensic analysis of my complete ${files.length}-page medical bill and identified systematic billing errors totaling $[amount] across multiple pages. The errors include cross-page duplicates, systematic upcoding, and comprehensive unbundling violations.
+
+Specifically, I've documented:
+1. Cross-page duplicates on pages [numbers]: $[amount]
+2. Systematic upcoding violations across pages [numbers]: $[amount]
+3. Unbundling schemes spanning pages [numbers]: $[amount]
+
+I'm requesting immediate supervisor review, complete bill audit, and corrections within 7 business days."
+
+## 4. REGULATORY COMPLIANCE ACROSS ALL PAGES
+
+**COMPREHENSIVE BILLING TRANSPARENCY VIOLATIONS:**
+- Document No Surprises Act violations across all pages
+- Identify pricing transparency failures in multi-page billing
+- Cross-reference good faith estimate accuracy
+- Document systematic disclosure violations
+
+**MULTI-PAGE FRAUD PATTERN ANALYSIS:**
+- Identify False Claims Act patterns across pages
+- Document systematic compliance failures
+- Analyze intent indicators in cross-page billing patterns
+- Prepare comprehensive regulatory violation documentation
+
+## 5. FINAL COMPREHENSIVE RECOMMENDATIONS
+
+**IMMEDIATE PRIORITY ACTIONS:**
+- Submit comprehensive multi-page dispute with cross-references
+- Request complete audit of all pages simultaneously
+- Escalate systematic pattern violations to compliance
+- Document cross-page inconsistencies for maximum leverage
+
+**LONG-TERM PROTECTION STRATEGY:**
+- Monitor future bills for similar multi-page patterns
+- Establish systematic review process for complex bills
+- Document provider patterns for ongoing protection
+- Create comprehensive appeal strategy template
+
+Extract every detail from ALL ${files.length} pages including cross-page references, account numbers, patient information, dates, providers, insurance details, and amounts. Use current regulatory standards and provide specific word-for-word dispute language for all identified errors across the complete bill.`;
+
+          const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'gpt-4o',
+              messages: [
+                {
+                  role: 'system',
+                  content: `You are the world's leading medical bill reduction expert specializing in multi-page bill analysis. Provide comprehensive forensic analysis with cross-page error detection and maximum savings opportunities.`
+                },
+                {
+                  role: 'user',
+                  content: comprehensiveAnalysisPrompt
+                }
+              ],
+              max_tokens: 4000,
+              temperature: 0.3
+            })
+          });
+
+          const analysisResult = await analysisResponse.json();
+          analysisData.aiAnalysis = analysisResult.choices?.[0]?.message?.content || 'Comprehensive multi-page analysis completed';
+        } catch (analysisError) {
+          console.error('Multi-page bill analysis error:', analysisError);
+          analysisData.aiAnalysis = `Multi-page bill analysis completed for ${files.length} images. Advanced comprehensive analysis temporarily unavailable.`;
+        }
+      } else {
+        return res.status(500).json({ message: 'AI analysis service unavailable. Please try again later.' });
+      }
+
+      // Create a comprehensive medical bill record
+      const billAmount = extractBillAmount(combinedBillText);
+      const providerName = extractProvider(combinedBillText);
+      const newBill = {
+        title: `${providerName} - ${files.length} Pages - ${new Date().toLocaleDateString()}`,
+        providerName: providerName,
+        totalAmount: billAmount.toString(),
+        patientResponsibility: billAmount.toString(),
+        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        status: 'uploaded' as const,
+        analysisStatus: 'completed' as const,
+        originalText: combinedBillText,
+        fileUrl: files.map(f => f.originalname).join(', ') // Store all filenames
+      };
+
+      const savedBill = await storage.createMedicalBill(userId, newBill);
+
+      res.json({
+        success: true,
+        bill: savedBill,
+        analysis: analysisData.aiAnalysis,
+        fileCount: files.length,
+        extractedText: combinedBillText.substring(0, 1000) + '...', // First 1000 chars for preview
+        message: `Successfully analyzed ${files.length} bill image${files.length > 1 ? 's' : ''}. ${billAmount > 0 ? `Found $${billAmount} in total charges across all pages.` : 'Complete bill ready for comprehensive analysis.'}`
+      });
+
+    } catch (error) {
+      console.error('Error uploading multiple bills:', error);
+      res.status(500).json({ message: 'Failed to upload and analyze bill images. Please try again.' });
     }
   });
 
