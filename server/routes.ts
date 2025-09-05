@@ -672,6 +672,93 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Simple AI Diagnosis Checking for Pixel Game
+  app.post('/api/cases/check-diagnosis', async (req, res) => {
+    try {
+      const { userDiagnosis, correctDiagnosis, symptoms = [], questionsAsked = [], orderedTests = [] } = req.body;
+      
+      if (!userDiagnosis || !correctDiagnosis) {
+        return res.status(400).json({ message: 'User diagnosis and correct diagnosis are required' });
+      }
+
+      let isCorrect = false;
+
+      // Use OpenAI for intelligent diagnosis matching if available
+      if (process.env.OPENAI_API_KEY) {
+        try {
+          const prompt = `You are a medical education AI that needs to determine if a student's diagnosis is medically equivalent to the correct diagnosis.
+
+Student's diagnosis: "${userDiagnosis}"
+Correct diagnosis: "${correctDiagnosis}"
+Patient symptoms: ${symptoms.join(', ')}
+Questions asked: ${questionsAsked.join(', ')}
+Tests ordered: ${orderedTests.join(', ')}
+
+Determine if the student's diagnosis is medically equivalent, close enough, or refers to the same condition as the correct diagnosis. Consider:
+- Synonyms (e.g., "heart attack" vs "myocardial infarction")
+- Abbreviated forms (e.g., "MI" vs "myocardial infarction")
+- Related conditions that would be clinically acceptable
+- Different levels of specificity (e.g., "pneumonia" vs "bacterial pneumonia")
+
+Respond with ONLY a JSON object:
+{
+  "isCorrect": true/false,
+  "confidence": 0.0-1.0,
+  "reasoning": "brief explanation"
+}`;
+
+          const response = await openAIService.openai.chat.completions.create({
+            model: "gpt-4o",
+            messages: [
+              {
+                role: "system",
+                content: "You are an expert medical educator evaluating student diagnoses for accuracy."
+              },
+              {
+                role: "user",
+                content: prompt
+              }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.1,
+            max_tokens: 200
+          });
+
+          const result = JSON.parse(response.choices[0].message.content || '{}');
+          isCorrect = result.isCorrect || false;
+          
+          res.json({ 
+            isCorrect, 
+            confidence: result.confidence || 0.5,
+            reasoning: result.reasoning || 'AI evaluation completed',
+            method: 'ai'
+          });
+          return;
+        } catch (aiError) {
+          console.warn('AI diagnosis check failed, using fallback logic:', aiError);
+        }
+      }
+
+      // Fallback to simple text matching
+      const userDiagLower = userDiagnosis.toLowerCase().trim();
+      const correctDiagLower = correctDiagnosis.toLowerCase().trim();
+      
+      isCorrect = userDiagLower.includes(correctDiagLower) || 
+                  correctDiagLower.includes(userDiagLower) ||
+                  userDiagLower === correctDiagLower;
+
+      res.json({ 
+        isCorrect, 
+        confidence: isCorrect ? 0.8 : 0.2,
+        reasoning: isCorrect ? 'Text matching successful' : 'No text match found',
+        method: 'fallback'
+      });
+    } catch (error) {
+      console.error('Error checking diagnosis:', error);
+      res.status(500).json({ message: 'Failed to check diagnosis' });
+    }
+  });
+
   // AI Learning Recommendations Route
   app.post('/api/learning-recommendations', async (req, res) => {
     try {
