@@ -377,18 +377,18 @@ export default function BillAI() {
     >
       <div className="flex flex-col h-full dark:bg-gray-900">
         {/* Dark Mode Toggle */}
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-16 right-3 z-20">
           <Button
             onClick={toggleDarkMode}
             variant="ghost"
             size="sm"
-            className="w-10 h-10 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 shadow-sm"
+            className="w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 shadow-lg"
             data-testid="dark-mode-toggle"
           >
             {isDarkMode ? (
-              <Sun className="h-5 w-5 text-amber-500" />
+              <Sun className="h-4 w-4 text-amber-500" />
             ) : (
-              <Moon className="h-5 w-5 text-gray-600" />
+              <Moon className="h-4 w-4 text-gray-600" />
             )}
           </Button>
         </div>
