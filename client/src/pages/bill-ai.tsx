@@ -26,7 +26,17 @@ import {
   Copy,
   Check,
   Download,
-  Phone
+  Phone,
+  ChevronDown,
+  ChevronUp,
+  Building2,
+  CreditCard,
+  Calculator,
+  Users,
+  Clock,
+  FileSearch,
+  HelpCircle,
+  Scale
 } from "lucide-react";
 import { Link } from "wouter";
 import { MobileLayout } from "@/components/mobile-layout";
@@ -60,6 +70,7 @@ export default function BillAI() {
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{current: number, total: number}>({current: 0, total: 0});
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
+  const [showMorePrompts, setShowMorePrompts] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -507,12 +518,172 @@ export default function BillAI() {
                   </Card>
                 </motion.div>
                 
+                {/* Show More Button */}
+                <motion.div 
+                  className="mt-3 px-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.0 }}
+                >
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowMorePrompts(!showMorePrompts)}
+                    className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-2xl h-8"
+                    data-testid="show-more-prompts"
+                  >
+                    <span className="text-xs font-medium">Show More Expert Prompts</span>
+                    {showMorePrompts ? (
+                      <ChevronUp className="h-3 w-3 ml-2" />
+                    ) : (
+                      <ChevronDown className="h-3 w-3 ml-2" />
+                    )}
+                  </Button>
+                </motion.div>
+
+                {/* Advanced Prompts Dropdown */}
+                <AnimatePresence>
+                  {showMorePrompts && (
+                    <motion.div 
+                      className="mt-2 px-4"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="space-y-2">
+                        {/* Insurance & Coverage */}
+                        <div className="grid grid-cols-1 gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("Guide me through accessing my insurance portal step-by-step. I need to download my Explanation of Benefits (EOB), check my coverage details, and find my claims history. What specific steps should I take for major insurers like Blue Cross, Aetna, UnitedHealth, or Kaiser?")}
+                            className="text-left p-3 h-auto rounded-xl border border-blue-200 hover:border-blue-300 hover:bg-blue-50 text-xs"
+                            data-testid="insurance-portal-guide"
+                          >
+                            <div className="flex items-start gap-2">
+                              <Building2 className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Insurance Portal Navigation</div>
+                                <div className="text-gray-600 mt-1">Step-by-step guide to access EOBs, claims, coverage details</div>
+                              </div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("My insurance denied my claim. Walk me through the complete appeals process: What documents do I need? What are the deadlines? How do I write a compelling appeal letter? What medical records should I request? Give me the exact timeline and strategy for a successful insurance appeal.")}
+                            className="text-left p-3 h-auto rounded-xl border border-red-200 hover:border-red-300 hover:bg-red-50 text-xs"
+                            data-testid="insurance-appeal-process"
+                          >
+                            <div className="flex items-start gap-2">
+                              <Scale className="h-4 w-4 text-red-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Insurance Appeal Mastery</div>
+                                <div className="text-gray-600 mt-1">Complete appeals process, deadlines, documents, strategies</div>
+                              </div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("Analyze my out-of-network charges. How do I calculate what insurance should have paid based on usual and customary rates? What's the difference between balance billing and legitimate charges? Give me specific negotiation tactics for out-of-network provider bills and how to use Medicare rates as leverage.")}
+                            className="text-left p-3 h-auto rounded-xl border border-purple-200 hover:border-purple-300 hover:bg-purple-50 text-xs"
+                            data-testid="out-of-network-analysis"
+                          >
+                            <div className="flex items-start gap-2">
+                              <Calculator className="h-4 w-4 text-purple-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Out-of-Network Bill Analysis</div>
+                                <div className="text-gray-600 mt-1">Calculate fair rates, balance billing protection, negotiation tactics</div>
+                              </div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("Create a comprehensive payment negotiation strategy. What's the best timing to call? Which departments should I contact first? How do I leverage financial hardship programs, charity care, and prompt-pay discounts? Give me specific scripts for negotiating with billing departments, including psychological tactics that work.")}
+                            className="text-left p-3 h-auto rounded-xl border border-green-200 hover:border-green-300 hover:bg-green-50 text-xs"
+                            data-testid="payment-negotiation-strategy"
+                          >
+                            <div className="flex items-start gap-2">
+                              <CreditCard className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Advanced Payment Negotiation</div>
+                                <div className="text-gray-600 mt-1">Scripts, timing, hardship programs, charity care applications</div>
+                              </div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("Help me understand medical coding errors that inflate bills. What are the most common upcoding scenarios? How do I identify when procedures are unbundled illegally? What CPT and DRG codes should I question? Give me a checklist to audit my medical bills for coding fraud and overcharges.")}
+                            className="text-left p-3 h-auto rounded-xl border border-orange-200 hover:border-orange-300 hover:bg-orange-50 text-xs"
+                            data-testid="medical-coding-audit"
+                          >
+                            <div className="flex items-start gap-2">
+                              <FileSearch className="h-4 w-4 text-orange-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Medical Coding Fraud Detection</div>
+                                <div className="text-gray-600 mt-1">Identify upcoding, unbundling, CPT errors, audit checklist</div>
+                              </div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("I need help with hospital financial assistance. What documents do I need for charity care applications? How do I calculate my income properly? What are hospitals legally required to offer? Give me state-by-state differences in charity care laws and specific application strategies for major hospital systems.")}
+                            className="text-left p-3 h-auto rounded-xl border border-teal-200 hover:border-teal-300 hover:bg-teal-50 text-xs"
+                            data-testid="charity-care-application"
+                          >
+                            <div className="flex items-start gap-2">
+                              <Users className="h-4 w-4 text-teal-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Charity Care & Financial Aid</div>
+                                <div className="text-gray-600 mt-1">Application process, required documents, legal requirements</div>
+                              </div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("Create a timeline-based action plan for my medical debt. What should I do in the first 24 hours, first week, first month? When do bills typically go to collections? How do I prioritize multiple medical bills? Give me a strategic roadmap with specific deadlines and actions to maximize my savings.")}
+                            className="text-left p-3 h-auto rounded-xl border border-indigo-200 hover:border-indigo-300 hover:bg-indigo-50 text-xs"
+                            data-testid="medical-debt-timeline"
+                          >
+                            <div className="flex items-start gap-2">
+                              <Clock className="h-4 w-4 text-indigo-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Medical Debt Action Timeline</div>
+                                <div className="text-gray-600 mt-1">24-hour to 6-month strategic roadmap, deadlines, priorities</div>
+                              </div>
+                            </div>
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            onClick={() => sendMessage("Help me understand my rights under medical billing laws. What protections do I have against surprise billing? How does the No Surprises Act affect my situation? What are my rights for emergency care billing? Give me state and federal law summaries that protect patients from unfair medical billing practices.")}
+                            className="text-left p-3 h-auto rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-xs"
+                            data-testid="patient-rights-laws"
+                          >
+                            <div className="flex items-start gap-2">
+                              <HelpCircle className="h-4 w-4 text-gray-600 flex-shrink-0 mt-0.5" />
+                              <div>
+                                <div className="font-semibold text-gray-900">Patient Rights & Legal Protection</div>
+                                <div className="text-gray-600 mt-1">No Surprises Act, state laws, emergency care protections</div>
+                              </div>
+                            </div>
+                          </Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 {/* Security Notice */}
                 <motion.div 
                   className="mt-4 px-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 1.0 }}
+                  transition={{ delay: 1.2 }}
                 >
                   <div className="flex items-center justify-center gap-2 text-gray-500 text-xs">
                     <CheckCircle className="h-3 w-3 text-emerald-600" />
