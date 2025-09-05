@@ -157,54 +157,28 @@ What's your household size and approximate income? I can tell you exactly what p
     }
     
     if (lowerMessage.includes("appeal") || lowerMessage.includes("dispute") || lowerMessage.includes("letter") || lowerMessage.includes("professional")) {
-      return `I will prepare a professional dispute letter using specific formatting and language that medical billing departments respond to most effectively.
+      return `I can help you write a professional dispute letter that hospitals take seriously.
 
-DISPUTE LETTER REQUIREMENTS:
+Before we start, I need to know what specific errors you found on your bill. Have you already identified billing errors, or do you need help finding them first?
 
-Pre-drafting documentation needed:
-1. Itemized bill with specific line item errors identified
-2. Medical records confirming actual services received
-3. Insurance EOB statements and coverage documentation
-4. Supporting evidence for each disputed charge
+If you've found errors, tell me:
+What type of errors did you find? For example, duplicate charges, services you didn't receive, or incorrect procedure codes.
 
-PROFESSIONAL LETTER STRUCTURE:
+Once I know what you're disputing, I'll help you write a letter that includes:
 
-HEADER SECTION:
-   - Your complete contact information
-   - Account number and service dates
-   - Hospital billing department address
-   - Professional business letter format
+Your contact information and account details formatted properly for hospital billing departments.
 
-DISPUTE STATEMENT:
-   "I am formally disputing specific charges on account #[number] due to documented billing errors. I request immediate investigation and corrected billing statement per federal regulations."
+A clear statement that you're formally disputing charges due to documented errors.
 
-ERROR DOCUMENTATION:
-   Each disputed charge must include:
-   - Specific line item number and description
-   - Charge amount being disputed
-   - Reason for dispute with supporting evidence
-   - Reference to medical records or documentation
+Specific details about each error with the line item numbers and amounts you're questioning.
 
-LEGAL REFERENCES:
-   - Fair Credit Billing Act compliance requirements
-   - Hospital billing transparency regulations
-   - Patient rights under federal law
-   - Good faith payment effort documentation
+A request for investigation and corrected billing within 30 days.
 
-RESOLUTION DEMANDS:
-   - Corrected bill within 30 calendar days
-   - Suspension of collection activities during investigation
-   - Written response detailing charge adjustments
-   - Compliance with federal dispute resolution procedures
+Professional language that references your rights under federal billing regulations.
 
-DISPUTE SUCCESS METRICS:
+Most properly written dispute letters get responses within 45 to 75 days, and about 68% result in some bill reduction.
 
-Response rates: 82% of properly documented disputes receive responses
-Reduction results: 68% achieve some bill reduction
-Average reductions: $6,500 to $28,000 on bills over $20,000
-Timeline: 45-75 days for complete resolution
-
-What specific billing errors have you identified that need to be included in your dispute letter?`;
+What billing errors have you found that you want to dispute?`;
     }
     
     // Default response 
