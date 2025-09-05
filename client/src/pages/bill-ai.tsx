@@ -132,15 +132,23 @@ export default function BillAI() {
       setUploadingFile(false);
       
       if (data.success && data.analysis) {
+        // Add user's file upload message first
+        const uploadMessage = {
+          id: Date.now().toString(),
+          role: "user" as const,
+          content: `📎 Uploaded medical bill for analysis`,
+          createdAt: new Date(),
+        };
+        
         // Add AI analysis as a message in the chat
         const analysisMessage = {
-          id: Date.now().toString(),
+          id: (Date.now() + 1).toString(),
           role: "assistant" as const,
           content: `🔍 **BILL ANALYSIS COMPLETE**\n\n${data.analysis}`,
           createdAt: new Date(),
         };
         
-        setLocalMessages(prev => [...prev, analysisMessage]);
+        setLocalMessages(prev => [...prev, uploadMessage, analysisMessage]);
         setConversationStarted(true);
         
         // Show success toast
@@ -172,12 +180,12 @@ export default function BillAI() {
     const file = event.target.files?.[0];
     if (!file) return;
     
-    // Validate file type
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+    // Validate file type - only PDF and images allowed
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
     if (!allowedTypes.includes(file.type)) {
       toast({
         title: "Invalid File Type",
-        description: "Please upload a PDF or image file (JPEG, PNG, WebP).",
+        description: "Please upload only PDF or image files (JPEG, PNG, WebP).",
         variant: "destructive",
       });
       return;
@@ -510,7 +518,7 @@ export default function BillAI() {
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*,application/pdf"
+            accept=".pdf,image/jpeg,image/jpg,image/png,image/webp"
             onChange={handleFileUpload}
             className="hidden"
             data-testid="file-input"
