@@ -648,14 +648,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("Guide me through accessing my insurance portal step-by-step. I need to download my Explanation of Benefits (EOB), check my coverage details, and find my claims history. What specific steps should I take for major insurers like Blue Cross, Aetna, UnitedHealth, or Kaiser?")}
-                            className="text-left p-3 h-auto rounded-xl border border-blue-200 hover:border-blue-300 hover:bg-blue-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-blue-200 dark:border-blue-800/30 hover:border-blue-300 dark:hover:border-blue-700/50 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-xs bg-white dark:bg-gray-800"
                             data-testid="insurance-portal-guide"
                           >
                             <div className="flex items-start gap-2">
                               <Building2 className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Insurance Portal Navigation</div>
-                                <div className="text-gray-600 mt-1">Step-by-step guide to access EOBs, claims, coverage details</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Insurance Portal Navigation</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">Step-by-step guide to access EOBs, claims, coverage details</div>
                               </div>
                             </div>
                           </Button>
@@ -663,14 +663,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("My insurance denied my claim. Walk me through the complete appeals process: What documents do I need? What are the deadlines? How do I write a compelling appeal letter? What medical records should I request? Give me the exact timeline and strategy for a successful insurance appeal.")}
-                            className="text-left p-3 h-auto rounded-xl border border-red-200 hover:border-red-300 hover:bg-red-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-red-200 dark:border-red-800/30 hover:border-red-300 dark:hover:border-red-700/50 hover:bg-red-50 dark:hover:bg-red-900/20 text-xs bg-white dark:bg-gray-800"
                             data-testid="insurance-appeal-process"
                           >
                             <div className="flex items-start gap-2">
                               <Scale className="h-4 w-4 text-red-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Insurance Appeal Mastery</div>
-                                <div className="text-gray-600 mt-1">Complete appeals process, deadlines, documents, strategies</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Insurance Appeal Mastery</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">Complete appeals process, deadlines, documents, strategies</div>
                               </div>
                             </div>
                           </Button>
@@ -678,14 +678,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("Analyze my out-of-network charges. How do I calculate what insurance should have paid based on usual and customary rates? What's the difference between balance billing and legitimate charges? Give me specific negotiation tactics for out-of-network provider bills and how to use Medicare rates as leverage.")}
-                            className="text-left p-3 h-auto rounded-xl border border-purple-200 hover:border-purple-300 hover:bg-purple-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-purple-200 dark:border-purple-800/30 hover:border-purple-300 dark:hover:border-purple-700/50 hover:bg-purple-50 dark:hover:bg-purple-900/20 text-xs bg-white dark:bg-gray-800"
                             data-testid="out-of-network-analysis"
                           >
                             <div className="flex items-start gap-2">
                               <Calculator className="h-4 w-4 text-purple-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Out-of-Network Bill Analysis</div>
-                                <div className="text-gray-600 mt-1">Calculate fair rates, balance billing protection, negotiation tactics</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Out-of-Network Bill Analysis</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">Calculate fair rates, balance billing protection, negotiation tactics</div>
                               </div>
                             </div>
                           </Button>
@@ -693,14 +693,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("Create a comprehensive payment negotiation strategy. What's the best timing to call? Which departments should I contact first? How do I leverage financial hardship programs, charity care, and prompt-pay discounts? Give me specific scripts for negotiating with billing departments, including psychological tactics that work.")}
-                            className="text-left p-3 h-auto rounded-xl border border-green-200 hover:border-green-300 hover:bg-green-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-green-200 dark:border-green-800/30 hover:border-green-300 dark:hover:border-green-700/50 hover:bg-green-50 dark:hover:bg-green-900/20 text-xs bg-white dark:bg-gray-800"
                             data-testid="payment-negotiation-strategy"
                           >
                             <div className="flex items-start gap-2">
                               <CreditCard className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Advanced Payment Negotiation</div>
-                                <div className="text-gray-600 mt-1">Scripts, timing, hardship programs, charity care applications</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Advanced Payment Negotiation</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">Scripts, timing, hardship programs, charity care applications</div>
                               </div>
                             </div>
                           </Button>
@@ -708,14 +708,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("Help me understand medical coding errors that inflate bills. What are the most common upcoding scenarios? How do I identify when procedures are unbundled illegally? What CPT and DRG codes should I question? Give me a checklist to audit my medical bills for coding fraud and overcharges.")}
-                            className="text-left p-3 h-auto rounded-xl border border-orange-200 hover:border-orange-300 hover:bg-orange-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-orange-200 dark:border-orange-800/30 hover:border-orange-300 dark:hover:border-orange-700/50 hover:bg-orange-50 dark:hover:bg-orange-900/20 text-xs bg-white dark:bg-gray-800"
                             data-testid="medical-coding-audit"
                           >
                             <div className="flex items-start gap-2">
                               <FileSearch className="h-4 w-4 text-orange-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Medical Coding Fraud Detection</div>
-                                <div className="text-gray-600 mt-1">Identify upcoding, unbundling, CPT errors, audit checklist</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Medical Coding Fraud Detection</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">Identify upcoding, unbundling, CPT errors, audit checklist</div>
                               </div>
                             </div>
                           </Button>
@@ -723,14 +723,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("I need help with hospital financial assistance. What documents do I need for charity care applications? How do I calculate my income properly? What are hospitals legally required to offer? Give me state-by-state differences in charity care laws and specific application strategies for major hospital systems.")}
-                            className="text-left p-3 h-auto rounded-xl border border-teal-200 hover:border-teal-300 hover:bg-teal-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-teal-200 dark:border-teal-800/30 hover:border-teal-300 dark:hover:border-teal-700/50 hover:bg-teal-50 dark:hover:bg-teal-900/20 text-xs bg-white dark:bg-gray-800"
                             data-testid="charity-care-application"
                           >
                             <div className="flex items-start gap-2">
                               <Users className="h-4 w-4 text-teal-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Charity Care & Financial Aid</div>
-                                <div className="text-gray-600 mt-1">Application process, required documents, legal requirements</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Charity Care & Financial Aid</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">Application process, required documents, legal requirements</div>
                               </div>
                             </div>
                           </Button>
@@ -738,14 +738,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("Create a timeline-based action plan for my medical debt. What should I do in the first 24 hours, first week, first month? When do bills typically go to collections? How do I prioritize multiple medical bills? Give me a strategic roadmap with specific deadlines and actions to maximize my savings.")}
-                            className="text-left p-3 h-auto rounded-xl border border-indigo-200 hover:border-indigo-300 hover:bg-indigo-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-indigo-200 dark:border-indigo-800/30 hover:border-indigo-300 dark:hover:border-indigo-700/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-xs bg-white dark:bg-gray-800"
                             data-testid="medical-debt-timeline"
                           >
                             <div className="flex items-start gap-2">
                               <Clock className="h-4 w-4 text-indigo-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Medical Debt Action Timeline</div>
-                                <div className="text-gray-600 mt-1">24-hour to 6-month strategic roadmap, deadlines, priorities</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Medical Debt Action Timeline</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">24-hour to 6-month strategic roadmap, deadlines, priorities</div>
                               </div>
                             </div>
                           </Button>
@@ -753,14 +753,14 @@ export default function BillAI() {
                           <Button
                             variant="outline"
                             onClick={() => sendMessage("Help me understand my rights under medical billing laws. What protections do I have against surprise billing? How does the No Surprises Act affect my situation? What are my rights for emergency care billing? Give me state and federal law summaries that protect patients from unfair medical billing practices.")}
-                            className="text-left p-3 h-auto rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-xs"
+                            className="text-left p-3 h-auto rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs bg-white dark:bg-gray-800"
                             data-testid="patient-rights-laws"
                           >
                             <div className="flex items-start gap-2">
                               <HelpCircle className="h-4 w-4 text-gray-600 flex-shrink-0 mt-0.5" />
                               <div>
-                                <div className="font-semibold text-gray-900">Patient Rights & Legal Protection</div>
-                                <div className="text-gray-600 mt-1">No Surprises Act, state laws, emergency care protections</div>
+                                <div className="font-semibold text-gray-900 dark:text-gray-100">Patient Rights & Legal Protection</div>
+                                <div className="text-gray-600 dark:text-gray-400 mt-1">No Surprises Act, state laws, emergency care protections</div>
                               </div>
                             </div>
                           </Button>
