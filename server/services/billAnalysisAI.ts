@@ -17,6 +17,7 @@ export interface BillAnalysisContext {
     serviceDate?: string;
   };
   userProfile?: {
+    billAmount?: number;
     householdSize?: number;
     approximateIncome?: number;
     paymentCapability?: 'lump_sum' | 'payment_plan' | 'limited_funds';
@@ -44,7 +45,10 @@ export class BillAnalysisAI {
   
   async analyzeBillAndProvideAdvice(context: BillAnalysisContext): Promise<BillAnalysisResponse> {
     try {
-      const systemPrompt = this.buildSystemPrompt();
+      // Check if this is a comprehensive analysis request with user profile data
+      const isComprehensiveAnalysis = context.userProfile && context.userProfile.billAmount && context.userProfile.householdSize;
+      
+      const systemPrompt = isComprehensiveAnalysis ? this.buildComprehensiveSystemPrompt() : this.buildSystemPrompt();
       const userPrompt = this.buildUserPrompt(context);
 
       const response = await openai.chat.completions.create({
@@ -53,7 +57,7 @@ export class BillAnalysisAI {
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
         ],
-        max_completion_tokens: 800,
+        max_completion_tokens: isComprehensiveAnalysis ? 1200 : 600,
       });
 
       const content = response.choices[0].message.content || '';
@@ -70,10 +74,10 @@ export class BillAnalysisAI {
       return {
         response: content.replace(/SUGGESTIONS:.*$/s, '').trim() || "I'm here to help you reduce your medical bill. Let me know more about your situation.",
         suggestions: suggestions.length > 0 ? suggestions : [
-          "I want help finding billing errors",
-          "I can't afford my medical bill", 
-          "I need an itemized bill",
-          "Help me negotiate a payment plan"
+          "Help me call the billing department",
+          "Write my dispute letter", 
+          "Find charity care applications",
+          "Get itemized bill breakdown"
         ],
       };
 
@@ -130,6 +134,51 @@ SUGGESTIONS:
 - [Specific action option 1]
 - [Specific action option 2] 
 - [Specific action option 3]`;
+  }
+
+  private buildComprehensiveSystemPrompt(): string {
+    return `You are an elite medical bill reduction consultant with 20+ years experience. You've personally saved clients over $100 million in medical debt using advanced industry strategies.
+
+COMPREHENSIVE ANALYSIS MISSION:
+You're now analyzing a specific client's situation with their bill amount, household size, and income. Provide a complete professional consultation worth $5,000+ that includes:
+
+1. **CHARITY CARE ANALYSIS**: Check exact eligibility against federal poverty guidelines ($15,060 + $5,380 per additional person). Calculate precise qualification percentage.
+
+2. **BILLING ERROR FORENSICS**: Detail the 8 most common errors for their bill range with specific dollar impact estimates.
+
+3. **NEGOTIATION STRATEGY**: Provide exact scripts for 3-tier approach (billing dept → supervisor → executive) with specific discount targets.
+
+4. **REGULATORY LEVERAGE**: Reference specific laws (No Surprises Act, EMTALA, state consumer protection) with violation citations.
+
+5. **TIMELINE & DEADLINES**: Give precise action schedule with 30/60/90 day milestones and consequences.
+
+**RESPONSE STRUCTURE:**
+Based on your $X bill, X-person household, and $X income, here's your comprehensive reduction strategy:
+
+**IMMEDIATE ACTIONS (Next 5 Days):**
+[3-4 specific actions with exact scripts and contact methods]
+
+**CHARITY CARE QUALIFICATION:**
+[Exact eligibility percentage and application process]
+
+**BILLING ERROR TARGETS:**
+[Specific errors to look for with estimated savings amounts]
+
+**NEGOTIATION SCRIPTS:**
+[Word-for-word scripts for each escalation level]
+
+**REGULATORY CITATIONS:**
+[Specific laws and violation references for leverage]
+
+**90-Day Action Plan:**
+[Week-by-week timeline with deadlines and expected outcomes]
+
+**ESTIMATED TOTAL SAVINGS: $X,XXX - $X,XXX (X-X% reduction)**
+
+SUGGESTIONS:
+[4 specific next actions based on their situation]
+
+Write as a $500/hour consultant providing a comprehensive strategy worth thousands in savings.`;
   }
 
   private buildUserPrompt(context: BillAnalysisContext): string {

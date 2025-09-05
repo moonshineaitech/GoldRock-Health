@@ -39,6 +39,7 @@ export default function BillAnalyzer() {
   const [localMessages, setLocalMessages] = useState<any[]>([]);
   const [conversationHistory, setConversationHistory] = useState<Array<{role: string, content: string}>>([]);
   const [userProfile, setUserProfile] = useState<{
+    billAmount?: number;
     householdSize?: number;
     approximateIncome?: number;
     paymentCapability?: 'lump_sum' | 'payment_plan' | 'limited_funds';
@@ -61,48 +62,154 @@ export default function BillAnalyzer() {
     enabled: !!user,
   });
 
-  // AI-powered response function using OpenAI
-  const getAIResponse = async (userMessage: string): Promise<{ content: string; suggestions?: string[] }> => {
-    try {
-      const response = await fetch('/api/bill-analysis-chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          conversationHistory,
-          userProfile,
-          uploadedBillData: userBills.length > 0 ? {
-            billAmount: userBills[0]?.totalAmount,
-            provider: userBills[0]?.providerName,
-            serviceDate: userBills[0]?.serviceDate?.toISOString()
-          } : undefined
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to get AI response');
-      }
-
-      const data = await response.json();
+  // Information gathering and expert analysis system
+  const getResponse = async (userMessage: string): Promise<{ content: string; suggestions?: string[] }> => {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    // Stage 1: Information Gathering with Premade Responses
+    if (!userProfile.billAmount && (lowerMessage.includes("help") || lowerMessage.includes("reduce") || lowerMessage.includes("bill") || lowerMessage.includes("payment") || lowerMessage.includes("afford"))) {
       return {
-        content: data.response,
-        suggestions: data.suggestions
-      };
-    } catch (error) {
-      console.error('Error getting AI response:', error);
-      // Fallback response
-      return {
-        content: "I'm here to help you reduce your medical bill. Most people can save thousands with the right approach. What specific challenge are you facing?",
+        content: `I'm a professional medical bill advocate. I've helped people save $50K-$500K+ on medical bills using insider strategies that hospitals don't want you to know.
+
+To give you the most effective reduction strategy, I need key details about your situation:
+
+**What's the total amount of your medical bill?** (This determines which reduction strategies will work best)`,
         suggestions: [
-          "I have a bill that seems too high",
-          "I can't afford my medical bill",
-          "I want to request an itemized bill", 
-          "I want to dispute billing errors"
+          "Under $1,000", 
+          "$1,000 - $5,000",
+          "$5,000 - $20,000", 
+          "Over $20,000"
         ]
       };
     }
+    
+    if (!userProfile.householdSize && userProfile.billAmount && (lowerMessage.includes("$") || lowerMessage.includes("000"))) {
+      // Extract amount and save to session
+      const amount = lowerMessage.match(/\$?([\d,]+)/)?.[1]?.replace(/,/g, '');
+      if (amount) {
+        setUserProfile(prev => ({ ...prev, billAmount: parseInt(amount) }));
+      }
+      
+      return {
+        content: `Got it - $${amount ? new Intl.NumberFormat().format(parseInt(amount)) : 'your bill amount'}.
+
+**How many people are in your household?** (This determines charity care eligibility - even people with insurance can get 50-100% forgiveness)`,
+        suggestions: [
+          "Just me (1 person)",
+          "2 people", 
+          "3-4 people",
+          "5+ people"
+        ]
+      };
+    }
+    
+    if (!userProfile.approximateIncome && userProfile.householdSize && (lowerMessage.includes("person") || lowerMessage.includes("people") || /\d/.test(lowerMessage))) {
+      // Extract household size
+      const size = lowerMessage.match(/\d+/)?.[0] || (lowerMessage.includes("just me") ? "1" : "2");
+      setUserProfile(prev => ({ ...prev, householdSize: parseInt(size) }));
+      
+      return {
+        content: `Perfect - ${size} ${size === "1" ? "person" : "people"} in your household.
+
+**What's your approximate annual household income?** (I use federal poverty guidelines to determine your best options - this stays private and helps me find programs worth thousands)`,
+        suggestions: [
+          "Under $30,000",
+          "$30,000 - $60,000", 
+          "$60,000 - $100,000",
+          "Over $100,000"
+        ]
+      };
+    }
+    
+    // Stage 2: Expert AI Analysis with Full Context
+    if (userProfile.billAmount && userProfile.householdSize && (userProfile.approximateIncome || lowerMessage.includes("$") || lowerMessage.includes("000"))) {
+      // Extract income if just provided
+      if (!userProfile.approximateIncome && lowerMessage.includes("$")) {
+        const income = lowerMessage.match(/\$?([\d,]+)/)?.[1]?.replace(/,/g, '');
+        if (income) {
+          setUserProfile(prev => ({ ...prev, approximateIncome: parseInt(income) }));
+        }
+      }
+      
+      // Now make AI call with full context for expert analysis
+      try {
+        const response = await fetch('/api/bill-analysis-chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: "Provide comprehensive medical bill reduction strategy",
+            conversationHistory,
+            userProfile: {
+              ...userProfile,
+              billAmount: userProfile.billAmount,
+              householdSize: userProfile.householdSize,
+              approximateIncome: userProfile.approximateIncome || (lowerMessage.includes("30") ? 25000 : lowerMessage.includes("60") ? 45000 : lowerMessage.includes("100") ? 80000 : 120000)
+            },
+            requestType: "COMPREHENSIVE_ANALYSIS"
+          }),
+        });
+
+        const data = await response.json();
+        return {
+          content: data.response,
+          suggestions: data.suggestions || [
+            "Help me call the billing department",
+            "Write my dispute letter",
+            "Find charity care applications", 
+            "Get itemized bill breakdown"
+          ]
+        };
+      } catch (error) {
+        console.error('Error with expert analysis:', error);
+        return {
+          content: "I'm experiencing a technical issue, but I can still provide manual guidance. Based on your situation, here are your best options for reducing this bill...",
+          suggestions: [
+            "Help me call the billing department", 
+            "Check charity care eligibility",
+            "Request itemized bill",
+            "Negotiate payment plan"
+          ]
+        };
+      }
+    }
+
+    // Handle specific requests during information gathering
+    if (lowerMessage.includes("itemized") || lowerMessage.includes("detailed bill")) {
+      return {
+        content: `**Requesting an itemized bill is crucial - 80% of medical bills contain errors.**
+
+Call your provider's billing department and say exactly this:
+
+*"I need a complete itemized statement showing all charges, procedure codes, dates, and provider information. Federal regulations require you provide this within 5 business days."*
+
+If they refuse, ask for a supervisor and reference your right to detailed billing under federal law.
+
+But first - what's your total bill amount? This determines the best strategy for finding errors worth disputing.`,
+        suggestions: [
+          "Under $1,000",
+          "$1,000 - $5,000", 
+          "$5,000 - $20,000",
+          "Over $20,000"
+        ]
+      };
+    }
+
+    // Default response
+    return {
+      content: `I'm a professional medical bill advocate who has saved people hundreds of thousands on medical bills.
+
+Most people can reduce their bills by 30-80% using strategies hospitals don't advertise. Let me help you.
+
+**What brings you here today?**`,
+      suggestions: [
+        "I have a medical bill that seems too high",
+        "I can't afford to pay my medical bill",
+        "I want to find billing errors",
+        "I need help negotiating payment"
+      ]
+    };
   };
 
   // Simple message handling with AI backend
@@ -124,24 +231,24 @@ export default function BillAnalyzer() {
     setIsTyping(true);
     setConversationStarted(true);
     
-    // Get AI response
+    // Get response (either information gathering or expert analysis)
     try {
-      const aiResponse = await getAIResponse(content);
+      const response = await getResponse(content);
       const assistantMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant", 
-        content: aiResponse.content,
-        suggestions: aiResponse.suggestions,
+        content: response.content,
+        suggestions: response.suggestions,
         createdAt: new Date(),
       };
       
       setLocalMessages(prev => [...prev, assistantMessage]);
       
       // Update conversation history
-      setConversationHistory(prev => [...prev, { role: "assistant", content: aiResponse.content }]);
+      setConversationHistory(prev => [...prev, { role: "assistant", content: response.content }]);
       
     } catch (error) {
-      console.error('Error getting AI response:', error);
+      console.error('Error getting response:', error);
       const errorMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant", 
