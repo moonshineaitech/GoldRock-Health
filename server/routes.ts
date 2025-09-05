@@ -7,7 +7,6 @@ import { openAIService } from "./services/openai";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
-import { billAnalysisAI } from "./services/billAnalysisAI";
 import { insertUserProgressSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
@@ -1607,65 +1606,6 @@ Respond with ONLY a JSON object:
     } catch (error) {
       console.error('Error creating chat message:', error);
       res.status(500).json({ message: 'Failed to create chat message' });
-    }
-  });
-
-  // Medical Bill Analysis AI - Powered analysis for bill reduction
-  app.post('/api/bill-analysis-chat', isAuthenticated, async (req: any, res) => {
-    try {
-      const { message, conversationHistory = [], uploadedBillData, userProfile } = req.body;
-      const userId = req.user.claims.sub;
-      
-      if (!message || typeof message !== 'string') {
-        return res.status(400).json({ message: 'Message is required' });
-      }
-
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(500).json({ message: 'AI analysis service is not configured' });
-      }
-
-      const context = {
-        userMessage: message,
-        conversationHistory,
-        uploadedBillData,
-        userProfile
-      };
-
-      const analysisResult = await billAnalysisAI.analyzeBillAndProvideAdvice(context);
-      
-      res.json(analysisResult);
-    } catch (error) {
-      console.error('Error in bill analysis chat:', error);
-      res.status(500).json({ 
-        response: 'I\'m experiencing a technical issue, but I can still help you reduce your medical bill. What specific challenge are you facing?',
-        suggestions: [
-          "I can't afford my medical bill",
-          "I think there are errors on my bill", 
-          "I want to negotiate a lower payment",
-          "Help me understand charity care options"
-        ]
-      });
-    }
-  });
-
-  // Bill data extraction endpoint
-  app.post('/api/extract-bill-data', isAuthenticated, async (req: any, res) => {
-    try {
-      const { billText } = req.body;
-      
-      if (!billText || typeof billText !== 'string') {
-        return res.status(400).json({ message: 'Bill text is required' });
-      }
-
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(500).json({ message: 'AI analysis service is not configured' });
-      }
-
-      const extractedData = await billAnalysisAI.extractBillData(billText);
-      res.json(extractedData);
-    } catch (error) {
-      console.error('Error extracting bill data:', error);
-      res.status(500).json({ message: 'Failed to extract bill data' });
     }
   });
 
