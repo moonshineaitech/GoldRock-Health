@@ -201,21 +201,21 @@ export default function BillAnalyzer() {
       label: "Assess Medical Bill",
       desc: "Find billing errors & overcharges",
       color: "red",
-      action: () => setInputMessage("Help me assess my medical bill to find billing errors and overcharges that I can dispute"),
+      action: () => setInputMessage("I have a medical bill that seems too high. Can you help me assess it for billing errors, duplicate charges, upcoding, and other overcharges that I can dispute to reduce my costs?"),
     },
     {
       icon: DollarSign,
       label: "Negotiate Payment",
       desc: "Get reduction strategies",
       color: "green",
-      action: () => setInputMessage("I need help negotiating a payment plan and reducing my medical bills. What strategies work best?"),
+      action: () => setInputMessage("I can't afford this medical bill. Please help me create a negotiation strategy with proven tactics to reduce the total amount, set up a payment plan, and apply for financial assistance programs."),
     },
     {
       icon: FileText,
       label: "Generate Appeal Letter",
       desc: "Professional dispute documents",
       color: "blue",
-      action: () => setInputMessage("Generate a professional appeal letter to dispute charges on my medical bill and request a reduction"),
+      action: () => setInputMessage("I need to dispute charges on my medical bill. Please generate a professional, legally-sound appeal letter that clearly outlines the billing errors and demands a corrected statement with reduced charges."),
     }
   ];
 
@@ -227,18 +227,18 @@ export default function BillAnalyzer() {
     >
       <div className="flex flex-col h-full">
         {/* Custom Header with Logo */}
-        <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 mb-4">
+        <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-4 mb-3">
           <div className="flex items-center space-x-3">
-            <img src={logoUrl} alt="GoldRock" className="w-8 h-8 rounded-xl" />
-            <div>
-              <h1 className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            <img src={logoUrl} alt="GoldRock" className="w-10 h-10 rounded-xl shadow-sm" />
+            <div className="flex-1">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 Medical Bill AI
               </h1>
-              <p className="text-xs text-gray-600">AI-powered cost reduction</p>
+              <p className="text-sm text-gray-600">AI-powered cost reduction</p>
             </div>
             {userBills.length > 0 && (
-              <div className="ml-auto text-right">
-                <div className="text-lg font-bold text-emerald-600">
+              <div className="text-right">
+                <div className="text-xl font-bold text-emerald-600">
                   {formatCurrency(getEstimatedSavings())}
                 </div>
                 <div className="text-xs text-gray-500">Est. Savings</div>
@@ -250,23 +250,23 @@ export default function BillAnalyzer() {
         {/* Compact Stats Bar */}
         {userBills.length > 0 && (
           <motion.div 
-            className="bg-gradient-to-r from-emerald-50 to-teal-50 p-3 mx-4 rounded-2xl mb-4"
+            className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 mx-4 rounded-2xl mb-3"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="text-lg font-bold text-gray-900">{userBills.length}</div>
-                <div className="text-xs text-gray-600">Bills</div>
+                <div className="text-xl font-bold text-gray-900">{userBills.length}</div>
+                <div className="text-sm text-gray-600">Bills</div>
               </div>
               <div>
-                <div className="text-lg font-bold text-emerald-600">{formatCurrency(getEstimatedSavings())}</div>
-                <div className="text-xs text-gray-600">Savings</div>
+                <div className="text-xl font-bold text-emerald-600">{formatCurrency(getEstimatedSavings())}</div>
+                <div className="text-sm text-gray-600">Savings</div>
               </div>
               <div>
-                <div className="text-lg font-bold text-purple-600">85%</div>
-                <div className="text-xs text-gray-600">Success</div>
+                <div className="text-xl font-bold text-purple-600">85%</div>
+                <div className="text-sm text-gray-600">Success</div>
               </div>
             </div>
           </motion.div>
@@ -277,30 +277,30 @@ export default function BillAnalyzer() {
           <div className="space-y-4 pb-4">
             {messages.length === 0 && !isLoading && (
               <motion.div 
-                className="text-center py-6"
+                className="text-center py-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
                 <motion.div 
-                  className="w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+                  className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-emerald-500/25"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                 >
-                  <Sparkles className="text-white h-8 w-8" />
+                  <Sparkles className="text-white h-10 w-10" />
                 </motion.div>
                 
-                <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
                   Welcome to Medical Bill AI!
                 </h2>
                 
-                <p className="text-sm text-gray-600 mb-6 px-4 leading-relaxed">
+                <p className="text-base text-gray-600 mb-8 px-4 leading-relaxed">
                   I specialize in finding billing errors, negotiating reductions, and generating professional appeals to slash your medical costs.
                 </p>
                 
                 {/* Compact Quick Actions */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-4 mb-8">
                   {quickActions.map((action, index) => {
                     const IconComponent = action.icon;
                     return (
@@ -311,16 +311,16 @@ export default function BillAnalyzer() {
                         transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
                       >
                         <Card 
-                          className="p-3 cursor-pointer hover:shadow-md transition-all bg-white/80 border-gray-200 h-20"
+                          className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 bg-white/90 border-gray-200 h-24 hover:border-emerald-300"
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className="flex flex-col items-center text-center space-y-1">
-                            <div className={`w-6 h-6 bg-${action.color}-100 rounded-lg flex items-center justify-center`}>
-                              <IconComponent className={`h-3 w-3 text-${action.color}-600`} />
+                          <div className="flex flex-col items-center text-center space-y-2">
+                            <div className={`w-8 h-8 bg-${action.color}-100 rounded-xl flex items-center justify-center shadow-sm`}>
+                              <IconComponent className={`h-4 w-4 text-${action.color}-600`} />
                             </div>
-                            <div className="font-medium text-gray-900 text-xs leading-tight">{action.label}</div>
-                            <div className="text-xs text-gray-500 leading-tight">{action.desc}</div>
+                            <div className="font-semibold text-gray-900 text-sm leading-tight">{action.label}</div>
+                            <div className="text-xs text-gray-600 leading-tight">{action.desc}</div>
                           </div>
                         </Card>
                       </motion.div>
@@ -328,9 +328,9 @@ export default function BillAnalyzer() {
                   })}
                 </div>
                 
-                <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
-                  <Shield className="h-3 w-3" />
-                  <span>Secure • Private • Exceeds HIPAA Standards</span>
+                <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-xl py-3 px-4">
+                  <Shield className="h-4 w-4 text-emerald-600" />
+                  <span className="font-medium">Secure • Private • Exceeds HIPAA Standards</span>
                 </div>
               </motion.div>
             )}
@@ -344,40 +344,43 @@ export default function BillAnalyzer() {
                 transition={{ delay: index * 0.05, duration: 0.3 }}
               >
                 <div
-                  className={`max-w-[85%] p-3 rounded-2xl ${
+                  className={`max-w-[85%] p-4 rounded-3xl ${
                     message.role === "user"
-                      ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white"
+                      ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg"
                       : "bg-white border border-gray-200 shadow-sm"
                   }`}
                 >
                   {message.role === "assistant" && (
-                    <div className="flex items-center mb-2">
-                      <div className="w-6 h-6 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center mr-2">
-                        <Bot className="text-white h-3 w-3" />
+                    <div className="flex items-center mb-3">
+                      <div className="w-7 h-7 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center mr-3 shadow-sm">
+                        <Bot className="text-white h-4 w-4" />
                       </div>
-                      <span className="text-xs font-medium text-gray-700">Medical Bill AI</span>
+                      <span className="text-sm font-semibold text-gray-700">Medical Bill AI</span>
                     </div>
                   )}
                   
-                  <div className="text-sm">{message.content}</div>
+                  <div className="text-base leading-relaxed">{message.content}</div>
                   
                   {message.messageType === "bill_upload" && message.metadata?.billId && (
-                    <div className="mt-2 p-2 bg-emerald-50 rounded-lg border border-emerald-200">
-                      <div className="flex items-center text-emerald-700 text-xs">
-                        <CheckCircle className="mr-1 h-3 w-3" />
-                        <span>Bill uploaded successfully!</span>
+                    <div className="mt-3 p-3 bg-emerald-50 rounded-2xl border border-emerald-200">
+                      <div className="flex items-center text-emerald-700 text-sm">
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <span className="font-medium">Bill uploaded successfully!</span>
                       </div>
+                      <p className="text-emerald-600 text-sm mt-1">
+                        Analyzing for potential savings opportunities...
+                      </p>
                     </div>
                   )}
 
                   {message.actionButtons && (
-                    <div className="flex flex-wrap gap-1 mt-2">
+                    <div className="flex flex-wrap gap-2 mt-3">
                       {message.actionButtons.map((button, index) => (
                         <Button
                           key={index}
                           size="sm"
                           variant="outline"
-                          className="text-xs h-6 px-2"
+                          className="text-sm h-8 px-3 rounded-xl bg-white/50 hover:bg-white/80 border-gray-300"
                           data-testid={`button-${button.action}-${index}`}
                         >
                           {button.text}
@@ -395,17 +398,18 @@ export default function BillAnalyzer() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <div className="max-w-[85%] p-3 rounded-2xl bg-white border border-gray-200 shadow-sm">
-                  <div className="flex items-center mb-2">
-                    <div className="w-6 h-6 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center mr-2">
-                      <Bot className="text-white h-3 w-3" />
+                <div className="max-w-[85%] p-4 rounded-3xl bg-white border border-gray-200 shadow-sm">
+                  <div className="flex items-center mb-3">
+                    <div className="w-7 h-7 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center mr-3 shadow-sm">
+                      <Bot className="text-white h-4 w-4" />
                     </div>
-                    <span className="text-xs font-medium text-gray-700">Medical Bill AI</span>
+                    <span className="text-sm font-semibold text-gray-700">Medical Bill AI</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full animate-bounce"></div>
-                    <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full animate-bounce delay-100"></div>
-                    <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full animate-bounce delay-200"></div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce delay-100"></div>
+                    <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce delay-200"></div>
+                    <span className="text-sm text-gray-500 ml-2">Analyzing your request...</span>
                   </div>
                 </div>
               </motion.div>
@@ -424,20 +428,20 @@ export default function BillAnalyzer() {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask how to reduce your medical bills, dispute charges, or negotiate payment..."
-                className="pr-10 h-10 bg-gray-50 border-gray-200 rounded-xl text-sm"
+                className="pr-12 h-12 bg-gray-50 border-gray-200 rounded-2xl text-base"
                 disabled={sendMessageMutation.isPending}
                 data-testid="input-message"
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 hover:bg-gray-200 rounded-lg transition-colors flex items-center justify-center"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 hover:bg-gray-200 rounded-xl transition-colors flex items-center justify-center"
                 disabled={uploadingFile}
                 data-testid="button-attach-file"
               >
                 {uploadingFile ? (
-                  <div className="animate-spin w-3 h-3 border border-emerald-600 border-t-transparent rounded-full"></div>
+                  <div className="animate-spin w-4 h-4 border border-emerald-600 border-t-transparent rounded-full"></div>
                 ) : (
-                  <Paperclip className="text-gray-500 h-3 w-3" />
+                  <Paperclip className="text-gray-500 h-4 w-4" />
                 )}
               </button>
             </div>
@@ -445,21 +449,21 @@ export default function BillAnalyzer() {
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || sendMessageMutation.isPending}
-              className="h-10 w-10 p-0 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-xl"
+              className="h-12 w-12 p-0 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-2xl shadow-lg"
               data-testid="button-send-message"
             >
               {sendMessageMutation.isPending ? (
-                <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
               ) : (
-                <Send className="h-4 w-4" />
+                <Send className="h-5 w-5 text-white" />
               )}
             </Button>
           </div>
           
           {/* Compact Disclaimer */}
-          <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
-            <AlertTriangle className="h-3 w-3 mr-1" />
-            <span>This is Generative AI - consult a professional</span>
+          <div className="flex items-center justify-center mt-3 text-sm text-gray-600 bg-amber-50 rounded-xl py-2 px-3">
+            <AlertTriangle className="h-4 w-4 mr-2 text-amber-600" />
+            <span className="font-medium">This is Generative AI - consult a professional</span>
           </div>
           
           <input
