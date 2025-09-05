@@ -124,12 +124,13 @@ export interface IStorage {
   updatePlatformStats(): Promise<PlatformStats>;
   
   // Medical Bill Analyzer operations
-  createChatSession(userId: string, billId?: string): Promise<ChatSession>;
+  createChatSession(session: InsertChatSession): Promise<ChatSession>;
   getChatSessions(userId: string): Promise<ChatSession[]>;
   getCurrentChatSession(userId: string): Promise<ChatSession | undefined>;
+  getChatSession(sessionId: string): Promise<ChatSession | undefined>;
   updateChatSession(sessionId: string, updates: Partial<ChatSession>): Promise<ChatSession>;
   
-  createChatMessage(sessionId: string, role: string, content: string, messageType?: string, metadata?: any): Promise<ChatMessage>;
+  createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
   getChatMessages(sessionId: string): Promise<ChatMessage[]>;
   
   createMedicalBill(userId: string, billData: InsertMedicalBill): Promise<MedicalBill>;
@@ -554,15 +555,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Medical Bill Analyzer implementations
-  async createChatSession(userId: string, billId?: string): Promise<ChatSession> {
-    const sessionData: InsertChatSession = {
-      userId,
-      billId,
-      title: billId ? "Bill Analysis Chat" : "General Medical Bill Assistance",
-      sessionType: billId ? "bill_analysis" : "general",
-    };
-    const [session] = await db.insert(chatSessions).values(sessionData).returning();
-    return session;
+  async createChatSession(session: InsertChatSession): Promise<ChatSession> {
+    const [newSession] = await db.insert(chatSessions).values(session).returning();
+    return newSession;
   }
 
   async getChatSessions(userId: string): Promise<ChatSession[]> {
@@ -583,7 +578,11 @@ export class DatabaseStorage implements IStorage {
     
     if (!session) {
       // Create a new session if none exists
-      return await this.createChatSession(userId);
+      return await this.createChatSession({
+        userId,
+        title: "Medical Bill Analysis",
+        sessionType: "bill_analysis",
+      });
     }
     
     return session;
@@ -598,15 +597,17 @@ export class DatabaseStorage implements IStorage {
     return session;
   }
 
-  async createChatMessage(sessionId: string, role: string, content: string, messageType?: string, metadata?: any): Promise<ChatMessage> {
-    const messageData: InsertChatMessage = {
-      sessionId,
-      role,
-      content,
-      messageType: messageType || "text",
-      metadata: metadata || {},
-    };
-    const [message] = await db.insert(chatMessages).values(messageData).returning();
+  async getChatSession(sessionId: string): Promise<ChatSession | undefined> {
+    const [session] = await db
+      .select()
+      .from(chatSessions)
+      .where(eq(chatSessions.id, sessionId))
+      .limit(1);
+    return session;
+  }
+
+  async createChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const [newMessage] = await db.insert(chatMessages).values(message).returning();
     
     // Update session with latest message timestamp and increment message count
     await db
@@ -615,9 +616,9 @@ export class DatabaseStorage implements IStorage {
         lastMessageAt: new Date(),
         totalMessages: sql`${chatSessions.totalMessages} + 1`,
       })
-      .where(eq(chatSessions.id, sessionId));
+      .where(eq(chatSessions.id, message.sessionId));
     
-    return message;
+    return newMessage;
   }
 
   async getChatMessages(sessionId: string): Promise<ChatMessage[]> {

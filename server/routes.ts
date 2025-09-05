@@ -1445,6 +1445,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }
 
+  // Chat Sessions API
+  app.get('/api/chat-sessions/current', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Try to find existing session first
+      let session = await storage.getCurrentChatSession(userId);
+      
+      // If no session exists, create a new one
+      if (!session) {
+        session = await storage.createChatSession({
+          userId,
+          title: "Medical Bill Analysis",
+          sessionType: "bill_analysis"
+        });
+      }
+      
+      res.json(session);
+    } catch (error) {
+      console.error('Error getting current chat session:', error);
+      res.status(500).json({ message: 'Failed to get chat session' });
+    }
+  });
+
+  // Chat Messages API
+  app.get('/api/chat-messages', isAuthenticated, async (req: any, res) => {
+    try {
+      const sessionId = req.query.sessionId;
+      const userId = req.user.claims.sub;
+      
+      if (!sessionId) {
+        return res.status(400).json({ message: 'sessionId query parameter is required' });
+      }
+      
+      // Verify session belongs to user
+      const session = await storage.getChatSession(sessionId as string);
+      if (!session || session.userId !== userId) {
+        return res.status(404).json({ message: 'Chat session not found' });
+      }
+      
+      const messages = await storage.getChatMessages(sessionId as string);
+      res.json(messages);
+    } catch (error) {
+      console.error('Error getting chat messages:', error);
+      res.status(500).json({ message: 'Failed to get chat messages' });
+    }
+  });
+
+  app.post('/api/chat-messages', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { sessionId, content, role, messageType = 'text' } = req.body;
+      
+      if (!sessionId || !content || !role) {
+        return res.status(400).json({ message: 'sessionId, content, and role are required' });
+      }
+      
+      // Verify session belongs to user
+      const session = await storage.getChatSession(sessionId);
+      if (!session || session.userId !== userId) {
+        return res.status(404).json({ message: 'Chat session not found' });
+      }
+      
+      const message = await storage.createChatMessage({
+        sessionId,
+        role,
+        content,
+        messageType
+      });
+      
+      res.json(message);
+    } catch (error) {
+      console.error('Error creating chat message:', error);
+      res.status(500).json({ message: 'Failed to create chat message' });
+    }
+  });
+
   // Medical Chatbot API - General medical and insurance Q&A
   app.post('/api/medical-chat', isAuthenticated, async (req: any, res) => {
     try {

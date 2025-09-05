@@ -231,7 +231,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
         content,
         role: "user",
       });
-      return response.json();
+      return response;
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["/api/chat-messages", currentSessionId] });
