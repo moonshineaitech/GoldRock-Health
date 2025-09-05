@@ -377,7 +377,7 @@ export default function BillAI() {
     >
       <div className="flex flex-col h-full dark:bg-gray-900">
         {/* Dark Mode Toggle */}
-        <div className="absolute top-16 right-3 z-20">
+        <div className="absolute top-20 right-6 z-20">
           <Button
             onClick={toggleDarkMode}
             variant="ghost"
@@ -447,7 +447,7 @@ export default function BillAI() {
 
         {/* Chat Messages Area */}
         {!activeFeature && (
-          <div className="flex-1 overflow-y-auto p-3 space-y-4 pb-6">
+          <div className="flex-1 overflow-y-auto p-3 space-y-4 pb-2">
             {/* Feature Access Buttons */}
             {conversationStarted && (
               <motion.div
@@ -485,7 +485,7 @@ export default function BillAI() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="px-4 py-8"
+                className="px-4 py-8 mb-4"
               >
                 {/* Balanced Hero Section */}
                 <div className="text-center mb-5">
