@@ -441,41 +441,78 @@ export default function BillAI() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="text-center py-6"
+                className="px-4 py-6"
               >
-                {/* Instant Assessment Button */}
+                {/* Hero Section with Premium Design */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 rounded-3xl opacity-60"></div>
+                  <div className="relative p-6 text-center">
+                    <motion.div
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.1, duration: 0.5 }}
+                      className="mb-4"
+                    >
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg mb-4">
+                        <Brain className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+                    
+                    <motion.h1 
+                      className="text-2xl font-bold text-gray-900 mb-2"
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      Save Thousands on Medical Bills
+                    </motion.h1>
+                    
+                    <motion.p 
+                      className="text-gray-600 text-sm leading-relaxed max-w-sm mx-auto"
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      AI-powered analysis finds billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
+                    </motion.p>
+                  </div>
+                </div>
+
+                {/* Premium Assessment Button */}
                 <motion.div
-                  className="mb-4 px-4"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                  className="mb-6"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4, duration: 0.4 }}
                 >
-                  <Button
+                  <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl h-14 shadow-lg border-0"
+                    className="relative group cursor-pointer"
                     data-testid="instant-assessment-button"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
-                        <Upload className="h-4 w-4 text-white" />
+                    {/* Gradient Background with Hover Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 rounded-2xl group-hover:from-emerald-600 group-hover:via-emerald-700 group-hover:to-teal-700 transition-all duration-300 shadow-lg group-hover:shadow-xl"></div>
+                    
+                    {/* Button Content */}
+                    <div className="relative flex items-center p-4 text-white">
+                      <div className="flex items-center justify-center w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl mr-4 group-hover:bg-white/20 transition-colors">
+                        <Upload className="h-6 w-6" />
                       </div>
-                      <div className="text-left flex-1">
-                        <div className="font-bold text-base text-white">Instant Medical Bill Assessment</div>
-                        <div className="text-emerald-100 text-xs">Upload bill • Find overcharges • Save thousands</div>
+                      <div className="flex-1 text-left">
+                        <div className="font-semibold text-lg leading-tight">Instant Medical Bill Assessment</div>
+                        <div className="text-emerald-100 text-sm font-medium mt-1">Upload bill • Find overcharges • Save thousands</div>
+                      </div>
+                      <div className="ml-2 opacity-60">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </div>
                     </div>
-                  </Button>
+                  </div>
                 </motion.div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Save Thousands on Medical Bills
-                </h3>
-                <p className="text-gray-600 mb-4 text-sm leading-relaxed px-4">
-                  I find billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
-                </p>
-                
-                {/* Quick Action Buttons */}
-                <div className="grid grid-cols-2 gap-2 px-4">
+                {/* Premium Action Grid */}
+                <div className="grid grid-cols-2 gap-3 mb-4">
                   {quickActions.map((action, index) => {
                     const IconComponent = action.icon;
                     return (
@@ -485,68 +522,86 @@ export default function BillAI() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 + 0.5 }}
                       >
-                        <Card 
-                          className="p-3 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-emerald-200"
+                        <div 
+                          className="group relative cursor-pointer"
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className="text-center">
-                            <div className={`w-10 h-10 bg-gradient-to-br from-${action.color}-500 to-${action.color}-600 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-lg`}>
-                              <IconComponent className="h-5 w-5 text-white" />
+                          {/* Card Background with Premium Effect */}
+                          <div className="absolute inset-0 bg-white rounded-2xl shadow-sm group-hover:shadow-lg transition-all duration-300 border border-gray-100 group-hover:border-gray-200"></div>
+                          <div className={`absolute inset-0 bg-gradient-to-br from-${action.color}-50 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300`}></div>
+                          
+                          {/* Card Content */}
+                          <div className="relative p-4 text-center">
+                            <div className={`w-12 h-12 bg-gradient-to-br from-${action.color}-500 to-${action.color}-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105`}>
+                              <IconComponent className="h-6 w-6 text-white" />
                             </div>
-                            <h4 className="font-bold text-gray-900 text-xs mb-1 leading-tight">{action.label}</h4>
-                            <p className="text-xs text-gray-600 leading-tight">{action.desc}</p>
+                            <h4 className="font-semibold text-gray-900 text-sm mb-1 leading-tight">{action.label}</h4>
+                            <p className="text-xs text-gray-500 leading-tight">{action.desc}</p>
                           </div>
-                        </Card>
+                        </div>
                       </motion.div>
                     );
                   })}
                 </div>
                 
-                {/* Compact Negotiation Strategy Box */}
+                {/* Premium Negotiation Strategy */}
                 <motion.div 
-                  className="mt-3 px-4"
+                  className="mb-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 }}
                 >
-                  <Card 
-                    className="p-2 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50"
+                  <div 
+                    className="group relative cursor-pointer"
                     onClick={() => setActiveFeature('negotiation-script')}
                     data-testid="negotiation-strategy-card"
                   >
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Phone className="h-4 w-4 text-white" />
+                    {/* Premium Background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-50 via-indigo-50 to-blue-50 rounded-2xl group-hover:from-purple-100 group-hover:via-indigo-100 group-hover:to-blue-100 transition-all duration-300"></div>
+                    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-2xl"></div>
+                    
+                    {/* Content */}
+                    <div className="relative flex items-center p-3 border border-purple-100 rounded-2xl group-hover:border-purple-200 transition-all duration-300">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                        <Phone className="h-5 w-5 text-white" />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 text-xs">Negotiation Strategy</h4>
-                        <p className="text-xs text-gray-600">Expert reduction tactics</p>
+                      <div className="flex-1 ml-3">
+                        <h4 className="font-semibold text-gray-900 text-sm">Negotiation Strategy</h4>
+                        <p className="text-xs text-gray-600 mt-0.5">Expert reduction tactics</p>
+                      </div>
+                      <div className="ml-2 opacity-40 group-hover:opacity-60 transition-opacity">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </div>
                     </div>
-                  </Card>
+                  </div>
                 </motion.div>
                 
-                {/* Show More Button */}
+                {/* Premium Show More Button */}
                 <motion.div 
-                  className="mt-3 px-4"
+                  className="mb-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.0 }}
                 >
-                  <Button
-                    variant="ghost"
+                  <div
                     onClick={() => setShowMorePrompts(!showMorePrompts)}
-                    className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-2xl h-8"
+                    className="group cursor-pointer"
                     data-testid="show-more-prompts"
                   >
-                    <span className="text-xs font-medium">Show More Expert Prompts</span>
-                    {showMorePrompts ? (
-                      <ChevronUp className="h-3 w-3 ml-2" />
-                    ) : (
-                      <ChevronDown className="h-3 w-3 ml-2" />
-                    )}
-                  </Button>
+                    <div className="flex items-center justify-center p-3 bg-gray-50 hover:bg-gray-100 rounded-2xl border border-gray-200 hover:border-gray-300 transition-all duration-300">
+                      <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Show More Expert Prompts</span>
+                      <div className="ml-2 transform group-hover:scale-110 transition-transform duration-200">
+                        {showMorePrompts ? (
+                          <ChevronUp className="h-4 w-4 text-gray-500" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 text-gray-500" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
 
                 {/* Advanced Prompts Dropdown */}
@@ -687,16 +742,18 @@ export default function BillAI() {
                   )}
                 </AnimatePresence>
 
-                {/* Security Notice */}
+                {/* Premium Security Badge */}
                 <motion.div 
-                  className="mt-4 px-4"
+                  className="mb-6"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.2 }}
                 >
-                  <div className="flex items-center justify-center gap-2 text-gray-500 text-xs">
-                    <CheckCircle className="h-3 w-3 text-emerald-600" />
-                    <span>Secure • Private • Exceeds HIPAA Standards</span>
+                  <div className="flex items-center justify-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full">
+                      <CheckCircle className="h-4 w-4 text-emerald-600" />
+                      <span className="text-xs font-medium text-emerald-800">Secure • Private • Exceeds HIPAA Standards</span>
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>
