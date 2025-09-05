@@ -403,7 +403,7 @@ export default function BillAI() {
 
         {/* Chat Messages Area */}
         {!activeFeature && (
-          <div className="flex-1 overflow-y-auto p-3 space-y-4 pb-28">
+          <div className="flex-1 overflow-y-auto p-3 space-y-4 pb-6">
             {/* Feature Access Buttons */}
             {conversationStarted && (
               <motion.div
@@ -726,20 +726,6 @@ export default function BillAI() {
                   )}
                 </AnimatePresence>
 
-                {/* Compact Security Badge */}
-                <motion.div 
-                  className="mb-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.2 }}
-                >
-                  <div className="flex items-center justify-center">
-                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 border border-emerald-200 rounded-full">
-                      <CheckCircle className="h-3 w-3 text-emerald-600" />
-                      <span className="text-xs font-medium text-emerald-800">Secure • Private • HIPAA</span>
-                    </div>
-                  </div>
-                </motion.div>
               </motion.div>
             )}
 
@@ -812,7 +798,7 @@ export default function BillAI() {
         )}
 
         {/* Input Area */}
-        <div className="p-3 border-t border-gray-200 bg-white mb-20">
+        <div className="p-3 border-t border-gray-200 bg-white mb-16">
           <div className="flex items-center space-x-2">
             <Button
               onClick={() => fileInputRef.current?.click()}
