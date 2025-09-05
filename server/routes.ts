@@ -2629,43 +2629,117 @@ What specific insurance issue are you facing? I can provide exact templates and 
       }
 
       // Generate a comprehensive synthetic patient using AI
-      const aiPrompt = `Generate a realistic, anonymous synthetic patient profile for medical training purposes. Create a comprehensive patient with the following structure:
+      const aiPrompt = `Generate a realistic, anonymous synthetic patient profile for medical training purposes. Create an extremely comprehensive patient with the following structure:
 
 PATIENT DEMOGRAPHICS:
-- Age: random between 25-75
-- Gender: random
-- Ethnicity: diverse representation
-- Occupation: realistic job
-- Marital status: varied
+- profileName: "Patient [Random Name]"
+- age: random between 25-75
+- gender: random (Male/Female/Non-binary)
+- ethnicity: diverse representation (Caucasian, Hispanic, African American, Asian, Native American, etc.)
+- occupation: realistic job with health implications
+- maritalStatus: varied (Single, Married, Divorced, Widowed)
 
 CLINICAL PRESENTATION:
-- Chief complaint: realistic medical concern
-- 3-5 presenting symptoms with detailed characteristics (severity 1-10, duration, onset, quality, location, aggravating/relieving factors)
-- Medical complexity level 1-5
+- chiefComplaint: realistic, specific medical concern (not generic)
+- presentingSymptoms: Array of 3-6 detailed symptom objects, each with:
+  {
+    symptom: "specific symptom name",
+    severity: 1-10,
+    duration: "specific timeframe",
+    onset: "gradual/sudden/intermittent",
+    quality: "sharp/dull/burning/cramping/etc",
+    location: "specific anatomical location",
+    radiation: "where it spreads if applicable",
+    aggravatingFactors: ["factor1", "factor2"],
+    relievingFactors: ["factor1", "factor2"],
+    associatedSymptoms: ["symptom1", "symptom2"]
+  }
 
 COMPREHENSIVE MEDICAL HISTORY:
-- 2-4 relevant past medical conditions
-- 1-2 surgical procedures if applicable  
-- 3-6 current medications with dosages and indications
-- 1-3 drug allergies with reactions
-- 2-4 family history conditions with relationships
-- Complete social history (smoking, alcohol, drugs, exercise, diet, travel)
+- pastMedicalHistory: {
+    conditions: ["condition1 (year diagnosed)", "condition2 (year diagnosed)"],
+    surgeries: ["surgery name (year)", "surgery name (year)"],
+    hospitalizations: ["reason (year)", "reason (year)"]
+  }
+- medications: [
+    {
+      name: "medication name",
+      dosage: "specific dose",
+      frequency: "daily/BID/TID/etc",
+      indication: "what it treats",
+      duration: "how long taking"
+    }
+  ]
+- allergies: [
+    {
+      allergen: "drug/food/environmental",
+      reaction: "specific reaction type"
+    }
+  ]
+- familyHistory: {
+    father: ["condition1", "condition2"],
+    mother: ["condition1", "condition2"],  
+    siblings: ["condition1", "condition2"],
+    paternal: ["condition1", "condition2"],
+    maternal: ["condition1", "condition2"]
+  }
+- socialHistory: {
+    smoking: { status: "never/former/current", details: "pack-years if applicable" },
+    alcohol: { status: "none/social/heavy", details: "drinks per week" },
+    drugs: { status: "none/former/current", details: "type and frequency" },
+    exercise: { frequency: "daily/weekly/none", type: "cardio/weights/sports" },
+    diet: { type: "balanced/vegetarian/high-sodium/etc", details: "specifics" },
+    travel: { recent: "any recent travel", endemic: "areas of concern" },
+    occupation: { hazards: "workplace exposures", stress: "high/moderate/low" }
+  }
 
 PHYSICAL EXAMINATION:
-- Complete vital signs with realistic values
-- General appearance and mental status
-- Systematic physical exam findings for all major systems
+- vitalSigns: {
+    temperature: "98.6-104°F realistic",
+    bloodPressure: { systolic: 90-180, diastolic: 60-110 },
+    heartRate: 60-120,
+    respiratoryRate: 12-24,
+    oxygenSaturation: 95-100,
+    height: "realistic height",
+    weight: "realistic weight",
+    bmi: "calculated BMI"
+  }
+- generalAppearance: { status: "well/ill-appearing", distress: "none/mild/moderate/severe", mental: "alert/confused/lethargic" }
+- systems: {
+    cardiovascular: { heartSounds: "specific findings", murmurs: "if present", pulses: "strength and quality", edema: "presence/location" },
+    pulmonary: { inspection: "findings", palpation: "findings", percussion: "findings", auscultation: "specific sounds" },
+    abdominal: { inspection: "findings", palpation: "findings", percussion: "findings", auscultation: "bowel sounds" },
+    neurological: { mentalStatus: "detailed findings", cranialNerves: "findings", motor: "strength/tone", sensory: "findings", reflexes: "findings" },
+    musculoskeletal: { inspection: "findings", palpation: "findings", rangeOfMotion: "limitations", strength: "specific grades" },
+    skin: { color: "findings", texture: "findings", lesions: "descriptions", temperature: "findings" },
+    heent: { head: "findings", eyes: "findings", ears: "findings", nose: "findings", throat: "findings" },
+    psychiatric: { mood: "findings", affect: "findings", thought: "process and content", perception: "findings" }
+  }
 
 RISK FACTORS & COMORBIDITIES:
-- 2-4 relevant risk factors with severity levels
-- 1-3 comorbid conditions with control status
+- riskFactors: [
+  {
+    factor: "specific risk factor",
+    severity: "mild/moderate/severe",
+    control: "well-controlled/poorly-controlled/uncontrolled",
+    impact: "low/medium/high impact on current condition"
+  }
+]
+- comorbidities: [
+  {
+    condition: "specific comorbid condition",
+    severity: "mild/moderate/severe",
+    control: "well-controlled/poorly-controlled",
+    relevance: "high/medium/low relevance to current presentation"
+  }
+]
 
 CASE CHARACTERISTICS:
-- Primary medical specialty focus
-- Relevant medical tags
-- Complexity rating 1-5
+- complexity: 1-5 (1=straightforward, 5=highly complex multi-system)
+- specialty: "Primary specialty this case relates to"
+- tags: ["tag1", "tag2", "tag3"] (relevant medical specialties/topics)
 
-Generate this in valid JSON format with realistic medical details. Make it educationally valuable and clinically accurate.`;
+Generate this as a single, well-structured JSON object with ALL fields populated with realistic, medically accurate, clinically relevant details. Make it educationally valuable and diagnostically challenging.`;
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -2674,7 +2748,7 @@ Generate this in valid JSON format with realistic medical details. Make it educa
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-4',
+          model: 'gpt-5',
           messages: [
             {
               role: 'system',
@@ -2685,7 +2759,7 @@ Generate this in valid JSON format with realistic medical details. Make it educa
               content: aiPrompt
             }
           ],
-          max_tokens: 2000,
+          max_tokens: 2500,
           temperature: 0.8
         })
       });
@@ -2843,7 +2917,7 @@ Make it clinically accurate and educationally valuable.`;
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-4',
+          model: 'gpt-5',
           messages: [
             {
               role: 'system',
@@ -2854,79 +2928,194 @@ Make it clinically accurate and educationally valuable.`;
               content: analysisPrompt
             }
           ],
-          max_tokens: 2000,
+          max_tokens: 3000,
           temperature: 0.7
         })
       });
 
+      // Check if OpenAI returned an error
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('OpenAI API Error:', errorData);
+        throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
+      }
+
       const aiData = await response.json();
+      console.log('OpenAI Response Status:', response.status);
+      console.log('OpenAI Response Data:', JSON.stringify(aiData, null, 2));
+      
       let diagnosticAnalysis;
       let learningPoints;
       
       try {
-        const aiContent = aiData.choices[0].message.content.trim();
-        
-        // Parse the response - it might contain multiple JSON objects
-        const jsonObjects = aiContent.split('\n\n').filter(section => 
-          section.trim().startsWith('{') && section.trim().endsWith('}')
-        );
-        
-        if (jsonObjects.length >= 1) {
-          diagnosticAnalysis = JSON.parse(jsonObjects[0]);
-          learningPoints = jsonObjects.length > 1 ? JSON.parse(jsonObjects[1]) : {
-            keyInsights: ["Comprehensive case analysis completed"],
-            clinicalPearls: ["Systematic approach improves diagnostic accuracy"],
-            commonMistakes: ["Not considering all differential diagnoses"],
-            literatureReferences: ["UpToDate Clinical Guidelines"]
-          };
-        } else {
-          throw new Error('No valid JSON found in AI response');
+        if (!aiData.choices || !aiData.choices[0] || !aiData.choices[0].message) {
+          throw new Error('Invalid OpenAI response structure');
         }
+        
+        const aiContent = aiData.choices[0].message.content.trim();
+        console.log('Raw AI Content:', aiContent);
+        
+        // More robust JSON extraction
+        let jsonString = aiContent;
+        
+        // Remove markdown code blocks if present
+        if (jsonString.includes('```json')) {
+          const jsonMatch = jsonString.match(/```json\s*([\s\S]*?)\s*```/);
+          if (jsonMatch) {
+            jsonString = jsonMatch[1];
+          }
+        } else if (jsonString.includes('```')) {
+          const jsonMatch = jsonString.match(/```\s*([\s\S]*?)\s*```/);
+          if (jsonMatch) {
+            jsonString = jsonMatch[1];
+          }
+        }
+        
+        // Find JSON boundaries more reliably
+        const jsonStart = jsonString.indexOf('{');
+        const jsonEnd = jsonString.lastIndexOf('}') + 1;
+        
+        if (jsonStart !== -1 && jsonEnd > jsonStart) {
+          jsonString = jsonString.slice(jsonStart, jsonEnd);
+        }
+        
+        console.log('Cleaned JSON String:', jsonString);
+        
+        // Try to parse as a single JSON object first
+        try {
+          const parsedData = JSON.parse(jsonString);
+          
+          // Check if it contains the expected diagnostic analysis structure
+          if (parsedData.differentialDiagnoses) {
+            diagnosticAnalysis = parsedData;
+            learningPoints = parsedData.keyInsights ? {
+              keyInsights: parsedData.keyInsights,
+              clinicalPearls: parsedData.clinicalPearls,
+              commonMistakes: parsedData.commonMistakes,
+              literatureReferences: parsedData.literatureReferences
+            } : {
+              keyInsights: ["Comprehensive case analysis completed"],
+              clinicalPearls: ["Systematic approach improves diagnostic accuracy"],
+              commonMistakes: ["Not considering all differential diagnoses"],
+              literatureReferences: ["Evidence-based medicine guidelines"]
+            };
+          } else {
+            throw new Error('Parsed data does not contain expected diagnostic structure');
+          }
+        } catch (singleParseError) {
+          // Try splitting into multiple JSON objects
+          const jsonObjects = jsonString.split('\n\n').filter(section => 
+            section.trim().startsWith('{') && section.trim().endsWith('}')
+          );
+          
+          if (jsonObjects.length >= 1) {
+            diagnosticAnalysis = JSON.parse(jsonObjects[0]);
+            learningPoints = jsonObjects.length > 1 ? JSON.parse(jsonObjects[1]) : {
+              keyInsights: ["Comprehensive case analysis completed"],
+              clinicalPearls: ["Systematic approach improves diagnostic accuracy"], 
+              commonMistakes: ["Not considering all differential diagnoses"],
+              literatureReferences: ["Evidence-based medicine guidelines"]
+            };
+          } else {
+            throw new Error('No valid JSON objects found in AI response');
+          }
+        }
+        
       } catch (parseError) {
         console.error('Error parsing AI diagnostic analysis:', parseError);
-        // Fallback analysis
+        console.error('Parse Error Details:', parseError.message);
+        
+        // Comprehensive fallback analysis based on patient data
         diagnosticAnalysis = {
           differentialDiagnoses: [{
-            diagnosis: "Further evaluation needed",
-            probability: 50,
-            supportingEvidence: ["Patient history", "Physical findings"],
-            contraEvidence: [],
-            requiredTests: ["Complete evaluation"],
+            diagnosis: `Evaluation for ${patient.chiefComplaint}`,
+            probability: 60,
+            supportingEvidence: [
+              "Patient presentation consistent with chief complaint",
+              "Age and demographic factors",
+              "Medical history supports consideration"
+            ],
+            contraEvidence: ["Requires further diagnostic workup"],
+            requiredTests: [
+              "Complete Blood Count",
+              "Comprehensive Metabolic Panel",
+              "Appropriate imaging studies"
+            ],
+            urgency: "routine"
+          }, {
+            diagnosis: "Alternative diagnosis consideration",
+            probability: 30,
+            supportingEvidence: ["Some supporting clinical features"],
+            contraEvidence: ["Inconsistent with some findings"],
+            requiredTests: ["Targeted diagnostic tests"],
             urgency: "routine"
           }],
           recommendedTests: [{
-            testName: "Comprehensive evaluation",
+            testName: "Comprehensive Diagnostic Panel",
             category: "laboratory",
             priority: "routine",
-            rationale: "Initial assessment",
-            expectedFindings: "Variable",
-            cost: "Variable"
+            rationale: `Initial workup for ${patient.chiefComplaint}`,
+            expectedFindings: "Will help clarify diagnosis",
+            cost: "$200-500"
+          }, {
+            testName: "Imaging Study",
+            category: "imaging",
+            priority: "routine", 
+            rationale: "Evaluate structural abnormalities",
+            expectedFindings: "Variable based on underlying condition",
+            cost: "$300-800"
           }],
           riskAssessment: {
-            overallRisk: "low",
-            specificRisks: [],
-            redFlags: []
+            overallRisk: "moderate",
+            specificRisks: [{
+              risk: "Disease progression",
+              probability: 25,
+              mitigation: "Early intervention and monitoring"
+            }],
+            redFlags: ["Worsening symptoms", "New concerning symptoms"]
           },
           treatmentRecommendations: [{
-            intervention: "Follow-up evaluation",
+            intervention: "Symptomatic management",
             type: "short_term",
-            evidenceLevel: "C",
+            evidenceLevel: "B",
+            contraindications: ["Patient-specific allergies"],
+            monitoringRequired: ["Symptom response", "Side effects"]
+          }, {
+            intervention: "Lifestyle modifications",
+            type: "long_term", 
+            evidenceLevel: "A",
             contraindications: [],
-            monitoringRequired: ["symptoms"]
+            monitoringRequired: ["Adherence", "Clinical response"]
           }],
           prognosis: {
-            shortTerm: "Requires evaluation",
-            mediumTerm: "Variable",
-            longTerm: "Depends on findings",
-            factorsAffectingOutcome: ["timely evaluation"]
+            shortTerm: "Good with appropriate treatment",
+            mediumTerm: "Depends on response to therapy",
+            longTerm: "Variable based on underlying condition",
+            factorsAffectingOutcome: ["Treatment compliance", "Early intervention", "Comorbidity management"]
           }
         };
         
         learningPoints = {
-          keyInsights: ["AI analysis encountered parsing error - manual review recommended"],
-          clinicalPearls: ["Always verify AI-generated recommendations"],
-          commonMistakes: ["Over-relying on AI without clinical correlation"],
-          literatureReferences: ["Standard medical references"]
+          keyInsights: [
+            "AI analysis had parsing challenges - manual review recommended",
+            "Clinical correlation essential for accurate diagnosis",
+            "Systematic approach to diagnostic workup important"
+          ],
+          clinicalPearls: [
+            "Always verify AI-generated recommendations with clinical judgment",
+            "Consider differential diagnosis systematically",
+            "Patient presentation should guide diagnostic approach"
+          ],
+          commonMistakes: [
+            "Over-relying on AI without clinical correlation",
+            "Ignoring patient-specific factors",
+            "Failing to consider alternative diagnoses"
+          ],
+          literatureReferences: [
+            "Evidence-based clinical practice guidelines",
+            "Peer-reviewed diagnostic protocols",
+            "Specialty-specific treatment recommendations"
+          ]
         };
       }
 
