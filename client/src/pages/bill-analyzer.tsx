@@ -447,8 +447,8 @@ What aspect of your medical billing situation requires immediate attention?`;
     },
     {
       icon: AlertTriangle,
-      label: "Find Overcharges",
-      desc: "Spot billing errors & scams",
+      label: "Assess Medical Bill",
+      desc: "Find hospital billing errors",
       color: "red",
       action: () => {
         const message = "I have a medical bill that seems too high. Please help me assess it for billing errors, duplicate charges, upcoding, and other overcharges that I can dispute to reduce my costs.";
@@ -457,8 +457,8 @@ What aspect of your medical billing situation requires immediate attention?`;
     },
     {
       icon: DollarSign,
-      label: "Get Itemized Bill",
-      desc: "Essential first step to savings",
+      label: "Request Hospital Records",
+      desc: "Get detailed billing breakdown",
       color: "green",
       action: () => {
         const message = "I need to request an itemized bill from my hospital/provider to identify overcharges. Please give me the exact script to use when calling them and what specific details to demand.";
@@ -467,8 +467,8 @@ What aspect of your medical billing situation requires immediate attention?`;
     },
     {
       icon: FileText,
-      label: "Appeal & Dispute",
-      desc: "Professional reduction letters",
+      label: "Dispute Insurance Claims",
+      desc: "Professional appeal letters",
       color: "blue",
       action: () => {
         const message = "I need to dispute charges on my medical bill. Please generate a professional appeal letter that clearly outlines billing errors and demands a corrected statement with reduced charges.";
@@ -530,11 +530,11 @@ What aspect of your medical billing situation requires immediate attention?`;
                 </motion.div>
                 
                 <h2 className="text-xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
-                  Save Thousands on Medical Bills
+                  Medical & Insurance Bill Assessment
                 </h2>
                 
                 <p className="text-sm text-gray-600 mb-6 px-6 leading-relaxed">
-                  I find billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
+                  I analyze hospital, medical, and insurance bills to find errors and overcharges worth thousands.
                 </p>
                 
                 {/* Compact Quick Actions */}
@@ -665,7 +665,7 @@ What aspect of your medical billing situation requires immediate attention?`;
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask how to find thousands in overcharges, request itemized bills, or dispute charges..."
+                placeholder="Ask about medical bill analysis, hospital billing errors, or insurance claim disputes..."
                 className="pr-12 h-12 bg-gray-50 border-gray-200 rounded-2xl text-base"
                 disabled={isTyping}
                 data-testid="input-message"
