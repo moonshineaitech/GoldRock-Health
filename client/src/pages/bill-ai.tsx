@@ -52,36 +52,7 @@ export default function BillAI() {
     enabled: !!user,
   });
 
-  // OpenAI Chat Mutation
-  const chatMutation = useMutation({
-    mutationFn: async (message: string) => {
-      const response = await apiRequest("/api/bill-ai-chat", {
-        method: "POST",
-        body: { message }
-      });
-      return response;
-    },
-    onSuccess: (data) => {
-      const assistantMessage: AIMessage = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: data.response,
-        createdAt: new Date(),
-      };
-      setLocalMessages(prev => [...prev, assistantMessage]);
-      setIsTyping(false);
-    },
-    onError: (error) => {
-      setIsTyping(false);
-      toast({
-        title: "AI Error",
-        description: "Sorry, I'm having trouble connecting. Please try again.",
-        variant: "destructive",
-      });
-    }
-  });
-
-  // Send message function
+  // Send message function using the working medical chat API
   const sendMessage = async (content: string) => {
     if (!content.trim() || isTyping) return;
 
@@ -98,8 +69,40 @@ export default function BillAI() {
     setIsTyping(true);
     setConversationStarted(true);
     
-    // Send to OpenAI
-    chatMutation.mutate(content);
+    // Send to the working medical chat API
+    try {
+      const response = await apiRequest("POST", "/api/medical-chat", {
+        message: content.trim()
+      });
+
+      const data = await response.json();
+
+      const assistantMessage: AIMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: data.response || "I'm here to help with medical bill questions. Please ask me about billing errors, negotiation strategies, or cost reduction techniques.",
+        createdAt: new Date(),
+      };
+
+      setLocalMessages(prev => [...prev, assistantMessage]);
+      setIsTyping(false);
+    } catch (error: any) {
+      const errorMessage: AIMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
+        createdAt: new Date(),
+      };
+      
+      setLocalMessages(prev => [...prev, errorMessage]);
+      setIsTyping(false);
+      
+      toast({
+        title: "Connection Error",
+        description: "Unable to connect to AI service. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   useEffect(() => {
