@@ -40,6 +40,14 @@ interface ChatMessage {
 }
 
 export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: ChatInterfaceProps) {
+  // Safety check for medicalCase
+  if (!medicalCase) {
+    return (
+      <MobileCard className="p-4 text-center">
+        <p className="text-gray-500">Loading medical case...</p>
+      </MobileCard>
+    );
+  }
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [startTime] = useState(Date.now());

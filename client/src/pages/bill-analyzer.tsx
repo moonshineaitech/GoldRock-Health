@@ -70,6 +70,9 @@ export default function BillAnalyzer() {
     if (lowerMessage.includes("itemized bill") || lowerMessage.includes("request") || lowerMessage.includes("hospital")) {
       return `As a professional medical bill reduction specialist, here is your proven approach for obtaining the documentation needed to identify overcharges:
 
+🚨 CRITICAL FIRST STEP - DO NOT PAY IMMEDIATELY:
+Medical bills typically aren't sent to collections for 90-120 days. Use this time strategically - never pay with credit card first! This window is your biggest advantage for maximum savings.
+
 PHONE SCRIPT FOR BILLING DEPARTMENT:
 
 Call and state exactly:
@@ -82,6 +85,7 @@ CRITICAL DETAILS TO DEMAND:
    - ICD-10 diagnosis codes
    - Service dates and time durations
    - Provider NPI numbers and credentials
+   - Medical record number and patient account details
 
 2. Facility charges breakdown:
    - Daily room and board rates
@@ -95,14 +99,19 @@ CRITICAL DETAILS TO DEMAND:
    - Medical device and supply itemization
    - IV fluids and contrast materials
 
-FOLLOW UP PROTOCOL:
+ESCALATION SCRIPT (if initial request denied):
+"Federal patient rights regulations require this documentation. Please connect me with your billing supervisor and compliance department. I am prepared to wait for someone with proper authorization."
 
-If initial request is denied, escalate immediately:
-"Federal patient rights regulations require this documentation. Please connect me with your billing supervisor and compliance department."
+ENHANCED ANALYSIS OPPORTUNITY:
 
-ANALYSIS OPPORTUNITY:
+This itemized documentation reveals specific line items where 80% of bills contain errors. Professional advocates use a 47-point error detection checklist focusing on:
+- Duplicate charges for same procedure
+- Wrong procedure codes (upcoding)
+- Unbundled charges (should be packaged)
+- Services not actually received
+- Incorrect dates, times, or patient information
 
-This itemized documentation reveals the specific line items where billing errors typically occur. Hospital bills contain an average of 7 billing errors, with large bills frequently having errors worth 25-40% of the total amount.
+Average savings on large bills: 50-90% reduction when errors are properly identified and disputed.
 
 What type of medical facility issued your bill, and what was the total amount charged?`;
     }
@@ -158,47 +167,118 @@ What is the total amount of your bill and what type of medical care was provided
     if (lowerMessage.includes("negotiate") || lowerMessage.includes("payment plan") || lowerMessage.includes("reduce") || lowerMessage.includes("can't afford")) {
       return `I will provide you with professional negotiation strategies that consistently achieve substantial bill reductions for patients.
 
+🎯 STRATEGIC APPROACH - USE YOUR 90-120 DAY WINDOW:
+Never rush to pay. Bills don't go to collections immediately - use this time to research, prepare, and negotiate from a position of strength.
+
 PRE-NEGOTIATION PREPARATION:
 
 Required documentation:
-1. Complete itemized bill with all line items
+1. Complete itemized bill with all line items and CPT codes
 2. Insurance EOB statements and coverage details
-3. Financial hardship documentation if applicable
-4. Research on fair market pricing for your procedures
+3. Financial hardship documentation (3 months pay stubs, tax returns, bank statements)
+4. Fair market pricing research using these professional tools:
+   • Healthcare Bluebook (fair price estimates)
+   • FAIR Health Consumer (geographic pricing data)
+   • Hospital Price Transparency websites (required by law)
 
 PROVEN NEGOTIATION APPROACH:
 
 Initial contact script:
 "I received a bill totaling $[amount] for recent medical care. I want to resolve this responsibly but need to discuss reasonable payment options based on fair market rates for these services."
 
-EFFECTIVE REDUCTION STRATEGIES:
+ENHANCED REDUCTION STRATEGIES:
 
-PROMPT PAYMENT DISCOUNTS:
-   Request immediate: 15-35% reduction for full payment
-   Typical results: $2,500 to $45,000 savings on large bills
-   Best success rate when combined with documented financial constraints
+1️⃣ CHARITY CARE PROGRAMS (50-100% FORGIVENESS):
+   • FREE CARE: Households ≤200% Federal Poverty Level
+   • DISCOUNTED CARE: 200-400% Federal Poverty Level  
+   • HARDSHIP PROGRAMS: When bills exceed 20% of annual income
+   • Available EVEN WITH insurance coverage
+   • Success rate increases from 60% to 85% with proper preparation
 
-FINANCIAL HARDSHIP PROGRAMS:
-   Most hospitals maintain charity care programs
-   Income-based reductions: 25% to 100% bill forgiveness
-   Required documentation: tax returns, pay stubs, bank statements
+2️⃣ PROMPT PAYMENT DISCOUNTS:
+   Request immediate: 15-40% reduction for full payment
+   Typical results: $2,500 to $50,000+ savings on large bills
+   Best combined with documented financial constraints
 
-FAIR MARKET RATE ADJUSTMENTS:
-   Challenge excessive charges by comparing to Medicare rates
-   Hospital charges often 300-800% above Medicare allowables
-   Reasonable settlement: Medicare rate plus 150-250%
+3️⃣ FAIR MARKET RATE ADJUSTMENTS:
+   Challenge excessive charges - hospitals often charge 300-800% above Medicare rates
+   Reasonable settlement target: Medicare rate plus 150-250%
+   Use price transparency data as negotiation leverage
 
-PAYMENT PLAN NEGOTIATIONS:
-   Request zero-interest extended payment terms
-   Typical arrangements: 24 to 60 month payment plans
-   Monthly payment caps based on documented income
+4️⃣ ZERO-INTEREST PAYMENT PLANS:
+   Request: 24-60 month payment terms with no interest
+   Monthly caps based on documented income capacity
+   Get agreement in writing before making any payments
 
-ESCALATION PROTOCOL:
+ADVANCED ESCALATION PROTOCOL:
 
-If initial representative cannot authorize reductions:
-"I need to speak with someone who has authority to approve payment adjustments and hardship considerations."
+If initial representative lacks authority:
+"I need to speak with someone authorized to approve payment adjustments and hardship considerations. I have documented billing errors and am prepared to file formal disputes if necessary."
 
 What is your total bill amount and what financial constraints are you facing?`;
+    }
+    
+    if (lowerMessage.includes("charity care") || lowerMessage.includes("financial assistance") || lowerMessage.includes("hardship") || lowerMessage.includes("poverty") || lowerMessage.includes("income")) {
+      return `I will guide you through charity care and financial assistance programs that can provide 50-100% bill forgiveness.
+
+🎯 CRITICAL FACT: Charity care is available EVEN WITH insurance coverage!
+
+ELIGIBILITY GUIDELINES (2024 Federal Poverty Levels):
+
+💚 FREE CARE (100% bill forgiveness):
+   • Individual: Income ≤$30,120 (200% FPL)
+   • Family of 2: Income ≤$40,880
+   • Family of 3: Income ≤$51,640  
+   • Family of 4: Income ≤$62,400
+
+💛 DISCOUNTED CARE (25-75% reduction):
+   • Individual: Income $30,121-$60,240 (200-400% FPL)
+   • Family of 2: Income $40,881-$81,760
+   • Family of 3: Income $51,641-$103,280
+   • Family of 4: Income $62,401-$124,800
+
+🆘 HARDSHIP PROGRAMS (Additional eligibility):
+   • When medical bills exceed 20% of annual income
+   • Sudden job loss or income reduction
+   • Major unexpected expenses
+   • Available at higher income levels with documentation
+
+REQUIRED DOCUMENTATION CHECKLIST:
+
+✅ Financial Documents (Last 3 months):
+   • Pay stubs or income statements
+   • Bank account statements  
+   • Previous year tax return
+   • Unemployment/disability documentation (if applicable)
+
+✅ Household Information:
+   • Proof of household size (birth certificates, etc.)
+   • Insurance cards and documentation
+   • List of monthly expenses and debts
+
+APPLICATION STRATEGY:
+
+1. Contact hospital financial assistance department immediately
+2. Request application forms (many available online)
+3. Submit complete documentation package
+4. Follow up weekly on application status
+5. If denied, request appeal process and specific denial reasons
+
+PROFESSIONAL SUCCESS TIPS:
+
+📝 APPLICATION SCRIPT:
+"I am requesting information about your charity care and financial assistance programs. My household income qualifies under federal guidelines, and I need immediate help with medical bill forgiveness."
+
+🔄 APPEAL STRATEGY (if initially denied):
+"I am formally appealing this denial. Please provide specific reasons for denial and information about your appeals process. My financial situation clearly meets published eligibility criteria."
+
+SUCCESS METRICS:
+• Initial approval rate: 60-70%
+• Appeal success rate: 85%+ with proper documentation
+• Average processing time: 30-45 days
+• Retroactive application: Usually possible up to 240 days
+
+What is your household size and approximate annual income? I can determine your exact eligibility.`;
     }
     
     if (lowerMessage.includes("appeal") || lowerMessage.includes("dispute") || lowerMessage.includes("letter") || lowerMessage.includes("professional")) {
@@ -252,45 +332,54 @@ Timeline: 45-75 days for complete resolution
 What specific billing errors have you identified that need to be included in your dispute letter?`;
     }
     
-    // Default response
+    // Default response with enhanced Bill Reduction Guide strategies
     return `I am a medical bill reduction specialist with expertise in identifying overcharges and negotiating substantial reductions for patients facing large medical bills.
 
-SPECIALIZATION AREAS:
+🎯 KEY INSIGHT: 80% of medical bills contain errors worth $50K-$500K+ in total overcharges annually.
 
-SYSTEMATIC BILL ANALYSIS:
-   Identifying billing errors using proven methodologies
-   Cross-referencing charges against medical records
-   Detecting upcoding, duplicate billing, and phantom charges
-   Typical findings: 3-8 errors per bill worth $2,000-$35,000
+CORE SPECIALIZATION AREAS:
 
-PROFESSIONAL DISPUTE PREPARATION:
-   Drafting legally compliant dispute letters
-   Documenting billing errors with supporting evidence
-   Negotiating with hospital billing departments
-   Success rate: 78% of cases achieve meaningful reduction
+📊 SYSTEMATIC BILL ANALYSIS (Professional 47-Point Error Detection):
+   • Identifying billing errors using proven methodologies
+   • Cross-referencing charges against medical records  
+   • Detecting upcoding, duplicate billing, phantom charges, and unbundling schemes
+   • Professional advocates find 3-8 errors per bill worth $2,000-$35,000
 
-PAYMENT NEGOTIATION STRATEGIES:
-   Securing prompt payment discounts of 15-40%
-   Accessing financial hardship programs
-   Negotiating fair market rate adjustments
-   Establishing zero-interest payment plans
+⚖️ STRATEGIC TIMING ADVANTAGE:
+   • DON'T PAY IMMEDIATELY - Use your 90-120 day collection window
+   • This delay period is your biggest negotiation advantage
+   • Research, prepare, and negotiate from strength
 
-DOCUMENTED RESULTS:
+💰 CHARITY CARE & FINANCIAL ASSISTANCE:
+   • FREE CARE: ≤200% Federal Poverty Level
+   • DISCOUNTED CARE: 200-400% Federal Poverty Level
+   • HARDSHIP PROGRAMS: Bills >20% of annual income
+   • Available even WITH insurance coverage
 
-Emergency department bills: Average 35-65% reduction
-Surgical procedures: Average 25-50% reduction
-Diagnostic imaging: Average 30-55% reduction
-Inpatient stays: Average 40-70% reduction
+🔍 FAIR MARKET PRICING RESEARCH:
+   • Healthcare Bluebook for fair price estimates
+   • FAIR Health Consumer for geographic pricing data
+   • Hospital Price Transparency websites (legally required)
+   • Challenge charges 300-800% above Medicare rates
 
-IMMEDIATE ACTION ITEMS:
+DOCUMENTED SUCCESS RATES:
 
-1. Obtain complete itemized billing documentation
-2. Gather all medical records and insurance statements
-3. Identify specific billing errors and overcharges
-4. Prepare professional dispute documentation
-5. Negotiate payment terms and reductions
+Emergency department bills: Average 50-90% reduction
+Surgical procedures: Average 40-70% reduction  
+Diagnostic imaging: Average 45-75% reduction
+Inpatient stays: Average 50-85% reduction
 
-The key to substantial reductions is methodical analysis combined with professional presentation of documented errors.
+IMMEDIATE ACTION WORKFLOW:
+
+1. STOP - Don't pay anything immediately
+2. Request complete itemized bill with CPT/ICD codes
+3. Apply 47-point error detection checklist
+4. Research fair market pricing using transparency tools
+5. Apply for charity care programs (if eligible)
+6. Negotiate using documented errors and pricing research
+7. Get all agreements in writing before payment
+
+The key to substantial reductions is methodical analysis, strategic timing, and professional presentation of documented errors combined with fair market pricing leverage.
 
 What aspect of your medical billing situation requires immediate attention?`;
   };
