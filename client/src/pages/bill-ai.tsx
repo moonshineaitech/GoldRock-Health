@@ -865,7 +865,7 @@ export default function BillAI() {
               <Input
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Ask how to find thousands in overcharges..."
+                placeholder="Ask any question"
                 onKeyPress={handleKeyPress}
                 disabled={isTyping}
                 className="pr-12 rounded-2xl border-gray-300 dark:border-gray-600 focus:border-emerald-500 focus:ring-emerald-500 h-10 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
