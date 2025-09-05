@@ -25,7 +25,8 @@ import {
   FileEdit,
   Copy,
   Check,
-  Download
+  Download,
+  Phone
 } from "lucide-react";
 import { Link } from "wouter";
 import { MobileLayout } from "@/components/mobile-layout";
