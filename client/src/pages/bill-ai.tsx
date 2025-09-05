@@ -131,7 +131,7 @@ export default function BillAI() {
     onSuccess: (data) => {
       setUploadingFile(false);
       
-      if (data.success && data.analysis) {
+      if (data.success) {
         // Add user's file upload message first
         const uploadMessage = {
           id: Date.now().toString(),
@@ -140,11 +140,13 @@ export default function BillAI() {
           createdAt: new Date(),
         };
         
-        // Add AI analysis as a message in the chat
+        // Add AI analysis as a message in the chat if available
         const analysisMessage = {
           id: (Date.now() + 1).toString(),
           role: "assistant" as const,
-          content: `🔍 **BILL ANALYSIS COMPLETE**\n\n${data.analysis}`,
+          content: data.analysis ? 
+            `🔍 **BILL ANALYSIS COMPLETE**\n\n${data.analysis}` :
+            `✅ **BILL UPLOADED SUCCESSFULLY**\n\nYour medical bill has been uploaded and saved. Use the features above to analyze it for billing errors and savings opportunities.`,
           createdAt: new Date(),
         };
         
@@ -153,16 +155,18 @@ export default function BillAI() {
         
         // Show success toast
         toast({
-          title: "Bill Analyzed Successfully",
-          description: data.message || "Your bill has been analyzed for billing errors and savings opportunities.",
+          title: "Bill Uploaded Successfully",
+          description: data.message || "Your bill has been uploaded and is ready for analysis.",
         });
         
         // Refetch bills to update the list
         queryClient.invalidateQueries({ queryKey: ["/api/medical-bills"] });
       } else {
+        // This should not happen anymore, but keeping as fallback
         toast({
-          title: "Upload Successful",
-          description: data.message || "Your bill has been uploaded successfully.",
+          title: "Upload Failed",
+          description: data.message || "Failed to upload bill. Please try again.",
+          variant: "destructive",
         });
       }
     },
