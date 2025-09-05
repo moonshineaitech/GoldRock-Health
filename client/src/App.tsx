@@ -18,6 +18,7 @@ import ClinicalDecisionTrees from "@/pages/clinical-decision-trees";
 import BillAnalyzer from "@/pages/bill-analyzer";
 import Premium from "@/pages/premium";
 import PixelGame from "@/pages/pixel-game";
+import BillReductionGuide from "@/pages/bill-reduction-guide";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -58,6 +59,7 @@ function Router() {
       <Route path="/bill-analyzer" component={BillAnalyzer} />
       <Route path="/premium" component={Premium} />
       <Route path="/pixel-game" component={PixelGame} />
+      <Route path="/bill-reduction-guide" component={BillReductionGuide} />
       <Route component={NotFound} />
     </Switch>
   );

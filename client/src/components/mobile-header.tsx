@@ -1,4 +1,4 @@
-import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2 } from "lucide-react";
+import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 import { useState } from "react";
@@ -48,6 +48,13 @@ export function NavigationDropdown() {
       href: "/pixel-game",
       description: "Fun Pixelated Diagnostics",
       special: true
+    },
+    {
+      icon: TrendingDown,
+      label: "Bill Reduction Guide",
+      href: "/bill-reduction-guide",
+      description: "Expert Bill Reduction Strategies",
+      premium: true
     }
   ];
 
@@ -107,7 +114,9 @@ export function NavigationDropdown() {
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-2xl mx-2 my-1 ${
                         item.special
                           ? 'text-purple-600 hover:bg-purple-50/80 hover:shadow-sm'
-                          : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
+                          : item.premium
+                            ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
+                            : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
                       }`}
                       onClick={() => {
                         navigate(item.href);
@@ -121,19 +130,29 @@ export function NavigationDropdown() {
                       <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
                         item.special 
                           ? 'bg-gradient-to-br from-purple-100 to-pink-100'
-                          : 'bg-gray-100'
+                          : item.premium
+                            ? 'bg-gradient-to-br from-orange-100 to-amber-100'
+                            : 'bg-gray-100'
                       }`}>
                         <IconComponent className={`h-4 w-4 ${
-                          item.special ? 'text-purple-600' : 'text-gray-600'
+                          item.special 
+                            ? 'text-purple-600' 
+                            : item.premium 
+                              ? 'text-orange-600' 
+                              : 'text-gray-600'
                         }`} />
                       </div>
                       <div className="flex-1 text-left">
                         <div className="font-semibold">{item.label}</div>
                         <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
                       </div>
-                      {item.special && (
+                      {(item.special || item.premium) && (
                         <motion.div
-                          className="w-2.5 h-2.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-sm"
+                          className={`w-2.5 h-2.5 rounded-full shadow-sm ${
+                            item.special 
+                              ? 'bg-gradient-to-r from-purple-500 to-pink-500'
+                              : 'bg-gradient-to-r from-orange-500 to-amber-500'
+                          }`}
                           animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         />
