@@ -43,6 +43,7 @@ export default function BillAnalyzer() {
   const [isTyping, setIsTyping] = useState(false);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [uploadingFile, setUploadingFile] = useState(false);
+  const [conversationStarted, setConversationStarted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -55,6 +56,12 @@ export default function BillAnalyzer() {
   // Get messages for current session
   const { data: messages = [], isLoading } = useQuery<MessageWithActions[]>({
     queryKey: ["/api/chat-messages", currentSessionId],
+    queryFn: async () => {
+      if (!currentSessionId) return [];
+      const response = await apiRequest("GET", `/api/chat-messages?sessionId=${currentSessionId}`);
+      console.log("Messages response:", response);
+      return Array.isArray(response) ? response : [];
+    },
     enabled: !!currentSessionId,
   });
 
@@ -238,6 +245,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
       const userMessage = inputMessage;
       setInputMessage("");
       setIsTyping(true);
+      setConversationStarted(true); // Mark conversation as started
       
       // Generate AI response
       setTimeout(async () => {
@@ -309,11 +317,18 @@ What specific aspect of your medical bill would you like help with? I'm here to 
   }, [currentSession]);
 
   useEffect(() => {
+    if (messages && Array.isArray(messages) && messages.length > 0) {
+      setConversationStarted(true);
+    }
+  }, [messages]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
   const handleSendMessage = () => {
     if (!inputMessage.trim() || sendMessageMutation.isPending) return;
+    setConversationStarted(true);
     sendMessageMutation.mutate(inputMessage);
   };
 
@@ -387,6 +402,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
       action: () => {
         const message = "I have a medical bill that seems too high. Please help me assess it for billing errors, duplicate charges, upcoding, and other overcharges that I can dispute to reduce my costs.";
         setInputMessage(message);
+        setConversationStarted(true);
         sendMessageMutation.mutate(message);
       },
     },
@@ -398,6 +414,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
       action: () => {
         const message = "I need to request an itemized bill from my hospital/provider to identify overcharges. Please give me the exact script to use when calling them and what specific details to demand.";
         setInputMessage(message);
+        setConversationStarted(true);
         sendMessageMutation.mutate(message);
       },
     },
@@ -409,6 +426,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
       action: () => {
         const message = "I need to dispute charges on my medical bill. Please generate a professional appeal letter that clearly outlines billing errors and demands a corrected statement with reduced charges.";
         setInputMessage(message);
+        setConversationStarted(true);
         sendMessageMutation.mutate(message);
       },
     }
@@ -450,7 +468,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
         {/* Chat Messages Area */}
         <div className="flex-1 px-4 overflow-y-auto mt-4">
           <div className="space-y-4 pb-4">
-            {messages.length === 0 && !isLoading && (
+            {!conversationStarted && messages.length === 0 && !isLoading && (
               <motion.div 
                 className="text-center py-6"
                 initial={{ opacity: 0, y: 20 }}
@@ -503,20 +521,14 @@ What specific aspect of your medical bill would you like help with? I'm here to 
                   })}
                 </div>
                 
-                <div className="space-y-2">
-                  <div className="flex items-center justify-center space-x-2 text-sm text-emerald-700 bg-emerald-50 rounded-xl py-3 px-4 border border-emerald-200">
-                    <TrendingDown className="h-4 w-4 text-emerald-600" />
-                    <span className="font-semibold">Users Save $50K-$500K+ on Average</span>
-                  </div>
-                  <div className="flex items-center justify-center space-x-2 text-xs text-gray-600 bg-gray-50 rounded-xl py-2 px-4">
-                    <Shield className="h-3 w-3 text-emerald-600" />
-                    <span className="font-medium">Secure • Private • Exceeds HIPAA Standards</span>
-                  </div>
+                <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-xl py-3 px-4">
+                  <Shield className="h-4 w-4 text-emerald-600" />
+                  <span className="font-medium">Secure • Private • Exceeds HIPAA Standards</span>
                 </div>
               </motion.div>
             )}
 
-            {messages.map((message: MessageWithActions, index) => (
+            {Array.isArray(messages) && messages.map((message: MessageWithActions, index) => (
               <motion.div
                 key={message.id}
                 className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
