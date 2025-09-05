@@ -219,7 +219,8 @@ function PremiumMarketing() {
   const { createSubscription } = useSubscription();
   const { toast } = useToast();
   const [clientSecret, setClientSecret] = useState("");
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<string>("annual");
+  const [purchasePlan, setPurchasePlan] = useState<string | null>(null);
 
   const handleSubscribe = async (planId: string) => {
     try {
@@ -227,7 +228,7 @@ function PremiumMarketing() {
       const data = await response.json();
       if (data.clientSecret) {
         setClientSecret(data.clientSecret);
-        setSelectedPlan(planId);
+        setPurchasePlan(planId);
       }
     } catch (error) {
       console.error("Subscription error:", error);
@@ -239,7 +240,7 @@ function PremiumMarketing() {
     }
   };
 
-  if (clientSecret && selectedPlan) {
+  if (clientSecret && purchasePlan) {
     return (
       <MobileLayout title="Complete Payment" showBottomNav={true}>
         <div className="space-y-4">
@@ -249,7 +250,7 @@ function PremiumMarketing() {
           </div>
           <MobileCard>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <SubscriptionForm planType={selectedPlan} />
+              <SubscriptionForm planType={purchasePlan} />
             </Elements>
           </MobileCard>
         </div>
@@ -305,205 +306,151 @@ function PremiumMarketing() {
           What You Get with Premium
         </h2>
         
-        {/* Value Proposition Banner */}
+        {/* Condensed Premium Features - Clickable */}
         <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 mb-6"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
+          className="space-y-4 cursor-pointer"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.4 }}
+          onClick={() => document.getElementById('purchase-section')?.scrollIntoView({ behavior: 'smooth' })}
         >
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-2">
+          {/* Value Banner */}
+          <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center">
+            <div className="flex items-center justify-center space-x-2 mb-1">
               <TrendingDown className="h-5 w-5 text-emerald-600" />
-              <span className="font-bold text-emerald-700 text-base">Average User Saves $127,000</span>
+              <span className="font-bold text-emerald-700">Average User Saves $127,000</span>
             </div>
-            <p className="text-sm text-emerald-600 font-medium">Subscription pays for itself with first bill analysis</p>
+            <p className="text-sm text-emerald-600">Subscription pays for itself with first bill analysis</p>
           </div>
-        </motion.div>
-        
-        {/* Medical Bill AI Features */}
-        <motion.div 
-          className="mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.4 }}
-        >
-          <h3 className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 text-center">
-            Medical Bill AI Protection
-          </h3>
-          <div className="space-y-3">
-            {premiumFeatures.filter(f => f.category === 'billing').map((feature, index) => {
-              const IconComponent = feature.icon;
-              return (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.8 + index * 0.1, duration: 0.3 }}
-                >
-                  <MobileCard className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-200">
-                    <div className="flex items-center space-x-4 p-1">
-                      <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
-                        <IconComponent className="h-6 w-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 text-sm mb-1">{feature.title}</h4>
-                        <p className="text-xs text-gray-700 leading-relaxed">{feature.description}</p>
-                        <span className="inline-block px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg mt-2">
-                          {feature.highlight}
-                        </span>
-                      </div>
-                    </div>
-                  </MobileCard>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
-        
-        {/* Medical Training Features */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.4 }}
-        >
-          <h3 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3 text-center">
-            Advanced Medical Training
-          </h3>
+          
+          {/* Key Features Grid */}
           <div className="grid grid-cols-2 gap-3">
-            {premiumFeatures.filter(f => f.category === 'training' || f.category === 'both').map((feature, index) => {
-              const IconComponent = feature.icon;
-              const isTraining = feature.category === 'training';
-              return (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.1 + index * 0.1, duration: 0.3 }}
-                >
-                  <MobileCard className={`h-full ${isTraining ? 'bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border-indigo-200' : 'bg-gradient-to-br from-orange-50/50 to-amber-50/50 border-orange-200'}`}>
-                    <div className="text-center p-1">
-                      <div className={`w-10 h-10 ${isTraining ? 'bg-indigo-100' : 'bg-orange-100'} rounded-xl flex items-center justify-center mx-auto mb-2`}>
-                        <IconComponent className={`h-5 w-5 ${isTraining ? 'text-indigo-600' : 'text-orange-600'}`} />
-                      </div>
-                      <h4 className="font-semibold text-gray-900 mb-1 text-sm leading-tight">{feature.title}</h4>
-                      <p className="text-xs text-gray-600 mb-2 leading-relaxed">{feature.description}</p>
-                      <span className={`inline-block px-2 py-1 ${isTraining ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'} text-xs font-medium rounded-lg`}>
-                        {feature.highlight}
-                      </span>
-                    </div>
-                  </MobileCard>
-                </motion.div>
-              );
-            })}
+            <MobileCard className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <DollarSign className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Bill AI Analysis</h4>
+                <p className="text-xs text-gray-700">Find $10K-$500K+ overcharges</p>
+              </div>
+            </MobileCard>
+            
+            <MobileCard className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 border-indigo-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <Brain className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Medical Training</h4>
+                <p className="text-xs text-gray-700">Unlimited AI cases & scenarios</p>
+              </div>
+            </MobileCard>
+            
+            <MobileCard className="bg-gradient-to-r from-orange-50/80 to-amber-50/80 border-orange-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <FileText className="h-8 w-8 text-orange-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Dispute Letters</h4>
+                <p className="text-xs text-gray-700">Professional templates</p>
+              </div>
+            </MobileCard>
+            
+            <MobileCard className="bg-gradient-to-r from-teal-50/80 to-cyan-50/80 border-teal-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <BarChart3 className="h-8 w-8 text-teal-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Analytics</h4>
+                <p className="text-xs text-gray-700">Track savings & progress</p>
+              </div>
+            </MobileCard>
+          </div>
+          
+          <div className="text-center py-2">
+            <p className="text-sm text-gray-600">👆 Tap to choose your plan</p>
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Side-by-Side Plan Comparison */}
+      {/* Single Plan Box with Toggle */}
       <motion.div
         className="space-y-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.0, duration: 0.5 }}
+        transition={{ delay: 1.4, duration: 0.5 }}
+        id="purchase-section"
       >
         <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
           Choose Your Plan
         </h2>
         <p className="text-sm text-gray-600 text-center mb-4">
-          Both plans include Medical Bill AI + Training. No hidden fees.
+          Medical Bill AI + Training. Cancel anytime.
         </p>
         
-        <div className="grid grid-cols-2 gap-3">
-          {subscriptionPlans.map((plan, index) => (
-            <motion.div
-              key={plan.id}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.1 + index * 0.1, duration: 0.3 }}
-              className="relative"
-            >
-              {plan.popular && (
-                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                    Best Value
-                  </div>
-                </div>
-              )}
+        <MobileCard className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 ring-2 ring-emerald-300 shadow-xl">
+          <div className="p-4 space-y-4">
+            {/* Plan Toggle */}
+            <div className="bg-white/70 rounded-2xl p-1 flex">
+              <button 
+                className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all ${
+                  selectedPlan === 'monthly' 
+                    ? 'bg-emerald-600 text-white shadow-lg' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+                onClick={() => setSelectedPlan('monthly')}
+              >
+                Monthly
+              </button>
+              <button 
+                className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all relative ${
+                  selectedPlan === 'annual' 
+                    ? 'bg-emerald-600 text-white shadow-lg' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+                onClick={() => setSelectedPlan('annual')}
+              >
+                Annual
+                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                  Save 17%
+                </span>
+              </button>
+            </div>
+            
+            {/* Selected Plan Details */}
+            {selectedPlan && (() => {
+              const plan = subscriptionPlans.find(p => p.id === selectedPlan);
+              if (!plan) return null;
               
-              <MobileCard className={`h-full ${plan.popular ? "border-emerald-400 bg-gradient-to-br from-emerald-50 to-teal-50 ring-2 ring-emerald-300 shadow-xl" : "border-gray-200 bg-white"}`}>
-                <div className="p-1 space-y-3">
-                  {/* Plan Header */}
-                  <div className="text-center pt-2">
-                    <h3 className="font-bold text-gray-900 text-lg">{plan.name}</h3>
-                    <div className="flex items-baseline justify-center">
-                      <span className="text-2xl font-bold text-gray-900">${plan.price}</span>
-                      <span className="text-gray-600 text-sm ml-1">/{plan.period}</span>
+              return (
+                <div className="text-center space-y-4">
+                  <div>
+                    <div className="flex items-baseline justify-center mb-2">
+                      <span className="text-3xl font-bold text-gray-900">${plan.price}</span>
+                      <span className="text-gray-600 ml-1">/{plan.period}</span>
                     </div>
                     {plan.savings && (
-                      <div className="text-green-600 font-medium text-sm mt-1">{plan.savings}</div>
+                      <div className="text-emerald-600 font-semibold text-sm">{plan.savings}</div>
                     )}
                   </div>
-
-                  {/* Plan Features */}
-                  <div className="space-y-2">
-                    {plan.features.map((feature, idx) => (
+                  
+                  <div className="space-y-2 text-left">
+                    {plan.features.slice(0, 4).map((feature, idx) => (
                       <div key={idx} className="flex items-start space-x-2">
-                        <Check className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs text-gray-700 leading-relaxed">{feature}</span>
+                        <Check className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-gray-700">{feature}</span>
                       </div>
                     ))}
                   </div>
-
-                  {/* Subscribe Button */}
-                  <div className="pt-2">
-                    <MobileButton 
-                      className={`w-full ${plan.popular ? "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg" : "bg-gray-800 hover:bg-gray-900"}`}
-                      size="sm"
-                      onClick={() => handleSubscribe(plan.id)}
-                      disabled={createSubscription.isPending}
-                      data-testid={`subscribe-${plan.id}`}
-                    >
-                      <DollarSign className="h-4 w-4 mr-1" />
-                      {createSubscription.isPending ? "Processing..." : "Start Saving"}
-                    </MobileButton>
-                  </div>
+                  
+                  <MobileButton 
+                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg"
+                    size="lg"
+                    onClick={() => handleSubscribe(plan.id)}
+                    disabled={createSubscription.isPending}
+                    data-testid={`subscribe-${plan.id}`}
+                  >
+                    <DollarSign className="h-5 w-5 mr-2" />
+                    {createSubscription.isPending ? "Processing..." : "Start Saving Money"}
+                  </MobileButton>
                 </div>
-              </MobileCard>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Security & Trust */}
-      <motion.div
-        className="text-center py-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.4 }}
-      >
-        <MobileCard className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-          <div className="py-2">
-            <div className="flex items-center justify-center space-x-4 text-sm text-gray-700">
-              <div className="flex items-center">
-                <Check className="h-4 w-4 text-green-600 mr-1" />
-                <span>Secure Payment</span>
-              </div>
-              <div className="flex items-center">
-                <Check className="h-4 w-4 text-green-600 mr-1" />
-                <span>Cancel Anytime</span>
-              </div>
-              <div className="flex items-center">
-                <Check className="h-4 w-4 text-green-600 mr-1" />
-                <span>Instant Access</span>
-              </div>
-            </div>
-            <p className="text-xs text-gray-600 mt-2">
-              Powered by Stripe • HIPAA Compliant • 256-bit SSL Encryption
-            </p>
+              );
+            })()}
           </div>
         </MobileCard>
       </motion.div>
+
     </div>
   );
 }
