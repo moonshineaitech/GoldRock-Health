@@ -119,19 +119,29 @@ export default function BillAI() {
   // Multiple file upload mutation for Bill AI
   const uploadBillMutation = useMutation({
     mutationFn: async (files: FileList) => {
+      console.log('Mutation called with files:', files.length);
       const formData = new FormData();
       
       // Add all files to FormData
-      for (let i = 0; i < files.length; i++) {
-        formData.append("bills", files[i]);
-      }
+      Array.from(files).forEach((file, index) => {
+        console.log(`Adding file ${index + 1}:`, file.name, file.type, file.size);
+        formData.append("bills", file);
+      });
       formData.append("sessionId", "bill-ai-session");
+      
+      console.log('FormData entries:', Array.from(formData.entries()).map(([key, value]) => 
+        [key, value instanceof File ? `${value.name} (${value.type})` : value]
+      ));
       
       const response = await fetch("/api/upload-bills", {
         method: "POST",
         body: formData,
       });
-      return response.json();
+      
+      console.log('Response status:', response.status);
+      const result = await response.json();
+      console.log('Response data:', result);
+      return result;
     },
     onSuccess: (data) => {
       setUploadingFiles(false);
@@ -188,7 +198,12 @@ export default function BillAI() {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0) {
+      console.log('No files selected');
+      return;
+    }
+    
+    console.log('Files selected:', files.length, Array.from(files).map(f => f.name));
     
     // Validate file count (max 5)
     if (files.length > 5) {
@@ -225,6 +240,7 @@ export default function BillAI() {
       }
     }
 
+    console.log('Starting upload with files:', files.length);
     setUploadingFiles(true);
     setUploadProgress({current: 0, total: files.length});
     uploadBillMutation.mutate(files);

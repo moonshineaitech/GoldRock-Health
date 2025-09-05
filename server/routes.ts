@@ -1980,7 +1980,15 @@ Extract every specific detail from the bill including exact account numbers, pat
       const userId = req.user.claims.sub;
       const files = req.files as Express.Multer.File[];
       
+      console.log('Upload request received:', {
+        hasFiles: !!files,
+        fileCount: files?.length || 0,
+        fieldNames: Object.keys(req.body || {}),
+        contentType: req.headers['content-type']
+      });
+      
       if (!files || files.length === 0) {
+        console.log('No files in request:', { files, body: req.body });
         return res.status(400).json({ message: 'No files uploaded. Please select at least one image.' });
       }
 
