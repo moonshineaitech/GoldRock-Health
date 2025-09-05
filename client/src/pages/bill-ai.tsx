@@ -35,6 +35,7 @@ import {
   BillingRightsAdvisor, 
   ClaimAppealGenerator 
 } from "@/components/bill-ai-features";
+import { BillAnalysisLoader } from "@/components/BillAnalysisLoader";
 
 interface AIMessage {
   id: string;
@@ -331,6 +332,11 @@ export default function BillAI() {
       showBottomNav={true}
     >
       <div className="flex flex-col h-full">
+        {/* Loading Animation Overlay */}
+        <BillAnalysisLoader 
+          fileCount={uploadProgress.total} 
+          isVisible={uploadingFiles && uploadProgress.total > 0} 
+        />
 
         {/* Compact Stats Bar */}
         {userBills.length > 0 && (
