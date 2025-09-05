@@ -64,6 +64,165 @@ export default function BillAnalyzer() {
     enabled: !!user,
   });
 
+  // Generate AI response function
+  const generateAIResponse = (userMessage: string): string => {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    if (lowerMessage.includes("itemized bill") || lowerMessage.includes("request") || lowerMessage.includes("hospital")) {
+      return `Here's exactly how to request an itemized bill from your hospital:
+
+**Step 1: Call the Billing Department**
+- Ask for: "Patient Financial Services" or "Billing Department"
+- Say: "I need a detailed, itemized bill for my recent stay/procedure"
+
+**Step 2: Specific Information to Request**
+- Complete itemized breakdown of all charges
+- CPT codes and descriptions for all procedures
+- Room and board daily rates
+- Pharmacy charges with medication names
+- Any facility fees or administrative charges
+
+**Step 3: Follow Up in Writing**
+Send an email requesting: "Please provide a complete itemized bill showing all charges, codes, and services for my account #[your account number]"
+
+**Why This Saves You Money:**
+Itemized bills often reveal:
+- Duplicate charges (saves $1,000-$10,000+)
+- Services you never received
+- Incorrect medication dosages
+- Inflated room rates
+
+Would you like me to help you draft the exact email to send to your hospital?`;
+    }
+    
+    if (lowerMessage.includes("billing error") || lowerMessage.includes("overcharge") || lowerMessage.includes("assess") || lowerMessage.includes("find")) {
+      return `I'll help you identify common billing errors that cost patients thousands:
+
+**Most Common Overcharges to Look For:**
+
+1. **Upcoding** (saves $5,000-$50,000+)
+   - Billing for more expensive procedures than performed
+   - Example: Charging for complex surgery when simple procedure was done
+
+2. **Duplicate Billing** (saves $1,000-$15,000+)
+   - Same service charged multiple times
+   - Lab tests, medications, or procedures listed twice
+
+3. **Unbundling** (saves $2,000-$25,000+)
+   - Charging separately for services that should be bundled
+   - Breaking down one procedure into multiple charges
+
+4. **Phantom Charges** (saves $500-$10,000+)
+   - Services you never received
+   - Medications not given, tests not performed
+
+**Next Steps:**
+1. Get your itemized bill first
+2. Compare with your medical records
+3. Question every charge you don't understand
+
+Do you have an itemized bill I can help you review for these errors?`;
+    }
+    
+    if (lowerMessage.includes("negotiate") || lowerMessage.includes("payment plan") || lowerMessage.includes("reduce") || lowerMessage.includes("can't afford")) {
+      return `Here are proven negotiation strategies that save patients $10,000-$100,000+:
+
+**Before You Call:**
+- Get your itemized bill
+- Research fair market rates for your procedures
+- Document your financial situation
+
+**Negotiation Script:**
+"I received this bill for $[amount] and need to discuss payment options. I've researched that the average cost for this procedure is $[lower amount]. Can we adjust this to a fair market rate?"
+
+**Key Strategies:**
+
+1. **Ask for the "Prompt Pay Discount"**
+   - Often 10-30% off for immediate payment
+   - Can save $5,000-$50,000+
+
+2. **Request Financial Hardship Assistance**
+   - Most hospitals have charity care programs
+   - Can reduce bills by 50-100%
+
+3. **Negotiate Payment Plans**
+   - $0 interest if you ask
+   - Extended terms (24-60 months)
+
+4. **Challenge Excessive Charges**
+   - Compare to Medicare rates (often 3-10x lower)
+   - Request adjustment to reasonable amounts
+
+**Magic Words:**
+"I want to pay my bill, but need help making it affordable."
+
+Would you like me to help you prepare for your negotiation call?`;
+    }
+    
+    if (lowerMessage.includes("appeal") || lowerMessage.includes("dispute") || lowerMessage.includes("letter") || lowerMessage.includes("professional")) {
+      return `I'll help you create a professional appeal letter that hospitals respond to:
+
+**Essential Elements of a Successful Appeal:**
+
+**Header Information:**
+- Your name, account number, dates of service
+- Hospital billing department address
+- Current date
+
+**Key Language to Include:**
+"I am formally disputing the following charges on my medical bill due to billing errors and request an immediate investigation and corrected statement."
+
+**Common Dispute Reasons:**
+- Charges for services not received
+- Duplicate billing for same procedure
+- Incorrect medication dosages/quantities
+- Room charges exceeding contracted rates
+- Upcoding of procedures
+
+**Supporting Documentation:**
+- Medical records showing actual services
+- Insurance EOB statements
+- Pharmacy records
+- Photographs of bills/statements
+
+**Call to Action:**
+"I request a detailed review of these charges and a corrected bill within 30 days. I am prepared to escalate this matter if necessary."
+
+**Template Structure:**
+1. Professional letterhead format
+2. Clear statement of dispute
+3. Specific charge details
+4. Supporting evidence
+5. Request for correction
+6. Timeline for response
+
+Would you like me to generate a customized appeal letter for your specific situation?`;
+    }
+    
+    // Default response
+    return `I specialize in helping you save thousands on medical bills through:
+
+**My Expertise:**
+- Finding billing errors that cost you $10,000-$100,000+
+- Negotiating payment reductions with hospitals
+- Creating professional dispute letters
+- Guiding you through the itemized bill process
+
+**How I Can Help You Today:**
+1. **Review your bill** for common overcharges and errors
+2. **Negotiate with hospitals** using proven strategies
+3. **Generate appeal letters** that get results
+4. **Guide you step-by-step** through the savings process
+
+**Quick Actions:**
+- Upload your medical bill for analysis
+- Get script for requesting itemized bills
+- Learn negotiation tactics that work
+- Generate professional dispute letters
+
+What specific aspect of your medical bill would you like help with? I'm here to help you save thousands!`;
+  };
+
   // Send message mutation
   const sendMessageMutation = useMutation({
     mutationFn: async (content: string) => {
@@ -74,17 +233,41 @@ export default function BillAnalyzer() {
       });
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["/api/chat-messages", currentSessionId] });
+      const userMessage = inputMessage;
       setInputMessage("");
       setIsTyping(true);
       
-      // Simulate AI response delay
-      setTimeout(() => {
-        setIsTyping(false);
-        // In real implementation, this would trigger the AI response
-      }, 2000);
+      // Generate AI response
+      setTimeout(async () => {
+        try {
+          const aiResponse = generateAIResponse(userMessage);
+          
+          await apiRequest("POST", "/api/chat-messages", {
+            sessionId: currentSessionId,
+            content: aiResponse,
+            role: "assistant",
+            messageType: "analysis"
+          });
+          
+          queryClient.invalidateQueries({ queryKey: ["/api/chat-messages", currentSessionId] });
+        } catch (error) {
+          console.error("Error generating AI response:", error);
+        } finally {
+          setIsTyping(false);
+        }
+      }, 1500);
     },
+    onError: (error) => {
+      console.error("Error sending message:", error);
+      setIsTyping(false);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    }
   });
 
   // Upload bill mutation
@@ -201,21 +384,33 @@ export default function BillAnalyzer() {
       label: "Find Overcharges",
       desc: "Spot billing errors & scams",
       color: "red",
-      action: () => setInputMessage("I have a medical bill that seems too high. Please help me identify specific overcharges, billing errors, duplicate charges, and upcoding scams. Start by telling me how to request an itemized bill from the hospital as step 1, then guide me through finding thousands in potential savings."),
+      action: () => {
+        const message = "I have a medical bill that seems too high. Please help me assess it for billing errors, duplicate charges, upcoding, and other overcharges that I can dispute to reduce my costs.";
+        setInputMessage(message);
+        sendMessageMutation.mutate(message);
+      },
     },
     {
       icon: DollarSign,
       label: "Get Itemized Bill",
       desc: "Essential first step to savings",
       color: "green",
-      action: () => setInputMessage("I need to request an itemized bill from my hospital/provider to identify overcharges. Please give me the exact script to use when calling them, what specific details to demand, and how this single step can save me thousands by exposing hidden billing errors."),
+      action: () => {
+        const message = "I need to request an itemized bill from my hospital/provider to identify overcharges. Please give me the exact script to use when calling them and what specific details to demand.";
+        setInputMessage(message);
+        sendMessageMutation.mutate(message);
+      },
     },
     {
       icon: FileText,
       label: "Appeal & Dispute",
       desc: "Professional reduction letters",
       color: "blue",
-      action: () => setInputMessage("I've found overcharges on my medical bill and need to dispute them. Please generate a professional, legally-sound appeal letter that demands specific reductions. Include industry-standard language that hospitals recognize and respond to, helping me save thousands in disputed charges."),
+      action: () => {
+        const message = "I need to dispute charges on my medical bill. Please generate a professional appeal letter that clearly outlines billing errors and demands a corrected statement with reduced charges.";
+        setInputMessage(message);
+        sendMessageMutation.mutate(message);
+      },
     }
   ];
 
@@ -275,8 +470,8 @@ export default function BillAnalyzer() {
                   Save Thousands on Medical Bills
                 </h2>
                 
-                <p className="text-sm text-gray-600 mb-6 px-4 leading-relaxed">
-                  Our AI uses industry billing knowledge to identify overcharges that cost you thousands. We've helped users save $50K-$500K+ by finding hidden billing errors, duplicate charges, and upcoding scams that hospitals don't want you to discover.
+                <p className="text-sm text-gray-600 mb-6 px-6 leading-relaxed">
+                  I find billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
                 </p>
                 
                 {/* Compact Quick Actions */}
