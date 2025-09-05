@@ -1,4 +1,4 @@
-import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown } from "lucide-react";
+import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 import { useState } from "react";
@@ -55,6 +55,12 @@ export function NavigationDropdown() {
       href: "/bill-reduction-guide",
       description: "Expert Bill Reduction Strategies",
       premium: true
+    },
+    {
+      icon: Download,
+      label: "Get Bills from Portal",
+      href: "/portal-access-guide",
+      description: "Access Insurance & Provider Portals"
     }
   ];
 

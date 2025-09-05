@@ -19,6 +19,7 @@ import BillAnalyzer from "@/pages/bill-analyzer";
 import Premium from "@/pages/premium";
 import PixelGame from "@/pages/pixel-game";
 import BillReductionGuide from "@/pages/bill-reduction-guide";
+import PortalAccessGuide from "@/pages/portal-access-guide";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -60,6 +61,7 @@ function Router() {
       <Route path="/premium" component={Premium} />
       <Route path="/pixel-game" component={PixelGame} />
       <Route path="/bill-reduction-guide" component={BillReductionGuide} />
+      <Route path="/portal-access-guide" component={PortalAccessGuide} />
       <Route component={NotFound} />
     </Switch>
   );
