@@ -72,7 +72,7 @@ export default function Landing() {
             <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
           </h1>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Save Thousands on Medical Bills + Master Diagnosis
+            Master Medical Diagnosis + Save Thousands on Bills
           </h2>
         </motion.div>
         
@@ -82,18 +82,26 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.7 }}
         >
-          AI that finds $50K-$500K+ in medical bill overcharges, plus interactive training across 19+ specialties.
+          Interactive medical training across 19+ specialties, plus AI that finds $50K-$500K+ in bill overcharges.
         </motion.p>
         
         <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 mb-8 max-w-sm mx-auto"
+          className="grid grid-cols-2 gap-3 mb-8 max-w-md mx-auto"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.0, duration: 0.6 }}
         >
-          <div className="flex items-center justify-center space-x-2 text-emerald-700">
-            <TrendingDown className="h-4 w-4" />
-            <span className="font-bold text-sm">Users Save $50K-$500K+ on Medical Bills</span>
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-3 text-center">
+            <div className="flex items-center justify-center space-x-1 text-indigo-700">
+              <Brain className="h-4 w-4" />
+              <span className="font-bold text-xs">60+ Medical Cases</span>
+            </div>
+          </div>
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-3 text-center">
+            <div className="flex items-center justify-center space-x-1 text-emerald-700">
+              <TrendingDown className="h-4 w-4" />
+              <span className="font-bold text-xs">Save $50K-$500K+</span>
+            </div>
           </div>
         </motion.div>
         
@@ -103,6 +111,20 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 1.1, duration: 0.7, type: "spring", stiffness: 100 }}
         >
+          <Link href="/training">
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+            >
+              <MobileButton className="w-full shadow-xl shadow-indigo-500/25 bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 hover:from-indigo-700 hover:via-purple-700 hover:to-blue-700" size="lg">
+                <BookOpen className="h-5 w-5 mr-3" />
+                Medical Training
+                <ArrowRight className="h-4 w-4 ml-3" />
+              </MobileButton>
+            </motion.div>
+          </Link>
+          
           <Link href="/bill-analyzer">
             <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
@@ -116,24 +138,10 @@ export default function Landing() {
               </MobileButton>
             </motion.div>
           </Link>
-          
-          <Link href="/training">
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-            >
-              <MobileButton variant="secondary" className="w-full shadow-lg border-2 border-indigo-200 hover:border-indigo-300" size="lg">
-                <BookOpen className="h-5 w-5 mr-3" />
-                Medical Training
-                <ArrowRight className="h-4 w-4 ml-3" />
-              </MobileButton>
-            </motion.div>
-          </Link>
         </motion.div>
       </motion.div>
 
-      {/* Bill AI Features Section */}
+      {/* Medical Training Quick Overview */}
       <motion.div 
         className="space-y-4 mt-6"
         initial={{ opacity: 0 }}
@@ -145,6 +153,104 @@ export default function Landing() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+            Medical Training
+          </h2>
+          <div className="h-1 w-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
+        </motion.div>
+        
+        <div className="space-y-3 mb-8">
+          {[
+            { 
+              icon: BookOpen, 
+              title: "Patient Simulations", 
+              desc: "60+ interactive medical cases across 19 specialties", 
+              color: "blue", 
+              delay: 1.3,
+              href: "/training"
+            },
+            { 
+              icon: Brain, 
+              title: "AI-Powered Learning", 
+              desc: "Personalized feedback and adaptive training paths", 
+              color: "purple", 
+              delay: 1.4,
+              href: "/training"
+            }
+          ].map((feature, index) => {
+            const IconComponent = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  delay: feature.delay, 
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 200
+                }}
+              >
+                <Link href={feature.href}>
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -4 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <MobileCard className="h-full backdrop-blur-xl border border-white/30 shadow-xl shadow-black/5 cursor-pointer overflow-hidden group" 
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)'
+                      }}>
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      
+                      <div className="flex items-center space-x-5 relative z-10">
+                        <motion.div 
+                          className={`w-12 h-12 bg-gradient-to-br ${
+                            feature.color === 'blue' ? 'from-blue-500 to-indigo-600' :
+                            feature.color === 'purple' ? 'from-purple-500 to-indigo-600' :
+                            feature.color === 'green' ? 'from-emerald-500 to-teal-600' :
+                            'from-gray-500 to-gray-600'
+                          } rounded-2xl flex items-center justify-center shadow-lg relative`}
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
+                        >
+                          <div className="absolute inset-0 bg-white/20 rounded-2xl backdrop-blur-sm" />
+                          <IconComponent className={`h-6 w-6 text-white relative z-10`} />
+                        </motion.div>
+                        <div className="flex-1">
+                          <h3 className="font-bold text-gray-900 mb-1 text-base leading-tight">{feature.title}</h3>
+                          <p className="text-sm text-gray-700 leading-relaxed font-medium">{feature.desc}</p>
+                        </div>
+                        <motion.div
+                          className="p-2 rounded-xl bg-white/50 backdrop-blur-sm border border-white/40 shadow-sm"
+                          whileHover={{ x: 4, scale: 1.1 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <ArrowRight className="h-4 w-4 text-gray-600" />
+                        </motion.div>
+                      </div>
+                    </MobileCard>
+                  </motion.div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Medical Bill AI Features Section */}
+      <motion.div 
+        className="space-y-4 mt-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.6 }}
+      >
+        <motion.div 
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.7, duration: 0.6 }}
         >
           <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-2">
             Medical Bill AI
@@ -159,23 +265,15 @@ export default function Landing() {
               title: "Find Hidden Overcharges", 
               desc: "AI identifies billing errors that cost you $10K-$100K+", 
               color: "red", 
-              delay: 1.3,
+              delay: 1.8,
               href: "/bill-analyzer"
             },
             { 
               icon: FileText, 
-              title: "Get Itemized Bills", 
-              desc: "Essential first step - we show you exactly what to request", 
+              title: "Professional Dispute Letters", 
+              desc: "Get proven templates that hospitals respond to", 
               color: "blue", 
-              delay: 1.4,
-              href: "/bill-analyzer"
-            },
-            { 
-              icon: DollarSign, 
-              title: "Dispute & Save", 
-              desc: "Professional letters that hospitals respond to", 
-              color: "green", 
-              delay: 1.5,
+              delay: 1.9,
               href: "/bill-analyzer"
             }
           ].map((feature, index) => {
@@ -236,21 +334,21 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* Training Modules Grid */}
+      {/* Advanced Training Modules */}
       <motion.div 
         className="space-y-4 mt-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.6 }}
+        transition={{ delay: 2.0, duration: 0.6 }}
       >
         <motion.div 
           className="text-center mb-6"
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.7, duration: 0.6 }}
+          transition={{ delay: 2.1, duration: 0.6 }}
         >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-2">
-            Medical Training
+          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+            Advanced Learning
           </h2>
           <div className="h-1 w-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
         </motion.div>
@@ -258,27 +356,11 @@ export default function Landing() {
         <div className="space-y-3">
           {[
             { 
-              icon: BookOpen, 
-              title: "Patient Simulations", 
-              desc: "60+ interactive medical cases across 19 specialties", 
-              color: "blue", 
-              delay: 1.8,
-              href: "/training"
-            },
-            { 
-              icon: Brain, 
-              title: "Medical Image Analysis", 
-              desc: "X-ray, CT, MRI interpretation training", 
-              color: "purple", 
-              delay: 1.9,
-              href: "/image-analysis"
-            },
-            { 
               icon: Trophy, 
               title: "Board Exam Prep", 
               desc: "USMLE & specialty board practice exams", 
               color: "green", 
-              delay: 2.0,
+              delay: 2.2,
               href: "/board-exam-prep"
             },
             { 
@@ -286,7 +368,7 @@ export default function Landing() {
               title: "Clinical Decision Trees", 
               desc: "Interactive diagnostic algorithms", 
               color: "orange", 
-              delay: 2.1,
+              delay: 2.3,
               href: "/clinical-decision-trees"
             }
           ].map((module, index) => {
@@ -381,9 +463,9 @@ export default function Landing() {
             
             <div className="grid grid-cols-3 gap-6">
               {[
-                { value: "$500K+", label: "Max Savings", gradient: "from-emerald-600 to-teal-600", delay: 2.4 },
                 { value: "60+", label: "Medical Cases", gradient: "from-indigo-600 to-blue-600", delay: 2.5 },
-                { value: "19", label: "Specialties", gradient: "from-purple-600 to-pink-600", delay: 2.6 }
+                { value: "$500K+", label: "Max Savings", gradient: "from-emerald-600 to-teal-600", delay: 2.6 },
+                { value: "19", label: "Specialties", gradient: "from-purple-600 to-pink-600", delay: 2.7 }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -420,7 +502,7 @@ export default function Landing() {
         className="text-center py-8 mt-8 relative overflow-hidden"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.7, duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ delay: 2.8, duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         {/* Background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -431,10 +513,10 @@ export default function Landing() {
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.8, duration: 0.6 }}
+          transition={{ delay: 2.9, duration: 0.6 }}
         >
           <h2 className="text-2xl font-black bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-2">
-            Ready to Save Thousands?
+            Ready to Get Started?
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full mx-auto mb-6" />
         </motion.div>
@@ -445,7 +527,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.9, duration: 0.6 }}
         >
-          Join thousands finding massive savings on medical bills and advancing their diagnostic skills.
+          Master medical diagnosis and find massive savings on your medical bills - all in one powerful platform.
         </motion.p>
         
         <motion.div

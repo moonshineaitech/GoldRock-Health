@@ -1,5 +1,5 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
-import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users } from "lucide-react";
+import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,40 +17,46 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const premiumFeatures = [
   {
+    icon: DollarSign,
+    title: "Medical Bill AI Analysis",
+    description: "AI identifies $10K-$500K+ in billing overcharges and errors",
+    highlight: "Save thousands",
+    category: "billing"
+  },
+  {
+    icon: FileText,
+    title: "Professional Dispute Letters",
+    description: "Get proven templates that hospitals and insurers respond to",
+    highlight: "95% success rate",
+    category: "billing"
+  },
+  {
+    icon: AlertTriangle,
+    title: "Real-Time Bill Monitoring",
+    description: "Instant alerts for suspicious charges and billing patterns",
+    highlight: "Live protection",
+    category: "billing"
+  },
+  {
     icon: Zap,
     title: "Unlimited AI Cases",
     description: "Generate endless custom medical scenarios with advanced AI",
-    highlight: "No limits"
+    highlight: "No limits",
+    category: "training"
   },
   {
     icon: Brain,
     title: "Advanced Specialties",
     description: "Access to rare diseases and complex subspecialty cases",
-    highlight: "All 19 specialties"
-  },
-  {
-    icon: Crown,
-    title: "Premium Voice Synthesis",
-    description: "High-quality, realistic patient voice interactions",
-    highlight: "Ultra-realistic"
+    highlight: "All 19 specialties",
+    category: "training"
   },
   {
     icon: BarChart3,
     title: "Advanced Analytics",
-    description: "In-depth performance insights and learning paths",
-    highlight: "Detailed reports"
-  },
-  {
-    icon: Target,
-    title: "Personalized Learning",
-    description: "AI-powered recommendations based on your progress",
-    highlight: "Smart tracking"
-  },
-  {
-    icon: Users,
-    title: "Study Groups",
-    description: "Collaborate with peers and join expert-led sessions",
-    highlight: "Team learning"
+    description: "Track both learning progress and billing savings",
+    highlight: "Dual insights",
+    category: "both"
   }
 ];
 
@@ -58,33 +64,33 @@ const subscriptionPlans = [
   {
     id: "monthly",
     name: "Monthly",
-    price: 19.99,
+    price: 39.99,
     period: "month",
     savings: null,
     popular: false,
     features: [
-      "Unlimited AI-generated cases",
-      "All 19 medical specialties",
-      "Premium voice synthesis", 
-      "Advanced analytics dashboard",
-      "Priority customer support",
-      "Mobile + web access"
+      "Medical Bill AI Analysis (Save $10K-$500K+)",
+      "Professional dispute letter templates",
+      "Unlimited AI-generated medical cases",
+      "All 19 medical specialties access",
+      "Real-time bill monitoring & alerts",
+      "Priority customer support"
     ]
   },
   {
     id: "annual",
     name: "Annual",
-    price: 179.99,
+    price: 399.99,
     period: "year",
-    savings: "Save 25%",
+    savings: "Save 17% + 2 Free Months",
     popular: true,
     features: [
       "Everything in Monthly plan",
-      "2 months free ($40 value)",
-      "Exclusive specialty content",
-      "Early access to new features",
-      "Advanced study group features",
-      "Personal learning coach"
+      "Advanced billing pattern recognition",
+      "Exclusive medical specialty content",
+      "Personal learning & savings coach",
+      "Early access to new AI features",
+      "Dedicated account manager"
     ]
   }
 ];
@@ -118,7 +124,7 @@ function LoginPrompt() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          Premium Features Await
+          Save Thousands + Learn Medicine
         </motion.h1>
         
         <motion.p 
@@ -127,7 +133,7 @@ function LoginPrompt() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
-          Sign in to access premium medical training features and advanced AI-powered simulations
+          Sign in to access Medical Bill AI analysis and advanced medical training features
         </motion.p>
         
         <motion.div
@@ -275,7 +281,7 @@ function PremiumMarketing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.4 }}
         >
-          Unlock Premium Features
+          Save Thousands + Master Medicine
         </motion.h1>
         
         <motion.p 
@@ -284,7 +290,7 @@ function PremiumMarketing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.4 }}
         >
-          Advanced AI training with unlimited access to all medical specialties
+          AI that finds massive bill overcharges + unlimited access to medical training
         </motion.p>
       </motion.div>
 
@@ -295,36 +301,103 @@ function PremiumMarketing() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <h2 className="text-xl font-semibold text-gray-900 text-center">
+        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
           What You Get with Premium
         </h2>
         
-        <div className="grid grid-cols-2 gap-3">
-          {premiumFeatures.map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 + index * 0.1, duration: 0.3 }}
-              >
-                <MobileCard className="h-full bg-gradient-to-br from-orange-50/50 to-amber-50/50 border-orange-200">
-                  <div className="text-center p-1">
-                    <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-2">
-                      <IconComponent className="h-5 w-5 text-orange-600" />
+        {/* Value Proposition Banner */}
+        <motion.div 
+          className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 mb-6"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
+        >
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <TrendingDown className="h-5 w-5 text-emerald-600" />
+              <span className="font-bold text-emerald-700 text-base">Average User Saves $127,000</span>
+            </div>
+            <p className="text-sm text-emerald-600 font-medium">Subscription pays for itself with first bill analysis</p>
+          </div>
+        </motion.div>
+        
+        {/* Medical Bill AI Features */}
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 0.4 }}
+        >
+          <h3 className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 text-center">
+            Medical Bill AI Protection
+          </h3>
+          <div className="space-y-3">
+            {premiumFeatures.filter(f => f.category === 'billing').map((feature, index) => {
+              const IconComponent = feature.icon;
+              return (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8 + index * 0.1, duration: 0.3 }}
+                >
+                  <MobileCard className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-200">
+                    <div className="flex items-center space-x-4 p-1">
+                      <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                        <IconComponent className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-gray-900 text-sm mb-1">{feature.title}</h4>
+                        <p className="text-xs text-gray-700 leading-relaxed">{feature.description}</p>
+                        <span className="inline-block px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg mt-2">
+                          {feature.highlight}
+                        </span>
+                      </div>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-1 text-sm leading-tight">{feature.title}</h3>
-                    <p className="text-xs text-gray-600 mb-2 leading-relaxed">{feature.description}</p>
-                    <span className="inline-block px-2 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-lg">
-                      {feature.highlight}
-                    </span>
-                  </div>
-                </MobileCard>
-              </motion.div>
-            );
-          })}
-        </div>
+                  </MobileCard>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+        
+        {/* Medical Training Features */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.4 }}
+        >
+          <h3 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3 text-center">
+            Advanced Medical Training
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            {premiumFeatures.filter(f => f.category === 'training' || f.category === 'both').map((feature, index) => {
+              const IconComponent = feature.icon;
+              const isTraining = feature.category === 'training';
+              return (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.1 + index * 0.1, duration: 0.3 }}
+                >
+                  <MobileCard className={`h-full ${isTraining ? 'bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border-indigo-200' : 'bg-gradient-to-br from-orange-50/50 to-amber-50/50 border-orange-200'}`}>
+                    <div className="text-center p-1">
+                      <div className={`w-10 h-10 ${isTraining ? 'bg-indigo-100' : 'bg-orange-100'} rounded-xl flex items-center justify-center mx-auto mb-2`}>
+                        <IconComponent className={`h-5 w-5 ${isTraining ? 'text-indigo-600' : 'text-orange-600'}`} />
+                      </div>
+                      <h4 className="font-semibold text-gray-900 mb-1 text-sm leading-tight">{feature.title}</h4>
+                      <p className="text-xs text-gray-600 mb-2 leading-relaxed">{feature.description}</p>
+                      <span className={`inline-block px-2 py-1 ${isTraining ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'} text-xs font-medium rounded-lg`}>
+                        {feature.highlight}
+                      </span>
+                    </div>
+                  </MobileCard>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* Side-by-Side Plan Comparison */}
@@ -334,9 +407,12 @@ function PremiumMarketing() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.0, duration: 0.5 }}
       >
-        <h2 className="text-xl font-semibold text-gray-900 text-center">
+        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
           Choose Your Plan
         </h2>
+        <p className="text-sm text-gray-600 text-center mb-4">
+          Both plans include Medical Bill AI + Training. No hidden fees.
+        </p>
         
         <div className="grid grid-cols-2 gap-3">
           {subscriptionPlans.map((plan, index) => (
@@ -349,13 +425,13 @@ function PremiumMarketing() {
             >
               {plan.popular && (
                 <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-                    Most Popular
+                  <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                    Best Value
                   </div>
                 </div>
               )}
               
-              <MobileCard className={`h-full ${plan.popular ? "border-orange-400 bg-gradient-to-br from-orange-50 to-orange-100 ring-2 ring-orange-300 shadow-lg" : "border-gray-200"}`}>
+              <MobileCard className={`h-full ${plan.popular ? "border-emerald-400 bg-gradient-to-br from-emerald-50 to-teal-50 ring-2 ring-emerald-300 shadow-xl" : "border-gray-200 bg-white"}`}>
                 <div className="p-1 space-y-3">
                   {/* Plan Header */}
                   <div className="text-center pt-2">
@@ -382,14 +458,14 @@ function PremiumMarketing() {
                   {/* Subscribe Button */}
                   <div className="pt-2">
                     <MobileButton 
-                      className={`w-full ${plan.popular ? "bg-orange-600 hover:bg-orange-700 shadow-lg" : "bg-gray-800 hover:bg-gray-900"}`}
+                      className={`w-full ${plan.popular ? "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg" : "bg-gray-800 hover:bg-gray-900"}`}
                       size="sm"
                       onClick={() => handleSubscribe(plan.id)}
                       disabled={createSubscription.isPending}
                       data-testid={`subscribe-${plan.id}`}
                     >
-                      <Crown className="h-4 w-4 mr-1" />
-                      {createSubscription.isPending ? "Processing..." : "Subscribe Now"}
+                      <DollarSign className="h-4 w-4 mr-1" />
+                      {createSubscription.isPending ? "Processing..." : "Start Saving"}
                     </MobileButton>
                   </div>
                 </div>
@@ -471,7 +547,7 @@ function PremiumDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
-          Enjoy unlimited access to all advanced features
+          Enjoy unlimited bill analysis and medical training features
         </motion.p>
       </motion.div>
 
@@ -483,7 +559,7 @@ function PremiumDashboard() {
         transition={{ delay: 0.9, duration: 0.6 }}
       >
         <h2 className="text-xl font-semibold text-gray-900 text-center mb-6">
-          Your Premium Features
+          Your Premium Benefits
         </h2>
         
         <div className="grid grid-cols-2 gap-4">
@@ -525,18 +601,19 @@ function PremiumDashboard() {
         </h2>
         
         <div className="space-y-3">
-          <Link href="/ai-generator">
-            <MobileButton className="w-full bg-orange-600 hover:bg-orange-700" size="lg">
-              <Zap className="h-5 w-5 mr-2" />
-              Generate Custom Case
+          <Link href="/bill-analyzer">
+            <MobileButton className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg" size="lg">
+              <DollarSign className="h-5 w-5 mr-2" />
+              Analyze Medical Bills
               <ArrowRight className="h-4 w-4 ml-2" />
             </MobileButton>
           </Link>
           
           <Link href="/training">
-            <MobileButton variant="secondary" className="w-full" size="lg">
-              <Star className="h-5 w-5 mr-2" />
-              Browse Premium Cases
+            <MobileButton className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg" size="lg">
+              <Stethoscope className="h-5 w-5 mr-2" />
+              Medical Training
+              <ArrowRight className="h-4 w-4 ml-2" />
             </MobileButton>
           </Link>
         </div>
