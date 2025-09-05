@@ -184,12 +184,12 @@ export default function BillAI() {
     const file = event.target.files?.[0];
     if (!file) return;
     
-    // Validate file type - only PDF and images allowed
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
+    // Validate file type - only images allowed for accurate analysis
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       toast({
-        title: "Invalid File Type",
-        description: "Please upload only PDF or image files (JPEG, PNG, WebP).",
+        title: "Images Only",
+        description: "Please upload image files only (JPG, PNG, WebP). Take a photo or screenshot of your medical bill.",
         variant: "destructive",
       });
       return;
@@ -246,7 +246,7 @@ export default function BillAI() {
   const quickActions = [
     {
       icon: Upload,
-      label: "Upload Medical Bill",
+      label: "Upload Bill Image",
       desc: "AI analysis for overcharges",
       color: "emerald",
       action: () => fileInputRef.current?.click(),
@@ -522,7 +522,7 @@ export default function BillAI() {
           <input
             ref={fileInputRef}
             type="file"
-            accept=".pdf,image/jpeg,image/jpg,image/png,image/webp"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
             onChange={handleFileUpload}
             className="hidden"
             data-testid="file-input"

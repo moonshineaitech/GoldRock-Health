@@ -1711,41 +1711,13 @@ You help patients save thousands of dollars through expert guidance on medical b
       let billText = '';
       let analysisData: any = {};
 
-      // Process PDF files
+      // Only process image files - PDFs are not supported
       if (file.mimetype === 'application/pdf') {
-        try {
-          // Try to parse PDF with fallback
-          if (process.env.OPENAI_API_KEY) {
-            // Use OpenAI to read PDF as base64 if available
-            const base64Pdf = file.buffer.toString('base64');
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                model: 'gpt-4o',
-                messages: [
-                  {
-                    role: 'user',
-                    content: 'Extract all text from this PDF medical bill. Provide complete text including all charges, dates, procedure codes, patient info, and billing details.'
-                  }
-                ],
-                max_tokens: 2000
-              })
-            });
-            const result = await response.json();
-            billText = result.choices?.[0]?.message?.content || 'Unable to extract text from PDF';
-          } else {
-            // Fallback: Use file name and basic info
-            billText = `Medical Bill from ${file.originalname}\nUploaded: ${new Date().toISOString()}\n\nNote: PDF text extraction requires AI service. Please try uploading as an image for full analysis.`;
-          }
-        } catch (pdfError) {
-          console.error('PDF parsing error:', pdfError);
-          billText = `Medical Bill from ${file.originalname}\nUploaded: ${new Date().toISOString()}\n\nNote: Unable to extract PDF text. Please try uploading as an image.`;
-        }
+        return res.status(400).json({ 
+          message: 'PDF files are not supported. Please convert your bill to an image format (JPG, PNG, WebP) and upload that instead for accurate analysis.' 
+        });
       }
+      
       // Process image files with OpenAI Vision
       else if (file.mimetype.startsWith('image/')) {
         if (!process.env.OPENAI_API_KEY) {
@@ -1794,46 +1766,149 @@ You help patients save thousands of dollars through expert guidance on medical b
       // Analyze the bill with expert AI prompting
       if (process.env.OPENAI_API_KEY && billText) {
         try {
-          const analysisPrompt = `You are a professional medical bill reduction specialist analyzing this medical bill for specific billing errors and cost reduction opportunities.
+          const analysisPrompt = `You are the world's leading medical bill reduction expert with 25+ years of experience saving patients millions. Analyze this medical bill with forensic precision to find every possible error and savings opportunity.
 
-**BILL CONTENT:**
+**MEDICAL BILL CONTENT:**
 ${billText}
 
-**EXPERT ANALYSIS REQUIRED:**
+**COMPREHENSIVE EXPERT ANALYSIS REQUIRED (minimum 1500 words):**
 
-1. **SPECIFIC BILLING ERRORS DETECTED** (provide exact line items and dollar amounts):
-   - Duplicate charges (same service charged multiple times)
-   - Upcoding violations (wrong procedure codes for higher reimbursement)
-   - Unbundling schemes (services that should be packaged together)
-   - Phantom charges (services billed but not provided)
-   - Incorrect dates, times, or patient information
-   - Equipment/supply charges for items not used
+## 1. DETAILED BILLING ERROR DETECTION
 
-2. **FINANCIAL OPPORTUNITIES** (provide specific dollar amounts):
-   - Total potential savings from error corrections
-   - Charity care eligibility assessment (based on bill amount)
-   - Negotiation leverage points with specific pricing comparisons
-   - Payment plan and settlement opportunities
+**DUPLICATE CHARGES** (Potential Savings: $1,500-$25,000):
+- Identify every duplicate line item with exact dates, codes, and amounts
+- Calculate precise savings for each duplicate found
+- Provide specific dispute language and CPT code references
+- Reference Medicare bundling rules and CMS guidelines
 
-3. **IMMEDIATE ACTION PLAN**:
-   - Priority dispute items with exact account numbers and codes
-   - Specific phone scripts for billing department
-   - Documents needed for appeals
-   - Timeline for maximum savings
+**UPCODING VIOLATIONS** (Potential Savings: $3,000-$50,000):
+- Compare each CPT code against actual services provided
+- Reference current Medicare pricing data and regional averages
+- Calculate overcharge amounts with specific percentages
+- Identify severity levels and audit red flags
 
-4. **PROFESSIONAL LETTERS TO GENERATE**:
-   - Error dispute letter with specific charge details
-   - Charity care application if applicable
-   - Settlement negotiation letter
+**UNBUNDLING SCHEMES** (Potential Savings: $2,000-$35,000):
+- Identify services that should be bundled together per CMS rules
+- Reference specific National Correct Coding Initiative (NCCI) edits
+- Calculate savings from proper bundling procedures
+- Document regulatory violations and compliance issues
 
-**CRITICAL INSTRUCTIONS:**
-- Reference exact charges, codes, and amounts from the bill
-- Provide specific dollar savings estimates for each error found
-- Include account numbers, procedure codes, and dates for disputes
-- Give realistic success rates and timelines
-- Be extremely specific and actionable
+**PHANTOM CHARGES** (Potential Savings: $800-$15,000):
+- List all services billed but potentially not provided
+- Cross-reference with standard care protocols and medical necessity
+- Document evidence needed to dispute each charge
+- Identify supplies/equipment charges without usage verification
 
-Analyze this bill comprehensively and provide expert-level findings with specific dollar amounts and action items.`;
+**ROOM/FACILITY ERRORS** (Potential Savings: $500-$10,000):
+- Verify room rates against regional market standards
+- Check for time-based billing errors and admission/discharge discrepancies
+- Identify incorrect facility levels and unnecessary ICU charges
+- Compare with Medicare Inpatient Prospective Payment System rates
+
+## 2. COMPREHENSIVE FINANCIAL OPPORTUNITIES
+
+**TOTAL POTENTIAL SAVINGS BREAKDOWN:**
+- Error corrections: $[exact calculated amount]
+- Charity care eligibility: $[amount based on income thresholds]
+- Market rate adjustments: $[amount compared to fair pricing]
+- Settlement opportunities: $[realistic range based on hospital practices]
+- **MAXIMUM TOTAL SAVINGS: $[comprehensive total]**
+
+**DETAILED CHARITY CARE ANALYSIS:**
+- Review specific hospital charity care policies and income requirements
+- Calculate qualification likelihood based on bill amount and typical income thresholds
+- Identify required documentation and application strategies
+- Estimate potential savings percentage (0-100% based on eligibility)
+
+**ADVANCED NEGOTIATION LEVERAGE:**
+- Benchmark pricing against Medicare rates and regional averages
+- Analyze insurance contract rates and payment patterns
+- Identify provider profit margins and cost structures
+- Document quality of care issues or service deficiencies for leverage
+
+## 3. DETAILED ACTION PLAN WITH EXACT SCRIPTS
+
+**PRIORITY DISPUTE SEQUENCE (ranked by potential savings):**
+1. [Highest value error] - Account #[number], CPT [code], Amount $[amount], Expected Success: [percentage]
+2. [Second highest] - Account #[number], CPT [code], Amount $[amount], Expected Success: [percentage]
+3. [Continue detailed ranking for all identified errors]
+
+**WORD-FOR-WORD PHONE SCRIPTS:**
+"Hello, I'm calling about account number [specific number from bill]. I'm [patient name] and I've conducted a detailed analysis of my bill and identified billing errors totaling $[specific amount]. I need to speak with a billing supervisor immediately.
+
+Specifically, I've found:
+1. [Error 1 with exact CPT code and amount]: This violates [specific regulation/guideline]
+2. [Error 2 with exact details]: This represents [specific type of billing error]
+
+I'm requesting immediate corrections and a revised bill within 7 business days. I'm also requesting a complete audit of my account and all supporting documentation."
+
+**COMPREHENSIVE DOCUMENT REQUESTS:**
+- Complete itemized bill with full CPT code descriptions and modifiers
+- All medical records for dates of service mentioned
+- Provider's current charge master and fee schedule
+- Insurance explanation of benefits and payment details
+- Hospital's charity care policy and income guidelines
+- Facility's compliance policies and error correction procedures
+
+**90-DAY SUCCESS TIMELINE:**
+- **Week 1**: Initial dispute calls and formal document requests
+- **Week 2**: Submit comprehensive written disputes with regulatory citations
+- **Week 3**: Charity care application with full documentation package
+- **Week 4**: Escalation to billing supervisor and compliance department
+- **Month 2**: Insurance appeals process and external review requests
+- **Month 3**: Settlement negotiations and final resolution documentation
+
+## 4. PROFESSIONAL DISPUTE DOCUMENTATION
+
+**COMPREHENSIVE ERROR DISPUTE LETTER:**
+- Patient and account identification with all relevant numbers
+- Detailed error descriptions with specific CPT codes and amounts
+- Citations of violated Medicare rules, state regulations, and hospital policies
+- Requested corrections with specific timelines for response
+- Documentation of potential fraud concerns and compliance violations
+- Consequences for non-compliance including regulatory reporting
+
+**STRATEGIC CHARITY CARE APPLICATION:**
+- Complete financial hardship documentation requirements
+- Professionally crafted hardship narrative with specific circumstances
+- Strategic timing recommendations for maximum effectiveness
+- Appeal strategies if initially denied
+- Alternative financial assistance program identification
+
+**ADVANCED SETTLEMENT NEGOTIATION:**
+- Detailed fair market value calculations with supporting data
+- Comprehensive payment capacity analysis with documentation
+- Realistic settlement ranges with industry benchmarks (typically 30-70% discounts)
+- Structured payment plan alternatives with interest rate negotiations
+- Legal protections and written agreement requirements
+
+## 5. REGULATORY COMPLIANCE AND FRAUD DETECTION
+
+**BILLING TRANSPARENCY VIOLATIONS:**
+- No Surprises Act compliance review and violation identification
+- State billing transparency law requirements and hospital failures
+- Patient rights violations and required disclosure analysis
+- Good faith estimate requirements and accuracy assessment
+
+**POTENTIAL FRAUD INDICATORS:**
+- False Claims Act violation patterns and documentation
+- Medicare/Medicaid fraud indicators with specific examples
+- Compliance program failures and internal control weaknesses
+- Whistleblower protection availability and reporting procedures
+
+**REGULATORY REPORTING RECOMMENDATIONS:**
+- State attorney general complaint procedures
+- Medicare fraud hotline reporting guidelines
+- Insurance commissioner violation reporting
+- Hospital regulatory body complaint processes
+
+**FINAL RECOMMENDATIONS:**
+- Immediate action priorities with specific deadlines
+- Long-term monitoring for future billing accuracy
+- Patient rights education and protection strategies
+- Success metrics and follow-up requirements
+
+Extract every specific detail from the bill including exact account numbers, patient names, CPT codes, dollar amounts, dates, provider names, and insurance information. Use current Medicare rates, regional pricing data, and specific regulatory citations throughout the analysis. Provide complete word-for-word scripts and template language for all recommended actions.`;
 
           const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -1853,7 +1928,7 @@ Analyze this bill comprehensively and provide expert-level findings with specifi
                   content: analysisPrompt
                 }
               ],
-              max_tokens: 2000,
+              max_tokens: 4000,
               temperature: 0.3
             })
           });
