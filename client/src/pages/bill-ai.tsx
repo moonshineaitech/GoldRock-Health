@@ -21,12 +21,20 @@ import {
   TrendingDown,
   Sparkles,
   Shield,
-  Loader2
+  Loader2,
+  FileEdit
 } from "lucide-react";
 import { Link } from "wouter";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { ChatMessage, ChatSession, MedicalBill } from "@shared/schema";
 import logoUrl from "@assets/ChatGPT_Image_Sep_4__2025__05_43_07_PM-removebg-preview_1757029452527.png";
+import { 
+  DisputeLetterGenerator, 
+  NegotiationScriptGenerator, 
+  ErrorDetectionChecklist, 
+  BillingRightsAdvisor, 
+  ClaimAppealGenerator 
+} from "@/components/bill-ai-features";
 
 interface AIMessage {
   id: string;
@@ -43,6 +51,8 @@ export default function BillAI() {
   const [isTyping, setIsTyping] = useState(false);
   const [conversationStarted, setConversationStarted] = useState(false);
   const [localMessages, setLocalMessages] = useState<AIMessage[]>([]);
+  const [uploadingFile, setUploadingFile] = useState(false);
+  const [activeFeature, setActiveFeature] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -105,6 +115,93 @@ export default function BillAI() {
     }
   };
 
+  // File upload mutation for Bill AI
+  const uploadBillMutation = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("bill", file);
+      formData.append("sessionId", "bill-ai-session");
+      
+      const response = await fetch("/api/upload-bill", {
+        method: "POST",
+        body: formData,
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setUploadingFile(false);
+      
+      if (data.success && data.analysis) {
+        // Add AI analysis as a message in the chat
+        const analysisMessage = {
+          id: Date.now().toString(),
+          role: "assistant" as const,
+          content: `🔍 **BILL ANALYSIS COMPLETE**\n\n${data.analysis}`,
+          createdAt: new Date(),
+        };
+        
+        setLocalMessages(prev => [...prev, analysisMessage]);
+        setConversationStarted(true);
+        
+        // Show success toast
+        toast({
+          title: "Bill Analyzed Successfully",
+          description: data.message || "Your bill has been analyzed for billing errors and savings opportunities.",
+        });
+        
+        // Refetch bills to update the list
+        queryClient.invalidateQueries({ queryKey: ["/api/medical-bills"] });
+      } else {
+        toast({
+          title: "Upload Successful",
+          description: data.message || "Your bill has been uploaded successfully.",
+        });
+      }
+    },
+    onError: (error: any) => {
+      setUploadingFile(false);
+      toast({
+        title: "Upload Failed",
+        description: error.response?.data?.message || "Failed to upload bill. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    // Validate file type
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please upload a PDF or image file (JPEG, PNG, WebP).",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "File Too Large",
+        description: "Please upload a file smaller than 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadingFile(true);
+    uploadBillMutation.mutate(file);
+    
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [localMessages, isTyping]);
@@ -140,40 +237,28 @@ export default function BillAI() {
       label: "Upload Medical Bill",
       desc: "AI analysis for overcharges",
       color: "emerald",
-      action: () => {
-        const message = "I have a medical bill I'd like you to analyze. Can you walk me through the process of uploading it and what you'll look for in terms of potential overcharges and billing errors?";
-        sendMessage(message);
-      },
+      action: () => fileInputRef.current?.click(),
     },
     {
       icon: AlertTriangle,
       label: "Find Billing Errors",
       desc: "Detect common overcharges",
       color: "red",
-      action: () => {
-        const message = "What are the most common billing errors and overcharges I should look for on my medical bills? Can you give me a checklist of specific things to examine?";
-        sendMessage(message);
-      },
+      action: () => setActiveFeature('error-detection'),
     },
     {
       icon: DollarSign,
       label: "Negotiation Strategy",
       desc: "Expert reduction tactics",
       color: "green",
-      action: () => {
-        const message = "I need help negotiating my medical bill with the hospital. What are the most effective strategies and scripts I should use to get the biggest reduction possible?";
-        sendMessage(message);
-      },
+      action: () => setActiveFeature('negotiation-script'),
     },
     {
       icon: FileText,
       label: "Dispute Letter",
       desc: "Professional appeals",
       color: "blue",
-      action: () => {
-        const message = "I found errors on my medical bill and need to write a formal dispute letter. Can you help me create a professional appeal that will get results?";
-        sendMessage(message);
-      },
+      action: () => setActiveFeature('dispute-letter'),
     }
   ];
 
@@ -210,9 +295,63 @@ export default function BillAI() {
           </motion.div>
         )}
 
+        {/* Feature Components */}
+        {activeFeature && (
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-4">
+              <Button
+                variant="ghost"
+                onClick={() => setActiveFeature(null)}
+                className="text-gray-600 hover:text-gray-800"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Chat
+              </Button>
+            </div>
+            
+            {activeFeature === 'dispute-letter' && <DisputeLetterGenerator onSendMessage={sendMessage} />}
+            {activeFeature === 'negotiation-script' && <NegotiationScriptGenerator onSendMessage={sendMessage} />}
+            {activeFeature === 'error-detection' && <ErrorDetectionChecklist onSendMessage={sendMessage} />}
+            {activeFeature === 'billing-rights' && <BillingRightsAdvisor onSendMessage={sendMessage} />}
+            {activeFeature === 'claim-appeal' && <ClaimAppealGenerator onSendMessage={sendMessage} />}
+          </div>
+        )}
+
         {/* Chat Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          <AnimatePresence>
+        {!activeFeature && (
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* Feature Access Buttons */}
+            {conversationStarted && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-4 mb-4"
+              >
+                <p className="text-sm font-medium text-gray-700 mb-3">🛠️ Advanced Tools:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setActiveFeature('billing-rights')}
+                    className="text-xs h-8"
+                  >
+                    <Shield className="h-3 w-3 mr-1" />
+                    Rights Advisor
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setActiveFeature('claim-appeal')}
+                    className="text-xs h-8"
+                  >
+                    <FileEdit className="h-3 w-3 mr-1" />
+                    Insurance Appeal
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+            
+            <AnimatePresence>
             {!conversationStarted && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -326,13 +465,26 @@ export default function BillAI() {
                 </div>
               </motion.div>
             )}
-          </AnimatePresence>
-          <div ref={messagesEndRef} />
-        </div>
+            </AnimatePresence>
+            <div ref={messagesEndRef} />
+          </div>
+        )}
 
         {/* Input Area */}
         <div className="p-4 border-t border-gray-200 bg-white">
           <div className="flex items-center space-x-3">
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isTyping || uploadingFile}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl w-12 h-12 p-0 border border-gray-300"
+              data-testid="button-attach"
+            >
+              {uploadingFile ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Paperclip className="h-5 w-5" />
+              )}
+            </Button>
             <div className="flex-1 relative">
               <Input
                 value={inputMessage}
@@ -353,6 +505,16 @@ export default function BillAI() {
               <Send className="h-5 w-5" />
             </Button>
           </div>
+          
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*,application/pdf"
+            onChange={handleFileUpload}
+            className="hidden"
+            data-testid="file-input"
+          />
         </div>
       </div>
     </MobileLayout>
