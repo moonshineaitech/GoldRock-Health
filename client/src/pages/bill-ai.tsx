@@ -346,23 +346,23 @@ export default function BillAI() {
         {/* Compact Stats Bar */}
         {userBills.length > 0 && (
           <motion.div 
-            className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 mx-4 rounded-2xl mb-4"
+            className="bg-gradient-to-r from-emerald-50 to-teal-50 p-3 mx-3 rounded-2xl mb-3"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-3 gap-3 text-center">
               <div>
-                <div className="text-xl font-bold text-gray-900">{userBills.length}</div>
-                <div className="text-sm text-gray-600">Bills</div>
+                <div className="text-lg font-bold text-gray-900">{userBills.length}</div>
+                <div className="text-xs text-gray-600">Bills</div>
               </div>
               <div>
-                <div className="text-xl font-bold text-emerald-600">{formatCurrency(getEstimatedSavings())}</div>
-                <div className="text-sm text-gray-600">Potential</div>
+                <div className="text-lg font-bold text-emerald-600">{formatCurrency(getEstimatedSavings())}</div>
+                <div className="text-xs text-gray-600">Potential</div>
               </div>
               <div>
-                <div className="text-xl font-bold text-purple-600">AI</div>
-                <div className="text-sm text-gray-600">Powered</div>
+                <div className="text-lg font-bold text-purple-600">AI</div>
+                <div className="text-xs text-gray-600">Powered</div>
               </div>
             </div>
           </motion.div>
@@ -392,7 +392,7 @@ export default function BillAI() {
 
         {/* Chat Messages Area */}
         {!activeFeature && (
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-2 space-y-4">
             {/* Feature Access Buttons */}
             {conversationStarted && (
               <motion.div
@@ -430,10 +430,10 @@ export default function BillAI() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="text-center py-8"
+                className="text-center py-4"
               >
                 <motion.div
-                  className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl"
+                  className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl"
                   animate={{ 
                     scale: [1, 1.05, 1],
                     rotate: [0, 2, -2, 0]
@@ -444,18 +444,18 @@ export default function BillAI() {
                     ease: "easeInOut"
                   }}
                 >
-                  <Brain className="h-8 w-8 text-white" />
+                  <Brain className="h-6 w-6 text-white" />
                 </motion.div>
                 
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
                   Save Thousands on Medical Bills
                 </h3>
-                <p className="text-gray-600 mb-8 text-sm leading-relaxed px-4">
+                <p className="text-gray-600 mb-4 text-sm leading-relaxed px-4">
                   I find billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
                 </p>
                 
                 {/* Quick Action Buttons */}
-                <div className="grid grid-cols-2 gap-3 px-4">
+                <div className="grid grid-cols-2 gap-2 px-4">
                   {quickActions.map((action, index) => {
                     const IconComponent = action.icon;
                     return (
@@ -466,15 +466,15 @@ export default function BillAI() {
                         transition={{ delay: index * 0.1 + 0.5 }}
                       >
                         <Card 
-                          className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-emerald-200 aspect-square"
+                          className="p-3 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-emerald-200"
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className="text-center h-full flex flex-col justify-center">
-                            <div className={`w-12 h-12 bg-gradient-to-br from-${action.color}-500 to-${action.color}-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
-                              <IconComponent className="h-6 w-6 text-white" />
+                          <div className="text-center">
+                            <div className={`w-10 h-10 bg-gradient-to-br from-${action.color}-500 to-${action.color}-600 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-lg`}>
+                              <IconComponent className="h-5 w-5 text-white" />
                             </div>
-                            <h4 className="font-bold text-gray-900 text-sm mb-1 leading-tight">{action.label}</h4>
+                            <h4 className="font-bold text-gray-900 text-xs mb-1 leading-tight">{action.label}</h4>
                             <p className="text-xs text-gray-600 leading-tight">{action.desc}</p>
                           </div>
                         </Card>
@@ -485,22 +485,22 @@ export default function BillAI() {
                 
                 {/* Compact Negotiation Strategy Box */}
                 <motion.div 
-                  className="mt-4 px-4"
+                  className="mt-3 px-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 }}
                 >
                   <Card 
-                    className="p-3 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50"
+                    className="p-2 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50"
                     onClick={() => setActiveFeature('negotiation-script')}
                     data-testid="negotiation-strategy-card"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Phone className="h-5 w-5 text-white" />
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Phone className="h-4 w-4 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 text-sm">Negotiation Strategy</h4>
+                        <h4 className="font-bold text-gray-900 text-xs">Negotiation Strategy</h4>
                         <p className="text-xs text-gray-600">Expert reduction tactics</p>
                       </div>
                     </div>
@@ -509,13 +509,13 @@ export default function BillAI() {
                 
                 {/* Security Notice */}
                 <motion.div 
-                  className="mt-8 px-4"
+                  className="mt-4 px-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.0 }}
                 >
-                  <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">
-                    <CheckCircle className="h-4 w-4 text-emerald-600" />
+                  <div className="flex items-center justify-center gap-2 text-gray-500 text-xs">
+                    <CheckCircle className="h-3 w-3 text-emerald-600" />
                     <span>Secure • Private • Exceeds HIPAA Standards</span>
                   </div>
                 </motion.div>
@@ -591,23 +591,23 @@ export default function BillAI() {
         )}
 
         {/* Input Area */}
-        <div className="p-4 border-t border-gray-200 bg-white">
-          <div className="flex items-center space-x-3">
+        <div className="p-3 border-t border-gray-200 bg-white">
+          <div className="flex items-center space-x-2">
             <Button
               onClick={() => fileInputRef.current?.click()}
               disabled={isTyping || uploadingFiles}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl w-12 h-12 p-0 border border-gray-300"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl w-10 h-10 p-0 border border-gray-300"
               data-testid="button-attach"
             >
               {uploadingFiles ? (
                 <div className="flex flex-col items-center">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3 w-3 animate-spin" />
                   {uploadProgress.total > 0 && (
                     <span className="text-xs">{uploadProgress.current}/{uploadProgress.total}</span>
                   )}
                 </div>
               ) : (
-                <Paperclip className="h-5 w-5" />
+                <Paperclip className="h-4 w-4" />
               )}
             </Button>
             <div className="flex-1 relative">
@@ -617,17 +617,17 @@ export default function BillAI() {
                 placeholder="Ask how to find thousands in overcharges..."
                 onKeyPress={handleKeyPress}
                 disabled={isTyping}
-                className="pr-12 rounded-2xl border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
+                className="pr-12 rounded-2xl border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 h-10 text-sm"
                 data-testid="input-message"
               />
             </div>
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isTyping}
-              className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl w-12 h-12 p-0 shadow-lg"
+              className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl w-10 h-10 p-0 shadow-lg"
               data-testid="button-send"
             >
-              <Send className="h-5 w-5" />
+              <Send className="h-4 w-4" />
             </Button>
           </div>
           
@@ -643,7 +643,7 @@ export default function BillAI() {
           />
           
           {/* AI Disclaimer */}
-          <div className="mt-2 px-1">
+          <div className="mt-1 px-1">
             <p className="text-xs text-gray-500 text-center">
               ⚠️ This is Generative AI - consult a professional
             </p>
