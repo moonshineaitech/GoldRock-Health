@@ -576,6 +576,199 @@ export const clinicalDecisionTrees = pgTable("clinical_decision_trees", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Synthetic Patient Profiles Table - AI-generated anonymous patient profiles
+export const syntheticPatients = pgTable("synthetic_patients", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  generationType: varchar("generation_type", { length: 20 }).notNull(), // "ai_generated" | "custom_created"
+  profileName: text("profile_name").notNull(),
+  
+  // Demographics
+  age: integer("age").notNull(),
+  gender: varchar("gender", { length: 20 }).notNull(),
+  ethnicity: varchar("ethnicity", { length: 50 }),
+  occupation: text("occupation"),
+  maritalStatus: varchar("marital_status", { length: 20 }),
+  
+  // Chief Complaint & Presentation
+  chiefComplaint: text("chief_complaint").notNull(),
+  presentingSymptoms: jsonb("presenting_symptoms").$type<{
+    symptom: string;
+    severity: number; // 1-10 scale
+    duration: string;
+    onset: string; // acute, gradual, sudden
+    quality: string;
+    location?: string;
+    aggravatingFactors: string[];
+    relievingFactors: string[];
+  }[]>().default([]),
+  
+  // Comprehensive Medical History
+  medicalHistory: jsonb("medical_history").$type<{
+    pastMedicalHistory: string[];
+    surgicalHistory: {
+      procedure: string;
+      date: string;
+      complications?: string;
+    }[];
+    medications: {
+      name: string;
+      dosage: string;
+      frequency: string;
+      indication: string;
+      adherence: "excellent" | "good" | "fair" | "poor";
+    }[];
+    allergies: {
+      allergen: string;
+      reaction: string;
+      severity: "mild" | "moderate" | "severe";
+    }[];
+    familyHistory: {
+      condition: string;
+      relationship: string;
+      ageOfOnset?: number;
+    }[];
+    socialHistory: {
+      smoking: { status: string; packsPerDay?: number; yearsSmoked?: number };
+      alcohol: { status: string; drinksPerWeek?: number };
+      drugs: { status: string; substances?: string[] };
+      exercise: string;
+      diet: string;
+      occupation: string;
+      travelHistory: string[];
+    };
+    reviewOfSystems: Record<string, {
+      system: string;
+      symptoms: string[];
+      negative: string[];
+    }>;
+  }>().default({}),
+  
+  // Physical Examination
+  physicalExam: jsonb("physical_exam").$type<{
+    vitals: {
+      bloodPressure: string;
+      heartRate: string;
+      respiratoryRate: string;
+      temperature: string;
+      oxygenSaturation?: string;
+      height: string;
+      weight: string;
+      bmi: string;
+    };
+    general: {
+      appearance: string;
+      distress: string;
+      mobility: string;
+      mood: string;
+      speech: string;
+    };
+    systems: {
+      cardiovascular: Record<string, string>;
+      pulmonary: Record<string, string>;
+      abdominal: Record<string, string>;
+      neurological: Record<string, string>;
+      musculoskeletal: Record<string, string>;
+      skin: Record<string, string>;
+      heent: Record<string, string>;
+      psychiatric: Record<string, string>;
+    };
+  }>().default({}),
+  
+  // AI-Generated Complexity Data
+  riskFactors: jsonb("risk_factors").$type<{
+    factor: string;
+    severity: "low" | "moderate" | "high";
+    impact: string;
+  }[]>().default([]),
+  
+  comorbidities: jsonb("comorbidities").$type<{
+    condition: string;
+    severity: "mild" | "moderate" | "severe";
+    controlled: boolean;
+    medications: string[];
+  }[]>().default([]),
+  
+  // Metadata
+  complexity: integer("complexity").default(1), // 1-5 scale
+  specialty: varchar("specialty", { length: 50 }),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  isAnonymized: boolean("is_anonymized").default(true),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Diagnostic Sessions Table - AI analysis sessions for synthetic patients
+export const diagnosticSessions = pgTable("diagnostic_sessions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  patientId: varchar("patient_id").notNull().references(() => syntheticPatients.id),
+  sessionName: text("session_name").notNull(),
+  
+  // Session Configuration
+  analysisType: varchar("analysis_type", { length: 30 }).notNull(), // differential_diagnosis, treatment_planning, risk_assessment, prognosis
+  focusAreas: jsonb("focus_areas").$type<string[]>().default([]), // cardiology, neurology, emergency_medicine, etc.
+  
+  // AI Analysis Results
+  diagnosticAnalysis: jsonb("diagnostic_analysis").$type<{
+    differentialDiagnoses: {
+      diagnosis: string;
+      probability: number; // 0-100%
+      supportingEvidence: string[];
+      contraEvidence: string[];
+      requiredTests: string[];
+      urgency: "low" | "moderate" | "high" | "critical";
+    }[];
+    recommendedTests: {
+      testName: string;
+      category: "laboratory" | "imaging" | "procedure" | "consultation";
+      priority: "stat" | "urgent" | "routine";
+      rationale: string;
+      expectedFindings: string;
+      cost: string;
+    }[];
+    riskAssessment: {
+      overallRisk: "low" | "moderate" | "high" | "critical";
+      specificRisks: {
+        risk: string;
+        probability: number;
+        mitigation: string;
+      }[];
+      redFlags: string[];
+    };
+    treatmentRecommendations: {
+      intervention: string;
+      type: "immediate" | "short_term" | "long_term";
+      evidenceLevel: "A" | "B" | "C" | "D";
+      contraindications: string[];
+      monitoringRequired: string[];
+    }[];
+    prognosis: {
+      shortTerm: string; // days to weeks
+      mediumTerm: string; // weeks to months  
+      longTerm: string; // months to years
+      factorsAffectingOutcome: string[];
+    };
+  }>().default({}),
+  
+  // Educational Insights
+  learningPoints: jsonb("learning_points").$type<{
+    keyInsights: string[];
+    clinicalPearls: string[];
+    commonMistakes: string[];
+    literatureReferences: string[];
+  }>().default({}),
+  
+  // Session Metrics
+  timeElapsed: integer("time_elapsed").default(0), // seconds
+  accuracy: decimal("accuracy", { precision: 5, scale: 2 }),
+  completed: boolean("completed").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
 // Medical Bills Table - Core bill information uploaded by users
 export const medicalBills = pgTable("medical_bills", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -1142,6 +1335,12 @@ export type ClinicalDecisionTree = typeof clinicalDecisionTrees.$inferSelect;
 export type InsertClinicalDecisionTree = typeof clinicalDecisionTrees.$inferInsert;
 export type DecisionTreeProgress = typeof decisionTreeProgress.$inferSelect;
 export type InsertDecisionTreeProgress = typeof decisionTreeProgress.$inferInsert;
+
+// Synthetic Patient Diagnostics Types
+export type SyntheticPatient = typeof syntheticPatients.$inferSelect;
+export type InsertSyntheticPatient = typeof syntheticPatients.$inferInsert;
+export type DiagnosticSession = typeof diagnosticSessions.$inferSelect;  
+export type InsertDiagnosticSession = typeof diagnosticSessions.$inferInsert;
 export type EmergencyScenario = typeof emergencyScenarios.$inferSelect;
 export type InsertEmergencyScenario = typeof emergencyScenarios.$inferInsert;
 export type EmergencyScenarioProgress = typeof emergencyScenarioProgress.$inferSelect;
@@ -1363,3 +1562,16 @@ export type ChatSession = typeof chatSessions.$inferSelect;
 export type InsertChatSession = typeof chatSessions.$inferInsert;
 export type ChatMessage = typeof chatMessages.$inferSelect;
 export type InsertChatMessage = typeof chatMessages.$inferInsert;
+
+// Synthetic Patient Diagnostics Insert Schemas
+export const insertSyntheticPatientSchema = createInsertSchema(syntheticPatients).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDiagnosticSessionSchema = createInsertSchema(diagnosticSessions).omit({
+  id: true,
+  createdAt: true,
+  completedAt: true,
+});

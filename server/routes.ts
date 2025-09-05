@@ -2506,6 +2506,453 @@ What specific insurance issue are you facing? I can provide exact templates and 
     }
   });
 
+  // ===== SYNTHETIC PATIENT DIAGNOSTICS ENDPOINTS =====
+  
+  // Get all synthetic patients for the authenticated user
+  app.get('/api/synthetic-patients', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const patients = await storage.getSyntheticPatientsByUser(userId);
+      res.json(patients);
+    } catch (error) {
+      console.error('Error fetching synthetic patients:', error);
+      res.status(500).json({ message: 'Failed to fetch synthetic patients' });
+    }
+  });
+
+  // Create a new synthetic patient (custom creation)
+  app.post('/api/synthetic-patients', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Parse and structure the patient data
+      const patientData = {
+        userId,
+        generationType: req.body.generationType || 'custom_created',
+        profileName: req.body.profileName,
+        age: parseInt(req.body.age),
+        gender: req.body.gender,
+        ethnicity: req.body.ethnicity || null,
+        occupation: req.body.occupation || null,
+        maritalStatus: null,
+        chiefComplaint: req.body.chiefComplaint,
+        presentingSymptoms: req.body.symptoms ? [{
+          symptom: req.body.symptoms,
+          severity: 5,
+          duration: "unknown",
+          onset: "gradual",
+          quality: "described",
+          aggravatingFactors: [],
+          relievingFactors: []
+        }] : [],
+        medicalHistory: req.body.medicalHistory ? {
+          pastMedicalHistory: req.body.medicalHistory.split(',').map((h: string) => h.trim()),
+          surgicalHistory: [],
+          medications: req.body.medications ? req.body.medications.split(',').map((m: string) => ({
+            name: m.trim(),
+            dosage: "unknown",
+            frequency: "unknown",
+            indication: "unknown",
+            adherence: "good" as const
+          })) : [],
+          allergies: req.body.allergies ? req.body.allergies.split(',').map((a: string) => ({
+            allergen: a.trim(),
+            reaction: "unknown",
+            severity: "mild" as const
+          })) : [],
+          familyHistory: req.body.familyHistory ? req.body.familyHistory.split(',').map((f: string) => ({
+            condition: f.trim(),
+            relationship: "unknown"
+          })) : [],
+          socialHistory: {
+            smoking: { status: "unknown" },
+            alcohol: { status: "unknown" },
+            drugs: { status: "unknown" },
+            exercise: req.body.socialHistory || "unknown",
+            diet: "unknown",
+            occupation: req.body.occupation || "unknown",
+            travelHistory: []
+          },
+          reviewOfSystems: {}
+        } : {},
+        physicalExam: {
+          vitals: {
+            bloodPressure: "120/80",
+            heartRate: "75",
+            respiratoryRate: "16",
+            temperature: "98.6°F",
+            height: "5'8\"",
+            weight: "160 lbs",
+            bmi: "24.3"
+          },
+          general: {
+            appearance: "well-appearing",
+            distress: "no acute distress",
+            mobility: "ambulatory",
+            mood: "appropriate",
+            speech: "clear"
+          },
+          systems: {
+            cardiovascular: { "heart sounds": "regular rate and rhythm" },
+            pulmonary: { "lung sounds": "clear to auscultation bilaterally" },
+            abdominal: { "inspection": "soft, non-tender, non-distended" },
+            neurological: { "mental status": "alert and oriented x3" },
+            musculoskeletal: { "range of motion": "intact" },
+            skin: { "inspection": "normal appearance" },
+            heent: { "inspection": "normal" },
+            psychiatric: { "mood": "euthymic" }
+          }
+        },
+        riskFactors: [],
+        comorbidities: [],
+        complexity: parseInt(req.body.complexity) || 3,
+        specialty: req.body.specialty || null,
+        tags: req.body.specialty ? [req.body.specialty] : [],
+        isAnonymized: true
+      };
+
+      const patient = await storage.createSyntheticPatient(patientData);
+      res.json(patient);
+    } catch (error) {
+      console.error('Error creating synthetic patient:', error);
+      res.status(500).json({ message: 'Failed to create synthetic patient' });
+    }
+  });
+
+  // AI-generated synthetic patient creation
+  app.post('/api/synthetic-patients/generate', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ message: 'AI patient generation is not available - OpenAI API key not configured' });
+      }
+
+      // Generate a comprehensive synthetic patient using AI
+      const aiPrompt = `Generate a realistic, anonymous synthetic patient profile for medical training purposes. Create a comprehensive patient with the following structure:
+
+PATIENT DEMOGRAPHICS:
+- Age: random between 25-75
+- Gender: random
+- Ethnicity: diverse representation
+- Occupation: realistic job
+- Marital status: varied
+
+CLINICAL PRESENTATION:
+- Chief complaint: realistic medical concern
+- 3-5 presenting symptoms with detailed characteristics (severity 1-10, duration, onset, quality, location, aggravating/relieving factors)
+- Medical complexity level 1-5
+
+COMPREHENSIVE MEDICAL HISTORY:
+- 2-4 relevant past medical conditions
+- 1-2 surgical procedures if applicable  
+- 3-6 current medications with dosages and indications
+- 1-3 drug allergies with reactions
+- 2-4 family history conditions with relationships
+- Complete social history (smoking, alcohol, drugs, exercise, diet, travel)
+
+PHYSICAL EXAMINATION:
+- Complete vital signs with realistic values
+- General appearance and mental status
+- Systematic physical exam findings for all major systems
+
+RISK FACTORS & COMORBIDITIES:
+- 2-4 relevant risk factors with severity levels
+- 1-3 comorbid conditions with control status
+
+CASE CHARACTERISTICS:
+- Primary medical specialty focus
+- Relevant medical tags
+- Complexity rating 1-5
+
+Generate this in valid JSON format with realistic medical details. Make it educationally valuable and clinically accurate.`;
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are a medical education AI that creates realistic synthetic patient profiles for training purposes. Generate comprehensive, medically accurate patient data in valid JSON format.'
+            },
+            {
+              role: 'user',
+              content: aiPrompt
+            }
+          ],
+          max_tokens: 2000,
+          temperature: 0.8
+        })
+      });
+
+      const aiData = await response.json();
+      let aiPatientData;
+      
+      try {
+        const aiContent = aiData.choices[0].message.content.trim();
+        // Clean up the response to ensure it's valid JSON
+        const jsonStart = aiContent.indexOf('{');
+        const jsonEnd = aiContent.lastIndexOf('}') + 1;
+        const jsonString = aiContent.slice(jsonStart, jsonEnd);
+        aiPatientData = JSON.parse(jsonString);
+      } catch (parseError) {
+        console.error('Error parsing AI response:', parseError);
+        // Fallback to template patient if AI parsing fails
+        aiPatientData = {
+          age: Math.floor(Math.random() * 50) + 25,
+          gender: Math.random() > 0.5 ? 'Male' : 'Female',
+          profileName: 'AI Generated Patient',
+          chiefComplaint: 'Chest pain and shortness of breath',
+          complexity: Math.floor(Math.random() * 3) + 2,
+          specialty: 'Internal Medicine'
+        };
+      }
+
+      // Structure the AI-generated data into our schema format
+      const structuredPatientData = {
+        userId,
+        generationType: 'ai_generated',
+        profileName: aiPatientData.profileName || `AI Patient ${Date.now()}`,
+        age: aiPatientData.age || Math.floor(Math.random() * 50) + 25,
+        gender: aiPatientData.gender || 'Male',
+        ethnicity: aiPatientData.ethnicity || 'Not specified',
+        occupation: aiPatientData.occupation || 'Not specified',
+        maritalStatus: aiPatientData.maritalStatus || null,
+        chiefComplaint: aiPatientData.chiefComplaint || 'General medical concern',
+        presentingSymptoms: aiPatientData.presentingSymptoms || [],
+        medicalHistory: aiPatientData.medicalHistory || {},
+        physicalExam: aiPatientData.physicalExam || {},
+        riskFactors: aiPatientData.riskFactors || [],
+        comorbidities: aiPatientData.comorbidities || [],
+        complexity: aiPatientData.complexity || Math.floor(Math.random() * 3) + 2,
+        specialty: aiPatientData.specialty || 'Internal Medicine',
+        tags: aiPatientData.tags || [aiPatientData.specialty || 'Internal Medicine'],
+        isAnonymized: true
+      };
+
+      const patient = await storage.createSyntheticPatient(structuredPatientData);
+      res.json(patient);
+    } catch (error) {
+      console.error('Error generating AI patient:', error);
+      res.status(500).json({ message: 'Failed to generate AI patient' });
+    }
+  });
+
+  // Run diagnostic analysis on a synthetic patient
+  app.post('/api/synthetic-patients/:id/analyze', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const patientId = req.params.id;
+      const { analysisType, focusAreas, sessionName } = req.body;
+
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ message: 'AI diagnostic analysis is not available - OpenAI API key not configured' });
+      }
+
+      // Get the patient data
+      const patient = await storage.getSyntheticPatientById(patientId);
+      if (!patient || patient.userId !== userId) {
+        return res.status(404).json({ message: 'Patient not found' });
+      }
+
+      // Create comprehensive AI prompt for diagnostic analysis
+      const analysisPrompt = `You are a world-class medical AI conducting ${analysisType.replace(/_/g, ' ')} for medical training purposes.
+
+PATIENT PROFILE:
+- Name: ${patient.profileName}
+- Age: ${patient.age}, Gender: ${patient.gender}
+- Chief Complaint: ${patient.chiefComplaint}
+- Medical History: ${JSON.stringify(patient.medicalHistory, null, 2)}
+- Physical Exam: ${JSON.stringify(patient.physicalExam, null, 2)}
+- Risk Factors: ${JSON.stringify(patient.riskFactors, null, 2)}
+- Comorbidities: ${JSON.stringify(patient.comorbidities, null, 2)}
+
+ANALYSIS TYPE: ${analysisType.replace(/_/g, ' ').toUpperCase()}
+FOCUS AREAS: ${focusAreas.join(', ')}
+
+Provide comprehensive analysis in JSON format with:
+
+{
+  "differentialDiagnoses": [
+    {
+      "diagnosis": "Primary diagnosis name",
+      "probability": 75,
+      "supportingEvidence": ["evidence 1", "evidence 2"],
+      "contraEvidence": ["contra evidence"],
+      "requiredTests": ["test 1", "test 2"],
+      "urgency": "moderate"
+    }
+  ],
+  "recommendedTests": [
+    {
+      "testName": "Complete Blood Count",
+      "category": "laboratory",
+      "priority": "routine",
+      "rationale": "Screen for infection/anemia",
+      "expectedFindings": "May show elevated WBC",
+      "cost": "$50-100"
+    }
+  ],
+  "riskAssessment": {
+    "overallRisk": "moderate",
+    "specificRisks": [
+      {
+        "risk": "Cardiovascular event",
+        "probability": 15,
+        "mitigation": "Risk factor modification"
+      }
+    ],
+    "redFlags": ["symptom progression", "chest pain"]
+  },
+  "treatmentRecommendations": [
+    {
+      "intervention": "Lifestyle modification",
+      "type": "long_term",
+      "evidenceLevel": "A",
+      "contraindications": [],
+      "monitoringRequired": ["vital signs", "symptoms"]
+    }
+  ],
+  "prognosis": {
+    "shortTerm": "Excellent with proper management",
+    "mediumTerm": "Good with compliance",
+    "longTerm": "Depends on risk factor control",
+    "factorsAffectingOutcome": ["compliance", "comorbidities"]
+  }
+}
+
+Also include learning insights:
+{
+  "keyInsights": ["insight 1", "insight 2"],
+  "clinicalPearls": ["pearl 1", "pearl 2"],
+  "commonMistakes": ["mistake 1", "mistake 2"],
+  "literatureReferences": ["reference 1", "reference 2"]
+}
+
+Make it clinically accurate and educationally valuable.`;
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an expert medical AI providing comprehensive diagnostic analysis for educational purposes. Always respond with valid JSON format containing detailed medical analysis.'
+            },
+            {
+              role: 'user',
+              content: analysisPrompt
+            }
+          ],
+          max_tokens: 2000,
+          temperature: 0.7
+        })
+      });
+
+      const aiData = await response.json();
+      let diagnosticAnalysis;
+      let learningPoints;
+      
+      try {
+        const aiContent = aiData.choices[0].message.content.trim();
+        
+        // Parse the response - it might contain multiple JSON objects
+        const jsonObjects = aiContent.split('\n\n').filter(section => 
+          section.trim().startsWith('{') && section.trim().endsWith('}')
+        );
+        
+        if (jsonObjects.length >= 1) {
+          diagnosticAnalysis = JSON.parse(jsonObjects[0]);
+          learningPoints = jsonObjects.length > 1 ? JSON.parse(jsonObjects[1]) : {
+            keyInsights: ["Comprehensive case analysis completed"],
+            clinicalPearls: ["Systematic approach improves diagnostic accuracy"],
+            commonMistakes: ["Not considering all differential diagnoses"],
+            literatureReferences: ["UpToDate Clinical Guidelines"]
+          };
+        } else {
+          throw new Error('No valid JSON found in AI response');
+        }
+      } catch (parseError) {
+        console.error('Error parsing AI diagnostic analysis:', parseError);
+        // Fallback analysis
+        diagnosticAnalysis = {
+          differentialDiagnoses: [{
+            diagnosis: "Further evaluation needed",
+            probability: 50,
+            supportingEvidence: ["Patient history", "Physical findings"],
+            contraEvidence: [],
+            requiredTests: ["Complete evaluation"],
+            urgency: "routine"
+          }],
+          recommendedTests: [{
+            testName: "Comprehensive evaluation",
+            category: "laboratory",
+            priority: "routine",
+            rationale: "Initial assessment",
+            expectedFindings: "Variable",
+            cost: "Variable"
+          }],
+          riskAssessment: {
+            overallRisk: "low",
+            specificRisks: [],
+            redFlags: []
+          },
+          treatmentRecommendations: [{
+            intervention: "Follow-up evaluation",
+            type: "short_term",
+            evidenceLevel: "C",
+            contraindications: [],
+            monitoringRequired: ["symptoms"]
+          }],
+          prognosis: {
+            shortTerm: "Requires evaluation",
+            mediumTerm: "Variable",
+            longTerm: "Depends on findings",
+            factorsAffectingOutcome: ["timely evaluation"]
+          }
+        };
+        
+        learningPoints = {
+          keyInsights: ["AI analysis encountered parsing error - manual review recommended"],
+          clinicalPearls: ["Always verify AI-generated recommendations"],
+          commonMistakes: ["Over-relying on AI without clinical correlation"],
+          literatureReferences: ["Standard medical references"]
+        };
+      }
+
+      // Create diagnostic session
+      const sessionData = {
+        userId,
+        patientId,
+        sessionName: sessionName || `${analysisType} Analysis - ${patient.profileName}`,
+        analysisType,
+        focusAreas,
+        diagnosticAnalysis,
+        learningPoints,
+        timeElapsed: 0,
+        accuracy: null,
+        completed: true,
+        completedAt: new Date()
+      };
+
+      const session = await storage.createDiagnosticSession(sessionData);
+      res.json(session);
+    } catch (error) {
+      console.error('Error running diagnostic analysis:', error);
+      res.status(500).json({ message: 'Failed to run diagnostic analysis' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -19,6 +19,8 @@ import {
   reductionStrategies,
   chatSessions,
   chatMessages,
+  syntheticPatients,
+  diagnosticSessions,
   type MedicalCase, 
   type InsertMedicalCase,
   type UserProgress,
@@ -57,7 +59,11 @@ import {
   type ChatSession,
   type InsertChatSession,
   type ChatMessage,
-  type InsertChatMessage
+  type InsertChatMessage,
+  type SyntheticPatient,
+  type InsertSyntheticPatient,
+  type DiagnosticSession,
+  type InsertDiagnosticSession
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count } from "drizzle-orm";
@@ -143,6 +149,17 @@ export interface IStorage {
   
   createReductionStrategy(strategyData: InsertReductionStrategy): Promise<ReductionStrategy>;
   getReductionStrategies(billId: string): Promise<ReductionStrategy[]>;
+  
+  // Synthetic Patient Diagnostics operations
+  createSyntheticPatient(patientData: InsertSyntheticPatient): Promise<SyntheticPatient>;
+  getSyntheticPatientsByUser(userId: string): Promise<SyntheticPatient[]>;
+  getSyntheticPatientById(patientId: string): Promise<SyntheticPatient | undefined>;
+  updateSyntheticPatient(patientId: string, updates: Partial<SyntheticPatient>): Promise<SyntheticPatient>;
+  
+  createDiagnosticSession(sessionData: InsertDiagnosticSession): Promise<DiagnosticSession>;
+  getDiagnosticSessionsByUser(userId: string): Promise<DiagnosticSession[]>;
+  getDiagnosticSessionById(sessionId: string): Promise<DiagnosticSession | undefined>;
+  updateDiagnosticSession(sessionId: string, updates: Partial<DiagnosticSession>): Promise<DiagnosticSession>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -691,6 +708,74 @@ export class DatabaseStorage implements IStorage {
       .from(reductionStrategies)
       .where(eq(reductionStrategies.billId, billId))
       .orderBy(desc(reductionStrategies.priority));
+  }
+
+  // ===== SYNTHETIC PATIENT DIAGNOSTICS METHODS =====
+  
+  async createSyntheticPatient(patientData: InsertSyntheticPatient): Promise<SyntheticPatient> {
+    const [patient] = await db
+      .insert(syntheticPatients)
+      .values(patientData)
+      .returning();
+    return patient;
+  }
+
+  async getSyntheticPatientsByUser(userId: string): Promise<SyntheticPatient[]> {
+    return await db
+      .select()
+      .from(syntheticPatients)
+      .where(eq(syntheticPatients.userId, userId))
+      .orderBy(desc(syntheticPatients.createdAt));
+  }
+
+  async getSyntheticPatientById(patientId: string): Promise<SyntheticPatient | undefined> {
+    const [patient] = await db
+      .select()
+      .from(syntheticPatients)
+      .where(eq(syntheticPatients.id, patientId));
+    return patient;
+  }
+
+  async updateSyntheticPatient(patientId: string, updates: Partial<SyntheticPatient>): Promise<SyntheticPatient> {
+    const [patient] = await db
+      .update(syntheticPatients)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(syntheticPatients.id, patientId))
+      .returning();
+    return patient;
+  }
+
+  async createDiagnosticSession(sessionData: InsertDiagnosticSession): Promise<DiagnosticSession> {
+    const [session] = await db
+      .insert(diagnosticSessions)
+      .values(sessionData)
+      .returning();
+    return session;
+  }
+
+  async getDiagnosticSessionsByUser(userId: string): Promise<DiagnosticSession[]> {
+    return await db
+      .select()
+      .from(diagnosticSessions)
+      .where(eq(diagnosticSessions.userId, userId))
+      .orderBy(desc(diagnosticSessions.createdAt));
+  }
+
+  async getDiagnosticSessionById(sessionId: string): Promise<DiagnosticSession | undefined> {
+    const [session] = await db
+      .select()
+      .from(diagnosticSessions)
+      .where(eq(diagnosticSessions.id, sessionId));
+    return session;
+  }
+
+  async updateDiagnosticSession(sessionId: string, updates: Partial<DiagnosticSession>): Promise<DiagnosticSession> {
+    const [session] = await db
+      .update(diagnosticSessions)
+      .set(updates)
+      .where(eq(diagnosticSessions.id, sessionId))
+      .returning();
+    return session;
   }
 }
 

@@ -4,7 +4,7 @@ import { StatisticsDashboard } from "@/components/statistics-dashboard";
 import { AchievementSystem } from "@/components/achievement-system";
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import { Link } from "wouter";
-import { BookOpen, Brain, Trophy, Zap, ArrowRight, DollarSign, AlertTriangle, TrendingDown, FileText } from "lucide-react";
+import { BookOpen, Brain, Trophy, Zap, ArrowRight, DollarSign, AlertTriangle, TrendingDown, FileText, Stethoscope } from "lucide-react";
 import { motion } from "framer-motion";
 
 
@@ -365,11 +365,19 @@ export default function Landing() {
         <div className="space-y-3">
           {[
             { 
+              icon: Stethoscope, 
+              title: "Synthetic Patient Diagnostics", 
+              desc: "AI-generated patient profiles & diagnostic training", 
+              color: "purple", 
+              delay: 2.2,
+              href: "/synthetic-patient-diagnostics"
+            },
+            { 
               icon: Trophy, 
               title: "Board Exam Prep", 
               desc: "USMLE & specialty board practice exams", 
               color: "green", 
-              delay: 2.2,
+              delay: 2.3,
               href: "/board-exam-prep"
             },
             { 
@@ -377,7 +385,7 @@ export default function Landing() {
               title: "Clinical Decision Trees", 
               desc: "Interactive diagnostic algorithms", 
               color: "orange", 
-              delay: 2.3,
+              delay: 2.4,
               href: "/clinical-decision-trees"
             }
           ].map((module, index) => {
