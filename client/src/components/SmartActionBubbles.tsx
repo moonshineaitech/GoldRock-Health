@@ -344,18 +344,8 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           description: 'Step-by-step action plan',
           color: 'text-purple-600',
           bgColor: 'bg-purple-100 hover:bg-purple-200',
-          priority: 'high',
+          priority: 'medium',
           action: () => onSendMessage("Give me a step-by-step action plan. What are my next steps to reduce this medical bill?")
-        },
-        {
-          id: 'get-more-info',
-          label: 'Provide More Details',
-          icon: AlertTriangle,
-          description: 'Share additional information',
-          color: 'text-indigo-600',
-          bgColor: 'bg-indigo-100 hover:bg-indigo-200',
-          priority: 'high',
-          action: () => onSendMessage("I'd like to provide more information about my medical bill or situation to get better personalized advice. What additional details would help you provide more targeted recommendations?")
         },
         {
           id: 'advanced-strategies',
@@ -365,7 +355,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           color: 'text-orange-600',
           bgColor: 'bg-orange-100 hover:bg-orange-200',
           priority: 'medium',
-          action: () => onSendMessage("🔒 This Advanced Strategies feature is available in Premium. Upgrade to unlock AI-generated creative tactics, lesser-known strategies, and advanced bill reduction techniques that go beyond basic approaches.")
+          action: () => onSendMessage("I've tried the basic approaches. What are some advanced, lesser-known strategies and tactics I can use to reduce this medical bill? Generate creative AI-powered solutions.")
         },
         {
           id: 'legal-escalation',
@@ -375,7 +365,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           color: 'text-red-600',
           bgColor: 'bg-red-100 hover:bg-red-200',
           priority: 'medium',
-          action: () => onSendMessage("🔒 Expert Legal Strategy is a Premium feature. Upgrade to access comprehensive legal escalation strategies, regulatory complaint guidance, and patient advocate resources.")
+          action: () => onSendMessage("If standard negotiations fail, what are my legal escalation options? Generate a comprehensive legal strategy including regulatory complaints, patient advocates, and legal protections I can invoke.")
         },
         {
           id: 'professional-audit',
@@ -385,7 +375,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           color: 'text-indigo-600',
           bgColor: 'bg-indigo-100 hover:bg-indigo-200',
           priority: 'medium',
-          action: () => onSendMessage("🔒 Professional Bill Audit is exclusive to Premium members. Upgrade to unlock forensic-level bill analysis, advanced billing scheme detection, and institutional pattern recognition.")
+          action: () => onSendMessage("Perform a professional-level forensic audit of my medical bill like a billing expert would. Look for advanced billing schemes, regulatory violations, and institutional patterns that typical reviews miss.")
         },
         {
           id: 'insider-tactics',
@@ -395,7 +385,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           color: 'text-purple-600',
           bgColor: 'bg-purple-100 hover:bg-purple-200',
           priority: 'medium',
-          action: () => onSendMessage("🔒 Hospital Insider Tactics is a Premium-only feature. Upgrade to learn industry secrets, healthcare loopholes, and tactics that billing departments don't want patients to know.")
+          action: () => onSendMessage("What are the insider tactics and industry secrets that hospital billing departments don't want patients to know? Generate strategies using healthcare industry loopholes and insider knowledge.")
         },
         {
           id: 'multi-bill-analysis',
@@ -405,7 +395,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           color: 'text-teal-600',
           bgColor: 'bg-teal-100 hover:bg-teal-200',
           priority: 'medium',
-          action: () => onSendMessage("🔒 Multi-Bill Pattern Analysis requires Premium access. Upgrade to analyze systematic overcharging patterns, provider-specific billing schemes, and identify class-action opportunities.")
+          action: () => onSendMessage("Analyze patterns across all my medical bills to identify systematic overcharging, provider-specific billing schemes, and opportunities for bulk disputes or class-action potential.")
         },
         {
           id: 'rights-advisor',
@@ -415,7 +405,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           color: 'text-purple-600',
           bgColor: 'bg-purple-100 hover:bg-purple-200',
           priority: 'medium',
-          action: () => onSendMessage("🔒 Rights Advisor is available with Premium. Upgrade to get comprehensive billing rights guidance, legal protection strategies, and violation documentation assistance.")
+          action: () => onSendMessage("I need guidance on my medical billing rights and legal protections. What rights do I have as a patient regarding billing disputes, and what can I do if a hospital is violating these rights?")
         },
         {
           id: 'insurance-appeal',
@@ -425,17 +415,17 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           color: 'text-blue-600',
           bgColor: 'bg-blue-100 hover:bg-blue-200',
           priority: 'medium',
-          action: () => onSendMessage("🔒 Insurance Appeal assistance is a Premium feature. Upgrade to access comprehensive appeal strategies, required documentation checklists, and expert guidance for getting claims approved.")
+          action: () => onSendMessage("Help me create a comprehensive insurance appeal for denied claims. I need assistance with the appeal process, required documentation, and strategies to get my claim approved.")
         },
         {
           id: 'upgrade-premium',
           label: 'Upgrade to Premium',
           icon: Crown,
-          description: 'Unlock copy, download & advanced features',
+          description: 'Unlock unlimited AI analysis',
           color: 'text-amber-600',
           bgColor: 'bg-gradient-to-r from-amber-100 to-yellow-100 hover:from-amber-200 hover:to-yellow-200 border-2 border-amber-200',
           priority: 'low',
-          action: () => onSendMessage("I want to unlock copy/download functionality, unlimited AI bill analysis, priority support, and all advanced features. How can I upgrade to Premium to maximize my medical bill savings?")
+          action: () => onSendMessage("I want to unlock unlimited AI bill analysis, priority support, and advanced features. How can I upgrade to Premium to maximize my medical bill savings?")
         }
       ]
     };
@@ -466,8 +456,8 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
       </div>
       
       <div className="grid grid-cols-1 gap-2">
-        {/* Show first 5 actions */}
-        {sortedActions.slice(0, 5).map((action, index) => {
+        {/* Show first 4 actions */}
+        {sortedActions.slice(0, 4).map((action, index) => {
           const IconComponent = action.icon;
           return (
             <motion.div
@@ -504,8 +494,8 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           );
         })}
         
-        {/* Show more button if there are more than 5 actions */}
-        {sortedActions.length > 5 && (
+        {/* Show more button if there are more than 4 actions */}
+        {sortedActions.length > 4 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -532,11 +522,9 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
         
         {/* Advanced actions - only show when expanded */}
         <AnimatePresence>
-          {showAdvanced && sortedActions.slice(5).map((action, index) => {
+          {showAdvanced && sortedActions.slice(4).map((action, index) => {
             const IconComponent = action.icon;
             const isUpgrade = action.id === 'upgrade-premium';
-            const isPremiumFeature = !isUpgrade; // Make all advanced features premium-only
-            
             return (
               <motion.div
                 key={action.id}
@@ -547,13 +535,7 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
               >
                 <Button
                   variant="ghost"
-                  onClick={() => {
-                    if (isPremiumFeature) {
-                      action.action(); // Show premium upgrade message instead
-                    } else {
-                      action.action();
-                    }
-                  }}
+                  onClick={action.action}
                   className={`w-full justify-start p-3 h-auto ${action.bgColor} ${isUpgrade ? 'border-2' : 'border'} border-gray-200 hover:shadow-sm transition-all duration-200 ${isUpgrade ? 'shadow-md' : ''}`}
                 >
                   <div className="flex items-center gap-3 w-full">
@@ -570,11 +552,6 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
                     </div>
                     {isUpgrade && (
                       <div className="px-2 py-1 bg-amber-200 text-amber-700 text-xs rounded-full font-medium">
-                        Premium
-                      </div>
-                    )}
-                    {isPremiumFeature && (
-                      <div className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">
                         Premium
                       </div>
                     )}
