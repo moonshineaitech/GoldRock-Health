@@ -2768,6 +2768,9 @@ Generate this as a single, well-structured JSON object with ALL fields populated
       let aiPatientData;
       
       try {
+        if (!aiData || !aiData.choices || !aiData.choices[0] || !aiData.choices[0].message || !aiData.choices[0].message.content) {
+          throw new Error('Invalid AI response structure');
+        }
         const aiContent = aiData.choices[0].message.content.trim();
         // Clean up the response to ensure it's valid JSON
         const jsonStart = aiContent.indexOf('{');
@@ -2824,6 +2827,11 @@ Generate this as a single, well-structured JSON object with ALL fields populated
       const patientId = req.params.id;
       const { analysisType, focusAreas, sessionName } = req.body;
 
+      // Validate required parameters
+      if (!analysisType) {
+        return res.status(400).json({ message: 'Analysis type is required' });
+      }
+
       if (!process.env.OPENAI_API_KEY) {
         return res.status(500).json({ message: 'AI diagnostic analysis is not available - OpenAI API key not configured' });
       }
@@ -2834,20 +2842,24 @@ Generate this as a single, well-structured JSON object with ALL fields populated
         return res.status(404).json({ message: 'Patient not found' });
       }
 
+      // Ensure we have valid data with defaults
+      const safeAnalysisType = analysisType || 'differential_diagnosis';
+      const safeFocusAreas = Array.isArray(focusAreas) ? focusAreas : ['Internal Medicine'];
+      
       // Create comprehensive AI prompt for diagnostic analysis
-      const analysisPrompt = `You are a world-class medical AI conducting ${analysisType.replace(/_/g, ' ')} for medical training purposes.
+      const analysisPrompt = `You are a world-class medical AI conducting ${safeAnalysisType.replace(/_/g, ' ')} for medical training purposes.
 
 PATIENT PROFILE:
-- Name: ${patient.profileName}
-- Age: ${patient.age}, Gender: ${patient.gender}
-- Chief Complaint: ${patient.chiefComplaint}
-- Medical History: ${JSON.stringify(patient.medicalHistory, null, 2)}
-- Physical Exam: ${JSON.stringify(patient.physicalExam, null, 2)}
-- Risk Factors: ${JSON.stringify(patient.riskFactors, null, 2)}
-- Comorbidities: ${JSON.stringify(patient.comorbidities, null, 2)}
+- Name: ${patient.profileName || 'Anonymous Patient'}
+- Age: ${patient.age || 'Unknown'}, Gender: ${patient.gender || 'Unknown'}
+- Chief Complaint: ${patient.chiefComplaint || 'General medical concern'}
+- Medical History: ${JSON.stringify(patient.medicalHistory || {}, null, 2)}
+- Physical Exam: ${JSON.stringify(patient.physicalExam || {}, null, 2)}
+- Risk Factors: ${JSON.stringify(patient.riskFactors || [], null, 2)}
+- Comorbidities: ${JSON.stringify(patient.comorbidities || [], null, 2)}
 
-ANALYSIS TYPE: ${analysisType.replace(/_/g, ' ').toUpperCase()}
-FOCUS AREAS: ${focusAreas.join(', ')}
+ANALYSIS TYPE: ${safeAnalysisType.replace(/_/g, ' ').toUpperCase()}
+FOCUS AREAS: ${safeFocusAreas.join(', ')}
 
 Provide comprehensive analysis in JSON format with:
 
@@ -3123,9 +3135,9 @@ Make it clinically accurate and educationally valuable.`;
       const sessionData = {
         userId,
         patientId,
-        sessionName: sessionName || `${analysisType} Analysis - ${patient.profileName}`,
-        analysisType,
-        focusAreas,
+        sessionName: sessionName || `${safeAnalysisType.replace(/_/g, ' ')} Analysis - ${patient.profileName || 'Patient'}`,
+        analysisType: safeAnalysisType,
+        focusAreas: safeFocusAreas,
         diagnosticAnalysis,
         learningPoints,
         timeElapsed: 0,
