@@ -510,6 +510,43 @@ export default function BillAI() {
                     {message.content}
                   </p>
                   
+                  {/* Premium-only copy button for AI responses */}
+                  {message.role === "assistant" && (
+                    <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            toast({
+                              title: "Premium Feature",
+                              description: "Upgrade to Premium to copy AI responses and download conversations.",
+                              variant: "default",
+                            });
+                          }}
+                          className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+                        >
+                          <Copy className="h-3 w-3" />
+                          Copy
+                        </button>
+                        <button
+                          onClick={() => {
+                            toast({
+                              title: "Premium Feature",
+                              description: "Upgrade to Premium to download full conversations as PDF or text files.",
+                              variant: "default",
+                            });
+                          }}
+                          className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+                        >
+                          <Download className="h-3 w-3" />
+                          Download
+                        </button>
+                      </div>
+                      <div className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded-full font-medium">
+                        Premium Only
+                      </div>
+                    </div>
+                  )}
+                  
                   {/* Smart Action Bubbles for AI responses */}
                   {message.role === "assistant" && (
                     <SmartActionBubbles
