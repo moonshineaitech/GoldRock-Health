@@ -483,7 +483,7 @@ export default function BillAI() {
                   })}
                 </div>
                 
-                {/* Wide Negotiation Strategy Box */}
+                {/* Compact Negotiation Strategy Box */}
                 <motion.div 
                   className="mt-4 px-4"
                   initial={{ opacity: 0, y: 20 }}
@@ -491,22 +491,17 @@ export default function BillAI() {
                   transition={{ delay: 0.9 }}
                 >
                   <Card 
-                    className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50"
+                    className="p-3 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50"
                     onClick={() => setActiveFeature('negotiation-script')}
                     data-testid="negotiation-strategy-card"
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Phone className="h-7 w-7 text-white" />
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Phone className="h-5 w-5 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 text-base mb-2">Negotiation Strategy</h4>
-                        <p className="text-sm text-gray-700 leading-relaxed">
-                          <strong>Expert tactics:</strong> Call within 30 days of billing, request financial hardship review, ask for itemized costs, negotiate payment plans with 0% interest, request charity care applications, and leverage Medicare rates as benchmarks for fair pricing.
-                        </p>
-                      </div>
-                      <div className="bg-purple-100 text-purple-700 text-xs px-3 py-1 rounded-full font-medium">
-                        Expert
+                        <h4 className="font-bold text-gray-900 text-sm">Negotiation Strategy</h4>
+                        <p className="text-xs text-gray-600">Expert reduction tactics</p>
                       </div>
                     </div>
                   </Card>
