@@ -54,7 +54,6 @@ export class BillAnalysisAI {
           { role: "user", content: userPrompt }
         ],
         response_format: { type: "json_object" },
-        temperature: 0.3,
         max_completion_tokens: 1500,
       });
 
@@ -223,7 +222,6 @@ Return comprehensive findings in JSON format with specific savings opportunities
           }
         ],
         response_format: { type: "json_object" },
-        temperature: 0.1,
         max_completion_tokens: 1000,
       });
 
