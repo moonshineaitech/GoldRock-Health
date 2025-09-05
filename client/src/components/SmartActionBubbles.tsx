@@ -127,6 +127,16 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           bgColor: 'bg-yellow-100 hover:bg-yellow-200',
           priority: 'low',
           action: () => onSendMessage("When is the best time to call billing departments for negotiations? What days and times are most effective?")
+        },
+        {
+          id: 'financial-hardship',
+          label: 'Financial Hardship Programs',
+          icon: Users,
+          description: 'AI-powered assistance programs',
+          color: 'text-indigo-600',
+          bgColor: 'bg-indigo-100 hover:bg-indigo-200',
+          priority: 'high',
+          action: () => onSendMessage("Generate a comprehensive guide to financial hardship programs, charity care, and assistance options I may qualify for. Include specific application strategies and qualification requirements.")
         }
       ],
       
@@ -170,6 +180,16 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           bgColor: 'bg-purple-100 hover:bg-purple-200',
           priority: 'medium',
           action: () => onSendMessage("Create a phone script for calling the billing department about these specific errors. What exactly should I say?")
+        },
+        {
+          id: 'regulatory-complaint',
+          label: 'File Regulatory Complaint',
+          icon: AlertTriangle,
+          description: 'AI-guided complaint strategy',
+          color: 'text-red-600',
+          bgColor: 'bg-red-100 hover:bg-red-200',
+          priority: 'medium',
+          action: () => onSendMessage("Generate a comprehensive strategy for filing regulatory complaints about these billing errors. Which agencies should I contact and what documentation do I need?")
         }
       ],
       
@@ -213,6 +233,16 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           bgColor: 'bg-green-100 hover:bg-green-200',
           priority: 'medium',
           action: () => onSendMessage("Help me find a qualified patient billing advocate or attorney who specializes in medical billing disputes.")
+        },
+        {
+          id: 'credit-protection',
+          label: 'Credit Protection Strategy',
+          icon: Shield,
+          description: 'AI-powered credit safeguards',
+          color: 'text-cyan-600',
+          bgColor: 'bg-cyan-100 hover:bg-cyan-200',
+          priority: 'high',
+          action: () => onSendMessage("Generate a comprehensive strategy to protect my credit from medical debt. What steps can I take to prevent this from affecting my credit score, and what are my rights?")
         }
       ],
       
@@ -256,6 +286,16 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           bgColor: 'bg-orange-100 hover:bg-orange-200',
           priority: 'medium',
           action: () => onSendMessage("Create a timeline for tracking my insurance appeal process. What are the key milestones and deadlines?")
+        },
+        {
+          id: 'medical-necessity',
+          label: 'Medical Necessity Documentation',
+          icon: BookOpen,
+          description: 'AI clinical justification help',
+          color: 'text-teal-600',
+          bgColor: 'bg-teal-100 hover:bg-teal-200',
+          priority: 'medium',
+          action: () => onSendMessage("Help me build a medical necessity argument for my insurance appeal. What clinical documentation and medical justifications should I include to strengthen my case?")
         }
       ],
       
@@ -299,6 +339,26 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           bgColor: 'bg-purple-100 hover:bg-purple-200',
           priority: 'medium',
           action: () => onSendMessage("Give me a step-by-step action plan. What are my next steps to reduce this medical bill?")
+        },
+        {
+          id: 'advanced-strategies',
+          label: 'Advanced Strategies',
+          icon: Zap,
+          description: 'AI-generated advanced tactics',
+          color: 'text-orange-600',
+          bgColor: 'bg-orange-100 hover:bg-orange-200',
+          priority: 'medium',
+          action: () => onSendMessage("I've tried the basic approaches. What are some advanced, lesser-known strategies and tactics I can use to reduce this medical bill? Generate creative AI-powered solutions.")
+        },
+        {
+          id: 'legal-escalation',
+          label: 'Legal Escalation Path',
+          icon: Scale,
+          description: 'AI legal guidance & options',
+          color: 'text-red-600',
+          bgColor: 'bg-red-100 hover:bg-red-200',
+          priority: 'medium',
+          action: () => onSendMessage("If standard negotiations fail, what are my legal escalation options? Generate a comprehensive legal strategy including regulatory complaints, patient advocates, and legal protections I can invoke.")
         }
       ]
     };
