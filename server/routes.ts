@@ -2825,20 +2825,30 @@ Generate this as a single, well-structured JSON object with ALL fields populated
     try {
       const userId = req.user.claims.sub;
       const patientId = req.params.id;
+      
+      console.log('Analysis request received:');
+      console.log('- User ID:', userId);
+      console.log('- Patient ID:', patientId);
+      console.log('- Request body:', JSON.stringify(req.body, null, 2));
+      
       const { analysisType, focusAreas, sessionName } = req.body;
 
-      // Validate required parameters
-      if (!analysisType) {
-        return res.status(400).json({ message: 'Analysis type is required' });
+      // Validate required parameters with better error messages
+      if (!analysisType || typeof analysisType !== 'string' || analysisType.trim() === '') {
+        console.log('Validation failed: analysisType missing or invalid:', analysisType);
+        return res.status(400).json({ message: 'Analysis type is required and must be a non-empty string' });
       }
 
       if (!process.env.OPENAI_API_KEY) {
+        console.log('OpenAI API key not configured');
         return res.status(500).json({ message: 'AI diagnostic analysis is not available - OpenAI API key not configured' });
       }
 
       // Get the patient data
       const patient = await storage.getSyntheticPatientById(patientId);
+      console.log('Patient data retrieved:', patient ? 'Found' : 'Not found');
       if (!patient || patient.userId !== userId) {
+        console.log('Patient validation failed - not found or user mismatch');
         return res.status(404).json({ message: 'Patient not found' });
       }
 
@@ -3147,10 +3157,13 @@ Make it clinically accurate and educationally valuable.`;
       };
 
       const session = await storage.createDiagnosticSession(sessionData);
+      console.log('Diagnostic session created successfully:', session.id);
       res.json(session);
     } catch (error) {
       console.error('Error running diagnostic analysis:', error);
-      res.status(500).json({ message: 'Failed to run diagnostic analysis' });
+      console.error('Error details:', error.message);
+      console.error('Stack trace:', error.stack);
+      res.status(500).json({ message: 'Failed to run diagnostic analysis', error: error.message });
     }
   });
 
