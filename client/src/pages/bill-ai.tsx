@@ -36,6 +36,7 @@ import {
   ClaimAppealGenerator 
 } from "@/components/bill-ai-features";
 import { BillAnalysisLoader } from "@/components/BillAnalysisLoader";
+import { SmartActionBubbles } from "@/components/SmartActionBubbles";
 
 interface AIMessage {
   id: string;
@@ -505,6 +506,16 @@ export default function BillAI() {
                   <p className={`text-sm whitespace-pre-wrap ${message.role === "user" ? "text-white" : "text-gray-900"}`}>
                     {message.content}
                   </p>
+                  
+                  {/* Smart Action Bubbles for AI responses */}
+                  {message.role === "assistant" && (
+                    <SmartActionBubbles
+                      context={activeFeature || 'general'}
+                      aiResponse={message.content}
+                      onSendMessage={sendMessage}
+                    />
+                  )}
+                  
                   <div className={`text-xs mt-2 ${message.role === "user" ? "text-emerald-100" : "text-gray-500"}`}>
                     {message.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
