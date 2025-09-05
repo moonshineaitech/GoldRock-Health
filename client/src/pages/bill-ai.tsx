@@ -403,7 +403,7 @@ export default function BillAI() {
 
         {/* Chat Messages Area */}
         {!activeFeature && (
-          <div className="flex-1 overflow-y-auto p-2 space-y-4 pb-20">
+          <div className="flex-1 overflow-y-auto p-2 space-y-4 pb-24">
             {/* Feature Access Buttons */}
             {conversationStarted && (
               <motion.div
@@ -441,78 +441,72 @@ export default function BillAI() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="px-4 py-6"
+                className="px-4 py-3"
               >
-                {/* Hero Section with Premium Design */}
-                <div className="relative mb-6">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 rounded-3xl opacity-60"></div>
-                  <div className="relative p-6 text-center">
-                    <motion.div
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.1, duration: 0.5 }}
-                      className="mb-4"
-                    >
-                      <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg mb-4">
-                        <Brain className="h-8 w-8 text-white" />
-                      </div>
-                    </motion.div>
-                    
-                    <motion.h1 
-                      className="text-2xl font-bold text-gray-900 mb-2"
-                      initial={{ y: 10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      Save Thousands on Medical Bills
-                    </motion.h1>
-                    
-                    <motion.p 
-                      className="text-gray-600 text-sm leading-relaxed max-w-sm mx-auto"
-                      initial={{ y: 10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      AI-powered analysis finds billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
-                    </motion.p>
-                  </div>
+                {/* Compact Hero Section */}
+                <div className="text-center mb-4">
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.1, duration: 0.5 }}
+                    className="mb-3"
+                  >
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg">
+                      <Brain className="h-6 w-6 text-white" />
+                    </div>
+                  </motion.div>
+                  
+                  <motion.h1 
+                    className="text-xl font-bold text-gray-900 mb-2"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Save Thousands on Medical Bills
+                  </motion.h1>
+                  
+                  <motion.p 
+                    className="text-gray-600 text-xs leading-relaxed px-4"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    AI finds billing errors and overcharges. Let's reduce your medical costs.
+                  </motion.p>
                 </div>
 
-                {/* Premium Assessment Button */}
+                {/* Compact Assessment Button */}
                 <motion.div
-                  className="mb-6"
+                  className="mb-4"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4, duration: 0.4 }}
                 >
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="relative group cursor-pointer"
+                    className="group relative cursor-pointer"
                     data-testid="instant-assessment-button"
                   >
-                    {/* Gradient Background with Hover Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 rounded-2xl group-hover:from-emerald-600 group-hover:via-emerald-700 group-hover:to-teal-700 transition-all duration-300 shadow-lg group-hover:shadow-xl"></div>
+                    {/* Gradient Border */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 rounded-2xl p-[2px] group-hover:from-emerald-600 group-hover:via-emerald-700 group-hover:to-teal-700 transition-all duration-300">
+                      <div className="bg-white rounded-2xl h-full w-full group-hover:bg-emerald-50 transition-colors"></div>
+                    </div>
                     
                     {/* Button Content */}
-                    <div className="relative flex items-center p-4 text-white">
-                      <div className="flex items-center justify-center w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl mr-4 group-hover:bg-white/20 transition-colors">
-                        <Upload className="h-6 w-6" />
+                    <div className="relative flex items-center p-3">
+                      <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl mr-3 shadow-lg group-hover:shadow-xl transition-all">
+                        <Upload className="h-5 w-5 text-white" />
                       </div>
                       <div className="flex-1 text-left">
-                        <div className="font-semibold text-lg leading-tight">Instant Medical Bill Assessment</div>
-                        <div className="text-emerald-100 text-sm font-medium mt-1">Upload bill • Find overcharges • Save thousands</div>
-                      </div>
-                      <div className="ml-2 opacity-60">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                        <div className="font-semibold text-sm text-gray-900 leading-tight">Instant Medical Bill Assessment</div>
+                        <div className="text-gray-600 text-xs mt-0.5">Upload bill • Find overcharges • Save thousands</div>
                       </div>
                     </div>
                   </div>
                 </motion.div>
                 
-                {/* Premium Action Grid */}
-                <div className="grid grid-cols-2 gap-3 mb-4">
+                {/* Compact Action Grid - All Same Size */}
+                <div className="grid grid-cols-2 gap-2 mb-3">
                   {quickActions.map((action, index) => {
                     const IconComponent = action.icon;
                     return (
@@ -527,16 +521,16 @@ export default function BillAI() {
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          {/* Card Background with Premium Effect */}
-                          <div className="absolute inset-0 bg-white rounded-2xl shadow-sm group-hover:shadow-lg transition-all duration-300 border border-gray-100 group-hover:border-gray-200"></div>
-                          <div className={`absolute inset-0 bg-gradient-to-br from-${action.color}-50 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300`}></div>
+                          {/* Uniform Card Background */}
+                          <div className="absolute inset-0 bg-white rounded-xl shadow-sm group-hover:shadow-md transition-all duration-300 border border-gray-100 group-hover:border-gray-200"></div>
+                          <div className={`absolute inset-0 bg-gradient-to-br from-${action.color}-50 to-transparent rounded-xl opacity-0 group-hover:opacity-50 transition-all duration-300`}></div>
                           
-                          {/* Card Content */}
-                          <div className="relative p-4 text-center">
-                            <div className={`w-12 h-12 bg-gradient-to-br from-${action.color}-500 to-${action.color}-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105`}>
-                              <IconComponent className="h-6 w-6 text-white" />
+                          {/* Uniform Card Content */}
+                          <div className="relative p-3 text-center h-24 flex flex-col justify-center">
+                            <div className={`w-10 h-10 bg-gradient-to-br from-${action.color}-500 to-${action.color}-600 rounded-xl flex items-center justify-center mx-auto mb-2 shadow-md group-hover:shadow-lg transition-all duration-300`}>
+                              <IconComponent className="h-5 w-5 text-white" />
                             </div>
-                            <h4 className="font-semibold text-gray-900 text-sm mb-1 leading-tight">{action.label}</h4>
+                            <h4 className="font-semibold text-gray-900 text-xs mb-0.5 leading-tight">{action.label}</h4>
                             <p className="text-xs text-gray-500 leading-tight">{action.desc}</p>
                           </div>
                         </div>
@@ -545,43 +539,33 @@ export default function BillAI() {
                   })}
                 </div>
                 
-                {/* Premium Negotiation Strategy */}
+                {/* Compact Negotiation Strategy */}
                 <motion.div 
-                  className="mb-4"
+                  className="mb-3"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 }}
                 >
                   <div 
-                    className="group relative cursor-pointer"
+                    className="group cursor-pointer"
                     onClick={() => setActiveFeature('negotiation-script')}
                     data-testid="negotiation-strategy-card"
                   >
-                    {/* Premium Background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-50 via-indigo-50 to-blue-50 rounded-2xl group-hover:from-purple-100 group-hover:via-indigo-100 group-hover:to-blue-100 transition-all duration-300"></div>
-                    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-2xl"></div>
-                    
-                    {/* Content */}
-                    <div className="relative flex items-center p-3 border border-purple-100 rounded-2xl group-hover:border-purple-200 transition-all duration-300">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-                        <Phone className="h-5 w-5 text-white" />
+                    <div className="flex items-center p-2 bg-white border border-purple-100 rounded-xl group-hover:border-purple-200 group-hover:bg-purple-50 transition-all duration-300 shadow-sm group-hover:shadow-md">
+                      <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
+                        <Phone className="h-4 w-4 text-white" />
                       </div>
-                      <div className="flex-1 ml-3">
-                        <h4 className="font-semibold text-gray-900 text-sm">Negotiation Strategy</h4>
-                        <p className="text-xs text-gray-600 mt-0.5">Expert reduction tactics</p>
-                      </div>
-                      <div className="ml-2 opacity-40 group-hover:opacity-60 transition-opacity">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                      <div className="flex-1 ml-2">
+                        <h4 className="font-semibold text-gray-900 text-xs">Negotiation Strategy</h4>
+                        <p className="text-xs text-gray-600">Expert reduction tactics</p>
                       </div>
                     </div>
                   </div>
                 </motion.div>
                 
-                {/* Premium Show More Button */}
+                {/* Compact Show More Button */}
                 <motion.div 
-                  className="mb-4"
+                  className="mb-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.0 }}
@@ -591,13 +575,13 @@ export default function BillAI() {
                     className="group cursor-pointer"
                     data-testid="show-more-prompts"
                   >
-                    <div className="flex items-center justify-center p-3 bg-gray-50 hover:bg-gray-100 rounded-2xl border border-gray-200 hover:border-gray-300 transition-all duration-300">
-                      <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Show More Expert Prompts</span>
+                    <div className="flex items-center justify-center p-2 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-300">
+                      <span className="text-xs font-medium text-gray-700 group-hover:text-gray-900">Show More Expert Prompts</span>
                       <div className="ml-2 transform group-hover:scale-110 transition-transform duration-200">
                         {showMorePrompts ? (
-                          <ChevronUp className="h-4 w-4 text-gray-500" />
+                          <ChevronUp className="h-3 w-3 text-gray-500" />
                         ) : (
-                          <ChevronDown className="h-4 w-4 text-gray-500" />
+                          <ChevronDown className="h-3 w-3 text-gray-500" />
                         )}
                       </div>
                     </div>
@@ -742,17 +726,17 @@ export default function BillAI() {
                   )}
                 </AnimatePresence>
 
-                {/* Premium Security Badge */}
+                {/* Compact Security Badge */}
                 <motion.div 
-                  className="mb-6"
+                  className="mb-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.2 }}
                 >
                   <div className="flex items-center justify-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full">
-                      <CheckCircle className="h-4 w-4 text-emerald-600" />
-                      <span className="text-xs font-medium text-emerald-800">Secure • Private • Exceeds HIPAA Standards</span>
+                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 border border-emerald-200 rounded-full">
+                      <CheckCircle className="h-3 w-3 text-emerald-600" />
+                      <span className="text-xs font-medium text-emerald-800">Secure • Private • HIPAA</span>
                     </div>
                   </div>
                 </motion.div>
@@ -828,7 +812,7 @@ export default function BillAI() {
         )}
 
         {/* Input Area */}
-        <div className="p-3 border-t border-gray-200 bg-white mb-16">
+        <div className="p-2 border-t border-gray-200 bg-white mb-16">
           <div className="flex items-center space-x-2">
             <Button
               onClick={() => fileInputRef.current?.click()}
