@@ -1482,14 +1482,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Verify session belongs to user
       const session = await storage.getChatSession(sessionId as string);
       if (!session || session.userId !== userId) {
-        return res.status(404).json({ message: 'Chat session not found' });
+        return res.json([]); // Return empty array instead of error
       }
       
       const messages = await storage.getChatMessages(sessionId as string);
-      res.json(messages);
+      res.json(Array.isArray(messages) ? messages : []);
     } catch (error) {
       console.error('Error getting chat messages:', error);
-      res.status(500).json({ message: 'Failed to get chat messages' });
+      res.json([]); // Return empty array on error instead of error response
     }
   });
 

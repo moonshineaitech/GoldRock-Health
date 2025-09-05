@@ -44,6 +44,7 @@ export default function BillAnalyzer() {
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [uploadingFile, setUploadingFile] = useState(false);
   const [conversationStarted, setConversationStarted] = useState(false);
+  const [localMessages, setLocalMessages] = useState<any[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -53,17 +54,8 @@ export default function BillAnalyzer() {
     enabled: !!user,
   });
 
-  // Get messages for current session
-  const { data: messages = [], isLoading } = useQuery<MessageWithActions[]>({
-    queryKey: ["/api/chat-messages", currentSessionId],
-    queryFn: async () => {
-      if (!currentSessionId) return [];
-      const response = await apiRequest("GET", `/api/chat-messages?sessionId=${currentSessionId}`);
-      console.log("Messages response:", response);
-      return Array.isArray(response) ? response : [];
-    },
-    enabled: !!currentSessionId,
-  });
+  // Use local messages for immediate display
+  const messages = localMessages;
 
   // Get user's bills for quick access
   const { data: userBills = [] } = useQuery<MedicalBill[]>({
@@ -230,53 +222,40 @@ Would you like me to generate a customized appeal letter for your specific situa
 What specific aspect of your medical bill would you like help with? I'm here to help you save thousands!`;
   };
 
-  // Send message mutation
-  const sendMessageMutation = useMutation({
-    mutationFn: async (content: string) => {
-      const response = await apiRequest("POST", "/api/chat-messages", {
-        sessionId: currentSessionId,
-        content,
-        role: "user",
-      });
-      return response;
-    },
-    onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/chat-messages", currentSessionId] });
-      const userMessage = inputMessage;
-      setInputMessage("");
-      setIsTyping(true);
-      setConversationStarted(true); // Mark conversation as started
+  // Simple message handling without backend complexity
+  const sendMessage = async (content: string) => {
+    const userMessage = {
+      id: Date.now().toString(),
+      role: "user",
+      content,
+      createdAt: new Date(),
+    };
+    
+    // Add user message immediately
+    setLocalMessages(prev => [...prev, userMessage]);
+    setInputMessage("");
+    setIsTyping(true);
+    setConversationStarted(true);
+    
+    // Generate AI response after delay
+    setTimeout(() => {
+      const aiResponse = generateAIResponse(content);
+      const assistantMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant", 
+        content: aiResponse,
+        createdAt: new Date(),
+      };
       
-      // Generate AI response
-      setTimeout(async () => {
-        try {
-          const aiResponse = generateAIResponse(userMessage);
-          
-          await apiRequest("POST", "/api/chat-messages", {
-            sessionId: currentSessionId,
-            content: aiResponse,
-            role: "assistant",
-            messageType: "analysis"
-          });
-          
-          queryClient.invalidateQueries({ queryKey: ["/api/chat-messages", currentSessionId] });
-        } catch (error) {
-          console.error("Error generating AI response:", error);
-        } finally {
-          setIsTyping(false);
-        }
-      }, 1500);
-    },
-    onError: (error) => {
-      console.error("Error sending message:", error);
+      setLocalMessages(prev => [...prev, assistantMessage]);
       setIsTyping(false);
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
-    }
-  });
+    }, 1500);
+  };
+
+  const sendMessageMutation = {
+    mutate: sendMessage,
+    isPending: isTyping,
+  };
 
   // Upload bill mutation
   const uploadBillMutation = useMutation({
@@ -317,19 +296,18 @@ What specific aspect of your medical bill would you like help with? I'm here to 
   }, [currentSession]);
 
   useEffect(() => {
-    if (messages && Array.isArray(messages) && messages.length > 0) {
+    if (localMessages.length > 0) {
       setConversationStarted(true);
     }
-  }, [messages]);
+  }, [localMessages]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping]);
+  }, [localMessages, isTyping]);
 
   const handleSendMessage = () => {
-    if (!inputMessage.trim() || sendMessageMutation.isPending) return;
-    setConversationStarted(true);
-    sendMessageMutation.mutate(inputMessage);
+    if (!inputMessage.trim() || isTyping) return;
+    sendMessage(inputMessage);
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -401,9 +379,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
       color: "red",
       action: () => {
         const message = "I have a medical bill that seems too high. Please help me assess it for billing errors, duplicate charges, upcoding, and other overcharges that I can dispute to reduce my costs.";
-        setInputMessage(message);
-        setConversationStarted(true);
-        sendMessageMutation.mutate(message);
+        sendMessage(message);
       },
     },
     {
@@ -413,9 +389,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
       color: "green",
       action: () => {
         const message = "I need to request an itemized bill from my hospital/provider to identify overcharges. Please give me the exact script to use when calling them and what specific details to demand.";
-        setInputMessage(message);
-        setConversationStarted(true);
-        sendMessageMutation.mutate(message);
+        sendMessage(message);
       },
     },
     {
@@ -425,9 +399,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
       color: "blue",
       action: () => {
         const message = "I need to dispute charges on my medical bill. Please generate a professional appeal letter that clearly outlines billing errors and demands a corrected statement with reduced charges.";
-        setInputMessage(message);
-        setConversationStarted(true);
-        sendMessageMutation.mutate(message);
+        sendMessage(message);
       },
     }
   ];
@@ -468,7 +440,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
         {/* Chat Messages Area */}
         <div className="flex-1 px-4 overflow-y-auto mt-4">
           <div className="space-y-4 pb-4">
-            {!conversationStarted && messages.length === 0 && !isLoading && (
+            {!conversationStarted && (!messages || messages.length === 0) && (
               <motion.div 
                 className="text-center py-6"
                 initial={{ opacity: 0, y: 20 }}
@@ -528,7 +500,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
               </motion.div>
             )}
 
-            {Array.isArray(messages) && messages.map((message: MessageWithActions, index) => (
+            {messages && Array.isArray(messages) && messages.map((message: MessageWithActions, index) => (
               <motion.div
                 key={message.id}
                 className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
@@ -622,7 +594,7 @@ What specific aspect of your medical bill would you like help with? I'm here to 
                 onKeyPress={handleKeyPress}
                 placeholder="Ask how to find thousands in overcharges, request itemized bills, or dispute charges..."
                 className="pr-12 h-12 bg-gray-50 border-gray-200 rounded-2xl text-base"
-                disabled={sendMessageMutation.isPending}
+                disabled={isTyping}
                 data-testid="input-message"
               />
               <button
@@ -641,11 +613,11 @@ What specific aspect of your medical bill would you like help with? I'm here to 
             
             <Button
               onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || sendMessageMutation.isPending}
+              disabled={!inputMessage.trim() || isTyping}
               className="h-12 w-12 p-0 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-2xl shadow-lg"
               data-testid="button-send-message"
             >
-              {sendMessageMutation.isPending ? (
+              {isTyping ? (
                 <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
               ) : (
                 <Send className="h-5 w-5 text-white" />

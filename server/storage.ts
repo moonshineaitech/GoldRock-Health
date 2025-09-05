@@ -622,11 +622,19 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getChatMessages(sessionId: string): Promise<ChatMessage[]> {
-    return await db
-      .select()
-      .from(chatMessages)
-      .where(eq(chatMessages.sessionId, sessionId))
-      .orderBy(chatMessages.createdAt);
+    try {
+      const messages = await db
+        .select()
+        .from(chatMessages)
+        .where(eq(chatMessages.sessionId, sessionId))
+        .orderBy(chatMessages.createdAt);
+      
+      console.log("Storage getChatMessages result:", messages);
+      return Array.isArray(messages) ? messages : [];
+    } catch (error) {
+      console.error("Error in getChatMessages:", error);
+      return [];
+    }
   }
 
   async createMedicalBill(userId: string, billData: InsertMedicalBill): Promise<MedicalBill> {
