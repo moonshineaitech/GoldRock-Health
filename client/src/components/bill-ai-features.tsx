@@ -615,6 +615,7 @@ export function ClaimAppealGenerator({ onSendMessage }: FeatureProps) {
     serviceDate: '',
     providerName: '',
     denialDate: '',
+    denialExplanation: '',
     medicalNecessity: ''
   });
 
@@ -643,13 +644,14 @@ export function ClaimAppealGenerator({ onSendMessage }: FeatureProps) {
 
 Claim Number: ${appealData.claimNumber}
 Insurance Company: ${appealData.insuranceCompany}
-Denial Reason: ${appealData.denialReason}
+Denial Reason Category: ${appealData.denialReason}
+Insurance Company's Exact Denial Explanation: ${appealData.denialExplanation}
 Service Date: ${appealData.serviceDate}
 Provider: ${appealData.providerName}
 Denial Date: ${appealData.denialDate}
 Medical Necessity Details: ${appealData.medicalNecessity}
 
-Create a complete appeal workflow including: formal appeal letter with legal citations, required documentation checklist, timeline for submission, follow-up schedule, and escalation steps if denied. Include specific insurance regulations and appeal rights.`;
+Create a complete appeal workflow that directly addresses the insurance company's specific denial reasoning. Include: formal appeal letter with legal citations that counter their exact denial points, required documentation checklist, timeline for submission, follow-up schedule, and escalation steps if denied. Include specific insurance regulations and appeal rights that apply to their denial reasoning.`;
 
     onSendMessage(prompt);
   };
@@ -719,6 +721,13 @@ Create a complete appeal workflow including: formal appeal letter with legal cit
           placeholder="Provider/Hospital Name"
           value={appealData.providerName}
           onChange={(e) => setAppealData(prev => ({ ...prev, providerName: e.target.value }))}
+        />
+
+        <Textarea
+          placeholder="What exactly did the insurance company say in their denial explanation? (copy their exact wording from the denial letter)"
+          value={appealData.denialExplanation}
+          onChange={(e) => setAppealData(prev => ({ ...prev, denialExplanation: e.target.value }))}
+          className="h-20"
         />
 
         <Textarea
