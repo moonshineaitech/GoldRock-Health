@@ -344,8 +344,18 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           description: 'Step-by-step action plan',
           color: 'text-purple-600',
           bgColor: 'bg-purple-100 hover:bg-purple-200',
-          priority: 'high',
+          priority: 'medium',
           action: () => onSendMessage("Give me a step-by-step action plan. What are my next steps to reduce this medical bill?")
+        },
+        {
+          id: 'upgrade-premium',
+          label: 'Upgrade to Premium',
+          icon: Crown,
+          description: 'Unlock copy, download & advanced features',
+          color: 'text-amber-600',
+          bgColor: 'bg-gradient-to-r from-amber-100 to-yellow-100 hover:from-amber-200 hover:to-yellow-200 border-2 border-amber-200',
+          priority: 'high',
+          action: () => onSendMessage("I want to unlock copy/download functionality, unlimited AI bill analysis, priority support, and all advanced features. How can I upgrade to Premium to maximize my medical bill savings?")
         },
         {
           id: 'advanced-strategies',
@@ -416,16 +426,6 @@ export function SmartActionBubbles({ context, aiResponse, onSendMessage, onGener
           bgColor: 'bg-blue-100 hover:bg-blue-200',
           priority: 'medium',
           action: () => onSendMessage("🔒 Insurance Appeal assistance is a Premium feature. Upgrade to access comprehensive appeal strategies, required documentation checklists, and expert guidance for getting claims approved.")
-        },
-        {
-          id: 'upgrade-premium',
-          label: 'Upgrade to Premium',
-          icon: Crown,
-          description: 'Unlock copy, download & advanced features',
-          color: 'text-amber-600',
-          bgColor: 'bg-gradient-to-r from-amber-100 to-yellow-100 hover:from-amber-200 hover:to-yellow-200 border-2 border-amber-200',
-          priority: 'low',
-          action: () => onSendMessage("I want to unlock copy/download functionality, unlimited AI bill analysis, priority support, and all advanced features. How can I upgrade to Premium to maximize my medical bill savings?")
         }
       ]
     };
