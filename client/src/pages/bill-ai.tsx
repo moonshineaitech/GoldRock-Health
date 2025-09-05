@@ -308,8 +308,8 @@ export default function BillAI() {
     },
     {
       icon: AlertTriangle,
-      label: "Find Overcharges",
-      desc: "Spot billing errors & scams",
+      label: "Find Billing Errors",
+      desc: "Detect common overcharges",
       color: "red",
       action: () => setActiveFeature('error-detection'),
     },
@@ -322,8 +322,8 @@ export default function BillAI() {
     },
     {
       icon: FileText,
-      label: "Appeal & Dispute",
-      desc: "Professional reduction letters",
+      label: "Dispute Letter & Templates",
+      desc: "Professional appeal templates",
       color: "blue",
       action: () => setActiveFeature('dispute-letter'),
     }
@@ -465,22 +465,51 @@ export default function BillAI() {
                         transition={{ delay: index * 0.1 + 0.5 }}
                       >
                         <Card 
-                          className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-emerald-200"
+                          className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-emerald-200 aspect-square"
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className="text-center">
+                          <div className="text-center h-full flex flex-col justify-center">
                             <div className={`w-12 h-12 bg-gradient-to-br from-${action.color}-500 to-${action.color}-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
                               <IconComponent className="h-6 w-6 text-white" />
                             </div>
-                            <h4 className="font-bold text-gray-900 text-sm mb-1">{action.label}</h4>
-                            <p className="text-xs text-gray-600">{action.desc}</p>
+                            <h4 className="font-bold text-gray-900 text-sm mb-1 leading-tight">{action.label}</h4>
+                            <p className="text-xs text-gray-600 leading-tight">{action.desc}</p>
                           </div>
                         </Card>
                       </motion.div>
                     );
                   })}
                 </div>
+                
+                {/* Wide Negotiation Strategy Box */}
+                <motion.div 
+                  className="mt-4 px-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 }}
+                >
+                  <Card 
+                    className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50"
+                    onClick={() => setActiveFeature('negotiation-script')}
+                    data-testid="negotiation-strategy-card"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Phone className="h-7 w-7 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-gray-900 text-base mb-2">Negotiation Strategy</h4>
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          <strong>Expert tactics:</strong> Call within 30 days of billing, request financial hardship review, ask for itemized costs, negotiate payment plans with 0% interest, request charity care applications, and leverage Medicare rates as benchmarks for fair pricing.
+                        </p>
+                      </div>
+                      <div className="bg-purple-100 text-purple-700 text-xs px-3 py-1 rounded-full font-medium">
+                        Expert
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
                 
                 {/* Security Notice */}
                 <motion.div 
