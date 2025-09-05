@@ -22,7 +22,10 @@ import {
   Sparkles,
   Shield,
   Loader2,
-  FileEdit
+  FileEdit,
+  Copy,
+  Check,
+  Download
 } from "lucide-react";
 import { Link } from "wouter";
 import { MobileLayout } from "@/components/mobile-layout";
