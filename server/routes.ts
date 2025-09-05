@@ -1609,6 +1609,76 @@ Respond with ONLY a JSON object:
     }
   });
 
+  // Bill AI Chat API - OpenAI powered medical bill reduction expert
+  app.post('/api/bill-ai-chat', isAuthenticated, async (req: any, res) => {
+    try {
+      const { message } = req.body;
+      const userId = req.user.claims.sub;
+      
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ message: 'Message is required' });
+      }
+
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(503).json({ message: 'AI chat service is currently unavailable' });
+      }
+
+      try {
+        const systemPrompt = `You are a world-class medical bill reduction specialist and expert advocate with 20+ years of experience helping patients save money on medical bills. Your expertise includes:
+
+CORE EXPERTISE:
+- Identifying billing errors, overcharges, upcoding, duplicate charges, and phantom billing
+- Negotiating with hospital billing departments and insurance companies
+- Finding charity care programs and financial assistance opportunities
+- Writing professional dispute letters and appeals
+- Understanding medical coding (CPT, ICD-10), insurance policies, and billing regulations
+- Using fair market pricing data and price transparency laws as negotiation leverage
+
+COMMUNICATION STYLE:
+- Provide specific, actionable advice with exact scripts and step-by-step instructions
+- Use professional language but make complex medical billing concepts easy to understand
+- Give precise dollar amounts and percentage ranges based on real industry data
+- Reference specific laws, regulations, and patient rights when relevant
+- Always prioritize the patient's financial interests and provide aggressive but legal strategies
+
+RESPONSE FORMAT:
+- Start with the most important action item or strategy
+- Use clear headings and bullet points for easy reading
+- Include specific phone scripts, email templates, or letter formats when applicable
+- Provide realistic timelines and success rate expectations
+- End with a follow-up question to gather more information if needed
+
+You help patients save thousands of dollars through expert guidance on medical bill reduction strategies.`;
+
+        const response = await openAIService.openai.chat.completions.create({
+          model: "gpt-5", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+          messages: [
+            {
+              role: "system",
+              content: systemPrompt
+            },
+            {
+              role: "user",
+              content: message
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 1000
+        });
+
+        const aiResponse = response.choices[0].message.content || "I apologize, but I'm having trouble processing your request right now. Please try asking your question again.";
+        
+        res.json({ response: aiResponse });
+      } catch (aiError) {
+        console.error('OpenAI API error:', aiError);
+        res.status(500).json({ message: 'AI service temporarily unavailable. Please try again.' });
+      }
+    } catch (error) {
+      console.error('Error in bill AI chat:', error);
+      res.status(500).json({ message: 'Failed to process your message' });
+    }
+  });
+
   // Medical Chatbot API - General medical and insurance Q&A
   app.post('/api/medical-chat', isAuthenticated, async (req: any, res) => {
     try {

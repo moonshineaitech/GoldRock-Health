@@ -37,7 +37,7 @@ const navItems: NavItem[] = [
     id: "billai",
     label: "Bill AI",
     icon: FileText,
-    path: "/bill-analyzer",
+    path: "/bill-ai",
     color: "text-purple-600"
   },
   {

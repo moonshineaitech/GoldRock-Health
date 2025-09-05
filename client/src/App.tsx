@@ -16,6 +16,7 @@ import StudyGroups from "@/pages/study-groups";
 import BoardExamPrep from "@/pages/board-exam-prep";
 import ClinicalDecisionTrees from "@/pages/clinical-decision-trees";
 import BillAnalyzer from "@/pages/bill-analyzer";
+import BillAI from "@/pages/bill-ai";
 import Premium from "@/pages/premium";
 import PixelGame from "@/pages/pixel-game";
 import BillReductionGuide from "@/pages/bill-reduction-guide";
@@ -58,6 +59,7 @@ function Router() {
       <Route path="/board-exam-prep" component={BoardExamPrep} />
       <Route path="/clinical-decision-trees" component={ClinicalDecisionTrees} />
       <Route path="/bill-analyzer" component={BillAnalyzer} />
+      <Route path="/bill-ai" component={BillAI} />
       <Route path="/premium" component={Premium} />
       <Route path="/pixel-game" component={PixelGame} />
       <Route path="/bill-reduction-guide" component={BillReductionGuide} />
