@@ -68,154 +68,94 @@ export default function BillAnalyzer() {
     const lowerMessage = userMessage.toLowerCase();
     
     if (lowerMessage.includes("itemized bill") || lowerMessage.includes("request") || lowerMessage.includes("hospital")) {
-      return `As a professional medical bill reduction specialist, here is your proven approach for obtaining the documentation needed to identify overcharges:
+      return `First things first - **don't pay anything yet**. You have 90-120 days before collections, so use this time wisely.
 
-🚨 CRITICAL FIRST STEP - DO NOT PAY IMMEDIATELY:
-Medical bills typically aren't sent to collections for 90-120 days. Use this time strategically - never pay with credit card first! This window is your biggest advantage for maximum savings.
+**Step 1: Call the billing department**
 
-PHONE SCRIPT FOR BILLING DEPARTMENT:
+Use this exact script:
+"I need a complete itemized statement for my recent treatment. Please include all procedure codes, dates, and provider information. I need this within 5 business days."
 
-Call and state exactly:
-"I am requesting a complete itemized statement for all services provided during my recent treatment. I need every charge broken down with corresponding procedure codes, dates, and provider information. Please provide this within 5 business days."
+**What to ask for specifically:**
+• CPT procedure codes with descriptions
+• Service dates and times  
+• Provider names and credentials
+• Medication details with quantities
 
-CRITICAL DETAILS TO DEMAND:
+**If they say no:**
+"Federal regulations require this documentation. Please connect me with your billing supervisor."
 
-1. Complete charge itemization including:
-   - CPT and HCPCS procedure codes with descriptions
-   - ICD-10 diagnosis codes
-   - Service dates and time durations
-   - Provider NPI numbers and credentials
-   - Medical record number and patient account details
+**Why this matters:**
+80% of bills have errors worth thousands of dollars. The itemized bill shows you exactly where to look.
 
-2. Facility charges breakdown:
-   - Daily room and board rates
-   - Operating room time charges
-   - Recovery and observation fees
-   - Equipment and facility usage fees
-
-3. Medications and supplies documentation:
-   - NDC numbers for all pharmaceuticals
-   - Exact quantities and dosages administered
-   - Medical device and supply itemization
-   - IV fluids and contrast materials
-
-ESCALATION SCRIPT (if initial request denied):
-"Federal patient rights regulations require this documentation. Please connect me with your billing supervisor and compliance department. I am prepared to wait for someone with proper authorization."
-
-ENHANCED ANALYSIS OPPORTUNITY:
-
-This itemized documentation reveals specific line items where 80% of bills contain errors. Professional advocates use a 47-point error detection checklist focusing on:
-- Duplicate charges for same procedure
-- Wrong procedure codes (upcoding)
-- Unbundled charges (should be packaged)
-- Services not actually received
-- Incorrect dates, times, or patient information
-
-Average savings on large bills: 50-90% reduction when errors are properly identified and disputed.
-
-What type of medical facility issued your bill, and what was the total amount charged?`;
+**What would you like help with next?**
+• Get the phone script for your specific situation
+• Learn what errors to look for once you get the itemized bill
+• Understand your rights if they refuse to provide it`;
     }
     
     if (lowerMessage.includes("billing error") || lowerMessage.includes("overcharge") || lowerMessage.includes("assess") || lowerMessage.includes("find")) {
-      return `I will conduct a systematic analysis of your medical bill using proven methodologies that have identified millions in overcharges for patients.
+      return `Good news: most large medical bills have errors you can get removed.
 
-IMMEDIATE ASSESSMENT REQUIREMENTS:
+**Tell me about your bill:**
+• What's the total amount?
+• What type of care was it for? (surgery, ER visit, tests, etc.)
+• Do you have an itemized bill yet?
 
-Essential information needed:
-1. Total bill amount and payment status
-2. Type of medical care provided (emergency, surgery, diagnostic, routine)
-3. Network status (in-network vs out-of-network provider)
-4. Insurance coverage details and EOB statements
-5. Itemized bill availability and completeness
+**Common errors I'll help you find:**
 
-PRIMARY ERROR CATEGORIES TO EXAMINE:
+**Duplicate charges** - Same service billed twice
+*Typical savings: $1,500-$15,000*
 
-UPCODING VIOLATIONS:
-   Billing for more expensive procedures than actually performed
-   Typical savings: $3,000 to $25,000 per incident
-   Common in emergency departments and surgical cases
+**Upcoding** - Billed for more expensive procedure than you got
+*Typical savings: $3,000-$25,000*
 
-DUPLICATE BILLING:
-   Same service charged multiple times on different dates
-   Typical savings: $1,500 to $15,000 per duplicate
-   Frequent in lab work, imaging, and pharmacy charges
+**Phantom charges** - Services you never received
+*Typical savings: $800-$12,000*
 
-UNBUNDLING SCHEMES:
-   Separate charges for services that should be packaged together
-   Typical savings: $2,000 to $18,000 per case
-   Common in surgical procedures and diagnostic testing
+**Unbundling** - Separate charges for things that should be packaged
+*Typical savings: $2,000-$18,000*
 
-PHANTOM CHARGES:
-   Services billed but never provided to patient
-   Typical savings: $800 to $12,000 per phantom charge
-   Often found in medication, supply, and equipment fees
+**Next steps:**
+• Share your bill details above
+• I'll walk you through checking for specific errors
+• Give you templates to dispute what we find
 
-ANALYSIS METHODOLOGY:
-
-I cross-reference your itemized bill against:
-- Medical records and physician notes
-- Insurance authorization documentation
-- Standard procedure bundling requirements
-- Medicare reimbursement guidelines
-- Regional pricing benchmarks
-
-Bills exceeding $15,000 typically contain $4,000 to $12,000 in correctable overcharges.
-
-What is the total amount of your bill and what type of medical care was provided?`;
+What's your bill amount and what was the medical care for?`;
     }
     
     if (lowerMessage.includes("negotiate") || lowerMessage.includes("payment plan") || lowerMessage.includes("reduce") || lowerMessage.includes("can't afford")) {
-      return `I will provide you with professional negotiation strategies that consistently achieve substantial bill reductions for patients.
+      return `You have several options to reduce your bill. Let's figure out which path is best for you.
 
-🎯 STRATEGIC APPROACH - USE YOUR 90-120 DAY WINDOW:
-Never rush to pay. Bills don't go to collections immediately - use this time to research, prepare, and negotiate from a position of strength.
+**First, what's your situation?**
+• What's your bill amount?
+• What's your household income range?
+• Can you pay a lump sum if you get a discount?
 
-PRE-NEGOTIATION PREPARATION:
+**Your main options:**
 
-Required documentation:
-1. Complete itemized bill with all line items and CPT codes
-2. Insurance EOB statements and coverage details
-3. Financial hardship documentation (3 months pay stubs, tax returns, bank statements)
-4. Fair market pricing research using these professional tools:
-   • Healthcare Bluebook (fair price estimates)
-   • FAIR Health Consumer (geographic pricing data)
-   • Hospital Price Transparency websites (required by law)
+**1. Charity Care (50-100% forgiveness)**
+For households earning under $60,000-$125,000 (depending on size)
+*Even works if you have insurance*
 
-PROVEN NEGOTIATION APPROACH:
+**2. Prompt Payment Discount (15-40% off)**
+If you can pay in full right away
+*Average savings: $2,500-$50,000*
 
-Initial contact script:
-"I received a bill totaling $[amount] for recent medical care. I want to resolve this responsibly but need to discuss reasonable payment options based on fair market rates for these services."
+**3. Payment Plan (0% interest)**
+Spread payments over 24-60 months
+*No interest if you negotiate properly*
 
-ENHANCED REDUCTION STRATEGIES:
+**4. Fair Price Challenge**
+If your bill seems too high compared to other hospitals
+*Hospitals often charge 300-800% above fair rates*
 
-1️⃣ CHARITY CARE PROGRAMS (50-100% FORGIVENESS):
-   • FREE CARE: Households ≤200% Federal Poverty Level
-   • DISCOUNTED CARE: 200-400% Federal Poverty Level  
-   • HARDSHIP PROGRAMS: When bills exceed 20% of annual income
-   • Available EVEN WITH insurance coverage
-   • Success rate increases from 60% to 85% with proper preparation
+**What would you like to explore first?**
+• Check if you qualify for charity care
+• Get a prompt payment discount script
+• Set up a payment plan
+• Challenge unfair pricing
 
-2️⃣ PROMPT PAYMENT DISCOUNTS:
-   Request immediate: 15-40% reduction for full payment
-   Typical results: $2,500 to $50,000+ savings on large bills
-   Best combined with documented financial constraints
-
-3️⃣ FAIR MARKET RATE ADJUSTMENTS:
-   Challenge excessive charges - hospitals often charge 300-800% above Medicare rates
-   Reasonable settlement target: Medicare rate plus 150-250%
-   Use price transparency data as negotiation leverage
-
-4️⃣ ZERO-INTEREST PAYMENT PLANS:
-   Request: 24-60 month payment terms with no interest
-   Monthly caps based on documented income capacity
-   Get agreement in writing before making any payments
-
-ADVANCED ESCALATION PROTOCOL:
-
-If initial representative lacks authority:
-"I need to speak with someone authorized to approve payment adjustments and hardship considerations. I have documented billing errors and am prepared to file formal disputes if necessary."
-
-What is your total bill amount and what financial constraints are you facing?`;
+Tell me your bill amount and income situation, and I'll guide you to the best option.`;
     }
     
     if (lowerMessage.includes("charity care") || lowerMessage.includes("financial assistance") || lowerMessage.includes("hardship") || lowerMessage.includes("poverty") || lowerMessage.includes("income")) {
