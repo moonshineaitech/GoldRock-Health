@@ -118,12 +118,12 @@ export default function BillAI() {
 
   // Multiple file upload mutation for Bill AI
   const uploadBillMutation = useMutation({
-    mutationFn: async (files: FileList) => {
+    mutationFn: async (files: File[]) => {
       console.log('Mutation called with files:', files.length);
       const formData = new FormData();
       
       // Add all files to FormData
-      Array.from(files).forEach((file, index) => {
+      files.forEach((file, index) => {
         console.log(`Adding file ${index + 1}:`, file.name, file.type, file.size);
         formData.append("bills", file);
       });
@@ -243,7 +243,11 @@ export default function BillAI() {
     console.log('Starting upload with files:', files.length);
     setUploadingFiles(true);
     setUploadProgress({current: 0, total: files.length});
-    uploadBillMutation.mutate(files);
+    
+    // Convert FileList to Array to prevent it from becoming stale
+    const fileArray = Array.from(files);
+    console.log('Converted to array:', fileArray.length, fileArray.map(f => f.name));
+    uploadBillMutation.mutate(fileArray);
     
     // Reset file input
     if (fileInputRef.current) {
