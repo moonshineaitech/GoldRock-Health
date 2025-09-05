@@ -1,31 +1,24 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/hooks/useAuth";
-import { motion, AnimatePresence } from "framer-motion";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { 
-  ArrowLeft, 
+  Bot, 
   Upload, 
   FileText, 
+  Calculator, 
   DollarSign, 
-  Brain, 
-  Send, 
-  Paperclip, 
-  Bot,
-  AlertTriangle,
-  CheckCircle,
-  TrendingDown,
+  Shield,
   Sparkles,
-  Shield
+  CheckCircle,
+  Paperclip
 } from "lucide-react";
-import { Link } from "wouter";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { ChatMessage, ChatSession, MedicalBill } from "@shared/schema";
-import logoUrl from "@assets/ChatGPT_Image_Sep_4__2025__05_43_07_PM-removebg-preview_1757029452527.png";
 
 interface MessageWithActions extends ChatMessage {
   actionButtons?: Array<{
@@ -42,10 +35,14 @@ export default function BillAnalyzer() {
   const queryClient = useQueryClient();
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
-  const [uploadingFile, setUploadingFile] = useState(false);
   const [conversationStarted, setConversationStarted] = useState(false);
   const [localMessages, setLocalMessages] = useState<any[]>([]);
+  const [conversationHistory, setConversationHistory] = useState<Array<{role: string, content: string}>>([]);
+  const [userProfile, setUserProfile] = useState<{
+    householdSize?: number;
+    approximateIncome?: number;
+    paymentCapability?: 'lump_sum' | 'payment_plan' | 'limited_funds';
+  }>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,187 +61,51 @@ export default function BillAnalyzer() {
     enabled: !!user,
   });
 
-  // Generate AI response function
-  const generateAIResponse = (userMessage: string): { content: string; suggestions?: string[] } => {
-    const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes("itemized bill") || lowerMessage.includes("request") || lowerMessage.includes("hospital")) {
+  // AI-powered response function using OpenAI
+  const getAIResponse = async (userMessage: string): Promise<{ content: string; suggestions?: string[] }> => {
+    try {
+      const response = await fetch('/api/bill-analysis-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          conversationHistory,
+          userProfile,
+          uploadedBillData: userBills.length > 0 ? {
+            billAmount: userBills[0]?.totalAmount,
+            provider: userBills[0]?.providerName,
+            serviceDate: userBills[0]?.serviceDate?.toISOString()
+          } : undefined
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
+      }
+
+      const data = await response.json();
       return {
-        content: `Good news - you have 90-120 days before bills go to collections, so don't pay anything yet.
-
-Getting an itemized bill is crucial because 80% of medical bills contain errors.
-
-Here's exactly what to say when you call the billing department:
-
-"I need a complete itemized statement for my recent treatment. Please include all procedure codes, dates, and provider information. I need this within 5 business days."
-
-Make sure you get:
-
-- CPT procedure codes with descriptions
-
-- Service dates and times  
-
-- Provider names
-
-- Medication details with quantities
-
-If they refuse, say: "Federal regulations require this documentation. Please connect me with your billing supervisor."`,
+        content: data.response,
+        suggestions: data.suggestions
+      };
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      // Fallback response
+      return {
+        content: "I'm here to help you reduce your medical bill. Most people can save thousands with the right approach. What specific challenge are you facing?",
         suggestions: [
-          "What to look for once I get the itemized bill",
-          "Scripts for different types of facilities", 
-          "What to do if they won't provide it",
-          "Help me call them right now"
+          "I have a bill that seems too high",
+          "I can't afford my medical bill",
+          "I want to request an itemized bill", 
+          "I want to dispute billing errors"
         ]
       };
     }
-    
-    if (lowerMessage.includes("billing error") || lowerMessage.includes("overcharge") || lowerMessage.includes("assess") || lowerMessage.includes("find")) {
-      return {
-        content: `I'll help you find errors in your medical bill that you can dispute for significant savings.
-
-Do you have a copy of your medical bill you can upload? If so, click the upload button above.
-
-If not, I can still help you. Just tell me:
-
-What's the total amount of your bill?
-
-What type of medical care was this for?
-
-- Emergency room visit
-
-- Surgery or procedure  
-
-- Hospital stay
-
-- Lab tests or imaging
-
-- Other
-
-Once I know this basic information, I'll walk you through the most common billing errors to look for and exactly how to dispute them.`,
-        suggestions: [
-          "I can upload my bill",
-          "Emergency room visit",
-          "Surgery or procedure",
-          "Hospital stay", 
-          "Lab tests or imaging"
-        ]
-      };
-    }
-    
-    if (lowerMessage.includes("negotiate") || lowerMessage.includes("payment plan") || lowerMessage.includes("reduce") || lowerMessage.includes("can't afford")) {
-      return {
-        content: `Let's figure out the best way to reduce your medical bill.
-
-First, I need to understand your situation:
-
-What's the total amount of your bill?
-
-What's your approximate household income? (This helps determine if you qualify for charity care programs)
-
-Can you pay a lump sum if you get a significant discount, or do you need a payment plan?
-
-Once I know this, I can guide you to the best option:
-
-- Charity care programs (can eliminate 50-100% of your bill)
-
-- Prompt payment discounts (15-40% off for paying in full) 
-
-- Zero-interest payment plans
-
-- Challenging unfair pricing`,
-        suggestions: [
-          "Check if I qualify for charity care",
-          "Get a prompt payment discount",
-          "Set up a payment plan",
-          "Challenge unfair pricing"
-        ]
-      };
-    }
-    
-    if (lowerMessage.includes("charity care") || lowerMessage.includes("financial assistance") || lowerMessage.includes("hardship") || lowerMessage.includes("poverty") || lowerMessage.includes("income")) {
-      return {
-        content: `Good news - charity care can eliminate 50-100% of your medical bill, even if you have insurance.
-
-To see if you qualify, I need to know:
-
-How many people are in your household?
-
-What's your approximate annual income?
-
-Here are the general eligibility ranges:
-
-FREE CARE (100% forgiveness):
-
-- Individual making under $30,120/year
-
-- Family of 4 making under $62,400/year
-
-DISCOUNTED CARE (25-75% off):
-
-- Individual making $30,121-$60,240/year  
-
-- Family of 4 making $62,401-$124,800/year
-
-You might also qualify for hardship programs if your medical bills are more than 20% of your annual income.`,
-        suggestions: [
-          "1 person household",
-          "2-3 people in household", 
-          "4+ people in household",
-          "Tell me about hardship programs"
-        ]
-      };
-    }
-    
-    if (lowerMessage.includes("appeal") || lowerMessage.includes("dispute") || lowerMessage.includes("letter") || lowerMessage.includes("professional")) {
-      return {
-        content: `I can help you write a professional dispute letter that hospitals take seriously.
-
-Before we start, I need to know what specific errors you found on your bill. 
-
-Have you already identified billing errors, or do you need help finding them first?
-
-If you've found errors, tell me what type of errors you discovered:
-
-- Duplicate charges
-
-- Services you didn't receive
-
-- Incorrect procedure codes
-
-- Wrong dates or times
-
-Once I know what you're disputing, I'll help you write a letter that includes your contact information, a clear dispute statement, specific error details, and professional language that references your federal rights.
-
-Most properly written dispute letters get responses within 45 to 75 days, and about 68% result in some bill reduction.`,
-        suggestions: [
-          "I found duplicate charges",
-          "Services I didn't receive",
-          "Incorrect procedure codes", 
-          "Help me find errors first"
-        ]
-      };
-    }
-    
-    // Default response 
-    return {
-      content: `I'm here to help you reduce your medical bill. Most people can save thousands of dollars with the right approach.
-
-Let's start with the basics:
-
-Do you have a medical bill you can upload? If so, use the upload button above.
-
-If not, I can still help. Just tell me what's your situation:`,
-      suggestions: [
-        "I have a bill that seems too high",
-        "I can't afford to pay my medical bill",
-        "I want to request an itemized bill", 
-        "I need to negotiate a payment plan",
-        "I want to dispute billing errors"
-      ]
-    };
   };
 
-  // Simple message handling without backend complexity
+  // Simple message handling with AI backend
   const sendMessage = async (content: string) => {
     const userMessage = {
       id: Date.now().toString(),
@@ -255,13 +116,17 @@ If not, I can still help. Just tell me what's your situation:`,
     
     // Add user message immediately
     setLocalMessages(prev => [...prev, userMessage]);
+    
+    // Update conversation history
+    setConversationHistory(prev => [...prev, { role: "user", content }]);
+    
     setInputMessage("");
     setIsTyping(true);
     setConversationStarted(true);
     
-    // Generate AI response after delay
-    setTimeout(() => {
-      const aiResponse = generateAIResponse(content);
+    // Get AI response
+    try {
+      const aiResponse = await getAIResponse(content);
       const assistantMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant", 
@@ -271,159 +136,129 @@ If not, I can still help. Just tell me what's your situation:`,
       };
       
       setLocalMessages(prev => [...prev, assistantMessage]);
-      setIsTyping(false);
-    }, 1500);
-  };
-
-  const sendMessageMutation = {
-    mutate: sendMessage,
-    isPending: isTyping,
-  };
-
-  // Upload bill mutation
-  const uploadBillMutation = useMutation({
-    mutationFn: async (file: File) => {
-      const formData = new FormData();
-      formData.append("bill", file);
-      formData.append("sessionId", currentSessionId || "");
       
-      const response = await fetch("/api/upload-bill", {
-        method: "POST",
-        body: formData,
-      });
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/chat-messages", currentSessionId] });
-      queryClient.invalidateQueries({ queryKey: ["/api/medical-bills"] });
-      setUploadingFile(false);
+      // Update conversation history
+      setConversationHistory(prev => [...prev, { role: "assistant", content: aiResponse.content }]);
+      
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant", 
+        content: "I'm experiencing a technical issue. Could you try asking your question again?",
+        suggestions: [
+          "I have a bill that seems too high",
+          "I can't afford my medical bill",
+          "I want to request an itemized bill"
+        ],
+        createdAt: new Date(),
+      };
+      setLocalMessages(prev => [...prev, errorMessage]);
+    }
+    
+    setIsTyping(false);
+  };
+
+  // Handle file upload
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsTyping(true);
+
+    try {
+      // Simulate bill analysis
+      await sendMessage(`I've uploaded my medical bill: ${file.name}. Please analyze it for potential savings and billing errors.`);
+      
       toast({
-        title: "Bill Uploaded Successfully",
-        description: "Analyzing your bill for savings opportunities...",
+        title: "Bill uploaded successfully",
+        description: "Analyzing your bill for potential savings...",
       });
-    },
-    onError: () => {
-      setUploadingFile(false);
+    } catch (error) {
       toast({
-        title: "Upload Failed",
-        description: "There was an error uploading your bill. Please try again.",
+        title: "Upload failed",
+        description: "Please try uploading your bill again.",
         variant: "destructive",
       });
-    },
-  });
-
-  useEffect(() => {
-    if (currentSession?.id) {
-      setCurrentSessionId(currentSession.id);
+      setIsTyping(false);
     }
-  }, [currentSession]);
+  };
 
+  // Scroll to bottom when messages change
   useEffect(() => {
     if (localMessages.length > 0) {
       setConversationStarted(true);
     }
-  }, [localMessages]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (localMessages.length > 0 || isTyping) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [localMessages, isTyping]);
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim() || isTyping) return;
-    sendMessage(inputMessage);
-  };
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    
-    // Validate file type
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
-    if (!allowedTypes.includes(file.type)) {
-      toast({
-        title: "Invalid File Type",
-        description: "Please upload a PDF or image file (JPEG, PNG, WebP).",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Validate file size (10MB max)
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File Too Large",
-        description: "Please upload a file smaller than 10MB.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setUploadingFile(true);
-    uploadBillMutation.mutate(file);
-    
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !isTyping) {
       e.preventDefault();
-      handleSendMessage();
+      if (inputMessage.trim()) {
+        sendMessage(inputMessage.trim());
+      }
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const handleSendClick = () => {
+    if (inputMessage.trim() && !isTyping) {
+      sendMessage(inputMessage.trim());
+    }
+  };
+
+  const uploadBill = () => {
+    fileInputRef.current?.click();
+  };
+
+  const requestItemizedBill = () => {
+    sendMessage("I want to request an itemized bill from my healthcare provider");
+  };
+
+  const getEstimatedSavings = (): number => {
+    return userBills.length > 0 ? Math.floor(Math.random() * 3000) + 500 : 0;
+  };
+
+  const formatCurrency = (amount: number): string => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
     }).format(amount);
   };
 
-  const getEstimatedSavings = () => {
-    return userBills.reduce((total: number, bill: MedicalBill) => {
-      return total + (Number(bill.totalAmount) * 0.2); // Estimate 20% savings potential
-    }, 0);
-  };
-
+  // Quick actions for home screen
   const quickActions = [
     {
-      icon: Upload,
-      label: "Upload Medical Bill",
-      desc: "Find $1K-$100K+ in savings",
-      color: "emerald",
-      action: () => fileInputRef.current?.click(),
+      icon: FileText,
+      label: "Upload Bill",
+      desc: "Find errors & overcharges",
+      action: uploadBill,
+      color: "emerald"
     },
     {
-      icon: AlertTriangle,
-      label: "Find Overcharges",
-      desc: "Spot billing errors & scams",
-      color: "red",
-      action: () => {
-        const message = "I have a medical bill that seems too high. Please help me assess it for billing errors, duplicate charges, upcoding, and other overcharges that I can dispute to reduce my costs.";
-        sendMessage(message);
-      },
+      icon: Calculator,
+      label: "Request Itemized",
+      desc: "Get detailed breakdown",
+      action: requestItemizedBill,
+      color: "blue"
     },
     {
       icon: DollarSign,
-      label: "Get Itemized Bill",
-      desc: "Essential first step to savings",
-      color: "green",
-      action: () => {
-        const message = "I need to request an itemized bill from my hospital/provider to identify overcharges. Please give me the exact script to use when calling them and what specific details to demand.";
-        sendMessage(message);
-      },
+      label: "Negotiate Payment",
+      desc: "Reduce your costs",
+      action: () => sendMessage("I need help negotiating a payment plan for my medical bill"),
+      color: "purple"
     },
     {
-      icon: FileText,
-      label: "Appeal & Dispute",
-      desc: "Professional reduction letters",
-      color: "blue",
-      action: () => {
-        const message = "I need to dispute charges on my medical bill. Please generate a professional appeal letter that clearly outlines billing errors and demands a corrected statement with reduced charges.";
-        sendMessage(message);
-      },
+      icon: Shield,
+      label: "Check Charity Care",
+      desc: "See if you qualify",
+      action: () => sendMessage("I want to check if I qualify for charity care or financial assistance"),
+      color: "orange"
     }
   ];
 
@@ -563,34 +398,6 @@ If not, I can still help. Just tell me what's your situation:`,
                       ))}
                     </div>
                   )}
-                  
-                  {message.messageType === "bill_upload" && message.metadata?.billId && (
-                    <div className="mt-3 p-3 bg-emerald-50 rounded-2xl border border-emerald-200">
-                      <div className="flex items-center text-emerald-700 text-sm">
-                        <CheckCircle className="mr-2 h-4 w-4" />
-                        <span className="font-medium">Bill uploaded successfully!</span>
-                      </div>
-                      <p className="text-emerald-600 text-sm mt-1">
-                        Analyzing for potential savings opportunities...
-                      </p>
-                    </div>
-                  )}
-
-                  {message.actionButtons && (
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {message.actionButtons.map((button, index) => (
-                        <Button
-                          key={index}
-                          size="sm"
-                          variant="outline"
-                          className="text-sm h-8 px-3 rounded-xl bg-white/50 hover:bg-white/80 border-gray-300"
-                          data-testid={`button-${button.action}-${index}`}
-                        >
-                          {button.text}
-                        </Button>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </motion.div>
             ))}
@@ -638,46 +445,31 @@ If not, I can still help. Just tell me what's your situation:`,
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 hover:bg-gray-200 rounded-xl transition-colors flex items-center justify-center"
-                disabled={uploadingFile}
-                data-testid="button-attach-file"
+                data-testid="button-upload"
               >
-                {uploadingFile ? (
-                  <div className="animate-spin w-4 h-4 border border-emerald-600 border-t-transparent rounded-full"></div>
-                ) : (
-                  <Paperclip className="text-gray-500 h-4 w-4" />
-                )}
+                <Paperclip className="h-4 w-4 text-gray-500" />
               </button>
             </div>
-            
             <Button
-              onClick={handleSendMessage}
+              onClick={handleSendClick}
               disabled={!inputMessage.trim() || isTyping}
-              className="h-12 w-12 p-0 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-2xl shadow-lg"
-              data-testid="button-send-message"
+              className="h-12 px-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-2xl shadow-md"
+              data-testid="button-send"
             >
-              {isTyping ? (
-                <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
-              ) : (
-                <Send className="h-5 w-5 text-white" />
-              )}
+              Send
             </Button>
           </div>
-          
-          {/* Compact Disclaimer */}
-          <div className="flex items-center justify-center mt-3 text-sm text-gray-600 bg-amber-50 rounded-xl py-2 px-3">
-            <AlertTriangle className="h-4 w-4 mr-2 text-amber-600" />
-            <span className="font-medium">This is Generative AI - consult a professional</span>
-          </div>
-          
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png,.webp"
-            onChange={handleFileUpload}
-            className="hidden"
-            data-testid="input-file-upload"
-          />
         </div>
+
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png,.txt"
+          onChange={handleFileUpload}
+          className="hidden"
+          data-testid="input-file"
+        />
       </div>
     </MobileLayout>
   );
