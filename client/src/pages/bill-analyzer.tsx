@@ -33,6 +33,7 @@ interface MessageWithActions extends ChatMessage {
     action: string;
     data?: any;
   }>;
+  suggestions?: string[];
 }
 
 export default function BillAnalyzer() {
@@ -64,11 +65,12 @@ export default function BillAnalyzer() {
   });
 
   // Generate AI response function
-  const generateAIResponse = (userMessage: string): string => {
+  const generateAIResponse = (userMessage: string): { content: string; suggestions?: string[] } => {
     const lowerMessage = userMessage.toLowerCase();
     
     if (lowerMessage.includes("itemized bill") || lowerMessage.includes("request") || lowerMessage.includes("hospital")) {
-      return `Good news - you have 90-120 days before bills go to collections, so don't pay anything yet.
+      return {
+        content: `Good news - you have 90-120 days before bills go to collections, so don't pay anything yet.
 
 Getting an itemized bill is crucial because 80% of medical bills contain errors.
 
@@ -77,127 +79,169 @@ Here's exactly what to say when you call the billing department:
 "I need a complete itemized statement for my recent treatment. Please include all procedure codes, dates, and provider information. I need this within 5 business days."
 
 Make sure you get:
+
 - CPT procedure codes with descriptions
+
 - Service dates and times  
+
 - Provider names
+
 - Medication details with quantities
 
-If they refuse, say: "Federal regulations require this documentation. Please connect me with your billing supervisor."
-
-Would you like me to help you with:
-1. What to look for once you get the itemized bill
-2. Scripts for different types of facilities
-3. What to do if they won't provide it`;
+If they refuse, say: "Federal regulations require this documentation. Please connect me with your billing supervisor."`,
+        suggestions: [
+          "What to look for once I get the itemized bill",
+          "Scripts for different types of facilities", 
+          "What to do if they won't provide it",
+          "Help me call them right now"
+        ]
+      };
     }
     
     if (lowerMessage.includes("billing error") || lowerMessage.includes("overcharge") || lowerMessage.includes("assess") || lowerMessage.includes("find")) {
-      return `I'll help you find errors in your medical bill that you can dispute for significant savings.
+      return {
+        content: `I'll help you find errors in your medical bill that you can dispute for significant savings.
 
 Do you have a copy of your medical bill you can upload? If so, click the upload button above.
 
 If not, I can still help you. Just tell me:
 
-1. What's the total amount of your bill?
+What's the total amount of your bill?
 
-2. What type of medical care was this for?
-   - Emergency room visit
-   - Surgery or procedure  
-   - Hospital stay
-   - Lab tests or imaging
-   - Other
+What type of medical care was this for?
 
-Once I know this basic information, I'll walk you through the most common billing errors to look for and exactly how to dispute them.
+- Emergency room visit
 
-What's your situation?`;
+- Surgery or procedure  
+
+- Hospital stay
+
+- Lab tests or imaging
+
+- Other
+
+Once I know this basic information, I'll walk you through the most common billing errors to look for and exactly how to dispute them.`,
+        suggestions: [
+          "I can upload my bill",
+          "Emergency room visit",
+          "Surgery or procedure",
+          "Hospital stay", 
+          "Lab tests or imaging"
+        ]
+      };
     }
     
     if (lowerMessage.includes("negotiate") || lowerMessage.includes("payment plan") || lowerMessage.includes("reduce") || lowerMessage.includes("can't afford")) {
-      return `Let's figure out the best way to reduce your medical bill.
+      return {
+        content: `Let's figure out the best way to reduce your medical bill.
 
 First, I need to understand your situation:
 
 What's the total amount of your bill?
 
-What's your approximate household income? 
-(This helps determine if you qualify for charity care programs)
+What's your approximate household income? (This helps determine if you qualify for charity care programs)
 
 Can you pay a lump sum if you get a significant discount, or do you need a payment plan?
 
 Once I know this, I can guide you to the best option:
 
 - Charity care programs (can eliminate 50-100% of your bill)
-- Prompt payment discounts (15-40% off for paying in full) 
-- Zero-interest payment plans
-- Challenging unfair pricing
 
-What's your bill amount and income situation?`;
+- Prompt payment discounts (15-40% off for paying in full) 
+
+- Zero-interest payment plans
+
+- Challenging unfair pricing`,
+        suggestions: [
+          "Check if I qualify for charity care",
+          "Get a prompt payment discount",
+          "Set up a payment plan",
+          "Challenge unfair pricing"
+        ]
+      };
     }
     
     if (lowerMessage.includes("charity care") || lowerMessage.includes("financial assistance") || lowerMessage.includes("hardship") || lowerMessage.includes("poverty") || lowerMessage.includes("income")) {
-      return `Good news - charity care can eliminate 50-100% of your medical bill, even if you have insurance.
+      return {
+        content: `Good news - charity care can eliminate 50-100% of your medical bill, even if you have insurance.
 
 To see if you qualify, I need to know:
 
-1. How many people are in your household?
-2. What's your approximate annual income?
+How many people are in your household?
+
+What's your approximate annual income?
 
 Here are the general eligibility ranges:
 
 FREE CARE (100% forgiveness):
+
 - Individual making under $30,120/year
+
 - Family of 4 making under $62,400/year
 
 DISCOUNTED CARE (25-75% off):
+
 - Individual making $30,121-$60,240/year  
+
 - Family of 4 making $62,401-$124,800/year
 
-You might also qualify for hardship programs if your medical bills are more than 20% of your annual income.
-
-What's your household size and approximate income? I can tell you exactly what programs you qualify for and walk you through the application process.`;
+You might also qualify for hardship programs if your medical bills are more than 20% of your annual income.`,
+        suggestions: [
+          "1 person household",
+          "2-3 people in household", 
+          "4+ people in household",
+          "Tell me about hardship programs"
+        ]
+      };
     }
     
     if (lowerMessage.includes("appeal") || lowerMessage.includes("dispute") || lowerMessage.includes("letter") || lowerMessage.includes("professional")) {
-      return `I can help you write a professional dispute letter that hospitals take seriously.
+      return {
+        content: `I can help you write a professional dispute letter that hospitals take seriously.
 
-Before we start, I need to know what specific errors you found on your bill. Have you already identified billing errors, or do you need help finding them first?
+Before we start, I need to know what specific errors you found on your bill. 
 
-If you've found errors, tell me:
-What type of errors did you find? For example, duplicate charges, services you didn't receive, or incorrect procedure codes.
+Have you already identified billing errors, or do you need help finding them first?
 
-Once I know what you're disputing, I'll help you write a letter that includes:
+If you've found errors, tell me what type of errors you discovered:
 
-Your contact information and account details formatted properly for hospital billing departments.
+- Duplicate charges
 
-A clear statement that you're formally disputing charges due to documented errors.
+- Services you didn't receive
 
-Specific details about each error with the line item numbers and amounts you're questioning.
+- Incorrect procedure codes
 
-A request for investigation and corrected billing within 30 days.
+- Wrong dates or times
 
-Professional language that references your rights under federal billing regulations.
+Once I know what you're disputing, I'll help you write a letter that includes your contact information, a clear dispute statement, specific error details, and professional language that references your federal rights.
 
-Most properly written dispute letters get responses within 45 to 75 days, and about 68% result in some bill reduction.
-
-What billing errors have you found that you want to dispute?`;
+Most properly written dispute letters get responses within 45 to 75 days, and about 68% result in some bill reduction.`,
+        suggestions: [
+          "I found duplicate charges",
+          "Services I didn't receive",
+          "Incorrect procedure codes", 
+          "Help me find errors first"
+        ]
+      };
     }
     
     // Default response 
-    return `I'm here to help you reduce your medical bill. Most people can save thousands of dollars with the right approach.
+    return {
+      content: `I'm here to help you reduce your medical bill. Most people can save thousands of dollars with the right approach.
 
 Let's start with the basics:
 
 Do you have a medical bill you can upload? If so, use the upload button above.
 
-If not, I can still help. Just tell me:
-
-What's your situation?
-1. I have a bill that seems too high
-2. I can't afford to pay my medical bill  
-3. I want to request an itemized bill
-4. I need to negotiate a payment plan
-5. I want to dispute billing errors
-
-Choose what fits your situation, and I'll walk you through the next steps one at a time.`;
+If not, I can still help. Just tell me what's your situation:`,
+      suggestions: [
+        "I have a bill that seems too high",
+        "I can't afford to pay my medical bill",
+        "I want to request an itemized bill", 
+        "I need to negotiate a payment plan",
+        "I want to dispute billing errors"
+      ]
+    };
   };
 
   // Simple message handling without backend complexity
@@ -221,7 +265,8 @@ Choose what fits your situation, and I'll walk you through the next steps one at
       const assistantMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant", 
-        content: aiResponse,
+        content: aiResponse.content,
+        suggestions: aiResponse.suggestions,
         createdAt: new Date(),
       };
       
@@ -503,6 +548,21 @@ Choose what fits your situation, and I'll walk you through the next steps one at
                   )}
                   
                   <div className="text-base leading-relaxed">{message.content}</div>
+                  
+                  {message.suggestions && message.role === "assistant" && (
+                    <div className="mt-4 space-y-2">
+                      {message.suggestions.map((suggestion: string, index: number) => (
+                        <button
+                          key={index}
+                          onClick={() => sendMessage(suggestion)}
+                          className="block w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-colors"
+                          data-testid={`suggestion-${index}`}
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   
                   {message.messageType === "bill_upload" && message.metadata?.billId && (
                     <div className="mt-3 p-3 bg-emerald-50 rounded-2xl border border-emerald-200">
