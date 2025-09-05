@@ -432,20 +432,41 @@ What aspect of your medical billing situation requires immediate attention?`;
       });
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/chat-messages", currentSessionId] });
-      queryClient.invalidateQueries({ queryKey: ["/api/medical-bills"] });
+    onSuccess: (data) => {
       setUploadingFile(false);
-      toast({
-        title: "Bill Uploaded Successfully",
-        description: "Analyzing your bill for savings opportunities...",
-      });
+      
+      if (data.success && data.analysis) {
+        // Add AI analysis as a message in the chat
+        const analysisMessage = {
+          id: Date.now().toString(),
+          role: "assistant" as const,
+          content: `🔍 **BILL ANALYSIS COMPLETE**\n\n${data.analysis}`,
+          createdAt: new Date(),
+        };
+        
+        setLocalMessages(prev => [...prev, analysisMessage]);
+        setConversationStarted(true);
+        
+        // Show success toast
+        toast({
+          title: "Bill Analyzed Successfully",
+          description: data.message || "Your bill has been analyzed for billing errors and savings opportunities.",
+        });
+        
+        // Refetch bills to update the list
+        queryClient.invalidateQueries({ queryKey: ["/api/medical-bills"] });
+      } else {
+        toast({
+          title: "Upload Successful",
+          description: data.message || "Your bill has been uploaded successfully.",
+        });
+      }
     },
-    onError: () => {
+    onError: (error: any) => {
       setUploadingFile(false);
       toast({
         title: "Upload Failed",
-        description: "There was an error uploading your bill. Please try again.",
+        description: error.response?.data?.message || "Failed to upload bill. Please try again.",
         variant: "destructive",
       });
     },

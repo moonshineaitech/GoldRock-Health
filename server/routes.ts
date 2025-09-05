@@ -12,6 +12,8 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
 import Stripe from "stripe";
 import { z } from "zod";
+import multer from "multer";
+// We'll import pdfParse dynamically when needed to avoid loading issues
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -21,6 +23,22 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Configure multer for file uploads
+  const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+      fileSize: 10 * 1024 * 1024, // 10MB limit
+    },
+    fileFilter: (req, file, cb) => {
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+      if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+      } else {
+        cb(new Error("Invalid file type. Only JPEG, PNG, WebP, and PDF files are allowed."));
+      }
+    },
+  });
+
   // Initialize medical cases on startup
   await medicalCasesService.initializeCases();
   
@@ -1678,6 +1696,211 @@ You help patients save thousands of dollars through expert guidance on medical b
       res.status(500).json({ message: 'Failed to process your message' });
     }
   });
+
+  // Bill Upload and Analysis API - AI-powered bill analysis for specific errors and opportunities
+  app.post('/api/upload-bill', isAuthenticated, upload.single('bill'), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const file = req.file;
+      const sessionId = req.body.sessionId;
+
+      if (!file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+      }
+
+      let billText = '';
+      let analysisData: any = {};
+
+      // Process PDF files
+      if (file.mimetype === 'application/pdf') {
+        try {
+          const pdfParseModule = await import('pdf-parse');
+          const pdfParse = pdfParseModule.default;
+          const pdfData = await pdfParse(file.buffer);
+          billText = pdfData.text;
+        } catch (pdfError) {
+          console.error('PDF parsing error:', pdfError);
+          return res.status(400).json({ message: 'Unable to read PDF file. Please ensure it\'s a valid medical bill PDF.' });
+        }
+      }
+      // Process image files with OpenAI Vision
+      else if (file.mimetype.startsWith('image/')) {
+        if (!process.env.OPENAI_API_KEY) {
+          return res.status(500).json({ message: 'AI analysis service unavailable. Please try again later.' });
+        }
+
+        try {
+          const base64Image = file.buffer.toString('base64');
+          const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'gpt-4o',
+              messages: [
+                {
+                  role: 'user',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Extract all text from this medical bill image. Provide the complete text content, including all charges, dates, procedure codes, patient information, and billing details. Be thorough and accurate.'
+                    },
+                    {
+                      type: 'image_url',
+                      image_url: {
+                        url: `data:${file.mimetype};base64,${base64Image}`
+                      }
+                    }
+                  ]
+                }
+              ],
+              max_tokens: 2000
+            })
+          });
+
+          const visionData = await response.json();
+          billText = visionData.choices?.[0]?.message?.content || 'Unable to extract text from image';
+        } catch (visionError) {
+          console.error('Vision API error:', visionError);
+          return res.status(500).json({ message: 'Unable to analyze image. Please try again or upload a clearer image.' });
+        }
+      }
+
+      // Analyze the bill with expert AI prompting
+      if (process.env.OPENAI_API_KEY && billText) {
+        try {
+          const analysisPrompt = `You are a professional medical bill reduction specialist analyzing this medical bill for specific billing errors and cost reduction opportunities.
+
+**BILL CONTENT:**
+${billText}
+
+**EXPERT ANALYSIS REQUIRED:**
+
+1. **SPECIFIC BILLING ERRORS DETECTED** (provide exact line items and dollar amounts):
+   - Duplicate charges (same service charged multiple times)
+   - Upcoding violations (wrong procedure codes for higher reimbursement)
+   - Unbundling schemes (services that should be packaged together)
+   - Phantom charges (services billed but not provided)
+   - Incorrect dates, times, or patient information
+   - Equipment/supply charges for items not used
+
+2. **FINANCIAL OPPORTUNITIES** (provide specific dollar amounts):
+   - Total potential savings from error corrections
+   - Charity care eligibility assessment (based on bill amount)
+   - Negotiation leverage points with specific pricing comparisons
+   - Payment plan and settlement opportunities
+
+3. **IMMEDIATE ACTION PLAN**:
+   - Priority dispute items with exact account numbers and codes
+   - Specific phone scripts for billing department
+   - Documents needed for appeals
+   - Timeline for maximum savings
+
+4. **PROFESSIONAL LETTERS TO GENERATE**:
+   - Error dispute letter with specific charge details
+   - Charity care application if applicable
+   - Settlement negotiation letter
+
+**CRITICAL INSTRUCTIONS:**
+- Reference exact charges, codes, and amounts from the bill
+- Provide specific dollar savings estimates for each error found
+- Include account numbers, procedure codes, and dates for disputes
+- Give realistic success rates and timelines
+- Be extremely specific and actionable
+
+Analyze this bill comprehensively and provide expert-level findings with specific dollar amounts and action items.`;
+
+          const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'gpt-4o',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are a expert medical bill reduction specialist with 20+ years of experience finding billing errors and negotiating substantial savings for patients. Provide specific, actionable analysis with exact dollar amounts and detailed action plans.'
+                },
+                {
+                  role: 'user',
+                  content: analysisPrompt
+                }
+              ],
+              max_tokens: 2000,
+              temperature: 0.3
+            })
+          });
+
+          const analysisResult = await analysisResponse.json();
+          analysisData.aiAnalysis = analysisResult.choices?.[0]?.message?.content || 'Analysis completed';
+        } catch (analysisError) {
+          console.error('Bill analysis error:', analysisError);
+          analysisData.aiAnalysis = 'Basic analysis completed. Advanced AI analysis temporarily unavailable.';
+        }
+      }
+
+      // Create a medical bill record in the database
+      const billAmount = extractBillAmount(billText);
+      const newBill = {
+        provider: extractProvider(billText),
+        totalAmount: billAmount.toString(),
+        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        status: 'pending' as const,
+        uploadedAt: new Date(),
+        originalText: billText,
+        aiAnalysis: analysisData.aiAnalysis || '',
+        fileName: file.originalname
+      };
+
+      const savedBill = await storage.createMedicalBill(userId, newBill);
+
+      res.json({
+        success: true,
+        bill: savedBill,
+        analysis: analysisData.aiAnalysis,
+        extractedText: billText.substring(0, 500) + '...', // First 500 chars for preview
+        message: `Bill uploaded and analyzed successfully. Found ${billAmount > 0 ? `$${billAmount}` : 'charges'} to review for potential savings.`
+      });
+
+    } catch (error) {
+      console.error('Error uploading bill:', error);
+      res.status(500).json({ message: 'Failed to upload and analyze bill. Please try again.' });
+    }
+  });
+
+  // Helper functions for bill analysis
+  function extractBillAmount(text: string): number {
+    const patterns = [
+      /total[:\s]*\$?([0-9,]+\.?[0-9]*)/i,
+      /amount due[:\s]*\$?([0-9,]+\.?[0-9]*)/i,
+      /balance[:\s]*\$?([0-9,]+\.?[0-9]*)/i,
+      /\$([0-9,]+\.?[0-9]*)/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = text.match(pattern);
+      if (match) {
+        const amount = parseFloat(match[1].replace(/,/g, ''));
+        if (amount > 0) return amount;
+      }
+    }
+    return 0;
+  }
+
+  function extractProvider(text: string): string {
+    const lines = text.split('\n');
+    for (let i = 0; i < Math.min(5, lines.length); i++) {
+      const line = lines[i].trim();
+      if (line.length > 5 && !line.includes('$') && !line.includes('Date') && !line.includes('Account')) {
+        return line;
+      }
+    }
+    return 'Healthcare Provider';
+  }
 
   // Medical Chatbot API - General medical and insurance Q&A
   app.post('/api/medical-chat', isAuthenticated, async (req: any, res) => {
