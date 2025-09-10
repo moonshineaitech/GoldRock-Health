@@ -642,7 +642,7 @@ export const syntheticPatients = pgTable("synthetic_patients", {
       symptoms: string[];
       negative: string[];
     }>;
-  }>().default({}),
+  }>(),
   
   // Physical Examination
   physicalExam: jsonb("physical_exam").$type<{
@@ -673,7 +673,7 @@ export const syntheticPatients = pgTable("synthetic_patients", {
       heent: Record<string, string>;
       psychiatric: Record<string, string>;
     };
-  }>().default({}),
+  }>(),
   
   // AI-Generated Complexity Data
   riskFactors: jsonb("risk_factors").$type<{
@@ -750,7 +750,7 @@ export const diagnosticSessions = pgTable("diagnostic_sessions", {
       longTerm: string; // months to years
       factorsAffectingOutcome: string[];
     };
-  }>().default({}),
+  }>(),
   
   // Educational Insights
   learningPoints: jsonb("learning_points").$type<{
@@ -758,7 +758,7 @@ export const diagnosticSessions = pgTable("diagnostic_sessions", {
     clinicalPearls: string[];
     commonMistakes: string[];
     literatureReferences: string[];
-  }>().default({}),
+  }>(),
   
   // Session Metrics
   timeElapsed: integer("time_elapsed").default(0), // seconds

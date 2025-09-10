@@ -27,8 +27,6 @@ import {
   Camera,
   Info,
   BarChart3,
-  Moon,
-  Sun,
   CheckCircle,
   Circle,
   DollarSign,
@@ -47,7 +45,8 @@ import {
   Sparkles,
   Settings,
   List,
-  Filter
+  Filter,
+  Star
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { MedicalBill } from "@shared/schema";
@@ -66,6 +65,7 @@ import { EnhancedProgressTracker } from "@/components/enhanced-progress-tracker"
 import { AdvancedErrorDetector } from "@/components/advanced-error-detector";
 import { ProfessionalWorkflowSuite } from "@/components/professional-workflow-suite";
 import { Link } from "wouter";
+import { SimplifiedIntakeForm, formatIntakeDataForChat, type SimplifiedIntakeData } from "@/components/SimplifiedIntakeForm";
 
 interface AIMessage {
   id: string;
@@ -105,6 +105,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   const { isSubscribed } = useSubscription();
   
   const coreWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'core');
+  const beginnerWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'beginner');
   const specialtyWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'specialty');
   const insuranceWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'insurance');
   const emergencyWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'emergency');
@@ -120,31 +121,31 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             <Brain className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Medical Bill AI</h1>
+            <h1 className="text-xl font-bold text-gray-900">Medical Bill AI</h1>
             <Badge className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs">
               <Shield className="h-3 w-3 mr-1" />
               Exceeds HIPAA Standards
             </Badge>
           </div>
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+        <p className="text-sm text-gray-600 max-w-md mx-auto">
           Professional-grade bill analysis and advocacy. Save $1K-$100K+ with AI-powered dispute templates.
         </p>
         <div className="flex items-center justify-center gap-4 text-xs">
           <div className="flex items-center gap-1">
             <Target className="h-3 w-3 text-emerald-600" />
-            <span className="text-gray-600 dark:text-gray-400">94% Success Rate</span>
+            <span className="text-gray-600">94% Success Rate</span>
           </div>
           <div className="flex items-center gap-1">
             <DollarSign className="h-3 w-3 text-emerald-600" />
-            <span className="text-gray-600 dark:text-gray-400">$50M+ Saved</span>
+            <span className="text-gray-600">$50M+ Saved</span>
           </div>
         </div>
       </div>
 
       {/* Core Workflows */}
       <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-emerald-600" />
           Essential Workflows
         </h3>
@@ -159,13 +160,47 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
         </div>
       </div>
 
+      {/* Beginner-Friendly Workflows */}
+      {beginnerWorkflows.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <Star className="h-4 w-4 text-yellow-600" />
+            Getting Started (Perfect for First-Time Users)
+          </h3>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-3">
+            <p className="text-xs text-yellow-800 text-center">
+              🎓 New to medical bill analysis? Start here! These beginner-friendly tools help you learn step-by-step.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-2">
+            {beginnerWorkflows.slice(0, 4).map((workflow) => (
+              <WorkflowListItem
+                key={workflow.id}
+                workflow={workflow}
+                onClick={() => onWorkflowSelect(workflow)}
+              />
+            ))}
+          </div>
+          {beginnerWorkflows.length > 4 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full text-yellow-700 border-yellow-200 hover:bg-yellow-50"
+              onClick={() => {}}
+            >
+              View All {beginnerWorkflows.length} Beginner Tools
+            </Button>
+          )}
+        </div>
+      )}
+
       {/* Quick Actions */}
       <div className="grid grid-cols-3 gap-2">
         <Button
           onClick={onStartChat}
           variant="outline"
           size="sm"
-          className="h-12 flex-col space-y-1 rounded-2xl border-gray-200 dark:border-gray-700"
+          className="h-12 flex-col space-y-1 rounded-2xl border-gray-200"
           data-testid="start-chat-button"
         >
           <MessageCircle className="h-4 w-4" />
@@ -175,7 +210,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <Button
             variant="outline"
             size="sm"
-            className="w-full h-12 flex-col space-y-1 rounded-2xl border-orange-200 dark:border-orange-700 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+            className="w-full h-12 flex-col space-y-1 rounded-2xl border-orange-200 text-orange-600 hover:bg-orange-50"
             data-testid="blitz-demo-button"
           >
             <Zap className="h-4 w-4" />
@@ -186,7 +221,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           onClick={() => {}}
           variant="outline"
           size="sm"
-          className="h-12 flex-col space-y-1 rounded-2xl border-gray-200 dark:border-gray-700"
+          className="h-12 flex-col space-y-1 rounded-2xl border-gray-200"
           data-testid="view-all-workflows"
         >
           <Plus className="h-4 w-4" />
@@ -258,11 +293,11 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       </div>
 
       {/* View All Workflows Button */}
-      <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div className="pt-4 border-t border-gray-200">
         <Button
           onClick={() => {}}
           variant="outline"
-          className="w-full h-12 rounded-2xl border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+          className="w-full h-12 rounded-2xl border-gray-200 text-gray-600 hover:text-emerald-600"
           data-testid="view-all-workflows-full"
         >
           <List className="h-4 w-4 mr-2" />
@@ -274,31 +309,102 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   );
 };
 
-// Workflow Card Component
+// Enhanced Workflow Card Component with interactions
 const WorkflowCard = ({ workflow, onClick }: {
   workflow: BillWorkflow;
   onClick: () => void;
 }) => {
   const { isSubscribed } = useSubscription();
+  const [isHovered, setIsHovered] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  
+  const handleClick = () => {
+    if (workflow.isPremium && !isSubscribed) {
+      setShowPreview(true);
+      return;
+    }
+    onClick();
+  };
   
   return (
-    <Button
-      onClick={onClick}
-      variant="outline"
-      className={`h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-200 relative overflow-hidden`}
-      data-testid={`workflow-${workflow.id}`}
-    >
-      {workflow.isPremium && !isSubscribed && (
-        <div className="absolute top-1 right-1">
-          <Crown className="h-3 w-3 text-orange-500" />
-        </div>
+    <>
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
+      >
+        <Button
+          onClick={handleClick}
+          variant="outline"
+          className={`h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
+            isHovered ? 'border-emerald-300 bg-emerald-50/50' : ''
+          }`}
+          data-testid={`workflow-${workflow.id}`}
+        >
+          {workflow.isPremium && !isSubscribed && (
+            <div className="absolute top-1 right-1">
+              <Crown className="h-3 w-3 text-orange-500" />
+            </div>
+          )}
+          <workflow.icon className={`h-5 w-5 ${workflow.color} ${isHovered ? 'scale-110' : ''} transition-transform`} />
+          <div className="text-center w-full">
+            <div className="text-xs font-semibold text-gray-900">{workflow.title}</div>
+            <div className="text-xs text-gray-600 truncate">{workflow.subtitle}</div>
+            {isHovered && (
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }}
+                className="text-xs text-emerald-600 font-medium mt-1"
+              >
+                {workflow.savingsPotential}
+              </motion.div>
+            )}
+          </div>
+        </Button>
+      </motion.div>
+      
+      {/* Premium Preview Modal */}
+      {showPreview && workflow.isPremium && !isSubscribed && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowPreview(false)}
+        >
+          <motion.div
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="text-center space-y-4">
+              <div className={`w-16 h-16 ${workflow.bgColor} rounded-2xl flex items-center justify-center mx-auto shadow-lg`}>
+                <workflow.icon className={`h-8 w-8 ${workflow.color}`} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-1">{workflow.title}</h3>
+                <p className="text-sm text-gray-600">{workflow.description}</p>
+              </div>
+              <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-4 border border-orange-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Crown className="h-4 w-4 text-orange-600" />
+                  <span className="text-sm font-semibold text-orange-800">Premium Feature</span>
+                </div>
+                <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
+                <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600">
+                  <Crown className="h-4 w-4 mr-2" />
+                  Upgrade to Premium
+                </Button>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setShowPreview(false)}>
+                Maybe Later
+              </Button>
+            </div>
+          </motion.div>
+        </motion.div>
       )}
-      <workflow.icon className={`h-5 w-5 ${workflow.color}`} />
-      <div className="text-center w-full">
-        <div className="text-xs font-semibold text-gray-900 dark:text-white">{workflow.title}</div>
-        <div className="text-xs text-gray-600 dark:text-gray-400 truncate">{workflow.subtitle}</div>
-      </div>
-    </Button>
+    </>
   );
 };
 
@@ -313,7 +419,7 @@ const WorkflowCategory = ({ title, icon: Icon, iconColor, workflows, onWorkflowS
 }) => {
   return (
     <div className="space-y-2">
-      <h4 className={`text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2`}>
+      <h4 className={`text-sm font-semibold text-gray-900 flex items-center gap-2`}>
         <Icon className={`h-4 w-4 ${iconColor}`} />
         {title}
       </h4>
@@ -330,37 +436,100 @@ const WorkflowCategory = ({ title, icon: Icon, iconColor, workflows, onWorkflowS
   );
 };
 
-// Workflow List Item Component  
+// Enhanced Workflow List Item Component
 const WorkflowListItem = ({ workflow, onClick }: {
   workflow: BillWorkflow;
   onClick: () => void;
 }) => {
   const { isSubscribed } = useSubscription();
+  const [showQuickPreview, setShowQuickPreview] = useState(false);
+  
+  const handleClick = () => {
+    if (workflow.isPremium && !isSubscribed) {
+      setShowQuickPreview(true);
+      return;
+    }
+    onClick();
+  };
   
   return (
-    <Button
-      onClick={onClick}
-      variant="ghost"
-      className="w-full h-auto p-3 justify-start text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-2xl"
-      data-testid={`workflow-list-${workflow.id}`}
-    >
-      <div className="flex items-center gap-3 w-full">
-        <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${workflow.bgColor}`}>
-          <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <div className="text-sm font-medium text-gray-900 dark:text-white">{workflow.title}</div>
-            {workflow.isPremium && !isSubscribed && (
-              <Crown className="h-3 w-3 text-orange-500" />
-            )}
+    <>
+      <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.98 }}>
+        <Button
+          onClick={handleClick}
+          variant="ghost"
+          className="w-full h-auto p-3 justify-start text-left hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 rounded-2xl transition-all duration-200 border border-transparent hover:border-emerald-200/50"
+          data-testid={`workflow-list-${workflow.id}`}
+        >
+          <div className="flex items-center gap-3 w-full">
+            <motion.div 
+              className={`w-8 h-8 rounded-xl flex items-center justify-center ${workflow.bgColor} shadow-sm`}
+              whileHover={{ scale: 1.1, rotate: 5 }}
+            >
+              <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
+            </motion.div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
+                {workflow.isPremium && !isSubscribed && (
+                  <Crown className="h-3 w-3 text-orange-500" />
+                )}
+                <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
+                  {workflow.successRate}
+                </Badge>
+              </div>
+              <div className="text-xs text-gray-500 mb-1">{workflow.subtitle}</div>
+              <div className="flex items-center gap-3 text-xs">
+                <div className="text-emerald-600 font-medium">{workflow.savingsPotential}</div>
+                <div className="text-gray-400">{workflow.estimatedTime}</div>
+              </div>
+            </div>
+            <ChevronDown className="h-4 w-4 text-gray-400 rotate-[-90deg] transition-transform group-hover:rotate-[-45deg]" />
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">{workflow.subtitle}</div>
-          <div className="text-xs text-emerald-600 dark:text-emerald-400">{workflow.savingsPotential}</div>
-        </div>
-        <ChevronDown className="h-4 w-4 text-gray-400 rotate-[-90deg]" />
-      </div>
-    </Button>
+        </Button>
+      </motion.div>
+      
+      {/* Quick Premium Preview */}
+      {showQuickPreview && workflow.isPremium && !isSubscribed && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowQuickPreview(false)}
+        >
+          <motion.div
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="text-center space-y-4">
+              <div className={`w-16 h-16 ${workflow.bgColor} rounded-2xl flex items-center justify-center mx-auto shadow-lg`}>
+                <workflow.icon className={`h-8 w-8 ${workflow.color}`} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-1">{workflow.title}</h3>
+                <p className="text-sm text-gray-600">{workflow.description}</p>
+              </div>
+              <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-4 border border-orange-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Crown className="h-4 w-4 text-orange-600" />
+                  <span className="text-sm font-semibold text-orange-800">Premium Feature</span>
+                </div>
+                <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
+                <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600">
+                  <Crown className="h-4 w-4 mr-2" />
+                  Upgrade Now
+                </Button>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setShowQuickPreview(false)}>
+                Maybe Later
+              </Button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </>
   );
 };
 
@@ -391,6 +560,7 @@ export default function BillAI() {
   const [selectedWorkflow, setSelectedWorkflow] = useState<BillWorkflow | null>(null);
   const [workflowIntakeData, setWorkflowIntakeData] = useState<Record<string, any>>({});
   const [showWorkflowSelection, setShowWorkflowSelection] = useState(true);
+  const [showSimplifiedIntake, setShowSimplifiedIntake] = useState(false);
   const [showAllWorkflows, setShowAllWorkflows] = useState(false);
   const [workflowFilter, setWorkflowFilter] = useState<string>('all');
   
@@ -664,12 +834,33 @@ export default function BillAI() {
     }
   };
 
+  // Simplified Intake Handlers
+  const handleSimplifiedIntakeSubmit = (data: SimplifiedIntakeData) => {
+    if (!selectedWorkflow) return;
+    
+    // Format the intake data for AI chat
+    const formattedMessage = formatIntakeDataForChat(selectedWorkflow, data);
+    
+    // Hide simplified intake and start conversation
+    setShowSimplifiedIntake(false);
+    setConversationStarted(true);
+    
+    // Send the formatted message to AI
+    sendMessage(formattedMessage);
+  };
+  
+  const handleSimplifiedIntakeBack = () => {
+    setShowSimplifiedIntake(false);
+    setShowWorkflowSelection(true);
+    setSelectedWorkflow(null);
+  };
+
   return (
     <MobileLayout title="Bill AI" showBottomNav={true}>
-      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50">
         
         {/* Enhanced Header with Navigation */}
-        <div className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200/30 dark:border-gray-700/30">
+        <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200/30">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center space-x-2">
               <Button
@@ -681,7 +872,7 @@ export default function BillAI() {
               >
                 <List className="h-4 w-4" />
               </Button>
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="text-lg font-semibold text-gray-900">
                 {selectedWorkflow ? selectedWorkflow.title : "Bill AI"}
               </div>
             </div>
@@ -691,7 +882,7 @@ export default function BillAI() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-9 h-9 p-0 rounded-xl text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                  className="w-9 h-9 p-0 rounded-xl text-orange-600 hover:bg-orange-50"
                   data-testid="header-blitz-demo"
                 >
                   <Zap className="h-4 w-4" />
@@ -712,28 +903,13 @@ export default function BillAI() {
 
         {/* Workflow Selection Panel */}
         {showWorkflowSelection && !selectedWorkflow && (
-          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
             <div className="p-4">
               <WorkflowSelectionPanel 
                 onWorkflowSelect={(workflow) => {
                   setSelectedWorkflow(workflow);
                   setShowWorkflowSelection(false);
-                  
-                  // Auto-start conversation with workflow if no intake needed
-                  if (workflow.intakeFields.length === 0) {
-                    sendMessage(`I want to use the ${workflow.title} workflow: ${workflow.description}`);
-                  } else {
-                    // Show intake form or start guided conversation
-                    const guideMessage = `I'm ready to help you with ${workflow.title}. ${workflow.description}\\n\\nTo provide the best assistance, I'll need some information about your bill. You can upload your bill or tell me about it.`;
-                    const aiMessage: AIMessage = {
-                      id: Date.now().toString() + "_guide",
-                      role: "assistant", 
-                      content: guideMessage,
-                      createdAt: new Date()
-                    };
-                    setLocalMessages(prev => [...prev, aiMessage]);
-                    setConversationStarted(true);
-                  }
+                  setShowSimplifiedIntake(true);
                 }}
                 onStartChat={() => {
                   setShowWorkflowSelection(false);
@@ -752,9 +928,20 @@ export default function BillAI() {
           </div>
         )}
 
+        {/* Simplified Intake Form */}
+        {showSimplifiedIntake && selectedWorkflow && (
+          <div className="flex-1 overflow-y-auto bg-gray-50/30 p-4">
+            <SimplifiedIntakeForm 
+              workflow={selectedWorkflow}
+              onSubmit={handleSimplifiedIntakeSubmit}
+              onBack={handleSimplifiedIntakeBack}
+            />
+          </div>
+        )}
+
         {/* Savings Calculator Panel */}
         {showSavingsCalculator && (
-          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
             <div className="p-3">
               <SavingsCalculator 
                 billAmount={intakeState.amount}
@@ -768,7 +955,7 @@ export default function BillAI() {
 
         {/* Enhanced Progress Tracker */}
         {showEnhancedTracker && conversationStarted && (
-          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
             <div className="p-3">
               <EnhancedProgressTracker 
                 intakeState={intakeState}
@@ -788,15 +975,42 @@ export default function BillAI() {
         )}
 
         {/* Chat Messages Area - iOS Style */}
-        <div className="flex-1 overflow-y-auto bg-gray-50/30 dark:bg-gray-900/30" style={{ padding: '1rem 1rem 0 1rem' }}>
+        <div className="flex-1 overflow-y-auto bg-gray-50/30" style={{ padding: '1rem 1rem 0 1rem' }}>
           <div className="space-y-4 pb-4">
             
-            {/* Welcome State */}
+            {/* Welcome State with Enhanced Call-to-Action */}
             {localMessages.length === 0 && !conversationStarted && showWorkflowSelection && (
               <div className="text-center py-8">
-                <div className="text-gray-500 dark:text-gray-400 text-sm">
-                  Select a workflow above or start a conversation
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-4"
+                >
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
+                    <Brain className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to Save on Your Medical Bills?</h3>
+                    <p className="text-sm text-gray-600 mb-4 max-w-md mx-auto">
+                      Our AI has helped patients save over $50M in billing errors. Select a workflow above or start chatting!
+                    </p>
+                    <div className="flex items-center justify-center gap-6 text-xs">
+                      <div className="flex items-center gap-1">
+                        <Target className="h-3 w-3 text-emerald-600" />
+                        <span className="text-gray-600">94% Success Rate</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="h-3 w-3 text-emerald-600" />
+                        <span className="text-gray-600">$12K Avg Savings</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Shield className="h-3 w-3 text-emerald-600" />
+                        <span className="text-gray-600">HIPAA Secure</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
             )}
 
@@ -812,7 +1026,7 @@ export default function BillAI() {
                   onClick={() => fileInputRef.current?.click()}
                   variant="outline"
                   size="sm"
-                  className="h-10 px-4 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200/50 dark:border-gray-700/50 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-700 shadow-sm"
+                  className="h-10 px-4 rounded-2xl bg-white/80 backdrop-blur-sm border-gray-200/50 text-gray-600 hover:text-emerald-600 hover:border-emerald-200 shadow-sm"
                   data-testid="quick-upload-button"
                 >
                   <Camera className="h-4 w-4 mr-2" />
@@ -833,7 +1047,7 @@ export default function BillAI() {
                 <div className={`max-w-[80%] group ${
                   message.role === "user" 
                     ? "bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 text-white rounded-3xl rounded-br-lg shadow-lg shadow-emerald-500/25 dark:shadow-emerald-600/20" 
-                    : "bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 text-gray-900 dark:text-gray-100 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30 dark:shadow-gray-900/30"
+                    : "bg-white/95 backdrop-blur-sm border border-gray-200/50 text-gray-900 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30"
                 } px-5 py-4 relative`}>
                   {message.role === "assistant" && (
                     <div className="flex items-center space-x-2.5 mb-3">
@@ -846,7 +1060,7 @@ export default function BillAI() {
                   <p className={`text-[15px] leading-relaxed whitespace-pre-wrap ${
                     message.role === "user" 
                       ? "text-white font-medium" 
-                      : "text-gray-900 dark:text-gray-100"
+                      : "text-gray-900"
                   }`}>
                     {message.content}
                   </p>
@@ -854,7 +1068,7 @@ export default function BillAI() {
                   <div className={`text-xs mt-3 flex items-center justify-between ${
                     message.role === "user" 
                       ? "text-emerald-100/80" 
-                      : "text-gray-500 dark:text-gray-400"
+                      : "text-gray-500"
                   }`}>
                     <Button
                       onClick={() => {
@@ -895,7 +1109,7 @@ export default function BillAI() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="flex justify-start mb-4"
               >
-                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 text-gray-900 dark:text-gray-100 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30 dark:shadow-gray-900/30 px-5 py-4 max-w-[80%]">
+                <div className="bg-white/95 backdrop-blur-sm border border-gray-200/50 text-gray-900 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30 px-5 py-4 max-w-[80%]">
                   <div className="flex items-center space-x-2.5 mb-3">
                     <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-sm">
                       <Bot className="h-4 w-4 text-white" />
@@ -920,7 +1134,7 @@ export default function BillAI() {
                         transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
                       />
                     </div>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Analyzing your bill details...</span>
+                    <span className="text-sm text-gray-600">Analyzing your bill details...</span>
                   </div>
                 </div>
               </motion.div>
@@ -930,16 +1144,16 @@ export default function BillAI() {
         </div>
 
         {/* iOS-Style Input Composer */}
-        <div className="sticky bottom-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-gray-200/30 dark:border-gray-700/30 p-4 safe-area-inset-bottom">
+        <div className="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-gray-200/30 p-4 safe-area-inset-bottom">
           <div className="flex items-center space-x-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => fileInputRef.current?.click()}
-              className="w-11 h-11 p-0 rounded-2xl bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/80 dark:hover:bg-gray-700/80 border-0"
+              className="w-11 h-11 p-0 rounded-2xl bg-gray-100/80 hover:bg-gray-200/80 dark:hover:bg-gray-700/80 border-0"
               data-testid="attach-file-button"
             >
-              <Paperclip className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+              <Paperclip className="h-5 w-5 text-gray-600" />
             </Button>
             
             <div className="flex-1 relative">
@@ -948,7 +1162,7 @@ export default function BillAI() {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Tell me about your bill..."
-                className="h-11 pr-12 rounded-2xl border-gray-200/50 dark:border-gray-700/50 bg-gray-50/80 dark:bg-gray-800/80 focus:border-emerald-500/50 dark:focus:border-emerald-400/50 focus:bg-white dark:focus:bg-gray-800 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base"
+                className="h-11 pr-12 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 dark:focus:border-emerald-400/50 focus:bg-white dark:focus:bg-gray-800 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base"
                 disabled={isTyping}
                 data-testid="message-input"
               />

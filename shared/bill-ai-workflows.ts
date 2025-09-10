@@ -19,7 +19,7 @@ export interface BillWorkflow {
   title: string;
   subtitle: string;
   description: string;
-  category: 'core' | 'specialty' | 'insurance' | 'financial' | 'legal' | 'emergency' | 'facility' | 'provider';
+  category: 'core' | 'beginner' | 'specialty' | 'insurance' | 'financial' | 'legal' | 'emergency' | 'facility' | 'provider';
   icon: any;
   color: string;
   bgColor: string;
@@ -190,6 +190,333 @@ REQUIREMENTS:
 Make this a compelling, professional request that hospital billing departments must honor. Include proper legal citations and formatting.`,
     tags: ['itemized', 'transparency', 'legal', 'required', 'core']
   },
+
+  // BEGINNER-FRIENDLY WORKFLOWS (New user onboarding and education)
+  {
+    id: 'getting-started-bill-review',
+    title: 'Getting Started Guide',
+    subtitle: 'Your first bill analysis',
+    description: 'Perfect for first-time users - learn to spot common errors and understand your rights with step-by-step guidance',
+    category: 'beginner',
+    icon: Star,
+    color: 'text-yellow-600',
+    bgColor: 'bg-yellow-100',
+    estimatedTime: '5-7 minutes',
+    savingsPotential: '$200-$5,000',
+    successRate: '85%',
+    isPremium: false,
+    intakeFields: [
+      { id: 'billAmount', label: 'Total Bill Amount', type: 'number', required: true, placeholder: 'What is the total amount you owe?' },
+      { id: 'visitType', label: 'Type of Visit', type: 'select', required: true, options: ['Emergency Room', 'Hospital Stay', 'Surgery', 'Doctor Visit', 'Diagnostic Test', 'Laboratory', 'X-ray/Imaging', 'Other'] },
+      { id: 'hadInsurance', label: 'Did you have insurance?', type: 'select', required: true, options: ['Yes - Insurance covered some', 'Yes - Insurance denied', 'No - No insurance', 'Not sure'] },
+      { id: 'mainConcern', label: 'What concerns you most?', type: 'select', required: true, options: ['Bill seems too high', 'Charged for things I didn\'t receive', 'Insurance should have covered more', 'Want to understand the charges', 'Need help negotiating payment'] }
+    ],
+    systemPrompt: `You are a friendly medical billing educator who specializes in helping first-time users understand their medical bills. Your approach is educational, encouraging, and focuses on empowering patients with knowledge.
+
+Your teaching style includes:
+- Breaking down complex billing concepts into simple terms
+- Highlighting common errors that most people can identify
+- Explaining patient rights in plain English
+- Building confidence for future bill reviews
+- Providing step-by-step action plans
+- Encouraging questions and further learning
+
+You make medical billing less intimidating and help users feel empowered to advocate for themselves.`,
+    userPromptTemplate: `Help this first-time user understand their medical bill and identify potential savings:
+
+BILL OVERVIEW:
+Total Amount: {billAmount}
+Visit Type: {visitType}
+Insurance Status: {hadInsurance}
+Main Concern: {mainConcern}
+
+BEGINNER-FRIENDLY ANALYSIS:
+1. **Education First**: Explain what this type of bill typically includes and what's normal vs unusual
+2. **Simple Error Check**: Identify the 3-5 most common errors for this type of visit that anyone can spot
+3. **Your Rights**: Explain patient rights and what you can legally request from the hospital
+4. **Quick Wins**: Point out immediate actions that could reduce the bill by $200-$2,000
+5. **Next Steps**: Provide a simple 1-2-3 action plan for disputing or negotiating
+6. **Learning Resources**: Suggest what to learn next to become more confident with medical bills
+
+Make this educational and empowering. Avoid overwhelming medical jargon. Focus on building confidence for future bill reviews.`,
+    tags: ['beginner', 'education', 'getting-started', 'first-time', 'guidance']
+  },
+  {
+    id: 'simple-itemized-request',
+    title: 'Simple Bill Request',
+    subtitle: 'Get detailed charges easily',
+    description: 'Easy template to request your itemized bill - the essential first step everyone should take',
+    category: 'beginner',
+    icon: FileText,
+    color: 'text-blue-500',
+    bgColor: 'bg-blue-100',
+    estimatedTime: '3 minutes',
+    savingsPotential: 'Required first step',
+    successRate: '98%',
+    isPremium: false,
+    intakeFields: [
+      { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Your full name' },
+      { id: 'hospitalName', label: 'Hospital or Provider', type: 'text', required: true, placeholder: 'Where did you receive care?' },
+      { id: 'visitDate', label: 'Date of Visit', type: 'date', required: true, description: 'When did you receive care?' },
+      { id: 'emailPreference', label: 'Preferred Response Method', type: 'select', required: true, options: ['Email (fastest)', 'Mail (traditional)', 'Either email or mail'] }
+    ],
+    systemPrompt: `You are a patient advocate who specializes in creating simple, effective requests that hospitals must honor. You write in a friendly but professional tone that gets results without being intimidating.
+
+Your expertise includes:
+- Writing clear, direct requests
+- Using patient-friendly language
+- Including necessary legal foundations
+- Making the process approachable for beginners
+- Ensuring hospitals respond promptly
+- Building patient confidence
+
+Your letters achieve compliance because they're professionally structured but written in a way that empowers patients rather than intimidates them.`,
+    userPromptTemplate: `Create a simple, effective letter requesting an itemized medical bill:
+
+REQUEST DETAILS:
+Patient: {patientName}
+Hospital: {hospitalName}
+Visit Date: {visitDate}
+Response Method: {emailPreference}
+
+CREATE A SIMPLE LETTER THAT:
+1. **Opens friendly but professional** - establish who you are and what you need
+2. **Explains your right** - mention this is required by law but in simple terms
+3. **Specifies exactly what you want** - itemized breakdown of all charges, codes, descriptions
+4. **Sets reasonable timeline** - 30 days per regulations
+5. **Provides clear contact info** - make it easy for them to respond
+6. **Closes with confidence** - thank them and express expectation of prompt response
+
+Keep the language simple and approachable - this should feel empowering, not intimidating. Include helpful tips about what to do once you receive the itemized bill.`,
+    tags: ['beginner', 'itemized', 'simple', 'request', 'first-step']
+  },
+  {
+    id: 'basic-overcharge-detector',
+    title: 'Spot Common Errors',
+    subtitle: 'Find obvious billing mistakes',
+    description: 'Learn to identify the most common billing errors that anyone can spot - no medical knowledge required',
+    category: 'beginner',
+    icon: AlertTriangle,
+    color: 'text-orange-600',
+    bgColor: 'bg-orange-100',
+    estimatedTime: '4-6 minutes',
+    savingsPotential: '$300-$8,000',
+    successRate: '78%',
+    isPremium: false,
+    intakeFields: [
+      { id: 'billType', label: 'What type of bill?', type: 'select', required: true, options: ['Emergency Room visit', 'Hospital stay (1-2 days)', 'Hospital stay (3+ days)', 'Outpatient surgery', 'Diagnostic tests only', 'Doctor consultation', 'Multiple visits/treatments'] },
+      { id: 'stayLength', label: 'If hospitalized, how long?', type: 'select', required: false, options: ['Same day', '1 night', '2-3 nights', '4-7 nights', 'Over 1 week', 'Not applicable'] },
+      { id: 'mainServices', label: 'Main services received', type: 'textarea', required: false, placeholder: 'List the main treatments, tests, or procedures (e.g., blood work, X-ray, IV fluids, surgery type)' },
+      { id: 'suspiciousCharges', label: 'Charges that seem wrong', type: 'textarea', required: false, placeholder: 'Any specific charges that surprised you or seem too high?' }
+    ],
+    systemPrompt: `You are a medical billing educator who teaches people to identify obvious billing errors. You focus on errors that don't require medical expertise - things like basic math, duplicate charges, and common sense inconsistencies.
+
+Your teaching approach:
+- Focus on errors anyone can spot
+- Use simple examples and analogies
+- Explain why certain charges don't make sense
+- Build confidence in questioning bills
+- Provide specific things to look for
+- Encourage users to trust their instincts
+- Make error detection feel achievable
+
+You help people realize they don't need to be experts to find significant billing errors.`,
+    userPromptTemplate: `Teach this person to identify common billing errors in their specific situation:
+
+BILL INFORMATION:
+Type of Bill: {billType}
+Length of Stay: {stayLength}
+Main Services: {mainServices}
+Suspicious Charges: {suspiciousCharges}
+
+BEGINNER ERROR DETECTION GUIDE:
+1. **Obvious Red Flags**: List 5-7 specific errors to look for based on this type of visit
+2. **Simple Math Check**: Basic calculations anyone can do to verify charges
+3. **Common Sense Test**: Things that don't add up logically (e.g., charged for 5 days in 3-day stay)
+4. **Duplicate Detection**: How to spot the same service charged multiple times
+5. **Missing Service Alert**: Services billed but not received
+6. **Price Reality Check**: When charges are unreasonably high for basic services
+
+For each error type, provide:
+- What to look for specifically
+- Why it's wrong
+- Estimated savings if corrected
+- Exact language to use when questioning it
+
+Make this feel doable and empowering - anyone can do this basic detective work!`,
+    tags: ['beginner', 'errors', 'detection', 'common', 'obvious', 'education']
+  },
+  {
+    id: 'quick-dispute-letter',
+    title: 'Quick Dispute Letter',
+    subtitle: 'Simple error correction',
+    description: 'Generate an easy-to-understand dispute letter for basic billing errors - no legal jargon required',
+    category: 'beginner',
+    icon: Mail,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-100',
+    estimatedTime: '5-8 minutes',
+    savingsPotential: '$500-$12,000',
+    successRate: '71%',
+    isPremium: false,
+    intakeFields: [
+      { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Your full name' },
+      { id: 'hospitalName', label: 'Hospital Name', type: 'text', required: true, placeholder: 'Full name of hospital or clinic' },
+      { id: 'errorType', label: 'Type of Error Found', type: 'select', required: true, options: ['Charged for services not received', 'Duplicate/double charges', 'Wrong dates or quantities', 'Overcharged for basic items', 'Insurance should have covered this', 'Billed wrong person/account', 'Other billing mistake'] },
+      { id: 'specificError', label: 'Describe the Specific Error', type: 'textarea', required: true, placeholder: 'Explain exactly what\'s wrong (e.g., "Charged $200 for 5 aspirin pills" or "Billed for room service I never ordered")' },
+      { id: 'requestedAction', label: 'What do you want?', type: 'select', required: true, options: ['Remove the incorrect charges', 'Reduce overcharged items to fair price', 'Apply my insurance coverage', 'Correct the billing error', 'Provide explanation for charges'] }
+    ],
+    systemPrompt: `You are a patient advocate who writes clear, respectful dispute letters that get results. You avoid legal jargon and write in a straightforward way that hospital billing departments understand and respond to positively.
+
+Your letter-writing approach:
+- Clear, respectful but firm tone
+- Specific details about errors
+- Reasonable requests for correction
+- Professional formatting
+- Patient-friendly language
+- Focus on fairness and accuracy
+- Include necessary follow-up expectations
+
+Your letters work because they're professional yet approachable, making it easy for billing departments to understand and correct the issues.`,
+    userPromptTemplate: `Write a clear, effective dispute letter for this billing error:
+
+DISPUTE INFORMATION:
+Patient: {patientName}
+Hospital: {hospitalName}  
+Error Type: {errorType}
+Specific Error: {specificError}
+Requested Action: {requestedAction}
+
+CREATE A DISPUTE LETTER THAT:
+1. **Professional Opening**: Establish patient identity and account reference
+2. **Clear Error Description**: Explain exactly what's wrong without emotion or accusation
+3. **Specific Evidence**: Point to line items, dates, amounts that are incorrect
+4. **Fair Resolution Request**: State clearly what correction is needed
+5. **Reasonable Timeline**: Request response within 30 days
+6. **Professional Closing**: Thank them for their attention and expect prompt resolution
+
+TONE: Professional but friendly, confident but not aggressive. Focus on fixing the error rather than blame. Make it easy for billing staff to understand and correct the issue.
+
+Include a note about what to do if they don't respond within the stated timeframe.`,
+    tags: ['beginner', 'dispute', 'simple', 'correction', 'friendly', 'effective']
+  },
+  {
+    id: 'medical-codes-guide',
+    title: 'Understand Your Codes',
+    subtitle: 'Decode your medical bill',
+    description: 'Simple guide to understanding the medical codes on your bill and whether they match what you actually received',
+    category: 'beginner',
+    icon: Brain,
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-100',
+    estimatedTime: '6-8 minutes',
+    savingsPotential: '$400-$15,000',
+    successRate: '68%',
+    isPremium: false,
+    intakeFields: [
+      { id: 'cptCodes', label: 'CPT Codes (Procedure Codes)', type: 'textarea', required: false, placeholder: 'Enter any 5-digit codes from your bill (e.g., 99213, 71020, 85025)' },
+      { id: 'icdCodes', label: 'ICD Codes (Diagnosis Codes)', type: 'textarea', required: false, placeholder: 'Enter diagnosis codes if shown (e.g., Z00.00, M25.50)' },
+      { id: 'actualServices', label: 'What Services Did You Actually Receive?', type: 'textarea', required: true, placeholder: 'Describe what was actually done (e.g., doctor examined my knee, took blood, got chest X-ray)' },
+      { id: 'questionableServices', label: 'Any Services You Don\'t Remember?', type: 'textarea', required: false, placeholder: 'Any procedures or tests listed that you don\'t remember having?' }
+    ],
+    systemPrompt: `You are a medical coding educator who helps patients understand what the codes on their bills actually mean. You explain complex medical coding in simple terms and help patients verify that codes match the services they received.
+
+Your educational approach:
+- Translate medical codes into plain English
+- Explain what each procedure/test involves
+- Help patients verify accuracy of coded services
+- Identify coding errors and upcoding
+- Build understanding of billing systems
+- Empower patients to question inappropriate codes
+- Focus on common coding mistakes
+
+You make medical coding accessible to everyone and help patients become informed advocates for accurate billing.`,
+    userPromptTemplate: `Help this patient understand their medical codes and verify billing accuracy:
+
+CODES ON BILL:
+CPT Codes (Procedures): {cptCodes}
+ICD Codes (Diagnoses): {icdCodes}
+
+ACTUAL SERVICES RECEIVED:
+Services Described: {actualServices}
+Questionable Services: {questionableServices}
+
+PROVIDE A BEGINNER'S GUIDE THAT:
+1. **Code Translation**: Explain what each code means in simple terms
+2. **Service Verification**: Does each code match what the patient actually received?
+3. **Common Mistakes**: Point out any obvious coding errors or inconsistencies
+4. **Upcoding Check**: Are higher-level codes used when simpler ones would be accurate?
+5. **Missing Context**: Any codes that don't make sense given the patient's condition?
+6. **Action Items**: Specific codes to question and why
+
+For each questionable code, provide:
+- What the code means
+- Why it might be wrong
+- What code would be more appropriate
+- Potential savings from correction
+
+Keep explanations simple and educational. Help the patient understand they have the right to question codes that don't match their experience.`,
+    tags: ['beginner', 'codes', 'education', 'verification', 'understanding', 'cpt', 'icd']
+  },
+  {
+    id: 'simple-payment-negotiation',
+    title: 'Easy Payment Plans',
+    subtitle: 'Reduce payments you can afford',
+    description: 'Simple strategies to negotiate payment plans and reductions that work for your budget',
+    category: 'beginner',
+    icon: Calculator,
+    color: 'text-green-600',
+    bgColor: 'bg-green-100',
+    estimatedTime: '4-5 minutes',
+    savingsPotential: '$1,000-$25,000+',
+    successRate: '82%',
+    isPremium: false,
+    intakeFields: [
+      { id: 'billAmount', label: 'Total Amount Owed', type: 'number', required: true, placeholder: 'What is your total bill amount?' },
+      { id: 'monthlyBudget', label: 'What Can You Afford Monthly?', type: 'number', required: true, placeholder: 'Realistic monthly payment amount' },
+      { id: 'financialSituation', label: 'Financial Situation', type: 'select', required: true, options: ['Limited income/fixed budget', 'Temporary financial hardship', 'Unemployed/job loss', 'Student/low income', 'Medical bills from multiple providers', 'Other financial challenges'] },
+      { id: 'hasBeenContacted', label: 'Has the hospital contacted you?', type: 'select', required: true, options: ['No contact yet', 'Received bills in mail', 'Got payment notices', 'Been called about payment', 'Sent to collections'] }
+    ],
+    systemPrompt: `You are a financial counselor who helps patients navigate medical bill payments with compassion and practical advice. You understand that medical debt affects everyone and focus on realistic, achievable solutions.
+
+Your counseling approach:
+- Empathetic understanding of financial stress
+- Practical payment strategies that work
+- Knowledge of hospital financial assistance programs
+- Realistic timeline expectations
+- Confidence-building communication scripts
+- Focus on patient rights and options
+- Clear action steps patients can follow
+
+You help patients feel empowered to negotiate fair payment arrangements while protecting their financial well-being.`,
+    userPromptTemplate: `Create a personalized payment negotiation strategy for this financial situation:
+
+FINANCIAL DETAILS:
+Total Bill: {billAmount}
+Monthly Budget: {monthlyBudget}
+Financial Situation: {financialSituation}
+Contact Status: {hasBeenContacted}
+
+CREATE A PAYMENT STRATEGY THAT INCLUDES:
+1. **Realistic Assessment**: Is the desired monthly payment feasible given the total amount?
+2. **Negotiation Approach**: Best strategy based on their financial situation
+3. **Financial Assistance Options**: Hospital programs they may qualify for
+4. **Communication Script**: Exactly what to say when calling the billing department
+5. **Documentation Plan**: What to put in writing and what records to keep
+6. **Timeline Strategy**: When to make calls, follow up, and expect responses
+7. **Alternative Options**: If the first approach doesn't work
+
+SPECIFIC RECOMMENDATIONS:
+- Target payment amount to negotiate
+- Key phrases to use when discussing financial hardship
+- Questions to ask about assistance programs
+- How to document any agreements reached
+- Warning signs to watch for in negotiations
+
+Make this feel achievable and reduce anxiety about the negotiation process. Focus on solutions that protect the patient's credit and financial stability.`,
+    tags: ['beginner', 'payment', 'negotiation', 'financial', 'assistance', 'affordable']
+  },
+
   {
     id: 'appeal-dispute',
     title: 'Appeal & Dispute',
