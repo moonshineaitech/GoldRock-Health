@@ -1825,8 +1825,8 @@ Now let me analyze their message and provide expert guidance to advance their bi
           </motion.div>
         </div>
 
-        {/* Dark Mode Toggle */}
-        <div className="fixed top-4 right-4">
+        {/* Dark Mode Toggle - Mobile Optimized */}
+        <div className="fixed top-4 right-4 z-50 safe-area-inset-top">
           <Button
             variant="ghost"
             size="sm"
@@ -1835,13 +1835,13 @@ Now let me analyze their message and provide expert guidance to advance their bi
               localStorage.setItem('billai-dark-mode', (!isDarkMode).toString());
               document.documentElement.classList.toggle('dark');
             }}
-            className="w-10 h-10 p-0 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+            className="w-11 h-11 p-0 rounded-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-gray-200/50 dark:border-gray-700/50 shadow-lg touch-target"
             data-testid="theme-toggle"
           >
             {isDarkMode ? (
-              <Sun className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              <Sun className="h-5 w-5 text-gray-600 dark:text-gray-400" />
             ) : (
-              <Moon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              <Moon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
             )}
           </Button>
         </div>

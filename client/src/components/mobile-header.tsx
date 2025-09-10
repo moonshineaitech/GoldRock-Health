@@ -88,9 +88,11 @@ export function NavigationDropdown() {
             
             {/* Menu */}
             <motion.div
-              className="absolute left-0 top-full mt-3 w-64 backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
+              className="absolute left-0 top-full mt-3 w-72 sm:w-80 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)'
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+                left: 'max(-1rem, calc(-100vw + 100% + 2rem))',
+                right: 'auto'
               }}
               initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
@@ -361,9 +363,11 @@ export function UserAvatarDropdown() {
             
             {/* Menu */}
             <motion.div
-              className="absolute right-0 top-full mt-3 w-52 backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
+              className="absolute right-0 top-full mt-3 w-56 sm:w-64 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)'
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+                right: 'max(-1rem, calc(-100vw + 100% + 2rem))',
+                left: 'auto'
               }}
               initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}

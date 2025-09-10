@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { elevenLabsService } from "./services/elevenlabs";
@@ -19,7 +20,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-08-27.basil",
+  apiVersion: "2024-09-30.acacia",
 });
 
 // Store Stripe price IDs
@@ -216,22 +217,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
           price: selectedPriceId,
         }],
         payment_behavior: 'default_incomplete',
+        payment_settings: {
+          save_default_payment_method: 'on_subscription',
+        },
         expand: ['latest_invoice.payment_intent'],
       });
 
-      // Update user with subscription info
+      // Store subscription ID but don't mark as active until payment succeeds
       await storage.upsertUser({
         ...user,
         stripeCustomerId: customerId,
         stripeSubscriptionId: subscription.id,
-        subscriptionStatus: 'active',
+        subscriptionStatus: 'incomplete',
         subscriptionPlan: planType || 'monthly',
       });
 
       const invoice = subscription.latest_invoice as any;
+      const paymentIntent = invoice?.payment_intent;
+      
+      console.log('Subscription created:', {
+        subscriptionId: subscription.id,
+        invoiceId: invoice?.id,
+        paymentIntentId: paymentIntent?.id,
+        hasClientSecret: !!paymentIntent?.client_secret
+      });
+
+      if (!paymentIntent?.client_secret) {
+        console.error('No payment intent or client secret found. Invoice status:', invoice?.status);
+        return res.status(500).json({ 
+          message: 'Failed to create payment intent for subscription',
+          debug: {
+            invoiceStatus: invoice?.status,
+            paymentIntentStatus: paymentIntent?.status
+          }
+        });
+      }
+
       res.json({
         subscriptionId: subscription.id,
-        clientSecret: invoice?.payment_intent?.client_secret,
+        clientSecret: paymentIntent.client_secret,
       });
     } catch (error: any) {
       console.error('Error creating subscription:', error);
@@ -260,6 +284,114 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error checking subscription status:', error);
       res.status(500).json({ message: 'Failed to check subscription status' });
+    }
+  });
+
+  // Stripe webhook endpoint - needs raw body for signature verification
+  app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    
+    if (!process.env.STRIPE_WEBHOOK_SECRET) {
+      console.error('Missing STRIPE_WEBHOOK_SECRET environment variable');
+      return res.status(400).send('Webhook secret not configured');
+    }
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig as string, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err: any) {
+      console.error('Webhook signature verification failed:', err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    console.log('Received Stripe webhook:', event.type);
+
+    try {
+      switch (event.type) {
+        case 'invoice.payment_succeeded': {
+          const invoice = event.data.object as any;
+          if (invoice.subscription) {
+            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
+            
+            // Find user by stripe customer ID
+            const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
+            
+            if (user) {
+              console.log(`Payment succeeded for user ${user.id}, activating subscription`);
+              await storage.upsertUser({
+                ...user,
+                subscriptionStatus: 'active',
+                subscriptionEndsAt: new Date(subscription.current_period_end * 1000).toISOString()
+              });
+            }
+          }
+          break;
+        }
+
+        case 'customer.subscription.updated': {
+          const subscription = event.data.object as any;
+          
+          // Find user by stripe customer ID
+          const users = await storage.getAllUsers();
+          const user = users.find(u => u.stripeCustomerId === subscription.customer);
+          
+          if (user) {
+            console.log(`Subscription updated for user ${user.id}, status: ${subscription.status}`);
+            await storage.upsertUser({
+              ...user,
+              subscriptionStatus: subscription.status === 'active' ? 'active' : 'inactive',
+              subscriptionEndsAt: new Date(subscription.current_period_end * 1000).toISOString()
+            });
+          }
+          break;
+        }
+
+        case 'customer.subscription.deleted': {
+          const subscription = event.data.object as any;
+          
+          // Find user by stripe customer ID
+          const users = await storage.getAllUsers();
+          const user = users.find(u => u.stripeCustomerId === subscription.customer);
+          
+          if (user) {
+            console.log(`Subscription cancelled for user ${user.id}`);
+            await storage.upsertUser({
+              ...user,
+              subscriptionStatus: 'cancelled',
+              subscriptionEndsAt: new Date(subscription.current_period_end * 1000).toISOString()
+            });
+          }
+          break;
+        }
+
+        case 'invoice.payment_failed': {
+          const invoice = event.data.object as any;
+          if (invoice.subscription) {
+            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
+            
+            // Find user by stripe customer ID
+            const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
+            
+            if (user) {
+              console.log(`Payment failed for user ${user.id}, marking subscription as past_due`);
+              await storage.upsertUser({
+                ...user,
+                subscriptionStatus: 'past_due'
+              });
+            }
+          }
+          break;
+        }
+
+        default:
+          console.log(`Unhandled webhook event type: ${event.type}`);
+      }
+
+      res.json({ received: true });
+    } catch (error) {
+      console.error('Error processing webhook:', error);
+      res.status(500).json({ error: 'Webhook processing failed' });
     }
   });
 

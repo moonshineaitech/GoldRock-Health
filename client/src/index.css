@@ -649,6 +649,52 @@ body {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+/* Mobile-first form inputs */
+.mobile-input {
+  font-size: 16px !important; /* Prevents iOS zoom on focus */
+  padding: 12px 16px;
+  min-height: 48px;
+  border-radius: 12px;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: all 0.2s ease;
+}
+
+/* Mobile-first buttons */
+.mobile-button {
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: all 0.2s ease;
+}
+
+/* Mobile form spacing */
+.mobile-form-spacing {
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .mobile-form-spacing {
+    gap: 1.5rem;
+  }
+  
+  .mobile-input {
+    font-size: 14px !important;
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+  
+  .mobile-button {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
 /* Mobile-first grid */
 .mobile-grid {
   display: grid;
