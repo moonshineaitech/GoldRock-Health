@@ -272,7 +272,7 @@ export default function Landing() {
               desc: "Dynamic case generation", 
               color: "blue", 
               delay: 2.0,
-              href: "/synthetic-patient-diagnostics"
+              href: "/ai-generator"
             },
             { 
               icon: BookOpen, 
@@ -280,7 +280,7 @@ export default function Landing() {
               desc: "Interactive diagnosis training", 
               color: "purple", 
               delay: 2.1,
-              href: "/synthetic-patient-diagnostics"
+              href: "/training"
             }
           ].map((feature, index) => {
             const IconComponent = feature.icon;
@@ -366,11 +366,11 @@ export default function Landing() {
           {[
             { 
               icon: Stethoscope, 
-              title: "Synthetic Patient Diagnostics", 
-              desc: "AI-generated patient profiles with interactive quiz cycles & real-time feedback", 
+              title: "AI Case Generator", 
+              desc: "Generate medical cases with AI for diagnostic training and practice", 
               color: "purple", 
               delay: 2.2,
-              href: "/synthetic-patient-diagnostics"
+              href: "/ai-generator"
             }
           ].map((module, index) => {
             const IconComponent = module.icon;
