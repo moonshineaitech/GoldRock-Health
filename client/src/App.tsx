@@ -22,6 +22,7 @@ import BillReductionGuide from "@/pages/bill-reduction-guide";
 import PortalAccessGuide from "@/pages/portal-access-guide";
 import BillBestPractices from "@/pages/bill-best-practices";
 import IndustryInsights from "@/pages/industry-insights";
+import BlitzDemo from "@/pages/blitz-demo";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -67,6 +68,7 @@ function Router() {
       <Route path="/portal-access-guide" component={PortalAccessGuide} />
       <Route path="/bill-best-practices" component={BillBestPractices} />
       <Route path="/industry-insights" component={IndustryInsights} />
+      <Route path="/blitz-demo" component={BlitzDemo} />
       <Route component={NotFound} />
     </Switch>
   );
