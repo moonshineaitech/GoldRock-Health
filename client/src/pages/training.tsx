@@ -52,7 +52,7 @@ export default function Training() {
   const { data: cases, isLoading, error } = useMedicalCases(filters);
 
   return (
-    <MobileLayout title="Medical Training" showBottomNav={true}>
+    <MobileLayout title="AI Case Training" showBottomNav={true}>
       {/* Training Modules Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -60,33 +60,12 @@ export default function Training() {
         transition={{ duration: 0.5 }}
       >
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Training Modules</h2>
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Progress & Analytics</h2>
+          <div className="grid grid-cols-1 gap-3 mb-4">
             {[
               {
-                title: "Image Analysis",
-                desc: "X-ray, CT, MRI training",
-                icon: FileImage,
-                color: "blue",
-                href: "/image-analysis"
-              },
-              {
-                title: "Board Exams",
-                desc: "USMLE & specialty prep",
-                icon: GraduationCap,
-                color: "green", 
-                href: "/board-exam-prep"
-              },
-              {
-                title: "Decision Trees",
-                desc: "Clinical algorithms",
-                icon: GitBranch,
-                color: "purple",
-                href: "/clinical-decision-trees"
-              },
-              {
                 title: "Progress Tracking",
-                desc: "Badges, awards & stats",
+                desc: "View badges, achievements & detailed statistics",
                 icon: Trophy,
                 color: "yellow",
                 href: "/progress"
@@ -126,20 +105,41 @@ export default function Training() {
       >
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Patient Simulations</h2>
+            <h2 className="text-lg font-semibold text-gray-900">AI-Generated Patient Cases</h2>
             <Stethoscope className="h-5 w-5 text-indigo-600" />
           </div>
           
           {/* AI Generator Banner */}
-          <MobileCard className="mb-4 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h3 className="font-semibold text-purple-900 mb-1">Generate New Cases</h3>
-                <p className="text-sm text-purple-700">Create unlimited practice scenarios with AI</p>
+          <MobileCard className="mb-6 bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 border-purple-200 shadow-sm">
+            <div className="p-1">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Stethoscope className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <h3 className="font-bold text-purple-900 text-lg">AI Case Generator</h3>
+                  </div>
+                  <p className="text-sm text-purple-800 leading-relaxed mb-3">
+                    Create unlimited medical cases with AI-powered patient scenarios. Each case includes interactive quiz cycles, differential diagnosis challenges, and step-by-step diagnostic reasoning.
+                  </p>
+                  <div className="flex items-center gap-4 text-xs text-purple-700">
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                      <span>Interactive Quizzes</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 bg-indigo-400 rounded-full"></div>
+                      <span>Diagnostic Reasoning</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <AICaseGenerator onCaseGenerated={(caseId) => {
-                window.location.reload();
-              }} />
+              <div className="flex justify-center">
+                <AICaseGenerator onCaseGenerated={(caseId) => {
+                  window.location.reload();
+                }} />
+              </div>
             </div>
           </MobileCard>
         </div>
@@ -199,7 +199,7 @@ export default function Training() {
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
-          <p className="text-gray-600 mt-4 text-sm">Loading medical cases...</p>
+          <p className="text-gray-600 mt-4 text-sm">Loading AI-generated cases...</p>
         </div>
       )}
 
@@ -327,7 +327,7 @@ export default function Training() {
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">No cases found</h3>
             <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-              Try adjusting your search criteria or browse different specialties
+              Try adjusting your search criteria, browse different specialties, or generate new AI cases above
             </p>
             <MobileButton 
               variant="secondary"
@@ -344,6 +344,61 @@ export default function Training() {
           </MobileCard>
         </motion.div>
       )}
+
+      {/* Coming Soon Features */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="mt-8 mb-6"
+      >
+        <h3 className="text-sm font-medium text-gray-500 mb-3 text-center">Additional Features Coming Soon</h3>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            {
+              title: "Medical Imaging",
+              desc: "X-ray, CT, MRI analysis",
+              icon: FileImage,
+              href: "/image-analysis"
+            },
+            {
+              title: "Board Prep",
+              desc: "USMLE & exams", 
+              icon: GraduationCap,
+              href: "/board-exam-prep"
+            },
+            {
+              title: "Decision Trees",
+              desc: "Clinical algorithms",
+              icon: GitBranch,
+              href: "/clinical-decision-trees"
+            }
+          ].map((feature, index) => {
+            const IconComponent = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 + index * 0.1, duration: 0.3 }}
+              >
+                <MobileCard className="bg-gray-50 border-gray-200 opacity-60">
+                  <div className="text-center p-2">
+                    <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-1">
+                      <IconComponent className="h-4 w-4 text-gray-400" />
+                    </div>
+                    <h4 className="font-medium text-gray-600 text-xs mb-1">{feature.title}</h4>
+                    <p className="text-xs text-gray-400">{feature.desc}</p>
+                    <div className="mt-1">
+                      <span className="text-xs bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full">Soon</span>
+                    </div>
+                  </div>
+                </MobileCard>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.div>
     </MobileLayout>
   );
 }

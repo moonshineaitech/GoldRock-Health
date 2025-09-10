@@ -18,38 +18,43 @@ export function TrainingQuickAccess() {
   const trainingModules = [
     {
       title: "Patient Cases",
-      desc: "Interactive simulations",
+      desc: "AI-generated case training",
       icon: Stethoscope,
       href: "/training",
-      color: "blue"
-    },
-    {
-      title: "Image Analysis", 
-      desc: "X-ray, CT, MRI training",
-      icon: FileImage,
-      href: "/image-analysis",
-      color: "purple"
-    },
-    {
-      title: "Board Exams",
-      desc: "USMLE & specialty prep", 
-      icon: GraduationCap,
-      href: "/board-exam-prep",
-      color: "green"
-    },
-    {
-      title: "Decision Trees",
-      desc: "Clinical algorithms",
-      icon: GitBranch,
-      href: "/clinical-decision-trees", 
-      color: "orange"
+      color: "blue",
+      isWorking: true
     },
     {
       title: "Study Groups",
       desc: "Collaborative learning",
       icon: Users,
       href: "/study-groups",
-      color: "pink"
+      color: "pink",
+      isWorking: true
+    },
+    {
+      title: "Image Analysis", 
+      desc: "X-ray, CT, MRI training - Coming Soon",
+      icon: FileImage,
+      href: "/image-analysis",
+      color: "gray",
+      isWorking: false
+    },
+    {
+      title: "Board Exams",
+      desc: "USMLE & specialty prep - Coming Soon", 
+      icon: GraduationCap,
+      href: "/board-exam-prep",
+      color: "gray",
+      isWorking: false
+    },
+    {
+      title: "Decision Trees",
+      desc: "Clinical algorithms - Coming Soon",
+      icon: GitBranch,
+      href: "/clinical-decision-trees", 
+      color: "gray",
+      isWorking: false
     }
   ];
 
@@ -105,18 +110,35 @@ export function TrainingQuickAccess() {
                   >
                     <Link href={module.href} onClick={() => setIsOpen(false)}>
                       <motion.div 
-                        className="bg-white/95 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/30 flex items-center space-x-3 min-w-48"
+                        className={`bg-white/95 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/30 flex items-center space-x-3 min-w-48 ${
+                          !module.isWorking ? 'opacity-60' : ''
+                        }`}
                         whileTap={{ scale: 0.95 }}
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={{ scale: module.isWorking ? 1.02 : 1 }}
                         data-testid={`quick-access-${module.title.toLowerCase().replace(/\s+/g, '-')}`}
                       >
-                        <div className={`w-10 h-10 bg-${module.color}-100 rounded-xl flex items-center justify-center`}>
-                          <IconComponent className={`h-5 w-5 text-${module.color}-600`} />
+                        <div className={`w-10 h-10 ${
+                          module.isWorking 
+                            ? `bg-${module.color}-100` 
+                            : 'bg-gray-100'
+                        } rounded-xl flex items-center justify-center`}>
+                          <IconComponent className={`h-5 w-5 ${
+                            module.isWorking 
+                              ? `text-${module.color}-600` 
+                              : 'text-gray-400'
+                          }`} />
                         </div>
                         <div className="flex-1">
-                          <div className="font-semibold text-gray-900 text-sm">{module.title}</div>
-                          <div className="text-xs text-gray-600">{module.desc}</div>
+                          <div className={`font-semibold text-sm ${
+                            module.isWorking ? 'text-gray-900' : 'text-gray-500'
+                          }`}>{module.title}</div>
+                          <div className={`text-xs ${
+                            module.isWorking ? 'text-gray-600' : 'text-gray-400'
+                          }`}>{module.desc}</div>
                         </div>
+                        {!module.isWorking && (
+                          <div className="text-xs text-gray-400 font-medium">Soon</div>
+                        )}
                       </motion.div>
                     </Link>
                   </motion.div>

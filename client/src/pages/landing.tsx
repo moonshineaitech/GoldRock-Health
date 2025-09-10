@@ -82,7 +82,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.7 }}
         >
-          AI-powered medical bill analysis that finds massive overcharges, plus interactive training across 19+ specialties.
+          AI-powered medical bill analysis that finds massive overcharges, plus AI-generated patient cases with interactive quiz cycles.
         </motion.p>
         
         <motion.div 
@@ -259,7 +259,7 @@ export default function Landing() {
           transition={{ delay: 1.9, duration: 0.6 }}
         >
           <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Plus: Advanced Medical Training
+            Plus: AI-Generated Patient Cases
           </h2>
           <div className="h-0.5 w-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
         </motion.div>
@@ -267,20 +267,20 @@ export default function Landing() {
         <div className="grid grid-cols-2 gap-3 mb-6">
           {[
             { 
-              icon: BookOpen, 
-              title: "60+ Cases", 
-              desc: "Interactive scenarios", 
+              icon: Brain, 
+              title: "AI Patient Profiles", 
+              desc: "Dynamic case generation", 
               color: "blue", 
               delay: 2.0,
-              href: "/training"
+              href: "/synthetic-patient-diagnostics"
             },
             { 
-              icon: Brain, 
-              title: "19 Specialties", 
-              desc: "All medical fields", 
+              icon: BookOpen, 
+              title: "Quiz Cycles", 
+              desc: "Interactive diagnosis training", 
               color: "purple", 
               delay: 2.1,
-              href: "/training"
+              href: "/synthetic-patient-diagnostics"
             }
           ].map((feature, index) => {
             const IconComponent = feature.icon;
@@ -357,7 +357,7 @@ export default function Landing() {
           transition={{ delay: 2.1, duration: 0.6 }}
         >
           <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Advanced Learning
+            AI Diagnostic Training
           </h2>
           <div className="h-1 w-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
         </motion.div>
@@ -367,26 +367,10 @@ export default function Landing() {
             { 
               icon: Stethoscope, 
               title: "Synthetic Patient Diagnostics", 
-              desc: "AI-generated patient profiles & diagnostic training", 
+              desc: "AI-generated patient profiles with interactive quiz cycles & real-time feedback", 
               color: "purple", 
               delay: 2.2,
               href: "/synthetic-patient-diagnostics"
-            },
-            { 
-              icon: Trophy, 
-              title: "Board Exam Prep", 
-              desc: "USMLE & specialty board practice exams", 
-              color: "green", 
-              delay: 2.3,
-              href: "/board-exam-prep"
-            },
-            { 
-              icon: Zap, 
-              title: "Clinical Decision Trees", 
-              desc: "Interactive diagnostic algorithms", 
-              color: "orange", 
-              delay: 2.4,
-              href: "/clinical-decision-trees"
             }
           ].map((module, index) => {
             const IconComponent = module.icon;
@@ -480,9 +464,9 @@ export default function Landing() {
             
             <div className="grid grid-cols-3 gap-6">
               {[
-                { value: "60+", label: "Medical Cases", gradient: "from-indigo-600 to-blue-600", delay: 2.5 },
+                { value: "AI", label: "Generated Cases", gradient: "from-indigo-600 to-blue-600", delay: 2.5 },
                 { value: "$500K+", label: "Max Savings", gradient: "from-emerald-600 to-teal-600", delay: 2.6 },
-                { value: "19", label: "Specialties", gradient: "from-purple-600 to-pink-600", delay: 2.7 }
+                { value: "Quiz", label: "Cycles", gradient: "from-purple-600 to-pink-600", delay: 2.7 }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}

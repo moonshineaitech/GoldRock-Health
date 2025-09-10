@@ -1,5 +1,5 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
-import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope } from "lucide-react";
+import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -19,42 +19,56 @@ const premiumFeatures = [
   {
     icon: DollarSign,
     title: "Medical Bill AI Analysis",
-    description: "AI identifies $10K-$500K+ in billing overcharges and errors",
+    description: "AI identifies $10K-$500K+ in billing overcharges using proven detection algorithms",
     highlight: "Save thousands",
     category: "billing"
   },
   {
+    icon: MessageCircle,
+    title: "Expert Negotiation Coaching",
+    description: "Learn hospital-specific tactics and proven scripts that get results",
+    highlight: "Insider knowledge",
+    category: "billing"
+  },
+  {
+    icon: Clock,
+    title: "Strategic Timing Guide",
+    description: "Know exactly when to dispute, negotiate, and escalate for maximum success",
+    highlight: "Perfect timing",
+    category: "billing"
+  },
+  {
+    icon: Code,
+    title: "Billing Code Mastery",
+    description: "Understand CPT codes, modifiers, and common overcharge patterns hospitals use",
+    highlight: "Decode the system",
+    category: "billing"
+  },
+  {
+    icon: UserCheck,
+    title: "Personal Bill Reduction Coach",
+    description: "1-on-1 guidance for complex cases with billing department veterans",
+    highlight: "Expert support",
+    category: "billing"
+  },
+  {
     icon: FileText,
-    title: "Professional Dispute Letters",
-    description: "Get proven templates that hospitals and insurers respond to",
+    title: "Professional Dispute Arsenal",
+    description: "Access 50+ proven letter templates that hospitals legally must respond to",
     highlight: "95% success rate",
     category: "billing"
   },
   {
-    icon: AlertTriangle,
-    title: "Real-Time Bill Monitoring",
-    description: "Instant alerts for suspicious charges and billing patterns",
-    highlight: "Live protection",
-    category: "billing"
-  },
-  {
-    icon: Zap,
-    title: "Unlimited AI Cases",
-    description: "Generate endless custom medical scenarios with advanced AI",
-    highlight: "No limits",
-    category: "training"
-  },
-  {
     icon: Brain,
-    title: "Advanced Specialties",
-    description: "Access to rare diseases and complex subspecialty cases",
-    highlight: "All 19 specialties",
+    title: "Unlimited Medical Training",
+    description: "Master medicine with AI-generated cases across all 19 specialties",
+    highlight: "Endless learning",
     category: "training"
   },
   {
     icon: BarChart3,
-    title: "Advanced Analytics",
-    description: "Track both learning progress and billing savings",
+    title: "Savings & Progress Analytics",
+    description: "Track your bill reductions and medical knowledge growth over time",
     highlight: "Dual insights",
     category: "both"
   }
@@ -69,12 +83,12 @@ const subscriptionPlans = [
     savings: null,
     popular: false,
     features: [
-      "Medical Bill AI Analysis (Save $10K-$500K+)",
-      "Professional dispute letter templates",
-      "Unlimited AI-generated medical cases",
-      "All 19 medical specialties access",
-      "Real-time bill monitoring & alerts",
-      "Priority customer support"
+      "AI Bill Analysis (Avg. $127K saved per user)",
+      "Expert negotiation coaching & proven scripts", 
+      "Strategic timing guide for maximum success",
+      "Billing code mastery & overcharge detection",
+      "50+ professional dispute letter templates",
+      "Real-time bill monitoring & fraud alerts"
     ]
   },
   {
@@ -86,11 +100,11 @@ const subscriptionPlans = [
     popular: true,
     features: [
       "Everything in Monthly plan",
-      "Advanced billing pattern recognition",
-      "Exclusive medical specialty content",
-      "Personal learning & savings coach",
-      "Early access to new AI features",
-      "Dedicated account manager"
+      "Personal bill reduction coach (1-on-1 sessions)",
+      "Hospital billing department insider tactics",
+      "Complex case escalation strategies",
+      "Insurance company negotiation playbook",
+      "Unlimited medical training (all specialties)"
     ]
   }
 ];
@@ -124,7 +138,7 @@ function LoginPrompt() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          Save Thousands + Learn Medicine
+          Master Bill Reduction + Medicine
         </motion.h1>
         
         <motion.p 
@@ -133,7 +147,7 @@ function LoginPrompt() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
-          Sign in to access Medical Bill AI analysis and advanced medical training features
+          Sign in to access expert bill negotiation strategies and advanced medical training
         </motion.p>
         
         <motion.div
@@ -282,7 +296,7 @@ function PremiumMarketing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.4 }}
         >
-          Save Thousands + Master Medicine
+          Master Bill Negotiation + Medicine
         </motion.h1>
         
         <motion.p 
@@ -291,7 +305,7 @@ function PremiumMarketing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.4 }}
         >
-          AI that finds massive bill overcharges + unlimited access to medical training
+          Expert strategies to slash medical bills + insider knowledge from billing veterans
         </motion.p>
       </motion.div>
 
@@ -327,33 +341,33 @@ function PremiumMarketing() {
           <div className="grid grid-cols-2 gap-3">
             <MobileCard className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-200 hover:shadow-lg transition-shadow">
               <div className="text-center p-2">
-                <DollarSign className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Bill AI Analysis</h4>
-                <p className="text-xs text-gray-700">Find $10K-$500K+ overcharges</p>
+                <MessageCircle className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Expert Negotiation</h4>
+                <p className="text-xs text-gray-700">Hospital-specific scripts & tactics</p>
               </div>
             </MobileCard>
             
             <MobileCard className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 border-indigo-200 hover:shadow-lg transition-shadow">
               <div className="text-center p-2">
-                <Brain className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Medical Training</h4>
-                <p className="text-xs text-gray-700">Unlimited AI cases & scenarios</p>
+                <Code className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Billing Code Mastery</h4>
+                <p className="text-xs text-gray-700">Decode overcharge patterns</p>
               </div>
             </MobileCard>
             
             <MobileCard className="bg-gradient-to-r from-orange-50/80 to-amber-50/80 border-orange-200 hover:shadow-lg transition-shadow">
               <div className="text-center p-2">
-                <FileText className="h-8 w-8 text-orange-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Dispute Letters</h4>
-                <p className="text-xs text-gray-700">Professional templates</p>
+                <UserCheck className="h-8 w-8 text-orange-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Personal Coach</h4>
+                <p className="text-xs text-gray-700">1-on-1 billing veteran guidance</p>
               </div>
             </MobileCard>
             
             <MobileCard className="bg-gradient-to-r from-teal-50/80 to-cyan-50/80 border-teal-200 hover:shadow-lg transition-shadow">
               <div className="text-center p-2">
-                <BarChart3 className="h-8 w-8 text-teal-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Analytics</h4>
-                <p className="text-xs text-gray-700">Track savings & progress</p>
+                <Clock className="h-8 w-8 text-teal-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Strategic Timing</h4>
+                <p className="text-xs text-gray-700">When to dispute & escalate</p>
               </div>
             </MobileCard>
           </div>
@@ -376,7 +390,7 @@ function PremiumMarketing() {
           Choose Your Plan
         </h2>
         <p className="text-sm text-gray-600 text-center mb-4">
-          Medical Bill AI + Training. Cancel anytime.
+          Expert bill reduction strategies + Medical training. Cancel anytime.
         </p>
         
         <MobileCard className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 ring-2 ring-emerald-300 shadow-xl">
@@ -494,7 +508,7 @@ function PremiumDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
-          Enjoy unlimited bill analysis and medical training features
+          Access expert bill negotiation strategies and unlimited medical training
         </motion.p>
       </motion.div>
 
