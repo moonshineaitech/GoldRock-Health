@@ -21,7 +21,6 @@ import {
   AlertTriangle,
   Shield,
   Loader2,
-  FileEdit,
   Plus,
   MessageCircle,
   Camera,
@@ -47,7 +46,9 @@ import {
   Sparkles,
   Settings,
   List,
-  Filter
+  Filter,
+  Activity,
+  Clock
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { MedicalBill } from "@shared/schema";
@@ -103,6 +104,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   onStartChat: () => void;
 }) => {
   const { isSubscribed } = useSubscription();
+  const [showAllWorkflows, setShowAllWorkflows] = useState(false);
   
   const coreWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'core');
   const specialtyWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'specialty');
@@ -183,7 +185,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           </Button>
         </Link>
         <Button
-          onClick={() => {}}
+          onClick={() => setShowAllWorkflows(true)}
           variant="outline"
           size="sm"
           className="h-12 flex-col space-y-1 rounded-2xl border-gray-200 dark:border-gray-700"
@@ -191,6 +193,61 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
         >
           <Plus className="h-4 w-4" />
           <span className="text-xs">All Tools</span>
+        </Button>
+      </div>
+
+      {/* Premium Preview Section */}
+      {!isSubscribed && (
+        <div className="space-y-3">
+          <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border border-orange-200/50 dark:border-orange-700/50 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Crown className="h-4 w-4 text-orange-600" />
+              <h4 className="text-sm font-semibold text-orange-800 dark:text-orange-200">Premium Success Stories</h4>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs text-orange-700 dark:text-orange-300">
+                <strong>Sarah M. saved $47,000</strong> on her surgery bill using our Advanced Error Detection
+              </div>
+              <div className="text-xs text-orange-700 dark:text-orange-300">
+                <strong>Mike D. saved $23,000</strong> with our Professional Dispute Letter Generator
+              </div>
+              <div className="text-xs text-orange-700 dark:text-orange-300">
+                <strong>Lisa K. saved $8,500</strong> using our Insurance Appeal Master workflows
+              </div>
+            </div>
+            <Link href="/premium" className="mt-2 block">
+              <Button size="sm" className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl">
+                <Crown className="h-3 w-3 mr-1" />
+                See How Premium Users Save More
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Beginner-Friendly Section */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <Activity className="h-4 w-4 text-green-600" />
+          Perfect for Beginners
+        </h3>
+        <div className="grid grid-cols-2 gap-2">
+          {BILL_AI_WORKFLOWS.filter(w => w.category === 'beginner').slice(0, 4).map((workflow) => (
+            <WorkflowCard
+              key={workflow.id}
+              workflow={workflow}
+              onClick={() => onWorkflowSelect(workflow)}
+            />
+          ))}
+        </div>
+        <Button
+          onClick={() => setShowAllWorkflows(true)}
+          variant="ghost"
+          size="sm"
+          className="w-full text-xs text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
+          data-testid="view-all-beginner-workflows"
+        >
+          View All {BILL_AI_WORKFLOWS.filter(w => w.category === 'beginner').length} Beginner-Friendly Tools
         </Button>
       </div>
 
@@ -260,7 +317,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       {/* View All Workflows Button */}
       <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
         <Button
-          onClick={() => {}}
+          onClick={() => setShowAllWorkflows(true)}
           variant="outline"
           className="w-full h-12 rounded-2xl border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400"
           data-testid="view-all-workflows-full"
@@ -979,7 +1036,175 @@ export default function BillAI() {
           onChange={handleFileUpload}
           data-testid="file-input"
         />
+
+        {/* All Workflows Sheet */}
+        <Sheet open={showAllWorkflows} onOpenChange={setShowAllWorkflows}>
+          <SheetContent side="bottom" className="h-[90vh] bg-white dark:bg-gray-900">
+            <SheetHeader className="mb-4">
+              <SheetTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <Brain className="h-6 w-6 text-emerald-600" />
+                All Medical Bill AI Workflows
+              </SheetTitle>
+              <SheetDescription className="text-gray-600 dark:text-gray-400">
+                Comprehensive medical bill analysis and dispute tools. {BILL_AI_WORKFLOWS.length} total workflows available.
+              </SheetDescription>
+              
+              {/* Quick Stats for All Workflows */}
+              <div className="grid grid-cols-3 gap-3 mt-3">
+                <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-3 text-center">
+                  <div className="text-lg font-bold text-green-700 dark:text-green-300">
+                    {BILL_AI_WORKFLOWS.filter(w => !w.isPremium).length}
+                  </div>
+                  <div className="text-xs text-green-600 dark:text-green-400">Free Tools</div>
+                </div>
+                <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-3 text-center">
+                  <div className="text-lg font-bold text-orange-700 dark:text-orange-300">
+                    {BILL_AI_WORKFLOWS.filter(w => w.isPremium).length}
+                  </div>
+                  <div className="text-xs text-orange-600 dark:text-orange-400">Premium Tools</div>
+                </div>
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3 text-center">
+                  <div className="text-lg font-bold text-blue-700 dark:text-blue-300">
+                    {BILL_AI_WORKFLOWS.filter(w => w.category === 'beginner').length}
+                  </div>
+                  <div className="text-xs text-blue-600 dark:text-blue-400">Beginner-Friendly</div>
+                </div>
+              </div>
+            </SheetHeader>
+
+            {/* Filter Options */}
+            <div className="flex items-center gap-2 mb-4">
+              <Select value={workflowFilter} onValueChange={setWorkflowFilter}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="core">Essential Tools</SelectItem>
+                  <SelectItem value="beginner">Beginner-Friendly</SelectItem>
+                  <SelectItem value="specialty">Specialty Analysis</SelectItem>
+                  <SelectItem value="insurance">Insurance Appeals</SelectItem>
+                  <SelectItem value="financial">Financial Assistance</SelectItem>
+                  <SelectItem value="legal">Legal & Disputes</SelectItem>
+                  <SelectItem value="emergency">Emergency Bills</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                <Filter className="h-3 w-3" />
+                {BILL_AI_WORKFLOWS.filter(w => workflowFilter === 'all' || w.category === workflowFilter).length} workflows
+              </div>
+            </div>
+
+            {/* All Workflows Grid */}
+            <div className="overflow-y-auto">
+              <div className="grid grid-cols-1 gap-3 pb-6">
+                {BILL_AI_WORKFLOWS
+                  .filter(workflow => workflowFilter === 'all' || workflow.category === workflowFilter)
+                  .map((workflow) => (
+                    <WorkflowDetailCard
+                      key={workflow.id}
+                      workflow={workflow}
+                      onClick={() => {
+                        setSelectedWorkflow(workflow);
+                        setShowAllWorkflows(false);
+                        setShowWorkflowSelection(false);
+                        
+                        // Auto-start conversation with workflow
+                        if (workflow.intakeFields.length === 0) {
+                          sendMessage(`I want to use the ${workflow.title} workflow: ${workflow.description}`);
+                        } else {
+                          const guideMessage = `I'm ready to help you with ${workflow.title}. ${workflow.description}\n\nTo provide the best assistance, I'll need some information about your bill. You can upload your bill or tell me about it.`;
+                          const aiMessage: AIMessage = {
+                            id: Date.now().toString() + "_guide",
+                            role: "assistant", 
+                            content: guideMessage,
+                            createdAt: new Date()
+                          };
+                          setLocalMessages(prev => [...prev, aiMessage]);
+                          setConversationStarted(true);
+                        }
+                      }}
+                    />
+                  ))
+                }
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </MobileLayout>
   );
 }
+
+// Workflow Detail Card Component for All Workflows view
+const WorkflowDetailCard = ({ workflow, onClick }: {
+  workflow: BillWorkflow;
+  onClick: () => void;
+}) => {
+  const { isSubscribed } = useSubscription();
+  
+  return (
+    <Card 
+      className="cursor-pointer hover:shadow-lg transition-all duration-200 border-gray-200 dark:border-gray-700"
+      onClick={onClick}
+      data-testid={`workflow-detail-${workflow.id}`}
+    >
+      <CardContent className="p-4">
+        <div className="flex items-start gap-4">
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${workflow.bgColor} flex-shrink-0`}>
+            <workflow.icon className={`h-6 w-6 ${workflow.color}`} />
+          </div>
+          
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-semibold text-gray-900 dark:text-white text-base">{workflow.title}</h3>
+              {workflow.isPremium && !isSubscribed && (
+                <Crown className="h-4 w-4 text-orange-500" />
+              )}
+            </div>
+            
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{workflow.subtitle}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-500 line-clamp-2 mb-3">{workflow.description}</p>
+            
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1">
+                  <Clock className="h-3 w-3 text-gray-400" />
+                  <span className="text-gray-600 dark:text-gray-400">{workflow.estimatedTime}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <DollarSign className="h-3 w-3 text-emerald-600" />
+                  <span className="text-emerald-600 font-medium">{workflow.savingsPotential}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Target className="h-3 w-3 text-blue-600" />
+                  <span className="text-blue-600">{workflow.successRate}</span>
+                </div>
+              </div>
+              
+              <Badge 
+                variant="secondary" 
+                className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              >
+                {workflow.category}
+              </Badge>
+            </div>
+            
+            {/* Tags */}
+            <div className="flex flex-wrap gap-1 mt-2">
+              {workflow.tags.slice(0, 3).map((tag) => (
+                <Badge 
+                  key={tag}
+                  variant="outline" 
+                  className="text-xs px-1.5 py-0 text-gray-500 dark:text-gray-400 border-gray-300 dark:border-gray-600"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
