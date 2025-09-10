@@ -8,6 +8,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { useSubscription } from "@/hooks/useSubscription";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Upload, 
@@ -32,7 +33,9 @@ import {
   Building2,
   Calendar,
   FileText,
-  ClipboardList
+  ClipboardList,
+  Crown,
+  Lock
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { MedicalBill } from "@shared/schema";
@@ -76,6 +79,7 @@ type NextRequiredField = 'amount' | 'provider' | 'dates' | 'insurance' | 'codes'
 
 export default function BillAI() {
   const { user } = useAuth();
+  const { isSubscribed } = useSubscription();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [inputMessage, setInputMessage] = useState("");
@@ -1414,10 +1418,35 @@ You are a senior medical billing advocate with 20+ years of experience saving pa
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[75vh] rounded-t-3xl border-t-0">
                   <SheetHeader className="pb-6">
-                    <SheetTitle className="text-lg font-semibold">Advanced Tools</SheetTitle>
-                    <SheetDescription>
-                      Professional bill analysis and negotiation tools
-                    </SheetDescription>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <SheetTitle className="text-lg font-semibold flex items-center space-x-2">
+                          <span>Advanced Tools</span>
+                          {!isSubscribed && (
+                            <Badge className="bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs">
+                              <Crown className="h-3 w-3 mr-1" />
+                              Premium
+                            </Badge>
+                          )}
+                        </SheetTitle>
+                        <SheetDescription>
+                          {isSubscribed 
+                            ? "Professional bill analysis and negotiation tools" 
+                            : "Professional tools to save $2,000-$50,000+ on medical bills"
+                          }
+                        </SheetDescription>
+                      </div>
+                      {!isSubscribed && (
+                        <div className="text-right">
+                          <div className="text-xs text-emerald-600 font-semibold">
+                            Average savings: $8,500
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            Unlock all features
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </SheetHeader>
                   <div className="grid grid-cols-1 gap-4">
                     <div className="grid grid-cols-2 gap-3">

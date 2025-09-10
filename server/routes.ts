@@ -8,7 +8,7 @@ import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
 import { insertUserProgressSchema } from "@shared/schema";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
 import Stripe from "stripe";
 import { z } from "zod";
@@ -1629,7 +1629,7 @@ Respond with ONLY a JSON object:
   });
 
   // Bill AI Chat API - OpenAI powered medical bill reduction expert
-  app.post('/api/bill-ai-chat', isAuthenticated, async (req: any, res) => {
+  app.post('/api/bill-ai-chat', requiresSubscription, async (req: any, res) => {
     try {
       const { message } = req.body;
       const userId = req.user.claims.sub;
@@ -1699,7 +1699,7 @@ You help patients save thousands of dollars through expert guidance on medical b
   });
 
   // Bill Upload and Analysis API - AI-powered bill analysis for specific errors and opportunities
-  app.post('/api/upload-bill', isAuthenticated, upload.single('bill'), async (req: any, res) => {
+  app.post('/api/upload-bill', requiresSubscription, upload.single('bill'), async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const file = req.file;
@@ -1975,7 +1975,7 @@ Extract every specific detail from the bill including exact account numbers, pat
   });
 
   // Multiple Bill Images Upload Route - Up to 5 images for comprehensive analysis
-  app.post('/api/upload-bills', isAuthenticated, upload.array('bills', 5), async (req: any, res) => {
+  app.post('/api/upload-bills', requiresSubscription, upload.array('bills', 5), async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const files = req.files as Express.Multer.File[];

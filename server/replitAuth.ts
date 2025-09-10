@@ -155,3 +155,37 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
     return;
   }
 };
+
+// Middleware to check if user has an active subscription
+export const requiresSubscription: RequestHandler = async (req, res, next) => {
+  // First ensure user is authenticated
+  const user = req.user as any;
+  if (!req.isAuthenticated() || !user) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  try {
+    const { storage } = await import("./storage");
+    const userId = user.claims.sub;
+    const userData = await storage.getUser(userId);
+    
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if user has active subscription
+    if (userData.subscriptionStatus !== 'active') {
+      return res.status(402).json({ 
+        message: "Premium subscription required",
+        code: "SUBSCRIPTION_REQUIRED",
+        upgradeRequired: true
+      });
+    }
+
+    // User has active subscription, continue
+    return next();
+  } catch (error) {
+    console.error('Error checking subscription status:', error);
+    return res.status(500).json({ message: "Failed to verify subscription status" });
+  }
+};

@@ -5,7 +5,9 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useSubscription } from "@/hooks/useSubscription";
 import { SmartActionBubbles } from "./SmartActionBubbles";
+import { PremiumPaywallOverlay } from "./premium-paywall-overlay";
 import { 
   FileText, 
   Copy, 
@@ -29,6 +31,7 @@ interface FeatureProps {
 
 // Feature 1: AI-powered document generation for medical bill dispute letters
 export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
+  const { isSubscribed } = useSubscription();
   const [formData, setFormData] = useState({
     patientName: '',
     accountNumber: '',
@@ -70,8 +73,16 @@ Create a formal, professional dispute letter that references specific billing er
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
     >
+      {!isSubscribed && (
+        <PremiumPaywallOverlay
+          title="Professional Dispute Letters"
+          description="Generate legally-compliant dispute letters that hospitals must respond to. Get results with our proven templates."
+          featureName="Dispute Letter Generator"
+          savingsPotential="$2,000-$35,000"
+        />
+      )}
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center">
           <FileText className="h-6 w-6 text-white" />
@@ -144,6 +155,7 @@ Create a formal, professional dispute letter that references specific billing er
 
 // Feature 2: One-click template customization for bill negotiation scripts
 export function NegotiationScriptGenerator({ onSendMessage }: FeatureProps) {
+  const { isSubscribed } = useSubscription();
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [customization, setCustomization] = useState({
     billAmount: '',
@@ -210,8 +222,16 @@ Create a step-by-step phone script with exact words to say, anticipated response
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
     >
+      {!isSubscribed && (
+        <PremiumPaywallOverlay
+          title="Professional Negotiation Scripts"
+          description="Get proven phone scripts that have saved patients thousands. Our templates include exact words to say and insider tactics."
+          featureName="Negotiation Script Generator"
+          savingsPotential="$5,000-$30,000"
+        />
+      )}
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center">
           <Phone className="h-6 w-6 text-white" />
@@ -293,6 +313,7 @@ Create a step-by-step phone script with exact words to say, anticipated response
 
 // Feature 3: Interactive bill error detection checklist with AI guidance
 export function ErrorDetectionChecklist({ onSendMessage }: FeatureProps) {
+  const { isSubscribed } = useSubscription();
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [findings, setFindings] = useState('');
 
@@ -391,8 +412,16 @@ export function ErrorDetectionChecklist({ onSendMessage }: FeatureProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
     >
+      {!isSubscribed && (
+        <PremiumPaywallOverlay
+          title="AI Error Detection"
+          description="Automatically identify billing errors, overcharges, and fraudulent charges using advanced AI algorithms."
+          featureName="Error Detection Checklist"
+          savingsPotential="$5,000-$50,000+"
+        />
+      )}
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center">
           <CheckSquare className="h-6 w-6 text-white" />
@@ -468,6 +497,7 @@ export function ErrorDetectionChecklist({ onSendMessage }: FeatureProps) {
 
 // Feature 4: Real-time medical billing rights and protection advisor
 export function BillingRightsAdvisor({ onSendMessage }: FeatureProps) {
+  const { isSubscribed } = useSubscription();
   const [situation, setSituation] = useState('');
   const [urgency, setUrgency] = useState('');
 
@@ -539,8 +569,16 @@ export function BillingRightsAdvisor({ onSendMessage }: FeatureProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
     >
+      {!isSubscribed && (
+        <PremiumPaywallOverlay
+          title="Legal Protection Advisor"
+          description="Get expert legal guidance on your rights when facing collections, lawsuits, or credit reporting issues."
+          featureName="Billing Rights Advisor"
+          savingsPotential="$1,000-$25,000+"
+        />
+      )}
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center">
           <Shield className="h-6 w-6 text-white" />
@@ -609,6 +647,7 @@ export function BillingRightsAdvisor({ onSendMessage }: FeatureProps) {
 
 // Feature 5: Automatic insurance claim appeal workflow generator
 export function ClaimAppealGenerator({ onSendMessage }: FeatureProps) {
+  const { isSubscribed } = useSubscription();
   const [appealData, setAppealData] = useState({
     claimNumber: '',
     denialReason: '',
@@ -663,8 +702,16 @@ Create a complete appeal workflow that directly addresses the insurance company'
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
     >
+      {!isSubscribed && (
+        <PremiumPaywallOverlay
+          title="Insurance Appeal Generator"
+          description="Automatically generate comprehensive insurance claim appeals that directly address denial reasons with legal citations."
+          featureName="Claim Appeal Generator"
+          savingsPotential="$3,000-$40,000+"
+        />
+      )}
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center">
           <FileEdit className="h-6 w-6 text-white" />
