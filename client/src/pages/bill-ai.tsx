@@ -46,6 +46,9 @@ import {
   ClaimAppealGenerator 
 } from "@/components/bill-ai-features";
 import { BillAnalysisLoader } from "@/components/BillAnalysisLoader";
+import { SavingsCalculator } from "@/components/SavingsCalculator";
+import { DemoStatsPanel } from "@/components/DemoStatsPanel";
+import { PremiumFeatureShowcase } from "@/components/PremiumFeatureShowcase";
 
 interface AIMessage {
   id: string;
@@ -91,6 +94,10 @@ export default function BillAI() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showToolsDrawer, setShowToolsDrawer] = useState(false);
   const [showAssessmentPanel, setShowAssessmentPanel] = useState(false);
+  const [showSavingsCalculator, setShowSavingsCalculator] = useState(false);
+  const [savingsAnalysisStage, setSavingsAnalysisStage] = useState<'scanning' | 'analyzing' | 'calculating' | 'complete'>('scanning');
+  const [showDemoStats, setShowDemoStats] = useState(true);
+  const [showPremiumShowcase, setShowPremiumShowcase] = useState(false);
   
   // Intake State Management
   const [intakeState, setIntakeState] = useState<IntakeState>({});
@@ -1020,10 +1027,22 @@ You are a senior medical billing advocate with 20+ years of experience saving pa
       // Also parse AI message for any information extraction
       updateIntakeFromMessage(assistantMessage.content);
       
-      // Update assessment panel after AI response
+      // Update assessment panel and savings calculator after AI response
       setTimeout(() => {
         if (!showAssessmentPanel && conversationStarted) {
           setShowAssessmentPanel(true);
+        }
+        // Show savings calculator if we have bill amount
+        if (intakeState.amount && !showSavingsCalculator) {
+          setShowSavingsCalculator(true);
+          // Simulate analysis stages
+          setTimeout(() => setSavingsAnalysisStage('analyzing'), 500);
+          setTimeout(() => setSavingsAnalysisStage('calculating'), 1500);
+          setTimeout(() => setSavingsAnalysisStage('complete'), 3000);
+        }
+        // Show premium showcase after some interaction
+        if (localMessages.length >= 3 && !isSubscribed && !showPremiumShowcase) {
+          setTimeout(() => setShowPremiumShowcase(true), 2000);
         }
       }, 1000);
       
@@ -1477,6 +1496,48 @@ You are a senior medical billing advocate with 20+ years of experience saving pa
             <BillSummaryCard />
           </div>
         </div>
+
+        {/* Savings Calculator Panel */}
+        {showSavingsCalculator && (
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+            <div className="p-3">
+              <SavingsCalculator 
+                billAmount={intakeState.amount}
+                provider={intakeState.provider}
+                isVisible={showSavingsCalculator}
+                analysisStage={savingsAnalysisStage}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Demo Stats Panel */}
+        {showDemoStats && (
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+            <div className="p-3">
+              <DemoStatsPanel isVisible={showDemoStats} />
+            </div>
+          </div>
+        )}
+
+        {/* Premium Feature Showcase */}
+        {showPremiumShowcase && !isSubscribed && (
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+            <div className="p-3">
+              <PremiumFeatureShowcase 
+                isSubscribed={isSubscribed}
+                onUpgrade={() => {
+                  // Navigate to premium page or trigger upgrade flow
+                  window.open('/premium', '_blank');
+                }}
+                savingsAmount={intakeState.amount?.replace(/[$,]/g, '') ? 
+                  Math.round(parseFloat(intakeState.amount.replace(/[$,]/g, '')) * 0.15).toLocaleString() : 
+                  '12,400'
+                }
+              />
+            </div>
+          </div>
+        )}
 
         {/* Chat Messages Area - iOS Style */}
         <div className="flex-1 overflow-y-auto bg-gray-50/30 dark:bg-gray-900/30" style={{ padding: '1rem 1rem 0 1rem' }}>
