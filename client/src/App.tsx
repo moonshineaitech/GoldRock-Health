@@ -20,6 +20,8 @@ import Premium from "@/pages/premium";
 import PixelGame from "@/pages/pixel-game";
 import BillReductionGuide from "@/pages/bill-reduction-guide";
 import PortalAccessGuide from "@/pages/portal-access-guide";
+import BillBestPractices from "@/pages/bill-best-practices";
+import IndustryInsights from "@/pages/industry-insights";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -63,6 +65,8 @@ function Router() {
       <Route path="/pixel-game" component={PixelGame} />
       <Route path="/bill-reduction-guide" component={BillReductionGuide} />
       <Route path="/portal-access-guide" component={PortalAccessGuide} />
+      <Route path="/bill-best-practices" component={BillBestPractices} />
+      <Route path="/industry-insights" component={IndustryInsights} />
       <Route component={NotFound} />
     </Switch>
   );

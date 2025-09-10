@@ -21,56 +21,64 @@ const premiumFeatures = [
     title: "Medical Bill AI Analysis",
     description: "AI identifies $2,000-$35,000+ in billing overcharges using proven detection algorithms",
     highlight: "Save thousands",
-    category: "billing"
+    category: "billing",
+    href: "/bill-ai"
   },
   {
     icon: MessageCircle,
     title: "Expert Negotiation Coaching",
     description: "Learn hospital-specific tactics and proven scripts that get results",
     highlight: "Insider knowledge",
-    category: "billing"
+    category: "billing",
+    href: "/bill-best-practices"
   },
   {
     icon: Clock,
     title: "Strategic Timing Guide",
     description: "Know exactly when to dispute, negotiate, and escalate for maximum success",
     highlight: "Perfect timing",
-    category: "billing"
+    category: "billing",
+    href: "/industry-insights"
   },
   {
     icon: Code,
     title: "Billing Code Mastery",
     description: "Understand CPT codes, modifiers, and common overcharge patterns hospitals use",
     highlight: "Decode the system",
-    category: "billing"
+    category: "billing",
+    href: "/industry-insights"
   },
   {
     icon: UserCheck,
     title: "Personal Bill Reduction Coach",
     description: "1-on-1 guidance for complex cases with billing department veterans",
     highlight: "Expert support",
-    category: "billing"
+    category: "billing",
+    href: "/bill-best-practices"
   },
   {
     icon: FileText,
     title: "Professional Dispute Arsenal",
     description: "Access 50+ proven letter templates that hospitals legally must respond to",
     highlight: "95% success rate",
-    category: "billing"
+    category: "billing",
+    href: "/bill-best-practices"
   },
   {
     icon: Brain,
     title: "Unlimited Medical Training",
     description: "Master medicine with AI-generated cases across all 19 specialties",
     highlight: "Endless learning",
-    category: "training"
+    category: "training",
+    href: "/training"
   },
   {
     icon: BarChart3,
     title: "Savings & Progress Analytics",
     description: "Track your bill reductions and medical knowledge growth over time",
     highlight: "Dual insights",
-    category: "both"
+    category: "both",
+    href: "/progress"
   }
 ];
 
@@ -528,7 +536,7 @@ function PremiumDashboard() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
               >
-                <Link href="/ai-generator">
+                <Link href={feature.href}>
                   <MobileCard className="h-full hover:bg-orange-50 transition-colors cursor-pointer border-orange-200">
                     <div className="text-center">
                       <div className="w-10 h-10 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
@@ -561,6 +569,22 @@ function PremiumDashboard() {
             <MobileButton className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg" size="lg">
               <DollarSign className="h-5 w-5 mr-2" />
               Analyze Medical Bills
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </MobileButton>
+          </Link>
+          
+          <Link href="/bill-best-practices">
+            <MobileButton className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-lg" size="lg">
+              <Target className="h-5 w-5 mr-2" />
+              Bill Best Practices
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </MobileButton>
+          </Link>
+          
+          <Link href="/industry-insights">
+            <MobileButton className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-lg" size="lg">
+              <Search className="h-5 w-5 mr-2" />
+              Industry Insights
               <ArrowRight className="h-4 w-4 ml-2" />
             </MobileButton>
           </Link>
