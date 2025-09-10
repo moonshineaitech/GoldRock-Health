@@ -172,22 +172,48 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center p-6"
+      className="fixed inset-0 z-50 luxury-card bg-gradient-to-br from-emerald-50 via-teal-50 to-blue-50 flex items-center justify-center p-6 relative overflow-hidden"
     >
       <div className="w-full max-w-sm mx-auto text-center">
         {/* Header */}
         <motion.div 
-          className="mb-8"
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          className="mb-10"
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 3, repeat: Infinity }}
         >
-          <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-            <Brain className="h-10 w-10 text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">AI Bill Analysis</h1>
-          <p className="text-gray-600 text-sm">
+          <motion.div 
+            className="w-24 h-24 bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-2xl relative overflow-hidden"
+            animate={{ 
+              rotate: [0, 360],
+              boxShadow: [
+                "0 20px 40px rgba(16, 185, 129, 0.2)",
+                "0 25px 50px rgba(16, 185, 129, 0.3)",
+                "0 20px 40px rgba(16, 185, 129, 0.2)"
+              ]
+            }}
+            transition={{ 
+              rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+              boxShadow: { duration: 2, repeat: Infinity }
+            }}
+          >
+            <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
+            <Brain className="h-12 w-12 text-white relative z-10" />
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0"
+              animate={{ x: [-100, 100] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            />
+          </motion.div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent mb-3">
+            AI Bill Analysis
+          </h1>
+          <motion.p 
+            className="text-gray-700 text-base font-medium"
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
             Analyzing {fileCount} page{fileCount > 1 ? 's' : ''} of your medical bill
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Current Stage Animation */}
@@ -200,34 +226,44 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
             className="mb-8"
           >
             <motion.div 
-              className={`w-20 h-20 ${currentStageData.bgColor} rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg`}
+              className={`w-24 h-24 ${currentStageData.bgColor} rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-2xl relative overflow-hidden`}
               animate={{ 
                 rotate: [0, 360],
-                scale: [1, 1.1, 1],
+                scale: [1, 1.08, 1],
                 boxShadow: [
-                  "0 4px 20px rgba(0,0,0,0.1)",
-                  "0 8px 30px rgba(0,0,0,0.15)",
-                  "0 4px 20px rgba(0,0,0,0.1)"
+                  "0 8px 25px rgba(0,0,0,0.12)",
+                  "0 15px 35px rgba(0,0,0,0.18)",
+                  "0 8px 25px rgba(0,0,0,0.12)"
                 ]
               }}
               transition={{ 
-                rotate: { duration: 4, repeat: Infinity, ease: "linear" },
-                scale: { duration: 2, repeat: Infinity },
-                boxShadow: { duration: 2, repeat: Infinity }
+                rotate: { duration: 6, repeat: Infinity, ease: "linear" },
+                scale: { duration: 2.5, repeat: Infinity },
+                boxShadow: { duration: 2.5, repeat: Infinity }
               }}
             >
-              <IconComponent className={`h-10 w-10 ${currentStageData.color}`} />
+              <div className="absolute inset-0 bg-white/15 animate-glass-reflection" />
+              <IconComponent className={`h-12 w-12 ${currentStageData.color} relative z-10`} />
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
+                animate={{ x: [-100, 100] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              />
             </motion.div>
             
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
               {currentStageData.title}
             </h2>
-            <p className="text-gray-600 text-sm leading-relaxed mb-2">
+            <p className="text-gray-700 text-base leading-relaxed mb-3 font-medium">
               {currentStageData.description}
             </p>
-            <p className="text-xs text-gray-500 italic">
+            <motion.p 
+              className="text-sm text-gray-600 italic"
+              animate={{ opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
               {currentStageData.details}
-            </p>
+            </motion.p>
           </motion.div>
         </AnimatePresence>
 

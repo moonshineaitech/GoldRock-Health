@@ -27,7 +27,9 @@ import {
   PlayCircle,
   User,
   Building2,
-  DollarSign
+  DollarSign,
+  ClipboardList,
+  Phone
 } from "lucide-react";
 
 interface WorkflowStep {
@@ -354,22 +356,83 @@ export function EnhancedProgressTracker({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+      className="luxury-card relative overflow-hidden"
     >
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Bill Analysis Progress</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {overallProgress.completed}/{overallProgress.total} steps completed • {timeElapsed} min elapsed
-          </p>
+      {/* Enhanced Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-4">
+          <motion.div 
+            className="w-16 h-16 bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-lg relative overflow-hidden"
+            whileHover={{ scale: 1.05, rotate: 3 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
+            <Target className="h-8 w-8 text-white relative z-10" />
+          </motion.div>
+          <div>
+            <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-1">
+              Bill Analysis Progress
+            </h3>
+            <div className="flex items-center space-x-3 text-sm">
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                {overallProgress.completed}/{overallProgress.total} steps
+              </Badge>
+              <span className="text-gray-600 dark:text-gray-400 flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                {timeElapsed} min elapsed
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="text-right">
-          <div className="text-2xl font-bold text-blue-600">{overallProgress.percentage}%</div>
-          <div className="text-xs text-gray-600 dark:text-gray-400">Complete</div>
-        </div>
+        <motion.div 
+          className="text-right"
+          whileHover={{ scale: 1.05 }}
+        >
+          <motion.div 
+            className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            animate={{ scale: [1, 1.02, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            {overallProgress.percentage}%
+          </motion.div>
+          <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Complete</div>
+          <div className={`text-xs font-medium ${
+            overallProgress.percentage >= 80 ? 'text-green-600' :
+            overallProgress.percentage >= 50 ? 'text-blue-600' : 'text-orange-600'
+          }`}>
+            {overallProgress.percentage >= 80 ? 'Almost Done!' :
+             overallProgress.percentage >= 50 ? 'Making Progress' : 'Getting Started'}
+          </div>
+        </motion.div>
       </div>
 
-      <Progress value={overallProgress.percentage} className="h-3 mb-6" />
+      {/* Enhanced Progress Bar */}
+      <div className="mb-8">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 rounded-full h-4" />
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 rounded-full h-4 shadow-lg"
+            initial={{ width: 0 }}
+            animate={{ width: `${overallProgress.percentage}%` }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/10 to-transparent rounded-full h-4" />
+          <motion.div
+            className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white rounded-full shadow-lg border-2 border-blue-500 z-10"
+            style={{ left: `calc(${overallProgress.percentage}% - 12px)` }}
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <div className="absolute inset-1 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full" />
+          </motion.div>
+        </div>
+        <div className="flex justify-between mt-2 text-xs text-gray-500">
+          <span>Started</span>
+          <span>Analysis</span>
+          <span>Action</span>
+          <span>Complete</span>
+        </div>
+      </div>
 
       <Tabs value={currentWorkflow} onValueChange={(value) => setCurrentWorkflow(value as any)}>
         <TabsList className="grid w-full grid-cols-3">
@@ -402,12 +465,12 @@ export function EnhancedProgressTracker({
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                  className={`p-5 rounded-xl cursor-pointer transition-all duration-300 relative overflow-hidden group ${
                     step.status === 'completed' 
-                      ? 'border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-900/20' 
+                      ? 'luxury-card border-green-200 shadow-lg shadow-green-500/10' 
                       : step.actionRequired 
-                        ? 'border-blue-200 bg-blue-50/50 dark:border-blue-800 dark:bg-blue-900/20' 
-                        : 'border-gray-200 bg-gray-50/50 dark:border-gray-700 dark:bg-gray-800/50'
+                        ? 'luxury-card border-blue-200 shadow-lg shadow-blue-500/10' 
+                        : 'luxury-card border-gray-200'
                   }`}
                   onClick={() => setExpandedStep(expandedStep === step.id ? null : step.id)}
                 >
@@ -475,17 +538,24 @@ export function EnhancedProgressTracker({
                         )}
 
                         {step.actionRequired && step.status === 'pending' && (
-                          <Button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleStepAction(step);
-                            }}
-                            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
-                            size="sm"
+                          <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
-                            <PlayCircle className="h-4 w-4 mr-2" />
-                            Start This Step
-                          </Button>
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleStepAction(step);
+                              }}
+                              className="w-full bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 hover:from-blue-600 hover:via-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25 relative overflow-hidden group"
+                              size="sm"
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                              <PlayCircle className="h-4 w-4 mr-2" />
+                              <span className="font-semibold">Start This Step</span>
+                              <ChevronRight className="h-3 w-3 ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                          </motion.div>
                         )}
                       </motion.div>
                     )}

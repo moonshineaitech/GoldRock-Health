@@ -25,16 +25,17 @@ export default function Landing() {
         </div>
         
         <motion.div 
-          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/30 relative"
+          className="w-24 h-24 luxury-card bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-amber-500/30 relative overflow-hidden"
           initial={{ scale: 0, rotate: -270, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ 
-            duration: 0.8, 
+            duration: 1, 
             delay: 0.4,
             type: "spring",
             stiffness: 150,
             damping: 10
           }}
+          whileHover={{ scale: 1.1, rotate: 5 }}
         >
           {/* Glass overlay on icon */}
           <div className="absolute inset-0 bg-white/20 rounded-[2rem] backdrop-blur-sm" />

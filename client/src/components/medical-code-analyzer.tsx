@@ -295,7 +295,7 @@ This analysis represents significant billing irregularities that require immedia
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 relative"
+      className="luxury-card relative overflow-hidden"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -306,15 +306,34 @@ This analysis represents significant billing irregularities that require immedia
         />
       )}
 
-      <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center">
-          <Brain className="h-6 w-6 text-white" />
-        </div>
-        <div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Medical Code Analysis</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {totalCodes} codes detected • AI-powered compliance check
-          </p>
+      {/* Enhanced Header with Gradient Animation */}
+      <div className="flex items-center space-x-4 mb-8">
+        <motion.div 
+          className="w-16 h-16 bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg relative overflow-hidden"
+          whileHover={{ scale: 1.05, rotate: 5 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
+          <Brain className="h-8 w-8 text-white relative z-10" />
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
+            animate={{ x: [-100, 100] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          />
+        </motion.div>
+        <div className="flex-1">
+          <h3 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-1">
+            Medical Code Analysis
+          </h3>
+          <div className="flex items-center space-x-3">
+            <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+              {totalCodes} codes detected
+            </Badge>
+            <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+              <Sparkles className="h-3 w-3 mr-1" />
+              AI-powered compliance check
+            </span>
+          </div>
         </div>
       </div>
 
@@ -339,26 +358,62 @@ This analysis represents significant billing irregularities that require immedia
             <TabsTrigger value="savings">Savings</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-4">
+          <TabsContent value="overview" className="space-y-6">
+            {/* Enhanced Statistics Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Shield className="h-5 w-5 text-green-600" />
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                className="luxury-card p-6 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/10 to-emerald-500/10 rounded-full -translate-y-8 translate-x-8" />
+                <div className="flex items-center space-x-3 relative z-10">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-white" />
+                  </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{analysis.riskScore}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Compliance Score</div>
+                    <motion.div 
+                      className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      {analysis.riskScore}
+                    </motion.div>
+                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Compliance Score</div>
+                    <div className="text-xs text-green-600 font-medium">
+                      {analysis.riskScore >= 80 ? 'Excellent' : analysis.riskScore >= 60 ? 'Good' : 'Needs Review'}
+                    </div>
                   </div>
                 </div>
-              </Card>
-              <Card className="p-4">
-                <div className="flex items-center space-x-2">
-                  <AlertTriangle className="h-5 w-5 text-orange-600" />
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                className="luxury-card p-6 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/10 to-red-500/10 rounded-full -translate-y-8 translate-x-8" />
+                <div className="flex items-center space-x-3 relative z-10">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center">
+                    <AlertTriangle className="h-6 w-6 text-white" />
+                  </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{analysis.complianceIssues}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Issues Found</div>
+                    <motion.div 
+                      className={`text-3xl font-bold ${analysis.complianceIssues > 0 ? 'bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent' : 'text-gray-400'}`}
+                      animate={analysis.complianceIssues > 0 ? { scale: [1, 1.1, 1] } : {}}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    >
+                      {analysis.complianceIssues}
+                    </motion.div>
+                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Issues Found</div>
+                    <div className={`text-xs font-medium ${
+                      analysis.complianceIssues === 0 ? 'text-green-600' :
+                      analysis.complianceIssues <= 3 ? 'text-yellow-600' : 'text-red-600'
+                    }`}>
+                      {analysis.complianceIssues === 0 ? 'All Clear' :
+                       analysis.complianceIssues <= 3 ? 'Minor Issues' : 'Requires Attention'}
+                    </div>
                   </div>
                 </div>
-              </Card>
+              </motion.div>
             </div>
 
             {analysis.complianceIssues > 0 && (
@@ -383,13 +438,21 @@ This analysis represents significant billing irregularities that require immedia
               </div>
             )}
 
-            <Button
-              onClick={generateDetailedAnalysisPrompt}
-              className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <Sparkles className="h-4 w-4 mr-2" />
-              Generate Comprehensive Analysis Report
-            </Button>
+              <Button
+                onClick={generateDetailedAnalysisPrompt}
+                className="w-full bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 hover:from-purple-600 hover:via-purple-700 hover:to-indigo-700 text-white shadow-lg shadow-purple-500/25 relative overflow-hidden group"
+                size="lg"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                <Sparkles className="h-5 w-5 mr-2" />
+                <span className="font-semibold">Generate Comprehensive Analysis Report</span>
+                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </motion.div>
           </TabsContent>
 
           <TabsContent value="codes" className="space-y-3">
