@@ -309,81 +309,12 @@ function PremiumMarketing() {
         </motion.p>
       </motion.div>
 
-      {/* Premium Features Grid */}
-      <motion.div
-        className="space-y-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
-        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
-          What You Get with Premium
-        </h2>
-        
-        {/* Condensed Premium Features - Clickable */}
-        <motion.div 
-          className="space-y-4 cursor-pointer"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.4 }}
-          onClick={() => document.getElementById('purchase-section')?.scrollIntoView({ behavior: 'smooth' })}
-        >
-          {/* Value Banner */}
-          <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center">
-            <div className="flex items-center justify-center space-x-2 mb-1">
-              <TrendingDown className="h-5 w-5 text-emerald-600" />
-              <span className="font-bold text-emerald-700">Average User Saves $8,500</span>
-            </div>
-            <p className="text-sm text-emerald-600">Subscription pays for itself with first bill analysis</p>
-          </div>
-          
-          {/* Key Features Grid */}
-          <div className="grid grid-cols-2 gap-3">
-            <MobileCard className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <MessageCircle className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Expert Negotiation</h4>
-                <p className="text-xs text-gray-700">Hospital-specific scripts & tactics</p>
-              </div>
-            </MobileCard>
-            
-            <MobileCard className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 border-indigo-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <Code className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Billing Code Mastery</h4>
-                <p className="text-xs text-gray-700">Decode overcharge patterns</p>
-              </div>
-            </MobileCard>
-            
-            <MobileCard className="bg-gradient-to-r from-orange-50/80 to-amber-50/80 border-orange-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <UserCheck className="h-8 w-8 text-orange-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Personal Coach</h4>
-                <p className="text-xs text-gray-700">1-on-1 billing veteran guidance</p>
-              </div>
-            </MobileCard>
-            
-            <MobileCard className="bg-gradient-to-r from-teal-50/80 to-cyan-50/80 border-teal-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <Clock className="h-8 w-8 text-teal-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Strategic Timing</h4>
-                <p className="text-xs text-gray-700">When to dispute & escalate</p>
-              </div>
-            </MobileCard>
-          </div>
-          
-          <div className="text-center py-2">
-            <p className="text-sm text-gray-600">👆 Tap to choose your plan</p>
-          </div>
-        </motion.div>
-      </motion.div>
-
       {/* Single Plan Box with Toggle */}
       <motion.div
         className="space-y-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.4, duration: 0.5 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
         id="purchase-section"
       >
         <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
@@ -463,6 +394,70 @@ function PremiumMarketing() {
             })()}
           </div>
         </MobileCard>
+      </motion.div>
+
+      {/* Premium Features Grid */}
+      <motion.div
+        className="space-y-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.0, duration: 0.5 }}
+      >
+        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
+          What You Get with Premium
+        </h2>
+        
+        {/* Condensed Premium Features */}
+        <motion.div 
+          className="space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.4 }}
+        >
+          {/* Value Banner */}
+          <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center">
+            <div className="flex items-center justify-center space-x-2 mb-1">
+              <TrendingDown className="h-5 w-5 text-emerald-600" />
+              <span className="font-bold text-emerald-700">Average User Saves $8,500</span>
+            </div>
+            <p className="text-sm text-emerald-600">Subscription pays for itself with first bill analysis</p>
+          </div>
+          
+          {/* Key Features Grid */}
+          <div className="grid grid-cols-2 gap-3">
+            <MobileCard className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <MessageCircle className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Expert Negotiation</h4>
+                <p className="text-xs text-gray-700">Hospital-specific scripts & tactics</p>
+              </div>
+            </MobileCard>
+            
+            <MobileCard className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 border-indigo-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <Code className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Billing Code Mastery</h4>
+                <p className="text-xs text-gray-700">Decode overcharge patterns</p>
+              </div>
+            </MobileCard>
+            
+            <MobileCard className="bg-gradient-to-r from-orange-50/80 to-amber-50/80 border-orange-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <UserCheck className="h-8 w-8 text-orange-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Personal Coach</h4>
+                <p className="text-xs text-gray-700">1-on-1 billing veteran guidance</p>
+              </div>
+            </MobileCard>
+            
+            <MobileCard className="bg-gradient-to-r from-teal-50/80 to-cyan-50/80 border-teal-200 hover:shadow-lg transition-shadow">
+              <div className="text-center p-2">
+                <Clock className="h-8 w-8 text-teal-600 mx-auto mb-2" />
+                <h4 className="font-bold text-gray-900 text-sm mb-1">Strategic Timing</h4>
+                <p className="text-xs text-gray-700">When to dispute & escalate</p>
+              </div>
+            </MobileCard>
+          </div>
+        </motion.div>
       </motion.div>
 
     </div>
