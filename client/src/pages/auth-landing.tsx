@@ -1,10 +1,17 @@
 import { MobileButton } from "@/components/mobile-layout";
-import { Apple, Mail, ArrowRight, Stethoscope } from "lucide-react";
+import { Apple, Mail, ArrowRight, Stethoscope, Shield, Brain, DollarSign, Users, CheckCircle, Star, Trophy, TrendingUp, Clock, Target, Award, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function AuthLanding() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col relative overflow-hidden">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <div className="absolute top-20 left-10 w-2 h-2 bg-indigo-300 rounded-full animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-1 h-1 bg-emerald-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-40 left-20 w-1.5 h-1.5 bg-purple-300 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" style={{animationDelay: '3s'}}></div>
+      </div>
       {/* Header */}
       <div className="flex-1 flex flex-col justify-center px-6 py-12">
         
@@ -38,14 +45,19 @@ export default function AuthLanding() {
             <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
           </motion.h1>
           
-          <motion.p 
-            className="text-lg text-gray-600 max-w-sm mx-auto leading-relaxed"
+          <motion.div 
+            className="max-w-lg mx-auto space-y-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
-            Master medical diagnosis with AI-powered patient simulations
-          </motion.p>
+            <p className="text-xl font-semibold text-gray-800 leading-tight">
+              Advanced Medical Training + Financial Protection
+            </p>
+            <p className="text-base text-gray-600 leading-relaxed">
+              Master clinical skills with 60+ AI cases across 19 specialties while detecting <span className="font-bold text-emerald-600">$50K-$500K+</span> in medical bill overcharges
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Authentication Options */}
@@ -122,52 +134,176 @@ export default function AuthLanding() {
           </motion.div>
         </motion.div>
 
-        {/* Features Preview */}
+        {/* Comprehensive Benefits Section */}
         <motion.div 
-          className="mt-12 max-w-sm mx-auto"
+          className="mt-16 max-w-2xl mx-auto space-y-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0, duration: 0.6 }}
         >
-          <div className="grid grid-cols-3 gap-4 text-center">
-            {[
-              { icon: "🔬", title: "60+ Cases", desc: "Medical scenarios" },
-              { icon: "🤖", title: "AI-Powered", desc: "Smart simulations" },
-              { icon: "🏆", title: "Progress", desc: "Track growth" }
-            ].map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-white/50"
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: 1.2 + index * 0.1, 
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 200
-                }}
-              >
-                <div className="text-2xl mb-2">{feature.icon}</div>
-                <h3 className="font-semibold text-gray-900 text-sm mb-1">{feature.title}</h3>
-                <p className="text-xs text-gray-600">{feature.desc}</p>
-              </motion.div>
-            ))}
+          {/* Medical Training Features */}
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+              <Brain className="h-5 w-5 text-indigo-600" />
+              AI-Powered Medical Training
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { icon: Stethoscope, title: "60+ Cases", desc: "19 Specialties", gradient: "from-indigo-500 to-purple-600" },
+                { icon: Zap, title: "Voice AI", desc: "Natural conversations", gradient: "from-emerald-500 to-teal-600" },
+                { icon: Target, title: "Real-time", desc: "Instant feedback", gradient: "from-amber-500 to-orange-600" },
+                { icon: Trophy, title: "Board Prep", desc: "USMLE ready", gradient: "from-rose-500 to-pink-600" }
+              ].map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/30 shadow-lg"
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ 
+                    delay: 1.2 + index * 0.1, 
+                    duration: 0.5,
+                    type: "spring",
+                    stiffness: 200
+                  }}
+                >
+                  <div className={`w-8 h-8 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-3 mx-auto`}>
+                    <feature.icon className="h-4 w-4 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 text-sm mb-1">{feature.title}</h4>
+                  <p className="text-xs text-gray-600">{feature.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
+
+          {/* Bill Analysis Features */}
+          <div className="text-center">
+            <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+              <Shield className="h-5 w-5 text-emerald-600" />
+              Financial Protection Suite
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { icon: DollarSign, title: "$50K-$500K+", desc: "Overcharge detection", gradient: "from-emerald-500 to-green-600" },
+                { icon: CheckCircle, title: "Error Analysis", desc: "AI-powered scanning", gradient: "from-blue-500 to-cyan-600" },
+                { icon: Mail, title: "Legal Letters", desc: "Auto-generated", gradient: "from-purple-500 to-indigo-600" },
+                { icon: Users, title: "Expert Support", desc: "Professional guidance", gradient: "from-amber-500 to-yellow-600" }
+              ].map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/30 shadow-lg"
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ 
+                    delay: 1.6 + index * 0.1, 
+                    duration: 0.5,
+                    type: "spring",
+                    stiffness: 200
+                  }}
+                >
+                  <div className={`w-8 h-8 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-3 mx-auto`}>
+                    <feature.icon className="h-4 w-4 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 text-sm mb-1">{feature.title}</h4>
+                  <p className="text-xs text-gray-600">{feature.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Social Proof & Stats */}
+          <motion.div 
+            className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-200/50 shadow-lg"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 2.0, duration: 0.6 }}
+          >
+            <div className="text-center mb-4">
+              <h4 className="font-bold text-indigo-900 text-base mb-2">Trusted by Medical Professionals</h4>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <div className="text-2xl font-bold text-indigo-700">60+</div>
+                  <div className="text-xs text-indigo-600">Medical Cases</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-emerald-700">$500K+</div>
+                  <div className="text-xs text-emerald-600">Max Savings</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-purple-700">19</div>
+                  <div className="text-xs text-purple-600">Specialties</div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+              ))}
+              <span className="text-sm text-gray-700 ml-2 font-medium">Professional Grade Platform</span>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 
-      {/* Footer */}
+      {/* Enhanced Footer */}
       <motion.div 
-        className="px-6 pb-8"
+        className="px-6 pb-8 mt-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
+        transition={{ delay: 2.2, duration: 0.6 }}
       >
-        <p className="text-center text-sm text-gray-500 leading-relaxed">
-          By continuing, you agree to our Terms of Service and Privacy Policy.{" "}
-          <br />
-          <span className="text-indigo-600 font-medium">Start your medical training journey today.</span>
-        </p>
+        {/* Trust Indicators */}
+        <div className="flex items-center justify-center space-x-6 mb-6">
+          <div className="flex items-center space-x-2">
+            <Shield className="h-4 w-4 text-emerald-600" />
+            <span className="text-xs font-medium text-gray-700">HIPAA Compliant</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <CheckCircle className="h-4 w-4 text-blue-600" />
+            <span className="text-xs font-medium text-gray-700">Medical Grade</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Award className="h-4 w-4 text-purple-600" />
+            <span className="text-xs font-medium text-gray-700">AI-Powered</span>
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-4 mb-6 border border-indigo-200/50">
+          <div className="text-center">
+            <h4 className="font-bold text-indigo-900 text-sm mb-2">
+              🎆 Transform Your Medical Career Today
+            </h4>
+            <p className="text-xs text-indigo-700 leading-relaxed">
+              Join thousands of medical professionals mastering clinical skills while protecting their finances. 
+              <span className="font-semibold">Start free - no credit card required.</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Legal & Links */}
+        <div className="text-center space-y-3">
+          <p className="text-xs text-gray-500 leading-relaxed">
+            By continuing, you agree to our{" "}
+            <span className="text-indigo-600 font-medium underline cursor-pointer">Terms of Service</span>
+            {" "}and{" "}
+            <span className="text-indigo-600 font-medium underline cursor-pointer">Privacy Policy</span>
+          </p>
+          
+          <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
+            <span>© 2025 GoldRock Health</span>
+            <span>•</span>
+            <span>Professional Medical Training</span>
+            <span>•</span>
+            <span>Financial Protection</span>
+          </div>
+
+          <div className="pt-2">
+            <p className="text-xs text-emerald-600 font-semibold">
+              ✨ Ready to discover hidden overcharges and master clinical excellence?
+            </p>
+          </div>
+        </div>
       </motion.div>
     </div>
   );
