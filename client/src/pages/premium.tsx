@@ -78,7 +78,7 @@ const subscriptionPlans = [
   {
     id: "monthly",
     name: "Monthly",
-    price: 39.99,
+    price: 20,
     period: "month",
     savings: null,
     popular: false,
@@ -94,9 +94,9 @@ const subscriptionPlans = [
   {
     id: "annual",
     name: "Annual",
-    price: 399.99,
+    price: 189,
     period: "year",
-    savings: "Save 17% + 2 Free Months",
+    savings: "Save 21% (~2.6 months free)",
     popular: true,
     features: [
       "Everything in Monthly plan",
@@ -417,7 +417,7 @@ function PremiumMarketing() {
               >
                 Annual
                 <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                  Save 17%
+                  Save 21%
                 </span>
               </button>
             </div>
