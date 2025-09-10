@@ -236,7 +236,7 @@ export function MedicalChatbot() {
                         <Stethoscope className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold text-sm">Medical Assistant</h3>
+                        <h3 className="text-white font-semibold text-sm">Bill Reduction Expert</h3>
                         <p className="text-emerald-100 text-xs">Ask about health & insurance</p>
                       </div>
                     </div>

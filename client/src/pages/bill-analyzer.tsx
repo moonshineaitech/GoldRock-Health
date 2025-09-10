@@ -335,7 +335,7 @@ What specific billing errors have you identified that need to be included in you
     // Default response with enhanced Bill Reduction Guide strategies
     return `I am a medical bill reduction specialist with expertise in identifying overcharges and negotiating substantial reductions for patients facing large medical bills.
 
-🎯 KEY INSIGHT: 80% of medical bills contain errors worth $50K-$500K+ in total overcharges annually.
+🎯 KEY INSIGHT: 80% of medical bills contain errors worth $2,000-$35,000+ in total overcharges annually.
 
 CORE SPECIALIZATION AREAS:
 

@@ -129,7 +129,7 @@ export default function BillReductionGuide() {
         >
           <div className="text-center mb-4">
             <h1 className="text-xl font-black text-emerald-700 mb-2">Expert Bill Reduction Strategies</h1>
-            <p className="text-sm text-emerald-600">Professional techniques that save patients $50K-$500K+</p>
+            <p className="text-sm text-emerald-600">Professional techniques that save patients $2,000-$35,000+</p>
           </div>
           
           <div className="grid grid-cols-3 gap-3">
@@ -1287,7 +1287,7 @@ Respectfully,
           <Heart className="h-8 w-8 mx-auto mb-2" />
           <h3 className="font-bold text-lg mb-1">Ready to Start Saving?</h3>
           <p className="text-emerald-100 text-sm mb-3">
-            Join thousands who've reduced their medical bills by $50K-$500K+
+            Join thousands who've reduced their medical bills by $2,000-$35,000+
           </p>
           <MobileButton 
             className="bg-white text-emerald-600 hover:bg-gray-50 font-bold"

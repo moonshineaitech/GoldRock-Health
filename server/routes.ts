@@ -2291,7 +2291,7 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
       // Use OpenAI for intelligent medical responses if available
       if (process.env.OPENAI_API_KEY) {
         try {
-          const prompt = `You are an expert medical assistant and professional medical bill reduction specialist with 20+ years of experience. You provide both medical guidance and world-class medical billing advocacy.
+          const prompt = `You are an expert bill reduction expert and medical bill advocate with 20+ years of experience. You provide both medical guidance and world-class medical billing advocacy.
 
 **EXPERT MEDICAL BILL REDUCTION DATABASE:**
 
@@ -2395,7 +2395,7 @@ Respond with complete, detailed advice AND proactive offers to generate document
               messages: [
                 {
                   role: 'system',
-                  content: 'You are an expert medical assistant and professional medical bill reduction specialist. For medical questions, provide standard guidance with disclaimers. For billing questions, use your extensive database of expert strategies to provide consultancy-level advice that saves patients thousands of dollars. Always be specific, actionable, and include exact scripts and dollar amounts.'
+                  content: 'You are an expert bill reduction expert and medical bill advocate. For medical questions, provide standard guidance with disclaimers. For billing questions, use your extensive database of expert strategies to provide consultancy-level advice that saves patients thousands of dollars. Always be specific, actionable, and include exact scripts and dollar amounts.'
                 },
                 {
                   role: 'user',
@@ -2451,7 +2451,7 @@ What specific insurance issue are you facing? I can provide exact templates and 
           } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
             response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.\n\nIf you're concerned about prescription costs, I can also help with medical bill reduction strategies and pharmaceutical assistance programs.";
           } else {
-            response = "I'm a medical assistant specializing in both health guidance and medical bill reduction. I help patients save $50K-$500K+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
+            response = "I'm a bill reduction expert specializing in both health guidance and medical bill reduction. I help patients save $2,000-$35,000+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
           }
         }
       } else {
@@ -2492,7 +2492,7 @@ What specific insurance issue are you facing? I can provide exact templates and 
         } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
           response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.\n\nIf you're concerned about prescription costs, I can also help with medical bill reduction strategies and pharmaceutical assistance programs.";
         } else {
-          response = "I'm a medical assistant specializing in both health guidance and medical bill reduction. I help patients save $50K-$500K+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
+          response = "I'm a bill reduction expert specializing in both health guidance and medical bill reduction. I help patients save $2,000-$35,000+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
         }
       }
 

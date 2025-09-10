@@ -72,7 +72,7 @@ export default function Landing() {
             <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
           </h1>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Save $50K-$500K+ on Medical Bills + Learn Medicine
+            Save $2,000-$35,000+ on Medical Bills + Learn Medicine
           </h2>
         </motion.div>
         

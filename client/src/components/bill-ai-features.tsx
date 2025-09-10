@@ -732,7 +732,7 @@ Create a complete appeal workflow that directly addresses the insurance company'
         />
 
         <Textarea
-          placeholder="Explain why this service was medically necessary (include symptoms, diagnosis, treatment history)"
+          placeholder="Explain why this service was medically necessary (include symptoms, medical condition, treatment history)"
           value={appealData.medicalNecessity}
           onChange={(e) => setAppealData(prev => ({ ...prev, medicalNecessity: e.target.value }))}
           className="h-24"

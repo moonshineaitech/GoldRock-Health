@@ -55,7 +55,7 @@ export default function AuthLanding() {
               Advanced Medical Training + Financial Protection
             </p>
             <p className="text-base text-gray-600 leading-relaxed">
-              Master clinical skills with 60+ AI cases across 19 specialties while detecting <span className="font-bold text-emerald-600">$50K-$500K+</span> in medical bill overcharges
+              Master clinical skills with 60+ AI cases across 19 specialties while detecting <span className="font-bold text-emerald-600">$2,000-$35,000+</span> in medical bill overcharges
             </p>
           </motion.div>
         </motion.div>
@@ -184,7 +184,7 @@ export default function AuthLanding() {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: DollarSign, title: "$50K-$500K+", desc: "Overcharge detection", gradient: "from-emerald-500 to-green-600" },
+                { icon: DollarSign, title: "$2,000-$35,000+", desc: "Overcharge detection", gradient: "from-emerald-500 to-green-600" },
                 { icon: CheckCircle, title: "Error Analysis", desc: "AI-powered scanning", gradient: "from-blue-500 to-cyan-600" },
                 { icon: Mail, title: "Legal Letters", desc: "Auto-generated", gradient: "from-purple-500 to-indigo-600" },
                 { icon: Users, title: "Expert Support", desc: "Professional guidance", gradient: "from-amber-500 to-yellow-600" }
@@ -256,7 +256,7 @@ export default function AuthLanding() {
         <div className="flex items-center justify-center space-x-6 mb-6">
           <div className="flex items-center space-x-2">
             <Shield className="h-4 w-4 text-emerald-600" />
-            <span className="text-xs font-medium text-gray-700">HIPAA Compliant</span>
+            <span className="text-xs font-medium text-gray-700">Exceeds Privacy Standards</span>
           </div>
           <div className="flex items-center space-x-2">
             <CheckCircle className="h-4 w-4 text-blue-600" />

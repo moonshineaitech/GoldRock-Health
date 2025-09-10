@@ -19,7 +19,7 @@ const premiumFeatures = [
   {
     icon: DollarSign,
     title: "Medical Bill AI Analysis",
-    description: "AI identifies $10K-$500K+ in billing overcharges using proven detection algorithms",
+    description: "AI identifies $2,000-$35,000+ in billing overcharges using proven detection algorithms",
     highlight: "Save thousands",
     category: "billing"
   },
@@ -83,7 +83,7 @@ const subscriptionPlans = [
     savings: null,
     popular: false,
     features: [
-      "AI Bill Analysis (Avg. $127K saved per user)",
+      "AI Bill Analysis (Avg. $8,500 saved per user)",
       "Expert negotiation coaching & proven scripts", 
       "Strategic timing guide for maximum success",
       "Billing code mastery & overcharge detection",
@@ -332,7 +332,7 @@ function PremiumMarketing() {
           <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center">
             <div className="flex items-center justify-center space-x-2 mb-1">
               <TrendingDown className="h-5 w-5 text-emerald-600" />
-              <span className="font-bold text-emerald-700">Average User Saves $127,000</span>
+              <span className="font-bold text-emerald-700">Average User Saves $8,500</span>
             </div>
             <p className="text-sm text-emerald-600">Subscription pays for itself with first bill analysis</p>
           </div>
