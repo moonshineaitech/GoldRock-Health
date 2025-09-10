@@ -52,6 +52,10 @@ import { BillAnalysisLoader } from "@/components/BillAnalysisLoader";
 import { SavingsCalculator } from "@/components/SavingsCalculator";
 import { DemoStatsPanel } from "@/components/DemoStatsPanel";
 import { PremiumFeatureShowcase } from "@/components/PremiumFeatureShowcase";
+import { MedicalCodeAnalyzer } from "@/components/medical-code-analyzer";
+import { EnhancedProgressTracker } from "@/components/enhanced-progress-tracker";
+import { AdvancedErrorDetector } from "@/components/advanced-error-detector";
+import { ProfessionalWorkflowSuite } from "@/components/professional-workflow-suite";
 
 interface AIMessage {
   id: string;
@@ -101,6 +105,11 @@ export default function BillAI() {
   const [savingsAnalysisStage, setSavingsAnalysisStage] = useState<'scanning' | 'analyzing' | 'calculating' | 'complete'>('scanning');
   const [showDemoStats, setShowDemoStats] = useState(true);
   const [showPremiumShowcase, setShowPremiumShowcase] = useState(false);
+  const [showMedicalCodeAnalyzer, setShowMedicalCodeAnalyzer] = useState(false);
+  const [showEnhancedTracker, setShowEnhancedTracker] = useState(true);
+  const [showAdvancedErrorDetector, setShowAdvancedErrorDetector] = useState(false);
+  const [showProfessionalWorkflows, setShowProfessionalWorkflows] = useState(false);
+  const [analysisComplete, setAnalysisComplete] = useState(false);
   
   // Intake State Management
   const [intakeState, setIntakeState] = useState<IntakeState>({});
@@ -362,7 +371,31 @@ export default function BillAI() {
   const updateIntakeFromMessage = (content: string) => {
     const updates = extractBillInformation(content);
     if (Object.keys(updates).length > 0) {
-      setIntakeState(prev => ({ ...prev, ...updates }));
+      setIntakeState(prev => {
+        const newState = { ...prev, ...updates };
+        
+        // Auto-trigger new components based on available data
+        // Show medical code analyzer if we have codes
+        if ((updates.cptCodes?.length || 0) > 0 || (updates.icdCodes?.length || 0) > 0) {
+          setTimeout(() => setShowMedicalCodeAnalyzer(true), 1000);
+        }
+        
+        // Show error detector if we have amount and basic info
+        if (updates.amount && newState.provider && newState.dates) {
+          setTimeout(() => setShowAdvancedErrorDetector(true), 1500);
+        }
+        
+        // Mark analysis complete if we have comprehensive data
+        if (newState.amount && newState.provider && newState.dates && 
+            ((newState.cptCodes?.length || 0) > 0 || (newState.icdCodes?.length || 0) > 0)) {
+          setTimeout(() => {
+            setAnalysisComplete(true);
+            setShowProfessionalWorkflows(true);
+          }, 2000);
+        }
+        
+        return newState;
+      });
     }
   };
 
@@ -2087,6 +2120,79 @@ Now let me analyze their message and provide expert guidance to advance their bi
                   Math.round(parseFloat(intakeState.amount.replace(/[$,]/g, '')) * 0.15).toLocaleString() : 
                   '12,400'
                 }
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Enhanced Progress Tracker */}
+        {showEnhancedTracker && (
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+            <div className="p-3">
+              <EnhancedProgressTracker 
+                intakeState={intakeState}
+                analysisComplete={analysisComplete}
+                onSendMessage={sendMessage}
+                onNextStep={(stepId: string) => {
+                  // Handle next step action
+                  if (stepId === 'medical-codes' && (intakeState.cptCodes?.length || 0) > 0) {
+                    setShowMedicalCodeAnalyzer(true);
+                  }
+                  if (stepId === 'error-detection' && intakeState.amount) {
+                    setShowAdvancedErrorDetector(true);
+                  }
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Medical Code Analyzer */}
+        {showMedicalCodeAnalyzer && (intakeState.cptCodes?.length || 0) > 0 && (
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+            <div className="p-3">
+              <MedicalCodeAnalyzer 
+                cptCodes={intakeState.cptCodes}
+                icdCodes={intakeState.icdCodes}
+                hcpcsCodes={intakeState.hcpcsCodes}
+                billAmount={intakeState.amount}
+                provider={intakeState.provider}
+                onSendMessage={sendMessage}
+                isVisible={showMedicalCodeAnalyzer}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Advanced Error Detector */}
+        {showAdvancedErrorDetector && intakeState.amount && (
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+            <div className="p-3">
+              <AdvancedErrorDetector 
+                billAmount={intakeState.amount}
+                provider={intakeState.provider}
+                cptCodes={intakeState.cptCodes}
+                icdCodes={intakeState.icdCodes}
+                hcpcsCodes={intakeState.hcpcsCodes}
+                onSendMessage={sendMessage}
+                isVisible={showAdvancedErrorDetector}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Professional Workflow Suite */}
+        {showProfessionalWorkflows && analysisComplete && (
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-100/50 dark:border-gray-700/30">
+            <div className="p-3">
+              <ProfessionalWorkflowSuite 
+                billAmount={intakeState.amount}
+                provider={intakeState.provider}
+                cptCodes={intakeState.cptCodes}
+                icdCodes={intakeState.icdCodes}
+                analysisResults={assessmentIssues}
+                onSendMessage={sendMessage}
+                isVisible={showProfessionalWorkflows}
               />
             </div>
           </div>
