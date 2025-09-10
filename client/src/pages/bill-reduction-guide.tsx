@@ -524,7 +524,7 @@ export default function BillReductionGuide() {
           </p>
           <MobileButton 
             className="bg-white text-emerald-600 hover:bg-gray-50 font-bold"
-            onClick={() => window.location.href = '/bill-analyzer'}
+            onClick={() => window.location.href = '/bill-ai'}
           >
             Analyze My Bill Now
           </MobileButton>

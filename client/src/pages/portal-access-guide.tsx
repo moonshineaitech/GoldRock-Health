@@ -410,7 +410,7 @@ export default function PortalAccessGuide() {
                   
                   <MobileButton 
                     className="w-full bg-gradient-to-r from-emerald-500 to-teal-600"
-                    onClick={() => window.location.href = '/bill-analyzer'}
+                    onClick={() => window.location.href = '/bill-ai'}
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Analyze My Bills Now

@@ -106,7 +106,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 1.1, duration: 0.7, type: "spring", stiffness: 100 }}
         >
-          <Link href="/bill-analyzer">
+          <Link href="/bill-ai">
             <motion.div
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -166,7 +166,7 @@ export default function Landing() {
               desc: "Take a photo or upload PDF - AI analyzes in seconds", 
               color: "emerald", 
               delay: 1.4,
-              href: "/bill-analyzer"
+              href: "/bill-ai"
             },
             { 
               icon: AlertTriangle, 
@@ -174,7 +174,7 @@ export default function Landing() {
               desc: "See exactly what you're being overcharged for", 
               color: "red", 
               delay: 1.5,
-              href: "/bill-analyzer"
+              href: "/bill-ai"
             },
             { 
               icon: DollarSign, 
@@ -182,7 +182,7 @@ export default function Landing() {
               desc: "Download proven templates that get results", 
               color: "green", 
               delay: 1.6,
-              href: "/bill-analyzer"
+              href: "/bill-ai"
             }
           ].map((feature, index) => {
             const IconComponent = feature.icon;
@@ -552,7 +552,7 @@ export default function Landing() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ delay: 3.0, duration: 0.7, type: "spring", stiffness: 150 }}
         >
-          <Link href="/bill-analyzer">
+          <Link href="/bill-ai">
             <motion.div
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.98 }}

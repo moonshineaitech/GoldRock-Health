@@ -548,7 +548,7 @@ function PremiumDashboard() {
         </h2>
         
         <div className="space-y-3">
-          <Link href="/bill-analyzer">
+          <Link href="/bill-ai">
             <MobileButton className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg" size="lg">
               <DollarSign className="h-5 w-5 mr-2" />
               Analyze Medical Bills

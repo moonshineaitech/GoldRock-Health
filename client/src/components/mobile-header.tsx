@@ -33,7 +33,7 @@ export function NavigationDropdown() {
     {
       icon: FileText,
       label: "Bill AI",
-      href: "/bill-analyzer",
+      href: "/bill-ai",
       description: "Find Medical Overcharges"
     },
     {
