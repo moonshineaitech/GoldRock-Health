@@ -55,15 +55,33 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
     }
 
     setIsGenerating(true);
-    const prompt = `Generate a professional medical bill dispute letter using this information:
-Patient Name: ${formData.patientName}
-Account Number: ${formData.accountNumber}
-Hospital: ${formData.hospitalName}
-Bill Amount: ${formData.billAmount}
-Dispute Reason: ${formData.disputeReason}
-Specific Charges: ${formData.specificCharges}
+    const prompt = `I need you to create a comprehensive, legally-compliant medical bill dispute letter that follows the exact format and language that has proven successful in obtaining hospital billing corrections and refunds.
 
-Create a formal, professional dispute letter that references specific billing errors, requests investigation, and cites patient rights. Include all necessary legal language and formatting.`;
+Patient Information:
+- Name: ${formData.patientName}
+- Account Number: ${formData.accountNumber}
+- Hospital/Provider: ${formData.hospitalName}
+- Total Bill Amount: ${formData.billAmount}
+- Dispute Category: ${formData.disputeReason}
+- Specific Problematic Charges: ${formData.specificCharges}
+
+This dispute letter must be structured to compel a response from hospital billing departments and protect the patient's legal rights. The letter should follow this comprehensive framework:
+
+Start with proper business letter formatting including the patient's full contact information, date, and the hospital's billing department address with attention to the "Patient Financial Services Director" or "Chief Financial Officer."
+
+The opening paragraph should immediately establish the legal foundation by referencing the patient's rights under the Fair Credit Billing Act, state hospital transparency laws, and the hospital's own billing error correction policies. Reference the specific account number and state that this constitutes a formal dispute of billing errors.
+
+In the body paragraphs, systematically document each billing error using specific medical billing terminology. For duplicate charges, reference the exact dates, procedure codes, and amounts that appear multiple times. For unbundling violations, explain how services that should be billed as a comprehensive package have been separated to increase charges, citing CMS bundling regulations. For upcoding issues, identify where higher-level procedure codes have been used when documentation supports lower-level services.
+
+Include a detailed demand section that specifies exactly what corrective action is required. Demand itemized documentation for all disputed charges, copies of medical records supporting the billed procedures, and written explanation of the hospital's charge calculation methodology. Require response within 30 days per federal billing dispute regulations.
+
+Reference potential regulatory violations and mention that failure to investigate billing errors could result in complaints to the state health department, Centers for Medicare and Medicaid Services, and the Consumer Financial Protection Bureau. This creates urgency for the billing department to address the issues promptly.
+
+Include specific legal language about the patient's right to withhold payment for disputed charges during the investigation period, protection from collection activities on disputed amounts, and the requirement for written resolution of all disputes.
+
+End with a professional but firm tone that emphasizes the patient's knowledge of their rights and expectation of prompt resolution. Include language about preserving all legal remedies and potential escalation if the hospital fails to respond appropriately.
+
+The letter should demonstrate knowledge of medical billing regulations, use proper industry terminology, and create legal protection for the patient while maintaining a professional tone that encourages cooperation from the billing department. Format it as a complete, ready-to-send business letter with all necessary components.`;
 
     onSendMessage(prompt);
     setIsGenerating(false);
@@ -205,13 +223,36 @@ export function NegotiationScriptGenerator({ onSendMessage }: FeatureProps) {
       return;
     }
 
-    const prompt = `Generate a professional phone negotiation script for "${selectedTemplate}" using this information:
-Bill Amount: ${customization.billAmount}
-Annual Income: ${customization.income}
-Hardship Details: ${customization.hardship}
-Payment Offer: ${customization.paymentOffer}
+    const prompt = `I need you to create a comprehensive, psychologically-informed phone negotiation script for the "${selectedTemplate}" approach that incorporates proven hospital billing negotiation tactics used by professional patient advocates.
 
-Create a step-by-step phone script with exact words to say, anticipated responses, and follow-up questions. Include specific dollar amounts and success tactics.`;
+Negotiation Details:
+- Current Bill Amount: ${customization.billAmount}
+- Patient's Annual Income: ${customization.income}
+- Financial Hardship Circumstances: ${customization.hardship}
+- Proposed Payment Offer: ${customization.paymentOffer}
+- Selected Strategy: ${selectedTemplate}
+
+This phone script must be designed to maximize the chances of significant bill reduction by understanding hospital billing department psychology, internal procedures, and decision-making authority levels. The script should provide a complete roadmap for the phone conversation.
+
+Start with pre-call preparation instructions including the best times to call (typically Tuesday-Thursday, 10 AM-2 PM when supervisors are available), required documentation to have ready, and strategic talking points based on the patient's specific financial situation.
+
+The opening should establish rapport and immediately position the caller as knowledgeable about billing procedures. Use language like "I'm calling to discuss payment options for my account" rather than "I can't afford this bill." This frames the conversation as a business discussion rather than a plea for help.
+
+For financial hardship negotiations, reference specific federal and state regulations that require nonprofit hospitals to provide charity care and payment assistance. Mention the hospital's community benefit obligations and ask specifically about their "financial hardship policy" or "charity care application." Know that hospitals often have income thresholds much higher than publicly disclosed.
+
+If negotiating based on billing errors, reference specific medical billing standards and Medicare rate comparisons. Use terminology like "I'd like to review the itemized charges against Medicare allowable amounts" and "These charges appear inconsistent with standard billing practices." This demonstrates knowledge that compels more serious consideration.
+
+For settlement negotiations, understand that hospitals often prefer lump sum payments and may accept 10-30% of the original bill amount. The script should include language like "I'm prepared to settle this account today for a reasonable amount" and specific phrases that trigger internal settlement procedures.
+
+Include escalation strategies for when the first representative cannot help. Know the titles to ask for: "Patient Financial Services Supervisor," "Revenue Cycle Manager," or "Chief Financial Officer." Each level has different authority to approve reductions.
+
+Provide specific responses to common objections like "This is what your insurance approved" (reference out-of-network balance billing protections), "The bill is accurate" (request itemized documentation and medical records), and "We can only offer a payment plan" (reference charity care requirements and settlement authority).
+
+Include psychological tactics like the "broken record" technique for persistent requests, "anchoring" by starting with a lower offer, and "time pressure" by mentioning other hospitals' more favorable policies. These proven negotiation techniques increase success rates dramatically.
+
+End the script with follow-up procedures including how to document agreements, request written confirmation, and timeline expectations for resolution. Include backup strategies if the initial call doesn't succeed.
+
+The script should read like a complete playbook that guides the caller through every aspect of the conversation, anticipates hospital responses, and provides professional language that achieves maximum bill reduction based on the selected negotiation strategy.`;
 
     onSendMessage(prompt);
   };
@@ -397,11 +438,33 @@ export function ErrorDetectionChecklist({ onSendMessage }: FeatureProps) {
     const selectedErrors = errorTypes.filter(error => checkedItems.includes(error.id));
     const errorDetails = selectedErrors.map(error => `${error.title}: ${error.desc}`).join(', ');
     
-    const prompt = `I've identified these billing errors on my medical bill: ${errorDetails}. 
-    
-    Additional findings: ${findings}
-    
-    Please provide a detailed analysis of these errors, estimated savings amounts, specific dispute strategies, and exact steps to challenge each error with the billing department. Include templates for dispute letters and phone scripts.`;
+    const prompt = `I've conducted a systematic review of my medical bill and identified multiple billing errors that require forensic analysis and strategic dispute planning. As my professional medical billing advocate, I need your expertise to create a comprehensive action plan for challenging these errors and recovering overcharges.
+
+Identified Billing Errors:
+${errorDetails}
+
+Additional Investigation Findings:
+${findings}
+
+I need you to provide a comprehensive forensic analysis of each identified error type, treating this like a professional billing audit worth thousands of dollars in potential savings. Your analysis should include several critical components:
+
+For each error type I've identified, provide a detailed explanation of why this constitutes a billing violation, including references to relevant medical billing standards, CMS regulations, or industry practices that hospitals are violating. Explain the typical methods hospitals use to disguise these errors and why they persist in billing systems.
+
+Calculate realistic savings potential for each error category based on industry data and typical hospital markups. Reference specific examples like "Duplicate lab charges typically represent $200-$2,000 in recoverable overcharges" or "Unbundling violations in surgical procedures average $3,000-$15,000 in excess charges." Provide ranges that reflect conservative to aggressive dispute outcomes.
+
+Develop specific dispute strategies for each error type that account for hospital billing department psychology and procedures. For duplicate charges, explain how to demand chronological service logs and cross-reference billing timestamps. For upcoding violations, detail how to request medical records documentation and compare against Medicare coding guidelines. For unbundling schemes, provide language that references CMS bundling regulations and demands compliance review.
+
+Create prioritized action steps that maximize savings potential while minimizing dispute complexity. Identify which errors have the highest success rates for amateur advocates versus those requiring professional escalation. Provide specific timelines for each dispute phase and explain hospital response patterns.
+
+Include template language for dispute letters that incorporates legal protections, regulatory references, and professional terminology that compels serious review. The templates should demonstrate knowledge of billing department procedures and include escalation language for non-responsive institutions.
+
+Provide detailed phone script components for calling billing departments about each error type. Include specific questions that expose billing weaknesses, responses to common objections, and escalation procedures to reach decision-makers with authority to authorize refunds.
+
+Reference relevant legal protections and regulatory requirements that strengthen the patient's position. Mention specific laws like the Fair Credit Billing Act, state billing transparency requirements, and hospital charity care obligations that create leverage in negotiations.
+
+Estimate total potential savings across all identified errors and provide realistic timelines for recovery based on hospital cooperation levels. Include backup strategies for resistant institutions and guidance on when to involve regulatory agencies or patient advocates.
+
+Your analysis should read like a professional billing consultant's comprehensive audit report, providing the roadmap for recovering maximum overcharges while protecting the patient's legal rights throughout the dispute process.`;
 
     onSendMessage(prompt);
   };
@@ -556,9 +619,27 @@ export function BillingRightsAdvisor({ onSendMessage }: FeatureProps) {
       return;
     }
 
-    const prompt = `I'm facing this medical billing situation: "${situation}". The urgency level is ${urgency}. 
-    
-    Please provide immediate legal protections available to me, specific patient rights I can invoke, step-by-step actions to take right now, legal deadlines I need to be aware of, and templates for any letters or communications I need to send. Include specific laws and regulations that protect me.`;
+    const prompt = `I'm currently facing a critical medical billing situation that requires immediate legal guidance and strategic action. My specific situation is: "${situation}" and the urgency level is ${urgency}. I need comprehensive legal protection guidance that addresses my immediate risks and protects my rights.
+
+As my legal advisor specializing in medical billing rights and patient protection laws, I need you to provide a comprehensive analysis of my situation that covers multiple critical areas:
+
+First, identify all immediate legal protections available to me based on federal and state laws. Reference specific statutes like the Fair Debt Collection Practices Act, Fair Credit Reporting Act, state balance billing protection laws, and any relevant consumer protection regulations. Explain exactly how these laws apply to my situation and what protections they provide.
+
+Second, detail my specific patient rights that I can invoke immediately. Include rights related to billing transparency, itemized documentation requests, payment plan negotiations, charity care eligibility, dispute resolution procedures, and collection action limitations. Explain how to properly invoke these rights and what language to use.
+
+Third, provide step-by-step immediate actions I should take right now to protect myself legally. Prioritize actions by urgency and importance, including documentation requirements, communication strategies, and protective measures I should implement immediately. Include specific timelines for each action.
+
+Fourth, identify all critical legal deadlines that apply to my situation. Include statute of limitations periods, dispute filing deadlines, appeal timelines, credit reporting protection periods, and any other time-sensitive requirements. Explain the consequences of missing each deadline and how to document compliance.
+
+Fifth, provide template language for any immediate letters or communications I need to send. Include debt verification requests, dispute letters, collection cease and desist notices, credit reporting disputes, or other protective communications. Each template should include proper legal language that maximizes my protection.
+
+Sixth, reference specific laws, regulations, and legal precedents that strengthen my position. Include relevant federal regulations like CMS billing requirements, state-specific patient protection laws, hospital charity care obligations, and consumer protection statutes. Explain how to leverage these in communications with providers and collection agencies.
+
+Seventh, provide guidance on escalation procedures if my initial actions don't resolve the situation. Include regulatory agencies to contact, complaint filing procedures, legal representation options, and additional protective measures available at each escalation level.
+
+Eighth, assess any financial risks I'm facing and provide strategies to minimize potential damage to my credit, finances, and legal standing. Include protective measures for wage garnishment, asset protection, and credit score preservation.
+
+Your guidance should read like a comprehensive legal consultation that provides immediate actionable protection while building a foundation for long-term resolution of my billing dispute.`;
 
     onSendMessage(prompt);
   };
@@ -680,18 +761,39 @@ export function ClaimAppealGenerator({ onSendMessage }: FeatureProps) {
       return;
     }
 
-    const prompt = `Generate a comprehensive insurance claim appeal package for this denied claim:
+    const prompt = `I need you to create a comprehensive, professionally-crafted insurance claim appeal package that maximizes the chances of overturning this denied claim and securing payment for medically necessary services.
 
-Claim Number: ${appealData.claimNumber}
-Insurance Company: ${appealData.insuranceCompany}
-Denial Reason Category: ${appealData.denialReason}
-Insurance Company's Exact Denial Explanation: ${appealData.denialExplanation}
-Service Date: ${appealData.serviceDate}
-Provider: ${appealData.providerName}
-Denial Date: ${appealData.denialDate}
-Medical Necessity Details: ${appealData.medicalNecessity}
+Claim Details:
+- Claim Number: ${appealData.claimNumber}
+- Insurance Company: ${appealData.insuranceCompany}
+- Denial Reason Category: ${appealData.denialReason}
+- Insurance Company's Specific Denial Explanation: ${appealData.denialExplanation}
+- Service Date: ${appealData.serviceDate}
+- Healthcare Provider: ${appealData.providerName}
+- Denial Date: ${appealData.denialDate}
+- Medical Necessity Information: ${appealData.medicalNecessity}
 
-Create a complete appeal workflow that directly addresses the insurance company's specific denial reasoning. Include: formal appeal letter with legal citations that counter their exact denial points, required documentation checklist, timeline for submission, follow-up schedule, and escalation steps if denied. Include specific insurance regulations and appeal rights that apply to their denial reasoning.`;
+This appeal package must be strategically designed to directly counter the insurance company's specific denial reasoning while establishing a compelling case for coverage. The package should include several critical components:
+
+Develop a formal appeal letter that systematically dismantles the insurance company's denial reasoning using medical evidence, policy language interpretation, and regulatory requirements. The letter should open by referencing the specific claim number, denial date, and policy provisions that support coverage. Address each denial point individually with supporting medical literature, clinical guidelines, and expert medical opinions that establish medical necessity.
+
+For medical necessity denials, include detailed clinical evidence that demonstrates the treatment met established medical criteria. Reference peer-reviewed studies, medical society guidelines, and FDA approvals that support the treatment decision. Explain how the patient's specific medical condition required this particular intervention and why alternative treatments were inadequate or contraindicated.
+
+For pre-authorization denials, document that either authorization was properly obtained, wasn't required based on policy language, or that emergency circumstances justified treatment without prior approval. Include relevant policy sections and state insurance regulations regarding emergency care coverage and retroactive authorization requirements.
+
+For experimental/investigational denials, provide evidence that the treatment represents standard medical care rather than experimental therapy. Include medical society position statements, FDA approval documentation, and widespread clinical adoption evidence that establishes the treatment as accepted medical practice.
+
+Develop a comprehensive documentation package that includes medical records, physician statements, clinical guidelines, policy sections, and any additional evidence that supports coverage. Create a detailed evidence index that cross-references each piece of documentation to specific denial points.
+
+Establish a strategic timeline for appeal submission that maximizes review opportunities while meeting all deadlines. Include first-level appeal requirements, external review options, state insurance department complaint procedures, and federal regulatory appeal rights. Provide specific deadlines for each appeal level and consequences of missing filing dates.
+
+Create follow-up procedures that ensure the appeal receives proper consideration and timely resolution. Include communication strategies with appeals reviewers, additional evidence submission procedures, and escalation tactics if the appeal is delayed or inadequately reviewed.
+
+Reference applicable insurance regulations, state laws, and federal requirements that strengthen the appeal. Include ERISA provisions for employer-sponsored plans, state insurance code sections for individual policies, and federal healthcare regulations that mandate coverage for certain treatments.
+
+Provide escalation strategies if the initial appeal is denied, including external review procedures, state insurance department complaints, and legal action options. Include criteria for determining when professional legal representation is advisable and how to document the case for potential litigation.
+
+The appeal package should demonstrate sophisticated understanding of insurance operations, medical documentation requirements, and regulatory oversight mechanisms that compel serious consideration and favorable resolution.`;
 
     onSendMessage(prompt);
   };

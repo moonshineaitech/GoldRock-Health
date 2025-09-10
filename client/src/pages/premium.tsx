@@ -246,17 +246,26 @@ function PremiumMarketing() {
 
   const handleSubscribe = async (planId: string) => {
     try {
-      const response = await createSubscription.mutateAsync({ planType: planId });
-      const data = await response.json();
+      console.log(`Starting subscription for plan: ${planId}`);
+      const data = await createSubscription.mutateAsync({ planType: planId });
+      console.log('Subscription response:', data);
+      
       if (data.clientSecret) {
         setClientSecret(data.clientSecret);
         setPurchasePlan(planId);
+      } else {
+        console.error('No clientSecret in response:', data);
+        toast({
+          title: "Error",
+          description: "Invalid response from server. Please try again.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error("Subscription error:", error);
       toast({
         title: "Error",
-        description: "Failed to start subscription process. Please try again.",
+        description: `Failed to start subscription process: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }

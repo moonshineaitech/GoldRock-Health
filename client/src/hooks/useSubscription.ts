@@ -14,7 +14,8 @@ export function useSubscription() {
 
   const createSubscription = useMutation({
     mutationFn: async ({ planType, priceId }: { planType: string; priceId?: string }) => {
-      return await apiRequest("POST", "/api/create-subscription", { planType, priceId });
+      const response = await apiRequest("POST", "/api/create-subscription", { planType, priceId });
+      return await response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/subscription-status"] });

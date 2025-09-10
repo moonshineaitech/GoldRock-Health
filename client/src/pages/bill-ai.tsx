@@ -35,7 +35,10 @@ import {
   FileText,
   ClipboardList,
   Crown,
-  Lock
+  Lock,
+  Copy,
+  Download,
+  Share
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { MedicalBill } from "@shared/schema";
@@ -87,7 +90,7 @@ export default function BillAI() {
   const queryClient = useQueryClient();
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [conversationStarted, setConversationStarted] = useState(true);
+  const [conversationStarted, setConversationStarted] = useState(false);
   const [localMessages, setLocalMessages] = useState<AIMessage[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{current: number, total: number}>({current: 0, total: 0});
@@ -106,7 +109,7 @@ export default function BillAI() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize dark mode and auto-seed conversation
+  // Initialize dark mode (conversation will be seeded when workflow is selected)
   useEffect(() => {
     const savedTheme = localStorage.getItem('billai-dark-mode');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -116,34 +119,6 @@ export default function BillAI() {
     if (shouldBeDark) {
       document.documentElement.classList.add('dark');
     }
-
-    // Auto-seed assistant greeting message
-    const initialMessage: AIMessage = {
-      id: 'initial-greeting',
-      role: 'assistant',
-      content: `👋 **Hello! I'm your Medical Bill Assessment Expert.**
-
-I specialize in finding billing errors, overcharges, and reduction opportunities in medical bills. I help patients save thousands by identifying:
-
-• **Billing errors** (duplicate charges, incorrect codes, unbundling)
-• **Price negotiations** using Medicare rates and market data  
-• **Insurance appeals** and prior authorization issues
-• **Financial assistance** programs and charity care options
-
-**To get started with your bill analysis, I need these details:**
-
-📋 **Total bill amount** - What's the total you're being charged?
-🏥 **Provider/Hospital name** - Which facility treated you?
-📅 **Service dates** - When did you receive care?
-🔢 **Medical codes** - Any CPT, HCPCS, or ICD-10 codes on your bill?
-🏥 **Insurance status** - Do you have insurance? Did they process this?
-📄 **Itemized bill** - Do you have a detailed breakdown of charges?
-
-**What's your medical bill situation?** Start by telling me the total amount and which hospital/provider it's from.`,
-      createdAt: new Date(),
-    };
-
-    setLocalMessages([initialMessage]);
   }, []);
 
   // Calculate intake progress
@@ -450,6 +425,150 @@ I specialize in finding billing errors, overcharges, and reduction opportunities
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+    }
+  };
+
+  // Premium Copy Message Functionality
+  const copyMessage = async (message: AIMessage) => {
+    if (!isSubscribed) {
+      toast({
+        title: "Premium Feature",
+        description: "Message copying is available for premium subscribers. Upgrade to access this feature.",
+        action: (
+          <Button variant="outline" size="sm" onClick={() => setShowPremiumShowcase(true)}>
+            <Crown className="h-3 w-3 mr-1" />
+            Upgrade
+          </Button>
+        )
+      });
+      return;
+    }
+
+    try {
+      const messageText = `${message.role === 'user' ? 'You' : 'Medical Bill Expert'} (${message.createdAt.toLocaleString()}):
+${message.content}`;
+      
+      await navigator.clipboard.writeText(messageText);
+      toast({
+        title: "Message Copied",
+        description: "Message copied to clipboard successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Copy Failed",
+        description: "Unable to copy message. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Premium Export Conversation Functionality
+  const exportConversation = async (format: 'text' | 'formatted') => {
+    if (!isSubscribed) {
+      toast({
+        title: "Premium Feature",
+        description: "Conversation export is available for premium subscribers. Upgrade to access this feature.",
+        action: (
+          <Button variant="outline" size="sm" onClick={() => setShowPremiumShowcase(true)}>
+            <Crown className="h-3 w-3 mr-1" />
+            Upgrade
+          </Button>
+        )
+      });
+      return;
+    }
+
+    if (localMessages.length === 0) {
+      toast({
+        title: "No Conversation",
+        description: "Start a conversation before exporting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Generate conversation metadata
+      const timestamp = new Date().toLocaleString();
+      const billInfo = {
+        amount: intakeState.amount || 'Not provided',
+        provider: intakeState.provider || 'Not provided',
+        dates: intakeState.dates || 'Not provided',
+        insurance: intakeState.insurance || 'Not provided',
+        totalMessages: localMessages.length
+      };
+
+      let exportContent = '';
+      
+      if (format === 'formatted') {
+        // Professional formatted export
+        exportContent = `MEDICAL BILL AI CONSULTATION REPORT
+Generated on: ${timestamp}
+===============================================
+
+BILL INFORMATION:
+• Amount: ${billInfo.amount}
+• Provider: ${billInfo.provider}
+• Service Dates: ${billInfo.dates}
+• Insurance: ${billInfo.insurance}
+• Total Messages: ${billInfo.totalMessages}
+
+===============================================
+CONSULTATION TRANSCRIPT:
+===============================================
+
+`;
+        localMessages.forEach((message, index) => {
+          const sender = message.role === 'user' ? 'CLIENT' : 'MEDICAL BILL EXPERT';
+          const time = message.createdAt.toLocaleString();
+          exportContent += `[${index + 1}] ${sender} - ${time}
+${'-'.repeat(50)}
+${message.content}
+
+`;
+        });
+
+        exportContent += `===============================================
+END OF CONSULTATION REPORT
+Generated by Medical Bill AI Expert
+===============================================`;
+      } else {
+        // Simple text export
+        exportContent = `Medical Bill AI Conversation - ${timestamp}\n\n`;
+        exportContent += `Bill Info: ${billInfo.amount} from ${billInfo.provider}\n`;
+        exportContent += `Service Date: ${billInfo.dates}\n\n`;
+        exportContent += `--- Conversation ---\n\n`;
+        
+        localMessages.forEach((message) => {
+          const sender = message.role === 'user' ? 'You' : 'AI Expert';
+          const time = message.createdAt.toLocaleTimeString();
+          exportContent += `${sender} (${time}): ${message.content}\n\n`;
+        });
+      }
+
+      // Create and download file
+      const blob = new Blob([exportContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const filename = `Medical_Bill_Consultation_${timestamp.replace(/[/:, ]/g, '_')}.txt`;
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: "Conversation Exported",
+        description: `Your consultation report has been downloaded as ${filename}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Export Failed",
+        description: "Unable to export conversation. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -922,6 +1041,87 @@ Your bill information is complete! I can now provide:
     return `${originalResponse}${guidanceText}`;
   };
 
+  // Professional workflow functions for different use cases
+  const startWorkflow = (workflowType: string, prompt: string) => {
+    setConversationStarted(true);
+    
+    // Create initial assistant message for the specific workflow
+    const initialMessage: AIMessage = {
+      id: 'workflow-greeting',
+      role: 'assistant',
+      content: prompt,
+      createdAt: new Date(),
+    };
+    
+    setLocalMessages([initialMessage]);
+  };
+
+  const workflowPrompts = {
+    itemizedBills: `I'm your professional medical billing advocate, and I specialize in helping patients obtain itemized bills from healthcare providers. Getting an itemized bill is absolutely critical because it's the only way to identify the billing errors that appear in roughly 80% of medical bills. Most patients don't realize they have the legal right to request these detailed statements at no charge.
+
+When I help you request an itemized bill, I'll create a professional letter that references specific patient rights legislation and billing transparency requirements. The letter will demand detailed itemization including every CPT procedure code, HCPCS equipment code, medication charges, room and board fees, and any facility charges. I'll also include proper legal language that hospitals must respond to within specific timeframes.
+
+Here's why this matters so much: hospitals often provide summary bills that group charges together, making it impossible to spot errors like duplicate procedures, unbundled services that should be billed together, or charges for services never provided. With an itemized bill, I can compare each charge against Medicare rates and identify overpricing that can save you thousands of dollars.
+
+The request letter I'll create includes escalation procedures if the billing department doesn't respond promptly. I know exactly which departments to contact and what language triggers the fastest response. I'll also provide you with phone scripts for following up, because sometimes a professional phone call gets faster results than written requests.
+
+To create the most effective request letter for your situation, I need some basic information about your case. Tell me which hospital or healthcare provider you received treatment from, and I'll guide you through getting the itemized documentation you need to protect yourself from billing errors and overcharges.`,
+
+    aiTemplates: `I maintain a comprehensive library of professionally crafted medical billing templates that have helped patients save millions of dollars in healthcare costs. These aren't generic form letters - they're sophisticated documents that incorporate specific legal language, regulatory citations, and proven negotiation strategies.
+
+My dispute letter templates are designed to get results from hospital billing departments. They reference specific billing regulations, patient rights legislation, and industry standards that hospitals must follow. Each letter is structured to document billing errors systematically, request specific corrections, and establish legal protection if the dispute escalates. I've seen these letters reduce bills by $5,000 to $50,000 depending on the errors identified.
+
+For negotiation situations, I provide detailed phone scripts and written correspondence that leverage financial hardship regulations, charity care requirements, and Medicare rate benchmarks. These templates include psychological tactics that work with billing representatives, specific language that triggers internal review processes, and escalation procedures to reach decision-makers who can approve significant reductions.
+
+My legal protection templates are particularly valuable when dealing with collection agencies or credit reporting issues. They invoke specific federal regulations like the Fair Debt Collection Practices Act and Fair Credit Reporting Act, demanding verification of medical debts and challenging improper collection practices. I've seen these templates completely eliminate medical debts that were being improperly collected.
+
+Each template comes with detailed customization instructions so you can adapt the language to your specific situation. I'll explain which sections to modify, what supporting documentation to include, and how to time your communications for maximum effectiveness.
+
+Tell me about your specific billing situation - whether you're dealing with billing errors, need to negotiate payment terms, facing collection actions, or dealing with insurance claim denials. I'll provide you with the most powerful template for your circumstances and guide you through customizing it for your case.`,
+
+    billAnalysis: `I perform comprehensive forensic audits of medical bills using the same techniques professional billing advocates charge $500-2000 for. My analysis goes far beyond basic error checking - I conduct systematic investigations that have identified savings averaging $8,400 per patient.
+
+I start by analyzing every line item for billing errors that hospitals hope patients won't notice. Duplicate charges are extremely common, especially for medications and diagnostic tests. I look for unbundling schemes where hospitals separate procedures that should be billed as a package, and upcoding violations where they bill for more expensive procedures than what was actually performed. I also catch phantom charges for services never provided and incorrect modifier usage that inflates reimbursement.
+
+My pricing analysis compares your charges against multiple benchmarks including Medicare allowable amounts, which represent what the government considers reasonable for each service. Hospitals often charge 300% to 1000% more than Medicare rates, and I can use this data to negotiate significant reductions. I also compare against regional pricing data and insurance contract rates to identify outlier charges.
+
+I evaluate your eligibility for financial assistance programs that most patients don't know exist. Federal regulations require nonprofit hospitals to provide charity care, and many have income thresholds much higher than people realize. I also identify payment plan optimization opportunities and settlement negotiation potential based on your financial situation.
+
+For each error or overcharge I identify, I prioritize them by savings potential and likelihood of successful dispute. I provide you with customized dispute letters, specific negotiation strategies with dollar amounts to request, and detailed timelines for maximum effectiveness. I also identify any regulatory violations that strengthen your negotiating position.
+
+To conduct your complete analysis, I need the total bill amount, provider information, service dates, insurance details, and itemized charges. You can upload photos of your bill or provide the information directly. Once I have these details, I'll identify every possible savings opportunity and create your personalized action plan.`,
+
+    overchargeDetection: `I specialize in forensic analysis of medical procedure codes to identify overcharges that can save patients thousands of dollars. Most people don't realize that every medical service has specific codes that determine pricing, and hospitals often manipulate these codes to maximize revenue at your expense.
+
+When I analyze your medical codes, I compare each CPT procedure code and HCPCS equipment code against Medicare allowable amounts, which represent what the federal government considers reasonable payment for each service. Hospitals routinely charge 300% to 1000% more than Medicare rates, but I can use this pricing data to negotiate dramatic reductions in your bill.
+
+I look for upcoding violations where hospitals bill for more complex or expensive procedures than what was actually performed. For example, they might bill a level 5 emergency room visit when you only received level 3 care, adding thousands to your bill. I also detect unbundling schemes where hospitals separately bill for services that should be packaged together at a lower combined rate.
+
+Emergency room facility fees are particularly problematic, often representing $3,000 to $10,000 in overcharges for services like "emergency department level 5" that have no standard definition. I know which of these charges are legitimate and which are inflated revenue generators.
+
+Surgical supply markups are another major source of overcharges. Hospitals often bill 500% to 1000% more than their actual cost for items like surgical implants, mesh, and disposable supplies. I can identify these excessive markups and provide ammunition for negotiating reductions.
+
+Pharmacy charges in hospitals are notoriously inflated, with markups of 300% to 500% over actual drug costs. I compare hospital medication charges against wholesale prices and retail pharmacy costs to identify unreasonable markups.
+
+I also catch duplicate diagnostic codes, modifier misuse that increases reimbursement, and charges for experimental procedures that insurance shouldn't cover. Each error I identify comes with specific dispute language and negotiation strategies.
+
+To perform this analysis, I need your medical procedure codes (both CPT and HCPCS codes), the charge amounts for each code, service descriptions, and information about your provider type and location. Share your itemized bill or provide these details directly, and I'll identify every overcharge that can be challenged.`,
+
+    comprehensiveAssessment: `I provide complete medical bill assessments that replicate the service professional billing advocates charge $500 to $2000 for. My comprehensive analysis has helped patients save an average of $12,300 per case, with some achieving reductions of $50,000 or more.
+
+My assessment begins with a line-by-line accuracy audit of every charge on your bill. I verify that each medical code corresponds to services actually provided, check that service dates align with your treatment timeline, and confirm that your provider information is accurate. I also analyze insurance processing to identify errors in coverage determination, prior authorization issues, and coordination of benefits problems.
+
+The financial analysis component calculates your total savings potential across multiple strategies. I identify immediate dispute opportunities with high success rates, evaluate payment plan options that minimize your total cost, and determine optimal settlement offers based on your financial capacity. I also identify medical expense tax deductions you might be eligible for.
+
+My legal rights review protects you from improper billing practices. I analyze balance billing protection under your state laws and federal regulations, verify network participation status of all providers, and review prior authorization requirements that might void certain charges. I also check collection law compliance to ensure hospitals aren't violating your rights during payment disputes.
+
+The strategic action plan prioritizes your dispute efforts for maximum financial impact. I provide customized dispute letters that reference specific billing errors and regulatory violations, create negotiation scripts with proven psychological tactics, and establish timelines that leverage billing department procedures for optimal results. I also set up follow-up tracking systems to ensure your disputes progress effectively.
+
+Patients using my comprehensive assessment approach have achieved remarkable results. One patient reduced a $47,000 emergency surgery bill to under $8,000. Another patient negotiated a $23,000 cancer treatment bill down to $3,500 through financial assistance programs I identified. A recent case involved completely eliminating an $89,000 helicopter transport charge by proving network adequacy violations.
+
+To conduct your complete assessment, I need your total bill amount and provider information, service dates and treatment details, insurance status and processing history, itemized charges for all services, and basic financial information to evaluate assistance program eligibility. Share these details and I'll create your personalized bill reduction strategy.`
+  };
+
   // Enhanced sendMessage with intake state management
   const sendMessage = async (content: string) => {
     if (!content.trim() || isTyping) return;
@@ -952,56 +1152,40 @@ ${Object.entries(intakeState).map(([key, value]) => `${key}: ${value}`).join('\\
       // Calculate what information we have vs what's missing
       const informationStatus = getInformationStatus();
       
-      const enhancedPrompt = `[EXPERT MEDICAL BILL ASSESSMENT SPECIALIST - STRUCTURED INFORMATION EXTRACTION]
+      const enhancedPrompt = `You are an expert medical billing advocate with over 20 years of experience helping patients reduce healthcare costs. I've personally saved clients millions of dollars by identifying billing errors, overcharges, and negotiating with hospitals. I work like a professional billing consultant who typically charges $500-2000 for comprehensive bill analysis.
 
-User Message: ${content.trim()}
+Here's what the patient just told me: "${content.trim()}"
+
+Current information I have about their bill:
 ${intakeContext}
 
-**CURRENT ASSESSMENT STATUS:**
-${informationStatus.summary}
+Current assessment status: ${informationStatus.summary}
 
-**YOUR EXPERT ROLE:**
-You are a senior medical billing advocate with 20+ years of experience saving patients millions in overcharges. You conduct forensic-level bill analysis and guide patients through comprehensive assessment like a professional consultant.
+As their dedicated billing advocate, I need to conduct a thorough forensic analysis of their medical bill. Here's what I'm looking for and why it's critical:
 
-**CRITICAL ASSESSMENT FRAMEWORK:**
+First, I need to extract every piece of billing information from what they've shared. I'll scan their message for dollar amounts, dates, hospital names, procedure codes, insurance details, and any red flags they've mentioned. Each piece of information tells me where to look for potential savings.
 
-1. **INFORMATION EXTRACTION PRIORITY:**
-   - Actively scan the user's message for specific bill details
-   - Extract and confirm: amounts, dates, provider names, codes, insurance details
-   - Cross-reference with assessment status to identify gaps
-   - Flag any billing red flags or error indicators mentioned
+When I respond, I'll start by acknowledging exactly what information they've provided and what that tells me about their situation. I'll be specific about what I've identified from their message rather than speaking in generalities.
 
-2. **STRUCTURED RESPONSE FORMAT:**
-   - Start: "Based on your message, I've identified [specific details found]"
-   - Acknowledge: What information you now have vs. what's still needed
-   - Educate: Brief explanation of why missing information is critical
-   - Guide: Specific instructions on where to find missing details on their bill
-   - Ask: Targeted follow-up questions for the most critical missing pieces
+Then I'll explain what additional information I need and exactly where to find it on their bill. For example, if I need CPT codes, I'll tell them to look in the "itemized charges" or "service details" section, not just ask for "medical codes." If I need the total amount, I'll tell them to look for "patient balance," "amount due," or "total charges" at the bottom of the bill.
 
-3. **EXPERT BILL ANALYSIS APPROACH:**
-   - Reference specific bill sections: "Look for the 'Itemized Charges' or 'Service Details' section"
-   - Mention common error types: "I need the CPT codes to check for unbundling schemes"
-   - Use professional terminology: "procedure codes", "charge master", "revenue codes"
-   - Reference regulatory requirements: "Hospital price transparency laws require..."
+I'll educate them about why each missing piece is important for finding savings. For instance, CPT codes let me check for unbundling schemes where hospitals separate procedures that should be billed together. Service dates help me verify they weren't charged for days they weren't actually in the hospital. Provider information helps me compare their charges to Medicare rates and market benchmarks.
 
-4. **MISSING INFORMATION GUIDANCE:**
-   ${informationStatus.missingGuidance}
+Throughout my response, I'll demonstrate my expertise by referencing industry knowledge. I know that 80% of medical bills contain errors worth an average of $2,400. I understand hospital pricing strategies, Medicare rates, insurance regulations, and patient rights. I'll mention specific billing error types like duplicate charges, upcoding violations, and phantom billing.
 
-5. **PROFESSIONAL POSITIONING:**
-   - Position yourself as their billing expert: "As your billing advocate..."
-   - Reference industry knowledge: "In my experience, 80% of bills contain errors worth $2,000+"
-   - Demonstrate expertise: "Based on the [provider/amount/procedure] you mentioned..."
-   - Show urgency: "Time is critical - bills typically go to collections in 90-120 days"
+I'll position myself as their professional advocate, saying things like "As your billing advocate" or "In my experience auditing thousands of medical bills." I'll reference my knowledge of hospital billing departments, regulatory requirements, and successful negotiation strategies.
 
-**RESPONSE REQUIREMENTS:**
-- Extract and confirm any new bill information from their message
-- Explicitly state what we now have vs. what we still need
-- Provide specific guidance on finding the most critical missing pieces
-- Ask targeted questions to advance the assessment
-- Reference potential savings opportunities based on information provided
-- Use expert medical billing terminology and demonstrate industry knowledge
+I'll create urgency by mentioning that medical bills typically go to collections within 90-120 days, so time is critical for maximizing their options.
 
-**CRITICAL:** Your response should advance the bill assessment process. Don't just provide general advice - actively extract information, identify gaps, and guide them toward comprehensive bill analysis like a professional billing consultant would.`;
+My response will advance their bill assessment by extracting new information, identifying what's still needed, providing specific guidance on finding missing details, and asking targeted questions that move us closer to a complete analysis.
+
+I'll also reference potential savings opportunities based on what they've shared. If they mention an emergency room visit, I'll talk about checking for out-of-network charges and balance billing violations. If they mention surgery, I'll discuss looking for equipment charges and anesthesia billing errors.
+
+My goal is to guide them through the information gathering process efficiently while demonstrating the value of professional bill analysis. I want them to feel they're working with a knowledgeable expert who can identify significant savings opportunities in their specific situation.
+
+${informationStatus.missingGuidance}
+
+Now let me analyze their message and provide expert guidance to advance their bill assessment.`;
       
       const response = await apiRequest("POST", "/api/medical-chat", {
         message: enhancedPrompt
@@ -1393,6 +1577,283 @@ You are a senior medical billing advocate with 20+ years of experience saving pa
     );
   };
 
+  // Professional Landing Page Component
+  const LandingPage = () => {
+    const workflowOptions = [
+      {
+        id: 'itemizedBills',
+        title: 'Request Itemized Bills',
+        description: 'Get professional request letters to obtain detailed bills from hospitals',
+        icon: FileText,
+        color: 'blue',
+        gradient: 'from-blue-500 to-blue-600',
+        savingsText: 'Average: $2,000-$15,000 saved',
+        features: ['Legal request templates', 'Follow-up procedures', 'Patient rights citations'],
+        popular: false
+      },
+      {
+        id: 'billAnalysis',
+        title: 'One-Click Bill Analysis',
+        description: 'Comprehensive forensic analysis to identify errors and savings opportunities',
+        icon: Brain,
+        color: 'emerald',
+        gradient: 'from-emerald-500 to-emerald-600',
+        savingsText: 'Average: $5,000-$35,000 saved',
+        features: ['Error detection', 'Pricing analysis', 'Action plans'],
+        popular: true
+      },
+      {
+        id: 'overchargeDetection',
+        title: 'Medical Code Overcharge Detection',
+        description: 'Advanced analysis of medical codes to identify billing errors and overcharges',
+        icon: AlertTriangle,
+        color: 'red',
+        gradient: 'from-red-500 to-red-600',
+        savingsText: 'Average: $3,000-$50,000 saved',
+        features: ['CPT code verification', 'Medicare comparisons', 'Unbundling detection'],
+        popular: false
+      },
+      {
+        id: 'aiTemplates',
+        title: 'AI Templates & Letters',
+        description: 'Professional dispute letters, negotiation scripts, and legal templates',
+        icon: FileEdit,
+        color: 'purple',
+        gradient: 'from-purple-500 to-purple-600',
+        savingsText: 'Proven results',
+        features: ['Dispute letters', 'Negotiation scripts', 'Legal templates'],
+        popular: false
+      },
+      {
+        id: 'comprehensiveAssessment',
+        title: 'Complete Bill Assessment',
+        description: 'Full professional assessment like medical billing advocates charge $500-2000 for',
+        icon: Shield,
+        color: 'orange',
+        gradient: 'from-orange-500 to-orange-600',
+        savingsText: 'Value: $500-$2,000 service',
+        features: ['Complete audit', 'Strategic plan', 'Legal review'],
+        popular: false
+      }
+    ];
+
+    const handleWorkflowStart = (workflowId: string) => {
+      const prompt = workflowPrompts[workflowId as keyof typeof workflowPrompts];
+      if (prompt) {
+        startWorkflow(workflowId, prompt);
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        {/* Hero Section */}
+        <div className="px-4 pt-8 pb-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center space-y-4"
+          >
+            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl flex items-center justify-center shadow-lg">
+              <DollarSign className="h-10 w-10 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                Medical Bill AI Expert
+              </h1>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-md mx-auto">
+                Professional medical bill analysis and advocacy tools. Save thousands on healthcare costs.
+              </p>
+            </div>
+            
+            {/* Stats Bar */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 mx-2">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">$2M+</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">Patient Savings</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">89%</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">Bills Have Errors</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">24/7</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">AI Assistance</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Workflow Options */}
+        <div className="px-4 pb-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">
+              Choose Your Workflow
+            </h2>
+            
+            <div className="space-y-3">
+              {workflowOptions.map((option, index) => {
+                const IconComponent = option.icon;
+                return (
+                  <motion.div
+                    key={option.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index }}
+                    className="relative"
+                  >
+                    {option.popular && (
+                      <div className="absolute -top-2 -right-2 z-10">
+                        <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs">
+                          <Crown className="h-3 w-3 mr-1" />
+                          Most Popular
+                        </Badge>
+                      </div>
+                    )}
+                    
+                    <Button
+                      onClick={() => handleWorkflowStart(option.id)}
+                      className="w-full h-auto p-0 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200"
+                      variant="ghost"
+                      data-testid={`workflow-${option.id}`}
+                    >
+                      <div className="w-full p-4 text-left">
+                        <div className="flex items-start space-x-4">
+                          <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${option.gradient} flex items-center justify-center shadow-sm flex-shrink-0`}>
+                            <IconComponent className="h-6 w-6 text-white" />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-900 dark:text-white text-base mb-1">
+                              {option.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 leading-relaxed">
+                              {option.description}
+                            </p>
+                            
+                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                              <Badge variant="secondary" className="text-xs bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300">
+                                {option.savingsText}
+                              </Badge>
+                            </div>
+                            
+                            <div className="flex flex-wrap gap-1">
+                              {option.features.map((feature, featureIndex) => (
+                                <span 
+                                  key={featureIndex}
+                                  className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full"
+                                >
+                                  {feature}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Button>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Additional Features */}
+        <div className="px-4 pb-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
+          >
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-center">
+              Why Choose Our Medical Bill AI?
+            </h3>
+            
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div className="space-y-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl mx-auto flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-white" />
+                </div>
+                <h4 className="font-medium text-gray-900 dark:text-white text-sm">HIPAA Compliant</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Your data is secure and private</p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl mx-auto flex items-center justify-center">
+                  <Bot className="h-5 w-5 text-white" />
+                </div>
+                <h4 className="font-medium text-gray-900 dark:text-white text-sm">AI-Powered</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Advanced analysis algorithms</p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl mx-auto flex items-center justify-center">
+                  <FileText className="h-5 w-5 text-white" />
+                </div>
+                <h4 className="font-medium text-gray-900 dark:text-white text-sm">Legal Templates</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Professionally reviewed letters</p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl mx-auto flex items-center justify-center">
+                  <DollarSign className="h-5 w-5 text-white" />
+                </div>
+                <h4 className="font-medium text-gray-900 dark:text-white text-sm">Proven Results</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Millions saved for patients</p>
+              </div>
+            </div>
+            
+            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Need help choosing? Start with{" "}
+                <Button
+                  variant="link"
+                  className="text-xs p-0 h-auto text-emerald-600 dark:text-emerald-400"
+                  onClick={() => handleWorkflowStart('billAnalysis')}
+                >
+                  One-Click Bill Analysis
+                </Button>
+                {" "}for comprehensive assessment.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Dark Mode Toggle */}
+        <div className="fixed top-4 right-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setIsDarkMode(!isDarkMode);
+              localStorage.setItem('billai-dark-mode', (!isDarkMode).toString());
+              document.documentElement.classList.toggle('dark');
+            }}
+            className="w-10 h-10 p-0 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50"
+            data-testid="theme-toggle"
+          >
+            {isDarkMode ? (
+              <Sun className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+            ) : (
+              <Moon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+            )}
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  // Render landing page or chat interface based on conversation state
+  if (!conversationStarted) {
+    return <LandingPage />;
+  }
+
   return (
     <MobileLayout 
       title="Bill Assessment" 
@@ -1422,6 +1883,98 @@ You are a senior medical billing advocate with 20+ years of experience saving pa
               <Button onClick={toggleDarkMode} variant="ghost" size="sm" className="w-9 h-9 p-0 rounded-xl">
                 {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
+              
+              {/* Export Conversation Button */}
+              {localMessages.length > 0 && (
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-9 h-9 p-0 rounded-xl relative"
+                      data-testid="export-conversation-button"
+                    >
+                      <Download className="h-4 w-4" />
+                      {!isSubscribed && (
+                        <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-orange-500 rounded-full flex items-center justify-center">
+                          <Crown className="h-1.5 w-1.5 text-white" />
+                        </div>
+                      )}
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="bottom" className="h-[40vh] rounded-t-3xl border-t-0">
+                    <SheetHeader className="pb-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <SheetTitle className="text-lg font-semibold flex items-center space-x-2">
+                            <Download className="h-5 w-5" />
+                            <span>Export Conversation</span>
+                            {!isSubscribed && (
+                              <Badge className="bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs">
+                                <Crown className="h-3 w-3 mr-1" />
+                                Premium
+                              </Badge>
+                            )}
+                          </SheetTitle>
+                          <SheetDescription>
+                            {isSubscribed 
+                              ? `Download your consultation report with ${localMessages.length} messages`
+                              : "Export your professional medical bill consultation report"
+                            }
+                          </SheetDescription>
+                        </div>
+                      </div>
+                    </SheetHeader>
+                    
+                    <div className="space-y-3">
+                      <Button
+                        onClick={() => exportConversation('text')}
+                        className="w-full h-12 justify-start text-left bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 dark:from-blue-900/20 dark:to-blue-800/20 dark:hover:from-blue-800/30 dark:hover:to-blue-700/30 text-blue-900 dark:text-blue-100 border border-blue-200 dark:border-blue-800"
+                        data-testid="export-simple-text"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <FileText className="h-4 w-4 text-white" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Simple Text Export</div>
+                            <div className="text-xs opacity-75">Easy to read conversation format</div>
+                          </div>
+                        </div>
+                      </Button>
+                      
+                      <Button
+                        onClick={() => exportConversation('formatted')}
+                        className="w-full h-12 justify-start text-left bg-gradient-to-r from-emerald-50 to-emerald-100 hover:from-emerald-100 hover:to-emerald-200 dark:from-emerald-900/20 dark:to-emerald-800/20 dark:hover:from-emerald-800/30 dark:hover:to-emerald-700/30 text-emerald-900 dark:text-emerald-100 border border-emerald-200 dark:border-emerald-800"
+                        data-testid="export-professional-report"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+                            <Shield className="h-4 w-4 text-white" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Professional Report</div>
+                            <div className="text-xs opacity-75">Formatted consultation report with metadata</div>
+                          </div>
+                        </div>
+                      </Button>
+
+                      {!isSubscribed && (
+                        <div className="mt-4 p-3 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/10 dark:to-yellow-900/10 rounded-xl border border-orange-200 dark:border-orange-800">
+                          <div className="flex items-center space-x-2">
+                            <Crown className="h-4 w-4 text-orange-600" />
+                            <span className="text-sm font-medium text-orange-900 dark:text-orange-100">Premium Feature</span>
+                          </div>
+                          <p className="text-xs text-orange-700 dark:text-orange-300 mt-1">
+                            Export professional consultation reports. Upgrade to access this feature.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              )}
+              
               <Sheet open={showToolsDrawer} onOpenChange={setShowToolsDrawer}>
                 <SheetTrigger asChild>
                   <Button 
@@ -1572,7 +2125,7 @@ You are a senior medical billing advocate with 20+ years of experience saving pa
               transition={{ delay: index * 0.05, duration: 0.3, ease: "easeOut" }}
               className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mb-4`}
             >
-              <div className={`max-w-[80%] ${
+              <div className={`max-w-[80%] group ${
                 message.role === "user" 
                   ? "bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 text-white rounded-3xl rounded-br-lg shadow-lg shadow-emerald-500/25 dark:shadow-emerald-600/20" 
                   : "bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 text-gray-900 dark:text-gray-100 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30 dark:shadow-gray-900/30"
@@ -1596,19 +2149,41 @@ You are a senior medical billing advocate with 20+ years of experience saving pa
                 {/* CTA Footer for AI responses */}
                 {message.role === "assistant" && <CTAFooter />}
                 
-                <div className={`text-xs mt-3 flex items-center justify-end ${
+                <div className={`text-xs mt-3 flex items-center justify-between ${
                   message.role === "user" 
                     ? "text-emerald-100/80" 
                     : "text-gray-500 dark:text-gray-400"
                 }`}>
-                  <span>{message.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                  {message.role === "user" && (
-                    <div className="ml-1.5 w-4 h-4 flex items-center justify-center">
-                      <svg className="w-3 h-3 text-emerald-100/60" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
+                  {/* Premium Copy Message Button */}
+                  <Button
+                    onClick={() => copyMessage(message)}
+                    variant="ghost"
+                    size="sm"
+                    className={`w-7 h-7 p-0 rounded-lg opacity-0 group-hover:opacity-100 hover:opacity-100 transition-opacity duration-200 ${
+                      message.role === "user"
+                        ? "text-emerald-100/60 hover:text-emerald-100 hover:bg-emerald-400/20"
+                        : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                    } ${!isSubscribed ? 'relative' : ''}`}
+                    data-testid={`copy-message-${message.id}`}
+                  >
+                    <Copy className="h-3 w-3" />
+                    {!isSubscribed && (
+                      <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-500 rounded-full flex items-center justify-center">
+                        <Crown className="h-1 w-1 text-white" />
+                      </div>
+                    )}
+                  </Button>
+                  
+                  <div className="flex items-center">
+                    <span>{message.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    {message.role === "user" && (
+                      <div className="ml-1.5 w-4 h-4 flex items-center justify-center">
+                        <svg className="w-3 h-3 text-emerald-100/60" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.div>

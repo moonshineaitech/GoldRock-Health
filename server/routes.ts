@@ -22,6 +22,79 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-08-27.basil",
 });
 
+// Store Stripe price IDs
+let MONTHLY_PRICE_ID: string;
+let ANNUAL_PRICE_ID: string;
+
+// Setup Stripe prices on startup
+async function setupStripe() {
+  try {
+    console.log('Setting up Stripe prices...');
+    
+    // Create or retrieve monthly price ($20)
+    const existingPrices = await stripe.prices.list({ limit: 100 });
+    
+    let monthlyPrice = existingPrices.data.find(
+      price => price.metadata?.plan === 'monthly' && price.unit_amount === 2000
+    );
+    
+    if (!monthlyPrice) {
+      console.log('Creating monthly price...');
+      const product = await stripe.products.create({
+        name: 'MedTrainer Premium Monthly',
+        description: 'Monthly subscription for MedTrainer Premium features including medical bill AI analysis and unlimited medical training',
+      });
+      
+      monthlyPrice = await stripe.prices.create({
+        unit_amount: 2000, // $20.00
+        currency: 'usd',
+        recurring: {
+          interval: 'month',
+        },
+        product: product.id,
+        metadata: {
+          plan: 'monthly',
+        },
+      });
+    }
+    
+    let annualPrice = existingPrices.data.find(
+      price => price.metadata?.plan === 'annual' && price.unit_amount === 18900
+    );
+    
+    if (!annualPrice) {
+      console.log('Creating annual price...');
+      const product = await stripe.products.create({
+        name: 'MedTrainer Premium Annual',
+        description: 'Annual subscription for MedTrainer Premium features including medical bill AI analysis and unlimited medical training (Save 21%)',
+      });
+      
+      annualPrice = await stripe.prices.create({
+        unit_amount: 18900, // $189.00
+        currency: 'usd',
+        recurring: {
+          interval: 'year',
+        },
+        product: product.id,
+        metadata: {
+          plan: 'annual',
+        },
+      });
+    }
+    
+    MONTHLY_PRICE_ID = monthlyPrice.id;
+    ANNUAL_PRICE_ID = annualPrice.id;
+    
+    console.log(`Stripe setup complete:
+    - Monthly Price ID: ${MONTHLY_PRICE_ID}
+    - Annual Price ID: ${ANNUAL_PRICE_ID}`);
+    
+  } catch (error) {
+    console.error('Failed to setup Stripe prices:', error);
+    throw error;
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Configure multer for file uploads
   const upload = multer({
@@ -40,6 +113,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     },
   });
 
+  // Initialize Stripe prices first
+  await setupStripe();
+  
   // Initialize medical cases on startup
   await medicalCasesService.initializeCases();
   
@@ -130,10 +206,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Create subscription
+      const selectedPriceId = priceId || (planType === 'annual' ? ANNUAL_PRICE_ID : MONTHLY_PRICE_ID);
+      
+      console.log(`Creating subscription for user ${userId} with plan ${planType}, priceId: ${selectedPriceId}`);
+      
       const subscription = await stripe.subscriptions.create({
         customer: customerId,
         items: [{
-          price: priceId || (planType === 'annual' ? 'price_annual' : 'price_monthly'), // You'll need to set these in Stripe
+          price: selectedPriceId,
         }],
         payment_behavior: 'default_incomplete',
         expand: ['latest_invoice.payment_intent'],
@@ -1699,7 +1779,7 @@ You help patients save thousands of dollars through expert guidance on medical b
   });
 
   // Bill Upload and Analysis API - AI-powered bill analysis for specific errors and opportunities
-  app.post('/api/upload-bill', requiresSubscription, upload.single('bill'), async (req: any, res) => {
+  app.post('/api/upload-bill', isAuthenticated, upload.single('bill'), async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const file = req.file;
@@ -1975,7 +2055,7 @@ Extract every specific detail from the bill including exact account numbers, pat
   });
 
   // Multiple Bill Images Upload Route - Up to 5 images for comprehensive analysis
-  app.post('/api/upload-bills', requiresSubscription, upload.array('bills', 5), async (req: any, res) => {
+  app.post('/api/upload-bills', isAuthenticated, upload.array('bills', 5), async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const files = req.files as Express.Multer.File[];
