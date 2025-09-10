@@ -20,7 +20,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-09-30.acacia",
+  apiVersion: "2025-08-27.basil",
 });
 
 // Store Stripe price IDs
@@ -322,7 +322,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               await storage.upsertUser({
                 ...user,
                 subscriptionStatus: 'active',
-                subscriptionEndsAt: new Date(subscription.current_period_end * 1000).toISOString()
+                subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
               });
             }
           }
@@ -341,7 +341,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await storage.upsertUser({
               ...user,
               subscriptionStatus: subscription.status === 'active' ? 'active' : 'inactive',
-              subscriptionEndsAt: new Date(subscription.current_period_end * 1000).toISOString()
+              subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
             });
           }
           break;
@@ -359,7 +359,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await storage.upsertUser({
               ...user,
               subscriptionStatus: 'cancelled',
-              subscriptionEndsAt: new Date(subscription.current_period_end * 1000).toISOString()
+              subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
             });
           }
           break;
@@ -952,7 +952,7 @@ Respond with ONLY a JSON object:
             ],
             response_format: { type: "json_object" },
             temperature: 0.1,
-            max_tokens: 200
+            max_completion_tokens: 200
           });
 
           const result = JSON.parse(response.choices[0].message.content || '{}');
@@ -1894,7 +1894,7 @@ You help patients save thousands of dollars through expert guidance on medical b
             }
           ],
           temperature: 0.7,
-          max_tokens: 1000
+          max_completion_tokens: 1000
         });
 
         const aiResponse = response.choices[0].message.content || "I apologize, but I'm having trouble processing your request right now. Please try asking your question again.";
@@ -1964,7 +1964,7 @@ You help patients save thousands of dollars through expert guidance on medical b
                   ]
                 }
               ],
-              max_tokens: 2000
+              max_completion_tokens: 2000
             })
           });
 
@@ -2141,7 +2141,7 @@ Extract every specific detail from the bill including exact account numbers, pat
                   content: analysisPrompt
                 }
               ],
-              max_tokens: 4000,
+              max_completion_tokens: 4000,
               temperature: 0.3
             })
           });
@@ -2158,6 +2158,7 @@ Extract every specific detail from the bill including exact account numbers, pat
       const billAmount = extractBillAmount(billText);
       const providerName = extractProvider(billText);
       const newBill = {
+        userId: userId,
         title: `${providerName} - ${new Date().toLocaleDateString()}`, // Required field
         providerName: providerName, // Match schema field name
         totalAmount: billAmount.toString(),
@@ -2170,7 +2171,7 @@ Extract every specific detail from the bill including exact account numbers, pat
       };
 
       // Use the updated createMedicalBill function (match the interface)
-      const savedBill = await storage.createMedicalBill(userId, newBill);
+      const savedBill = await storage.createMedicalBill(newBill);
 
       res.json({
         success: true,
@@ -2257,7 +2258,7 @@ Extract every specific detail from the bill including exact account numbers, pat
                     ]
                   }
                 ],
-                max_tokens: 2000
+                max_completion_tokens: 2000
               })
             });
 
@@ -2411,7 +2412,7 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
                   content: comprehensiveAnalysisPrompt
                 }
               ],
-              max_tokens: 4000,
+              max_completion_tokens: 4000,
               temperature: 0.3
             })
           });
@@ -2430,6 +2431,7 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
       const billAmount = extractBillAmount(combinedBillText);
       const providerName = extractProvider(combinedBillText);
       const newBill = {
+        userId: userId,
         title: `${providerName} - ${files.length} Pages - ${new Date().toLocaleDateString()}`,
         providerName: providerName,
         totalAmount: billAmount.toString(),
@@ -2441,7 +2443,7 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
         fileUrl: files.map(f => f.originalname).join(', ') // Store all filenames
       };
 
-      const savedBill = await storage.createMedicalBill(userId, newBill);
+      const savedBill = await storage.createMedicalBill(newBill);
 
       res.json({
         success: true,
@@ -2614,7 +2616,7 @@ Respond with complete, detailed advice AND proactive offers to generate document
                   content: prompt
                 }
               ],
-              max_tokens: 1500,
+              max_completion_tokens: 1500,
               temperature: 0.7
             })
           });
@@ -2971,7 +2973,7 @@ Generate this as a single, well-structured JSON object with ALL fields populated
               content: aiPrompt
             }
           ],
-          max_tokens: 2500,
+          max_completion_tokens: 2500,
           temperature: 0.8
         })
       });
@@ -3162,7 +3164,7 @@ Make it clinically accurate and educationally valuable.`;
               content: analysisPrompt
             }
           ],
-          max_tokens: 3000,
+          max_completion_tokens: 3000,
           temperature: 0.7
         })
       });

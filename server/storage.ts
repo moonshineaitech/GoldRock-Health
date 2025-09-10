@@ -72,6 +72,7 @@ export interface IStorage {
   // User operations (IMPORTANT) these user operations are mandatory for Replit Auth.
   getUser(id: string): Promise<User | undefined>;
   getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
   upsertUser(user: UpsertUser): Promise<User>;
 
   // Medical Cases
@@ -173,6 +174,10 @@ export class DatabaseStorage implements IStorage {
   async getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.stripeCustomerId, stripeCustomerId));
     return user;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users).orderBy(users.createdAt);
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {

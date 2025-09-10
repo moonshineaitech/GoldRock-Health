@@ -544,6 +544,8 @@ export default function BillAI() {
   const [localMessages, setLocalMessages] = useState<AIMessage[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{current: number, total: number}>({current: 0, total: 0});
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [dragActive, setDragActive] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showToolsDrawer, setShowToolsDrawer] = useState(false);
   const [showAssessmentPanel, setShowAssessmentPanel] = useState(false);
@@ -703,7 +705,7 @@ export default function BillAI() {
       }
 
       // Make API call  
-      const response = await apiRequest('/api/chat', {
+      const response = await apiRequest('/api/bill-ai-chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -721,7 +723,7 @@ export default function BillAI() {
       const aiMessage: AIMessage = {
         id: Date.now().toString() + "_ai",
         role: "assistant", 
-        content: responseData.message || 'I\'m analyzing your request. Please provide more details about your medical bill.',
+        content: responseData.response || responseData.message || 'I\'m analyzing your request. Please provide more details about your medical bill.',
         createdAt: new Date()
       };
       
@@ -775,63 +777,159 @@ export default function BillAI() {
     }
   };
 
-  // Handle file upload
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+  // Handle file upload - Updated for medical bill analysis
+  const handleFileUpload = async (files: FileList | File[]) => {
+    const fileArray = Array.from(files);
+    
+    // Validate file count (max 5 images)
+    if (fileArray.length > 5) {
+      toast({
+        title: "Too many files",
+        description: "Please select up to 5 medical bill images at a time.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file types (images only)
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const invalidFiles = fileArray.filter(file => !validTypes.includes(file.type));
+    
+    if (invalidFiles.length > 0) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload only JPG, PNG, or WebP image files.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file sizes (max 10MB each)
+    const oversizedFiles = fileArray.filter(file => file.size > 10 * 1024 * 1024);
+    if (oversizedFiles.length > 0) {
+      toast({
+        title: "File too large",
+        description: "Each image must be under 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setUploadingFiles(true);
-    setUploadProgress({ current: 0, total: files.length });
+    setUploadProgress({ current: 0, total: fileArray.length });
 
     try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        setUploadProgress({ current: i + 1, total: files.length });
-        
-        const formData = new FormData();
-        formData.append('file', file);
-        
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        
-        const responseData = await response.json();
-        
-        // Process the uploaded file response
-        if (responseData.extractedText) {
-          updateIntakeFromMessage(responseData.extractedText);
-          
-          // Send extracted text as a message
-          const extractedMessage: AIMessage = {
-            id: Date.now().toString() + "_upload",
-            role: "user",
-            content: `Uploaded file: ${file.name}\n\nExtracted content:\n${responseData.extractedText}`,
-            createdAt: new Date()
-          };
-          
-          setLocalMessages(prev => [...prev, extractedMessage]);
-          
-          // Trigger AI analysis
-          sendMessage(`Please analyze this uploaded medical bill: ${responseData.extractedText}`);
+      const formData = new FormData();
+      
+      // Append all files to FormData for bulk upload
+      fileArray.forEach((file) => {
+        formData.append('bills', file);
+      });
+
+      // Use the correct multiple upload endpoint
+      const response = await fetch('/api/upload-bills', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          // Don't set Content-Type - let browser set it with boundary for FormData
         }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Upload failed');
+      }
+
+      const responseData = await response.json();
+      
+      // Update progress to show completion
+      setUploadProgress({ current: fileArray.length, total: fileArray.length });
+      
+      // Process the uploaded files response
+      if (responseData.success && responseData.extractedText) {
+        // Update intake with extracted information
+        updateIntakeFromMessage(responseData.extractedText);
+        
+        // Create a comprehensive message about the uploaded bills
+        const extractedMessage: AIMessage = {
+          id: Date.now().toString() + "_upload",
+          role: "user",
+          content: `📋 Uploaded ${fileArray.length} medical bill image${fileArray.length > 1 ? 's' : ''}: ${fileArray.map(f => f.name).join(', ')}\n\n🔍 **Extracted Content:**\n${responseData.extractedText}\n\n💡 **AI Analysis:**\n${responseData.analysis || 'Ready for detailed analysis.'}`,
+          createdAt: new Date()
+        };
+        
+        setLocalMessages(prev => [...prev, extractedMessage]);
+        
+        // Start conversation if not already started
+        setConversationStarted(true);
+        
+        // Auto-trigger comprehensive analysis
+        setTimeout(() => {
+          sendMessage(`I've uploaded ${fileArray.length} medical bill image${fileArray.length > 1 ? 's' : ''} with the following extracted information:\n\n${responseData.extractedText}\n\nPlease provide a comprehensive analysis with specific savings opportunities, error detection, and actionable next steps.`);
+        }, 1000);
       }
       
       toast({
-        title: "Files uploaded successfully",
-        description: `${files.length} file(s) processed and analyzed.`,
+        title: "✅ Bills uploaded successfully!",
+        description: `${fileArray.length} medical bill${fileArray.length > 1 ? 's' : ''} processed with AI text extraction. ${responseData.message || 'Ready for analysis.'}`,
       });
       
-    } catch (error) {
+      // Clear file selection
+      setSelectedFiles([]);
+      
+    } catch (error: any) {
+      console.error('Upload error:', error);
       toast({
         title: "Upload failed",
-        description: "Please try uploading your files again.",
+        description: error.message || "Please try uploading your medical bill images again.",
         variant: "destructive",
       });
     } finally {
       setUploadingFiles(false);
       setUploadProgress({ current: 0, total: 0 });
     }
+  };
+
+  // Handle file input change
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    handleFileUpload(files);
+  };
+
+  // Handle drag and drop
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFileUpload(e.dataTransfer.files);
+    }
+  };
+
+  // Add files to selection for preview
+  const handleFileSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    
+    const fileArray = Array.from(files);
+    setSelectedFiles(prev => [...prev, ...fileArray].slice(0, 5)); // Max 5 files
+  };
+
+  // Remove file from selection
+  const removeFile = (index: number) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   // Simplified Intake Handlers
@@ -1152,6 +1250,7 @@ export default function BillAI() {
               onClick={() => fileInputRef.current?.click()}
               className="w-11 h-11 p-0 rounded-2xl bg-gray-100/80 hover:bg-gray-200/80 dark:hover:bg-gray-700/80 border-0"
               data-testid="attach-file-button"
+              disabled={uploadingFiles}
             >
               <Paperclip className="h-5 w-5 text-gray-600" />
             </Button>
@@ -1183,14 +1282,80 @@ export default function BillAI() {
           </div>
         </div>
 
+        {/* Drag and Drop Area */}
+        {dragActive && (
+          <div 
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl border-2 border-dashed border-emerald-300"
+            >
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto">
+                  <Upload className="h-8 w-8 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Drop Medical Bills Here</h3>
+                  <p className="text-sm text-gray-600">Drop up to 5 medical bill images for instant AI analysis</p>
+                </div>
+                <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                  <span>JPG</span>
+                  <Circle className="h-1 w-1 fill-gray-400" />
+                  <span>PNG</span>
+                  <Circle className="h-1 w-1 fill-gray-400" />
+                  <span>WebP</span>
+                  <Circle className="h-1 w-1 fill-gray-400" />
+                  <span>Max 10MB each</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Upload Progress Overlay */}
+        {uploadingFiles && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl"
+            >
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto">
+                  <Loader2 className="h-8 w-8 text-white animate-spin" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Processing Medical Bills</h3>
+                  <p className="text-sm text-gray-600">AI is extracting text and analyzing your bills...</p>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-emerald-500 to-teal-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${uploadProgress.total > 0 ? (uploadProgress.current / uploadProgress.total) * 100 : 0}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500">
+                  {uploadProgress.total > 0 ? `${uploadProgress.current} of ${uploadProgress.total} files processed` : 'Starting upload...'}
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
         {/* Hidden File Input */}
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
+          accept="image/jpeg,image/jpg,image/png,image/webp"
           multiple
           className="hidden"
-          onChange={handleFileUpload}
+          onChange={handleFileInputChange}
           data-testid="file-input"
         />
       </div>
