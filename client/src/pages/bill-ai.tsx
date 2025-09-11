@@ -192,7 +192,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <Sparkles className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-emerald-600" />
           Essential Workflows
         </h3>
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 lg:gap-8 xl:gap-12 2xl:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 lg:gap-12 xl:gap-16 2xl:gap-20">
           {coreWorkflows.map((workflow) => (
             <WorkflowCard
               key={workflow.id}
@@ -215,7 +215,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               🎓 New to medical bill analysis? Start here! These beginner-friendly tools help you learn step-by-step.
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 lg:gap-8 xl:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 lg:gap-12 xl:gap-16 2xl:gap-20">
             {beginnerWorkflows.slice(0, 4).map((workflow) => (
               <WorkflowListItem
                 key={workflow.id}
@@ -238,7 +238,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-2 lg:gap-8 xl:gap-12 2xl:gap-16 max-w-md lg:max-w-none mx-auto">
+      <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 lg:gap-12 xl:gap-16 2xl:gap-20 max-w-md lg:max-w-none mx-auto">
         <Button
           onClick={onStartChat}
           variant="outline"
@@ -521,7 +521,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 Premium Intelligence Databases (Exclusive Access)
               </h3>
               
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-8 xl:gap-12 2xl:gap-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 lg:gap-12 xl:gap-16 2xl:gap-20">
                 <Button
                   onClick={() => setShowHospitalBillsDatabase(!showHospitalBillsDatabase)}
                   variant="outline"
