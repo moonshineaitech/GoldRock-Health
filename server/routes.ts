@@ -147,6 +147,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // User Data Rights (GDPR/Privacy Compliance)
+  app.post('/api/user/delete-data', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const result = await storage.deleteAllUserData(userId);
+      
+      if (result.success) {
+        res.json({ 
+          message: 'User data deletion completed successfully', 
+          deletedCount: result.deletedCount 
+        });
+      } else {
+        res.status(500).json({ message: 'Failed to delete user data' });
+      }
+    } catch (error) {
+      console.error('Error deleting user data:', error);
+      res.status(500).json({ message: 'Failed to delete user data' });
+    }
+  });
+
+  app.get('/api/user/export-data', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const userData = await storage.exportUserData(userId);
+      
+      // Set headers for file download
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', `attachment; filename="user-data-export-${new Date().toISOString().split('T')[0]}.json"`);
+      
+      res.json(userData);
+    } catch (error) {
+      console.error('Error exporting user data:', error);
+      res.status(500).json({ message: 'Failed to export user data' });
+    }
+  });
+
+  // Data retention cleanup endpoint (admin use)
+  app.post('/api/admin/cleanup-old-data', async (req, res) => {
+    try {
+      const { retentionDays = 30, adminKey } = req.body;
+      
+      // Simple admin key check for cleanup operations
+      if (adminKey !== process.env.ADMIN_CLEANUP_KEY) {
+        return res.status(403).json({ message: 'Unauthorized' });
+      }
+      
+      const result = await storage.cleanupOldData(retentionDays);
+      res.json({ 
+        message: 'Data cleanup completed',
+        ...result
+      });
+    } catch (error) {
+      console.error('Error during data cleanup:', error);
+      res.status(500).json({ message: 'Failed to cleanup old data' });
+    }
+  });
+
   // Stripe payment routes
   app.post("/api/create-payment-intent", async (req, res) => {
     try {
@@ -322,7 +379,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               await storage.upsertUser({
                 ...user,
                 subscriptionStatus: 'active',
-                subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
+                subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
               });
             }
           }
@@ -341,7 +398,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await storage.upsertUser({
               ...user,
               subscriptionStatus: subscription.status === 'active' ? 'active' : 'inactive',
-              subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
+              subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
             });
           }
           break;
@@ -359,7 +416,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await storage.upsertUser({
               ...user,
               subscriptionStatus: 'cancelled',
-              subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
+              subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
             });
           }
           break;
@@ -1019,7 +1076,7 @@ Respond with ONLY a JSON object:
 
       const differentials = await diagnosticEngine.generateDifferentialDiagnosis(
         medicalCase.chiefComplaint,
-        medicalCase.symptoms,
+        medicalCase.symptoms || [],
         medicalCase.physicalExam,
         medicalCase.medicalHistory
       );
@@ -1466,7 +1523,7 @@ Respond with ONLY a JSON object:
         findingsIdentified: findings,
         diagnosis,
         confidence,
-        accuracy: parseFloat(accuracy.toFixed(2)),
+        accuracy: accuracy.toFixed(2),
         score,
         completed: true,
         completedAt: new Date(),
@@ -1539,7 +1596,7 @@ Respond with ONLY a JSON object:
       }
       
       // Check if group is full
-      if (group.currentMembers >= group.maxMembers) {
+      if ((group.currentMembers || 0) >= (group.maxMembers || 0)) {
         return res.status(400).json({ message: 'Study group is full' });
       }
       

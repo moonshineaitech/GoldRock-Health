@@ -23,6 +23,8 @@ import PortalAccessGuide from "@/pages/portal-access-guide";
 import BillBestPractices from "@/pages/bill-best-practices";
 import IndustryInsights from "@/pages/industry-insights";
 import BlitzDemo from "@/pages/blitz-demo";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import TermsOfService from "@/pages/terms-of-service";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -42,9 +44,15 @@ function Router() {
     );
   }
 
-  // Show auth landing for unauthenticated users
+  // Show auth landing for unauthenticated users, but allow access to legal pages
   if (!isAuthenticated) {
-    return <AuthLanding />;
+    return (
+      <Switch>
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/terms-of-service" component={TermsOfService} />
+        <Route component={AuthLanding} />
+      </Switch>
+    );
   }
 
   // Show main app for authenticated users
@@ -69,6 +77,8 @@ function Router() {
       <Route path="/bill-best-practices" component={BillBestPractices} />
       <Route path="/industry-insights" component={IndustryInsights} />
       <Route path="/blitz-demo" component={BlitzDemo} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/terms-of-service" component={TermsOfService} />
       <Route component={NotFound} />
     </Switch>
   );

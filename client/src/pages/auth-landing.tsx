@@ -1,6 +1,7 @@
 import { MobileButton } from "@/components/mobile-layout";
 import { Apple, Mail, ArrowRight, Stethoscope, Shield, Brain, DollarSign, Users, CheckCircle, Star, Trophy, TrendingUp, Clock, Target, Award, Zap } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 
 export default function AuthLanding() {
   return (
@@ -285,9 +286,9 @@ export default function AuthLanding() {
         <div className="text-center space-y-3">
           <p className="text-xs text-gray-500 leading-relaxed">
             By continuing, you agree to our{" "}
-            <span className="text-indigo-600 font-medium underline cursor-pointer">Terms of Service</span>
+            <Link href="/terms-of-service" className="text-indigo-600 font-medium underline hover:text-indigo-700">Terms of Service</Link>
             {" "}and{" "}
-            <span className="text-indigo-600 font-medium underline cursor-pointer">Privacy Policy</span>
+            <Link href="/privacy-policy" className="text-indigo-600 font-medium underline hover:text-indigo-700">Privacy Policy</Link>
           </p>
           
           <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
