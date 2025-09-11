@@ -263,9 +263,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
           expand: ['latest_invoice.payment_intent'],
         });
         const invoice = subscription.latest_invoice as any;
+        let paymentIntent = invoice?.payment_intent;
+
+        // If subscription is incomplete and no payment intent, try to create one
+        if (subscription.status === 'incomplete' && !paymentIntent && invoice) {
+          try {
+            console.log('Incomplete subscription found, finalizing invoice:', invoice.id);
+            const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id, {
+              expand: ['payment_intent']
+            });
+            paymentIntent = finalizedInvoice.payment_intent;
+            console.log('Finalized invoice payment intent:', paymentIntent?.id);
+          } catch (err: any) {
+            console.error('Error finalizing existing invoice:', err);
+          }
+        }
+
         return res.json({
           subscriptionId: subscription.id,
-          clientSecret: invoice?.payment_intent?.client_secret,
+          clientSecret: paymentIntent?.client_secret,
         });
       }
 
