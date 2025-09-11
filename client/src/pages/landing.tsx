@@ -4,7 +4,7 @@ import { StatisticsDashboard } from "@/components/statistics-dashboard";
 import { AchievementSystem } from "@/components/achievement-system";
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import { Link } from "wouter";
-import { BookOpen, Brain, Trophy, Zap, ArrowRight, DollarSign, AlertTriangle, TrendingDown, FileText, Stethoscope } from "lucide-react";
+import { BookOpen, Brain, Trophy, Zap, ArrowRight, DollarSign, AlertTriangle, TrendingDown, FileText, Stethoscope, Target } from "lucide-react";
 import { motion } from "framer-motion";
 
 
@@ -73,7 +73,7 @@ export default function Landing() {
             <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
           </h1>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Comprehensive Medical Bill Analysis + Learn Medicine
+            AI-Powered Medical Bill Protection
           </h2>
         </motion.div>
         
@@ -83,7 +83,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.7 }}
         >
-          AI-powered medical bill analysis that analyzes potential issues, plus AI-generated patient cases with interactive quiz cycles.
+          Professional AI technology that identifies overcharges, detects billing errors, and generates dispute letters to save thousands on medical bills.
         </motion.p>
         
         <motion.div 
@@ -95,9 +95,9 @@ export default function Landing() {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-1">
               <DollarSign className="h-5 w-5 text-emerald-600" />
-              <span className="font-bold text-emerald-700 text-base">Advanced Analysis Tools</span>
+              <span className="font-bold text-emerald-700 text-base">Save Thousands in Minutes</span>
             </div>
-            <p className="text-sm text-emerald-600 font-medium">Upload your bill for AI analysis in seconds</p>
+            <p className="text-sm text-emerald-600 font-medium">Upload your bill & get professional dispute templates</p>
           </div>
         </motion.div>
         
@@ -111,9 +111,9 @@ export default function Landing() {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-1">
               <Trophy className="h-4 w-4 text-blue-600" />
-              <span className="font-bold text-blue-700 text-base">Growing User Base</span>
+              <span className="font-bold text-blue-700 text-base">Proven Results</span>
             </div>
-            <p className="text-sm text-blue-600 font-medium">Professional-grade AI technology</p>
+            <p className="text-sm text-blue-600 font-medium">Advanced AI detects billing errors & overcharges</p>
           </div>
         </motion.div>
         
@@ -131,21 +131,35 @@ export default function Landing() {
             >
               <MobileButton className="w-full max-w-xs mx-auto shadow-xl shadow-emerald-500/25 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700">
                 <DollarSign className="h-4 w-4 mr-2" />
-                Find Bill Overcharges
+                Analyze My Bill
                 <ArrowRight className="h-3 w-3 ml-2" />
               </MobileButton>
             </motion.div>
           </Link>
           
-          <Link href="/training">
+          <Link href="/bill-reduction-guide">
             <motion.div
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
             >
-              <MobileButton variant="secondary" className="w-full max-w-xs mx-auto shadow-lg border-2 border-indigo-200 hover:border-indigo-300">
-                <BookOpen className="h-4 w-4 mr-2" />
-                Medical Training
+              <MobileButton variant="secondary" className="w-full max-w-xs mx-auto shadow-lg border-2 border-blue-200 hover:border-blue-300">
+                <TrendingDown className="h-4 w-4 mr-2" />
+                Bill Reduction Guide
+                <ArrowRight className="h-3 w-3 ml-2" />
+              </MobileButton>
+            </motion.div>
+          </Link>
+          
+          <Link href="/portal-access-guide">
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+            >
+              <MobileButton variant="secondary" className="w-full max-w-xs mx-auto shadow-lg border-2 border-purple-200 hover:border-purple-300">
+                <FileText className="h-4 w-4 mr-2" />
+                Portal Access Guide
                 <ArrowRight className="h-3 w-3 ml-2" />
               </MobileButton>
             </motion.div>
@@ -167,11 +181,11 @@ export default function Landing() {
           transition={{ delay: 1.3, duration: 0.6 }}
         >
           <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-2">
-            How to Reduce Your Medical Bills
+            Advanced Bill AI Features
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
           <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto">
-            Follow these simple steps to find and dispute overcharges
+            Professional-grade AI technology identifies errors & creates winning strategies
           </p>
           
           {/* Success Rate Badge */}
@@ -184,9 +198,9 @@ export default function Landing() {
             <div className="text-center">
               <div className="flex items-center justify-center space-x-1 mb-1">
                 <Zap className="h-4 w-4 text-amber-600" />
-                <span className="font-bold text-amber-700 text-sm">AI-Powered Analysis</span>
+                <span className="font-bold text-amber-700 text-sm">Instant Dispute Letters</span>
               </div>
-              <p className="text-xs text-amber-600 font-medium">Advanced AI technology for comprehensive review</p>
+              <p className="text-xs text-amber-600 font-medium">Professional templates proven to reduce bills significantly</p>
             </div>
           </motion.div>
         </motion.div>
@@ -195,24 +209,24 @@ export default function Landing() {
           {[
             { 
               icon: FileText, 
-              title: "1. Upload Your Medical Bill", 
-              desc: "Take a photo or upload PDF - AI analyzes in seconds", 
+              title: "Smart Bill Analysis", 
+              desc: "Upload any medical bill - AI instantly identifies overcharges & errors", 
               color: "emerald", 
               delay: 1.4,
               href: "/bill-ai"
             },
             { 
               icon: AlertTriangle, 
-              title: "2. Review Overcharges Found", 
-              desc: "See exactly what you're being overcharged for", 
+              title: "Error Detection Engine", 
+              desc: "Advanced algorithms find billing mistakes that cost you thousands", 
               color: "red", 
               delay: 1.5,
               href: "/bill-ai"
             },
             { 
               icon: DollarSign, 
-              title: "3. Get Professional Dispute Letters", 
-              desc: "Download proven templates that get results", 
+              title: "Professional Dispute System", 
+              desc: "Generate winning dispute letters & negotiation scripts instantly", 
               color: "green", 
               delay: 1.6,
               href: "/bill-ai"
@@ -278,7 +292,7 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* Medical Training Overview */}
+      {/* Bill AI Advanced Features */}
       <motion.div 
         className="space-y-4 mt-8"
         initial={{ opacity: 0 }}
@@ -292,7 +306,7 @@ export default function Landing() {
           transition={{ delay: 1.9, duration: 0.6 }}
         >
           <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Plus: AI-Generated Patient Cases
+            Comprehensive Bill Protection
           </h2>
           <div className="h-0.5 w-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
         </motion.div>
@@ -300,20 +314,20 @@ export default function Landing() {
         <div className="grid grid-cols-2 gap-3 mb-6">
           {[
             { 
-              icon: Brain, 
-              title: "AI Patient Profiles", 
-              desc: "Dynamic case generation", 
+              icon: Target, 
+              title: "Negotiation Scripts", 
+              desc: "AI-generated phone scripts", 
               color: "blue", 
               delay: 2.0,
-              href: "/ai-generator"
+              href: "/bill-ai"
             },
             { 
-              icon: BookOpen, 
-              title: "Quiz Cycles", 
-              desc: "Interactive diagnosis training", 
+              icon: Brain, 
+              title: "Error Patterns", 
+              desc: "Learns common billing mistakes", 
               color: "purple", 
               delay: 2.1,
-              href: "/training"
+              href: "/bill-ai"
             }
           ].map((feature, index) => {
             const IconComponent = feature.icon;
@@ -347,6 +361,7 @@ export default function Landing() {
                             feature.color === 'red' ? 'from-red-500 to-orange-600' :
                             feature.color === 'blue' ? 'from-blue-500 to-indigo-600' :
                             feature.color === 'green' ? 'from-emerald-500 to-teal-600' :
+                            feature.color === 'purple' ? 'from-purple-500 to-indigo-600' :
                             'from-gray-500 to-gray-600'
                           } rounded-2xl flex items-center justify-center shadow-lg relative`}
                           whileHover={{ scale: 1.1, rotate: 5 }}
@@ -376,7 +391,7 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* Advanced Training Modules */}
+      {/* Industry-Grade Bill AI */}
       <motion.div 
         className="space-y-4 mt-6"
         initial={{ opacity: 0 }}
@@ -390,7 +405,7 @@ export default function Landing() {
           transition={{ delay: 2.1, duration: 0.6 }}
         >
           <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            AI Diagnostic Training
+            Industry-Grade AI Technology
           </h2>
           <div className="h-1 w-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
         </motion.div>
@@ -398,12 +413,12 @@ export default function Landing() {
         <div className="space-y-3">
           {[
             { 
-              icon: Stethoscope, 
-              title: "AI Case Generator", 
-              desc: "Generate medical cases with AI for diagnostic training and practice", 
+              icon: Zap, 
+              title: "Enterprise AI Engine", 
+              desc: "Professional-grade technology that finds billing errors hospitals hope you'll miss", 
               color: "purple", 
               delay: 2.2,
-              href: "/ai-generator"
+              href: "/bill-ai"
             }
           ].map((module, index) => {
             const IconComponent = module.icon;
@@ -497,9 +512,9 @@ export default function Landing() {
             
             <div className="grid grid-cols-3 gap-6">
               {[
-                { value: "AI", label: "Generated Cases", gradient: "from-indigo-600 to-blue-600", delay: 2.5 },
-                { value: "$500K+", label: "Max Savings", gradient: "from-emerald-600 to-teal-600", delay: 2.6 },
-                { value: "Quiz", label: "Cycles", gradient: "from-purple-600 to-pink-600", delay: 2.7 }
+                { value: "Bill AI", label: "Error Detection", gradient: "from-indigo-600 to-blue-600", delay: 2.5 },
+                { value: "$500K+", label: "Potential Savings", gradient: "from-emerald-600 to-teal-600", delay: 2.6 },
+                { value: "Premium", label: "Dispute Engine", gradient: "from-purple-600 to-pink-600", delay: 2.7 }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
