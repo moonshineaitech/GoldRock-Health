@@ -9,13 +9,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/apple-touch-icon.png",
+      "src": "/apple-touch-icon-180.png",
       "type": "image/png",
       "sizes": "180x180",
       "purpose": "any maskable"
     },
     {
-      "src": "/goldrock-social.png",
+      "src": "/goldrock-social-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"

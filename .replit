@@ -4,6 +4,7 @@ hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
 channel = "stable-24_05"
+packages = ["imagemagick"]
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -40,3 +41,7 @@ integrations = ["javascript_anthropic==1.0.0", "javascript_openai==1.0.0", "java
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 46369
+externalPort = 3000
