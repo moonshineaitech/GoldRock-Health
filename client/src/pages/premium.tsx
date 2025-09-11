@@ -7,7 +7,7 @@ import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/queryClient";
 
 if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
@@ -826,6 +826,13 @@ function PremiumDashboard() {
 export default function Premium() {
   const { isAuthenticated, isLoading } = useAuth();
   const { isSubscribed, isLoading: subscriptionLoading } = useSubscription();
+  
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
   if (isLoading || subscriptionLoading) {
     return (

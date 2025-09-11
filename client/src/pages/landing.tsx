@@ -6,9 +6,17 @@ import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layo
 import { Link } from "wouter";
 import { BookOpen, Brain, Trophy, Zap, ArrowRight, DollarSign, AlertTriangle, TrendingDown, FileText, Stethoscope, Target } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 
 export default function Landing() {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+  
   return (
     <MobileLayout title="GoldRock Health" showBottomNav={true}>
       {/* Enhanced Mobile Hero Section */}

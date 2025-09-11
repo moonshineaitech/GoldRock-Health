@@ -827,7 +827,7 @@ const WorkflowCard = ({ workflow, onClick }: {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setShowPreview(false)}
         >
           <motion.div
@@ -956,7 +956,7 @@ const WorkflowListItem = ({ workflow, onClick }: {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setShowQuickPreview(false)}
         >
           <motion.div
@@ -1981,7 +1981,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 onClick={() => sendMessage()}
                 disabled={!inputMessage.trim() || isTyping}
                 size="sm"
-                className="absolute right-1.5 lg:right-2 top-1.5 lg:top-2 w-8 h-8 lg:w-10 lg:h-10 p-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 shadow-sm"
+                className="absolute right-1.5 lg:right-2 top-1.5 lg:top-2 w-8 h-8 lg:w-10 lg:h-10 p-0 rounded-xl bg-emerald-500 hover:bg-emerald-600 shadow-sm"
                 data-testid="send-message-button"
               >
                 {isTyping ? (
@@ -2004,7 +2004,7 @@ What would you like to do first? I'm here to help you find every possible saving
         {/* Drag and Drop Area */}
         {dragActive && (
           <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center"
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
@@ -2044,7 +2044,7 @@ What would you like to do first? I'm here to help you find every possible saving
 
         {/* Upload Progress Overlay */}
         {uploadingFiles && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}

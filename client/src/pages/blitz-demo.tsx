@@ -156,6 +156,13 @@ export default function BlitzDemo() {
   const { isSubscribed, createSubscription } = useSubscription();
   const { toast } = useToast();
   
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+  
   // Demo state
   const [currentStage, setCurrentStage] = useState<'input' | 'upload' | 'analyzing' | 'results'>('input');
   const [billDetails, setBillDetails] = useState<BillDetails>({
