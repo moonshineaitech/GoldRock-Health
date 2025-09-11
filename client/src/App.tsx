@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -25,7 +25,36 @@ import IndustryInsights from "@/pages/industry-insights";
 import BlitzDemo from "@/pages/blitz-demo";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
+import AiUsageAgreement from "@/pages/ai-usage-agreement";
 import NotFound from "@/pages/not-found";
+
+// Define AI-protected routes that require AI agreement
+const AI_PROTECTED_ROUTES = [
+  '/ai-generator',
+  '/bill-ai', 
+  '/bill-analyzer',
+  '/image-analysis',
+  '/training',
+  '/game',
+  '/blitz-demo'
+];
+
+// Component wrapper to protect AI routes
+function AIRouteGuard({ children, path }: { children: React.ReactNode; path: string }) {
+  const { hasAcceptedAiTerms, isAuthenticated } = useAuth();
+  
+  // If not authenticated, let the main router handle it
+  if (!isAuthenticated) {
+    return <>{children}</>;
+  }
+  
+  // If route requires AI agreement and user hasn't accepted, redirect
+  if (AI_PROTECTED_ROUTES.includes(path) && !hasAcceptedAiTerms) {
+    return <Redirect to="/ai-agreement" />;
+  }
+  
+  return <>{children}</>;
+}
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -58,25 +87,58 @@ function Router() {
   // Show main app for authenticated users
   return (
     <Switch>
+      <Route path="/ai-agreement" component={AiUsageAgreement} />
       <Route path="/" component={Landing} />
-      <Route path="/training" component={Training} />
-      <Route path="/ai-generator" component={AIGenerator} />
-      <Route path="/game" component={Game} />
-      <Route path="/game/:id" component={Game} />
+      <Route path="/training">
+        <AIRouteGuard path="/training">
+          <Training />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/ai-generator">
+        <AIRouteGuard path="/ai-generator">
+          <AIGenerator />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/game">
+        <AIRouteGuard path="/game">
+          <Game />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/game/:id">
+        <AIRouteGuard path="/game">
+          <Game />
+        </AIRouteGuard>
+      </Route>
       <Route path="/progress" component={Progress} />
-      <Route path="/image-analysis" component={ImageAnalysis} />
+      <Route path="/image-analysis">
+        <AIRouteGuard path="/image-analysis">
+          <ImageAnalysis />
+        </AIRouteGuard>
+      </Route>
       <Route path="/study-groups" component={StudyGroups} />
       <Route path="/board-exam-prep" component={BoardExamPrep} />
       <Route path="/clinical-decision-trees" component={ClinicalDecisionTrees} />
-      <Route path="/bill-analyzer" component={BillAI} />
-      <Route path="/bill-ai" component={BillAI} />
+      <Route path="/bill-analyzer">
+        <AIRouteGuard path="/bill-analyzer">
+          <BillAI />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/bill-ai">
+        <AIRouteGuard path="/bill-ai">
+          <BillAI />
+        </AIRouteGuard>
+      </Route>
       <Route path="/premium" component={Premium} />
       <Route path="/pixel-game" component={PixelGame} />
       <Route path="/bill-reduction-guide" component={BillReductionGuide} />
       <Route path="/portal-access-guide" component={PortalAccessGuide} />
       <Route path="/bill-best-practices" component={BillBestPractices} />
       <Route path="/industry-insights" component={IndustryInsights} />
-      <Route path="/blitz-demo" component={BlitzDemo} />
+      <Route path="/blitz-demo">
+        <AIRouteGuard path="/blitz-demo">
+          <BlitzDemo />
+        </AIRouteGuard>
+      </Route>
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
       <Route component={NotFound} />

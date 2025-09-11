@@ -9,7 +9,7 @@ import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
 import { insertUserProgressSchema } from "@shared/schema";
-import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
+import { setupAuth, isAuthenticated, requiresSubscription, requiresAiAgreement } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
 import Stripe from "stripe";
 import { z } from "zod";
@@ -584,7 +584,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Voice Synthesis Routes
-  app.post('/api/voice/synthesize', async (req, res) => {
+  app.post('/api/voice/synthesize', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { text, patientProfile } = req.body;
       
@@ -606,7 +606,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/voice/voices', async (req, res) => {
+  app.get('/api/voice/voices', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const voices = await elevenLabsService.getAvailableVoices();
       res.json(voices);
@@ -617,7 +617,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Serve cached voice files
-  app.get('/api/voice-cache/:filename', async (req, res) => {
+  app.get('/api/voice-cache/:filename', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { filename } = req.params;
       
@@ -823,7 +823,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Case Question/Response System with AI Integration
-  app.post('/api/cases/:id/ask', async (req, res) => {
+  app.post('/api/cases/:id/ask', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { id } = req.params;
       const { question, conversationHistory = [] } = req.body;
@@ -904,7 +904,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Diagnosis Submission with AI Feedback
-  app.post('/api/cases/:id/diagnose', async (req, res) => {
+  app.post('/api/cases/:id/diagnose', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { id } = req.params;
       const { diagnosis, confidence, questionsAsked = [], timeElapsed } = req.body;
@@ -987,7 +987,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Simple AI Diagnosis Checking for Pixel Game
-  app.post('/api/cases/check-diagnosis', async (req, res) => {
+  app.post('/api/cases/check-diagnosis', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { userDiagnosis, correctDiagnosis, symptoms = [], questionsAsked = [], orderedTests = [] } = req.body;
       
@@ -1074,7 +1074,7 @@ Respond with ONLY a JSON object:
   });
 
   // AI Learning Recommendations Route
-  app.post('/api/learning-recommendations', async (req, res) => {
+  app.post('/api/learning-recommendations', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { userPerformance } = req.body;
       
@@ -1091,7 +1091,7 @@ Respond with ONLY a JSON object:
   });
 
   // Advanced Diagnostic Features
-  app.post('/api/cases/:id/differential-diagnosis', async (req, res) => {
+  app.post('/api/cases/:id/differential-diagnosis', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { id } = req.params;
       
@@ -1114,7 +1114,7 @@ Respond with ONLY a JSON object:
     }
   });
 
-  app.post('/api/cases/:id/clinical-reasoning', async (req, res) => {
+  app.post('/api/cases/:id/clinical-reasoning', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { id } = req.params;
       const { questionsAsked = [] } = req.body;
@@ -1132,7 +1132,7 @@ Respond with ONLY a JSON object:
     }
   });
 
-  app.post('/api/cases/:id/physical-exam/:system', async (req, res) => {
+  app.post('/api/cases/:id/physical-exam/:system', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { id, system } = req.params;
       
@@ -1149,7 +1149,7 @@ Respond with ONLY a JSON object:
     }
   });
 
-  app.post('/api/cases/:id/learning-objectives', async (req, res) => {
+  app.post('/api/cases/:id/learning-objectives', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { id } = req.params;
       const { userPerformance } = req.body;
@@ -1219,7 +1219,7 @@ Respond with ONLY a JSON object:
     }
   });
 
-  app.post('/api/cases/:id/order-test', async (req, res) => {
+  app.post('/api/cases/:id/order-test', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { id } = req.params;
       const { testName, testType } = req.body;
@@ -1357,7 +1357,7 @@ Respond with ONLY a JSON object:
   });
 
   // AI Case Generation Routes
-  app.post('/api/ai/generate-case', async (req, res) => {
+  app.post('/api/ai/generate-case', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const request: CaseGenerationRequest = req.body;
       
@@ -1388,7 +1388,7 @@ Respond with ONLY a JSON object:
     }
   });
 
-  app.post('/api/ai/generate-multiple-cases', async (req, res) => {
+  app.post('/api/ai/generate-multiple-cases', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { request, count = 3 }: { request: CaseGenerationRequest, count?: number } = req.body;
       
@@ -1924,7 +1924,7 @@ Respond with ONLY a JSON object:
   });
 
   // Bill AI Chat API - OpenAI powered medical bill reduction expert
-  app.post('/api/bill-ai-chat', requiresSubscription, async (req: any, res) => {
+  app.post('/api/bill-ai-chat', isAuthenticated, requiresAiAgreement, requiresSubscription, async (req: any, res) => {
     try {
       const { message } = req.body;
       const userId = req.user.claims.sub;
@@ -1993,7 +1993,7 @@ You help patients save thousands of dollars through expert guidance on medical b
   });
 
   // Bill Upload and Analysis API - AI-powered bill analysis for specific errors and opportunities
-  app.post('/api/upload-bill', isAuthenticated, upload.single('bill'), async (req: any, res) => {
+  app.post('/api/upload-bill', isAuthenticated, requiresAiAgreement, upload.single('bill'), async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const file = req.file;
@@ -2269,7 +2269,7 @@ Extract every specific detail from the bill including exact account numbers, pat
   });
 
   // Multiple Bill Images Upload Route - Up to 5 images for comprehensive analysis
-  app.post('/api/upload-bills', isAuthenticated, upload.array('bills', 5), async (req: any, res) => {
+  app.post('/api/upload-bills', isAuthenticated, requiresAiAgreement, upload.array('bills', 5), async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const files = req.files as Express.Multer.File[];
@@ -2571,7 +2571,7 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
   }
 
   // Medical Chatbot API - General medical and insurance Q&A
-  app.post('/api/medical-chat', isAuthenticated, async (req: any, res) => {
+  app.post('/api/medical-chat', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
     try {
       const { message } = req.body;
       const userId = req.user.claims.sub;
@@ -2913,7 +2913,7 @@ What specific insurance issue are you facing? I can provide exact templates and 
   });
 
   // AI-generated synthetic patient creation
-  app.post('/api/synthetic-patients/generate', isAuthenticated, async (req: any, res) => {
+  app.post('/api/synthetic-patients/generate', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
 
@@ -3114,7 +3114,7 @@ Generate this as a single, well-structured JSON object with ALL fields populated
   });
 
   // Run diagnostic analysis on a synthetic patient
-  app.post('/api/synthetic-patients/:id/analyze', isAuthenticated, async (req: any, res) => {
+  app.post('/api/synthetic-patients/:id/analyze', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const patientId = req.params.id;

@@ -57,7 +57,7 @@ function updateUserSession(
 async function upsertUser(
   claims: any,
 ) {
-  await storage.upsertUser({
+  return await storage.upsertUser({
     id: claims["sub"],
     email: claims["email"],
     firstName: claims["first_name"],
@@ -80,7 +80,11 @@ export async function setupAuth(app: Express) {
   ) => {
     const user = {};
     updateUserSession(user, tokens);
-    await upsertUser(tokens.claims());
+    const dbUser = await upsertUser(tokens.claims());
+    
+    // Store AI agreement status in session for redirect logic
+    (user as any).needsAiAgreement = !dbUser.acceptedAiTerms;
+    
     verified(null, user);
   };
 
@@ -109,9 +113,27 @@ export async function setupAuth(app: Express) {
   });
 
   app.get("/api/callback", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
-      successReturnToOrRedirect: "/",
-      failureRedirect: "/api/login",
+    passport.authenticate(`replitauth:${req.hostname}`, (err: any, user: any) => {
+      if (err) {
+        return res.redirect("/api/login");
+      }
+      if (!user) {
+        return res.redirect("/api/login");
+      }
+      
+      req.logIn(user, (err: any) => {
+        if (err) {
+          return res.redirect("/api/login");
+        }
+        
+        // Check if user needs to accept AI terms
+        if (user.needsAiAgreement) {
+          return res.redirect("/ai-agreement");
+        }
+        
+        // Proceed to main app
+        return res.redirect("/");
+      });
     })(req, res, next);
   });
 
@@ -153,6 +175,40 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
   } catch (error) {
     res.status(401).json({ message: "Unauthorized" });
     return;
+  }
+};
+
+// Middleware to check if user has accepted AI terms
+export const requiresAiAgreement: RequestHandler = async (req, res, next) => {
+  // First ensure user is authenticated
+  const user = req.user as any;
+  if (!req.isAuthenticated() || !user) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  try {
+    const { storage } = await import("./storage");
+    const userId = user.claims.sub;
+    const userData = await storage.getUser(userId);
+    
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if user has accepted AI terms
+    if (!userData.acceptedAiTerms) {
+      return res.status(451).json({ 
+        message: "AI agreement acceptance required",
+        code: "AI_AGREEMENT_REQUIRED",
+        requiresAgreement: true
+      });
+    }
+
+    // User has accepted AI terms, continue
+    return next();
+  } catch (error) {
+    console.error('Error checking AI agreement status:', error);
+    return res.status(500).json({ message: "Failed to verify AI agreement status" });
   }
 };
 
