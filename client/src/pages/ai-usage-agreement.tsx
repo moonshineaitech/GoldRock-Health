@@ -295,25 +295,11 @@ export default function AiUsageAgreement() {
 
                 <Separator />
 
-                {/* Contact Information */}
-                <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
-                    <Mail className="h-5 w-5" />
-                    Contact Information
-                  </h3>
-                  
-                  <p className="mb-4">
-                    For questions about this AI usage agreement, privacy practices, or to exercise your data rights, contact:
+                {/* Contact Information - Minimized */}
+                <section className="text-xs">
+                  <p className="text-gray-500 mb-2">
+                    Questions about this agreement? Contact: <span className="text-gray-600">privacy@goldrockhealth.com</span>
                   </p>
-                  
-                  <div className="bg-gray-50 border rounded-lg p-4">
-                    <p className="font-medium mb-2">GoldRock Health Privacy Team</p>
-                    <p>Email: privacy@goldrockhealth.com</p>
-                    <p>Data Protection Officer: dpo@goldrockhealth.com</p>
-                    <p className="mt-2 text-xs text-gray-600">
-                      Response time: We aim to respond to privacy inquiries within 30 days
-                    </p>
-                  </div>
                 </section>
               </div>
             </ScrollArea>
