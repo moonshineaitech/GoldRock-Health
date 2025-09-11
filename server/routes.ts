@@ -147,6 +147,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Terms acceptance endpoint
+  app.post('/api/accept-ai-terms', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { version } = req.body;
+
+      if (!version) {
+        return res.status(400).json({ message: 'AI terms version is required' });
+      }
+
+      const user = await storage.acceptAiTerms(userId, version);
+      res.json({ 
+        message: 'AI terms accepted successfully',
+        user: {
+          id: user.id,
+          acceptedAiTerms: user.acceptedAiTerms,
+          aiTermsAcceptedAt: user.aiTermsAcceptedAt,
+          aiTermsVersion: user.aiTermsVersion
+        }
+      });
+    } catch (error) {
+      console.error('Error accepting AI terms:', error);
+      res.status(500).json({ message: 'Failed to record AI terms acceptance' });
+    }
+  });
+
   // User Data Rights (GDPR/Privacy Compliance)
   app.post('/api/user/delete-data', isAuthenticated, async (req: any, res) => {
     try {

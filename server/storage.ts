@@ -75,6 +75,7 @@ export interface IStorage {
   getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined>;
   getAllUsers(): Promise<User[]>;
   upsertUser(user: UpsertUser): Promise<User>;
+  acceptAiTerms(userId: string, version: string): Promise<User>;
 
   // Medical Cases
   getMedicalCases(filters?: { specialty?: string; difficulty?: number; search?: string }): Promise<MedicalCase[]>;
@@ -197,6 +198,20 @@ export class DatabaseStorage implements IStorage {
           updatedAt: new Date(),
         },
       })
+      .returning();
+    return user;
+  }
+
+  async acceptAiTerms(userId: string, version: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        acceptedAiTerms: true,
+        aiTermsAcceptedAt: new Date(),
+        aiTermsVersion: version,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
       .returning();
     return user;
   }
