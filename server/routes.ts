@@ -316,7 +316,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             // If no valid payment intent, delete and recreate
             console.log(`Deleting incomplete subscription ${existingSubscription.id} (no valid payment intent)`);
-            await stripe.subscriptions.del(existingSubscription.id);
+            await stripe.subscriptions.cancel(existingSubscription.id);
             
             // Clear subscription ID from user record
             await storage.upsertUser({
@@ -378,7 +378,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Clean up the broken subscription
         try {
-          await stripe.subscriptions.del(subscription.id);
+          await stripe.subscriptions.cancel(subscription.id);
           await storage.upsertUser({
             ...user,
             stripeSubscriptionId: null,
