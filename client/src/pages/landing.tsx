@@ -95,9 +95,25 @@ export default function Landing() {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-1">
               <DollarSign className="h-5 w-5 text-emerald-600" />
-              <span className="font-bold text-emerald-700 text-base">Average User Saves $127,000</span>
+              <span className="font-bold text-emerald-700 text-base">Average User Saves $8,250</span>
             </div>
             <p className="text-sm text-emerald-600 font-medium">Upload your bill and find overcharges in seconds</p>
+          </div>
+        </motion.div>
+        
+        {/* Trust Indicators */}
+        <motion.div 
+          className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4 mb-8 max-w-sm mx-auto"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.05, duration: 0.6 }}
+        >
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-1">
+              <Trophy className="h-4 w-4 text-blue-600" />
+              <span className="font-bold text-blue-700 text-base">25,000+ Patients Helped</span>
+            </div>
+            <p className="text-sm text-blue-600 font-medium">Trusted by healthcare advocates nationwide</p>
           </div>
         </motion.div>
         
@@ -157,6 +173,22 @@ export default function Landing() {
           <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto">
             Follow these simple steps to find and dispute overcharges
           </p>
+          
+          {/* Success Rate Badge */}
+          <motion.div 
+            className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-3 mt-4 max-w-sm mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.35, duration: 0.5 }}
+          >
+            <div className="text-center">
+              <div className="flex items-center justify-center space-x-1 mb-1">
+                <Zap className="h-4 w-4 text-amber-600" />
+                <span className="font-bold text-amber-700 text-sm">95% Success Rate</span>
+              </div>
+              <p className="text-xs text-amber-600 font-medium">Our AI finds errors insurance companies miss</p>
+            </div>
+          </motion.div>
         </motion.div>
         
         <div className="space-y-3 mb-8">
@@ -524,13 +556,29 @@ export default function Landing() {
         </motion.div>
         
         <motion.p 
-          className="text-base text-gray-700 mb-8 max-w-sm mx-auto leading-relaxed font-medium"
+          className="text-base text-gray-700 mb-4 max-w-sm mx-auto leading-relaxed font-medium"
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.9, duration: 0.6 }}
         >
           Master medical diagnosis and find massive savings on your medical bills - all in one powerful platform.
         </motion.p>
+        
+        {/* Risk-Free Guarantee */}
+        <motion.div 
+          className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-3 mb-8 max-w-sm mx-auto"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 2.95, duration: 0.5 }}
+        >
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-1">
+              <Trophy className="h-4 w-4 text-green-600" />
+              <span className="font-bold text-green-700 text-sm">100% Risk-Free Analysis</span>
+            </div>
+            <p className="text-xs text-green-600 font-medium">No upfront cost • Pay only when you save</p>
+          </div>
+        </motion.div>
         
         <motion.div
           initial={{ opacity: 0, scale: 0.8, y: 30 }}

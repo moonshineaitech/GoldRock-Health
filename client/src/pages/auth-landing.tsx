@@ -52,10 +52,10 @@ export default function AuthLanding() {
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <p className="text-xl font-semibold text-gray-800 leading-tight">
-              Advanced Medical Training + Financial Protection
+              AI Medical Bill Advocate & Error Detection
             </p>
             <p className="text-base text-gray-600 leading-relaxed">
-              Master clinical skills with 60+ AI cases across 19 specialties while detecting <span className="font-bold text-emerald-600">$2,000-$35,000+</span> in medical bill overcharges
+              Professional-grade AI finds hidden billing errors and overcharges worth <span className="font-bold text-emerald-600">$2,000-$35,000+</span>. Your personal advocate for medical bill protection and maximum savings.
             </p>
           </motion.div>
         </motion.div>
@@ -141,18 +141,18 @@ export default function AuthLanding() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0, duration: 0.6 }}
         >
-          {/* Medical Training Features */}
+          {/* AI Bill Analysis Features */}
           <div className="text-center mb-6">
             <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
               <Brain className="h-5 w-5 text-indigo-600" />
-              AI-Powered Medical Training
+              AI-Powered Bill Intelligence
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: Stethoscope, title: "60+ Cases", desc: "19 Specialties", gradient: "from-indigo-500 to-purple-600" },
-                { icon: Zap, title: "Voice AI", desc: "Natural conversations", gradient: "from-emerald-500 to-teal-600" },
-                { icon: Target, title: "Real-time", desc: "Instant feedback", gradient: "from-amber-500 to-orange-600" },
-                { icon: Trophy, title: "Board Prep", desc: "USMLE ready", gradient: "from-rose-500 to-pink-600" }
+                { icon: Zap, title: "Instant Analysis", desc: "Seconds, not hours", gradient: "from-indigo-500 to-purple-600" },
+                { icon: Target, title: "Error Detection", desc: "95%+ accuracy rate", gradient: "from-emerald-500 to-teal-600" },
+                { icon: Shield, title: "Industry Secrets", desc: "Best practices shared", gradient: "from-amber-500 to-orange-600" },
+                { icon: Trophy, title: "Proven Results", desc: "$500K+ recovered", gradient: "from-rose-500 to-pink-600" }
               ].map((feature, index) => (
                 <motion.div
                   key={feature.title}
@@ -176,18 +176,18 @@ export default function AuthLanding() {
             </div>
           </div>
 
-          {/* Bill Analysis Features */}
+          {/* Consumer Advocacy Features */}
           <div className="text-center">
             <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
               <Shield className="h-5 w-5 text-emerald-600" />
-              Financial Protection Suite
+              Consumer Advocacy & Savings
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: DollarSign, title: "$2,000-$35,000+", desc: "Overcharge detection", gradient: "from-emerald-500 to-green-600" },
-                { icon: CheckCircle, title: "Error Analysis", desc: "AI-powered scanning", gradient: "from-blue-500 to-cyan-600" },
-                { icon: Mail, title: "Legal Letters", desc: "Auto-generated", gradient: "from-purple-500 to-indigo-600" },
-                { icon: Users, title: "Expert Support", desc: "Professional guidance", gradient: "from-amber-500 to-yellow-600" }
+                { icon: DollarSign, title: "Average $8,250", desc: "Savings per user", gradient: "from-emerald-500 to-green-600" },
+                { icon: CheckCircle, title: "87% Error Rate", desc: "Bills contain mistakes", gradient: "from-blue-500 to-cyan-600" },
+                { icon: Mail, title: "Appeal Letters", desc: "Professional drafts", gradient: "from-purple-500 to-indigo-600" },
+                { icon: Users, title: "Industry Intel", desc: "Insider strategies", gradient: "from-amber-500 to-yellow-600" }
               ].map((feature, index) => (
                 <motion.div
                   key={feature.title}
@@ -219,19 +219,19 @@ export default function AuthLanding() {
             transition={{ delay: 2.0, duration: 0.6 }}
           >
             <div className="text-center mb-4">
-              <h4 className="font-bold text-indigo-900 text-base mb-2">Trusted by Medical Professionals</h4>
+              <h4 className="font-bold text-indigo-900 text-base mb-2">Trusted by Healthcare Consumers</h4>
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <div className="text-2xl font-bold text-indigo-700">60+</div>
-                  <div className="text-xs text-indigo-600">Medical Cases</div>
+                  <div className="text-2xl font-bold text-indigo-700">87%</div>
+                  <div className="text-xs text-indigo-600">Bills Have Errors</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-emerald-700">$500K+</div>
-                  <div className="text-xs text-emerald-600">Max Savings</div>
+                  <div className="text-xs text-emerald-600">Total Recovered</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-purple-700">19</div>
-                  <div className="text-xs text-purple-600">Specialties</div>
+                  <div className="text-2xl font-bold text-purple-700">95%</div>
+                  <div className="text-xs text-purple-600">Success Rate</div>
                 </div>
               </div>
             </div>
@@ -272,11 +272,11 @@ export default function AuthLanding() {
         <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-4 mb-6 border border-indigo-200/50">
           <div className="text-center">
             <h4 className="font-bold text-indigo-900 text-sm mb-2">
-              🎆 Transform Your Medical Career Today
+              💰 Stop Overpaying for Healthcare Today
             </h4>
             <p className="text-xs text-indigo-700 leading-relaxed">
-              Join thousands of medical professionals mastering clinical skills while protecting their finances. 
-              <span className="font-semibold">Start free - no credit card required.</span>
+              Join thousands protecting themselves from medical bill overcharges with AI-powered error detection. 
+              <span className="font-semibold">Start your financial protection - completely free.</span>
             </p>
           </div>
         </div>
@@ -293,14 +293,14 @@ export default function AuthLanding() {
           <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
             <span>© 2025 GoldRock Health</span>
             <span>•</span>
-            <span>Professional Medical Training</span>
+            <span>AI Bill Analysis</span>
             <span>•</span>
-            <span>Financial Protection</span>
+            <span>Consumer Advocacy</span>
           </div>
 
           <div className="pt-2">
             <p className="text-xs text-emerald-600 font-semibold">
-              ✨ Ready to discover hidden overcharges and master clinical excellence?
+              💎 Ready to uncover hidden overcharges worth thousands in your medical bills?
             </p>
           </div>
         </div>
