@@ -156,25 +156,25 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   const dataIntelligenceWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'data-intelligence');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 lg:space-y-8">
       {/* Header */}
-      <div className="text-center space-y-3">
+      <div className="text-center space-y-3 lg:space-y-4">
         <div className="flex items-center justify-center gap-2">
           <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
             <Brain className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Medical Bill AI</h1>
+            <h1 className="text-xl lg:text-3xl font-bold text-gray-900">Medical Bill AI</h1>
             <Badge className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs">
               <Shield className="h-3 w-3 mr-1" />
               Exceeds HIPAA Standards
             </Badge>
           </div>
         </div>
-        <p className="text-sm text-gray-600 max-w-md mx-auto">
+        <p className="text-sm lg:text-lg text-gray-600 max-w-md lg:max-w-2xl mx-auto">
           Professional-grade bill analysis and advocacy. Professional AI-powered dispute templates.
         </p>
-        <div className="flex items-center justify-center gap-4 text-xs">
+        <div className="flex items-center justify-center gap-4 lg:gap-8 text-xs lg:text-sm">
           <div className="flex items-center gap-1">
             <Target className="h-3 w-3 text-emerald-600" />
             <span className="text-gray-600">AI-Powered Analysis</span>
@@ -187,12 +187,12 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       </div>
 
       {/* Core Workflows */}
-      <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-emerald-600" />
+      <div className="space-y-3 lg:space-y-4">
+        <h3 className="text-sm lg:text-base font-semibold text-gray-900 flex items-center gap-2">
+          <Sparkles className="h-4 w-4 lg:h-5 lg:w-5 text-emerald-600" />
           Essential Workflows
         </h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
           {coreWorkflows.map((workflow) => (
             <WorkflowCard
               key={workflow.id}
@@ -205,17 +205,17 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
 
       {/* Beginner-Friendly Workflows */}
       {beginnerWorkflows.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <Star className="h-4 w-4 text-yellow-600" />
+        <div className="space-y-3 lg:space-y-4">
+          <h3 className="text-sm lg:text-base font-semibold text-gray-900 flex items-center gap-2">
+            <Star className="h-4 w-4 lg:h-5 lg:w-5 text-yellow-600" />
             Getting Started (Perfect for First-Time Users)
           </h3>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-3">
-            <p className="text-xs text-yellow-800 text-center">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 lg:p-6 mb-3">
+            <p className="text-xs lg:text-sm text-yellow-800 text-center">
               🎓 New to medical bill analysis? Start here! These beginner-friendly tools help you learn step-by-step.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 lg:gap-3">
             {beginnerWorkflows.slice(0, 4).map((workflow) => (
               <WorkflowListItem
                 key={workflow.id}
@@ -1520,11 +1520,11 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
   return (
     <MobileLayout title="Bill AI" showBottomNav={true}>
-      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 lg:max-w-none xl:max-w-6xl xl:mx-auto">
         
         {/* Enhanced Header with Navigation */}
         <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200/30">
-          <div className="flex items-center justify-between p-4">
+          <div className="flex items-center justify-between p-4 lg:px-8 lg:py-6">
             <div className="flex items-center space-x-2">
               <Button
                 variant="ghost"
@@ -1535,7 +1535,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
               >
                 <List className="h-4 w-4" />
               </Button>
-              <div className="text-lg font-semibold text-gray-900">
+              <div className="text-lg lg:text-2xl font-semibold text-gray-900">
                 {selectedWorkflow ? selectedWorkflow.title : "Bill AI"}
               </div>
             </div>
@@ -1567,7 +1567,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         {/* Workflow Selection Panel */}
         {showWorkflowSelection && !selectedWorkflow && (
           <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
-            <div className="p-4">
+            <div className="p-4 lg:px-8 lg:py-6">
               <WorkflowSelectionPanel 
                 onWorkflowSelect={(workflow) => {
                   initializeWorkflowConversation(workflow);
@@ -1687,27 +1687,27 @@ What would you like to do first? I'm here to help you find every possible saving
         )}
 
         {/* Chat Messages Area - iOS Style */}
-        <div className="flex-1 overflow-y-auto bg-gray-50/30" style={{ padding: '1rem 1rem 0 1rem' }}>
-          <div className="space-y-4 pb-4">
+        <div className="flex-1 overflow-y-auto bg-gray-50/30 px-4 pt-4 lg:px-8 lg:py-6">
+          <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8">
             
             {/* Welcome State with Enhanced Call-to-Action */}
             {localMessages.length === 0 && !conversationStarted && showWorkflowSelection && (
-              <div className="text-center py-8">
+              <div className="text-center py-8 lg:py-16">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                   className="space-y-4"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
-                    <Brain className="h-8 w-8 text-white" />
+                  <div className="w-16 h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
+                    <Brain className="h-8 w-8 lg:h-12 lg:w-12 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to Save on Your Medical Bills?</h3>
-                    <p className="text-sm text-gray-600 mb-4 max-w-md mx-auto">
+                    <h3 className="text-lg lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-2 lg:mb-4">Ready to Save on Your Medical Bills?</h3>
+                    <p className="text-sm lg:text-lg text-gray-600 mb-4 lg:mb-8 max-w-md lg:max-w-3xl mx-auto">
                       Our AI has helped patients save over $50M in billing errors. Select a workflow above or start chatting!
                     </p>
-                    <div className="flex items-center justify-center gap-6 text-xs">
+                    <div className="flex items-center justify-center gap-6 lg:gap-12 text-xs lg:text-sm">
                       <div className="flex items-center gap-1">
                         <Target className="h-3 w-3 text-emerald-600" />
                         <span className="text-gray-600">94% Success Rate</span>
@@ -1897,7 +1897,7 @@ What would you like to do first? I'm here to help you find every possible saving
         </div>
 
         {/* iOS-Style Input Composer */}
-        <div className="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-gray-200/30 p-4 safe-area-inset-bottom">
+        <div className="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-gray-200/30 p-4 lg:p-6 safe-area-inset-bottom lg:relative lg:bg-white lg:border lg:rounded-2xl lg:m-4 lg:shadow-lg">
           {/* Quick Upload Hint */}
           {localMessages.length === 0 && !conversationStarted && (
             <motion.div
@@ -1905,14 +1905,14 @@ What would you like to do first? I'm here to help you find every possible saving
               animate={{ opacity: 1, y: 0 }}
               className="mb-3 text-center"
             >
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm lg:text-base text-gray-600 dark:text-gray-400 mb-2 lg:mb-3">
                 💡 <span className="font-medium">Pro Tip:</span> Upload bill images for instant AI analysis
               </p>
               <Button
                 onClick={() => setShowOptionalIntakePopup(true)}
                 variant="outline"
                 size="sm"
-                className="h-9 px-4 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 hover:border-emerald-300"
+                className="h-9 lg:h-11 px-4 lg:px-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 hover:border-emerald-300 lg:text-base"
                 data-testid="quick-capture-button"
               >
                 <Camera className="h-4 w-4 mr-2" />
@@ -1926,22 +1926,22 @@ What would you like to do first? I'm here to help you find every possible saving
               variant="ghost"
               size="sm"
               onClick={() => fileInputRef.current?.click()}
-              className="w-11 h-11 p-0 rounded-2xl bg-gray-100/80 hover:bg-gray-200/80 dark:hover:bg-gray-700/80 border-0"
+              className="w-11 h-11 lg:w-14 lg:h-14 p-0 rounded-2xl bg-gray-100/80 hover:bg-gray-200/80 dark:hover:bg-gray-700/80 border-0"
               data-testid="attach-file-button"
               disabled={uploadingFiles}
             >
-              <Paperclip className="h-5 w-5 text-gray-600" />
+              <Paperclip className="h-5 w-5 lg:h-6 lg:w-6 text-gray-600" />
             </Button>
             
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowOptionalIntakePopup(true)}
-              className="w-11 h-11 p-0 rounded-2xl bg-emerald-100/80 hover:bg-emerald-200/80 border-0"
+              className="w-11 h-11 lg:w-14 lg:h-14 p-0 rounded-2xl bg-emerald-100/80 hover:bg-emerald-200/80 border-0"
               data-testid="quick-info-button"
               title="Quick Info Capture"
             >
-              <Brain className="h-5 w-5 text-emerald-600" />
+              <Brain className="h-5 w-5 lg:h-6 lg:w-6 text-emerald-600" />
             </Button>
             
             <div className="flex-1 relative">
@@ -1950,7 +1950,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Tell me about your bill..."
-                className="h-11 pr-12 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 dark:focus:border-emerald-400/50 focus:bg-white dark:focus:bg-gray-800 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base"
+                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 dark:focus:border-emerald-400/50 focus:bg-white dark:focus:bg-gray-800 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base lg:text-lg"
                 disabled={isTyping}
                 data-testid="message-input"
               />
@@ -1958,7 +1958,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 onClick={() => sendMessage()}
                 disabled={!inputMessage.trim() || isTyping}
                 size="sm"
-                className="absolute right-1.5 top-1.5 w-8 h-8 p-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 shadow-sm"
+                className="absolute right-1.5 lg:right-2 top-1.5 lg:top-2 w-8 h-8 lg:w-10 lg:h-10 p-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 shadow-sm"
                 data-testid="send-message-button"
               >
                 {isTyping ? (

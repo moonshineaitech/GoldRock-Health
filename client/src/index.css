@@ -621,6 +621,60 @@ body {
   font-size: clamp(1.5rem, 5vw, 2rem);
 }
 
+/* Desktop-specific responsive improvements for bill-ai page */
+@media (min-width: 1024px) {
+  /* Override MobileLayout constraints for desktop */
+  .mobile-container {
+    max-width: none !important;
+  }
+  
+  /* Bill AI desktop layout improvements */
+  .bill-ai-desktop-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  /* Desktop grid improvements */
+  .desktop-grid-enhanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Desktop text sizing */
+  .desktop-text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  .desktop-text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .desktop-text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  /* Desktop spacing improvements */
+  .desktop-spacing {
+    margin-bottom: 2rem;
+  }
+  
+  .desktop-spacing-lg {
+    margin-bottom: 3rem;
+  }
+  
+  /* Desktop card improvements */
+  .desktop-card-enhanced {
+    padding: 2rem;
+    border-radius: 1rem;
+  }
+}
+
 /* Mobile-optimized containers */
 .mobile-container {
   max-width: 100%;
