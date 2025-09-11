@@ -65,7 +65,7 @@ import { EnhancedProgressTracker } from "@/components/enhanced-progress-tracker"
 import { AdvancedErrorDetector } from "@/components/advanced-error-detector";
 import { ProfessionalWorkflowSuite } from "@/components/professional-workflow-suite";
 import { Link } from "wouter";
-import { SimplifiedIntakeForm, formatIntakeDataForChat, type SimplifiedIntakeData } from "@/components/SimplifiedIntakeForm";
+import { OptionalIntakePopup } from "@/components/OptionalIntakePopup";
 
 interface AIMessage {
   id: string;
@@ -553,16 +553,16 @@ export default function BillAI() {
   const [savingsAnalysisStage, setSavingsAnalysisStage] = useState<'scanning' | 'analyzing' | 'calculating' | 'complete'>('scanning');
   const [showPremiumShowcase, setShowPremiumShowcase] = useState(false);
   const [showMedicalCodeAnalyzer, setShowMedicalCodeAnalyzer] = useState(false);
-  const [showEnhancedTracker, setShowEnhancedTracker] = useState(true);
+  const [showEnhancedTracker, setShowEnhancedTracker] = useState(false);
   const [showAdvancedErrorDetector, setShowAdvancedErrorDetector] = useState(false);
   const [showProfessionalWorkflows, setShowProfessionalWorkflows] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
+  const [showOptionalIntakePopup, setShowOptionalIntakePopup] = useState(false);
   
   // Comprehensive Workflow State Management
   const [selectedWorkflow, setSelectedWorkflow] = useState<BillWorkflow | null>(null);
   const [workflowIntakeData, setWorkflowIntakeData] = useState<Record<string, any>>({});
   const [showWorkflowSelection, setShowWorkflowSelection] = useState(true);
-  const [showSimplifiedIntake, setShowSimplifiedIntake] = useState(false);
   const [showAllWorkflows, setShowAllWorkflows] = useState(false);
   const [workflowFilter, setWorkflowFilter] = useState<string>('all');
   
@@ -577,7 +577,6 @@ export default function BillAI() {
   const initializeWorkflowConversation = (workflow: BillWorkflow) => {
     setSelectedWorkflow(workflow);
     setShowWorkflowSelection(false);
-    setShowSimplifiedIntake(false);
     setConversationStarted(true);
     
     // Create workflow-specific AI message using conversation starter
@@ -765,33 +764,52 @@ export default function BillAI() {
     }
   };
 
-  // Update intake state from message analysis
+  // Update intake state from message analysis (disabled automatic UI triggers)
   const updateIntakeFromMessage = (content: string) => {
     const updates = extractBillInformation(content);
     if (Object.keys(updates).length > 0) {
       setIntakeState(prev => {
         const newState = { ...prev, ...updates };
         
-        // Auto-trigger components based on available data
-        if ((updates.cptCodes?.length || 0) > 0 || (updates.icdCodes?.length || 0) > 0) {
-          setTimeout(() => setShowMedicalCodeAnalyzer(true), 1000);
-        }
-        
-        if (updates.amount && newState.provider && newState.dates) {
-          setTimeout(() => setShowAdvancedErrorDetector(true), 1500);
-        }
-        
-        if (newState.amount && newState.provider && newState.dates && 
-            ((newState.cptCodes?.length || 0) > 0 || (newState.icdCodes?.length || 0) > 0)) {
-          setTimeout(() => {
-            setAnalysisComplete(true);
-            setShowProfessionalWorkflows(true);
-          }, 2000);
-        }
+        // Keep state updates but disable automatic UI component triggers
+        // This allows conversational AI to flow naturally without automatic popups
         
         return newState;
       });
     }
+  };
+
+  // Handle optional intake popup submission
+  const handleOptionalIntakeSubmit = (data: any, submissionType: 'chat' | 'analysis') => {
+    // Update intake state with provided data
+    setIntakeState(prev => ({
+      ...prev,
+      amount: data.billAmount || prev.amount,
+      provider: data.providerHospital || prev.provider,
+      dates: data.serviceDates || prev.dates,
+      insurance: data.insuranceInfo || prev.insurance,
+      codes: data.medicalCodes || prev.codes
+    }));
+
+    // If user wants to run analysis immediately, send a comprehensive analysis request
+    if (submissionType === 'analysis') {
+      const analysisMessage = `I've provided the following information about my medical bill:
+
+${data.billAmount ? `• Bill Amount: ${data.billAmount}` : ''}
+${data.providerHospital ? `• Provider/Hospital: ${data.providerHospital}` : ''}
+${data.serviceDates ? `• Service Dates: ${data.serviceDates}` : ''}
+${data.insuranceInfo ? `• Insurance Information: ${data.insuranceInfo}` : ''}
+${data.medicalCodes ? `• Medical Codes: ${data.medicalCodes}` : ''}
+${data.additionalDetails ? `• Additional Details: ${data.additionalDetails}` : ''}
+
+Please provide a comprehensive medical bill analysis with specific savings opportunities, error detection, and actionable next steps. Focus on identifying billing errors, overcharges, and compliance issues.`;
+
+      setTimeout(() => {
+        sendMessage(analysisMessage);
+      }, 500);
+    }
+
+    setShowOptionalIntakePopup(false);
   };
 
   // Handle key press for sending messages
@@ -957,26 +975,6 @@ export default function BillAI() {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  // Simplified Intake Handlers
-  const handleSimplifiedIntakeSubmit = (data: SimplifiedIntakeData) => {
-    if (!selectedWorkflow) return;
-    
-    // Format the intake data for AI chat
-    const formattedMessage = formatIntakeDataForChat(selectedWorkflow, data);
-    
-    // Hide simplified intake and start conversation
-    setShowSimplifiedIntake(false);
-    setConversationStarted(true);
-    
-    // Send the formatted message to AI
-    sendMessage(formattedMessage);
-  };
-  
-  const handleSimplifiedIntakeBack = () => {
-    setShowSimplifiedIntake(false);
-    setShowWorkflowSelection(true);
-    setSelectedWorkflow(null);
-  };
 
   return (
     <MobileLayout title="Bill AI" showBottomNav={true}>
@@ -1039,7 +1037,17 @@ export default function BillAI() {
                   const welcomeMessage: AIMessage = {
                     id: Date.now().toString() + "_welcome",
                     role: "assistant",
-                    content: "Hello! I'm your Medical Bill AI assistant. I can help you save thousands on medical bills through professional analysis, dispute templates, and negotiation strategies. How can I help you today?",
+                    content: `Hello! I'm your Medical Bill AI assistant with professional billing expertise. I've helped patients save over $50 million in billing errors and overcharges.
+
+📋 **Best Ways to Get Started:**
+• **Upload bill images** - Fastest way! I can instantly extract and analyze all details
+• Share your bill amount and provider name
+• Tell me about specific charges that seem wrong
+• Ask about billing codes you don't understand
+
+📸 **Pro Tip:** Uploading medical bill photos gives me the most accurate data to find errors, overcharges, and savings opportunities. I can analyze up to 5 images at once!
+
+What would you like to do first? I'm here to help you find every possible saving!`,
                     createdAt: new Date()
                   };
                   setLocalMessages([welcomeMessage]);
@@ -1049,16 +1057,6 @@ export default function BillAI() {
           </div>
         )}
 
-        {/* Simplified Intake Form */}
-        {showSimplifiedIntake && selectedWorkflow && (
-          <div className="flex-1 overflow-y-auto bg-gray-50/30 p-4">
-            <SimplifiedIntakeForm 
-              workflow={selectedWorkflow}
-              onSubmit={handleSimplifiedIntakeSubmit}
-              onBack={handleSimplifiedIntakeBack}
-            />
-          </div>
-        )}
 
         {/* Savings Calculator Panel */}
         {showSavingsCalculator && (
@@ -1266,6 +1264,29 @@ export default function BillAI() {
 
         {/* iOS-Style Input Composer */}
         <div className="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-gray-200/30 p-4 safe-area-inset-bottom">
+          {/* Quick Upload Hint */}
+          {localMessages.length === 0 && !conversationStarted && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-3 text-center"
+            >
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                💡 <span className="font-medium">Pro Tip:</span> Upload bill images for instant AI analysis
+              </p>
+              <Button
+                onClick={() => setShowOptionalIntakePopup(true)}
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 hover:border-emerald-300"
+                data-testid="quick-capture-button"
+              >
+                <Camera className="h-4 w-4 mr-2" />
+                Quick Info Capture
+              </Button>
+            </motion.div>
+          )}
+          
           <div className="flex items-center space-x-3">
             <Button
               variant="ghost"
@@ -1276,6 +1297,17 @@ export default function BillAI() {
               disabled={uploadingFiles}
             >
               <Paperclip className="h-5 w-5 text-gray-600" />
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowOptionalIntakePopup(true)}
+              className="w-11 h-11 p-0 rounded-2xl bg-emerald-100/80 hover:bg-emerald-200/80 border-0"
+              data-testid="quick-info-button"
+              title="Quick Info Capture"
+            >
+              <Brain className="h-5 w-5 text-emerald-600" />
             </Button>
             
             <div className="flex-1 relative">
@@ -1380,6 +1412,14 @@ export default function BillAI() {
           className="hidden"
           onChange={handleFileInputChange}
           data-testid="file-input"
+        />
+
+        {/* Optional Intake Popup */}
+        <OptionalIntakePopup
+          isOpen={showOptionalIntakePopup}
+          onClose={() => setShowOptionalIntakePopup(false)}
+          onSubmit={handleOptionalIntakeSubmit}
+          onFileUpload={handleFileUpload}
         />
       </div>
     </MobileLayout>

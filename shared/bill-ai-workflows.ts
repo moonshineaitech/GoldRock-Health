@@ -54,13 +54,18 @@ export const BILL_AI_WORKFLOWS: BillWorkflow[] = [
 
 I've helped patients save over $50 million in billing errors. Let's analyze your medical bill together!
 
-📋 **To get started, you can:**
-• Upload images of your medical bills (I can analyze up to 5 at once)
+📸 **BEST WAY TO START - Upload Bill Images:**
+• Simply take photos of your medical bills (I can analyze up to 5 at once)
+• I'll instantly extract ALL the details and find every error
+• Most accurate analysis possible - no missed information
+• Fastest path to finding savings opportunities
+
+📋 **Or share details manually:**
 • Tell me about any charges that seem suspicious
 • Share basic details like the hospital name and total amount
 • Ask about specific line items or codes you don't understand
 
-What would you like to do first? I'm here to help you find every possible saving!`,
+💡 **Pro Tip:** Uploading bill images gives me 10x more data to find errors and saves you time! What would you like to do first?`,
     intakeFields: [
       { id: 'billFile', label: 'Upload Bill', type: 'file', required: true, description: 'Upload PDF, image, or document' },
       { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Full name as shown on bill' },
@@ -112,17 +117,22 @@ Focus on errors that can be professionally disputed with hospital billing depart
     isPremium: false,
     conversationStarter: `🚨 **Overcharge Detection Expert** here! I've identified over $100 million in billing errors and I'm ready to help you spot suspicious charges.
 
-Common overcharges I find:
+📸 **FASTEST OVERCHARGE DETECTION - Upload Your Bill Images:**
+• I'll instantly scan every line item for errors
+• Compare all charges against Medicare rates and industry benchmarks
+• Identify duplicate charges, upcoding, and bundling violations automatically
+• Spot facility fee violations and excessive markups immediately
+
+🔍 **Common overcharges I find:**
 • Duplicate charges (same service billed twice)
-• Upcoding (billing for more expensive procedures)
+• Upcoding (billing for more expensive procedures)  
 • Unbundling violations (separating bundled services)
 • Facility fees that violate regulations
 • Charges that exceed Medicare allowable rates by 400%+
 
-💰 **Let's find your overcharges:**
-What type of bill are you dealing with? (Emergency room, hospital stay, surgery, etc.) Or if you have specific charges that seem wrong, tell me about those!
+💰 **Ready to find overcharges?** Upload bill images for instant analysis, or tell me what type of bill you're dealing with (Emergency room, hospital stay, surgery, etc.)
 
-I'll compare your charges against industry benchmarks and flag anything suspicious.`,
+I'll compare your charges against industry benchmarks and flag anything suspicious!`,
     intakeFields: [
       { id: 'billAmount', label: 'Total Bill Amount', type: 'number', required: true, placeholder: 'Enter total amount owed' },
       { id: 'facilityType', label: 'Facility Type', type: 'select', required: true, options: ['Hospital', 'Emergency Room', 'Surgical Center', 'Urgent Care', 'Clinic', 'Laboratory', 'Imaging Center', 'Other'] },
@@ -177,15 +187,20 @@ Provide specific overcharge amounts, percentage markups, and regulatory citation
     isPremium: false,
     conversationStarter: `⚖️ **Patient Rights Attorney** here! I specialize in medical billing transparency laws and will create a legally-compliant request that hospitals MUST honor.
 
-📋 **Why you need an itemized bill:**
+📸 **HAVE YOUR BILL ALREADY? Upload Images First!**
+• If you have any medical bills, upload them now for instant analysis
+• I can work with summary bills to create itemized requests
+• Upload saves time and ensures accurate letter details
+
+📋 **Need an itemized bill? Here's why it's essential:**
 • Required by law in most states
-• Essential for finding billing errors
+• Essential for finding billing errors  
 • Shows exactly what you're paying for
 • Includes medical codes and procedure details
 • Often reveals overcharges immediately
 
 ✉️ **I'll create a professional letter for you**
-Just tell me:
+Upload your current bill images OR just tell me:
 • Which hospital/provider sent the bill?
 • Your name (as it appears on the bill)
 • Approximately when you received care
