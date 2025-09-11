@@ -276,7 +276,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
         </div>
 
         {/* Step Content */}
-        <div className="p-6 flex-1 overflow-y-auto">
+        <div className="p-6 flex-1 overflow-y-auto max-h-[calc(90vh-200px)]">
           {currentStepData && (
             <motion.div
               key={currentStep}
