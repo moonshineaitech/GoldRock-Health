@@ -87,6 +87,7 @@ import { SpecialtyCareIntelligence } from "@/components/specialty-care-intellige
 import { PharmaceuticalDeviceDatabase } from "@/components/pharmaceutical-device-database";
 import { Link } from "wouter";
 import { OptionalIntakePopup } from "@/components/OptionalIntakePopup";
+import { RunAnotherWorkflow } from "@/components/RunAnotherWorkflow";
 
 interface AIMessage {
   id: string;
@@ -1043,7 +1044,7 @@ export default function BillAI() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize workflow-specific conversation
-  const initializeWorkflowConversation = (workflow: BillWorkflow) => {
+  const initializeWorkflowConversation = (workflow: BillWorkflow, preserveContext: boolean = false) => {
     setSelectedWorkflow(workflow);
     setShowWorkflowSelection(false);
     setConversationStarted(true);
@@ -1052,11 +1053,18 @@ export default function BillAI() {
     const workflowMessage: AIMessage = {
       id: Date.now().toString() + "_workflow_start",
       role: "assistant",
-      content: workflow.conversationStarter,
+      content: preserveContext 
+        ? `**🔄 SWITCHING TO: ${workflow.title.toUpperCase()}**\n\n${workflow.conversationStarter}`
+        : workflow.conversationStarter,
       createdAt: new Date()
     };
     
-    setLocalMessages([workflowMessage]);
+    // Either replace messages (fresh start) or append to existing conversation
+    if (preserveContext) {
+      setLocalMessages(prev => [...prev, workflowMessage]);
+    } else {
+      setLocalMessages([workflowMessage]);
+    }
     
     // Store the workflow context for future AI interactions
     setWorkflowIntakeData({
@@ -1768,6 +1776,19 @@ What would you like to do first? I'm here to help you find every possible saving
                   }`}>
                     {message.content}
                   </p>
+                  
+                  {/* Run Another Workflow Button (for all AI responses) */}
+                  {message.role === "assistant" && (
+                    <div className="mt-4 pt-3 border-t border-gray-100/50">
+                      <div className="flex justify-center">
+                        <RunAnotherWorkflow
+                          onWorkflowSelect={(workflow) => {
+                            initializeWorkflowConversation(workflow, true);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
                   
                   {/* Premium Tools Button (only for AI responses and subscribed users) */}
                   {message.role === "assistant" && isSubscribed && (
