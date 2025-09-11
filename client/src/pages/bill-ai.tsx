@@ -525,78 +525,78 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <Button
                   onClick={() => setShowHospitalBillsDatabase(!showHospitalBillsDatabase)}
                   variant="outline"
-                  className="h-20 lg:h-32 xl:h-40 2xl:h-48 p-3 lg:p-6 xl:p-8 flex-col space-y-2 lg:space-y-4 xl:space-y-6 text-left justify-start rounded-2xl lg:rounded-3xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50"
+                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 overflow-hidden"
                   data-testid="hospital-bills-database"
                 >
                   <Building2 className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-blue-600" />
-                  <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-tight">Hospital Bills Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-2 leading-tight">Insider billing patterns</div>
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
+                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Hospital Bills Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Insider billing patterns</div>
                   </div>
                 </Button>
 
                 <Button
                   onClick={() => setShowInsuranceClaimsDatabase(!showInsuranceClaimsDatabase)}
                   variant="outline"
-                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50"
+                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 overflow-hidden"
                   data-testid="insurance-claims-database"
                 >
                   <Shield className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-indigo-600" />
-                  <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Insurance Claims Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">Company-specific tactics</div>
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
+                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Insurance Claims Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Company-specific tactics</div>
                   </div>
                 </Button>
 
                 <Button
                   onClick={() => setShowInsuranceDenialsIntelligence(!showInsuranceDenialsIntelligence)}
                   variant="outline"
-                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50"
+                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 overflow-hidden"
                   data-testid="insurance-denials-intelligence"
                 >
                   <XCircle className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-red-600" />
-                  <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Insurance Denials Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">Reversal strategies</div>
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
+                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Insurance Denials Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Reversal strategies</div>
                   </div>
                 </Button>
 
                 <Button
                   onClick={() => setShowEmergencyCareBillingDatabase(!showEmergencyCareBillingDatabase)}
                   variant="outline"
-                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50"
+                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 overflow-hidden"
                   data-testid="emergency-care-billing-database"
                 >
                   <Siren className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-orange-600" />
-                  <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Emergency Care Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">No Surprises Act tactics</div>
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
+                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Emergency Care Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">No Surprises Act tactics</div>
                   </div>
                 </Button>
 
                 <Button
                   onClick={() => setShowSpecialtyCareIntelligence(!showSpecialtyCareIntelligence)}
                   variant="outline"
-                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50"
+                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 overflow-hidden"
                   data-testid="specialty-care-intelligence"
                 >
                   <Stethoscope className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-purple-600" />
-                  <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Specialty Care Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">High-cost procedures</div>
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
+                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Specialty Care Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">High-cost procedures</div>
                   </div>
                 </Button>
 
                 <Button
                   onClick={() => setShowPharmaceuticalDeviceDatabase(!showPharmaceuticalDeviceDatabase)}
                   variant="outline"
-                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-green-200 hover:shadow-lg transition-all duration-200 hover:border-green-300 hover:bg-green-50/50"
+                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-green-200 hover:shadow-lg transition-all duration-200 hover:border-green-300 hover:bg-green-50/50 overflow-hidden"
                   data-testid="pharmaceutical-device-database"
                 >
                   <Pill className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-green-600" />
-                  <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Pharmaceutical & Device Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">Drug & device pricing</div>
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
+                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Pharmaceutical & Device Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Drug & device pricing</div>
                   </div>
                 </Button>
               </div>
@@ -795,25 +795,25 @@ const WorkflowCard = ({ workflow, onClick }: {
         <Button
           onClick={handleClick}
           variant="outline"
-          className={`h-24 lg:h-40 xl:h-48 2xl:h-56 p-4 lg:p-8 xl:p-10 2xl:p-12 flex-col space-y-2 lg:space-y-6 xl:space-y-8 text-left justify-start rounded-2xl lg:rounded-3xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-visible ${
+          className={`h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-8 xl:p-10 2xl:p-12 flex-col space-y-2 lg:space-y-4 xl:space-y-6 text-left justify-start rounded-2xl lg:rounded-3xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
             isHovered ? 'border-emerald-300 bg-emerald-50/50' : ''
           }`}
           data-testid={`workflow-${workflow.id}`}
         >
-          {workflow.isPremium && !isSubscribed && (
-            <div className="absolute top-2 right-2 lg:top-4 lg:right-4 xl:top-5 xl:right-5 z-10">
-              <Crown className="h-3 w-3 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-orange-500" />
-            </div>
-          )}
           <workflow.icon className={`h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 ${workflow.color} ${isHovered ? 'scale-110' : ''} transition-transform`} />
-          <div className="text-center w-full">
-            <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-tight">{workflow.title}</div>
-            <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-2 leading-tight">{workflow.subtitle}</div>
+          <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
+            <div className="flex items-start justify-center gap-2">
+              <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words text-center">{workflow.title}</div>
+              {workflow.isPremium && !isSubscribed && (
+                <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500 flex-shrink-0 mt-0.5" />
+              )}
+            </div>
+            <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">{workflow.subtitle}</div>
             {isHovered && (
               <motion.div 
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }}
-                className="text-xs lg:text-sm xl:text-base text-emerald-600 font-medium mt-1 lg:mt-2"
+                className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-emerald-600 font-medium"
               >
                 {workflow.savingsPotential}
               </motion.div>
