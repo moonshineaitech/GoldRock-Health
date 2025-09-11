@@ -573,6 +573,31 @@ export default function BillAI() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Initialize workflow-specific conversation
+  const initializeWorkflowConversation = (workflow: BillWorkflow) => {
+    setSelectedWorkflow(workflow);
+    setShowWorkflowSelection(false);
+    setShowSimplifiedIntake(false);
+    setConversationStarted(true);
+    
+    // Create workflow-specific AI message using conversation starter
+    const workflowMessage: AIMessage = {
+      id: Date.now().toString() + "_workflow_start",
+      role: "assistant",
+      content: workflow.conversationStarter,
+      createdAt: new Date()
+    };
+    
+    setLocalMessages([workflowMessage]);
+    
+    // Store the workflow context for future AI interactions
+    setWorkflowIntakeData({
+      workflowId: workflow.id,
+      systemPrompt: workflow.systemPrompt,
+      userPromptTemplate: workflow.userPromptTemplate
+    });
+  };
+
   // Initialize dark mode
   useEffect(() => {
     const savedTheme = localStorage.getItem('billai-dark-mode');
@@ -1005,9 +1030,7 @@ export default function BillAI() {
             <div className="p-4">
               <WorkflowSelectionPanel 
                 onWorkflowSelect={(workflow) => {
-                  setSelectedWorkflow(workflow);
-                  setShowWorkflowSelection(false);
-                  setShowSimplifiedIntake(true);
+                  initializeWorkflowConversation(workflow);
                 }}
                 onStartChat={() => {
                   setShowWorkflowSelection(false);

@@ -30,6 +30,7 @@ export interface BillWorkflow {
   intakeFields: WorkflowField[];
   systemPrompt: string;
   userPromptTemplate: string;
+  conversationStarter: string;
   examples?: string[];
   tags: string[];
 }
@@ -49,6 +50,17 @@ export const BILL_AI_WORKFLOWS: BillWorkflow[] = [
     savingsPotential: '$1,000-$100,000+',
     successRate: '94%',
     isPremium: false,
+    conversationStarter: `Hello! I'm your professional medical billing advocate. I specialize in finding $1K-$100K+ in savings by identifying billing errors, overcharges, and regulatory violations.
+
+I've helped patients save over $50 million in billing errors. Let's analyze your medical bill together!
+
+📋 **To get started, you can:**
+• Upload images of your medical bills (I can analyze up to 5 at once)
+• Tell me about any charges that seem suspicious
+• Share basic details like the hospital name and total amount
+• Ask about specific line items or codes you don't understand
+
+What would you like to do first? I'm here to help you find every possible saving!`,
     intakeFields: [
       { id: 'billFile', label: 'Upload Bill', type: 'file', required: true, description: 'Upload PDF, image, or document' },
       { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Full name as shown on bill' },
@@ -98,6 +110,19 @@ Focus on errors that can be professionally disputed with hospital billing depart
     savingsPotential: '$500-$50,000',
     successRate: '89%',
     isPremium: false,
+    conversationStarter: `🚨 **Overcharge Detection Expert** here! I've identified over $100 million in billing errors and I'm ready to help you spot suspicious charges.
+
+Common overcharges I find:
+• Duplicate charges (same service billed twice)
+• Upcoding (billing for more expensive procedures)
+• Unbundling violations (separating bundled services)
+• Facility fees that violate regulations
+• Charges that exceed Medicare allowable rates by 400%+
+
+💰 **Let's find your overcharges:**
+What type of bill are you dealing with? (Emergency room, hospital stay, surgery, etc.) Or if you have specific charges that seem wrong, tell me about those!
+
+I'll compare your charges against industry benchmarks and flag anything suspicious.`,
     intakeFields: [
       { id: 'billAmount', label: 'Total Bill Amount', type: 'number', required: true, placeholder: 'Enter total amount owed' },
       { id: 'facilityType', label: 'Facility Type', type: 'select', required: true, options: ['Hospital', 'Emergency Room', 'Surgical Center', 'Urgent Care', 'Clinic', 'Laboratory', 'Imaging Center', 'Other'] },
@@ -150,6 +175,22 @@ Provide specific overcharge amounts, percentage markups, and regulatory citation
     savingsPotential: 'Required for disputes',
     successRate: '100%',
     isPremium: false,
+    conversationStarter: `⚖️ **Patient Rights Attorney** here! I specialize in medical billing transparency laws and will create a legally-compliant request that hospitals MUST honor.
+
+📋 **Why you need an itemized bill:**
+• Required by law in most states
+• Essential for finding billing errors
+• Shows exactly what you're paying for
+• Includes medical codes and procedure details
+• Often reveals overcharges immediately
+
+✉️ **I'll create a professional letter for you**
+Just tell me:
+• Which hospital/provider sent the bill?
+• Your name (as it appears on the bill)
+• Approximately when you received care
+
+I'll draft a letter with proper legal citations that gets results in 30 days or less!`,
     intakeFields: [
       { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Full legal name' },
       { id: 'hospitalName', label: 'Hospital/Provider', type: 'text', required: true, placeholder: 'Full facility name' },
@@ -205,6 +246,21 @@ Make this a compelling, professional request that hospital billing departments m
     savingsPotential: '$200-$5,000',
     successRate: '85%',
     isPremium: false,
+    conversationStarter: `👋 **Welcome! I'm your friendly Medical Bill Educator!**
+
+I see this is your first time analyzing a medical bill - that's totally normal and I'm here to help make it easy and empowering!
+
+🎓 **What I'll teach you:**
+✅ How to spot common errors anyone can find
+✅ Your rights as a patient (more than you think!)
+✅ Simple actions that could save you $200-$5,000
+✅ Building confidence for future bills
+
+💡 **To get started, just tell me:**
+• What type of medical visit was this? (ER, hospital stay, doctor visit, etc.)
+• What's your main concern about the bill?
+
+Don't worry about having all the details - I'll guide you step by step! What would you like to know first?`,
     intakeFields: [
       { id: 'billAmount', label: 'Total Bill Amount', type: 'number', required: true, placeholder: 'What is the total amount you owe?' },
       { id: 'visitType', label: 'Type of Visit', type: 'select', required: true, options: ['Emergency Room', 'Hospital Stay', 'Surgery', 'Doctor Visit', 'Diagnostic Test', 'Laboratory', 'X-ray/Imaging', 'Other'] },
@@ -254,6 +310,25 @@ Make this educational and empowering. Avoid overwhelming medical jargon. Focus o
     savingsPotential: 'Required first step',
     successRate: '98%',
     isPremium: false,
+    conversationStarter: `📋 **Hi! I'm your Patient Advocate - let's get your itemized bill!**
+
+Getting an itemized bill is the ESSENTIAL first step and it's your legal right. Hospitals must provide it, and it often reveals errors immediately!
+
+✨ **Why this matters:**
+• Shows exactly what you're paying for
+• Required by law in most states  
+• Reveals overcharges and duplicate charges
+• Essential for any dispute or negotiation
+• Often reduces bills just by requesting it!
+
+✍️ **I'll write a simple, friendly letter that gets results**
+
+Just tell me:
+• Which hospital or provider sent you the bill?
+• Your name (as it appears on the bill)
+• When did you receive care?
+
+I'll create a professional request that feels empowering, not intimidating!`,
     intakeFields: [
       { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Your full name' },
       { id: 'hospitalName', label: 'Hospital or Provider', type: 'text', required: true, placeholder: 'Where did you receive care?' },
@@ -303,6 +378,20 @@ Keep the language simple and approachable - this should feel empowering, not int
     savingsPotential: '$300-$8,000',
     successRate: '78%',
     isPremium: false,
+    conversationStarter: `🔍 **Hi! I'm your Billing Error Detective!**
+
+I'll teach you to spot common billing mistakes that anyone can find - no medical expertise needed! Think of me as your friendly guide to finding obvious errors.
+
+🚩 **Common errors I'll help you spot:**
+• Simple math mistakes (2+2=5 type errors)
+• Duplicate charges (same thing billed twice)
+• Services you didn't receive
+• Prices that just don't make sense
+
+💡 **Let's start simple:**
+What type of medical visit are you dealing with? I'll show you exactly what to look for based on your specific situation. Don't worry if you're not sure about everything - I'll guide you step by step!
+
+Ready to become a billing error detective?`,
     intakeFields: [
       { id: 'billType', label: 'What type of bill?', type: 'select', required: true, options: ['Emergency Room visit', 'Hospital stay (1-2 days)', 'Hospital stay (3+ days)', 'Outpatient surgery', 'Diagnostic tests only', 'Doctor consultation', 'Multiple visits/treatments'] },
       { id: 'stayLength', label: 'If hospitalized, how long?', type: 'select', required: false, options: ['Same day', '1 night', '2-3 nights', '4-7 nights', 'Over 1 week', 'Not applicable'] },
@@ -359,6 +448,20 @@ Make this feel doable and empowering - anyone can do this basic detective work!`
     savingsPotential: '$500-$12,000',
     successRate: '71%',
     isPremium: false,
+    conversationStarter: `✉️ **Hello! I'm your Letter Writing Assistant!**
+
+I'll help you write a clear, respectful letter that gets results from hospital billing departments. No legal jargon or intimidating language - just friendly but firm communication that works.
+
+📝 **What I'll create for you:**
+• A professional letter that billing staff will take seriously
+• Clear explanation of what's wrong
+• Specific request for what you want fixed
+• Friendly but confident tone that gets responses
+
+🎯 **To get started:**
+Tell me what billing error you found. Even if you just have a feeling something's wrong, I can help you put it into words that hospital billing departments will understand and act on.
+
+What seems off about your bill?`,
     intakeFields: [
       { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Your full name' },
       { id: 'hospitalName', label: 'Hospital Name', type: 'text', required: true, placeholder: 'Full name of hospital or clinic' },
@@ -413,6 +516,23 @@ Include a note about what to do if they don't respond within the stated timefram
     savingsPotential: '$400-$15,000',
     successRate: '68%',
     isPremium: false,
+    conversationStarter: `🧠 **Hi! I'm your Medical Code Translator!**
+
+Those mysterious numbers on your bill? I'll help you understand exactly what they mean and whether they match what actually happened to you.
+
+🔢 **What I'll decode:**
+• CPT codes (what procedures were billed)
+• ICD codes (what diagnoses were recorded)
+• Whether the codes match your actual experience
+• Common coding mistakes that cost you money
+
+✅ **Simple verification process:**
+You tell me what actually happened during your visit, and I'll check if the codes on your bill match your experience. If they don't match, I'll show you exactly what to question.
+
+📋 **To start:**
+Just describe what happened during your medical visit in your own words. Did you have blood drawn? Get an X-ray? See a doctor? I'll compare that to what's billed.
+
+What services did you actually receive?`,
     intakeFields: [
       { id: 'cptCodes', label: 'CPT Codes (Procedure Codes)', type: 'textarea', required: false, placeholder: 'Enter any 5-digit codes from your bill (e.g., 99213, 71020, 85025)' },
       { id: 'icdCodes', label: 'ICD Codes (Diagnosis Codes)', type: 'textarea', required: false, placeholder: 'Enter diagnosis codes if shown (e.g., Z00.00, M25.50)' },
@@ -471,6 +591,22 @@ Keep explanations simple and educational. Help the patient understand they have 
     savingsPotential: '$1,000-$25,000+',
     successRate: '82%',
     isPremium: false,
+    conversationStarter: `💰 **Hi! I'm your Payment Plan Helper!**
+
+Don't worry - hospitals want to work with you! Most offer payment plans with 0% interest, and many have secret programs that can reduce or even eliminate your bill.
+
+🤝 **What I'll help you arrange:**
+• Interest-free monthly payment plans
+• Hospital financial assistance programs
+• Income-based payment reductions
+• Medical debt forgiveness options
+
+✨ **The good news:** You have more negotiating power than you think! Hospitals often prefer payment plans over collections.
+
+💡 **To get started:**
+Tell me how much you owe total and what you can realistically afford each month. I'll show you exactly what to say to get the best payment arrangement.
+
+What's your biggest concern about paying this bill?`,
     intakeFields: [
       { id: 'billAmount', label: 'Total Amount Owed', type: 'number', required: true, placeholder: 'What is your total bill amount?' },
       { id: 'monthlyBudget', label: 'What Can You Afford Monthly?', type: 'number', required: true, placeholder: 'Realistic monthly payment amount' },
@@ -530,6 +666,24 @@ Make this feel achievable and reduce anxiety about the negotiation process. Focu
     savingsPotential: '$2,000-$35,000',
     successRate: '73%',
     isPremium: false,
+    conversationStarter: `🛡️ **Professional Medical Bill Advocate** here! I've helped patients save over $100 million by writing compelling dispute letters that hospitals must take seriously.
+
+📝 **What I'll create for you:**
+• Professional, legally-sound dispute letters
+• Appeals that reference your rights under law
+• Documentation that compels responses
+• Follow-up templates for non-responses
+
+⚖️ **My letters work because they:**
+• Use proper legal language hospital billing departments respect
+• Reference specific regulations and patient rights
+• Demand specific actions within legal timeframes
+• Protect your legal remedies while seeking resolution
+
+💪 **Ready to fight your medical bill?**
+Tell me what charges you want to dispute and why you believe they're wrong. I'll craft a professional letter that gets results.
+
+What specific issues do you want to challenge on your bill?`,
     intakeFields: [
       { id: 'patientName', label: 'Patient Name', type: 'text', required: true, placeholder: 'Full legal name' },
       { id: 'hospitalName', label: 'Hospital Name', type: 'text', required: true, placeholder: 'Full facility name' },
@@ -588,6 +742,22 @@ Generate a compelling, professional dispute letter that hospital billing departm
     savingsPotential: '$5,000-$75,000',
     successRate: '82%',
     isPremium: true,
+    conversationStarter: `🚨 **Emergency Room Billing Specialist** here! ER bills are notorious for outrageous overcharges and illegal surprise billing - I'm here to fight back!
+
+⚡ **Emergency room billing violations I combat:**
+• Surprise out-of-network charges (often illegal!)
+• Excessive facility fees that violate federal law
+• Inflated ER level billing for minor complaints
+• Charges for services never provided during your visit
+• EMTALA violations and improper emergency screening
+
+🛡️ **The No Surprises Act protects you:**
+Emergency billing has the strongest patient protections. I'll use federal law to fight unfair charges and get you the savings you deserve.
+
+💰 **Ready to fight your ER bill?**
+Tell me what brought you to the emergency room and what seems wrong with your bill. I'll analyze every charge and find violations that could save you thousands.
+
+What happened during your ER visit?`,
     intakeFields: [
       { id: 'erVisitDate', label: 'ER Visit Date', type: 'date', required: true, description: 'Date of emergency room visit' },
       { id: 'chiefComplaint', label: 'Reason for Visit', type: 'textarea', required: true, placeholder: 'What brought you to the ER?' },
@@ -644,6 +814,22 @@ Provide specific recommendations for disputing inappropriate charges with regula
     savingsPotential: '$10,000-$150,000',
     successRate: '78%',
     isPremium: true,
+    conversationStarter: `⚕️ **Surgical Billing Expert** here! Surgery bills are where I find the biggest savings - $10K to $150K+ reductions are common.
+
+🔍 **What I'll analyze for you:**
+• Operating room time charges (often inflated)
+• Anesthesia billing accuracy and calculations
+• Surgical supplies and device costs
+• Assistant surgeon necessity and billing
+• Recovery and monitoring fees
+
+💎 **Premium surgical analysis uncovers:**
+• OR time verification against medical records
+• Surgical supply cost comparisons
+• Device and implant pricing reviews
+• Anesthesia time and base unit calculations
+
+Tell me about your surgery and what charges seem excessive. I'll find every possible error and get you maximum savings!`,
     intakeFields: [
       { id: 'surgeryType', label: 'Surgery Type', type: 'text', required: true, placeholder: 'Name of surgical procedure' },
       { id: 'surgeryDate', label: 'Surgery Date', type: 'date', required: true, description: 'Date of surgical procedure' },
@@ -704,6 +890,22 @@ Provide specific recommendations for disputing inappropriate surgical charges wi
     savingsPotential: '$1,500-$25,000',
     successRate: '85%',
     isPremium: true,
+    conversationStarter: `🔬 **Diagnostic Test Billing Specialist** here! Lab tests and imaging are gold mines for overcharges - I'll help you find every penny you're owed.
+
+💡 **Common diagnostic test overcharges I find:**
+• Blood work billed at 10x the Medicare rate
+• "STAT" surcharges that weren't medically necessary  
+• Duplicate tests billed separately
+• Contrast materials overcharged by 500%+
+• Imaging studies bundled incorrectly
+
+🎯 **My analysis success rate: 85%**
+Most diagnostic bills have errors because labs and imaging centers know patients don't understand the complex billing codes.
+
+📋 **Tell me about your tests:**
+What kind of tests did you have? Blood work? X-rays? MRI? Even if you're not sure about all the details, I can help you spot the obvious overcharges.
+
+What diagnostic tests are you being charged for?`,
     intakeFields: [
       { id: 'testType', label: 'Type of Tests', type: 'select', required: true, options: ['Laboratory Tests', 'X-rays', 'CT Scans', 'MRI', 'Ultrasound', 'Nuclear Medicine', 'PET Scans', 'Multiple Test Types'] },
       { id: 'testCodes', label: 'CPT/Test Codes', type: 'textarea', required: false, placeholder: 'List any CPT codes or test names from your bill' },
@@ -762,6 +964,24 @@ Provide specific overcharge amounts and recommendations for disputing inappropri
     savingsPotential: '$5,000-$100,000+',
     successRate: '71%',
     isPremium: true,
+    conversationStarter: `🛡️ **Insurance Appeals Expert** here! I've overturned thousands of claim denials and I'm ready to fight for your coverage.
+
+🚫 **Insurance denied your claim? I'll help you fight back!**
+• I know the exact language insurers must respond to
+• I've won appeals that saved patients $100,000+
+• I understand medical necessity criteria better than most doctors
+• I'll create a professional appeal they can't ignore
+
+⚖️ **Common denials I overturn:**
+• "Not medically necessary" (often wrong!)
+• "Experimental" treatments that are actually standard care
+• Out-of-network surprise bills
+• Pre-authorization technicalities
+
+💪 **Ready to appeal your denial?**
+Tell me what was denied and why the insurance company said no. I'll create a compelling appeal that references your policy rights and medical evidence.
+
+What did your insurance deny and what reason did they give?`,
     intakeFields: [
       { id: 'insuranceCompany', label: 'Insurance Company', type: 'text', required: true, placeholder: 'Name of insurance company' },
       { id: 'policyNumber', label: 'Policy Number', type: 'text', required: true, placeholder: 'Insurance policy number' },
@@ -822,6 +1042,24 @@ Generate a compelling, professionally-structured appeal that maximizes the chanc
     savingsPotential: '50-100% bill reduction',
     successRate: '68%',
     isPremium: true,
+    conversationStarter: `💚 **Financial Assistance Advocate** here! I help families get the charity care they deserve - often 50-100% bill forgiveness.
+
+🏥 **Did you know hospitals are required by law to help you?**
+• Nonprofit hospitals MUST provide charity care
+• You may qualify even if you have insurance
+• Many hospitals have secret programs with generous income limits
+• Financial assistance can reduce bills to $0
+
+✨ **I've helped families qualify for:**
+• Complete bill forgiveness (100% charity care)
+• Income-based payment plans as low as $10/month
+• Retroactive charity care for old bills
+• Payment plan reductions of 50-90%
+
+💝 **Don't struggle alone with medical debt**
+Tell me about your financial situation. I'll help you apply for assistance programs and show you exactly how hospitals are required to help families like yours.
+
+What's your biggest concern about paying this medical bill?`,
     intakeFields: [
       { id: 'householdSize', label: 'Household Size', type: 'number', required: true, placeholder: 'Number of people in household' },
       { id: 'annualIncome', label: 'Annual Income', type: 'number', required: true, placeholder: 'Gross annual household income' },
@@ -882,6 +1120,25 @@ Generate a complete, professional application that maximizes approval chances fo
     savingsPotential: '$3,000-$50,000',
     successRate: '81%',
     isPremium: true,
+    conversationStarter: `🏛️ **Medicare/Medicaid Billing Expert** here! Government programs have the strongest billing protections - I'll help you use them to fight unfair charges.
+
+🇺🇸 **Your Medicare/Medicaid rights are powerful:**
+• Providers must follow strict federal billing rules
+• Balance billing is often prohibited  
+• You have guaranteed appeals processes
+• Medicare fee schedules set maximum allowable charges
+
+💪 **Common violations I fight:**
+• Providers charging more than Medicare allows
+• Improper billing of Medicare deductibles
+• Medicaid balance billing (often illegal!)
+• Coordination of benefits errors
+• Dual eligible billing mistakes
+
+📋 **Tell me about your government program:**
+Are you on Medicare Part A, B, or C? Medicaid? Both? I'll review your bill against federal regulations and find every violation.
+
+What Medicare or Medicaid charges are concerning you?`,
     intakeFields: [
       { id: 'programType', label: 'Program Type', type: 'select', required: true, options: ['Medicare Part A', 'Medicare Part B', 'Medicare Advantage', 'Medicaid', 'Medicare/Medicaid Dual', 'Medicare Supplement'] },
       { id: 'beneficiaryId', label: 'Beneficiary ID', type: 'text', required: true, placeholder: 'Medicare or Medicaid ID number' },
@@ -940,6 +1197,26 @@ Provide specific recommendations for resolving billing issues with citations to 
     savingsPotential: '$500-$15,000',
     successRate: '76%',
     isPremium: true,
+    conversationStarter: `💊 **Pharmacy Billing Specialist** here! Drug charges are notorious for outrageous markups - I'll help you spot every overcharge.
+
+💰 **Shocking medication overcharges I find:**
+• $50 for a single Tylenol pill (should cost $0.02)
+• $500 for a saline bag (costs $3 to make)
+• Brand name drugs when generics were given
+• "IV administration" fees for oral medications
+• Pharmacy markups of 1000%+ over wholesale cost
+
+🔍 **What I'll analyze:**
+• Drug pricing against wholesale costs
+• Dispensing fees (often excessive)
+• Administration charges vs actual delivery method
+• Brand vs generic substitutions
+• Insurance formulary compliance
+
+📋 **Tell me about your medication charges:**
+What drugs are you being charged for? Even if you don't know the exact names, describe what medications you received - pills, IV drips, shots, etc.
+
+What medication charges seem too high to you?`,
     intakeFields: [
       { id: 'medicationList', label: 'Medications Billed', type: 'textarea', required: true, placeholder: 'List all medications and doses from your bill' },
       { id: 'pharmacyType', label: 'Pharmacy Type', type: 'select', required: true, options: ['Hospital Pharmacy', 'Retail Pharmacy', 'Specialty Pharmacy', 'Compounding Pharmacy', 'Mail Order', 'Other'] },
@@ -999,6 +1276,19 @@ Provide specific recommendations for disputing excessive medication charges with
     savingsPotential: '$2,000-$20,000',
     successRate: '79%',
     isPremium: true,
+    conversationStarter: `🎨 **Physical Therapy Billing Expert** here! PT bills are full of inflated charges - I'll help you spot every overcharge.
+
+🏋️ **Common PT billing problems I fix:**
+• Charging for multiple PT sessions per day (often impossible)
+• Billing individual therapy when group therapy was provided
+• Excessive evaluation and re-evaluation fees
+• Charging for PT aide time at therapist rates
+• Duplicate billing for the same treatment
+
+📊 **Tell me about your therapy:**
+How many PT sessions did you actually attend? What type of treatments did you receive? I'll check if you're being billed correctly.
+
+What seems wrong with your physical therapy charges?`,
     intakeFields: [
       { id: 'therapyType', label: 'Therapy Type', type: 'select', required: true, options: ['Physical Therapy', 'Occupational Therapy', 'Speech Therapy', 'Multiple Therapies'] },
       { id: 'sessionCount', label: 'Number of Sessions', type: 'number', required: true, placeholder: 'Total therapy sessions billed' },
@@ -1055,6 +1345,19 @@ Provide specific recommendations for disputing inappropriate therapy charges wit
     savingsPotential: '$2,500-$30,000',
     successRate: '83%',
     isPremium: true,
+    conversationStarter: `📷 **Radiology Billing Expert** here! Imaging bills have some of the highest overcharges - I'll help you fight back.
+
+💰 **Shocking imaging overcharges I find:**
+• Contrast dye marked up 500% over cost
+• Billing for multiple "views" of the same scan
+• Excessive facility fees for simple X-rays
+• Charging professional and technical fees twice
+• Emergency radiology surcharges without justification
+
+🔍 **Tell me about your imaging:**
+What type of scans did you have? X-ray, CT, MRI? Were you given contrast dye? I'll analyze every charge.
+
+What imaging charges seem too high?`,
     intakeFields: [
       { id: 'imagingType', label: 'Imaging Type', type: 'select', required: true, options: ['X-ray', 'CT Scan', 'MRI', 'Ultrasound', 'Nuclear Medicine', 'PET/CT', 'Mammography', 'Multiple Studies'] },
       { id: 'studyReason', label: 'Reason for Study', type: 'textarea', required: true, placeholder: 'Why was the imaging ordered?' },
@@ -1113,6 +1416,19 @@ Provide specific recommendations for disputing inappropriate radiology charges w
     savingsPotential: '$800-$12,000',
     successRate: '88%',
     isPremium: true,
+    conversationStarter: `🔬 **Laboratory Billing Expert** here! Lab tests are notorious for outrageous overcharges - my success rate is 88% for finding savings.
+
+💰 **Shocking lab overcharges I find:**
+• $50 for a basic blood test (costs $2 to run)
+• $200 "STAT" fees for routine tests
+• Charging for tests never performed
+• Billing comprehensive panels for single tests
+• Collection fees of $100+ for simple blood draws
+
+📋 **Tell me about your lab work:**
+What blood tests or lab work did you have? Even if you don't know the exact names, I can help - just describe what happened.
+
+What lab charges seem too high to you?`,
     intakeFields: [
       { id: 'labTests', label: 'Laboratory Tests', type: 'textarea', required: true, placeholder: 'List all lab tests from your bill' },
       { id: 'testCodes', label: 'CPT Codes', type: 'textarea', required: false, placeholder: 'List any CPT codes from your bill' },
@@ -1171,6 +1487,19 @@ Provide specific recommendations for disputing inappropriate laboratory charges 
     savingsPotential: '$3,000-$25,000',
     successRate: '71%',
     isPremium: true,
+    conversationStarter: `🏥 **Hospital Room Rate Specialist** here! Room charges are often wildly inflated - I'll help you challenge every unfair facility fee.
+
+💰 **Outrageous room charges I fight:**
+• $5,000/night for a basic hospital room (hotel suites cost less!)
+• Private room charges when no shared rooms were available
+• Facility fees that violate federal transparency rules
+• Room charges for time you weren't even in the room
+• "Observation" charges at inpatient rates
+
+🛏️ **Tell me about your hospital stay:**
+What type of room did you have? How long were you there? Did you request a private room or were you assigned one?
+
+I'll analyze every facility charge and find violations that could save you thousands!`,
     intakeFields: [
       { id: 'roomType', label: 'Room Type', type: 'select', required: true, options: ['Private Room', 'Semi-Private', 'ICU', 'CCU', 'Step-Down', 'Emergency Department', 'Observation', 'Other'] },
       { id: 'lengthOfStay', label: 'Length of Stay', type: 'number', required: true, placeholder: 'Number of days/hours' },
@@ -1227,6 +1556,20 @@ Provide specific recommendations for disputing inappropriate facility charges wi
     savingsPotential: '$1,500-$15,000',
     successRate: '74%',
     isPremium: true,
+    conversationStarter: `🚑 **Emergency Transport Billing Advocate** here! Ambulance bills are notorious for surprise charges and medical necessity violations - I'm here to fight back!
+
+⚡ **Emergency transport violations I combat:**
+• Charging for emergency rates when transport wasn't medically necessary
+• Air ambulance bills of $50,000+ for short flights
+• Billing advanced life support when basic support was provided
+• Mileage overcharges and route manipulation
+• Balance billing that violates your insurance contract
+
+🚨 **Every ambulance ride has strict rules:**
+Medicare and insurance set specific rates and medical necessity criteria. I'll verify that your transport met these requirements and fight any violations.
+
+📋 **Tell me about your ambulance ride:**
+Was this a 911 emergency call? Ground or air transport? What was the medical emergency? I'll analyze every aspect of your bill!`,
     intakeFields: [
       { id: 'ambulanceType', label: 'Ambulance Type', type: 'select', required: true, options: ['Ground Ambulance', 'Air Ambulance', 'Helicopter', 'Fixed Wing Aircraft', 'Wheelchair Van'] },
       { id: 'transportReason', label: 'Transport Reason', type: 'textarea', required: true, placeholder: 'Why was ambulance transport needed?' },
@@ -1285,6 +1628,19 @@ Provide specific negotiation strategies and dispute recommendations with regulat
     savingsPotential: '$1,200-$18,000',
     successRate: '77%',
     isPremium: true,
+    conversationStarter: `🩺 **Physician Billing Specialist** here! Specialist consultations are often overcharged - I'll help you verify every physician charge is accurate and fair.
+
+💼 **Common physician billing violations I find:**
+• Billing consultation codes when simple office visits occurred
+• Charging for time not actually spent with patients
+• Upcoding to higher complexity levels without justification
+• Duplicate billing for related services
+• Charging for services performed by assistants at doctor rates
+
+📋 **Tell me about your specialist visit:**
+What type of specialist did you see? How long was your appointment? What procedures or tests were done during the visit?
+
+I'll verify that the billing codes match what actually happened during your visit and find any overcharges!`,
     intakeFields: [
       { id: 'specialistType', label: 'Specialist Type', type: 'select', required: true, options: ['Cardiology', 'Neurology', 'Oncology', 'Orthopedics', 'Gastroenterology', 'Pulmonology', 'Endocrinology', 'Other Specialty'] },
       { id: 'consultationType', label: 'Consultation Type', type: 'select', required: true, options: ['Initial Consultation', 'Follow-up Visit', 'Second Opinion', 'Pre-operative Consultation', 'Emergency Consultation', 'Telemedicine'] },
@@ -1344,6 +1700,19 @@ Provide specific recommendations for disputing inappropriate physician charges w
     savingsPotential: '$5,000-$75,000',
     successRate: '69%',
     isPremium: true,
+    conversationStarter: `🔧 **Medical Device Billing Expert** here! Device and implant charges have some of the highest markups in healthcare - I'll help you find massive savings.
+
+💎 **Shocking device overcharges I combat:**
+• Heart stents marked up 500% over wholesale cost
+• Knee implants charged at $50,000 when they cost $8,000
+• DME equipment billed at retail when insurance rates apply
+• Surgical devices bundled incorrectly for maximum charges
+• Warranty replacement devices billed as new
+
+⚙️ **Tell me about your medical device:**
+What type of device or implant did you receive? When was it placed? Do you know the specific name or model?
+
+I'll analyze the markup and find every dollar you shouldn't be paying!`,
     intakeFields: [
       { id: 'deviceType', label: 'Device Type', type: 'select', required: true, options: ['Cardiac Implant', 'Orthopedic Implant', 'Surgical Mesh', 'Stent', 'Prosthetic', 'DME Equipment', 'Other Device'] },
       { id: 'deviceName', label: 'Device Name/Model', type: 'text', required: false, placeholder: 'Specific device name or model number' },
@@ -1402,6 +1771,22 @@ Provide specific recommendations for disputing excessive device charges with pri
     savingsPotential: '$3,000-$40,000',
     successRate: '72%',
     isPremium: true,
+    conversationStarter: `💼 **Workers' Compensation Billing Advocate** here! Work injury bills have special protections and fee schedules - I'll make sure you get every benefit you deserve.
+
+⚖️ **Workers' comp billing violations I fight:**
+• Charging above state-mandated fee schedules
+• Billing for treatments not related to work injury
+• Charging for unnecessary repeat procedures
+• Billing employee for charges insurance should cover
+• Violating approved treatment plans
+
+🛡️ **Your workers' comp rights are strong:**
+State fee schedules set maximum charges, and certain treatments must be pre-approved. I'll verify compliance with all regulations.
+
+📋 **Tell me about your work injury:**
+What happened at work? What treatment did you receive? Is your employer or their insurance trying to make you pay for covered medical care?
+
+I'll protect your rights and challenge any improper billing!`,
     intakeFields: [
       { id: 'injuryDate', label: 'Date of Injury', type: 'date', required: true, description: 'Date of work-related injury' },
       { id: 'injuryType', label: 'Type of Injury', type: 'textarea', required: true, placeholder: 'Describe the work-related injury' },
@@ -1460,6 +1845,23 @@ Provide specific recommendations for disputing inappropriate workers' comp charg
     savingsPotential: '$2,500-$50,000',
     successRate: '75%',
     isPremium: true,
+    conversationStarter: `🚗 **Auto Insurance Medical Billing Advocate** here! Car accident medical bills can be confusing and overwhelming - I'm here to help you navigate your coverage and fight unfair charges.
+
+🛡️ **Your auto insurance should cover your medical bills:**
+• Personal Injury Protection (PIP) covers medical expenses regardless of fault
+• Medical payments coverage helps with immediate medical costs
+• You shouldn't be stuck with bills your insurance should pay
+
+💪 **Common auto insurance billing issues I resolve:**
+• Insurance denying medically necessary treatment
+• Coordination of benefits problems with health insurance
+• Excessive charges above reasonable and customary rates
+• Bills sent to you instead of your auto insurance
+
+📋 **Tell me about your car accident:**
+When did the accident happen? What injuries did you sustain? Is your auto insurance covering your medical bills properly?
+
+I'll help you understand your coverage and fight for every benefit you deserve!`,
     intakeFields: [
       { id: 'accidentDate', label: 'Accident Date', type: 'date', required: true, description: 'Date of motor vehicle accident' },
       { id: 'insuranceCompany', label: 'Auto Insurance Company', type: 'text', required: true, placeholder: 'Auto insurance carrier name' },
@@ -1520,6 +1922,24 @@ Provide specific recommendations for disputing inappropriate auto insurance medi
     savingsPotential: '$2,000-$30,000',
     successRate: '86%',
     isPremium: true,
+    conversationStarter: `🎖️ **Veterans Healthcare Advocate** here! You served our country and earned your healthcare benefits - I'm here to make sure you get every benefit you deserve.
+
+🇺🇸 **Your VA healthcare benefits are comprehensive:**
+• Service-connected conditions should be covered 100%
+• Emergency care coverage even at non-VA facilities
+• Community Care Network for specialty services
+• Priority access based on service-connected disabilities
+
+⚖️ **Common VA billing issues I fight:**
+• Being billed for care that VA should cover
+• Incorrect copayment calculations
+• Denied Community Care authorizations
+• Emergency care coverage disputes
+
+📋 **Tell me about your situation:**
+Are you being billed for care you believe VA should cover? What type of treatment did you receive? Do you have service-connected disabilities?
+
+You've earned these benefits - let's make sure you get them!`,
     intakeFields: [
       { id: 'vaEligibility', label: 'VA Eligibility Status', type: 'select', required: true, options: ['Service-Connected', 'Non-Service Connected', 'Priority Group 1-8', 'Unknown Eligibility'] },
       { id: 'serviceConnection', label: 'Service-Connected Condition', type: 'textarea', required: false, placeholder: 'Describe any service-connected conditions' },
@@ -1578,6 +1998,21 @@ Provide specific recommendations for resolving inappropriate veteran healthcare 
     savingsPotential: '$1,000-$15,000',
     successRate: '73%',
     isPremium: true,
+    conversationStarter: `🦷 **Dental Billing Specialist** here! Dental and oral surgery bills can be tricky because they often fall between dental and medical coverage - I'll help you navigate this complexity.
+
+🔍 **Common dental billing challenges I solve:**
+• Determining if procedures should be covered by medical vs dental insurance
+• Oral surgery billed incorrectly as routine dental work
+• Hospital facility fees for dental procedures
+• Anesthesia charges that exceed standard rates
+• Duplicate billing between dental and medical providers
+
+💡 **Key insight:** Many oral surgeries are actually medical procedures that should be covered by your medical insurance, not just dental!
+
+📋 **Tell me about your dental treatment:**
+What dental or oral surgery procedure did you have? Was it done in a hospital or dental office? Are you dealing with both dental and medical insurance?
+
+I'll help you understand which insurance should cover what and find any billing errors!`,
     intakeFields: [
       { id: 'procedureType', label: 'Dental Procedure', type: 'select', required: true, options: ['Oral Surgery', 'Orthodontics', 'Periodontics', 'Endodontics', 'Prosthodontics', 'General Dentistry', 'Multiple Procedures'] },
       { id: 'dentalCodes', label: 'Dental Codes', type: 'textarea', required: false, placeholder: 'List any ADA/CDT codes from your bill' },
@@ -1636,6 +2071,22 @@ Provide specific recommendations for disputing inappropriate dental charges and 
     savingsPotential: '$2,000-$25,000',
     successRate: '71%',
     isPremium: true,
+    conversationStarter: `🧠 **Mental Health Billing Advocate** here! Mental health treatment deserves the same coverage as physical health - I'm here to make sure you get the benefits you're entitled to.
+
+🔍 **Mental health billing violations I fight:**
+• Insurance treating mental health differently than medical care
+• Excessive prior authorization requirements for therapy
+• Arbitrary session limits that violate parity laws
+• Higher copays for mental health than medical visits
+• Denials based on outdated treatment criteria
+
+⚖️ **Your mental health parity rights are strong:**
+Federal law requires mental health benefits to be equal to medical benefits. I'll help you enforce these protections.
+
+📋 **Tell me about your mental health treatment:**
+What type of therapy or treatment are you receiving? Are you dealing with insurance denials or excessive costs? Have you faced different requirements than you would for medical care?
+
+Your mental health matters and deserves proper coverage - let's fight for your rights!`,
     intakeFields: [
       { id: 'treatmentType', label: 'Treatment Type', type: 'select', required: true, options: ['Inpatient Psychiatric', 'Outpatient Therapy', 'Intensive Outpatient', 'Substance Abuse Treatment', 'Crisis Intervention', 'Multiple Services'] },
       { id: 'providerType', label: 'Provider Type', type: 'select', required: true, options: ['Psychiatrist', 'Psychologist', 'Licensed Therapist', 'Social Worker', 'Substance Abuse Counselor', 'Multiple Providers'] },
