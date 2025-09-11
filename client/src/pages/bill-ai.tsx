@@ -1971,6 +1971,13 @@ What would you like to do first? I'm here to help you find every possible saving
           </div>
         </div>
 
+        {/* AI Disclaimer */}
+        <div className="px-4 pb-2">
+          <p className="text-xs text-gray-500 text-center">
+            This is generative AI. For medical advice, please consult your healthcare provider.
+          </p>
+        </div>
+
         {/* Drag and Drop Area */}
         {dragActive && (
           <div 
