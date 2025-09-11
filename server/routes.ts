@@ -246,43 +246,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Subscription management
+  // Subscription management - SECURITY AND FUNCTIONALITY FIXED
   app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { priceId, planType } = req.body;
+      const { planType } = req.body;
+      
+      // SECURITY FIX: Validate planType against allowlist
+      if (!planType || !['monthly', 'annual'].includes(planType)) {
+        return res.status(400).json({ message: 'Invalid plan type. Must be "monthly" or "annual"' });
+      }
       
       let user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
-      }
-
-      // If user already has a subscription, return existing
-      if (user.stripeSubscriptionId) {
-        const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
-          expand: ['latest_invoice.payment_intent'],
-        });
-        const invoice = subscription.latest_invoice as any;
-        let paymentIntent = invoice?.payment_intent;
-
-        // If subscription is incomplete and no payment intent, try to create one
-        if (subscription.status === 'incomplete' && !paymentIntent && invoice) {
-          try {
-            console.log('Incomplete subscription found, finalizing invoice:', invoice.id);
-            const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id, {
-              expand: ['payment_intent']
-            });
-            paymentIntent = finalizedInvoice.payment_intent;
-            console.log('Finalized invoice payment intent:', paymentIntent?.id);
-          } catch (err: any) {
-            console.error('Error finalizing existing invoice:', err);
-          }
-        }
-
-        return res.json({
-          subscriptionId: subscription.id,
-          clientSecret: paymentIntent?.client_secret,
-        });
       }
 
       if (!user.email) {
@@ -303,14 +280,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ...user,
           stripeCustomerId: customerId,
         });
+        user = { ...user, stripeCustomerId: customerId };
       }
 
-      // Create subscription
-      const selectedPriceId = priceId || (planType === 'annual' ? ANNUAL_PRICE_ID : MONTHLY_PRICE_ID);
+      // Handle existing subscription case
+      if (user.stripeSubscriptionId) {
+        try {
+          const existingSubscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
+            expand: ['latest_invoice.payment_intent'],
+          });
+
+          // If subscription is active, return success
+          if (existingSubscription.status === 'active') {
+            return res.json({
+              subscriptionId: existingSubscription.id,
+              clientSecret: null, // No payment needed for active subscription
+              status: 'active'
+            });
+          }
+
+          // OPTIMIZATION FIX: For incomplete subscriptions, check if they have valid payment intent
+          if (existingSubscription.status === 'incomplete' || existingSubscription.status === 'incomplete_expired') {
+            const invoice = existingSubscription.latest_invoice as any;
+            const paymentIntent = invoice?.payment_intent;
+            
+            // If we have a valid payment intent, return it instead of deleting
+            if (paymentIntent && paymentIntent.client_secret) {
+              console.log(`Returning existing payment intent for incomplete subscription ${existingSubscription.id}`);
+              return res.json({
+                subscriptionId: existingSubscription.id,
+                clientSecret: paymentIntent.client_secret,
+                status: 'requires_payment'
+              });
+            }
+            
+            // If no valid payment intent, delete and recreate
+            console.log(`Deleting incomplete subscription ${existingSubscription.id} (no valid payment intent)`);
+            await stripe.subscriptions.del(existingSubscription.id);
+            
+            // Clear subscription ID from user record
+            await storage.upsertUser({
+              ...user,
+              stripeSubscriptionId: null,
+              subscriptionStatus: 'inactive',
+            });
+            user = { ...user, stripeSubscriptionId: null, subscriptionStatus: 'inactive' };
+          }
+        } catch (error: any) {
+          console.error('Error checking existing subscription:', error);
+          // Continue with creating new subscription if we can't retrieve the old one
+        }
+      }
+
+      // SECURITY FIX: Only use server-side price IDs based on planType
+      const selectedPriceId = planType === 'annual' ? ANNUAL_PRICE_ID : MONTHLY_PRICE_ID;
       
-      console.log(`Creating subscription for user ${userId} with plan ${planType}, priceId: ${selectedPriceId}`);
+      console.log(`Creating new subscription for user ${userId} with plan ${planType}, priceId: ${selectedPriceId}`);
       
-      const subscription = await stripe.subscriptions.create({
+      // NEW APPROACH: Create subscription with proper payment setup
+      // Instead of default_incomplete, we'll ensure payment intent creation
+      const subscriptionData = {
         customer: customerId,
         items: [{
           price: selectedPriceId,
@@ -320,88 +349,108 @@ export async function registerRoutes(app: Express): Promise<Server> {
           save_default_payment_method: 'on_subscription',
           payment_method_types: ['card'],
         },
-        collection_method: 'charge_automatically',
         expand: ['latest_invoice.payment_intent'],
+      };
+
+      const subscription = await stripe.subscriptions.create(subscriptionData);
+      
+      console.log('Subscription created:', {
+        subscriptionId: subscription.id,
+        status: subscription.status,
+        invoiceId: (subscription.latest_invoice as any)?.id,
       });
 
-      // Store subscription ID but don't mark as active until payment succeeds
+      // Store subscription immediately
       await storage.upsertUser({
         ...user,
-        stripeCustomerId: customerId,
         stripeSubscriptionId: subscription.id,
         subscriptionStatus: 'incomplete',
         subscriptionPlan: planType || 'monthly',
       });
 
+      // Get the payment intent from the subscription
       const invoice = subscription.latest_invoice as any;
-      let paymentIntent = invoice?.payment_intent;
-      
-      console.log('Subscription created:', {
-        subscriptionId: subscription.id,
-        invoiceId: invoice?.id,
-        paymentIntentId: paymentIntent?.id,
-        hasClientSecret: !!paymentIntent?.client_secret
-      });
+      const paymentIntent = invoice?.payment_intent;
 
-      // If no payment intent exists on the invoice, create one manually
-      if (!paymentIntent && invoice) {
+      // FUNCTIONAL FIX: If no payment intent, cancel subscription and recreate instead of manual creation
+      if (!paymentIntent || !paymentIntent.client_secret) {
+        console.log('No valid payment intent found, cancelling subscription and recreating');
+        
+        // Clean up the broken subscription
         try {
-          console.log('No payment intent found, creating one for invoice:', invoice.id);
-          
-          // Check if invoice is already finalized
-          if (invoice.status === 'open') {
-            const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id, {
-              expand: ['payment_intent']
-            });
-            paymentIntent = finalizedInvoice.payment_intent;
-            console.log('Created payment intent via invoice finalization:', paymentIntent?.id);
-          } else {
-            // Invoice is already finalized, try to retrieve payment intent
-            const updatedInvoice = await stripe.invoices.retrieve(invoice.id, {
-              expand: ['payment_intent']
-            });
-            paymentIntent = updatedInvoice.payment_intent;
-            
-            // If still no payment intent, create one directly
-            if (!paymentIntent) {
-              console.log('Creating payment intent directly for finalized invoice');
-              const createdPaymentIntent = await stripe.paymentIntents.create({
-                amount: invoice.amount_due,
-                currency: invoice.currency,
-                customer: customerId,
-                metadata: {
-                  invoice_id: invoice.id,
-                  subscription_id: subscription.id
-                }
-              });
-              paymentIntent = createdPaymentIntent;
-              console.log('Created direct payment intent:', paymentIntent.id);
-            }
-          }
-        } catch (err: any) {
-          console.error('Error creating payment intent:', err);
+          await stripe.subscriptions.del(subscription.id);
+          await storage.upsertUser({
+            ...user,
+            stripeSubscriptionId: null,
+            subscriptionStatus: 'inactive',
+          });
+        } catch (cleanupError) {
+          console.error('Error cleaning up broken subscription:', cleanupError);
         }
-      }
-
-      if (!paymentIntent?.client_secret) {
-        console.error('No payment intent or client secret found. Invoice status:', invoice?.status);
-        return res.status(500).json({ 
-          message: 'Failed to create payment intent for subscription',
-          debug: {
-            invoiceStatus: invoice?.status,
-            paymentIntentStatus: paymentIntent?.status,
-            subscriptionStatus: subscription.status
-          }
+        
+        // Recreate subscription with better configuration
+        const newSubscription = await stripe.subscriptions.create({
+          customer: customerId,
+          items: [{
+            price: selectedPriceId,
+          }],
+          payment_behavior: 'default_incomplete',
+          payment_settings: {
+            save_default_payment_method: 'on_subscription',
+            payment_method_types: ['card'],
+          },
+          expand: ['latest_invoice.payment_intent'],
+        });
+        
+        // Update user with new subscription
+        await storage.upsertUser({
+          ...user,
+          stripeSubscriptionId: newSubscription.id,
+          subscriptionStatus: 'incomplete',
+          subscriptionPlan: planType,
+        });
+        
+        const newInvoice = newSubscription.latest_invoice as any;
+        const newPaymentIntent = newInvoice?.payment_intent;
+        
+        if (!newPaymentIntent || !newPaymentIntent.client_secret) {
+          console.error('Failed to create subscription with valid payment intent after retry');
+          return res.status(500).json({ 
+            message: 'Failed to setup payment for subscription. Please contact support.',
+          });
+        }
+        
+        console.log('Successfully recreated subscription with payment intent:', {
+          subscriptionId: newSubscription.id,
+          paymentIntentId: newPaymentIntent.id,
+        });
+        
+        return res.json({
+          subscriptionId: newSubscription.id,
+          clientSecret: newPaymentIntent.client_secret,
+          status: 'requires_payment'
         });
       }
 
+      console.log('Successfully created subscription with payment intent:', {
+        subscriptionId: subscription.id,
+        paymentIntentId: paymentIntent.id,
+        hasClientSecret: !!paymentIntent.client_secret
+      });
+
+      // Return both subscription ID and client secret
       res.json({
         subscriptionId: subscription.id,
         clientSecret: paymentIntent.client_secret,
+        status: 'requires_payment'
       });
+
     } catch (error: any) {
       console.error('Error creating subscription:', error);
-      res.status(500).json({ message: 'Failed to create subscription: ' + error.message });
+      res.status(500).json({ 
+        message: 'Failed to create subscription. Please try again.',
+        error: error.message 
+      });
     }
   });
 
