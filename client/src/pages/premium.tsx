@@ -176,7 +176,7 @@ function LoginPrompt() {
   );
 }
 
-function SubscriptionForm({ planType }: { planType: string }) {
+function SubscriptionForm({ planType, setupIntentId }: { planType: string; setupIntentId: string }) {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
@@ -192,29 +192,71 @@ function SubscriptionForm({ planType }: { planType: string }) {
     setIsProcessing(true);
 
     try {
-      const { error } = await stripe.confirmPayment({
+      // Step 1: Confirm the SetupIntent to collect payment method
+      const { error: setupError } = await stripe.confirmSetup({
         elements,
         confirmParams: {
           return_url: window.location.origin + "/premium",
         },
+        redirect: 'if_required', // Don't redirect if not necessary
       });
 
-      if (error) {
+      if (setupError) {
         toast({
-          title: "Payment Failed",
-          description: error.message,
+          title: "Payment Setup Failed",
+          description: setupError.message,
           variant: "destructive",
         });
-      } else {
-        toast({
-          title: "Welcome to Premium!",
-          description: "Your subscription is now active. Enjoy unlimited access!",
-        });
+        return;
       }
-    } catch (error) {
+
+      // Step 2: Call our backend to confirm the subscription
+      const confirmResponse = await apiRequest("POST", "/api/confirm-subscription", {
+        setupIntentId: setupIntentId,
+      });
+
+      const confirmResult = await confirmResponse.json();
+
+      if (!confirmResponse.ok) {
+        throw new Error(confirmResult.message || 'Failed to confirm subscription');
+      }
+
+      // Handle different response statuses
+      if (confirmResult.status === 'requires_action' && confirmResult.clientSecret) {
+        // Handle 3D Secure or other payment confirmations
+        const { error: paymentError } = await stripe.confirmPayment({
+          clientSecret: confirmResult.clientSecret,
+          confirmParams: {
+            return_url: window.location.origin + "/premium",
+          },
+        });
+
+        if (paymentError) {
+          toast({
+            title: "Payment Confirmation Failed",
+            description: paymentError.message,
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
+      // Success!
       toast({
-        title: "Payment Error", 
-        description: "An unexpected error occurred. Please try again.",
+        title: "Welcome to Premium!",
+        description: "Your subscription is now active. Enjoy unlimited access!",
+      });
+
+      // Refresh the page to show premium content
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+
+    } catch (error) {
+      console.error('Subscription confirmation error:', error);
+      toast({
+        title: "Subscription Error", 
+        description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -240,21 +282,27 @@ function SubscriptionForm({ planType }: { planType: string }) {
 function PremiumMarketing() {
   const { createSubscription } = useSubscription();
   const { toast } = useToast();
-  const [clientSecret, setClientSecret] = useState("");
+  const [setupData, setSetupData] = useState<{
+    clientSecret: string;
+    setupIntentId: string;
+    planType: string;
+  } | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<string>("annual");
-  const [purchasePlan, setPurchasePlan] = useState<string | null>(null);
 
   const handleSubscribe = async (planId: string) => {
     try {
       console.log(`Starting subscription for plan: ${planId}`);
       const data = await createSubscription.mutateAsync({ planType: planId });
-      console.log('Subscription response:', data);
+      console.log('Subscription setup response:', data);
       
-      if (data.clientSecret) {
-        setClientSecret(data.clientSecret);
-        setPurchasePlan(planId);
+      if (data.clientSecret && data.setupIntentId) {
+        setSetupData({
+          clientSecret: data.clientSecret,
+          setupIntentId: data.setupIntentId,
+          planType: data.planType || planId,
+        });
       } else {
-        console.error('No clientSecret in response:', data);
+        console.error('Invalid response format:', data);
         toast({
           title: "Error",
           description: "Invalid response from server. Please try again.",
@@ -271,7 +319,7 @@ function PremiumMarketing() {
     }
   };
 
-  if (clientSecret && purchasePlan) {
+  if (setupData) {
     return (
       <MobileLayout title="Complete Payment" showBottomNav={true}>
         <div className="space-y-4">
@@ -280,8 +328,11 @@ function PremiumMarketing() {
             <p className="text-gray-600 text-sm">Secure payment powered by Stripe</p>
           </div>
           <MobileCard>
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <SubscriptionForm planType={purchasePlan} />
+            <Elements stripe={stripePromise} options={{ clientSecret: setupData.clientSecret }}>
+              <SubscriptionForm 
+                planType={setupData.planType} 
+                setupIntentId={setupData.setupIntentId}
+              />
             </Elements>
           </MobileCard>
         </div>
