@@ -40,7 +40,3 @@ integrations = ["javascript_anthropic==1.0.0", "javascript_openai==1.0.0", "java
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 41581
-externalPort = 3000
