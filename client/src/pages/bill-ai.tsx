@@ -172,16 +172,16 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           </div>
         </div>
         <p className="text-sm text-gray-600 max-w-md mx-auto">
-          Professional-grade bill analysis and advocacy. Save $1K-$100K+ with AI-powered dispute templates.
+          Professional-grade bill analysis and advocacy. Professional AI-powered dispute templates.
         </p>
         <div className="flex items-center justify-center gap-4 text-xs">
           <div className="flex items-center gap-1">
             <Target className="h-3 w-3 text-emerald-600" />
-            <span className="text-gray-600">94% Success Rate</span>
+            <span className="text-gray-600">AI-Powered Analysis</span>
           </div>
           <div className="flex items-center gap-1">
             <DollarSign className="h-3 w-3 text-emerald-600" />
-            <span className="text-gray-600">$50M+ Saved</span>
+            <span className="text-gray-600">Advanced Technology</span>
           </div>
         </div>
       </div>
@@ -358,7 +358,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               </div>
             </div>
             <WorkflowCategory
-              title="🔓 Hospital Insider Secrets (91% Success Rate)"
+              title="🔓 Hospital Insider Secrets (Professional Analysis)"
               icon={Shield}
               iconColor="text-purple-700"
               workflows={hospitalInsiderWorkflows}
@@ -390,7 +390,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               </div>
             </div>
             <WorkflowCategory
-              title="🧬 Medical Coding Intelligence (88% Success Rate)"
+              title="🧬 Medical Coding Intelligence (Advanced Technology)"
               icon={Brain}
               iconColor="text-emerald-700"
               workflows={codingIntelligenceWorkflows}
@@ -409,7 +409,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <span className="text-sm font-bold text-pink-800">Financial Hardship Mastery</span>
                 <Badge className="bg-pink-600 text-white text-xs">
                   <Star className="h-3 w-3 mr-1" />
-                  92% Success
+                  Professional Tools
                 </Badge>
               </div>
               <p className="text-xs text-pink-700 mb-2">
@@ -422,7 +422,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               </div>
             </div>
             <WorkflowCategory
-              title="💝 Financial Hardship Mastery (92% Success Rate)"
+              title="💝 Financial Hardship Mastery (Professional Methods)"
               icon={HeartHandshake}
               iconColor="text-pink-700"
               workflows={hardshipMasteryWorkflows}
@@ -435,7 +435,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
         {/* Advanced Appeal System */}
         {appealSystemWorkflows.length > 0 && (
           <WorkflowCategory
-            title="🏆 Advanced Appeal System (91% Success Rate)"
+            title="🏆 Advanced Appeal System (Advanced Analysis)"
             icon={CheckCircle}
             iconColor="text-emerald-700"
             workflows={appealSystemWorkflows}
@@ -447,7 +447,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
         {/* Denial Reversal Arsenal */}
         {denialReversalWorkflows.length > 0 && (
           <WorkflowCategory
-            title="💊 Denial Reversal Arsenal (89% Success Rate)"
+            title="💊 Denial Reversal Arsenal (Professional Methods)"
             icon={Stethoscope}
             iconColor="text-blue-700"
             workflows={denialReversalWorkflows}
@@ -459,7 +459,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
         {/* Coverage Expansion Strategies */}
         {coverageExpansionWorkflows.length > 0 && (
           <WorkflowCategory
-            title="🌐 Coverage Expansion Strategies (73% Success Rate)"
+            title="🌐 Coverage Expansion Strategies (Comprehensive Tools)"
             icon={Network}
             iconColor="text-teal-700"
             workflows={coverageExpansionWorkflows}

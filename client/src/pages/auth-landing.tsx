@@ -55,7 +55,7 @@ export default function AuthLanding() {
               AI Medical Bill Advocate & Error Detection
             </p>
             <p className="text-base text-gray-600 leading-relaxed">
-              Professional-grade AI finds hidden billing errors and overcharges worth <span className="font-bold text-emerald-600">$2,000-$35,000+</span>. Your personal advocate for medical bill protection and maximum savings.
+              Professional-grade AI finds hidden billing errors and overcharges worth <span className="font-bold text-emerald-600">substantial amounts</span>. Your personal advocate for medical bill protection and potential savings.
             </p>
           </motion.div>
         </motion.div>
@@ -150,9 +150,9 @@ export default function AuthLanding() {
             <div className="grid grid-cols-2 gap-3">
               {[
                 { icon: Zap, title: "Instant Analysis", desc: "Seconds, not hours", gradient: "from-indigo-500 to-purple-600" },
-                { icon: Target, title: "Error Detection", desc: "95%+ accuracy rate", gradient: "from-emerald-500 to-teal-600" },
+                { icon: Target, title: "Error Detection", desc: "Professional Analysis", gradient: "from-emerald-500 to-teal-600" },
                 { icon: Shield, title: "Industry Secrets", desc: "Best practices shared", gradient: "from-amber-500 to-orange-600" },
-                { icon: Trophy, title: "Proven Results", desc: "$500K+ recovered", gradient: "from-rose-500 to-pink-600" }
+                { icon: Trophy, title: "Advanced Technology", desc: "AI-Powered Platform", gradient: "from-rose-500 to-pink-600" }
               ].map((feature, index) => (
                 <motion.div
                   key={feature.title}
@@ -184,8 +184,8 @@ export default function AuthLanding() {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: DollarSign, title: "Average $8,250", desc: "Savings per user", gradient: "from-emerald-500 to-green-600" },
-                { icon: CheckCircle, title: "87% Error Rate", desc: "Bills contain mistakes", gradient: "from-blue-500 to-cyan-600" },
+                { icon: DollarSign, title: "Potential Savings", desc: "Analysis per bill", gradient: "from-emerald-500 to-green-600" },
+                { icon: CheckCircle, title: "Comprehensive Review", desc: "Thorough bill analysis", gradient: "from-blue-500 to-cyan-600" },
                 { icon: Mail, title: "Appeal Letters", desc: "Professional drafts", gradient: "from-purple-500 to-indigo-600" },
                 { icon: Users, title: "Industry Intel", desc: "Insider strategies", gradient: "from-amber-500 to-yellow-600" }
               ].map((feature, index) => (
@@ -222,16 +222,16 @@ export default function AuthLanding() {
               <h4 className="font-bold text-indigo-900 text-base mb-2">Trusted by Healthcare Consumers</h4>
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <div className="text-2xl font-bold text-indigo-700">87%</div>
-                  <div className="text-xs text-indigo-600">Bills Have Errors</div>
+                  <div className="text-2xl font-bold text-indigo-700">Most</div>
+                  <div className="text-xs text-indigo-600">Bills Have Issues</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-emerald-700">$500K+</div>
-                  <div className="text-xs text-emerald-600">Total Recovered</div>
+                  <div className="text-2xl font-bold text-emerald-700">AI</div>
+                  <div className="text-xs text-emerald-600">Advanced Technology</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-purple-700">95%</div>
-                  <div className="text-xs text-purple-600">Success Rate</div>
+                  <div className="text-2xl font-bold text-purple-700">Pro</div>
+                  <div className="text-xs text-purple-600">Professional Grade</div>
                 </div>
               </div>
             </div>

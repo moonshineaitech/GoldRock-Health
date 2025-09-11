@@ -73,7 +73,7 @@ export default function Landing() {
             <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
           </h1>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Save $2,000-$35,000+ on Medical Bills + Learn Medicine
+            Comprehensive Medical Bill Analysis + Learn Medicine
           </h2>
         </motion.div>
         
@@ -83,7 +83,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.7 }}
         >
-          AI-powered medical bill analysis that finds massive overcharges, plus AI-generated patient cases with interactive quiz cycles.
+          AI-powered medical bill analysis that analyzes potential issues, plus AI-generated patient cases with interactive quiz cycles.
         </motion.p>
         
         <motion.div 
@@ -95,9 +95,9 @@ export default function Landing() {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-1">
               <DollarSign className="h-5 w-5 text-emerald-600" />
-              <span className="font-bold text-emerald-700 text-base">Average User Saves $8,250</span>
+              <span className="font-bold text-emerald-700 text-base">Advanced Analysis Tools</span>
             </div>
-            <p className="text-sm text-emerald-600 font-medium">Upload your bill and find overcharges in seconds</p>
+            <p className="text-sm text-emerald-600 font-medium">Upload your bill for AI analysis in seconds</p>
           </div>
         </motion.div>
         
@@ -111,9 +111,9 @@ export default function Landing() {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-1">
               <Trophy className="h-4 w-4 text-blue-600" />
-              <span className="font-bold text-blue-700 text-base">25,000+ Patients Helped</span>
+              <span className="font-bold text-blue-700 text-base">Growing User Base</span>
             </div>
-            <p className="text-sm text-blue-600 font-medium">Trusted by healthcare advocates nationwide</p>
+            <p className="text-sm text-blue-600 font-medium">Professional-grade AI technology</p>
           </div>
         </motion.div>
         
@@ -184,9 +184,9 @@ export default function Landing() {
             <div className="text-center">
               <div className="flex items-center justify-center space-x-1 mb-1">
                 <Zap className="h-4 w-4 text-amber-600" />
-                <span className="font-bold text-amber-700 text-sm">95% Success Rate</span>
+                <span className="font-bold text-amber-700 text-sm">AI-Powered Analysis</span>
               </div>
-              <p className="text-xs text-amber-600 font-medium">Our AI finds errors insurance companies miss</p>
+              <p className="text-xs text-amber-600 font-medium">Advanced AI technology for comprehensive review</p>
             </div>
           </motion.div>
         </motion.div>
