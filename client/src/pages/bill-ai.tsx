@@ -192,7 +192,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <Sparkles className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-emerald-600" />
           Essential Workflows
         </h3>
-        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 lg:gap-6 xl:gap-8 2xl:gap-10">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 lg:gap-8 xl:gap-12 2xl:gap-16">
           {coreWorkflows.map((workflow) => (
             <WorkflowCard
               key={workflow.id}
@@ -215,7 +215,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               🎓 New to medical bill analysis? Start here! These beginner-friendly tools help you learn step-by-step.
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 lg:gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 lg:gap-8 xl:gap-12">
             {beginnerWorkflows.slice(0, 4).map((workflow) => (
               <WorkflowListItem
                 key={workflow.id}
@@ -238,7 +238,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-2 lg:gap-6 xl:gap-8 max-w-md lg:max-w-none mx-auto">
+      <div className="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-2 lg:gap-8 xl:gap-12 2xl:gap-16 max-w-md lg:max-w-none mx-auto">
         <Button
           onClick={onStartChat}
           variant="outline"
@@ -273,7 +273,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       </div>
 
       {/* Comprehensive Workflow Categories */}
-      <div className="space-y-4 lg:space-y-8 xl:space-y-12 2xl:space-y-16">
+      <div className="space-y-4 lg:space-y-12 xl:space-y-16 2xl:space-y-24">
         {/* Specialty Analysis */}
         {specialtyWorkflows.length > 0 && (
           <WorkflowCategory
@@ -521,7 +521,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 Premium Intelligence Databases (Exclusive Access)
               </h3>
               
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-3 lg:gap-6 xl:gap-8">
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 lg:gap-8 xl:gap-12 2xl:gap-16">
                 <Button
                   onClick={() => setShowHospitalBillsDatabase(!showHospitalBillsDatabase)}
                   variant="outline"
@@ -543,8 +543,8 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 >
                   <Shield className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-indigo-600" />
                   <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-tight">Insurance Claims Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-2 leading-tight">Company-specific tactics</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Insurance Claims Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">Company-specific tactics</div>
                   </div>
                 </Button>
 
@@ -556,8 +556,8 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 >
                   <XCircle className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-red-600" />
                   <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-tight">Insurance Denials Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-2 leading-tight">Reversal strategies</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Insurance Denials Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">Reversal strategies</div>
                   </div>
                 </Button>
 
@@ -569,8 +569,8 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 >
                   <Siren className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-orange-600" />
                   <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-tight">Emergency Care Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-2 leading-tight">No Surprises Act tactics</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Emergency Care Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">No Surprises Act tactics</div>
                   </div>
                 </Button>
 
@@ -582,8 +582,8 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 >
                   <Stethoscope className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-purple-600" />
                   <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-tight">Specialty Care Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-2 leading-tight">High-cost procedures</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Specialty Care Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">High-cost procedures</div>
                   </div>
                 </Button>
 
@@ -595,8 +595,8 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 >
                   <Pill className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-green-600" />
                   <div className="text-center w-full">
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-tight">Pharmaceutical & Device Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-2 leading-tight">Drug & device pricing</div>
+                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg font-semibold text-gray-900 leading-relaxed">Pharmaceutical & Device Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-gray-600 mt-1 lg:mt-3 leading-relaxed">Drug & device pricing</div>
                   </div>
                 </Button>
               </div>
@@ -795,13 +795,13 @@ const WorkflowCard = ({ workflow, onClick }: {
         <Button
           onClick={handleClick}
           variant="outline"
-          className={`h-20 lg:h-32 xl:h-40 2xl:h-48 p-3 lg:p-6 xl:p-8 flex-col space-y-2 lg:space-y-4 xl:space-y-6 text-left justify-start rounded-2xl lg:rounded-3xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
+          className={`h-24 lg:h-40 xl:h-48 2xl:h-56 p-4 lg:p-8 xl:p-10 2xl:p-12 flex-col space-y-2 lg:space-y-6 xl:space-y-8 text-left justify-start rounded-2xl lg:rounded-3xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-visible ${
             isHovered ? 'border-emerald-300 bg-emerald-50/50' : ''
           }`}
           data-testid={`workflow-${workflow.id}`}
         >
           {workflow.isPremium && !isSubscribed && (
-            <div className="absolute top-1 right-1 lg:top-3 lg:right-3">
+            <div className="absolute top-2 right-2 lg:top-4 lg:right-4 xl:top-5 xl:right-5 z-10">
               <Crown className="h-3 w-3 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-orange-500" />
             </div>
           )}
@@ -881,7 +881,7 @@ const WorkflowCategory = ({ title, icon: Icon, iconColor, workflows, onWorkflowS
         <Icon className={`h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 ${iconColor}`} />
         {title}
       </h4>
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 lg:gap-6 xl:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-2 lg:gap-8 xl:gap-12 2xl:gap-16">
         {workflows.slice(0, maxVisible).map((workflow) => (
           <WorkflowListItem
             key={workflow.id}
@@ -916,10 +916,10 @@ const WorkflowListItem = ({ workflow, onClick }: {
         <Button
           onClick={handleClick}
           variant="ghost"
-          className="w-full h-auto p-3 lg:p-6 xl:p-8 justify-start text-left hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 rounded-2xl lg:rounded-3xl transition-all duration-200 border border-transparent hover:border-emerald-200/50"
+          className="w-full h-auto p-4 lg:p-8 xl:p-10 2xl:p-12 justify-start text-left hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 rounded-2xl lg:rounded-3xl transition-all duration-200 border border-transparent hover:border-emerald-200/50"
           data-testid={`workflow-list-${workflow.id}`}
         >
-          <div className="flex items-center gap-3 lg:gap-6 xl:gap-8 w-full">
+          <div className="flex items-center gap-4 lg:gap-8 xl:gap-12 w-full">
             <motion.div 
               className={`w-8 h-8 lg:w-12 lg:h-12 xl:w-16 xl:h-16 rounded-xl lg:rounded-2xl flex items-center justify-center ${workflow.bgColor} shadow-sm`}
               whileHover={{ scale: 1.1, rotate: 5 }}
@@ -927,8 +927,8 @@ const WorkflowListItem = ({ workflow, onClick }: {
               <workflow.icon className={`h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8 ${workflow.color}`} />
             </motion.div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 lg:gap-4 mb-1 lg:mb-2">
-                <div className="text-sm lg:text-base xl:text-lg 2xl:text-xl font-medium text-gray-900">{workflow.title}</div>
+              <div className="flex items-center gap-3 lg:gap-6 mb-2 lg:mb-4 flex-wrap">
+                <div className="text-sm lg:text-base xl:text-lg 2xl:text-xl font-medium text-gray-900 leading-relaxed">{workflow.title}</div>
                 {workflow.isPremium && !isSubscribed && (
                   <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500" />
                 )}
@@ -936,8 +936,8 @@ const WorkflowListItem = ({ workflow, onClick }: {
                   {workflow.successRate}
                 </Badge>
               </div>
-              <div className="text-xs lg:text-sm xl:text-base text-gray-500 mb-1 lg:mb-2">{workflow.subtitle}</div>
-              <div className="flex items-center gap-3 lg:gap-6 text-xs lg:text-sm xl:text-base">
+              <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-500 mb-2 lg:mb-3 leading-relaxed">{workflow.subtitle}</div>
+              <div className="flex items-center gap-4 lg:gap-8 text-xs lg:text-sm xl:text-base 2xl:text-lg flex-wrap">
                 <div className="text-emerald-600 font-medium">{workflow.savingsPotential}</div>
                 <div className="text-gray-400">{workflow.estimatedTime}</div>
               </div>

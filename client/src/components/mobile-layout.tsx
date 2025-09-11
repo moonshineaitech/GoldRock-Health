@@ -42,7 +42,7 @@ export function MobileLayout({
       />
       
       <motion.main 
-        className={`px-4 relative z-10 ${className}`}
+        className={`px-4 lg:px-8 xl:px-12 2xl:px-16 relative z-10 ${className}`}
         style={{ 
           paddingTop: 'calc(3.75rem + env(safe-area-inset-top, 0px))',
           paddingBottom: showBottomNav ? 'calc(4rem + env(safe-area-inset-bottom, 0px))' : '1rem',
