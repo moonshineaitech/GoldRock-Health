@@ -881,7 +881,7 @@ const WorkflowCategory = ({ title, icon: Icon, iconColor, workflows, onWorkflowS
         <Icon className={`h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 ${iconColor}`} />
         {title}
       </h4>
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-2 lg:gap-8 xl:gap-12 2xl:gap-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 lg:gap-12 xl:gap-16 2xl:gap-20">
         {workflows.slice(0, maxVisible).map((workflow) => (
           <WorkflowListItem
             key={workflow.id}
@@ -916,23 +916,23 @@ const WorkflowListItem = ({ workflow, onClick }: {
         <Button
           onClick={handleClick}
           variant="ghost"
-          className="w-full h-auto p-4 lg:p-8 xl:p-10 2xl:p-12 justify-start text-left hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 rounded-2xl lg:rounded-3xl transition-all duration-200 border border-transparent hover:border-emerald-200/50"
+          className="w-full h-auto p-6 lg:p-10 xl:p-12 2xl:p-16 justify-start text-left hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 rounded-2xl lg:rounded-3xl transition-all duration-200 border border-transparent hover:border-emerald-200/50"
           data-testid={`workflow-list-${workflow.id}`}
         >
-          <div className="flex items-center gap-4 lg:gap-8 xl:gap-12 w-full">
+          <div className="flex items-center gap-6 lg:gap-12 xl:gap-16 2xl:gap-20 w-full">
             <motion.div 
-              className={`w-8 h-8 lg:w-12 lg:h-12 xl:w-16 xl:h-16 rounded-xl lg:rounded-2xl flex items-center justify-center ${workflow.bgColor} shadow-sm`}
+              className={`w-10 h-10 lg:w-14 lg:h-14 xl:w-18 xl:h-18 2xl:w-20 2xl:h-20 rounded-xl lg:rounded-2xl flex items-center justify-center ${workflow.bgColor} shadow-sm flex-shrink-0`}
               whileHover={{ scale: 1.1, rotate: 5 }}
             >
-              <workflow.icon className={`h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8 ${workflow.color}`} />
+              <workflow.icon className={`h-5 w-5 lg:h-7 lg:w-7 xl:h-9 xl:w-9 2xl:h-10 2xl:w-10 ${workflow.color}`} />
             </motion.div>
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 pr-4">
               <div className="space-y-1 lg:space-y-2 mb-2 lg:mb-4">
                 <div className="flex items-center justify-between gap-4 lg:gap-6">
-                  <div className="text-sm lg:text-base xl:text-lg 2xl:text-xl font-medium text-gray-900 leading-relaxed flex-1 min-w-0 pr-2">
+                  <div className="text-sm lg:text-base xl:text-lg 2xl:text-xl font-medium text-gray-900 leading-normal flex-1 min-w-0 pr-3 whitespace-normal break-words">
                     {workflow.title}
                     {workflow.isPremium && !isSubscribed && (
-                      <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500 inline-block ml-2" />
+                      <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500 inline-block ml-2 flex-shrink-0" />
                     )}
                   </div>
                   <Badge variant="secondary" className="text-xs lg:text-sm px-2 py-1 lg:px-3 lg:py-1.5 font-semibold flex-shrink-0">
@@ -940,10 +940,10 @@ const WorkflowListItem = ({ workflow, onClick }: {
                   </Badge>
                 </div>
               </div>
-              <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-500 mb-2 lg:mb-3 leading-relaxed">{workflow.subtitle}</div>
-              <div className="flex items-center gap-4 lg:gap-8 text-xs lg:text-sm xl:text-base 2xl:text-lg flex-wrap">
-                <div className="text-emerald-600 font-medium">{workflow.savingsPotential}</div>
-                <div className="text-gray-400">{workflow.estimatedTime}</div>
+              <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-500 mb-3 lg:mb-4 leading-normal whitespace-normal break-words">{workflow.subtitle}</div>
+              <div className="flex items-center gap-6 lg:gap-10 text-xs lg:text-sm xl:text-base 2xl:text-lg flex-wrap">
+                <div className="text-emerald-600 font-medium whitespace-nowrap">{workflow.savingsPotential}</div>
+                <div className="text-gray-400 whitespace-nowrap">{workflow.estimatedTime}</div>
               </div>
             </div>
             <ChevronDown className="h-4 w-4 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-gray-400 rotate-[-90deg] transition-transform group-hover:rotate-[-45deg]" />
