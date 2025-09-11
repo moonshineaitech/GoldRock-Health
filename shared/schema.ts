@@ -39,6 +39,9 @@ export const users = pgTable("users", {
   subscriptionStatus: varchar("subscription_status").default("inactive"), // inactive, active, canceled, past_due
   subscriptionPlan: varchar("subscription_plan"), // monthly, annual
   subscriptionEndsAt: timestamp("subscription_ends_at"),
+  acceptedAiTerms: boolean("accepted_ai_terms").default(false),
+  aiTermsAcceptedAt: timestamp("ai_terms_accepted_at"),
+  aiTermsVersion: varchar("ai_terms_version"), // track version of terms accepted
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
