@@ -42,6 +42,9 @@ export default function AiUsageAgreement() {
   const acceptTermsMutation = useMutation({
     mutationFn: () => apiRequest(`/api/accept-ai-terms`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ version: AI_TERMS_VERSION }),
     }),
     onSuccess: () => {
