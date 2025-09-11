@@ -79,12 +79,12 @@ export default function AiUsageAgreement() {
               <Shield className="h-6 w-6 text-white" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              AI Usage Agreement
+              Terms of Service
             </h1>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Before accessing GoldRock Health, please review and accept our AI usage terms and data practices.
-            This is a one-time requirement for new users.
+            Welcome to GoldRock Health! Please review our terms of service before getting started.
+            Most users just scroll through and click "Accept" - this is pretty standard stuff.
           </p>
         </div>
 
@@ -92,10 +92,10 @@ export default function AiUsageAgreement() {
           <CardHeader className="text-center pb-6">
             <CardTitle className="flex items-center justify-center gap-2 text-2xl">
               <Brain className="h-6 w-6 text-indigo-600" />
-              Artificial Intelligence Usage Disclosure
+              Service Agreement
             </CardTitle>
             <p className="text-sm text-gray-500">
-              Effective Date: {new Date().toLocaleDateString()} | Version {AI_TERMS_VERSION}
+              Last updated: {new Date().toLocaleDateString()} | Version {AI_TERMS_VERSION}
             </p>
           </CardHeader>
 
@@ -103,193 +103,146 @@ export default function AiUsageAgreement() {
             <ScrollArea className="h-96 pr-4" data-testid="agreement-content">
               <div className="space-y-6 text-sm text-gray-700 leading-relaxed">
                 
-                {/* AI Usage Notice */}
+                {/* Service Overview */}
                 <section>
                   <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
                     <Brain className="h-5 w-5" />
-                    AI-Powered Services Notice
+                    What We Do
                   </h3>
-                  <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
-                    <div className="flex items-start">
-                      <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 mr-2 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium text-amber-800">Important Notice</p>
-                        <p className="text-amber-700">
-                          GoldRock Health utilizes artificial intelligence and machine learning technologies to enhance your experience. 
-                          Your messages, uploads, and interactions may be processed by third-party AI service providers.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                   
                   <p className="mb-4">
-                    <strong>GoldRock Health</strong> ("Company," "we," "us," or "our") operates as a healthcare technology platform 
-                    that integrates artificial intelligence services to provide enhanced user experiences. By using our services, 
-                    you acknowledge and consent to the AI-powered features described herein.
+                    GoldRock Health is a healthcare cost reduction platform that uses AI to help you save money on medical bills. 
+                    Pretty simple stuff - you upload your bills, we analyze them, and help you find ways to reduce costs.
                   </p>
                   
                   <p className="mb-4">
-                    Our platform uses AI technologies including but not limited to:
+                    Our service includes:
                   </p>
-                  <ul className="list-disc ml-6 space-y-2 mb-4">
-                    <li>Natural language processing for message analysis and response generation</li>
-                    <li>Document analysis and content extraction from uploaded files</li>
-                    <li>Intelligent recommendations and personalized content delivery</li>
-                    <li>Automated content moderation and safety filtering</li>
-                    <li>Data analytics and pattern recognition for service improvement</li>
+                  <ul className="list-disc ml-6 space-y-1 mb-4">
+                    <li>AI-powered bill analysis and error detection</li>
+                    <li>Chat support for questions about your bills</li>
+                    <li>Personalized savings recommendations</li>
+                    <li>Document processing and text extraction</li>
                   </ul>
                 </section>
 
                 <Separator />
 
-                {/* Data Collection and Processing */}
+                {/* How We Handle Your Data */}
                 <section>
                   <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
                     <FileText className="h-5 w-5" />
-                    Data Collection and AI Processing
+                    Your Data & Privacy
                   </h3>
                   
                   <p className="mb-4">
-                    <strong>Information We Collect for AI Processing:</strong>
+                    <strong>What we collect:</strong> Your account info, uploaded bill images, chat messages, and basic usage data. Standard stuff.
                   </p>
-                  <ul className="list-disc ml-6 space-y-2 mb-4">
-                    <li><strong>Messages and Communications:</strong> Text-based interactions, queries, and responses you provide</li>
-                    <li><strong>File Uploads:</strong> Documents, images, and other files you submit for analysis</li>
-                    <li><strong>Usage Patterns:</strong> How you interact with AI features and system responses</li>
-                    <li><strong>Technical Data:</strong> Device information, IP addresses, and session data for service delivery</li>
-                    <li><strong>Preferences:</strong> Settings and customizations you apply to AI features</li>
-                  </ul>
-
-                  <p className="mb-4">
-                    <strong>Third-Party AI Service Providers:</strong>
-                  </p>
-                  <p className="mb-4">
-                    We partner with leading AI service providers including but not limited to OpenAI, Anthropic, and Google AI. 
-                    Your data may be transmitted to and processed by these services according to their respective privacy policies 
-                    and terms of service. We implement contractual safeguards requiring these providers to:
-                  </p>
-                  <ul className="list-disc ml-6 space-y-2 mb-4">
-                    <li>Process data only for the purposes of providing our services</li>
-                    <li>Implement appropriate security measures</li>
-                    <li>Not retain your data beyond the necessary processing period</li>
-                    <li>Not use your data for their own model training without explicit consent</li>
-                  </ul>
-                </section>
-
-                <Separator />
-
-                {/* Privacy and Security */}
-                <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
-                    <Lock className="h-5 w-5" />
-                    Privacy and Security Measures
-                  </h3>
                   
                   <p className="mb-4">
-                    <strong>Data Protection:</strong> We implement industry-standard security measures including:
-                  </p>
-                  <ul className="list-disc ml-6 space-y-2 mb-4">
-                    <li>End-to-end encryption for data in transit</li>
-                    <li>Secure data storage with encryption at rest</li>
-                    <li>Regular security audits and vulnerability assessments</li>
-                    <li>Access controls and authentication mechanisms</li>
-                    <li>Data anonymization and pseudonymization where feasible</li>
-                  </ul>
-
-                  <p className="mb-4">
-                    <strong>Data Retention:</strong> We retain your data only as long as necessary to provide our services 
-                    or as required by law. You may request deletion of your data at any time, subject to legal obligations.
+                    <strong>How long we keep it:</strong> We automatically delete your bill data and chat messages after 30 days. Account data stays until you delete your account.
                   </p>
 
                   <p className="mb-4">
-                    <strong>HIPAA Disclaimer:</strong> GoldRock Health is not a HIPAA-covered entity. While we implement 
-                    strong privacy and security measures, our services are not designed to handle protected health information (PHI) 
-                    under HIPAA standards. Please do not submit personal medical records or other PHI through our platform.
+                    <strong>AI Processing:</strong> We use OpenAI and similar services to analyze your bills and provide responses. Your data is sent to these services securely and they're contractually prohibited from using it for their own purposes.
+                  </p>
+                  
+                  <p className="mb-4">
+                    <strong>Security:</strong> Everything is encrypted and secure. We follow industry best practices.
                   </p>
                 </section>
 
                 <Separator />
 
-                {/* User Rights and Choices */}
-                <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
-                    <Shield className="h-5 w-5" />
-                    Your Rights and Choices
-                  </h3>
-                  
-                  <p className="mb-4">You have the following rights regarding your data and AI processing:</p>
-                  <ul className="list-disc ml-6 space-y-2 mb-4">
-                    <li><strong>Access:</strong> Request information about data we collect and how it's processed</li>
-                    <li><strong>Correction:</strong> Update or correct inaccurate personal information</li>
-                    <li><strong>Deletion:</strong> Request deletion of your personal data (subject to legal requirements)</li>
-                    <li><strong>Portability:</strong> Request a copy of your data in a structured format</li>
-                    <li><strong>Opt-Out:</strong> Disable certain AI features that require data sharing</li>
-                    <li><strong>Objection:</strong> Object to specific processing activities</li>
-                  </ul>
-
-                  <p className="mb-4">
-                    <strong>Opt-Out Options:</strong> While AI processing is integral to our core services, 
-                    you may limit certain AI features through your account settings. Note that opting out of 
-                    essential AI processing may limit platform functionality.
-                  </p>
-                </section>
-
-                <Separator />
-
-                {/* Limitations and Disclaimers */}
+                {/* Important Disclaimers */}
                 <section>
                   <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
                     <AlertTriangle className="h-5 w-5" />
-                    Important Limitations and Disclaimers
+                    The Important Legal Stuff
                   </h3>
                   
-                  <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
-                    <p className="font-medium text-red-800 mb-2">AI Limitations:</p>
-                    <ul className="text-red-700 space-y-1 text-sm">
-                      <li>• AI responses are generated and may contain inaccuracies</li>
-                      <li>• Do not rely on AI outputs for critical decisions without verification</li>
-                      <li>• AI cannot replace professional medical, legal, or financial advice</li>
-                      <li>• System availability and performance may vary</li>
-                    </ul>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <p className="font-medium text-blue-800 mb-2">Not Medical Advice</p>
+                    <p className="text-blue-700 text-sm">
+                      We help with bill analysis, not medical advice. Always consult healthcare professionals for medical decisions.
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                    <p className="font-medium text-gray-800 mb-2">HIPAA Status</p>
+                    <p className="text-gray-700 text-sm">
+                      We're not a HIPAA-covered entity. Don't upload sensitive medical records or personal health info.
+                    </p>
                   </div>
 
                   <p className="mb-4">
-                    <strong>No Medical Advice:</strong> GoldRock Health provides educational and informational 
-                    content only. Our AI-powered features do not constitute medical advice, diagnosis, or treatment. 
-                    Always consult qualified healthcare professionals for medical concerns.
+                    <strong>Accuracy:</strong> AI isn't perfect. While we work hard to provide accurate analysis, 
+                    always verify important information independently.
                   </p>
 
                   <p className="mb-4">
-                    <strong>Liability Limitations:</strong> To the fullest extent permitted by law, GoldRock Health 
-                    disclaims all warranties and limits liability for AI-generated content, service interruptions, 
-                    or data processing errors.
+                    <strong>Service Availability:</strong> We try to keep everything running smoothly, but can't 
+                    guarantee 100% uptime. Technology happens.
                   </p>
                 </section>
 
                 <Separator />
 
-                {/* Compliance and Legal */}
+                {/* Your Rights */}
                 <section>
                   <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
-                    <FileText className="h-5 w-5" />
-                    Legal Compliance and Governing Law
+                    <Shield className="h-5 w-5" />
+                    Your Rights
+                  </h3>
+                  
+                  <p className="mb-4">Standard data rights apply:</p>
+                  <ul className="list-disc ml-6 space-y-1 mb-4">
+                    <li>Request a copy of your data</li>
+                    <li>Correct inaccurate information</li>
+                    <li>Delete your account and data</li>
+                    <li>Export your data if you want to leave</li>
+                  </ul>
+
+                  <p className="mb-4">
+                    Just email us at privacy@goldrockhealth.com if you need anything.
+                  </p>
+                </section>
+
+                <Separator />
+
+                {/* Liability */}
+                <section>
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
+                    <Shield className="h-5 w-5" />
+                    Liability & Limitations
                   </h3>
                   
                   <p className="mb-4">
-                    <strong>Jurisdictional Compliance:</strong> This agreement is governed by the laws of the United States. 
-                    We comply with applicable federal and state privacy laws, including but not limited to state privacy statutes 
-                    where applicable.
+                    Standard tech company liability limitations apply. We provide the service "as is" and can't 
+                    be held responsible for any damages from using our service. Use common sense.
                   </p>
 
                   <p className="mb-4">
-                    <strong>Updates to Terms:</strong> We may update these AI usage terms periodically. 
-                    Significant changes will be communicated through platform notifications. Continued use 
-                    constitutes acceptance of updated terms.
+                    We're based in the US and US laws apply to this agreement.
+                  </p>
+                </section>
+
+                <Separator />
+
+                {/* Changes to Terms */}
+                <section>
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700">
+                    <FileText className="h-5 w-5" />
+                    Updates & Changes
+                  </h3>
+                  
+                  <p className="mb-4">
+                    We might update these terms occasionally. If we make significant changes, we'll let you know 
+                    through the platform. Continued use means you accept the new terms.
                   </p>
 
                   <p className="mb-4">
-                    <strong>Data Transfers:</strong> Your data may be processed in servers located in the United States 
-                    and other countries where our service providers operate, subject to appropriate safeguards.
+                    That's pretty much it! Thanks for using GoldRock Health.
                   </p>
                 </section>
 
