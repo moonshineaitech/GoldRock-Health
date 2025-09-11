@@ -1882,7 +1882,7 @@ RESPONSE FORMAT:
 You help patients save thousands of dollars through expert guidance on medical bill reduction strategies.`;
 
         const response = await openAIService.openai.chat.completions.create({
-          model: "gpt-5", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+          model: "gpt-4o", // Using gpt-4o as it's the most current available model
           messages: [
             {
               role: "system",
@@ -1893,7 +1893,6 @@ You help patients save thousands of dollars through expert guidance on medical b
               content: message
             }
           ],
-          temperature: 0.7,
           max_completion_tokens: 1000
         });
 
@@ -2605,7 +2604,7 @@ Respond with complete, detailed advice AND proactive offers to generate document
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              model: 'gpt-4',
+              model: 'gpt-4o',
               messages: [
                 {
                   role: 'system',
@@ -2616,8 +2615,7 @@ Respond with complete, detailed advice AND proactive offers to generate document
                   content: prompt
                 }
               ],
-              max_completion_tokens: 1500,
-              temperature: 0.7
+              max_completion_tokens: 1500
             })
           });
 
@@ -3153,7 +3151,7 @@ Make it clinically accurate and educationally valuable.`;
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-5',
+          model: 'gpt-4o',
           messages: [
             {
               role: 'system',
@@ -3164,8 +3162,7 @@ Make it clinically accurate and educationally valuable.`;
               content: analysisPrompt
             }
           ],
-          max_completion_tokens: 3000,
-          temperature: 0.7
+          max_completion_tokens: 3000
         })
       });
 

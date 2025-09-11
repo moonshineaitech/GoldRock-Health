@@ -6,9 +6,11 @@ import {
   FileText,
   Trophy,
   User,
-  Crown
+  Crown,
+  Sparkles
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSubscription } from "@/hooks/useSubscription";
 
 interface NavItem {
   id: string;
@@ -51,6 +53,7 @@ const navItems: NavItem[] = [
 
 export function MobileBottomNav() {
   const [location] = useLocation();
+  const { isSubscribed } = useSubscription();
 
   const isActive = (path: string) => {
     if (path === "/" && location === "/") return true;
@@ -115,6 +118,31 @@ export function MobileBottomNav() {
                       ) : '#6B7280'
                     }}
                   />
+                  
+                  {/* Premium Badge for Premium Tab */}
+                  {item.id === 'premium' && !isSubscribed && (
+                    <motion.div
+                      className="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold shadow-lg"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+                    >
+                      <Sparkles className="h-3 w-3" />
+                    </motion.div>
+                  )}
+                  
+                  {/* Premium Member Badge */}
+                  {item.id === 'premium' && isSubscribed && (
+                    <motion.div
+                      className="absolute -top-1 -right-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold shadow-lg"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+                    >
+                      ✓
+                    </motion.div>
+                  )}
+                  
                   {active && (
                     <motion.div
                       className="absolute -bottom-1 left-1/2 w-1 h-1 bg-current rounded-full"

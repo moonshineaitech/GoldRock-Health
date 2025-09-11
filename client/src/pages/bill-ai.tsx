@@ -50,7 +50,12 @@ import {
   Stethoscope,
   Network,
   Radar,
-  HeartHandshake
+  HeartHandshake,
+  Database,
+  Pill,
+  Siren,
+  XCircle,
+  ArrowRight
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { MedicalBill } from "@shared/schema";
@@ -74,6 +79,12 @@ import { AdvancedErrorDetector } from "@/components/advanced-error-detector";
 import { ProfessionalWorkflowSuite } from "@/components/professional-workflow-suite";
 import { PremiumAutomationEngine } from "@/components/premium-automation-engine";
 import { PremiumTemplatesLibrary } from "@/components/premium-templates-library";
+import { HospitalBillsIntelligenceDatabase } from "@/components/hospital-bills-intelligence-database";
+import { InsuranceClaimsDatabase } from "@/components/insurance-claims-database";
+import { InsuranceDenialsIntelligence } from "@/components/insurance-denials-intelligence";
+import { EmergencyCareBillingDatabase } from "@/components/emergency-care-billing-database";
+import { SpecialtyCareIntelligence } from "@/components/specialty-care-intelligence";
+import { PharmaceuticalDeviceDatabase } from "@/components/pharmaceutical-device-database";
 import { Link } from "wouter";
 import { OptionalIntakePopup } from "@/components/OptionalIntakePopup";
 
@@ -113,6 +124,14 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   onStartChat: () => void;
 }) => {
   const { isSubscribed } = useSubscription();
+  
+  // Add missing state variables for database visibility
+  const [showHospitalBillsDatabase, setShowHospitalBillsDatabase] = useState(false);
+  const [showInsuranceClaimsDatabase, setShowInsuranceClaimsDatabase] = useState(false);
+  const [showInsuranceDenialsIntelligence, setShowInsuranceDenialsIntelligence] = useState(false);
+  const [showEmergencyCareBillingDatabase, setShowEmergencyCareBillingDatabase] = useState(false);
+  const [showSpecialtyCareIntelligence, setShowSpecialtyCareIntelligence] = useState(false);
+  const [showPharmaceuticalDeviceDatabase, setShowPharmaceuticalDeviceDatabase] = useState(false);
   
   const coreWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'core');
   const beginnerWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'beginner');
@@ -471,7 +490,264 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             maxVisible={2}
           />
         )}
-      </div>
+
+        {/* PREMIUM INSIGHT DATABASES */}
+        {isSubscribed && (
+          <>
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl p-4 mb-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Database className="h-4 w-4 text-blue-600" />
+                <span className="text-sm font-bold text-blue-800">Premium Insight Databases</span>
+                <Badge className="bg-blue-600 text-white text-xs">
+                  <Crown className="h-3 w-3 mr-1" />
+                  Exclusive Intelligence
+                </Badge>
+              </div>
+              <p className="text-xs text-blue-700 mb-2">
+                🎯 Comprehensive billing intelligence databases with insider knowledge, proven strategies, and massive savings potential.
+              </p>
+              <div className="text-xs text-blue-600 space-y-1">
+                <div>• Hospital billing patterns & vulnerabilities</div>
+                <div>• Insurance company tactics & countermeasures</div>
+                <div>• Emergency care billing protections</div>
+                <div>• Specialty care & pharmaceutical intelligence</div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <Database className="h-4 w-4 text-blue-600" />
+                Premium Intelligence Databases (Exclusive Access)
+              </h3>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  onClick={() => setShowHospitalBillsDatabase(!showHospitalBillsDatabase)}
+                  variant="outline"
+                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50"
+                  data-testid="hospital-bills-database"
+                >
+                  <Building2 className="h-5 w-5 text-blue-600" />
+                  <div className="text-center w-full">
+                    <div className="text-xs font-semibold text-gray-900">Hospital Bills Intelligence</div>
+                    <div className="text-xs text-gray-600 truncate">Insider billing patterns</div>
+                  </div>
+                </Button>
+
+                <Button
+                  onClick={() => setShowInsuranceClaimsDatabase(!showInsuranceClaimsDatabase)}
+                  variant="outline"
+                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50"
+                  data-testid="insurance-claims-database"
+                >
+                  <Shield className="h-5 w-5 text-indigo-600" />
+                  <div className="text-center w-full">
+                    <div className="text-xs font-semibold text-gray-900">Insurance Claims Database</div>
+                    <div className="text-xs text-gray-600 truncate">Company-specific tactics</div>
+                  </div>
+                </Button>
+
+                <Button
+                  onClick={() => setShowInsuranceDenialsIntelligence(!showInsuranceDenialsIntelligence)}
+                  variant="outline"
+                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50"
+                  data-testid="insurance-denials-intelligence"
+                >
+                  <XCircle className="h-5 w-5 text-red-600" />
+                  <div className="text-center w-full">
+                    <div className="text-xs font-semibold text-gray-900">Insurance Denials Intelligence</div>
+                    <div className="text-xs text-gray-600 truncate">Reversal strategies</div>
+                  </div>
+                </Button>
+
+                <Button
+                  onClick={() => setShowEmergencyCareBillingDatabase(!showEmergencyCareBillingDatabase)}
+                  variant="outline"
+                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50"
+                  data-testid="emergency-care-billing-database"
+                >
+                  <Siren className="h-5 w-5 text-orange-600" />
+                  <div className="text-center w-full">
+                    <div className="text-xs font-semibold text-gray-900">Emergency Care Database</div>
+                    <div className="text-xs text-gray-600 truncate">No Surprises Act tactics</div>
+                  </div>
+                </Button>
+
+                <Button
+                  onClick={() => setShowSpecialtyCareIntelligence(!showSpecialtyCareIntelligence)}
+                  variant="outline"
+                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50"
+                  data-testid="specialty-care-intelligence"
+                >
+                  <Stethoscope className="h-5 w-5 text-purple-600" />
+                  <div className="text-center w-full">
+                    <div className="text-xs font-semibold text-gray-900">Specialty Care Intelligence</div>
+                    <div className="text-xs text-gray-600 truncate">High-cost procedures</div>
+                  </div>
+                </Button>
+
+                <Button
+                  onClick={() => setShowPharmaceuticalDeviceDatabase(!showPharmaceuticalDeviceDatabase)}
+                  variant="outline"
+                  className="h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-green-200 hover:shadow-lg transition-all duration-200 hover:border-green-300 hover:bg-green-50/50"
+                  data-testid="pharmaceutical-device-database"
+                >
+                  <Pill className="h-5 w-5 text-green-600" />
+                  <div className="text-center w-full">
+                    <div className="text-xs font-semibold text-gray-900">Pharmaceutical & Device Database</div>
+                    <div className="text-xs text-gray-600 truncate">Drug & device pricing</div>
+                  </div>
+                </Button>
+              </div>
+            </div>
+            </>
+          )}
+
+          {/* Premium Discovery Section for Non-Subscribers */}
+          {!isSubscribed && (
+            <>
+              <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 border border-amber-200 rounded-2xl p-4 mb-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <Crown className="h-4 w-4 text-amber-600" />
+                  <span className="text-sm font-bold text-amber-800">Unlock Premium Intelligence Tools</span>
+                  <Badge className="bg-amber-600 text-white text-xs">
+                    <Lock className="h-3 w-3 mr-1" />
+                    Premium Only
+                  </Badge>
+                </div>
+                <p className="text-xs text-amber-700 mb-3">
+                  🚀 Access 6 comprehensive intelligence databases and 100+ professional workflows that have saved users $10K-$500K+ per bill.
+                </p>
+                <div className="grid grid-cols-2 gap-2 text-xs text-amber-700 mb-3">
+                  <div>• Hospital Insider Secrets</div>
+                  <div>• Insurance Company Tactics</div>
+                  <div>• Emergency Care Protections</div>
+                  <div>• Pharmaceutical Intelligence</div>
+                  <div>• Professional Dispute Templates</div>
+                  <div>• Automated Analysis Tools</div>
+                </div>
+                <Link href="/premium" className="w-full">
+                  <Button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg" size="sm">
+                    <Crown className="h-4 w-4 mr-2" />
+                    Unlock All Premium Tools - Save $10K+
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  <Database className="h-4 w-4 text-amber-600" />
+                  Premium Intelligence Databases (Preview)
+                </h3>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <Link href="/premium" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 relative"
+                      data-testid="preview-hospital-bills-database"
+                    >
+                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                        $50K+ Avg
+                      </div>
+                      <Building2 className="h-5 w-5 text-blue-600" />
+                      <div className="text-center w-full">
+                        <div className="text-xs font-semibold text-gray-900">Hospital Bills Intelligence</div>
+                        <div className="text-xs text-gray-600 truncate">500+ hospital insider secrets</div>
+                      </div>
+                    </Button>
+                  </Link>
+
+                  <Link href="/premium" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 relative"
+                      data-testid="preview-insurance-claims-database"
+                    >
+                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                        $35K+ Avg
+                      </div>
+                      <Shield className="h-5 w-5 text-indigo-600" />
+                      <div className="text-center w-full">
+                        <div className="text-xs font-semibold text-gray-900">Insurance Claims Database</div>
+                        <div className="text-xs text-gray-600 truncate">Company-specific tactics</div>
+                      </div>
+                    </Button>
+                  </Link>
+
+                  <Link href="/premium" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 relative"
+                      data-testid="preview-insurance-denials-intelligence"
+                    >
+                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                        $75K+ Avg
+                      </div>
+                      <XCircle className="h-5 w-5 text-red-600" />
+                      <div className="text-center w-full">
+                        <div className="text-xs font-semibold text-gray-900">Denial Reversal Intelligence</div>
+                        <div className="text-xs text-gray-600 truncate">92% success rate</div>
+                      </div>
+                    </Button>
+                  </Link>
+
+                  <Link href="/premium" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 relative"
+                      data-testid="preview-emergency-care-billing-database"
+                    >
+                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                        $85K+ Avg
+                      </div>
+                      <Siren className="h-5 w-5 text-orange-600" />
+                      <div className="text-center w-full">
+                        <div className="text-xs font-semibold text-gray-900">Emergency Care Intelligence</div>
+                        <div className="text-xs text-gray-600 truncate">EMTALA violations & tactics</div>
+                      </div>
+                    </Button>
+                  </Link>
+
+                  <Link href="/premium" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-teal-200 hover:shadow-lg transition-all duration-200 hover:border-teal-300 hover:bg-teal-50/50 relative"
+                      data-testid="preview-specialty-care-intelligence"
+                    >
+                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                        $45K+ Avg
+                      </div>
+                      <Stethoscope className="h-5 w-5 text-teal-600" />
+                      <div className="text-center w-full">
+                        <div className="text-xs font-semibold text-gray-900">Specialty Care Intelligence</div>
+                        <div className="text-xs text-gray-600 truncate">Cardiology, oncology & more</div>
+                      </div>
+                    </Button>
+                  </Link>
+
+                  <Link href="/premium" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 relative"
+                      data-testid="preview-pharmaceutical-device-database"
+                    >
+                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                        $25K+ Avg
+                      </div>
+                      <Pill className="h-5 w-5 text-purple-600" />
+                      <div className="text-center w-full">
+                        <div className="text-xs font-semibold text-gray-900">Pharmaceutical Intelligence</div>
+                        <div className="text-xs text-gray-600 truncate">Drug pricing & device markups</div>
+                      </div>
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
 
       {/* View All Workflows Button */}
       <div className="pt-4 border-t border-gray-200">
@@ -740,6 +1016,14 @@ export default function BillAI() {
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [showOptionalIntakePopup, setShowOptionalIntakePopup] = useState(false);
   
+  // Premium Insight Database States
+  const [showHospitalBillsDatabase, setShowHospitalBillsDatabase] = useState(false);
+  const [showInsuranceClaimsDatabase, setShowInsuranceClaimsDatabase] = useState(false);
+  const [showInsuranceDenialsIntelligence, setShowInsuranceDenialsIntelligence] = useState(false);
+  const [showEmergencyCareBillingDatabase, setShowEmergencyCareBillingDatabase] = useState(false);
+  const [showSpecialtyCareIntelligence, setShowSpecialtyCareIntelligence] = useState(false);
+  const [showPharmaceuticalDeviceDatabase, setShowPharmaceuticalDeviceDatabase] = useState(false);
+  
   // Comprehensive Workflow State Management
   const [selectedWorkflow, setSelectedWorkflow] = useState<BillWorkflow | null>(null);
   const [workflowIntakeData, setWorkflowIntakeData] = useState<Record<string, any>>({});
@@ -934,12 +1218,77 @@ export default function BillAI() {
       
       setLocalMessages(prev => [...prev, aiMessage]);
       
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Chat API error:', error);
+      
+      // Check if it's a 401 authentication error
+      if (error.message?.includes('401')) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to use the AI chat feature.",
+          variant: "destructive",
+        });
+        // Redirect to login after a brief delay
+        setTimeout(() => {
+          window.location.href = '/api/login';
+        }, 2000);
+        return;
+      }
+      
+      // Check if it's a 402 subscription error  
+      if (error.message?.includes('402')) {
+        toast({
+          title: "Premium Subscription Required",
+          description: "AI chat is a premium feature. Please upgrade your subscription to continue.",
+          variant: "destructive",
+        });
+        // Add a subscription upgrade message to chat
+        const upgradeMessage: AIMessage = {
+          id: Date.now().toString() + "_upgrade",
+          role: "assistant",
+          content: `🔒 **Premium Feature Required**
+
+AI-powered medical bill analysis is a premium feature that helps you save $1K-$100K+ on medical bills.
+
+**What you get with Premium:**
+• Unlimited AI chat sessions for bill analysis
+• Advanced error detection and savings calculations  
+• Professional dispute letter generation
+• Insurance appeal templates and strategies
+• 24/7 access to expert bill reduction advice
+
+To continue using the AI chat, please upgrade to our Premium subscription.
+
+[Would you like me to help you with general billing information instead?]`,
+          createdAt: new Date()
+        };
+        setLocalMessages(prev => [...prev, upgradeMessage]);
+        return;
+      }
+      
+      // Generic error for other cases
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
+        title: "Connection Error",
+        description: "Unable to connect to AI service. Please check your internet connection and try again.",
         variant: "destructive",
       });
+      
+      // Add a helpful error message to chat
+      const errorMessage: AIMessage = {
+        id: Date.now().toString() + "_error",
+        role: "assistant",
+        content: `I'm sorry, I'm having trouble connecting right now. This could be due to:
+
+• Network connectivity issues
+• Server maintenance  
+• High traffic volume
+
+Please try again in a few moments. If the problem persists, try refreshing the page.
+
+In the meantime, I can still help you with general medical billing questions if you'd like to try again.`,
+        createdAt: new Date()
+      };
+      setLocalMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsTyping(false);
     }
@@ -1288,6 +1637,55 @@ What would you like to do first? I'm here to help you find every possible saving
           <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
             <div className="p-3">
               <PremiumTemplatesLibrary onSendMessage={sendMessage} />
+            </div>
+          </div>
+        )}
+
+        {/* Premium Insight Databases */}
+        {showHospitalBillsDatabase && (
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+            <div className="p-3">
+              <HospitalBillsIntelligenceDatabase onSendMessage={sendMessage} />
+            </div>
+          </div>
+        )}
+
+        {showInsuranceClaimsDatabase && (
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+            <div className="p-3">
+              <InsuranceClaimsDatabase onSendMessage={sendMessage} />
+            </div>
+          </div>
+        )}
+
+        {showInsuranceDenialsIntelligence && (
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+            <div className="p-3">
+              <InsuranceDenialsIntelligence onSendMessage={sendMessage} />
+            </div>
+          </div>
+        )}
+
+        {showEmergencyCareBillingDatabase && (
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+            <div className="p-3">
+              <EmergencyCareBillingDatabase onSendMessage={sendMessage} />
+            </div>
+          </div>
+        )}
+
+        {showSpecialtyCareIntelligence && (
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+            <div className="p-3">
+              <SpecialtyCareIntelligence onSendMessage={sendMessage} />
+            </div>
+          </div>
+        )}
+
+        {showPharmaceuticalDeviceDatabase && (
+          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+            <div className="p-3">
+              <PharmaceuticalDeviceDatabase onSendMessage={sendMessage} />
             </div>
           </div>
         )}
