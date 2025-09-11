@@ -50,8 +50,7 @@ import {
   Stethoscope,
   Network,
   Radar,
-  Vault,
-  Heart
+  HeartHandshake
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { MedicalBill } from "@shared/schema";
@@ -322,7 +321,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <>
             <div className="bg-gradient-to-r from-purple-50 to-red-50 border border-purple-200 rounded-2xl p-4 mb-3">
               <div className="flex items-center gap-2 mb-2">
-                <Vault className="h-4 w-4 text-purple-600" />
+                <Shield className="h-4 w-4 text-purple-600" />
                 <span className="text-sm font-bold text-purple-800">Hospital Industry Insider Secrets</span>
                 <Badge className="bg-purple-600 text-white text-xs">
                   <Lock className="h-3 w-3 mr-1" />
@@ -340,7 +339,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             </div>
             <WorkflowCategory
               title="🔓 Hospital Insider Secrets (91% Success Rate)"
-              icon={Vault}
+              icon={Shield}
               iconColor="text-purple-700"
               workflows={hospitalInsiderWorkflows}
               onWorkflowSelect={onWorkflowSelect}
@@ -386,7 +385,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <>
             <div className="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-4 mb-3">
               <div className="flex items-center gap-2 mb-2">
-                <Heart className="h-4 w-4 text-pink-600" />
+                <HeartHandshake className="h-4 w-4 text-pink-600" />
                 <span className="text-sm font-bold text-pink-800">Financial Hardship Mastery</span>
                 <Badge className="bg-pink-600 text-white text-xs">
                   <Star className="h-3 w-3 mr-1" />
@@ -404,7 +403,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             </div>
             <WorkflowCategory
               title="💝 Financial Hardship Mastery (92% Success Rate)"
-              icon={Heart}
+              icon={HeartHandshake}
               iconColor="text-pink-700"
               workflows={hardshipMasteryWorkflows}
               onWorkflowSelect={onWorkflowSelect}

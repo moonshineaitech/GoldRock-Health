@@ -57,7 +57,7 @@ import {
   BookOpen,
   Clipboard,
   CreditCard,
-  Plus
+  PlusCircle
 } from "lucide-react";
 
 interface AutomationRule {
@@ -785,7 +785,7 @@ function AutomationManagement({ rules, onRuleUpdate }: { rules: AutomationRule[]
       <div className="flex justify-between items-center">
         <h4 className="font-semibold text-gray-900">Active Automation Rules</h4>
         <Button size="sm" variant="outline">
-          <Plus className="h-4 w-4 mr-2" />
+          <PlusCircle className="h-4 w-4 mr-2" />
           Add Rule
         </Button>
       </div>
