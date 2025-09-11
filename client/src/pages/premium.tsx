@@ -383,7 +383,7 @@ function PremiumMarketing() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        id="purchase-section"
+        id="plans"
       >
         <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
           Choose Your Plan
@@ -827,11 +827,30 @@ export default function Premium() {
   const { isAuthenticated, isLoading } = useAuth();
   const { isSubscribed, isLoading: subscriptionLoading } = useSubscription();
   
-  // Scroll to top when component mounts
+  // Scroll to top when component mounts or handle hash navigation
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    const handleNavigation = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'plans') {
+        // Small delay to allow content to render
+        setTimeout(() => {
+          const element = document.getElementById('plans');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      } else {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
+    };
+
+    handleNavigation();
+    
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleNavigation);
+    return () => window.removeEventListener('hashchange', handleNavigation);
   }, []);
 
   if (isLoading || subscriptionLoading) {

@@ -850,10 +850,12 @@ const WorkflowCard = ({ workflow, onClick }: {
                   <span className="text-sm font-semibold text-orange-800">Premium Feature</span>
                 </div>
                 <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
-                <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600">
-                  <Crown className="h-4 w-4 mr-2" />
-                  Upgrade to Premium
-                </Button>
+                <Link href="/premium#plans">
+                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600" onClick={() => setShowPreview(false)}>
+                    <Crown className="h-4 w-4 mr-2" />
+                    Upgrade to Premium
+                  </Button>
+                </Link>
               </div>
               <Button variant="ghost" size="sm" onClick={() => setShowPreview(false)}>
                 Maybe Later
@@ -979,10 +981,12 @@ const WorkflowListItem = ({ workflow, onClick }: {
                   <span className="text-sm font-semibold text-orange-800">Premium Feature</span>
                 </div>
                 <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
-                <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600">
-                  <Crown className="h-4 w-4 mr-2" />
-                  Upgrade Now
-                </Button>
+                <Link href="/premium#plans">
+                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600" onClick={() => setShowQuickPreview(false)}>
+                    <Crown className="h-4 w-4 mr-2" />
+                    Upgrade Now
+                  </Button>
+                </Link>
               </div>
               <Button variant="ghost" size="sm" onClick={() => setShowQuickPreview(false)}>
                 Maybe Later
