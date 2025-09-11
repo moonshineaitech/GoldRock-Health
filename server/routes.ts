@@ -268,14 +268,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // If subscription is incomplete and no payment intent, try to create one
         if (subscription.status === 'incomplete' && !paymentIntent && invoice) {
           try {
-            console.log('Incomplete subscription found, finalizing invoice:', invoice.id);
-            const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id, {
-              expand: ['payment_intent']
-            });
-            paymentIntent = finalizedInvoice.payment_intent;
-            console.log('Finalized invoice payment intent:', paymentIntent?.id);
+            console.log('Incomplete subscription found, checking invoice:', invoice.id, 'status:', invoice.status);
+            
+            if (invoice.status === 'draft') {
+              // Invoice is still a draft, finalize it
+              const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id, {
+                expand: ['payment_intent']
+              });
+              paymentIntent = finalizedInvoice.payment_intent;
+              console.log('Finalized invoice payment intent:', paymentIntent?.id);
+            } else if (invoice.status === 'open') {
+              // Invoice is already finalized but has no payment intent, create one manually
+              console.log('Invoice already finalized, creating payment intent manually');
+              const createdPaymentIntent = await stripe.paymentIntents.create({
+                amount: invoice.amount_due,
+                currency: invoice.currency || 'usd',
+                customer: subscription.customer as string,
+                metadata: {
+                  invoice_id: invoice.id,
+                  subscription_id: subscription.id,
+                },
+              });
+              paymentIntent = createdPaymentIntent;
+              console.log('Created manual payment intent:', paymentIntent.id);
+            }
           } catch (err: any) {
-            console.error('Error finalizing existing invoice:', err);
+            console.error('Error handling existing invoice:', err);
           }
         }
 
