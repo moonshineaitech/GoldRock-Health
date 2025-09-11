@@ -2157,7 +2157,6 @@ Extract every specific detail from the bill including exact account numbers, pat
       const billAmount = extractBillAmount(billText);
       const providerName = extractProvider(billText);
       const newBill = {
-        userId: userId,
         title: `${providerName} - ${new Date().toLocaleDateString()}`, // Required field
         providerName: providerName, // Match schema field name
         totalAmount: billAmount.toString(),
@@ -2169,8 +2168,8 @@ Extract every specific detail from the bill including exact account numbers, pat
         fileUrl: file.originalname // Store filename for reference
       };
 
-      // Use the updated createMedicalBill function (match the interface)
-      const savedBill = await storage.createMedicalBill(newBill);
+      // Use the correct createMedicalBill function signature (userId, billData)
+      const savedBill = await storage.createMedicalBill(userId, newBill);
 
       res.json({
         success: true,
@@ -2430,7 +2429,6 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
       const billAmount = extractBillAmount(combinedBillText);
       const providerName = extractProvider(combinedBillText);
       const newBill = {
-        userId: userId,
         title: `${providerName} - ${files.length} Pages - ${new Date().toLocaleDateString()}`,
         providerName: providerName,
         totalAmount: billAmount.toString(),
@@ -2442,7 +2440,7 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
         fileUrl: files.map(f => f.originalname).join(', ') // Store all filenames
       };
 
-      const savedBill = await storage.createMedicalBill(newBill);
+      const savedBill = await storage.createMedicalBill(userId, newBill);
 
       res.json({
         success: true,

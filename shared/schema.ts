@@ -1550,6 +1550,7 @@ export type PlatformStats = typeof platformStats.$inferSelect;
 // Medical Bill Analyzer Type exports
 export type MedicalBill = typeof medicalBills.$inferSelect;
 export type InsertMedicalBill = typeof medicalBills.$inferInsert;
+export type InsertMedicalBillData = Omit<InsertMedicalBill, 'userId'>;
 export type BillAnalysisResult = typeof billAnalysisResults.$inferSelect;
 export type InsertBillAnalysisResult = typeof billAnalysisResults.$inferInsert;
 export type ReductionStrategy = typeof reductionStrategies.$inferSelect;

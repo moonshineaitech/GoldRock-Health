@@ -52,6 +52,7 @@ import {
   type InsertDecisionTreeProgress,
   type MedicalBill,
   type InsertMedicalBill,
+  type InsertMedicalBillData,
   type BillAnalysisResult,
   type InsertBillAnalysisResult,
   type ReductionStrategy,
@@ -141,7 +142,7 @@ export interface IStorage {
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
   getChatMessages(sessionId: string): Promise<ChatMessage[]>;
   
-  createMedicalBill(userId: string, billData: InsertMedicalBill): Promise<MedicalBill>;
+  createMedicalBill(userId: string, billData: InsertMedicalBillData): Promise<MedicalBill>;
   getMedicalBills(userId: string): Promise<MedicalBill[]>;
   getMedicalBill(billId: string, userId: string): Promise<MedicalBill | undefined>;
   updateMedicalBill(billId: string, updates: Partial<MedicalBill>): Promise<MedicalBill>;
@@ -665,7 +666,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async createMedicalBill(userId: string, billData: InsertMedicalBill): Promise<MedicalBill> {
+  async createMedicalBill(userId: string, billData: InsertMedicalBillData): Promise<MedicalBill> {
     const [bill] = await db.insert(medicalBills).values({ ...billData, userId }).returning();
     return bill;
   }

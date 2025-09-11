@@ -1024,6 +1024,10 @@ export default function BillAI() {
   const [showSpecialtyCareIntelligence, setShowSpecialtyCareIntelligence] = useState(false);
   const [showPharmaceuticalDeviceDatabase, setShowPharmaceuticalDeviceDatabase] = useState(false);
   
+  // Premium Tools Modal States (moved from prominent display to optional modals)
+  const [showPremiumAutomationModal, setShowPremiumAutomationModal] = useState(false);
+  const [showPremiumTemplatesModal, setShowPremiumTemplatesModal] = useState(false);
+  
   // Comprehensive Workflow State Management
   const [selectedWorkflow, setSelectedWorkflow] = useState<BillWorkflow | null>(null);
   const [workflowIntakeData, setWorkflowIntakeData] = useState<Record<string, any>>({});
@@ -1623,23 +1627,7 @@ What would you like to do first? I'm here to help you find every possible saving
           </div>
         )}
 
-        {/* Premium Automation Engine */}
-        {isSubscribed && conversationStarted && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
-            <div className="p-3">
-              <PremiumAutomationEngine onSendMessage={sendMessage} />
-            </div>
-          </div>
-        )}
-
-        {/* Premium Templates Library */}
-        {isSubscribed && conversationStarted && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
-            <div className="p-3">
-              <PremiumTemplatesLibrary onSendMessage={sendMessage} />
-            </div>
-          </div>
-        )}
+        {/* REMOVED: Premium sections moved to modals for cleaner interface */}
 
         {/* Premium Insight Databases */}
         {showHospitalBillsDatabase && (
@@ -1780,6 +1768,34 @@ What would you like to do first? I'm here to help you find every possible saving
                   }`}>
                     {message.content}
                   </p>
+                  
+                  {/* Premium Tools Button (only for AI responses and subscribed users) */}
+                  {message.role === "assistant" && isSubscribed && (
+                    <div className="mt-4 pt-3 border-t border-gray-100">
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => setShowPremiumAutomationModal(true)}
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 px-3 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200/50 text-purple-700 hover:from-purple-100 hover:to-indigo-100 text-xs"
+                          data-testid="premium-automation-button"
+                        >
+                          <Zap className="h-3 w-3 mr-1.5" />
+                          Automation
+                        </Button>
+                        <Button
+                          onClick={() => setShowPremiumTemplatesModal(true)}
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 px-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/50 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 text-xs"
+                          data-testid="premium-templates-button"
+                        >
+                          <FileText className="h-3 w-3 mr-1.5" />
+                          Templates
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                   
                   <div className={`text-xs mt-3 flex items-center justify-between ${
                     message.role === "user" 
@@ -2010,6 +2026,42 @@ What would you like to do first? I'm here to help you find every possible saving
           onChange={handleFileInputChange}
           data-testid="file-input"
         />
+
+        {/* Premium Automation Engine Modal */}
+        <Sheet open={showPremiumAutomationModal} onOpenChange={setShowPremiumAutomationModal}>
+          <SheetContent side="bottom" className="h-[80vh] overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-purple-600" />
+                Premium Automation Engine
+              </SheetTitle>
+              <SheetDescription>
+                Automate your medical bill analysis and dispute processes with AI-powered workflows.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="mt-4">
+              <PremiumAutomationEngine onSendMessage={sendMessage} />
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        {/* Premium Templates Library Modal */}
+        <Sheet open={showPremiumTemplatesModal} onOpenChange={setShowPremiumTemplatesModal}>
+          <SheetContent side="bottom" className="h-[80vh] overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-emerald-600" />
+                Premium Templates Library
+              </SheetTitle>
+              <SheetDescription>
+                Access professional-grade dispute letter templates and automated document generation.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="mt-4">
+              <PremiumTemplatesLibrary onSendMessage={sendMessage} />
+            </div>
+          </SheetContent>
+        </Sheet>
 
         {/* Optional Intake Popup */}
         <OptionalIntakePopup
