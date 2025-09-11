@@ -192,7 +192,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <Sparkles className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-emerald-600" />
           Essential Workflows
         </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3 lg:gap-6 xl:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3 lg:gap-6 xl:gap-8 justify-items-center mx-auto max-w-md lg:max-w-4xl">
           {coreWorkflows.map((workflow) => (
             <WorkflowCard
               key={workflow.id}
