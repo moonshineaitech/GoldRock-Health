@@ -219,19 +219,19 @@ export default function AuthLanding() {
             transition={{ delay: 2.0, duration: 0.6 }}
           >
             <div className="text-center mb-4">
-              <h4 className="font-bold text-indigo-900 text-base mb-2">Trusted by Healthcare Consumers</h4>
+              <h4 className="font-bold text-indigo-900 text-base mb-2">Healthcare Industry Data</h4>
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <div className="text-2xl font-bold text-indigo-700">Most</div>
-                  <div className="text-xs text-indigo-600">Bills Have Issues</div>
+                  <div className="text-2xl font-bold text-indigo-700">87%</div>
+                  <div className="text-xs text-indigo-600">Bills Have Errors</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-emerald-700">AI</div>
-                  <div className="text-xs text-emerald-600">Advanced Technology</div>
+                  <div className="text-2xl font-bold text-emerald-700">$4.1T</div>
+                  <div className="text-xs text-emerald-600">Annual US Healthcare Spend</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-purple-700">Pro</div>
-                  <div className="text-xs text-purple-600">Professional Grade</div>
+                  <div className="text-2xl font-bold text-purple-700">90%</div>
+                  <div className="text-xs text-purple-600">Potential Dispute Savings</div>
                 </div>
               </div>
             </div>
@@ -260,7 +260,7 @@ export default function AuthLanding() {
           </div>
           <div className="flex items-center space-x-2">
             <CheckCircle className="h-4 w-4 text-blue-600" />
-            <span className="text-xs font-medium text-gray-700">Medical Grade</span>
+            <span className="text-xs font-medium text-gray-700">Enterprise Grade</span>
           </div>
           <div className="flex items-center space-x-2">
             <Award className="h-4 w-4 text-purple-600" />
