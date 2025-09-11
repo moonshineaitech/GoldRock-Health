@@ -237,7 +237,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
         initial={{ scale: 0.95, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.95, y: 20 }}
-        className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-hidden"
+        className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-hidden mb-20"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
