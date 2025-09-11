@@ -156,43 +156,43 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   const dataIntelligenceWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'data-intelligence');
 
   return (
-    <div className="space-y-6 lg:space-y-8">
+    <div className="space-y-6 lg:space-y-10 xl:space-y-12 2xl:space-y-16">
       {/* Header */}
-      <div className="text-center space-y-3 lg:space-y-4">
-        <div className="flex items-center justify-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <Brain className="h-5 w-5 text-white" />
+      <div className="text-center space-y-3 lg:space-y-6 xl:space-y-8">
+        <div className="flex items-center justify-center gap-3 lg:gap-4">
+          <div className="w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <Brain className="h-5 w-5 lg:h-7 lg:w-7 xl:h-8 xl:w-8 text-white" />
           </div>
           <div>
-            <h1 className="text-xl lg:text-3xl font-bold text-gray-900">Medical Bill AI</h1>
-            <Badge className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs">
-              <Shield className="h-3 w-3 mr-1" />
+            <h1 className="text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900">Medical Bill AI</h1>
+            <Badge className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs lg:text-sm xl:text-base">
+              <Shield className="h-3 w-3 lg:h-4 lg:w-4 mr-1" />
               Exceeds HIPAA Standards
             </Badge>
           </div>
         </div>
-        <p className="text-sm lg:text-lg text-gray-600 max-w-md lg:max-w-2xl mx-auto">
+        <p className="text-sm lg:text-xl xl:text-2xl 2xl:text-3xl text-gray-600 max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto">
           Professional-grade bill analysis and advocacy. Professional AI-powered dispute templates.
         </p>
-        <div className="flex items-center justify-center gap-4 lg:gap-8 text-xs lg:text-sm">
-          <div className="flex items-center gap-1">
-            <Target className="h-3 w-3 text-emerald-600" />
+        <div className="flex items-center justify-center gap-4 lg:gap-12 xl:gap-16 text-xs lg:text-base xl:text-lg">
+          <div className="flex items-center gap-2 lg:gap-3">
+            <Target className="h-3 w-3 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-emerald-600" />
             <span className="text-gray-600">AI-Powered Analysis</span>
           </div>
-          <div className="flex items-center gap-1">
-            <DollarSign className="h-3 w-3 text-emerald-600" />
+          <div className="flex items-center gap-2 lg:gap-3">
+            <DollarSign className="h-3 w-3 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-emerald-600" />
             <span className="text-gray-600">Advanced Technology</span>
           </div>
         </div>
       </div>
 
       {/* Core Workflows */}
-      <div className="space-y-3 lg:space-y-4">
-        <h3 className="text-sm lg:text-base font-semibold text-gray-900 flex items-center gap-2">
-          <Sparkles className="h-4 w-4 lg:h-5 lg:w-5 text-emerald-600" />
+      <div className="space-y-3 lg:space-y-6 xl:space-y-8">
+        <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-900 flex items-center gap-2 lg:gap-4">
+          <Sparkles className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-emerald-600" />
           Essential Workflows
         </h3>
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 lg:gap-6 xl:gap-8 2xl:gap-10">
           {coreWorkflows.map((workflow) => (
             <WorkflowCard
               key={workflow.id}
@@ -205,17 +205,17 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
 
       {/* Beginner-Friendly Workflows */}
       {beginnerWorkflows.length > 0 && (
-        <div className="space-y-3 lg:space-y-4">
-          <h3 className="text-sm lg:text-base font-semibold text-gray-900 flex items-center gap-2">
-            <Star className="h-4 w-4 lg:h-5 lg:w-5 text-yellow-600" />
+        <div className="space-y-3 lg:space-y-6 xl:space-y-8">
+          <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-900 flex items-center gap-2 lg:gap-4">
+            <Star className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-yellow-600" />
             Getting Started (Perfect for First-Time Users)
           </h3>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 lg:p-6 mb-3">
-            <p className="text-xs lg:text-sm text-yellow-800 text-center">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 lg:p-8 xl:p-10 mb-3">
+            <p className="text-xs lg:text-base xl:text-lg text-yellow-800 text-center">
               🎓 New to medical bill analysis? Start here! These beginner-friendly tools help you learn step-by-step.
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 lg:gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 lg:gap-6 xl:gap-8">
             {beginnerWorkflows.slice(0, 4).map((workflow) => (
               <WorkflowListItem
                 key={workflow.id}
@@ -228,7 +228,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             <Button
               variant="outline"
               size="sm"
-              className="w-full text-yellow-700 border-yellow-200 hover:bg-yellow-50"
+              className="w-full lg:w-auto lg:mx-auto lg:px-8 text-yellow-700 border-yellow-200 hover:bg-yellow-50"
               onClick={() => {}}
             >
               View All {beginnerWorkflows.length} Beginner Tools
@@ -238,42 +238,42 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-2 lg:gap-6 xl:gap-8 max-w-md lg:max-w-none mx-auto">
         <Button
           onClick={onStartChat}
           variant="outline"
           size="sm"
-          className="h-12 flex-col space-y-1 rounded-2xl border-gray-200"
+          className="h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
           data-testid="start-chat-button"
         >
-          <MessageCircle className="h-4 w-4" />
-          <span className="text-xs">Start Chat</span>
+          <MessageCircle className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
+          <span className="text-xs lg:text-sm xl:text-base">Start Chat</span>
         </Button>
         <Link href="/blitz-demo" className="w-full">
           <Button
             variant="outline"
             size="sm"
-            className="w-full h-12 flex-col space-y-1 rounded-2xl border-orange-200 text-orange-600 hover:bg-orange-50"
+            className="w-full h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-orange-200 text-orange-600 hover:bg-orange-50"
             data-testid="blitz-demo-button"
           >
-            <Zap className="h-4 w-4" />
-            <span className="text-xs">Blitz Demo</span>
+            <Zap className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
+            <span className="text-xs lg:text-sm xl:text-base">Blitz Demo</span>
           </Button>
         </Link>
         <Button
           onClick={() => {}}
           variant="outline"
           size="sm"
-          className="h-12 flex-col space-y-1 rounded-2xl border-gray-200"
+          className="h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
           data-testid="view-all-workflows"
         >
-          <Plus className="h-4 w-4" />
-          <span className="text-xs">All Tools</span>
+          <Plus className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
+          <span className="text-xs lg:text-sm xl:text-base">All Tools</span>
         </Button>
       </div>
 
       {/* Comprehensive Workflow Categories */}
-      <div className="space-y-4">
+      <div className="space-y-4 lg:space-y-8 xl:space-y-12 2xl:space-y-16">
         {/* Specialty Analysis */}
         {specialtyWorkflows.length > 0 && (
           <WorkflowCategory
@@ -1520,7 +1520,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
   return (
     <MobileLayout title="Bill AI" showBottomNav={true}>
-      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 lg:max-w-none xl:max-w-6xl xl:mx-auto">
+      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 lg:max-w-none xl:max-w-7xl 2xl:max-w-none xl:mx-auto">
         
         {/* Enhanced Header with Navigation */}
         <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200/30">
@@ -1776,6 +1776,25 @@ What would you like to do first? I'm here to help you find every possible saving
                   }`}>
                     {message.content}
                   </p>
+                  
+                  {/* Customize Response Button (for AI responses) */}
+                  {message.role === "assistant" && (
+                    <div className="mt-4 flex justify-center">
+                      <Button
+                        onClick={() => {
+                          const customizeMessage = `Help me customize that response. I'd like to modify or improve the previous analysis/advice you just provided. Please ask me what specific aspects I'd like to change or enhance.`;
+                          sendMessage(customizeMessage);
+                        }}
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/50 text-blue-700 hover:from-blue-100 hover:to-indigo-100 text-xs"
+                        data-testid="customize-response-button"
+                      >
+                        <Settings className="h-3 w-3 mr-1.5" />
+                        Help me customize that
+                      </Button>
+                    </div>
+                  )}
                   
                   {/* Run Another Workflow Button (for all AI responses) */}
                   {message.role === "assistant" && (
