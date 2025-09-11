@@ -927,14 +927,18 @@ const WorkflowListItem = ({ workflow, onClick }: {
               <workflow.icon className={`h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8 ${workflow.color}`} />
             </motion.div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 lg:gap-6 mb-2 lg:mb-4 flex-wrap">
-                <div className="text-sm lg:text-base xl:text-lg 2xl:text-xl font-medium text-gray-900 leading-relaxed">{workflow.title}</div>
-                {workflow.isPremium && !isSubscribed && (
-                  <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500" />
-                )}
-                <Badge variant="secondary" className="text-xs lg:text-sm px-1.5 py-0.5 lg:px-3 lg:py-1">
-                  {workflow.successRate}
-                </Badge>
+              <div className="space-y-1 lg:space-y-2 mb-2 lg:mb-4">
+                <div className="flex items-center justify-between gap-4 lg:gap-6">
+                  <div className="text-sm lg:text-base xl:text-lg 2xl:text-xl font-medium text-gray-900 leading-relaxed flex-1 min-w-0 pr-2">
+                    {workflow.title}
+                    {workflow.isPremium && !isSubscribed && (
+                      <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500 inline-block ml-2" />
+                    )}
+                  </div>
+                  <Badge variant="secondary" className="text-xs lg:text-sm px-2 py-1 lg:px-3 lg:py-1.5 font-semibold flex-shrink-0">
+                    {workflow.successRate}
+                  </Badge>
+                </div>
               </div>
               <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-500 mb-2 lg:mb-3 leading-relaxed">{workflow.subtitle}</div>
               <div className="flex items-center gap-4 lg:gap-8 text-xs lg:text-sm xl:text-base 2xl:text-lg flex-wrap">
