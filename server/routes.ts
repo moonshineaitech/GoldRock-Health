@@ -320,6 +320,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           save_default_payment_method: 'on_subscription',
           payment_method_types: ['card'],
         },
+        collection_method: 'charge_automatically',
         expand: ['latest_invoice.payment_intent'],
       });
 
@@ -346,19 +347,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!paymentIntent && invoice) {
         try {
           console.log('No payment intent found, creating one for invoice:', invoice.id);
-          const updatedInvoice = await stripe.invoices.retrieve(invoice.id, {
-            expand: ['payment_intent']
-          });
           
-          if (!updatedInvoice.payment_intent) {
-            // Finalize the invoice to create a payment intent
+          // Check if invoice is already finalized
+          if (invoice.status === 'open') {
             const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id, {
               expand: ['payment_intent']
             });
             paymentIntent = finalizedInvoice.payment_intent;
             console.log('Created payment intent via invoice finalization:', paymentIntent?.id);
           } else {
+            // Invoice is already finalized, try to retrieve payment intent
+            const updatedInvoice = await stripe.invoices.retrieve(invoice.id, {
+              expand: ['payment_intent']
+            });
             paymentIntent = updatedInvoice.payment_intent;
+            
+            // If still no payment intent, create one directly
+            if (!paymentIntent) {
+              console.log('Creating payment intent directly for finalized invoice');
+              const createdPaymentIntent = await stripe.paymentIntents.create({
+                amount: invoice.amount_due,
+                currency: invoice.currency,
+                customer: customerId,
+                metadata: {
+                  invoice_id: invoice.id,
+                  subscription_id: subscription.id
+                }
+              });
+              paymentIntent = createdPaymentIntent;
+              console.log('Created direct payment intent:', paymentIntent.id);
+            }
           }
         } catch (err: any) {
           console.error('Error creating payment intent:', err);
