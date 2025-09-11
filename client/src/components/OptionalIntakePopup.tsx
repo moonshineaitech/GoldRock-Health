@@ -122,6 +122,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
   const [formData, setFormData] = useState<OptionalIntakeData>({});
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
+  const [dataConsent, setDataConsent] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -133,6 +134,16 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
   };
 
   const handleFileSelection = (files: FileList | File[]) => {
+    // Check for data consent first
+    if (!dataConsent) {
+      toast({
+        title: "Data processing consent required",
+        description: "Please check the consent box to confirm you understand how your data will be processed before uploading files.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const fileArray = Array.from(files);
     
     // Validate file types
@@ -360,6 +371,28 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                       ))}
                     </div>
                   )}
+
+                  {/* Data Consent Checkbox */}
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="data-consent-checkbox"
+                        checked={dataConsent}
+                        onChange={(e) => setDataConsent(e.target.checked)}
+                        className="mt-1 w-4 h-4 text-blue-600 bg-white border-2 border-blue-300 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-blue-600"
+                        data-testid="data-consent-checkbox"
+                      />
+                      <div className="flex-1">
+                        <label htmlFor="data-consent-checkbox" className="text-sm font-medium text-blue-900 dark:text-blue-100 cursor-pointer">
+                          I understand my data processing
+                        </label>
+                        <p className="text-xs text-blue-700 dark:text-blue-200 mt-1 leading-relaxed">
+                          I understand that my uploaded medical bill images will be processed by AI systems (including OpenAI) to analyze and identify potential billing errors, overcharges, and savings opportunities. My data will be handled securely and retained for 30 days maximum.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
                   <input
                     ref={fileInputRef}

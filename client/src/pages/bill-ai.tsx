@@ -2022,6 +2022,11 @@ What would you like to do first? I'm here to help you find every possible saving
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Drop Medical Bills Here</h3>
                   <p className="text-sm text-gray-600">Drop up to 5 medical bill images for instant AI analysis</p>
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-xs text-blue-800 text-center">
+                      <strong>Data Processing Notice:</strong> Your uploaded images will be processed by AI systems (including OpenAI) for analysis. Data is retained for 30 days maximum.
+                    </p>
+                  </div>
                 </div>
                 <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
                   <span>JPG</span>

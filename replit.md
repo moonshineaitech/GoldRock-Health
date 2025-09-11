@@ -33,10 +33,8 @@ Preferred communication style: Simple, everyday language.
 - **Platform Statistics**: Real-time analytics for case completion rates and user engagement
 
 ### Voice and AI Integration
-- **Text-to-Speech**: ElevenLabs API integration for realistic patient voice synthesis with configurable voice profiles
-- **Speech Recognition**: Browser-native Web Speech API with enhanced medical terminology support
-- **Voice Caching**: Client-side audio caching system for improved performance
-- **Multi-modal Interface**: Seamless switching between voice and text interactions
+- **Voice Processing**: Disabled for compliance and data privacy requirements
+- **Text-Based Interface**: Pure text interaction for optimal security and privacy
 
 ### Data Management
 - **Case Initialization**: Automated seeding of 60+ medical cases across 19 specialties on startup
@@ -48,7 +46,6 @@ Preferred communication style: Simple, everyday language.
 
 ### Cloud Services
 - **Neon Database**: Serverless PostgreSQL hosting with connection pooling
-- **ElevenLabs API**: Professional text-to-speech voice synthesis service
 
 ### UI and Component Libraries
 - **Radix UI**: Accessible headless components for complex UI elements (dialogs, dropdowns, etc.)

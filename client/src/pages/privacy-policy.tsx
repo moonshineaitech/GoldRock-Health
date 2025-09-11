@@ -65,7 +65,6 @@ export default function PrivacyPolicy() {
             <p className="mb-4">We share information with trusted service providers who help us operate our platform:</p>
             <ul className="list-disc pl-6 mb-4">
               <li><strong>OpenAI:</strong> AI analysis of your medical bills and chat conversations</li>
-              <li><strong>ElevenLabs:</strong> Text-to-speech services for voice outputs</li>
               <li><strong>Stripe:</strong> Payment processing (financial information only)</li>
               <li><strong>Hosting Providers:</strong> Secure cloud infrastructure for our platform</li>
             </ul>
@@ -103,8 +102,8 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li><strong>Account Data:</strong> Until you delete your account</li>
-              <li><strong>Medical Bills & Analysis:</strong> 90 days by default, or until you request deletion</li>
-              <li><strong>Chat Messages:</strong> 90 days by default, or until you request deletion</li>
+              <li><strong>Medical Bills & Analysis:</strong> 30 days by default, or until you request deletion</li>
+              <li><strong>Chat Messages:</strong> 30 days by default, or until you request deletion</li>
               <li><strong>Usage Analytics:</strong> Aggregated data retained for service improvement</li>
             </ul>
 

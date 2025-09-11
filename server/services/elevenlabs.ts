@@ -31,76 +31,14 @@ export class ElevenLabsService {
   }): Promise<VoiceSynthesisResponse> {
     const { text } = options;
     
-    // Check cache first to avoid unnecessary API calls
-    const cachedAudio = await voiceCacheService.getCachedAudio(text, patientProfile);
-    if (cachedAudio) {
-      return {
-        audioUrl: cachedAudio.audioUrl,
-        audioBuffer: cachedAudio.audioBuffer,
-      };
-    }
-
-    if (!this.apiKey) {
-      console.warn('ElevenLabs API key not configured, returning mock response');
-      // Return a mock response when API key is not available
-      const mockBuffer = Buffer.from('mock-audio-data');
-      const cacheEntry = await voiceCacheService.storeAudio(text, mockBuffer, patientProfile);
-      return {
-        audioUrl: cacheEntry.audioUrl,
-        audioBuffer: mockBuffer,
-      };
-    }
-
-    const {
-      voiceId = 'pNInz6obpgDQGcFmaJgB', // Default professional voice
-      stability = 0.5,
-      similarityBoost = 0.75,
-      modelId = 'eleven_monolingual_v1'
-    } = options;
-
-    try {
-      console.log(`Generating new voice audio for: "${text.substring(0, 50)}..."`);
-      
-      const response = await fetch(`${this.baseUrl}/text-to-speech/${voiceId}`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'audio/mpeg',
-          'Content-Type': 'application/json',
-          'xi-api-key': this.apiKey,
-        },
-        body: JSON.stringify({
-          text,
-          model_id: modelId,
-          voice_settings: {
-            stability,
-            similarity_boost: similarityBoost,
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`ElevenLabs API error: ${response.status} ${response.statusText}`);
-      }
-
-      const audioBuffer = Buffer.from(await response.arrayBuffer());
-      
-      // Store in cache for future use
-      const cacheEntry = await voiceCacheService.storeAudio(text, audioBuffer, patientProfile);
-      
-      return {
-        audioUrl: cacheEntry.audioUrl,
-        audioBuffer: cacheEntry.audioBuffer,
-      };
-    } catch (error) {
-      console.error('Error synthesizing speech:', error);
-      // Store a mock response in cache to avoid repeated failures
-      const mockBuffer = Buffer.from('error-mock-audio-data');
-      const cacheEntry = await voiceCacheService.storeAudio(text, mockBuffer, patientProfile);
-      return {
-        audioUrl: cacheEntry.audioUrl,
-        audioBuffer: mockBuffer,
-      };
-    }
+    // VOICE PROCESSING DISABLED - Always return mock response
+    console.log('Voice synthesis disabled - returning mock response');
+    const mockBuffer = Buffer.from('mock-audio-data');
+    const cacheEntry = await voiceCacheService.storeAudio(text, mockBuffer, patientProfile);
+    return {
+      audioUrl: cacheEntry.audioUrl,
+      audioBuffer: mockBuffer,
+    };
   }
 
   async getAvailableVoices() {
@@ -143,34 +81,14 @@ export class ElevenLabsService {
     gender: string;
     condition?: string;
   }): Promise<VoiceSynthesisResponse> {
-    const voices = this.getPatientVoices();
-    let voiceId = voices.maleAdult;
-
-    // Select appropriate voice based on patient profile
-    if (patientProfile.age < 18) {
-      voiceId = voices.pediatric;
-    } else if (patientProfile.age > 65) {
-      voiceId = patientProfile.gender === 'Female' ? voices.femaleElderly : voices.maleElderly;
-    } else {
-      voiceId = patientProfile.gender === 'Female' ? voices.femaleAdult : voices.maleAdult;
-    }
-
-    // Adjust voice settings based on medical condition
-    let stability = 0.5;
-    let similarityBoost = 0.75;
-
-    if (patientProfile.condition?.toLowerCase().includes('anxiety')) {
-      stability = 0.3; // More variation for anxious speech
-    } else if (patientProfile.condition?.toLowerCase().includes('pain')) {
-      stability = 0.4; // Slightly strained voice
-    }
-
-    return this.synthesizeText({
-      text,
-      voiceId,
-      stability,
-      similarityBoost,
-    }, patientProfile);
+    // VOICE PROCESSING DISABLED - Always return mock response
+    console.log('Patient voice synthesis disabled - returning mock response');
+    const mockBuffer = Buffer.from('mock-patient-audio-data');
+    const cacheEntry = await voiceCacheService.storeAudio(text, mockBuffer, patientProfile);
+    return {
+      audioUrl: cacheEntry.audioUrl,
+      audioBuffer: mockBuffer,
+    };
   }
 }
 
