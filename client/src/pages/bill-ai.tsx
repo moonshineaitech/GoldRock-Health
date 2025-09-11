@@ -1520,7 +1520,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
   return (
     <MobileLayout title="Bill AI" showBottomNav={true}>
-      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 lg:max-w-none xl:max-w-7xl 2xl:max-w-none xl:mx-auto">
+      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50">
         
         {/* Enhanced Header with Navigation */}
         <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200/30">

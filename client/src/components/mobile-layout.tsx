@@ -57,7 +57,7 @@ export function MobileLayout({
         }}
       >
         <SafeAreaProvider>
-          <div className="max-w-md mx-auto space-y-4">
+          <div className="max-w-md mx-auto lg:max-w-none lg:mx-0 space-y-4">
             {children}
           </div>
         </SafeAreaProvider>
