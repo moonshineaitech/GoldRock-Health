@@ -129,24 +129,24 @@ const revenueCycleData = {
       icon: Target,
       insights: [
         {
-          title: "End-of-Fiscal-Year Desperation",
-          detail: "Most hospitals operate on fiscal years ending December 31st or March 31st. In the final quarter, they need to show revenue recognition to meet budget projections for board reporting.",
-          actionable: "Time major negotiations for October-December or January-March. Hospitals will accept 40-60% settlements to close revenue gaps."
+          stage: "End-of-Fiscal-Year Desperation",
+          description: "Most hospitals operate on fiscal years ending December 31st or March 31st. In the final quarter, they need to show revenue recognition to meet budget projections for board reporting.",
+          leverage: "Time major negotiations for October-December or January-March. Hospitals will accept 40-60% settlements to close revenue gaps."
         },
         {
-          title: "Monthly Collection Quotas",
-          detail: "Revenue cycle staff have monthly collection targets. The last week of each month, they have authority to make deals to hit quotas.",
-          actionable: "Schedule payment negotiations for the 25th-31st of any month when staff are most motivated to close deals."
+          stage: "Monthly Collection Quotas", 
+          description: "Revenue cycle staff have monthly collection targets. The last week of each month, they have authority to make deals to hit quotas.",
+          leverage: "Schedule payment negotiations for the 25th-31st of any month when staff are most motivated to close deals."
         },
         {
-          title: "Charity Care Budget Allocation",
-          detail: "Nonprofit hospitals must spend a minimum amount on charity care annually to maintain tax-exempt status. They often have unspent budgets.",
-          actionable: "Apply for charity care in Q4 when hospitals need to hit their annual charity care spending requirements."
+          stage: "Charity Care Budget Allocation",
+          description: "Nonprofit hospitals must spend a minimum amount on charity care annually to maintain tax-exempt status. They often have unspent budgets.",
+          leverage: "Apply for charity care in Q4 when hospitals need to hit their annual charity care spending requirements."
         },
         {
-          title: "Bad Debt Write-Off Thresholds",
-          detail: "Hospitals have accounting thresholds (often $500-1000) below which they automatically write off debts rather than pursue collections.",
-          actionable: "For smaller bills, simply request a 'financial hardship write-off' - many will approve without documentation."
+          stage: "Bad Debt Write-Off Thresholds",
+          description: "Hospitals have accounting thresholds (often $500-1000) below which they automatically write off debts rather than pursue collections.",
+          leverage: "For smaller bills, simply request a 'financial hardship write-off' - many will approve without documentation."
         }
       ]
     }
@@ -590,7 +590,9 @@ const stateRegulations = {
             "Hospitals must offer payment plans of at least 24 months"
           ],
           keyLaw: "California Hospital Fair Pricing Act",
-          leverage: "Reference specific income thresholds and Medicare rate requirements. California law is among the strongest nationally."
+          leverage: "Reference specific income thresholds and Medicare rate requirements. California law is among the strongest nationally.",
+          gaps: [],
+          strategy: "Reference specific income thresholds and Medicare rate requirements. California law is among the strongest nationally."
         },
         {
           state: "New York", 
@@ -601,7 +603,9 @@ const stateRegulations = {
             "Required financial assistance screening before collections"
           ],
           keyLaw: "New York Hospital Financial Assistance Law",
-          leverage: "Demand financial assistance screening and sliding scale evaluation even if you think you don't qualify."
+          leverage: "Demand financial assistance screening and sliding scale evaluation even if you think you don't qualify.",
+          gaps: [],
+          strategy: "Demand financial assistance screening and sliding scale evaluation even if you think you don't qualify."
         },
         {
           state: "Illinois",
@@ -612,7 +616,9 @@ const stateRegulations = {
             "Required community benefit spending"
           ],
           keyLaw: "Illinois Hospital Uninsured Patient Discount Act",
-          leverage: "Use the 4% of income rule to establish affordable payment plans. Challenge any garnishment threats for smaller debts."
+          leverage: "Use the 4% of income rule to establish affordable payment plans. Challenge any garnishment threats for smaller debts.",
+          gaps: [],
+          strategy: "Use the 4% of income rule to establish affordable payment plans. Challenge any garnishment threats for smaller debts."
         }
       ]
     },
@@ -628,6 +634,8 @@ const stateRegulations = {
             "Payment plan requirements for financial hardship",
             "Prohibition on liens against primary residences under $5,000"
           ],
+          keyLaw: "",
+          leverage: "Focus on federal requirements and nonprofit tax obligations since state law is weaker.",
           gaps: ["No specific income thresholds", "Limited enforcement mechanisms"],
           strategy: "Focus on federal requirements and nonprofit tax obligations since state law is weaker."
         },
@@ -639,6 +647,8 @@ const stateRegulations = {
             "Payment plan availability",
             "Price transparency requirements"
           ],
+          keyLaw: "",
+          leverage: "Leverage IRS nonprofit requirements and price transparency laws for negotiation.",
           gaps: ["Weak enforcement", "No specific discount percentages"],
           strategy: "Leverage IRS nonprofit requirements and price transparency laws for negotiation."
         }
@@ -756,19 +766,19 @@ const insiderTips = {
       icon: Handshake,
       strategies: [
         {
-          strategy: "Multiple Settlement Offers",
-          technique: "Present 3 options: low immediate payment, medium 30-day payment, higher 6-month plan",
-          psychology: "Gives staff options to choose from rather than just accept/reject one offer"
+          document: "Multiple Settlement Offers",
+          purpose: "Gives staff options to choose from rather than just accept/reject one offer",
+          technique: "Present 3 options: low immediate payment, medium 30-day payment, higher 6-month plan"
         },
         {
-          strategy: "Charity Care + Settlement Hybrid",
-          technique: "Apply for charity care but offer immediate settlement during review period",
-          advantage: "Creates urgency while showing financial need documentation"
+          document: "Charity Care + Settlement Hybrid",
+          purpose: "Creates urgency while showing financial need documentation",
+          technique: "Apply for charity care but offer immediate settlement during review period"
         },
         {
-          strategy: "Professional Third-Party Reference",
-          technique: "Mention consulting with medical billing advocate or attorney (even if you haven't)",
-          impact: "Elevates your perceived sophistication and gets better offers"
+          document: "Professional Third-Party Reference", 
+          purpose: "Elevates your perceived sophistication and gets better offers",
+          technique: "Mention consulting with medical billing advocate or attorney (even if you haven't)"
         }
       ]
     }
@@ -995,8 +1005,8 @@ export default function IndustryInsights() {
                                 
                                 {subsection.content && subsection.content.map((item, itemIndex) => (
                                   <div key={itemIndex} className="bg-white/60 rounded-lg p-4 border border-gray-200">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{item.stage || item.title}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{item.description || item.detail}</p>
+                                    <h4 className="font-semibold text-gray-900 mb-2">{item.stage}</h4>
+                                    <p className="text-sm text-gray-700 mb-3">{item.description}</p>
                                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
                                       <div className="flex items-start space-x-2">
                                         <Lightbulb className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -1011,7 +1021,7 @@ export default function IndustryInsights() {
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
                                         <div>
                                           <span className="text-sm font-medium text-emerald-800">Your Leverage: </span>
-                                          <span className="text-sm text-emerald-700">{item.leverage || item.actionable}</span>
+                                          <span className="text-sm text-emerald-700">{item.leverage}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -1020,14 +1030,14 @@ export default function IndustryInsights() {
 
                                 {subsection.insights && subsection.insights.map((insight, insightIndex) => (
                                   <div key={insightIndex} className="bg-white/60 rounded-lg p-4 border border-gray-200">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{insight.title}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{insight.detail}</p>
+                                    <h4 className="font-semibold text-gray-900 mb-2">{insight.stage}</h4>
+                                    <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
                                         <div>
                                           <span className="text-sm font-medium text-emerald-800">Action: </span>
-                                          <span className="text-sm text-emerald-700">{insight.actionable}</span>
+                                          <span className="text-sm text-emerald-700">{insight.leverage}</span>
                                         </div>
                                       </div>
                                     </div>

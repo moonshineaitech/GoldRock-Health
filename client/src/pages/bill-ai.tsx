@@ -160,12 +160,12 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       {/* Header */}
       <div className="text-center space-y-3 lg:space-y-6 xl:space-y-8">
         <div className="flex items-center justify-center gap-3 lg:gap-4">
-          <div className="w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16 bg-gradient-to-br from-emerald-100 via-teal-100 to-blue-200 rounded-2xl flex items-center justify-center shadow-lg">
             <Brain className="h-5 w-5 lg:h-7 lg:w-7 xl:h-8 xl:w-8 text-white" />
           </div>
           <div>
             <h1 className="text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900">Medical Bill AI</h1>
-            <Badge className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs lg:text-sm xl:text-base">
+            <Badge className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-xs lg:text-sm xl:text-base">
               <Shield className="h-3 w-3 lg:h-4 lg:w-4 mr-1" />
               Exceeds HIPAA Standards
             </Badge>
@@ -343,7 +343,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               <div className="flex items-center gap-2 mb-2">
                 <Shield className="h-4 w-4 text-purple-600" />
                 <span className="text-sm font-bold text-purple-800">Hospital Industry Insider Secrets</span>
-                <Badge className="bg-purple-600 text-white text-xs">
+                <Badge className="bg-purple-100 text-purple-800 text-xs">
                   <Lock className="h-3 w-3 mr-1" />
                   Premium Only
                 </Badge>
@@ -375,7 +375,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               <div className="flex items-center gap-2 mb-2">
                 <Brain className="h-4 w-4 text-emerald-600" />
                 <span className="text-sm font-bold text-emerald-800">Medical Coding Intelligence</span>
-                <Badge className="bg-emerald-600 text-white text-xs">
+                <Badge className="bg-emerald-100 text-emerald-800 text-xs">
                   <Crown className="h-3 w-3 mr-1" />
                   Expert Level
                 </Badge>
@@ -407,7 +407,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               <div className="flex items-center gap-2 mb-2">
                 <HeartHandshake className="h-4 w-4 text-pink-600" />
                 <span className="text-sm font-bold text-pink-800">Financial Hardship Mastery</span>
-                <Badge className="bg-pink-600 text-white text-xs">
+                <Badge className="bg-pink-100 text-pink-800 text-xs">
                   <Star className="h-3 w-3 mr-1" />
                   Professional Tools
                 </Badge>
@@ -499,7 +499,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               <div className="flex items-center gap-2 mb-2">
                 <Database className="h-4 w-4 text-blue-600" />
                 <span className="text-sm font-bold text-blue-800">Premium Insight Databases</span>
-                <Badge className="bg-blue-600 text-white text-xs">
+                <Badge className="bg-blue-100 text-blue-800 text-xs">
                   <Crown className="h-3 w-3 mr-1" />
                   Exclusive Intelligence
                 </Badge>
@@ -611,7 +611,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <div className="flex items-center gap-2 mb-2">
                   <Crown className="h-4 w-4 text-amber-600" />
                   <span className="text-sm font-bold text-amber-800">Unlock Premium Intelligence Tools</span>
-                  <Badge className="bg-amber-600 text-white text-xs">
+                  <Badge className="bg-amber-100 text-amber-800 text-xs">
                     <Lock className="h-3 w-3 mr-1" />
                     Premium Only
                   </Badge>
@@ -628,7 +628,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <div>• Automated Analysis Tools</div>
                 </div>
                 <Link href="/premium" className="w-full">
-                  <Button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg" size="sm">
+                  <Button className="w-full bg-gradient-to-r from-amber-100 to-orange-100 hover:from-amber-200 hover:to-orange-200 text-amber-800 shadow-lg" size="sm">
                     <Crown className="h-4 w-4 mr-2" />
                     Unlock All Premium Tools - Save $10K+
                     <ArrowRight className="h-4 w-4 ml-2" />
@@ -851,7 +851,7 @@ const WorkflowCard = ({ workflow, onClick }: {
                 </div>
                 <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
                 <Link href="/premium#plans">
-                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600" onClick={() => setShowPreview(false)}>
+                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-100 to-amber-100 hover:from-orange-200 hover:to-amber-200 text-orange-800" onClick={() => setShowPreview(false)}>
                     <Crown className="h-4 w-4 mr-2" />
                     Upgrade to Premium
                   </Button>
@@ -982,7 +982,7 @@ const WorkflowListItem = ({ workflow, onClick }: {
                 </div>
                 <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
                 <Link href="/premium#plans">
-                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600" onClick={() => setShowQuickPreview(false)}>
+                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-100 to-amber-100 hover:from-orange-200 hover:to-amber-200 text-orange-800" onClick={() => setShowQuickPreview(false)}>
                     <Crown className="h-4 w-4 mr-2" />
                     Upgrade Now
                   </Button>
@@ -1707,7 +1707,7 @@ What would you like to do first? I'm here to help you find every possible saving
                   transition={{ delay: 0.3 }}
                   className="space-y-4"
                 >
-                  <div className="w-16 h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
+                  <div className="w-16 h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-100 via-teal-100 to-blue-200 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
                     <Brain className="h-8 w-8 lg:h-12 lg:w-12 text-white" />
                   </div>
                   <div>
@@ -1766,13 +1766,13 @@ What would you like to do first? I'm here to help you find every possible saving
               >
                 <div className={`max-w-[80%] group ${
                   message.role === "user" 
-                    ? "bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 text-white rounded-3xl rounded-br-lg shadow-lg shadow-emerald-500/25 dark:shadow-emerald-600/20" 
+                    ? "bg-gradient-to-br from-emerald-100 via-emerald-200 to-teal-200 text-emerald-800 rounded-3xl rounded-br-lg shadow-lg shadow-emerald-200/25" 
                     : "bg-white/95 backdrop-blur-sm border border-gray-200/50 text-gray-900 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30"
                 } px-5 py-4 relative`}>
                   {message.role === "assistant" && (
                     <div className="flex items-center space-x-2.5 mb-3">
-                      <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-sm">
-                        <Bot className="h-4 w-4 text-white" />
+                      <div className="w-7 h-7 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-sm">
+                        <Bot className="h-4 w-4 text-emerald-700" />
                       </div>
                       <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 tracking-tight">Medical Bill Expert</span>
                     </div>
@@ -1891,8 +1891,8 @@ What would you like to do first? I'm here to help you find every possible saving
               >
                 <div className="bg-white/95 backdrop-blur-sm border border-gray-200/50 text-gray-900 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30 px-5 py-4 max-w-[80%]">
                   <div className="flex items-center space-x-2.5 mb-3">
-                    <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-sm">
-                      <Bot className="h-4 w-4 text-white" />
+                    <div className="w-7 h-7 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-sm">
+                      <Bot className="h-4 w-4 text-emerald-700" />
                     </div>
                     <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 tracking-tight">Medical Bill Expert</span>
                   </div>
@@ -2020,8 +2020,8 @@ What would you like to do first? I'm here to help you find every possible saving
               className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl border-2 border-dashed border-emerald-300"
             >
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto">
-                  <Upload className="h-8 w-8 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-2xl flex items-center justify-center mx-auto">
+                  <Upload className="h-8 w-8 text-emerald-700" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Drop Medical Bills Here</h3>
@@ -2055,8 +2055,8 @@ What would you like to do first? I'm here to help you find every possible saving
               className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl"
             >
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto">
-                  <Loader2 className="h-8 w-8 text-white animate-spin" />
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-2xl flex items-center justify-center mx-auto">
+                  <Loader2 className="h-8 w-8 text-emerald-700 animate-spin" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Processing Medical Bills</h3>
@@ -2064,7 +2064,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-gradient-to-r from-emerald-500 to-teal-600 h-2 rounded-full transition-all duration-300"
+                    className="bg-gradient-to-r from-emerald-200 to-teal-300 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${uploadProgress.total > 0 ? (uploadProgress.current / uploadProgress.total) * 100 : 0}%` }}
                   />
                 </div>

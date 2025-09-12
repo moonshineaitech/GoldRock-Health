@@ -740,12 +740,12 @@ export default function BlitzDemo() {
             className="text-center space-y-3"
           >
             <div className="flex items-center justify-center gap-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-100 via-purple-100 to-indigo-200 rounded-2xl flex items-center justify-center shadow-lg">
                 <Brain className="h-6 w-6 text-white" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Medical Bill AI</h1>
-                <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                <Badge className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800">
                   <Sparkles className="h-3 w-3 mr-1" />
                   BLITZ DEMO
                 </Badge>
@@ -763,10 +763,10 @@ export default function BlitzDemo() {
                 <div key={stage.id} className="flex items-center">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
                     currentStage === stage.id 
-                      ? 'bg-blue-600 text-white' 
+                      ? 'bg-blue-100 text-blue-800' 
                       : index < demoStages.findIndex(s => s.id === currentStage)
-                        ? 'bg-green-500 text-white'
-                        : 'bg-gray-200 text-gray-600'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-500'
                   }`}>
                     {index < demoStages.findIndex(s => s.id === currentStage) ? (
                       <CheckCircle2 className="h-4 w-4" />
@@ -815,7 +815,7 @@ export default function BlitzDemo() {
                     <div className="grid grid-cols-1 gap-4">
                       <Button
                         onClick={() => setCurrentStage('upload')}
-                        className="h-20 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl"
+                        className="h-20 bg-gradient-to-r from-blue-100 to-indigo-100 hover:from-blue-200 hover:to-indigo-200 text-blue-800 rounded-2xl"
                         data-testid="button-upload-bills"
                       >
                         <div className="flex flex-col items-center gap-2">
@@ -1015,7 +1015,7 @@ export default function BlitzDemo() {
                   <Button
                     data-testid="button-start-analysis"
                     onClick={startAnalysis}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3"
+                    className="flex-1 bg-gradient-to-r from-blue-100 to-purple-100 hover:from-blue-200 hover:to-purple-200 text-blue-800 font-semibold py-3"
                   >
                     <Brain className="h-4 w-4 mr-2" />
                     {useUploadedData ? 'Analyze Uploaded Bills' : 'Start Demo Analysis'}
@@ -1113,8 +1113,8 @@ export default function BlitzDemo() {
                                 <X className="h-4 w-4" />
                               </Button>
                               {uploadedFile.uploading && (
-                                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center">
-                                  <Loader2 className="h-6 w-6 text-white animate-spin" />
+                                <div className="absolute inset-0 bg-white bg-opacity-90 rounded-xl flex items-center justify-center">
+                                  <Loader2 className="h-6 w-6 text-gray-600 animate-spin" />
                                 </div>
                               )}
                               {uploadedFile.extracted && (
@@ -1166,7 +1166,7 @@ export default function BlitzDemo() {
                   <Button
                     onClick={uploadAndAnalyze}
                     disabled={uploadedFiles.length === 0}
-                    className="h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl font-semibold disabled:from-gray-400 disabled:to-gray-400"
+                    className="h-14 bg-gradient-to-r from-blue-100 to-indigo-100 hover:from-blue-200 hover:to-indigo-200 text-blue-800 rounded-2xl font-semibold disabled:from-gray-200 disabled:to-gray-300"
                     data-testid="button-upload-analyze"
                   >
                     <Brain className="h-5 w-5 mr-2" />
@@ -1188,7 +1188,7 @@ export default function BlitzDemo() {
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center"
+                    className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-200 rounded-full mx-auto mb-6 flex items-center justify-center"
                   >
                     <Brain className="h-8 w-8 text-white" />
                   </motion.div>
@@ -1261,7 +1261,7 @@ export default function BlitzDemo() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: "spring", delay: 0.2 }}
-                      className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mx-auto mb-4 flex items-center justify-center"
+                      className="w-16 h-16 bg-gradient-to-r from-green-100 to-emerald-200 rounded-full mx-auto mb-4 flex items-center justify-center"
                     >
                       <Trophy className="h-8 w-8 text-white" />
                     </motion.div>
@@ -1473,7 +1473,7 @@ export default function BlitzDemo() {
                     <Button
                       data-testid="button-get-premium"
                       onClick={handleUpgrade}
-                      className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold"
+                      className="flex-1 bg-gradient-to-r from-amber-100 to-orange-100 hover:from-amber-200 hover:to-orange-200 text-amber-800 font-semibold"
                     >
                       <Crown className="h-4 w-4 mr-2" />
                       Get Premium Access
