@@ -27,6 +27,12 @@ import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import AiUsageAgreement from "@/pages/ai-usage-agreement";
 import NotFound from "@/pages/not-found";
+import NegotiationCoaching from "@/pages/negotiation-coaching";
+import TimingGuide from "@/pages/timing-guide";
+import DisputeArsenal from "@/pages/dispute-arsenal";
+import ReductionCoach from "@/pages/reduction-coach";
+import CodeMastery from "@/pages/code-mastery";
+import AnalyticsDashboard from "@/pages/analytics-dashboard";
 
 // Define AI-protected routes that require AI agreement
 const AI_PROTECTED_ROUTES = [
@@ -133,7 +139,13 @@ function Router() {
       <Route path="/bill-reduction-guide" component={BillReductionGuide} />
       <Route path="/portal-access-guide" component={PortalAccessGuide} />
       <Route path="/bill-best-practices" component={BillBestPractices} />
+      <Route path="/negotiation-coaching" component={NegotiationCoaching} />
+      <Route path="/reduction-coach" component={ReductionCoach} />
       <Route path="/industry-insights" component={IndustryInsights} />
+      <Route path="/timing-guide" component={TimingGuide} />
+      <Route path="/dispute-arsenal" component={DisputeArsenal} />
+      <Route path="/code-mastery" component={CodeMastery} />
+      <Route path="/analytics-dashboard" component={AnalyticsDashboard} />
       <Route path="/blitz-demo">
         <AIRouteGuard path="/blitz-demo">
           <BlitzDemo />

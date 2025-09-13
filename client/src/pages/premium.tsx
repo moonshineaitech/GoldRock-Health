@@ -289,7 +289,7 @@ const premiumFeatures = [
     description: "Learn hospital-specific tactics and proven scripts that get results",
     highlight: "Insider knowledge",
     category: "billing",
-    href: "/bill-best-practices"
+    href: "/negotiation-coaching"
   },
   {
     icon: Clock,
@@ -297,7 +297,7 @@ const premiumFeatures = [
     description: "Know exactly when to dispute, negotiate, and escalate for maximum success",
     highlight: "Perfect timing",
     category: "billing",
-    href: "/industry-insights"
+    href: "/timing-guide"
   },
   {
     icon: Code,
@@ -305,7 +305,7 @@ const premiumFeatures = [
     description: "Understand CPT codes, modifiers, and common overcharge patterns hospitals use",
     highlight: "Decode the system",
     category: "billing",
-    href: "/industry-insights"
+    href: "/code-mastery"
   },
   {
     icon: UserCheck,
@@ -313,7 +313,7 @@ const premiumFeatures = [
     description: "1-on-1 guidance for complex cases with billing department veterans",
     highlight: "Expert support",
     category: "billing",
-    href: "/bill-best-practices"
+    href: "/reduction-coach"
   },
   {
     icon: FileText,
@@ -321,7 +321,7 @@ const premiumFeatures = [
     description: "Access 50+ proven letter templates that hospitals legally must respond to",
     highlight: "95% success rate",
     category: "billing",
-    href: "/bill-best-practices"
+    href: "/dispute-arsenal"
   },
   {
     icon: Brain,
@@ -337,7 +337,7 @@ const premiumFeatures = [
     description: "Track your bill reductions and medical knowledge growth over time",
     highlight: "Dual insights",
     category: "both",
-    href: "/progress"
+    href: "/analytics-dashboard"
   }
 ];
 
@@ -2181,18 +2181,18 @@ function PremiumDashboard() {
             </MobileButton>
           </Link>
           
-          <Link href="/bill-best-practices">
+          <Link href="/negotiation-coaching">
             <MobileButton className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-lg" size="lg">
-              <Target className="h-5 w-5 mr-2" />
-              Bill Best Practices
+              <MessageCircle className="h-5 w-5 mr-2" />
+              Expert Negotiation Coaching
               <ArrowRight className="h-4 w-4 ml-2" />
             </MobileButton>
           </Link>
           
-          <Link href="/industry-insights">
+          <Link href="/timing-guide">
             <MobileButton className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-lg" size="lg">
-              <Search className="h-5 w-5 mr-2" />
-              Industry Insights
+              <Clock className="h-5 w-5 mr-2" />
+              Strategic Timing Guide
               <ArrowRight className="h-4 w-4 ml-2" />
             </MobileButton>
           </Link>
@@ -2201,6 +2201,14 @@ function PremiumDashboard() {
             <MobileButton className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg" size="lg">
               <Stethoscope className="h-5 w-5 mr-2" />
               Medical Training
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </MobileButton>
+          </Link>
+          
+          <Link href="/analytics-dashboard">
+            <MobileButton className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-lg" size="lg">
+              <BarChart3 className="h-5 w-5 mr-2" />
+              Savings Analytics
               <ArrowRight className="h-4 w-4 ml-2" />
             </MobileButton>
           </Link>
@@ -2222,7 +2230,7 @@ function PremiumDashboard() {
           <p className="text-xs text-green-600 mt-1">Next billing: January 15, 2025</p>
         </MobileCard>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

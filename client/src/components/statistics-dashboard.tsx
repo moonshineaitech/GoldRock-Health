@@ -2,8 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Users, Clock, Target, FileText } from "lucide-react";
 
+interface StatsData {
+  totalCases?: number;
+  activeStudents?: number;
+  totalHours?: number;
+  avgAccuracy?: string;
+}
+
 export function StatisticsDashboard() {
-  const { data: stats } = useQuery({
+  const { data: stats } = useQuery<StatsData>({
     queryKey: ["/api/stats"],
     refetchInterval: 30000, // Update every 30 seconds
   });
