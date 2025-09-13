@@ -525,7 +525,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <Button
                   onClick={() => setShowHospitalBillsDatabase(!showHospitalBillsDatabase)}
                   variant="outline"
-                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 overflow-hidden"
+                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 overflow-hidden"
                   data-testid="hospital-bills-database"
                 >
                   <Building2 className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-blue-600" />
@@ -538,7 +538,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <Button
                   onClick={() => setShowInsuranceClaimsDatabase(!showInsuranceClaimsDatabase)}
                   variant="outline"
-                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 overflow-hidden"
+                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 overflow-hidden"
                   data-testid="insurance-claims-database"
                 >
                   <Shield className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-indigo-600" />
@@ -551,7 +551,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <Button
                   onClick={() => setShowInsuranceDenialsIntelligence(!showInsuranceDenialsIntelligence)}
                   variant="outline"
-                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 overflow-hidden"
+                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 overflow-hidden"
                   data-testid="insurance-denials-intelligence"
                 >
                   <XCircle className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-red-600" />
@@ -564,7 +564,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <Button
                   onClick={() => setShowEmergencyCareBillingDatabase(!showEmergencyCareBillingDatabase)}
                   variant="outline"
-                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 overflow-hidden"
+                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 overflow-hidden"
                   data-testid="emergency-care-billing-database"
                 >
                   <Siren className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-orange-600" />
@@ -577,7 +577,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <Button
                   onClick={() => setShowSpecialtyCareIntelligence(!showSpecialtyCareIntelligence)}
                   variant="outline"
-                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 overflow-hidden"
+                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 overflow-hidden"
                   data-testid="specialty-care-intelligence"
                 >
                   <Stethoscope className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-purple-600" />
@@ -590,7 +590,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 <Button
                   onClick={() => setShowPharmaceuticalDeviceDatabase(!showPharmaceuticalDeviceDatabase)}
                   variant="outline"
-                  className="h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-green-200 hover:shadow-lg transition-all duration-200 hover:border-green-300 hover:bg-green-50/50 overflow-hidden"
+                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-green-200 hover:shadow-lg transition-all duration-200 hover:border-green-300 hover:bg-green-50/50 overflow-hidden"
                   data-testid="pharmaceutical-device-database"
                 >
                   <Pill className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-green-600" />
@@ -646,7 +646,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <Link href="/premium" className="w-full">
                     <Button
                       variant="outline"
-                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 relative"
+                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 relative"
                       data-testid="preview-hospital-bills-database"
                     >
                       <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
@@ -663,7 +663,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <Link href="/premium" className="w-full">
                     <Button
                       variant="outline"
-                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 relative"
+                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 relative"
                       data-testid="preview-insurance-claims-database"
                     >
                       <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
@@ -680,7 +680,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <Link href="/premium" className="w-full">
                     <Button
                       variant="outline"
-                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 relative"
+                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 relative"
                       data-testid="preview-insurance-denials-intelligence"
                     >
                       <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
@@ -697,7 +697,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <Link href="/premium" className="w-full">
                     <Button
                       variant="outline"
-                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 relative"
+                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 relative"
                       data-testid="preview-emergency-care-billing-database"
                     >
                       <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
@@ -714,7 +714,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <Link href="/premium" className="w-full">
                     <Button
                       variant="outline"
-                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-teal-200 hover:shadow-lg transition-all duration-200 hover:border-teal-300 hover:bg-teal-50/50 relative"
+                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-teal-200 hover:shadow-lg transition-all duration-200 hover:border-teal-300 hover:bg-teal-50/50 relative"
                       data-testid="preview-specialty-care-intelligence"
                     >
                       <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
@@ -731,7 +731,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <Link href="/premium" className="w-full">
                     <Button
                       variant="outline"
-                      className="w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 relative"
+                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 relative"
                       data-testid="preview-pharmaceutical-device-database"
                     >
                       <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
@@ -755,7 +755,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
         <Button
           onClick={() => {}}
           variant="outline"
-          className="w-full h-12 rounded-2xl border-gray-200 text-gray-600 hover:text-emerald-600"
+          className="!bg-white w-full h-12 rounded-2xl border-gray-200 text-gray-600 hover:text-emerald-600"
           data-testid="view-all-workflows-full"
         >
           <List className="h-4 w-4 mr-2" />
