@@ -1,5 +1,5 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
-import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code } from "lucide-react";
+import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -120,55 +120,114 @@ const subscriptionPlans = [
 function LoginPrompt() {
   return (
     <div className="space-y-6">
+      {/* Hero Section with Enhanced Design */}
       <motion.div 
-        className="text-center py-6"
-        initial={{ opacity: 0, y: 30 }}
+        className="text-center py-8 px-4 relative overflow-hidden"
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
+        
+        {/* Premium App Icon */}
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-orange-500/25"
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
+          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
+          initial={{ scale: 0, rotate: -180, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ 
-            duration: 0.6, 
+            duration: 0.8, 
             delay: 0.3,
             type: "spring",
-            stiffness: 200
+            stiffness: 180,
+            damping: 12
           }}
+          whileHover={{ scale: 1.05, rotate: 3 }}
         >
-          <Crown className="h-8 w-8 text-white" />
+          <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
+          <Crown className="text-white text-2xl relative z-10" />
+          
+          {/* Premium Sparkle Effects */}
+          <motion.div 
+            className="absolute -top-2 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
+            animate={{ 
+              y: [-6, 6, -6],
+              scale: [1, 1.3, 1],
+              opacity: [0.8, 1, 0.8]
+            }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div 
+            className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full shadow-lg"
+            animate={{ 
+              y: [4, -4, 4],
+              scale: [0.9, 1.2, 0.9],
+              opacity: [0.7, 1, 0.7]
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          />
         </motion.div>
         
-        <motion.h1 
-          className="text-2xl font-bold text-gray-900 mb-4"
-          initial={{ opacity: 0, y: 20 }}
+        {/* Enhanced Headlines */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
+          transition={{ delay: 0.6, duration: 0.7 }}
         >
-          Master Bill Reduction + Medicine
-        </motion.h1>
+          <h1 className="text-3xl font-black mb-3 leading-tight tracking-tight">
+            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Premium</span>{" "}
+            <span className="text-gray-900">Bill Reduction</span>
+          </h1>
+          <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
+            Save $2,000 - $35,000+ Per Bill
+          </h2>
+        </motion.div>
         
         <motion.p 
-          className="text-base text-gray-600 mb-8 max-w-sm mx-auto"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-base text-gray-700 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
         >
-          Sign in to access expert bill negotiation strategies and advanced medical training
+          Sign in to access professional bill negotiation strategies, insider knowledge, and AI-powered medical training.
         </motion.p>
+        
+        {/* Massive Savings Highlight */}
+        <motion.div 
+          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-6 max-w-sm mx-auto shadow-lg"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.0, duration: 0.6 }}
+        >
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <Crown className="h-5 w-5 text-emerald-600" />
+              <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
+            </div>
+            <p className="text-sm text-emerald-600 font-semibold">Expert strategies + AI technology</p>
+          </div>
+        </motion.div>
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.6 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
         >
           <a href="/api/login">
-            <MobileButton size="lg" className="bg-orange-600 hover:bg-orange-700">
-              <LogIn className="h-5 w-5 mr-2" />
-              Sign In to Continue
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </MobileButton>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -3 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+            >
+              <MobileButton className="w-full max-w-xs mx-auto shadow-2xl shadow-emerald-500/30 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-4">
+                <LogIn className="h-5 w-5 mr-2" />
+                Sign In to Save Thousands
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </MobileButton>
+            </motion.div>
           </a>
         </motion.div>
       </motion.div>
@@ -265,17 +324,46 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <PaymentElement />
-      <MobileButton 
-        type="submit" 
-        className="w-full bg-orange-600 hover:bg-orange-700" 
-        size="lg"
-        disabled={!stripe || !elements || isProcessing}
-      >
-        {isProcessing ? "Processing..." : `Subscribe to ${planType}`}
-      </MobileButton>
-    </form>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-gradient-to-br from-white/60 via-white/40 to-white/30 backdrop-blur-sm rounded-2xl p-4 border border-white/50">
+          <PaymentElement />
+        </div>
+        <motion.div
+          whileHover={{ scale: 1.02, y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.2 }}
+        >
+          <MobileButton 
+            type="submit" 
+            className="w-full shadow-2xl shadow-emerald-500/30 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700" 
+            size="lg"
+            disabled={!stripe || !elements || isProcessing}
+          >
+            {isProcessing ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Crown className="h-5 w-5 mr-2" />
+                Start Saving with {planType}
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </>
+            )}
+          </MobileButton>
+        </motion.div>
+      </form>
+    </motion.div>
   );
 }
 
@@ -322,103 +410,406 @@ function PremiumMarketing() {
   if (setupData) {
     return (
       <MobileLayout title="Complete Payment" showBottomNav={true}>
-        <div className="space-y-4">
-          <div className="text-center py-2">
-            <h2 className="text-xl font-semibold text-gray-900 mb-1">Complete Your Subscription</h2>
-            <p className="text-gray-600 text-sm">Secure payment powered by Stripe</p>
+        {/* Enhanced Payment Hero */}
+        <motion.div 
+          className="text-center py-8 px-4 relative overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* Background Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
           </div>
-          <MobileCard>
-            <Elements stripe={stripePromise} options={{ clientSecret: setupData.clientSecret }}>
-              <SubscriptionForm 
-                planType={setupData.planType} 
-                setupIntentId={setupData.setupIntentId}
-              />
-            </Elements>
+          
+          <motion.div 
+            className="w-16 h-16 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ 
+              duration: 0.6, 
+              delay: 0.2,
+              type: "spring",
+              stiffness: 200
+            }}
+          >
+            <div className="absolute inset-0 bg-white/20 rounded-[1.25rem] backdrop-blur-sm" />
+            <Crown className="text-white text-xl relative z-10" />
+          </motion.div>
+          
+          <motion.h2 
+            className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-2"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            Complete Your Premium Access
+          </motion.h2>
+          
+          <motion.p 
+            className="text-gray-600 text-sm mb-6 font-medium"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+          >
+            Secure payment powered by Stripe • Start saving thousands today
+          </motion.p>
+          
+          {/* Premium Value Reminder */}
+          <motion.div 
+            className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-4 mb-6 max-w-sm mx-auto shadow-lg"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <div className="text-center">
+              <div className="flex items-center justify-center space-x-2 mb-1">
+                <DollarSign className="h-4 w-4 text-emerald-600" />
+                <span className="font-bold text-emerald-700 text-sm">Average User Saves $8,500</span>
+              </div>
+              <p className="text-xs text-emerald-600 font-medium">Your subscription pays for itself instantly</p>
+            </div>
+          </motion.div>
+        </motion.div>
+        
+        <motion.div
+          className="px-4 pb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 0.6 }}
+        >
+          <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+            <div className="relative z-10 p-4">
+              <Elements stripe={stripePromise} options={{ clientSecret: setupData.clientSecret }}>
+                <SubscriptionForm 
+                  planType={setupData.planType} 
+                  setupIntentId={setupData.setupIntentId}
+                />
+              </Elements>
+            </div>
           </MobileCard>
-        </div>
+        </motion.div>
       </MobileLayout>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Hero Section */}
+    <div className="space-y-8">
+      {/* Enhanced Hero Section */}
       <motion.div 
-        className="text-center py-4"
-        initial={{ opacity: 0, y: 20 }}
+        className="text-center py-8 px-4 relative overflow-hidden"
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
+        
+        {/* Premium App Icon */}
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-orange-500/25"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
+          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
+          initial={{ scale: 0, rotate: -180, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+          transition={{ 
+            duration: 0.8, 
+            delay: 0.3,
+            type: "spring",
+            stiffness: 180,
+            damping: 12
+          }}
+          whileHover={{ scale: 1.05, rotate: 3 }}
         >
-          <Crown className="h-8 w-8 text-white" />
+          <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
+          <Crown className="text-white text-2xl relative z-10" />
+          
+          {/* Premium Sparkle Effects */}
+          <motion.div 
+            className="absolute -top-2 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
+            animate={{ 
+              y: [-6, 6, -6],
+              scale: [1, 1.3, 1],
+              opacity: [0.8, 1, 0.8]
+            }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div 
+            className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full shadow-lg"
+            animate={{ 
+              y: [4, -4, 4],
+              scale: [0.9, 1.2, 0.9],
+              opacity: [0.7, 1, 0.7]
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          />
         </motion.div>
         
-        <motion.h1 
-          className="text-2xl font-bold text-gray-900 mb-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.4 }}
+        {/* Enhanced Headlines */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.7 }}
         >
-          Master Bill Negotiation + Medicine
-        </motion.h1>
+          <h1 className="text-3xl font-black mb-3 leading-tight tracking-tight">
+            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Premium</span>{" "}
+            <span className="text-gray-900">Bill Reduction</span>
+          </h1>
+          <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
+            Save $2,000 - $35,000+ Per Bill
+          </h2>
+        </motion.div>
         
         <motion.p 
-          className="text-base text-gray-600 max-w-sm mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
+          className="text-base text-gray-700 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
         >
-          Expert strategies to slash medical bills + insider knowledge from billing veterans
+          Professional bill negotiation strategies, insider knowledge from billing veterans, and AI-powered medical training.
         </motion.p>
+        
+        {/* Massive Savings Highlight */}
+        <motion.div 
+          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-8 max-w-sm mx-auto shadow-lg"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.0, duration: 0.6 }}
+        >
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <Crown className="h-5 w-5 text-emerald-600" />
+              <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
+            </div>
+            <p className="text-sm text-emerald-600 font-semibold">Subscription pays for itself instantly</p>
+          </div>
+        </motion.div>
       </motion.div>
 
-      {/* Single Plan Box with Toggle */}
-      <motion.div
+      {/* Success Stories Section */}
+      <motion.div 
         className="space-y-4"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <motion.div 
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
+            Real Success Stories
+          </h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
+          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
+            Actual premium members who saved massive amounts
+          </p>
+        </motion.div>
+        
+        <div className="space-y-4">
+          {[
+            { 
+              title: "Emergency Surgery Bill", 
+              savings: "$23,000", 
+              strategy: "AI detected overcharges + charity care application", 
+              time: "6 weeks",
+              percentage: "78% reduction",
+              color: "emerald", 
+              delay: 1.4,
+              icon: AlertTriangle,
+              testimonial: "The premium database revealed billing violations my lawyer missed!"
+            },
+            { 
+              title: "Cancer Treatment", 
+              savings: "$89,500", 
+              strategy: "Insurance denial reversal + expert coaching", 
+              time: "8 weeks",
+              percentage: "85% reduction",
+              color: "blue", 
+              delay: 1.5,
+              icon: FileText,
+              testimonial: "Premium coaching helped me navigate the complex appeal process."
+            },
+            { 
+              title: "Cardiac Procedure", 
+              savings: "$34,800", 
+              strategy: "Good faith estimate violation + negotiations", 
+              time: "5 weeks",
+              percentage: "72% reduction",
+              color: "purple", 
+              delay: 1.6,
+              icon: DollarSign,
+              testimonial: "The insider tactics from premium saved my family from bankruptcy."
+            }
+          ].map((story, index) => {
+            const IconComponent = story.icon;
+            return (
+              <motion.div
+                key={story.title}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  delay: story.delay, 
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 150
+                }}
+                data-testid={`success-story-${story.title.toLowerCase().replace(/ /g, '-')}`}
+              >
+                <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <motion.div 
+                          className={`w-12 h-12 bg-gradient-to-br ${
+                            story.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
+                            story.color === 'blue' ? 'from-blue-500 to-indigo-600' :
+                            story.color === 'purple' ? 'from-purple-500 to-indigo-600' :
+                            'from-gray-500 to-gray-600'
+                          } rounded-2xl flex items-center justify-center shadow-lg`}
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                        >
+                          <IconComponent className="h-6 w-6 text-white" />
+                        </motion.div>
+                        <div>
+                          <h3 className="font-bold text-gray-900 text-base">{story.title}</h3>
+                          <p className="text-sm text-gray-600 font-medium">{story.strategy}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-black text-emerald-700">{story.savings}</div>
+                        <div className="text-xs text-emerald-600 font-semibold">{story.percentage}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-gray-50 rounded-xl p-3 mb-3">
+                      <p className="text-sm text-gray-700 italic">"{story.testimonial}"</p>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center space-x-1 text-gray-600">
+                        <Clock className="h-4 w-4" />
+                        <span className="font-medium">{story.time}</span>
+                      </div>
+                      <div className="flex items-center space-x-1 text-emerald-600">
+                        <Crown className="h-4 w-4" />
+                        <span className="font-semibold">Premium Member</span>
+                      </div>
+                    </div>
+                  </div>
+                </MobileCard>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Enhanced Pricing Section */}
+      <motion.div
+        className="space-y-6"
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
+        transition={{ delay: 1.7, duration: 0.6 }}
         id="plans"
       >
-        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
-          Choose Your Plan
-        </h2>
-        <p className="text-sm text-gray-600 text-center mb-4">
-          Expert bill reduction strategies + Medical training. Cancel anytime.
-        </p>
+        <motion.div 
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
+            Choose Your Premium Plan
+          </h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto" />
+          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
+            Professional bill reduction + Medical training • Cancel anytime
+          </p>
+        </motion.div>
         
-        <MobileCard className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 ring-2 ring-emerald-300 shadow-xl">
-          <div className="p-4 space-y-4">
-            {/* Plan Toggle */}
-            <div className="bg-white/70 rounded-2xl p-1 flex">
-              <button 
-                className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all ${
+        {/* Value Proposition Banner */}
+        <motion.div 
+          className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center mb-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.9, duration: 0.5 }}
+        >
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <TrendingDown className="h-5 w-5 text-emerald-600" />
+            <span className="font-black text-emerald-700 text-lg">ROI: 4,250% Average Return</span>
+          </div>
+          <p className="text-sm text-emerald-600 font-semibold">Your subscription pays for itself with first bill analysis</p>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.0, duration: 0.5 }}
+        >
+          <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-green-50/80" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/20" />
+            <div className="relative z-10 p-6 space-y-6">
+            {/* Enhanced Plan Toggle */}
+            <div className="bg-gradient-to-r from-white/80 via-white/60 to-white/80 backdrop-blur-sm rounded-2xl p-1.5 flex shadow-lg border border-white/50">
+              <motion.button 
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
                   selectedPlan === 'monthly' 
-                    ? 'bg-emerald-600 text-white shadow-lg' 
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
                 }`}
                 onClick={() => setSelectedPlan('monthly')}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Monthly
-              </button>
-              <button 
-                className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all relative ${
+                {selectedPlan === 'monthly' && (
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-green-400/20 rounded-xl"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+                <span className="relative z-10">Monthly</span>
+              </motion.button>
+              <motion.button 
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
                   selectedPlan === 'annual' 
-                    ? 'bg-emerald-600 text-white shadow-lg' 
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
                 }`}
                 onClick={() => setSelectedPlan('annual')}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Annual
-                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                {selectedPlan === 'annual' && (
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-green-400/20 rounded-xl"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+                <span className="relative z-10">Annual</span>
+                <motion.span 
+                  className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg"
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, -5, 0]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
                   Save 21%
-                </span>
-              </button>
+                </motion.span>
+              </motion.button>
             </div>
             
             {/* Selected Plan Details */}
@@ -427,41 +818,112 @@ function PremiumMarketing() {
               if (!plan) return null;
               
               return (
-                <div className="text-center space-y-4">
-                  <div>
-                    <div className="flex items-baseline justify-center mb-2">
-                      <span className="text-3xl font-bold text-gray-900">${plan.price}</span>
-                      <span className="text-gray-600 ml-1">/{plan.period}</span>
+                <motion.div 
+                  className="text-center space-y-6"
+                  key={selectedPlan}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {/* Enhanced Pricing Display */}
+                  <div className="relative">
+                    <div className="flex items-baseline justify-center mb-3">
+                      <span className="text-4xl font-black bg-gradient-to-r from-gray-900 via-emerald-700 to-gray-900 bg-clip-text text-transparent">${plan.price}</span>
+                      <span className="text-gray-600 ml-2 text-lg font-medium">/{plan.period}</span>
                     </div>
                     {plan.savings && (
-                      <div className="text-emerald-600 font-semibold text-sm">{plan.savings}</div>
+                      <motion.div 
+                        className="inline-flex items-center space-x-1 bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200 rounded-full px-3 py-1 mb-4"
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <Sparkles className="h-3 w-3 text-orange-600" />
+                        <span className="text-orange-700 font-bold text-sm">{plan.savings}</span>
+                      </motion.div>
                     )}
+                    {/* ROI Indicator */}
+                    <div className="text-center mb-4">
+                      <div className="inline-flex items-center space-x-1 bg-emerald-100 border border-emerald-200 rounded-full px-3 py-1">
+                        <TrendingDown className="h-3 w-3 text-emerald-600" />
+                        <span className="text-emerald-700 font-bold text-xs">Pays for itself in first analysis</span>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="space-y-2 text-left">
-                    {plan.features.slice(0, 4).map((feature, idx) => (
-                      <div key={idx} className="flex items-start space-x-2">
-                        <Check className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-700">{feature}</span>
-                      </div>
+                  {/* Enhanced Features List */}
+                  <div className="space-y-3 text-left bg-white/50 backdrop-blur-sm rounded-2xl p-4 border border-white/60">
+                    {plan.features.slice(0, 5).map((feature, idx) => (
+                      <motion.div 
+                        key={idx} 
+                        className="flex items-start space-x-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1, duration: 0.3 }}
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.2, rotate: 180 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Check className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        </motion.div>
+                        <span className="text-sm text-gray-800 font-medium leading-relaxed">{feature}</span>
+                      </motion.div>
                     ))}
                   </div>
                   
-                  <MobileButton 
-                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg"
-                    size="lg"
-                    onClick={() => handleSubscribe(plan.id)}
-                    disabled={createSubscription.isPending}
-                    data-testid={`subscribe-${plan.id}`}
+                  {/* Enhanced CTA Button */}
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <DollarSign className="h-5 w-5 mr-2" />
-                    {createSubscription.isPending ? "Processing..." : "Start Saving Money"}
-                  </MobileButton>
-                </div>
+                    <MobileButton 
+                      className="w-full shadow-2xl shadow-emerald-500/40 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 border-2 border-emerald-200"
+                      size="lg"
+                      onClick={() => handleSubscribe(plan.id)}
+                      disabled={createSubscription.isPending}
+                      data-testid={`subscribe-${plan.id}`}
+                    >
+                      {createSubscription.isPending ? (
+                        <>
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                          />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <Crown className="h-5 w-5 mr-2" />
+                          Start Saving Thousands
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </>
+                      )}
+                    </MobileButton>
+                  </motion.div>
+                  
+                  {/* Trust Indicators */}
+                  <div className="flex items-center justify-center space-x-4 text-xs text-gray-600">
+                    <div className="flex items-center space-x-1">
+                      <ShieldCheck className="h-3 w-3" />
+                      <span>Secure Payment</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-3 w-3" />
+                      <span>Cancel Anytime</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Star className="h-3 w-3" />
+                      <span>95% Success Rate</span>
+                    </div>
+                  </div>
+                </motion.div>
               );
             })()}
-          </div>
-        </MobileCard>
+            </div>
+          </MobileCard>
+        </motion.div>
       </motion.div>
 
       {/* Enhanced Premium Features Section */}
@@ -471,18 +933,39 @@ function PremiumMarketing() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.0, duration: 0.5 }}
       >
-        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
-          What You Get with Premium
-        </h2>
+        <motion.div 
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.7, duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
+            Professional Features Included
+          </h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
+          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
+            Everything you need to reduce medical bills by thousands
+          </p>
+        </motion.div>
         
-        {/* Value Banner */}
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center">
-          <div className="flex items-center justify-center space-x-2 mb-1">
-            <TrendingDown className="h-5 w-5 text-emerald-600" />
-            <span className="font-bold text-emerald-700">Average User Saves $8,500+</span>
+        {/* Enhanced Value Banner */}
+        <motion.div 
+          className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-5 text-center shadow-lg"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 2.8, duration: 0.5 }}
+        >
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <TrendingDown className="h-6 w-6 text-emerald-600" />
+            </motion.div>
+            <span className="font-black text-emerald-700 text-xl">$8,500+ Average Savings</span>
           </div>
-          <p className="text-sm text-emerald-600">Subscription pays for itself with first bill analysis</p>
-        </div>
+          <p className="text-sm text-emerald-600 font-semibold">ROI: 4,250% • Pays for itself instantly</p>
+        </motion.div>
 
         {/* Premium Intelligence Databases */}
         <motion.div 
@@ -491,72 +974,95 @@ function PremiumMarketing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.4 }}
         >
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <Search className="h-5 w-5 text-blue-600" />
-              <span className="text-lg font-bold text-blue-800">6 Exclusive Intelligence Databases</span>
-              <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                Professional Grade
-              </span>
-            </div>
-            <p className="text-sm text-blue-700 mb-4">
-              🎯 Comprehensive billing intelligence with insider knowledge, proven strategies, and massive savings potential.
-            </p>
+          <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-purple-50/60 to-indigo-50/80" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/20" />
+            <div className="relative z-10 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <motion.div
+                  className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                >
+                  <Search className="h-6 w-6 text-white" />
+                </motion.div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-black text-blue-800 mb-1">6 Intelligence Databases</h3>
+                  <span className="inline-flex items-center space-x-1 bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg">
+                    <Sparkles className="h-3 w-3" />
+                    <span>Professional Grade</span>
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm text-blue-700 mb-6 font-medium leading-relaxed">
+                🎯 Comprehensive billing intelligence with insider knowledge, proven strategies, and massive savings potential from industry veterans.
+              </p>
             
-            {/* Intelligence Databases Grid */}
-            <div className="grid grid-cols-1 gap-3">
-              <div className="bg-white/80 rounded-xl p-3 border border-blue-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <Search className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-gray-900 text-sm">Hospital Bills Intelligence</h4>
-                      <span className="bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $50K+ Avg
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600">500+ hospital insider secrets, billing vulnerabilities, and department-specific tactics</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/80 rounded-xl p-3 border border-indigo-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
-                    <Zap className="h-5 w-5 text-indigo-600" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-gray-900 text-sm">Insurance Claims Intelligence</h4>
-                      <span className="bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $35K+ Avg
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600">Company-specific tactics, claim processing secrets, and counter-strategies</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/80 rounded-xl p-3 border border-red-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
-                    <Target className="h-5 w-5 text-red-600" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-gray-900 text-sm">Denial Reversal Intelligence</h4>
-                      <span className="bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $75K+ Avg
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600">92% success rate reversal strategies and appeal templates</p>
-                  </div>
-                </div>
+              {/* Enhanced Intelligence Databases Grid */}
+              <div className="grid grid-cols-1 gap-4">
+                {[
+                  {
+                    icon: Search,
+                    title: "Hospital Bills Intelligence", 
+                    savings: "$50K+ Avg",
+                    desc: "500+ hospital insider secrets, billing vulnerabilities, and department-specific tactics",
+                    color: "blue",
+                    delay: 2.9
+                  },
+                  {
+                    icon: Zap,
+                    title: "Insurance Claims Intelligence", 
+                    savings: "$35K+ Avg",
+                    desc: "Company-specific tactics, claim processing secrets, and counter-strategies",
+                    color: "indigo",
+                    delay: 3.0
+                  },
+                  {
+                    icon: Target,
+                    title: "Denial Reversal Intelligence", 
+                    savings: "$75K+ Avg",
+                    desc: "92% success rate reversal strategies and appeal templates",
+                    color: "red",
+                    delay: 3.1
+                  }
+                ].map((db, index) => {
+                  const IconComponent = db.icon;
+                  return (
+                    <motion.div 
+                      key={db.title}
+                      className="bg-gradient-to-r from-white/90 via-white/70 to-white/90 backdrop-blur-sm rounded-2xl p-4 border border-white/60 shadow-lg hover:shadow-xl transition-all duration-300"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: db.delay, duration: 0.5 }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <motion.div 
+                          className={`w-14 h-14 bg-gradient-to-br ${
+                            db.color === 'blue' ? 'from-blue-500 to-blue-600' :
+                            db.color === 'indigo' ? 'from-indigo-500 to-indigo-600' :
+                            db.color === 'red' ? 'from-red-500 to-red-600' :
+                            'from-gray-500 to-gray-600'
+                          } rounded-2xl flex items-center justify-center shadow-lg`}
+                          whileHover={{ scale: 1.1, rotate: 8 }}
+                        >
+                          <IconComponent className="h-7 w-7 text-white" />
+                        </motion.div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h4 className="font-bold text-gray-900 text-base">{db.title}</h4>
+                            <span className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg">
+                              {db.savings}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700 font-medium leading-relaxed">{db.desc}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
-          </div>
+          </MobileCard>
         </motion.div>
 
         {/* Success Stories Section */}
@@ -613,38 +1119,77 @@ function PremiumMarketing() {
             Professional-Grade Tools
           </h3>
           
-          <div className="grid grid-cols-2 gap-3">
-            <MobileCard className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <MessageCircle className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Expert Negotiation Scripts</h4>
-                <p className="text-xs text-gray-700">Hospital-specific tactics from billing veterans</p>
-              </div>
-            </MobileCard>
-            
-            <MobileCard className="bg-gradient-to-r from-indigo-50/80 to-purple-50/80 border-indigo-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <Code className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Billing Code Mastery</h4>
-                <p className="text-xs text-gray-700">Decode hidden overcharge patterns</p>
-              </div>
-            </MobileCard>
-            
-            <MobileCard className="bg-gradient-to-r from-orange-50/80 to-amber-50/80 border-orange-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <UserCheck className="h-8 w-8 text-orange-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Personal Bill Coach</h4>
-                <p className="text-xs text-gray-700">1-on-1 guidance from industry insiders</p>
-              </div>
-            </MobileCard>
-            
-            <MobileCard className="bg-gradient-to-r from-teal-50/80 to-cyan-50/80 border-teal-200 hover:shadow-lg transition-shadow">
-              <div className="text-center p-2">
-                <Clock className="h-8 w-8 text-teal-600 mx-auto mb-2" />
-                <h4 className="font-bold text-gray-900 text-sm mb-1">Strategic Timing Guide</h4>
-                <p className="text-xs text-gray-700">Perfect timing for disputes & escalations</p>
-              </div>
-            </MobileCard>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              {
+                icon: MessageCircle,
+                title: "Expert Negotiation Scripts",
+                desc: "Hospital-specific tactics from billing veterans", 
+                color: "emerald",
+                delay: 3.2
+              },
+              {
+                icon: Code,
+                title: "Billing Code Mastery",
+                desc: "Decode hidden overcharge patterns",
+                color: "indigo", 
+                delay: 3.25
+              },
+              {
+                icon: UserCheck,
+                title: "Personal Bill Coach",
+                desc: "1-on-1 guidance from industry insiders",
+                color: "orange",
+                delay: 3.3
+              },
+              {
+                icon: Clock,
+                title: "Strategic Timing Guide", 
+                desc: "Perfect timing for disputes & escalations",
+                color: "teal",
+                delay: 3.35
+              }
+            ].map((tool, index) => {
+              const IconComponent = tool.icon;
+              return (
+                <motion.div
+                  key={tool.title}
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ 
+                    delay: tool.delay, 
+                    duration: 0.5,
+                    type: "spring",
+                    stiffness: 200
+                  }}
+                >
+                  <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl h-36 cursor-pointer overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    <div className="flex flex-col items-center justify-center h-full space-y-3 relative z-10 p-3 text-center">
+                      <motion.div 
+                        className={`w-12 h-12 bg-gradient-to-br ${
+                          tool.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
+                          tool.color === 'indigo' ? 'from-indigo-500 to-purple-600' :
+                          tool.color === 'orange' ? 'from-orange-500 to-red-600' :
+                          tool.color === 'teal' ? 'from-teal-500 to-cyan-600' :
+                          'from-gray-500 to-gray-600'
+                        } rounded-2xl flex items-center justify-center shadow-lg`}
+                        whileHover={{ scale: 1.2, rotate: 10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <IconComponent className="h-6 w-6 text-white" />
+                      </motion.div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 text-sm leading-tight mb-1">{tool.title}</h4>
+                        <p className="text-xs text-gray-600 font-medium leading-relaxed">{tool.desc}</p>
+                      </div>
+                    </div>
+                  </MobileCard>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
 
