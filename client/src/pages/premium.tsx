@@ -904,6 +904,7 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
 }
 
 function PremiumMarketing() {
+  // IMPORTANT: All hooks MUST be declared at the top, before any conditional logic
   const { createSubscription } = useSubscription();
   const { toast } = useToast();
   const [setupData, setSetupData] = useState<{
@@ -1501,7 +1502,8 @@ function PremiumMarketing() {
             {/* Selected Plan Details */}
             {selectedPlan && (() => {
               const plan = subscriptionPlans.find(p => p.id === selectedPlan);
-              if (!plan) return null;
+              // Don't return null conditionally - this breaks React hooks rules
+              if (!plan) return <div>Plan not found</div>;
               
               return (
                 <motion.div 
