@@ -1275,7 +1275,7 @@ export default function BlitzDemo() {
                 </Card>
 
                 {/* Detailed Results */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {[
                     { 
                       label: 'Billing Errors', 
@@ -1311,15 +1311,16 @@ export default function BlitzDemo() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3 + (index * 0.1) }}
+                      className="w-full"
                     >
-                      <Card className="p-4">
+                      <Card className="p-4 h-full">
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg ${metric.bgColor}`}>
+                          <div className={`p-2 rounded-lg ${metric.bgColor} flex-shrink-0`}>
                             <metric.icon className={`h-4 w-4 ${metric.color}`} />
                           </div>
-                          <div>
-                            <div className="text-xs text-gray-600">{metric.label}</div>
-                            <div className="font-bold text-lg">{metric.value}</div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs text-gray-600 truncate">{metric.label}</div>
+                            <div className="font-bold text-lg truncate">{metric.value}</div>
                           </div>
                         </div>
                       </Card>

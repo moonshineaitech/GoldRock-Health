@@ -1311,17 +1311,17 @@ Respond with ONLY a JSON object:
           medicalHistory: medicalCase.medicalHistory || {},
           physicalExam: medicalCase.physicalExam || {},
           correctDiagnosis: medicalCase.correctDiagnosis,
-          correctTreatment: medicalCase.correctTreatment,
+          correctTreatment: medicalCase.correctTreatment || undefined,
           learningObjectives: medicalCase.learningObjectives || [],
           estimatedDuration: medicalCase.estimatedDuration,
-          rating: medicalCase.rating,
+          rating: medicalCase.rating || "0.00",
           responses: medicalCase.responses || {}
         };
         const comprehensiveCase = medicalCasesService.generateComprehensiveCase(safeCase);
         diagnosticTests = comprehensiveCase.diagnosticTests?.available || {
-          laboratory: [],
-          imaging: [],
-          procedures: []
+          laboratory: [] as any[],
+          imaging: [] as any[],
+          procedures: [] as any[]
         };
         
         // Update the case in storage with generated data
@@ -1443,14 +1443,14 @@ Respond with ONLY a JSON object:
           medicalHistory: medicalCase.medicalHistory || {},
           physicalExam: medicalCase.physicalExam || {},
           correctDiagnosis: medicalCase.correctDiagnosis,
-          correctTreatment: medicalCase.correctTreatment,
+          correctTreatment: medicalCase.correctTreatment || undefined,
           learningObjectives: medicalCase.learningObjectives || [],
           estimatedDuration: medicalCase.estimatedDuration,
-          rating: medicalCase.rating,
+          rating: medicalCase.rating || "0.00",
           responses: medicalCase.responses || {}
         };
         const comprehensiveCase = medicalCasesService.generateComprehensiveCase(safeCase);
-        physicalExam = comprehensiveCase.physicalExam || {};
+        physicalExam = comprehensiveCase.physicalExam || {} as any;
         
         
         // Update the case in storage with generated data
@@ -2043,7 +2043,7 @@ Respond with ONLY a JSON object:
   });
 
   // Bill AI Chat API - OpenAI powered medical bill reduction expert
-  app.post('/api/bill-ai-chat', isAuthenticated, requiresAiAgreement, requiresSubscription, async (req: any, res) => {
+  app.post('/api/bill-ai-chat', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
     try {
       const { message } = req.body;
       const userId = req.user.claims.sub;
@@ -2957,8 +2957,8 @@ What specific insurance issue are you facing? I can provide exact templates and 
           aggravatingFactors: [],
           relievingFactors: []
         }] : [],
-        medicalHistory: req.body.medicalHistory ? {
-          pastMedicalHistory: req.body.medicalHistory.split(',').map((h: string) => h.trim()),
+        medicalHistory: {
+          pastMedicalHistory: req.body.medicalHistory ? req.body.medicalHistory.split(',').map((h: string) => h.trim()) : [],
           surgicalHistory: [],
           medications: req.body.medications ? req.body.medications.split(',').map((m: string) => ({
             name: m.trim(),
@@ -2986,7 +2986,7 @@ What specific insurance issue are you facing? I can provide exact templates and 
             travelHistory: []
           },
           reviewOfSystems: {}
-        } : {},
+        },
         physicalExam: {
           vitals: {
             bloodPressure: "120/80",
@@ -3437,7 +3437,7 @@ Make it clinically accurate and educationally valuable.`;
           }
         } catch (singleParseError) {
           // Try splitting into multiple JSON objects
-          const jsonObjects = jsonString.split('\n\n').filter(section => 
+          const jsonObjects = jsonString.split('\n\n').filter((section: string) => 
             section.trim().startsWith('{') && section.trim().endsWith('}')
           );
           
@@ -3456,7 +3456,7 @@ Make it clinically accurate and educationally valuable.`;
         
       } catch (parseError) {
         console.error('Error parsing AI diagnostic analysis:', parseError);
-        console.error('Parse Error Details:', parseError.message);
+        console.error('Parse Error Details:', (parseError as Error).message);
         
         // Comprehensive fallback analysis based on patient data
         diagnosticAnalysis = {
@@ -3572,9 +3572,9 @@ Make it clinically accurate and educationally valuable.`;
       res.json(session);
     } catch (error) {
       console.error('Error running diagnostic analysis:', error);
-      console.error('Error details:', error.message);
-      console.error('Stack trace:', error.stack);
-      res.status(500).json({ message: 'Failed to run diagnostic analysis', error: error.message });
+      console.error('Error details:', (error as Error).message);
+      console.error('Stack trace:', (error as Error).stack);
+      res.status(500).json({ message: 'Failed to run diagnostic analysis', error: (error as Error).message });
     }
   });
 
