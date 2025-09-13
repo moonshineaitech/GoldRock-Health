@@ -904,7 +904,7 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
 }
 
 function PremiumMarketing() {
-  // IMPORTANT: All hooks MUST be declared at the top, before any conditional logic
+  // CRITICAL: ALL hooks MUST be declared at the top, before ANY conditional logic or returns
   const { createSubscription } = useSubscription();
   const { toast } = useToast();
   const [setupData, setSetupData] = useState<{
@@ -913,6 +913,10 @@ function PremiumMarketing() {
     planType: string;
   } | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<string>("annual");
+  
+  // These hooks were previously AFTER the conditional return - causing the error!
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const handleSubscribe = async (planId: string) => {
     try {
@@ -1103,9 +1107,6 @@ function PremiumMarketing() {
       </MobileLayout>
     );
   }
-
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <motion.div 
