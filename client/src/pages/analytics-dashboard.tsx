@@ -363,7 +363,8 @@ function SavingsTimelineChart() {
         <ComposedChart data={mockAnalyticsData.savingsTimeline}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
           <XAxis dataKey="month" stroke="#64748b" />
-          <YAxis stroke="#64748b" />
+          <YAxis yAxisId="left" stroke="#64748b" />
+          <YAxis yAxisId="right" orientation="right" stroke="#64748b" />
           <Tooltip 
             contentStyle={{ 
               backgroundColor: 'rgba(255, 255, 255, 0.95)', 
@@ -378,6 +379,7 @@ function SavingsTimelineChart() {
             fill="url(#savingsGradient)"
             stroke="#10B981"
             strokeWidth={3}
+            yAxisId="left"
           />
           <Line
             type="monotone"
