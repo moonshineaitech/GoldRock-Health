@@ -740,12 +740,12 @@ export default function BlitzDemo() {
             className="text-center space-y-3"
           >
             <div className="flex items-center justify-center gap-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-100 via-purple-100 to-indigo-200 rounded-2xl flex items-center justify-center shadow-lg">
-                <Brain className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50 rounded-2xl flex items-center justify-center shadow-lg border border-blue-200">
+                <Brain className="h-6 w-6 text-blue-600" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Medical Bill AI</h1>
-                <Badge className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800">
+                <Badge className="bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border border-blue-200">
                   <Sparkles className="h-3 w-3 mr-1" />
                   BLITZ DEMO
                 </Badge>
@@ -763,10 +763,10 @@ export default function BlitzDemo() {
                 <div key={stage.id} className="flex items-center">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
                     currentStage === stage.id 
-                      ? 'bg-blue-100 text-blue-800' 
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200' 
                       : index < demoStages.findIndex(s => s.id === currentStage)
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-500'
+                        ? 'bg-green-50 text-green-700 border border-green-200'
+                        : 'bg-gray-50 text-gray-500 border border-gray-200'
                   }`}>
                     {index < demoStages.findIndex(s => s.id === currentStage) ? (
                       <CheckCircle2 className="h-4 w-4" />
@@ -815,7 +815,7 @@ export default function BlitzDemo() {
                     <div className="grid grid-cols-1 gap-4">
                       <Button
                         onClick={() => setCurrentStage('upload')}
-                        className="h-20 bg-gradient-to-r from-blue-100 to-indigo-100 hover:from-blue-200 hover:to-indigo-200 text-blue-800 rounded-2xl"
+                        className="h-20 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-700 border border-blue-200 rounded-2xl"
                         data-testid="button-upload-bills"
                       >
                         <div className="flex flex-col items-center gap-2">
@@ -834,7 +834,7 @@ export default function BlitzDemo() {
                         data-testid="button-demo-data"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+                          <div className="w-10 h-10 bg-orange-50 border border-orange-200 rounded-xl flex items-center justify-center">
                             <Zap className="h-5 w-5 text-orange-600" />
                           </div>
                           <div className="text-left">
@@ -855,7 +855,7 @@ export default function BlitzDemo() {
                       {useUploadedData ? 'Extracted Bill Information' : 'Manual Bill Information'}
                     </h3>
                     {useUploadedData && (
-                      <Badge className="bg-green-100 text-green-800">
+                      <Badge className="bg-green-50 text-green-700 border border-green-200">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         From Uploaded Bills
                       </Badge>
@@ -1015,7 +1015,7 @@ export default function BlitzDemo() {
                   <Button
                     data-testid="button-start-analysis"
                     onClick={startAnalysis}
-                    className="flex-1 bg-gradient-to-r from-blue-100 to-purple-100 hover:from-blue-200 hover:to-purple-200 text-blue-800 font-semibold py-3"
+                    className="flex-1 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-blue-700 border border-blue-200 font-semibold py-3"
                   >
                     <Brain className="h-4 w-4 mr-2" />
                     {useUploadedData ? 'Analyze Uploaded Bills' : 'Start Demo Analysis'}
@@ -1075,7 +1075,7 @@ export default function BlitzDemo() {
                   >
                     {uploadedFiles.length === 0 ? (
                       <div className="space-y-4">
-                        <div className="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto">
+                        <div className="w-20 h-20 bg-blue-50 border border-blue-200 rounded-2xl flex items-center justify-center mx-auto">
                           <Upload className="h-10 w-10 text-blue-600" />
                         </div>
                         <div>
@@ -1096,7 +1096,7 @@ export default function BlitzDemo() {
                         <div className="grid grid-cols-2 gap-4">
                           {uploadedFiles.map((uploadedFile, index) => (
                             <div key={index} className="relative group">
-                              <div className="aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                              <div className="aspect-video bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
                                 <img
                                   src={uploadedFile.preview}
                                   alt={`Bill ${index + 1}`}
@@ -1166,7 +1166,7 @@ export default function BlitzDemo() {
                   <Button
                     onClick={uploadAndAnalyze}
                     disabled={uploadedFiles.length === 0}
-                    className="h-14 bg-gradient-to-r from-blue-100 to-indigo-100 hover:from-blue-200 hover:to-indigo-200 text-blue-800 rounded-2xl font-semibold disabled:from-gray-200 disabled:to-gray-300"
+                    className="h-14 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-700 border border-blue-200 rounded-2xl font-semibold disabled:from-gray-200 disabled:to-gray-300"
                     data-testid="button-upload-analyze"
                   >
                     <Brain className="h-5 w-5 mr-2" />
@@ -1188,9 +1188,9 @@ export default function BlitzDemo() {
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-200 rounded-full mx-auto mb-6 flex items-center justify-center"
+                    className="w-16 h-16 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-full mx-auto mb-6 flex items-center justify-center"
                   >
-                    <Brain className="h-8 w-8 text-white" />
+                    <Brain className="h-8 w-8 text-blue-600" />
                   </motion.div>
                   
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -1261,9 +1261,9 @@ export default function BlitzDemo() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: "spring", delay: 0.2 }}
-                      className="w-16 h-16 bg-gradient-to-r from-green-100 to-emerald-200 rounded-full mx-auto mb-4 flex items-center justify-center"
+                      className="w-16 h-16 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-full mx-auto mb-4 flex items-center justify-center"
                     >
-                      <Trophy className="h-8 w-8 text-white" />
+                      <Trophy className="h-8 w-8 text-green-600" />
                     </motion.div>
                     <h3 className="text-2xl font-bold text-green-800 mb-2">
                       {analysisResults.totalSavings} in Savings Found!
@@ -1282,28 +1282,28 @@ export default function BlitzDemo() {
                       value: `${analysisResults.errorCount} found`, 
                       icon: FileText, 
                       color: 'text-red-600',
-                      bgColor: 'bg-red-100'
+                      bgColor: 'bg-red-50 border border-red-200'
                     },
                     { 
                       label: 'Overcharge Amount', 
                       value: analysisResults.overchargeAmount, 
                       icon: AlertTriangle, 
                       color: 'text-orange-600',
-                      bgColor: 'bg-orange-100'
+                      bgColor: 'bg-orange-50 border border-orange-200'
                     },
                     { 
                       label: 'Negotiation Potential', 
                       value: analysisResults.negotiationPotential, 
                       icon: Target, 
                       color: 'text-blue-600',
-                      bgColor: 'bg-blue-100'
+                      bgColor: 'bg-blue-50 border border-blue-200'
                     },
                     { 
                       label: 'Confidence Score', 
                       value: `${analysisResults.confidence}%`, 
                       icon: Shield, 
                       color: 'text-green-600',
-                      bgColor: 'bg-green-100'
+                      bgColor: 'bg-green-50 border border-green-200'
                     }
                   ].map((metric, index) => (
                     <motion.div
@@ -1415,7 +1415,7 @@ export default function BlitzDemo() {
                       >
                         <div className="flex items-start gap-3">
                           <div className={`p-1 rounded-full ${
-                            insight.evidenceBased ? 'bg-green-100' : 'bg-blue-100'
+                            insight.evidenceBased ? 'bg-green-50 border border-green-200' : 'bg-blue-50 border border-blue-200'
                           }`}>
                             {insight.evidenceBased ? 
                               <CheckCircle className="h-4 w-4 text-green-600" /> :
@@ -1424,7 +1424,7 @@ export default function BlitzDemo() {
                           </div>
                           <div className="flex-1">
                             <p className="text-sm text-gray-900 mb-2">{insight.insight}</p>
-                            <div className="bg-gray-50 p-2 rounded text-xs text-gray-700">
+                            <div className="bg-white border border-gray-200 p-2 rounded text-xs text-gray-700">
                               <span className="font-medium">Action Required:</span> {insight.actionRequired}
                             </div>
                           </div>
@@ -1474,7 +1474,7 @@ export default function BlitzDemo() {
                     <Button
                       data-testid="button-get-premium"
                       onClick={handleUpgrade}
-                      className="flex-1 bg-gradient-to-r from-amber-100 to-orange-100 hover:from-amber-200 hover:to-orange-200 text-amber-800 font-semibold"
+                      className="flex-1 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 text-amber-700 border border-amber-200 font-semibold"
                     >
                       <Crown className="h-4 w-4 mr-2" />
                       Get Premium Access

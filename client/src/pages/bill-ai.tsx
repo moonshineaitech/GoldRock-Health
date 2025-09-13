@@ -1774,7 +1774,7 @@ What would you like to do first? I'm here to help you find every possible saving
                       <div className="w-7 h-7 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-sm">
                         <Bot className="h-4 w-4 text-emerald-700" />
                       </div>
-                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 tracking-tight">Medical Bill Expert</span>
+                      <span className="text-sm font-semibold text-emerald-600 tracking-tight">Medical Bill Expert</span>
                     </div>
                   )}
                   <p className={`text-[15px] leading-relaxed whitespace-pre-wrap ${
@@ -1860,7 +1860,7 @@ What would you like to do first? I'm here to help you find every possible saving
                       className={`w-7 h-7 p-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                         message.role === "user"
                           ? "text-emerald-100/60 hover:text-emerald-100 hover:bg-emerald-400/20"
-                          : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                          : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
                       }`}
                       data-testid={`copy-message-${message.id}`}
                     >
@@ -1894,7 +1894,7 @@ What would you like to do first? I'm here to help you find every possible saving
                     <div className="w-7 h-7 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-sm">
                       <Bot className="h-4 w-4 text-emerald-700" />
                     </div>
-                    <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 tracking-tight">Medical Bill Expert</span>
+                    <span className="text-sm font-semibold text-emerald-600 tracking-tight">Medical Bill Expert</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="flex space-x-1">
@@ -1932,7 +1932,7 @@ What would you like to do first? I'm here to help you find every possible saving
               animate={{ opacity: 1, y: 0 }}
               className="mb-3 text-center"
             >
-              <p className="text-sm lg:text-base text-gray-600 dark:text-gray-400 mb-2 lg:mb-3">
+              <p className="text-sm lg:text-base text-gray-600 mb-2 lg:mb-3">
                 💡 <span className="font-medium">Pro Tip:</span> Upload bill images for instant AI analysis
               </p>
               <Button
@@ -1953,7 +1953,7 @@ What would you like to do first? I'm here to help you find every possible saving
               variant="ghost"
               size="sm"
               onClick={() => fileInputRef.current?.click()}
-              className="w-11 h-11 lg:w-14 lg:h-14 p-0 rounded-2xl bg-gray-100/80 hover:bg-gray-200/80 dark:hover:bg-gray-700/80 border-0"
+              className="w-11 h-11 lg:w-14 lg:h-14 p-0 rounded-2xl bg-gray-100/80 hover:bg-gray-200/80 border-0"
               data-testid="attach-file-button"
               disabled={uploadingFiles}
             >
@@ -1977,7 +1977,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Tell me about your bill..."
-                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 dark:focus:border-emerald-400/50 focus:bg-white dark:focus:bg-gray-800 placeholder:text-gray-500 dark:placeholder:text-gray-400 text-base lg:text-lg"
+                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 focus:bg-white placeholder:text-gray-500 text-base lg:text-lg"
                 disabled={isTyping}
                 data-testid="message-input"
               />
