@@ -770,16 +770,10 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
               >
                 <PaymentElement 
                   options={{
-                    style: {
-                      base: {
-                        fontSize: '16px',
-                        color: '#374151',
-                        fontFamily: 'SF Pro Display, Inter, system-ui, sans-serif',
-                        '::placeholder': {
-                          color: '#9CA3AF',
-                        },
-                      },
-                    },
+                    layout: {
+                      type: 'tabs',
+                      defaultCollapsed: false,
+                    }
                   }}
                 />
               </motion.div>
