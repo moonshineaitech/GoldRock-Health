@@ -7,7 +7,8 @@ import {
   Trophy,
   User,
   Crown,
-  Sparkles
+  Sparkles,
+  Shield
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -41,6 +42,13 @@ const navItems: NavItem[] = [
     icon: FileText,
     path: "/bill-ai",
     color: "text-purple-600"
+  },
+  {
+    id: "rights",
+    label: "Rights",
+    icon: Shield,
+    path: "/rights-hub",
+    color: "text-red-600"
   },
   {
     id: "premium",
@@ -112,6 +120,7 @@ export function MobileBottomNav() {
                         item.color === 'text-blue-600' ? '#3B82F6' :
                         item.color === 'text-purple-600' ? '#8B5CF6' :
                         item.color === 'text-green-600' ? '#10B981' :
+                        item.color === 'text-red-600' ? '#DC2626' :
                         item.color === 'text-orange-600' ? '#F59E0B' :
                         item.color === 'text-indigo-600' ? '#6366F1' :
                         '#6366F1'
@@ -158,6 +167,7 @@ export function MobileBottomNav() {
                       item.color === 'text-blue-600' ? '#3B82F6' :
                       item.color === 'text-purple-600' ? '#8B5CF6' :
                       item.color === 'text-green-600' ? '#10B981' :
+                      item.color === 'text-red-600' ? '#DC2626' :
                       item.color === 'text-orange-600' ? '#F59E0B' :
                       item.color === 'text-indigo-600' ? '#6366F1' :
                       '#6366F1'

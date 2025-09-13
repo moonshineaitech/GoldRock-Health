@@ -33,6 +33,10 @@ import DisputeArsenal from "@/pages/dispute-arsenal";
 import ReductionCoach from "@/pages/reduction-coach";
 import CodeMastery from "@/pages/code-mastery";
 import AnalyticsDashboard from "@/pages/analytics-dashboard";
+import RightsHub from "@/pages/rights-hub";
+import EmergencyHelp from "@/pages/emergency-help";
+import QuickAnalyzer from "@/pages/quick-analyzer";
+import ProviderContacts from "@/pages/provider-contacts";
 
 // Define AI-protected routes that require AI agreement
 const AI_PROTECTED_ROUTES = [
@@ -146,6 +150,10 @@ function Router() {
       <Route path="/dispute-arsenal" component={DisputeArsenal} />
       <Route path="/code-mastery" component={CodeMastery} />
       <Route path="/analytics-dashboard" component={AnalyticsDashboard} />
+      <Route path="/rights-hub" component={RightsHub} />
+      <Route path="/emergency-help" component={EmergencyHelp} />
+      <Route path="/quick-analyzer" component={QuickAnalyzer} />
+      <Route path="/provider-contacts" component={ProviderContacts} />
       <Route path="/blitz-demo">
         <AIRouteGuard path="/blitz-demo">
           <BlitzDemo />

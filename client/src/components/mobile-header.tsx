@@ -1,4 +1,4 @@
-import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download } from "lucide-react";
+import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download, Shield, Heart, Search, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 import { useState } from "react";
@@ -35,6 +35,30 @@ export function NavigationDropdown() {
       label: "Bill AI",
       href: "/bill-ai",
       description: "Find Medical Overcharges"
+    },
+    {
+      icon: Shield,
+      label: "Know Your Rights Hub",
+      href: "/rights-hub",
+      description: "Know Your Patient Rights"
+    },
+    {
+      icon: Heart,
+      label: "Emergency Financial Help",
+      href: "/emergency-help",
+      description: "Crisis Financial Assistance"
+    },
+    {
+      icon: Search,
+      label: "Quick Bill Analyzer",
+      href: "/quick-analyzer",
+      description: "Free Bill Analysis"
+    },
+    {
+      icon: Phone,
+      label: "Provider Contact Database",
+      href: "/provider-contacts",
+      description: "Hospital Contact Database"
     },
     {
       icon: PremiumIcon,
