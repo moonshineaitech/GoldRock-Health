@@ -228,7 +228,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             <Button
               variant="outline"
               size="sm"
-              className="w-full lg:w-auto lg:mx-auto lg:px-8 text-yellow-700 border-yellow-200 hover:bg-yellow-50"
+              className="!bg-white w-full lg:w-auto lg:mx-auto lg:px-8 text-yellow-700 border-yellow-200 hover:bg-yellow-50"
               onClick={() => {}}
             >
               View All {beginnerWorkflows.length} Beginner Tools
@@ -243,7 +243,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           onClick={onStartChat}
           variant="outline"
           size="sm"
-          className="h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
+          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
           data-testid="start-chat-button"
         >
           <MessageCircle className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
@@ -253,7 +253,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <Button
             variant="outline"
             size="sm"
-            className="w-full h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-orange-200 text-orange-600 hover:bg-orange-50"
+            className="!bg-white w-full h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-orange-200 text-orange-600 hover:bg-orange-50"
             data-testid="blitz-demo-button"
           >
             <Zap className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
@@ -264,7 +264,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           onClick={() => {}}
           variant="outline"
           size="sm"
-          className="h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
+          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
           data-testid="view-all-workflows"
         >
           <Plus className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
@@ -1766,7 +1766,7 @@ What would you like to do first? I'm here to help you find every possible saving
               >
                 <div className={`max-w-[80%] group ${
                   message.role === "user" 
-                    ? "bg-gradient-to-br from-emerald-100 via-emerald-200 to-teal-200 text-emerald-800 rounded-3xl rounded-br-lg shadow-lg shadow-emerald-200/25" 
+                    ? "bg-gradient-to-br from-green-500 via-green-600 to-emerald-600 text-white rounded-3xl rounded-br-lg shadow-lg shadow-green-200/40" 
                     : "bg-white/95 backdrop-blur-sm border border-gray-200/50 text-gray-900 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30"
                 } px-5 py-4 relative`}>
                   {message.role === "assistant" && (
@@ -1779,7 +1779,7 @@ What would you like to do first? I'm here to help you find every possible saving
                   )}
                   <p className={`text-[15px] leading-relaxed whitespace-pre-wrap ${
                     message.role === "user" 
-                      ? "text-white font-medium" 
+                      ? "text-white font-semibold" 
                       : "text-gray-900"
                   }`}>
                     {message.content}
@@ -1977,7 +1977,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Tell me about your bill..."
-                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 focus:bg-white placeholder:text-gray-500 text-base lg:text-lg"
+                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 focus:bg-white placeholder:text-gray-500 text-gray-900 text-base lg:text-lg"
                 disabled={isTyping}
                 data-testid="message-input"
               />

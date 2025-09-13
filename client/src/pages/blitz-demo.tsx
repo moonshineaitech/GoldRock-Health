@@ -830,7 +830,7 @@ export default function BlitzDemo() {
                       <Button
                         onClick={fillDemoData}
                         variant="outline"
-                        className="h-16 border-gray-300 hover:bg-gray-50 rounded-2xl"
+                        className="!bg-white h-16 border-gray-300 hover:bg-gray-50 rounded-2xl"
                         data-testid="button-demo-data"
                       >
                         <div className="flex items-center gap-3">
@@ -872,7 +872,7 @@ export default function BlitzDemo() {
                           placeholder="e.g., $47,850"
                           value={billDetails.amount}
                           onChange={(e) => setBillDetails(prev => ({ ...prev, amount: e.target.value }))}
-                          className="!bg-white text-lg"
+                          className="!bg-white text-gray-900 text-lg"
                         />
                       </div>
                       <div>
@@ -906,7 +906,7 @@ export default function BlitzDemo() {
                         placeholder="e.g., Metro General Hospital"
                         value={billDetails.provider}
                         onChange={(e) => setBillDetails(prev => ({ ...prev, provider: e.target.value }))}
-                        className="!bg-white text-lg"
+                        className="!bg-white text-gray-900 text-lg"
                       />
                     </div>
                     
@@ -920,7 +920,7 @@ export default function BlitzDemo() {
                           placeholder="e.g., January 15, 2025"
                           value={billDetails.serviceDate}
                           onChange={(e) => setBillDetails(prev => ({ ...prev, serviceDate: e.target.value }))}
-                          className="!bg-white"
+                          className="!bg-white text-gray-900"
                         />
                       </div>
                       <div>
@@ -978,7 +978,7 @@ export default function BlitzDemo() {
                             placeholder="e.g., Blue Cross Blue Shield, Aetna, etc."
                             value={billDetails.insuranceCompany}
                             onChange={(e) => setBillDetails(prev => ({ ...prev, insuranceCompany: e.target.value }))}
-                            className="!bg-white"
+                            className="!bg-white text-gray-900"
                           />
                         </div>
                         
@@ -991,7 +991,7 @@ export default function BlitzDemo() {
                             placeholder="e.g., CPT 99285, ICD-10 K35.9, 36415, 80053"
                             value={billDetails.medicalCodes}
                             onChange={(e) => setBillDetails(prev => ({ ...prev, medicalCodes: e.target.value }))}
-                            className="!bg-white"
+                            className="!bg-white text-gray-900"
                           />
                           <p className="text-xs text-gray-500 mt-1">Enter any CPT, ICD-10, or HCPCS codes from your bill</p>
                         </div>
@@ -1005,7 +1005,7 @@ export default function BlitzDemo() {
                             placeholder="e.g., Duplicate lab charges, excessive ER fees, services not received..."
                             value={billDetails.specificConcerns}
                             onChange={(e) => setBillDetails(prev => ({ ...prev, specificConcerns: e.target.value }))}
-                            className="!bg-white min-h-[80px]"
+                            className="!bg-white text-gray-900 min-h-[80px]"
                           />
                         </div>
                       </motion.div>
@@ -1238,7 +1238,7 @@ export default function BlitzDemo() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.2 }}
                     >
-                      <Card className="p-3 text-center">
+                      <Card className="!bg-white p-3 text-center">
                         <stat.icon className={`h-6 w-6 mx-auto mb-1 ${stat.color}`} />
                         <div className="font-bold text-lg">{stat.value}</div>
                         <div className="text-xs text-gray-600">{stat.label}</div>
