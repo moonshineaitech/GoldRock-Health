@@ -795,7 +795,7 @@ const WorkflowCard = ({ workflow, onClick }: {
         <Button
           onClick={handleClick}
           variant="outline"
-          className={`h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-8 xl:p-10 2xl:p-12 flex-col space-y-2 lg:space-y-4 xl:space-y-6 text-left justify-start rounded-2xl lg:rounded-3xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
+          className={`!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-8 xl:p-10 2xl:p-12 flex-col space-y-2 lg:space-y-4 xl:space-y-6 text-left justify-start rounded-2xl lg:rounded-3xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
             isHovered ? 'border-emerald-300 bg-emerald-50/50' : ''
           }`}
           data-testid={`workflow-${workflow.id}`}

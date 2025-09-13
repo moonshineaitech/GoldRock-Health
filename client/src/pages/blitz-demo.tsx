@@ -757,7 +757,7 @@ export default function BlitzDemo() {
           </motion.div>
 
           {/* Progress Indicator */}
-          <Card className="p-4">
+          <Card className="!bg-white p-4">
             <div className="flex items-center justify-between mb-4">
               {demoStages.map((stage, index) => (
                 <div key={stage.id} className="flex items-center">
@@ -848,7 +848,7 @@ export default function BlitzDemo() {
                 </Card>
                 
                 {/* Manual Input Card */}
-                <Card className="p-6">
+                <Card className="!bg-white p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                       <DollarSign className="h-5 w-5 text-emerald-600" />
@@ -872,7 +872,7 @@ export default function BlitzDemo() {
                           placeholder="e.g., $47,850"
                           value={billDetails.amount}
                           onChange={(e) => setBillDetails(prev => ({ ...prev, amount: e.target.value }))}
-                          className="text-lg"
+                          className="!bg-white text-lg"
                         />
                       </div>
                       <div>
@@ -880,7 +880,7 @@ export default function BlitzDemo() {
                           Service Type
                         </label>
                         <Select onValueChange={(value) => setBillDetails(prev => ({ ...prev, serviceType: value }))}>
-                          <SelectTrigger data-testid="select-service-type">
+                          <SelectTrigger data-testid="select-service-type" className="!bg-white">
                             <SelectValue placeholder="Select service type" />
                           </SelectTrigger>
                           <SelectContent>
@@ -906,7 +906,7 @@ export default function BlitzDemo() {
                         placeholder="e.g., Metro General Hospital"
                         value={billDetails.provider}
                         onChange={(e) => setBillDetails(prev => ({ ...prev, provider: e.target.value }))}
-                        className="text-lg"
+                        className="!bg-white text-lg"
                       />
                     </div>
                     
@@ -920,6 +920,7 @@ export default function BlitzDemo() {
                           placeholder="e.g., January 15, 2025"
                           value={billDetails.serviceDate}
                           onChange={(e) => setBillDetails(prev => ({ ...prev, serviceDate: e.target.value }))}
+                          className="!bg-white"
                         />
                       </div>
                       <div>
@@ -927,7 +928,7 @@ export default function BlitzDemo() {
                           Claim Status
                         </label>
                         <Select onValueChange={(value) => setBillDetails(prev => ({ ...prev, claimStatus: value }))}>
-                          <SelectTrigger data-testid="select-claim-status">
+                          <SelectTrigger data-testid="select-claim-status" className="!bg-white">
                             <SelectValue placeholder="Insurance claim status" />
                           </SelectTrigger>
                           <SelectContent>
@@ -945,7 +946,7 @@ export default function BlitzDemo() {
                 </Card>
 
                 {/* Advanced Bill Details */}
-                <Card className="p-6">
+                <Card className="!bg-white p-6">
                   <Button
                     variant="ghost"
                     onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
@@ -977,6 +978,7 @@ export default function BlitzDemo() {
                             placeholder="e.g., Blue Cross Blue Shield, Aetna, etc."
                             value={billDetails.insuranceCompany}
                             onChange={(e) => setBillDetails(prev => ({ ...prev, insuranceCompany: e.target.value }))}
+                            className="!bg-white"
                           />
                         </div>
                         
@@ -989,6 +991,7 @@ export default function BlitzDemo() {
                             placeholder="e.g., CPT 99285, ICD-10 K35.9, 36415, 80053"
                             value={billDetails.medicalCodes}
                             onChange={(e) => setBillDetails(prev => ({ ...prev, medicalCodes: e.target.value }))}
+                            className="!bg-white"
                           />
                           <p className="text-xs text-gray-500 mt-1">Enter any CPT, ICD-10, or HCPCS codes from your bill</p>
                         </div>
@@ -1002,7 +1005,7 @@ export default function BlitzDemo() {
                             placeholder="e.g., Duplicate lab charges, excessive ER fees, services not received..."
                             value={billDetails.specificConcerns}
                             onChange={(e) => setBillDetails(prev => ({ ...prev, specificConcerns: e.target.value }))}
-                            className="min-h-[80px]"
+                            className="!bg-white min-h-[80px]"
                           />
                         </div>
                       </motion.div>
@@ -1060,7 +1063,7 @@ export default function BlitzDemo() {
                 </Card>
                 
                 {/* File Upload Area */}
-                <Card className="p-6">
+                <Card className="!bg-white p-6">
                   <div
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
@@ -1184,7 +1187,7 @@ export default function BlitzDemo() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="space-y-6"
               >
-                <Card className="p-8 text-center">
+                <Card className="!bg-white p-8 text-center">
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -1313,7 +1316,7 @@ export default function BlitzDemo() {
                       transition={{ delay: 0.3 + (index * 0.1) }}
                       className="w-full"
                     >
-                      <Card className="p-4 h-full">
+                      <Card className="!bg-white p-4 h-full">
                         <div className="flex items-center gap-3">
                           <div className={`p-2 rounded-lg ${metric.bgColor} flex-shrink-0`}>
                             <metric.icon className={`h-4 w-4 ${metric.color}`} />
@@ -1329,7 +1332,7 @@ export default function BlitzDemo() {
                 </div>
 
                 {/* Detailed Analysis Breakdown */}
-                <Card className="p-6">
+                <Card className="!bg-white p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <Brain className="h-5 w-5 text-blue-600" />
                     AI Analysis Breakdown
@@ -1357,7 +1360,7 @@ export default function BlitzDemo() {
                 </Card>
 
                 {/* Detected Issues */}
-                <Card className="p-6">
+                <Card className="!bg-white p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5 text-red-600" />
                     Issues Detected
@@ -1399,7 +1402,7 @@ export default function BlitzDemo() {
                 </Card>
 
                 {/* Key Insights */}
-                <Card className="p-6">
+                <Card className="!bg-white p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                     <Eye className="h-5 w-5 text-green-600" />
                     AI-Generated Insights
