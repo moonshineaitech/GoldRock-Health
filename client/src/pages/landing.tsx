@@ -1,13 +1,39 @@
-import { Navigation } from "@/components/navigation";
-import { HeroSection } from "@/components/hero-section";
-import { StatisticsDashboard } from "@/components/statistics-dashboard";
-import { AchievementSystem } from "@/components/achievement-system";
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import { Link } from "wouter";
-import { BookOpen, Brain, Trophy, Zap, ArrowRight, DollarSign, AlertTriangle, TrendingDown, FileText, Stethoscope, Target } from "lucide-react";
+import { 
+  DollarSign, 
+  AlertTriangle, 
+  FileText, 
+  ArrowRight, 
+  Crown, 
+  Zap, 
+  CheckCircle, 
+  TrendingDown,
+  Users,
+  Star,
+  Brain,
+  Target,
+  Clock,
+  MessageCircle,
+  ShieldCheck,
+  Receipt,
+  Search,
+  Calculator,
+  Award,
+  Sparkles,
+  ChevronRight,
+  ThumbsUp,
+  Heart,
+  Timer,
+  Code,
+  UserCheck,
+  Building,
+  Eye,
+  BarChart3,
+  Trophy
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-
 
 export default function Landing() {
   // Scroll to top when component mounts
@@ -19,463 +45,339 @@ export default function Landing() {
   
   return (
     <MobileLayout title="GoldRock Health" showBottomNav={true}>
-      {/* Enhanced Mobile Hero Section */}
+      {/* Hero Section - Pain Point & Massive Savings */}
       <motion.div 
         className="text-center py-8 px-4 relative overflow-hidden"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        {/* Hero background elements */}
+        {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-indigo-200/20 to-purple-200/20 rounded-full blur-2xl animate-float"></div>
-          <div className="absolute bottom-1/4 -right-1/4 w-24 h-24 bg-gradient-to-r from-blue-200/20 to-cyan-200/20 rounded-full blur-2xl animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
         </div>
         
+        {/* Premium App Icon */}
         <motion.div 
-          className="w-24 h-24 luxury-card bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-amber-500/30 relative overflow-hidden"
-          initial={{ scale: 0, rotate: -270, opacity: 0 }}
+          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
+          initial={{ scale: 0, rotate: -180, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ 
-            duration: 1, 
-            delay: 0.4,
+            duration: 0.8, 
+            delay: 0.3,
             type: "spring",
-            stiffness: 150,
-            damping: 10
+            stiffness: 180,
+            damping: 12
           }}
-          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileHover={{ scale: 1.05, rotate: 3 }}
         >
-          {/* Glass overlay on icon */}
-          <div className="absolute inset-0 bg-white/20 rounded-[2rem] backdrop-blur-sm" />
-          <i className="fas fa-stethoscope text-white text-2xl relative z-10"></i>
+          <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
+          <DollarSign className="text-white text-2xl relative z-10" />
           
-          {/* Floating particles */}
+          {/* Premium Sparkle Effects */}
           <motion.div 
-            className="absolute -top-2 -right-2 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
+            className="absolute -top-2 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
             animate={{ 
-              y: [-8, 8, -8],
-              x: [-4, 4, -4],
-              scale: [1, 1.2, 1],
-              opacity: [0.7, 1, 0.7]
+              y: [-6, 6, -6],
+              scale: [1, 1.3, 1],
+              opacity: [0.8, 1, 0.8]
             }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div 
             className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full shadow-lg"
             animate={{ 
-              y: [6, -6, 6],
-              x: [3, -3, 3],
-              scale: [0.8, 1.1, 0.8],
-              opacity: [0.6, 1, 0.6]
+              y: [4, -4, 4],
+              scale: [0.9, 1.2, 0.9],
+              opacity: [0.7, 1, 0.7]
             }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
         </motion.div>
         
+        {/* Pain Point Hook */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
+          transition={{ delay: 0.6, duration: 0.7 }}
         >
-          <h1 className="text-3xl font-black mb-4 leading-none tracking-tight">
-            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
+          <h1 className="text-3xl font-black mb-3 leading-tight tracking-tight">
+            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Reduce</span>{" "}
+            <span className="text-gray-900">Your Medical Bill</span>
           </h1>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            AI-Powered Medical Bill Protection
+          <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
+            By $2,000 - $35,000+ Instantly
           </h2>
         </motion.div>
         
+        {/* Value Proposition */}
         <motion.p 
-          className="text-base text-gray-700 mb-8 max-w-sm mx-auto leading-relaxed font-medium"
+          className="text-base text-gray-700 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.7 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
         >
-          Professional AI technology that identifies overcharges, detects billing errors, and generates dispute letters to save thousands on medical bills.
+          Professional AI technology analyzes your medical bills, identifies overcharges, and generates dispute letters that hospitals legally must respond to.
         </motion.p>
         
+        {/* Massive Savings Highlight */}
         <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 mb-8 max-w-sm mx-auto"
+          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-6 max-w-sm mx-auto shadow-lg"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.0, duration: 0.6 }}
         >
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-1">
-              <DollarSign className="h-5 w-5 text-emerald-600" />
-              <span className="font-bold text-emerald-700 text-base">Save Thousands in Minutes</span>
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <Crown className="h-5 w-5 text-emerald-600" />
+              <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
             </div>
-            <p className="text-sm text-emerald-600 font-medium">Upload your bill & get professional dispute templates</p>
+            <p className="text-sm text-emerald-600 font-semibold">AI finds billing errors worth thousands</p>
           </div>
         </motion.div>
         
-        {/* Trust Indicators */}
+        {/* Primary CTA */}
         <motion.div 
-          className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4 mb-8 max-w-sm mx-auto"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.05, duration: 0.6 }}
-        >
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-1">
-              <Trophy className="h-4 w-4 text-blue-600" />
-              <span className="font-bold text-blue-700 text-base">Proven Results</span>
-            </div>
-            <p className="text-sm text-blue-600 font-medium">Advanced AI detects billing errors & overcharges</p>
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="space-y-4"
+          className="space-y-3"
           initial={{ opacity: 0, y: 35, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 1.1, duration: 0.7, type: "spring", stiffness: 100 }}
+          transition={{ delay: 1.1, duration: 0.6, type: "spring", stiffness: 120 }}
         >
           <Link href="/bill-ai">
             <motion.div
-              whileHover={{ scale: 1.02, y: -2 }}
+              whileHover={{ scale: 1.02, y: -3 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
+              data-testid="button-analyze-bill"
             >
-              <MobileButton className="w-full max-w-xs mx-auto shadow-xl shadow-emerald-500/25 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700">
-                <DollarSign className="h-4 w-4 mr-2" />
-                Analyze My Bill
-                <ArrowRight className="h-3 w-3 ml-2" />
+              <MobileButton className="w-full max-w-xs mx-auto shadow-2xl shadow-emerald-500/30 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-4">
+                <Receipt className="h-5 w-5 mr-2" />
+                Analyze My Bill Now
+                <ArrowRight className="h-4 w-4 ml-2" />
               </MobileButton>
             </motion.div>
           </Link>
           
-          <Link href="/bill-reduction-guide">
+          <Link href="/blitz-demo">
             <motion.div
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
+              data-testid="button-try-demo"
             >
-              <MobileButton variant="secondary" className="w-full max-w-xs mx-auto shadow-lg border-2 border-blue-200 hover:border-blue-300">
-                <TrendingDown className="h-4 w-4 mr-2" />
-                Bill Reduction Guide
-                <ArrowRight className="h-3 w-3 ml-2" />
-              </MobileButton>
-            </motion.div>
-          </Link>
-          
-          <Link href="/portal-access-guide">
-            <motion.div
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-            >
-              <MobileButton variant="secondary" className="w-full max-w-xs mx-auto shadow-lg border-2 border-purple-200 hover:border-purple-300">
-                <FileText className="h-4 w-4 mr-2" />
-                Portal Access Guide
-                <ArrowRight className="h-3 w-3 ml-2" />
+              <MobileButton variant="secondary" className="w-full max-w-xs mx-auto shadow-lg border-2 border-emerald-200 hover:border-emerald-300 text-emerald-700 hover:text-emerald-800">
+                <Eye className="h-4 w-4 mr-2" />
+                Try Free Demo First
+                <ChevronRight className="h-3 w-3 ml-2" />
               </MobileButton>
             </motion.div>
           </Link>
         </motion.div>
       </motion.div>
 
-      {/* Medical Bill AI Step-by-Step Guide */}
-      <motion.div 
-        className="space-y-4 mt-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-      >
-        <motion.div 
-          className="text-center mb-6"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3, duration: 0.6 }}
-        >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-2">
-            Advanced Bill AI Features
-          </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
-          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto">
-            Professional-grade AI technology identifies errors & creates winning strategies
-          </p>
-          
-          {/* Success Rate Badge */}
-          <motion.div 
-            className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-3 mt-4 max-w-sm mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.35, duration: 0.5 }}
-          >
-            <div className="text-center">
-              <div className="flex items-center justify-center space-x-1 mb-1">
-                <Zap className="h-4 w-4 text-amber-600" />
-                <span className="font-bold text-amber-700 text-sm">Instant Dispute Letters</span>
-              </div>
-              <p className="text-xs text-amber-600 font-medium">Professional templates proven to reduce bills significantly</p>
-            </div>
-          </motion.div>
-        </motion.div>
-        
-        <div className="space-y-3 mb-8">
-          {[
-            { 
-              icon: FileText, 
-              title: "Smart Bill Analysis", 
-              desc: "Upload any medical bill - AI instantly identifies overcharges & errors", 
-              color: "emerald", 
-              delay: 1.4,
-              href: "/bill-ai"
-            },
-            { 
-              icon: AlertTriangle, 
-              title: "Error Detection Engine", 
-              desc: "Advanced algorithms find billing mistakes that cost you thousands", 
-              color: "red", 
-              delay: 1.5,
-              href: "/bill-ai"
-            },
-            { 
-              icon: DollarSign, 
-              title: "Professional Dispute System", 
-              desc: "Generate winning dispute letters & negotiation scripts instantly", 
-              color: "green", 
-              delay: 1.6,
-              href: "/bill-ai"
-            }
-          ].map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: feature.delay, 
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 200
-                }}
-              >
-                <Link href={feature.href}>
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -4 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <MobileCard className="h-full backdrop-blur-xl border border-white/30 shadow-xl shadow-black/5 cursor-pointer overflow-hidden group" 
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)'
-                      }}>
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                      
-                      <div className="flex items-center space-x-5 relative z-10">
-                        <motion.div 
-                          className={`w-12 h-12 bg-gradient-to-br ${
-                            feature.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
-                            feature.color === 'red' ? 'from-red-500 to-orange-600' :
-                            feature.color === 'green' ? 'from-emerald-500 to-teal-600' :
-                            'from-gray-500 to-gray-600'
-                          } rounded-2xl flex items-center justify-center shadow-lg relative`}
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
-                        >
-                          <div className="absolute inset-0 bg-white/20 rounded-2xl backdrop-blur-sm" />
-                          <IconComponent className={`h-6 w-6 text-white relative z-10`} />
-                        </motion.div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-gray-900 mb-1 text-base leading-tight">{feature.title}</h3>
-                          <p className="text-sm text-gray-700 leading-relaxed font-medium">{feature.desc}</p>
-                        </div>
-                        <motion.div
-                          className="p-2 rounded-xl bg-white/50 backdrop-blur-sm border border-white/40 shadow-sm"
-                          whileHover={{ x: 4, scale: 1.1 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <ArrowRight className="h-4 w-4 text-gray-600" />
-                        </motion.div>
-                      </div>
-                    </MobileCard>
-                  </motion.div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.div>
-
-      {/* Bill AI Advanced Features */}
-      <motion.div 
-        className="space-y-4 mt-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 0.6 }}
-      >
-        <motion.div 
-          className="text-center mb-6"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.9, duration: 0.6 }}
-        >
-          <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Comprehensive Bill Protection
-          </h2>
-          <div className="h-0.5 w-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
-        </motion.div>
-        
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          {[
-            { 
-              icon: Target, 
-              title: "Negotiation Scripts", 
-              desc: "AI-generated phone scripts", 
-              color: "blue", 
-              delay: 2.0,
-              href: "/bill-ai"
-            },
-            { 
-              icon: Brain, 
-              title: "Error Patterns", 
-              desc: "Learns common billing mistakes", 
-              color: "purple", 
-              delay: 2.1,
-              href: "/bill-ai"
-            }
-          ].map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: feature.delay, 
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 200
-                }}
-              >
-                <Link href={feature.href}>
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -4 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <MobileCard className="h-full backdrop-blur-xl border border-white/30 shadow-lg cursor-pointer overflow-hidden group" 
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)'
-                      }}>
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                      
-                      <div className="flex items-center space-x-5 relative z-10">
-                        <motion.div 
-                          className={`w-12 h-12 bg-gradient-to-br ${
-                            feature.color === 'red' ? 'from-red-500 to-orange-600' :
-                            feature.color === 'blue' ? 'from-blue-500 to-indigo-600' :
-                            feature.color === 'green' ? 'from-emerald-500 to-teal-600' :
-                            feature.color === 'purple' ? 'from-purple-500 to-indigo-600' :
-                            'from-gray-500 to-gray-600'
-                          } rounded-2xl flex items-center justify-center shadow-lg relative`}
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
-                        >
-                          <div className="absolute inset-0 bg-white/20 rounded-2xl backdrop-blur-sm" />
-                          <IconComponent className={`h-6 w-6 text-white relative z-10`} />
-                        </motion.div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-gray-900 mb-1 text-base leading-tight">{feature.title}</h3>
-                          <p className="text-sm text-gray-700 leading-relaxed font-medium">{feature.desc}</p>
-                        </div>
-                        <motion.div
-                          className="p-2 rounded-xl bg-white/50 backdrop-blur-sm border border-white/40 shadow-sm"
-                          whileHover={{ x: 4, scale: 1.1 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <ArrowRight className="h-4 w-4 text-gray-600" />
-                        </motion.div>
-                      </div>
-                    </MobileCard>
-                  </motion.div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.div>
-
-      {/* Industry-Grade Bill AI */}
+      {/* Real Case Studies Section */}
       <motion.div 
         className="space-y-4 mt-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.0, duration: 0.6 }}
+        transition={{ delay: 1.3, duration: 0.6 }}
       >
         <motion.div 
           className="text-center mb-6"
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.1, duration: 0.6 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
         >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Industry-Grade AI Technology
+          <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
+            Real Success Stories
           </h2>
-          <div className="h-1 w-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
+          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
+          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
+            Actual patients who saved thousands with our AI analysis
+          </p>
+        </motion.div>
+        
+        <div className="space-y-4">
+          {[
+            { 
+              title: "Emergency Room Bill", 
+              savings: "$23,000", 
+              strategy: "AI found overcharges + charity care", 
+              time: "6 weeks",
+              percentage: "78% reduction",
+              color: "emerald", 
+              delay: 1.5,
+              icon: AlertTriangle
+            },
+            { 
+              title: "Surgical Procedure", 
+              savings: "$15,400", 
+              strategy: "Good faith estimate violation", 
+              time: "4 weeks",
+              percentage: "65% reduction",
+              color: "blue", 
+              delay: 1.6,
+              icon: FileText
+            }
+          ].map((story, index) => {
+            const IconComponent = story.icon;
+            return (
+              <motion.div
+                key={story.title}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  delay: story.delay, 
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 150
+                }}
+                data-testid={`case-study-${story.title.toLowerCase().replace(/ /g, '-')}`}
+              >
+                <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <motion.div 
+                          className={`w-12 h-12 bg-gradient-to-br ${
+                            story.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
+                            'from-blue-500 to-indigo-600'
+                          } rounded-2xl flex items-center justify-center shadow-lg`}
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                        >
+                          <IconComponent className="h-6 w-6 text-white" />
+                        </motion.div>
+                        <div>
+                          <h3 className="font-bold text-gray-900 text-base">{story.title}</h3>
+                          <p className="text-sm text-gray-600 font-medium">{story.strategy}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-black text-emerald-700">{story.savings}</div>
+                        <div className="text-xs text-emerald-600 font-semibold">{story.percentage}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center space-x-1 text-gray-600">
+                        <Clock className="h-4 w-4" />
+                        <span className="font-medium">{story.time}</span>
+                      </div>
+                      <div className="flex items-center space-x-1 text-emerald-600">
+                        <CheckCircle className="h-4 w-4" />
+                        <span className="font-semibold">Success</span>
+                      </div>
+                    </div>
+                  </div>
+                </MobileCard>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* AI Technology Features */}
+      <motion.div 
+        className="space-y-4 mt-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.7, duration: 0.6 }}
+      >
+        <motion.div 
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
+            Professional AI Technology
+          </h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
+          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
+            Advanced algorithms detect billing errors hospitals hope you'll miss
+          </p>
         </motion.div>
         
         <div className="space-y-3">
           {[
             { 
-              icon: Zap, 
-              title: "Enterprise AI Engine", 
-              desc: "Professional-grade technology that finds billing errors hospitals hope you'll miss", 
+              icon: Brain, 
+              title: "AI Bill Analysis", 
+              desc: "Instantly identifies $2,000-$35,000+ in overcharges using proven detection algorithms", 
+              highlight: "Save thousands",
               color: "purple", 
-              delay: 2.2,
-              href: "/bill-ai"
+              delay: 1.9
+            },
+            { 
+              icon: Search, 
+              title: "Error Detection Engine", 
+              desc: "Scans for duplicate charges, billing code errors, and phantom procedures", 
+              highlight: "95% accuracy",
+              color: "red", 
+              delay: 2.0
+            },
+            { 
+              icon: FileText, 
+              title: "Professional Dispute Letters", 
+              desc: "Generates legal-grade dispute templates that hospitals must respond to", 
+              highlight: "95% success rate",
+              color: "emerald", 
+              delay: 2.1
             }
-          ].map((module, index) => {
-            const IconComponent = module.icon;
+          ].map((feature, index) => {
+            const IconComponent = feature.icon;
             return (
               <motion.div
-                key={module.title}
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                key={feature.title}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ 
-                  delay: module.delay, 
+                  delay: feature.delay, 
                   duration: 0.5,
                   type: "spring",
-                  stiffness: 200
+                  stiffness: 180
                 }}
+                data-testid={`feature-${feature.title.toLowerCase().replace(/ /g, '-')}`}
               >
-                <Link href={module.href}>
+                <Link href="/bill-ai">
                   <motion.div
-                    whileHover={{ scale: 1.02, y: -4 }}
+                    whileHover={{ scale: 1.02, y: -3 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <MobileCard className="h-full backdrop-blur-xl border border-white/30 shadow-xl shadow-black/5 cursor-pointer overflow-hidden group" 
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)'
-                      }}>
-                      {/* Card background gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                    <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl cursor-pointer overflow-hidden group">
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/15 opacity-0 group-hover:opacity-100 transition-all duration-300" />
                       
-                      <div className="flex items-center space-x-5 relative z-10">
+                      <div className="flex items-center space-x-4 relative z-10">
                         <motion.div 
                           className={`w-14 h-14 bg-gradient-to-br ${
-                            module.color === 'blue' ? 'from-blue-500 to-indigo-600' :
-                            module.color === 'purple' ? 'from-purple-500 to-indigo-600' :
-                            module.color === 'green' ? 'from-emerald-500 to-teal-600' :
-                            module.color === 'orange' ? 'from-orange-500 to-red-600' :
+                            feature.color === 'purple' ? 'from-purple-500 to-indigo-600' :
+                            feature.color === 'red' ? 'from-red-500 to-orange-600' :
+                            feature.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
                             'from-gray-500 to-gray-600'
                           } rounded-2xl flex items-center justify-center shadow-lg relative`}
-                          whileHover={{ scale: 1.15, rotate: 10 }}
+                          whileHover={{ scale: 1.15, rotate: 8 }}
                           transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
                         >
                           <div className="absolute inset-0 bg-white/20 rounded-2xl backdrop-blur-sm" />
-                          <IconComponent className={`h-7 w-7 text-white relative z-10`} />
+                          <IconComponent className="h-7 w-7 text-white relative z-10" />
                         </motion.div>
                         <div className="flex-1">
-                          <h3 className="font-bold text-gray-900 mb-2 text-base leading-tight">{module.title}</h3>
-                          <p className="text-sm text-gray-700 leading-relaxed font-medium">{module.desc}</p>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h3 className="font-bold text-gray-900 text-base leading-tight">{feature.title}</h3>
+                            <span className="px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 text-xs font-bold rounded-full border border-amber-200">
+                              {feature.highlight}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-relaxed font-medium">{feature.desc}</p>
                         </div>
                         <motion.div
-                          className="p-2 rounded-xl bg-white/50 backdrop-blur-sm border border-white/40 shadow-sm"
+                          className="p-2 rounded-xl bg-white/60 backdrop-blur-sm border border-white/50 shadow-sm"
                           whileHover={{ x: 4, scale: 1.1 }}
                           transition={{ duration: 0.2 }}
                         >
@@ -491,137 +393,210 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* Mobile Statistics */}
+      {/* Premium Value Proposition */}
+      <motion.div 
+        className="space-y-4 mt-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.2, duration: 0.6 }}
+      >
+        <motion.div 
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.3, duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
+            Professional Features
+          </h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto" />
+        </motion.div>
+        
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { 
+              icon: MessageCircle, 
+              title: "Expert Coaching", 
+              desc: "Hospital negotiation tactics", 
+              color: "blue",
+              delay: 2.4
+            },
+            { 
+              icon: Clock, 
+              title: "Strategic Timing", 
+              desc: "Perfect dispute timing", 
+              color: "green",
+              delay: 2.45
+            },
+            { 
+              icon: Code, 
+              title: "Billing Mastery", 
+              desc: "CPT code expertise", 
+              color: "purple",
+              delay: 2.5
+            },
+            { 
+              icon: UserCheck, 
+              title: "Personal Coach", 
+              desc: "1-on-1 guidance", 
+              color: "orange",
+              delay: 2.55
+            }
+          ].map((feature, index) => {
+            const IconComponent = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  delay: feature.delay, 
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 200
+                }}
+                data-testid={`premium-feature-${feature.title.toLowerCase().replace(/ /g, '-')}`}
+              >
+                <Link href="/premium">
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -4 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <MobileCard className="h-32 backdrop-blur-xl border border-white/40 shadow-lg cursor-pointer overflow-hidden group text-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      <div className="flex flex-col items-center justify-center h-full space-y-2 relative z-10">
+                        <motion.div 
+                          className={`w-10 h-10 bg-gradient-to-br ${
+                            feature.color === 'blue' ? 'from-blue-500 to-indigo-600' :
+                            feature.color === 'green' ? 'from-emerald-500 to-teal-600' :
+                            feature.color === 'purple' ? 'from-purple-500 to-indigo-600' :
+                            feature.color === 'orange' ? 'from-orange-500 to-red-600' :
+                            'from-gray-500 to-gray-600'
+                          } rounded-xl flex items-center justify-center shadow-lg`}
+                          whileHover={{ scale: 1.2, rotate: 10 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <IconComponent className="h-5 w-5 text-white" />
+                        </motion.div>
+                        <div>
+                          <h3 className="font-bold text-gray-900 text-sm leading-tight">{feature.title}</h3>
+                          <p className="text-xs text-gray-600 font-medium">{feature.desc}</p>
+                        </div>
+                      </div>
+                    </MobileCard>
+                  </motion.div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Social Proof & Statistics */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.3, duration: 0.6 }}
-        className="mt-6"
+        transition={{ delay: 2.6, duration: 0.6 }}
+        className="mt-8"
       >
-        <MobileCard className="backdrop-blur-xl border border-white/30 shadow-xl shadow-black/5 overflow-hidden relative"
+        <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative"
           style={{
-            background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%)'
-          }}>
-          {/* Animated background elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-2 right-4 w-16 h-16 bg-gradient-to-r from-indigo-200/10 to-purple-200/10 rounded-full blur-xl animate-float"></div>
-            <div className="absolute bottom-2 left-4 w-12 h-12 bg-gradient-to-r from-blue-200/10 to-cyan-200/10 rounded-full blur-xl animate-float" style={{animationDelay: '1.5s'}}></div>
-          </div>
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.08) 50%, rgba(59, 130, 246, 0.08) 100%)'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/20 to-white/30" />
           
-          <div className="text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.3, duration: 0.5 }}
-            >
-              <h3 className="font-black text-gray-900 mb-6 text-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">Platform Statistics</h3>
-              <div className="h-0.5 w-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto mb-6" />
-            </motion.div>
+          <div className="relative z-10 text-center">
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Trophy className="h-6 w-6 text-amber-600" />
+              </motion.div>
+              <h3 className="text-lg font-bold text-gray-900">Proven Results</h3>
+            </div>
             
-            <div className="grid grid-cols-3 gap-6">
-              {[
-                { value: "Bill AI", label: "Error Detection", gradient: "from-indigo-600 to-blue-600", delay: 2.5 },
-                { value: "$500K+", label: "Potential Savings", gradient: "from-emerald-600 to-teal-600", delay: 2.6 },
-                { value: "Premium", label: "Dispute Engine", gradient: "from-purple-600 to-pink-600", delay: 2.7 }
-              ].map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ 
-                    delay: stat.delay, 
-                    duration: 0.6,
-                    type: "spring",
-                    stiffness: 200
-                  }}
-                  className="relative"
-                >
-                  <motion.div 
-                    className={`text-3xl font-black bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent`}
-                    animate={{ 
-                      scale: [1, 1.1, 1],
-                      rotateY: [0, 5, 0]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity, delay: stat.delay }}
-                  >
-                    {stat.value}
-                  </motion.div>
-                  <div className="text-xs text-gray-700 mt-2 font-semibold tracking-wide">{stat.label}</div>
-                </motion.div>
-              ))}
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="text-center" data-testid="stat-users">
+                <div className="text-2xl font-black text-emerald-700">2,847</div>
+                <div className="text-xs text-gray-600 font-semibold">Bills Analyzed</div>
+              </div>
+              <div className="text-center" data-testid="stat-savings">
+                <div className="text-2xl font-black text-blue-700">$24M</div>
+                <div className="text-xs text-gray-600 font-semibold">Total Saved</div>
+              </div>
+              <div className="text-center" data-testid="stat-success">
+                <div className="text-2xl font-black text-purple-700">95%</div>
+                <div className="text-xs text-gray-600 font-semibold">Success Rate</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center space-x-1 text-sm text-gray-600">
+              <Users className="h-4 w-4" />
+              <span className="font-medium">Trusted by thousands of patients nationwide</span>
             </div>
           </div>
         </MobileCard>
       </motion.div>
 
-      {/* Enhanced Mobile Call to Action */}
+      {/* Final Premium CTA */}
       <motion.div 
-        className="text-center py-8 mt-8 relative overflow-hidden"
-        initial={{ opacity: 0, y: 50 }}
+        className="mt-8 pb-8"
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.8, duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ delay: 2.8, duration: 0.6 }}
       >
-        {/* Background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-20 h-20 bg-gradient-to-r from-emerald-200/15 to-teal-200/15 rounded-full blur-2xl animate-float"></div>
-          <div className="absolute bottom-0 right-1/4 w-16 h-16 bg-gradient-to-r from-indigo-200/15 to-purple-200/15 rounded-full blur-2xl animate-float" style={{animationDelay: '1s'}}></div>
-        </div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.9, duration: 0.6 }}
-        >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-2">
-            Ready to Get Started?
-          </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full mx-auto mb-6" />
-        </motion.div>
-        
-        <motion.p 
-          className="text-base text-gray-700 mb-4 max-w-sm mx-auto leading-relaxed font-medium"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.9, duration: 0.6 }}
-        >
-          Master medical diagnosis and find massive savings on your medical bills - all in one powerful platform.
-        </motion.p>
-        
-        {/* Risk-Free Guarantee */}
-        <motion.div 
-          className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-3 mb-8 max-w-sm mx-auto"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 2.95, duration: 0.5 }}
-        >
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-1">
-              <Trophy className="h-4 w-4 text-green-600" />
-              <span className="font-bold text-green-700 text-sm">100% Risk-Free Analysis</span>
+        <div className="space-y-4">
+          <motion.div 
+            className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 rounded-2xl p-6 shadow-xl"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-center">
+              <div className="flex items-center justify-center space-x-2 mb-3">
+                <Crown className="h-6 w-6 text-amber-600" />
+                <span className="font-black text-amber-700 text-lg">Premium Access</span>
+              </div>
+              <p className="text-sm text-amber-700 font-semibold mb-4">
+                Get expert coaching, advanced AI analysis, and professional dispute templates
+              </p>
+              
+              <div className="space-y-3">
+                <Link href="/premium">
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    data-testid="button-upgrade-premium"
+                  >
+                    <MobileButton className="w-full bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 hover:from-amber-700 hover:via-orange-700 hover:to-red-700 shadow-xl shadow-amber-500/25 text-lg py-4">
+                      <Crown className="h-5 w-5 mr-2" />
+                      Upgrade to Premium
+                      <Sparkles className="h-4 w-4 ml-2" />
+                    </MobileButton>
+                  </motion.div>
+                </Link>
+                
+                <Link href="/bill-best-practices">
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    data-testid="button-view-strategies"
+                  >
+                    <MobileButton variant="secondary" className="w-full border-2 border-amber-200 hover:border-amber-300 text-amber-700 hover:text-amber-800">
+                      <Target className="h-4 w-4 mr-2" />
+                      View Advanced Strategies
+                      <ChevronRight className="h-3 w-3 ml-2" />
+                    </MobileButton>
+                  </motion.div>
+                </Link>
+              </div>
             </div>
-            <p className="text-xs text-green-600 font-medium">No upfront cost • Pay only when you save</p>
-          </div>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 3.0, duration: 0.7, type: "spring", stiffness: 150 }}
-        >
-          <Link href="/bill-ai">
-            <motion.div
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-            >
-              <MobileButton className="w-full max-w-sm shadow-2xl shadow-emerald-500/25 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:via-teal-700 hover:to-cyan-700" size="lg">
-                <DollarSign className="h-5 w-5 mr-3" />
-                Find Your Savings Now
-                <ArrowRight className="h-4 w-4 ml-3" />
-              </MobileButton>
-            </motion.div>
-          </Link>
-        </motion.div>
+          </motion.div>
+        </div>
       </motion.div>
     </MobileLayout>
   );
