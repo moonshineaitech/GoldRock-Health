@@ -1,19 +1,278 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
-import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code, ShieldCheck } from "lucide-react";
-import { motion } from "framer-motion";
+import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code, ShieldCheck, Hexagon, Triangle, Circle, Square } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence, useAnimation, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { apiRequest } from "@/lib/queryClient";
 
 if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
   throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
 }
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
+// 2025 Modern Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 60, opacity: 0, scale: 0.8 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+      duration: 0.8,
+    },
+  },
+};
+
+const floatingVariants = {
+  animate: {
+    y: [-20, 20, -20],
+    x: [-10, 10, -10],
+    rotate: [0, 5, -5, 0],
+    scale: [1, 1.05, 1],
+    transition: {
+      duration: 8,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+};
+
+const particleVariants = {
+  animate: (i: number) => ({
+    y: [-30, -80, -30],
+    x: [0, Math.sin(i) * 40, 0],
+    opacity: [0, 1, 0],
+    scale: [0, 1, 0],
+    transition: {
+      duration: 4 + i * 0.5,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: i * 0.3,
+    },
+  }),
+};
+
+const shimmerVariants = {
+  initial: { x: '-100%', opacity: 0 },
+  animate: {
+    x: '100%',
+    opacity: [0, 1, 0],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+};
+
+// Floating Background Elements Component
+function FloatingElements() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Dynamic Gradient Morphing Background */}
+      <motion.div
+        className="absolute inset-0 opacity-30"
+        animate={{
+          background: [
+            'linear-gradient(45deg, #06b6d4, #8b5cf6, #06b6d4)',
+            'linear-gradient(135deg, #8b5cf6, #06b6d4, #10b981)',
+            'linear-gradient(225deg, #10b981, #f59e0b, #8b5cf6)',
+            'linear-gradient(315deg, #f59e0b, #06b6d4, #10b981)',
+            'linear-gradient(45deg, #06b6d4, #8b5cf6, #06b6d4)',
+          ],
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      
+      {/* Floating Geometric Shapes */}
+      {[...Array(8)].map((_, i) => (
+        <motion.div
+          key={i}
+          className={`absolute ${i % 4 === 0 ? 'text-cyan-400/20' : 
+                               i % 4 === 1 ? 'text-purple-400/20' : 
+                               i % 4 === 2 ? 'text-emerald-400/20' : 'text-amber-400/20'}`}
+          style={{
+            left: `${10 + (i * 12)}%`,
+            top: `${20 + (i % 3) * 25}%`,
+          }}
+          variants={floatingVariants}
+          animate="animate"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: i * 0.2 }}
+        >
+          {i % 4 === 0 && <Hexagon className="w-8 h-8" />}
+          {i % 4 === 1 && <Triangle className="w-6 h-6" />}
+          {i % 4 === 2 && <Circle className="w-7 h-7" />}
+          {i % 4 === 3 && <Square className="w-6 h-6" />}
+        </motion.div>
+      ))}
+
+      {/* Particle System */}
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={`particle-${i}`}
+          className="absolute w-1 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          variants={particleVariants}
+          animate="animate"
+          custom={i}
+        />
+      ))}
+
+      {/* Organic Blob Shapes */}
+      <motion.div
+        className="absolute top-1/4 -left-20 w-40 h-40 bg-gradient-to-br from-cyan-200/10 to-purple-200/10 rounded-full blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [-20, 20, -20],
+          y: [-20, 20, -20],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 -right-20 w-32 h-32 bg-gradient-to-br from-emerald-200/10 to-amber-200/10 rounded-full blur-3xl"
+        animate={{
+          scale: [1.2, 1, 1.2],
+          x: [20, -20, 20],
+          y: [20, -20, 20],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      />
+    </div>
+  );
+}
+
+// Enhanced Premium Icon with Orbital Effects
+function EnhancedPremiumIcon({ size = "w-20 h-20" }: { size?: string }) {
+  return (
+    <motion.div
+      className={`${size} relative mx-auto mb-8`}
+      whileHover="hover"
+      initial="initial"
+      animate="animate"
+    >
+      {/* Orbital Rings */}
+      <motion.div
+        className="absolute inset-0 border border-amber-400/30 rounded-full"
+        variants={{
+          initial: { scale: 1, opacity: 0.3 },
+          animate: { scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] },
+          hover: { scale: 1.3, opacity: 0.8 },
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute inset-2 border border-emerald-400/30 rounded-full"
+        variants={{
+          initial: { scale: 1, opacity: 0.2 },
+          animate: { scale: [1, 1.15, 1], opacity: [0.2, 0.5, 0.2] },
+          hover: { scale: 1.25, opacity: 0.7 },
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
+      />
+
+      {/* Main Icon Container */}
+      <motion.div
+        className="relative w-full h-full bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-amber-500/25 overflow-hidden"
+        variants={{
+          initial: { scale: 1, rotate: 0 },
+          animate: { 
+            scale: [1, 1.05, 1],
+            rotate: [0, 2, -2, 0],
+          },
+          hover: { 
+            scale: 1.1, 
+            rotate: 5,
+            boxShadow: "0 25px 50px -12px rgba(245, 158, 11, 0.4)",
+          },
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
+        <Crown className="text-white text-2xl relative z-10" />
+
+        {/* Shimmer Effect */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+          variants={shimmerVariants}
+          initial="initial"
+          animate="animate"
+        />
+
+        {/* Orbiting Particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-white/60 rounded-full"
+            style={{
+              top: '50%',
+              left: '50%',
+            }}
+            animate={{
+              rotate: 360,
+              x: Math.cos((i * 60) * Math.PI / 180) * 40,
+              y: Math.sin((i * 60) * Math.PI / 180) * 40,
+            }}
+            transition={{
+              duration: 8 + i,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        ))}
+      </motion.div>
+    </motion.div>
+  );
+}
 
 const premiumFeatures = [
   {
@@ -118,120 +377,201 @@ const subscriptionPlans = [
 ];
 
 function LoginPrompt() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   return (
-    <div className="space-y-6">
-      {/* Hero Section with Enhanced Design */}
+    <motion.div 
+      ref={ref}
+      className="space-y-6 relative"
+      variants={containerVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+    >
+      {/* Enhanced Hero Section with 2025 Design */}
       <motion.div 
-        className="text-center py-8 px-4 relative overflow-hidden"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="text-center py-12 px-4 relative overflow-hidden min-h-[600px] flex flex-col justify-center"
+        variants={itemVariants}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-        </div>
+        {/* Advanced Floating Background System */}
+        <FloatingElements />
         
-        {/* Premium App Icon */}
-        <motion.div 
-          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
-          initial={{ scale: 0, rotate: -180, opacity: 0 }}
-          animate={{ scale: 1, rotate: 0, opacity: 1 }}
-          transition={{ 
-            duration: 0.8, 
-            delay: 0.3,
-            type: "spring",
-            stiffness: 180,
-            damping: 12
-          }}
-          whileHover={{ scale: 1.05, rotate: 3 }}
-        >
-          <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
-          <Crown className="text-white text-2xl relative z-10" />
-          
-          {/* Premium Sparkle Effects */}
-          <motion.div 
-            className="absolute -top-2 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [-6, 6, -6],
-              scale: [1, 1.3, 1],
-              opacity: [0.8, 1, 0.8]
-            }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [4, -4, 4],
-              scale: [0.9, 1.2, 0.9],
-              opacity: [0.7, 1, 0.7]
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-        </motion.div>
-        
-        {/* Enhanced Headlines */}
+        {/* Enhanced Premium Icon with Orbital Effects */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.7 }}
+          variants={itemVariants}
+          transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
         >
-          <h1 className="text-3xl font-black mb-3 leading-tight tracking-tight">
-            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Premium</span>{" "}
-            <span className="text-gray-900">Bill Reduction</span>
-          </h1>
-          <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Save $2,000 - $35,000+ Per Bill
-          </h2>
+          <EnhancedPremiumIcon />
         </motion.div>
         
+        {/* 2025 Typography with Advanced Gradients */}
+        <motion.div
+          variants={itemVariants}
+          transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
+          className="relative z-10"
+        >
+          <motion.h1 
+            className="text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight"
+            animate={{
+              backgroundPosition: ["0%", "100%", "0%"],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              background: "linear-gradient(45deg, #f59e0b, #eab308, #10b981, #06b6d4, #8b5cf6, #f59e0b)",
+              backgroundSize: "400% 400%",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+            data-testid="text-premium-title"
+          >
+            Premium Bill Reduction
+          </motion.h1>
+          
+          <motion.h2 
+            className="text-2xl md:text-3xl font-bold mb-6 leading-tight"
+            variants={itemVariants}
+            transition={{ delay: 0.7 }}
+          >
+            <motion.span
+              className="inline-block"
+              animate={{
+                color: ["#10b981", "#06b6d4", "#8b5cf6", "#10b981"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              data-testid="text-savings-amount"
+            >
+              Save $2,000 - $35,000+ Per Bill
+            </motion.span>
+          </motion.h2>
+        </motion.div>
+        
+        {/* Enhanced Description with Parallax Effect */}
         <motion.p 
-          className="text-base text-gray-700 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          className="text-lg text-gray-700 mb-8 max-w-md mx-auto leading-relaxed font-medium relative z-10"
+          variants={itemVariants}
+          transition={{ delay: 0.9 }}
+          data-testid="text-description"
         >
           Sign in to access professional bill negotiation strategies, insider knowledge, and AI-powered medical training.
         </motion.p>
         
-        {/* Massive Savings Highlight */}
+        {/* 2025 Enhanced Savings Highlight with Glass Morphism */}
         <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-6 max-w-sm mx-auto shadow-lg"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
+          className="relative max-w-sm mx-auto mb-8"
+          variants={itemVariants}
+          transition={{ delay: 1.1 }}
         >
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Crown className="h-5 w-5 text-emerald-600" />
-              <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
+          <motion.div 
+            className="backdrop-blur-xl bg-gradient-to-br from-white/80 via-emerald-50/80 to-white/60 border border-white/40 rounded-3xl p-6 shadow-2xl overflow-hidden relative"
+            whileHover={{ 
+              scale: 1.05, 
+              boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.3)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            {/* Glassmorphism Shimmer Effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+              animate={{ x: ["-100%", "200%"] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                repeatDelay: 2,
+              }}
+            />
+            
+            <div className="text-center relative z-10">
+              <motion.div 
+                className="flex items-center justify-center space-x-3 mb-3"
+                animate={{ y: [0, -2, 0] }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
+                  <Crown className="h-6 w-6 text-emerald-600" />
+                </motion.div>
+                <span className="font-black text-emerald-700 text-xl" data-testid="text-average-savings">
+                  Average User Saves $8,500
+                </span>
+              </motion.div>
+              <motion.p 
+                className="text-sm text-emerald-600 font-semibold"
+                animate={{ opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                Expert strategies + AI technology
+              </motion.p>
             </div>
-            <p className="text-sm text-emerald-600 font-semibold">Expert strategies + AI technology</p>
-          </div>
+          </motion.div>
         </motion.div>
         
+        {/* Enhanced CTA Button with 2025 Animations */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
+          variants={itemVariants}
+          transition={{ delay: 1.3 }}
+          className="relative z-10"
         >
           <a href="/api/login">
             <motion.div
-              whileHover={{ scale: 1.02, y: -3 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
+              whileHover={{ 
+                scale: 1.05, 
+                y: -8,
+                boxShadow: "0 20px 40px -12px rgba(16, 185, 129, 0.4)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              className="relative group"
             >
-              <MobileButton className="w-full max-w-xs mx-auto shadow-2xl shadow-emerald-500/30 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-4">
-                <LogIn className="h-5 w-5 mr-2" />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 rounded-2xl blur-lg opacity-60 group-hover:opacity-80 transition-opacity"
+                animate={{
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              <MobileButton 
+                className="relative w-full max-w-xs mx-auto shadow-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-4 border-0"
+                data-testid="button-sign-in"
+              >
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                >
+                  <LogIn className="h-5 w-5 mr-3" />
+                </motion.div>
                 Sign In to Save Thousands
-                <ArrowRight className="h-4 w-4 ml-2" />
+                <motion.div
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <ArrowRight className="h-5 w-5 ml-3" />
+                </motion.div>
               </MobileButton>
             </motion.div>
           </a>
         </motion.div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -240,6 +580,9 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
   const elements = useElements();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [formProgress, setFormProgress] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -323,46 +666,245 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
     }
   };
 
+  // Monitor form completion progress
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const inputs = document.querySelectorAll('[name*="cardNumber"], [name*="cardExpiry"], [name*="cardCvc"]');
+      const filled = Array.from(inputs).filter((input: any) => input.value?.length > 0).length;
+      setFormProgress((filled / inputs.length) * 100);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      ref={ref}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.95 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 100, 
+        damping: 20,
+        duration: 0.8 
+      }}
+      className="relative"
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-gradient-to-br from-white/60 via-white/40 to-white/30 backdrop-blur-sm rounded-2xl p-4 border border-white/50">
-          <PaymentElement />
-        </div>
+      {/* Enhanced Form Container with 2025 Glassmorphism */}
+      <motion.div
+        className="relative overflow-hidden"
+        whileHover={{ y: -4 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
         <motion.div
-          whileHover={{ scale: 1.02, y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ duration: 0.2 }}
-        >
-          <MobileButton 
-            type="submit" 
-            className="w-full shadow-2xl shadow-emerald-500/30 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700" 
-            size="lg"
-            disabled={!stripe || !elements || isProcessing}
+          className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-purple-400/10 to-emerald-400/10 rounded-3xl blur-xl"
+          animate={{
+            scale: [1, 1.05, 1],
+            rotate: [0, 1, -1, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        
+        <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+          {/* Progress Indicator */}
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
           >
-            {isProcessing ? (
-              <>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600">Form Progress</span>
+              <span className="text-sm font-bold text-emerald-600">{Math.round(formProgress)}%</span>
+            </div>
+            <div className="h-2 bg-gray-200/60 rounded-full overflow-hidden backdrop-blur-sm">
+              <motion.div
+                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full relative overflow-hidden"
+                initial={{ width: 0 }}
+                animate={{ width: `${formProgress}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
                 <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                 />
-                Processing...
-              </>
-            ) : (
-              <>
-                <Crown className="h-5 w-5 mr-2" />
-                Start Saving with {planType}
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </>
-            )}
-          </MobileButton>
-        </motion.div>
-      </form>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Enhanced Payment Element Container */}
+          <motion.div
+            className="relative group"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/70 backdrop-blur-xl rounded-3xl border border-white/60 shadow-2xl"
+              whileHover={{
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8)",
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            
+            {/* Ambient Glow Effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-transparent to-purple-400/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100"
+              transition={{ duration: 0.5 }}
+            />
+            
+            <div className="relative z-10 p-6">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                <PaymentElement 
+                  options={{
+                    style: {
+                      base: {
+                        fontSize: '16px',
+                        color: '#374151',
+                        fontFamily: 'SF Pro Display, Inter, system-ui, sans-serif',
+                        '::placeholder': {
+                          color: '#9CA3AF',
+                        },
+                      },
+                    },
+                  }}
+                />
+              </motion.div>
+            </div>
+
+            {/* Security Badge */}
+            <motion.div
+              className="absolute top-4 right-4 flex items-center space-x-1 bg-emerald-50/80 backdrop-blur-sm px-3 py-1 rounded-full border border-emerald-200/60"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              <ShieldCheck className="h-3 w-3 text-emerald-600" />
+              <span className="text-xs font-medium text-emerald-700">Secured by Stripe</span>
+            </motion.div>
+          </motion.div>
+
+          {/* Enhanced Submit Button */}
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
+          >
+            <motion.div
+              whileHover={{ 
+                scale: 1.02, 
+                y: -6,
+                boxShadow: "0 20px 40px -12px rgba(16, 185, 129, 0.4)",
+              }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              className="relative group"
+            >
+              {/* Button Glow Effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 rounded-2xl blur-lg opacity-60 group-hover:opacity-80"
+                animate={{
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              
+              <MobileButton 
+                type="submit" 
+                className="relative w-full shadow-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-4 border-0 overflow-hidden"
+                size="lg"
+                disabled={!stripe || !elements || isProcessing}
+                data-testid="button-complete-payment"
+              >
+                {/* Button Shimmer Effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatDelay: 2,
+                  }}
+                />
+                
+                <AnimatePresence mode="wait">
+                  {isProcessing ? (
+                    <motion.div
+                      key="processing"
+                      className="flex items-center justify-center"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <motion.div
+                        className="relative mr-3"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full" />
+                        <motion.div
+                          className="absolute inset-0 border-2 border-transparent border-t-white rounded-full"
+                          animate={{ rotate: -360 }}
+                          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                        />
+                      </motion.div>
+                      <motion.span
+                        animate={{ opacity: [1, 0.7, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        Processing Payment...
+                      </motion.span>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="default"
+                      className="flex items-center justify-center"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <motion.div
+                        animate={{ rotate: [0, 360] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Crown className="h-5 w-5 mr-3" />
+                      </motion.div>
+                      Start Saving with {planType}
+                      <motion.div
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <ArrowRight className="h-5 w-5 ml-3" />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </MobileButton>
+            </motion.div>
+          </motion.div>
+        </form>
+      </motion.div>
     </motion.div>
   );
 }
@@ -410,182 +952,332 @@ function PremiumMarketing() {
   if (setupData) {
     return (
       <MobileLayout title="Complete Payment" showBottomNav={true}>
-        {/* Enhanced Payment Hero */}
+        {/* 2025 Enhanced Payment Hero */}
         <motion.div 
-          className="text-center py-8 px-4 relative overflow-hidden"
-          initial={{ opacity: 0, y: 30 }}
+          className="text-center py-12 px-4 relative overflow-hidden min-h-[400px] flex flex-col justify-center"
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, type: "spring", stiffness: 100 }}
         >
-          {/* Background Elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-          </div>
+          {/* Advanced Background System */}
+          <FloatingElements />
           
-          <motion.div 
-            className="w-16 h-16 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
+          {/* Enhanced Premium Icon */}
+          <motion.div
+            initial={{ scale: 0, rotate: -180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
             transition={{ 
-              duration: 0.6, 
+              duration: 0.8, 
               delay: 0.2,
               type: "spring",
               stiffness: 200
             }}
           >
-            <div className="absolute inset-0 bg-white/20 rounded-[1.25rem] backdrop-blur-sm" />
-            <Crown className="text-white text-xl relative z-10" />
+            <EnhancedPremiumIcon size="w-16 h-16" />
           </motion.div>
           
+          {/* Modern Typography */}
           <motion.h2 
-            className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-2"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-3xl font-black mb-3 leading-tight relative z-10"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
           >
-            Complete Your Premium Access
+            <motion.span
+              animate={{
+                backgroundPosition: ["0%", "100%", "0%"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              style={{
+                background: "linear-gradient(45deg, #10b981, #06b6d4, #8b5cf6, #10b981)",
+                backgroundSize: "300% 300%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Complete Your Premium Access
+            </motion.span>
           </motion.h2>
           
           <motion.p 
-            className="text-gray-600 text-sm mb-6 font-medium"
-            initial={{ opacity: 0, y: 15 }}
+            className="text-gray-600 text-base mb-8 font-medium max-w-md mx-auto relative z-10"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
           >
             Secure payment powered by Stripe • Start saving thousands today
           </motion.p>
           
-          {/* Premium Value Reminder */}
+          {/* Enhanced Value Reminder with 2025 Glassmorphism */}
           <motion.div 
-            className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-4 mb-6 max-w-sm mx-auto shadow-lg"
+            className="relative max-w-sm mx-auto mb-8"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
           >
-            <div className="text-center">
-              <div className="flex items-center justify-center space-x-2 mb-1">
-                <DollarSign className="h-4 w-4 text-emerald-600" />
-                <span className="font-bold text-emerald-700 text-sm">Average User Saves $8,500</span>
+            <motion.div 
+              className="backdrop-blur-xl bg-gradient-to-br from-emerald-50/80 via-white/60 to-emerald-50/80 border border-white/40 rounded-3xl p-5 shadow-2xl overflow-hidden relative"
+              whileHover={{ 
+                scale: 1.05, 
+                boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.3)",
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              {/* Glassmorphism Shimmer */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  repeatDelay: 2,
+                }}
+              />
+              
+              <div className="text-center relative z-10">
+                <motion.div 
+                  className="flex items-center justify-center space-x-2 mb-2"
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  >
+                    <DollarSign className="h-5 w-5 text-emerald-600" />
+                  </motion.div>
+                  <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
+                </motion.div>
+                <motion.p 
+                  className="text-sm text-emerald-600 font-semibold"
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  Your subscription pays for itself instantly
+                </motion.p>
               </div>
-              <p className="text-xs text-emerald-600 font-medium">Your subscription pays for itself instantly</p>
-            </div>
+            </motion.div>
           </motion.div>
         </motion.div>
         
+        {/* Enhanced Payment Form Container */}
         <motion.div
           className="px-4 pb-8"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
+          transition={{ delay: 1.0, duration: 0.8 }}
         >
-          <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
-            <div className="relative z-10 p-4">
-              <Elements stripe={stripePromise} options={{ clientSecret: setupData.clientSecret }}>
-                <SubscriptionForm 
-                  planType={setupData.planType} 
-                  setupIntentId={setupData.setupIntentId}
-                />
-              </Elements>
-            </div>
-          </MobileCard>
+          <motion.div
+            className="relative overflow-hidden"
+            whileHover={{ y: -4 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            {/* Background Glow Effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-transparent to-purple-400/20 rounded-3xl blur-2xl"
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.5, 0.8, 0.5],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            
+            <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+              <div className="relative z-10 p-6">
+                <Elements stripe={stripePromise} options={{ clientSecret: setupData.clientSecret }}>
+                  <SubscriptionForm 
+                    planType={setupData.planType} 
+                    setupIntentId={setupData.setupIntentId}
+                  />
+                </Elements>
+              </div>
+            </MobileCard>
+          </motion.div>
         </motion.div>
       </MobileLayout>
     );
   }
 
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   return (
-    <div className="space-y-8">
-      {/* Enhanced Hero Section */}
+    <motion.div 
+      ref={ref}
+      className="space-y-12 relative"
+      variants={containerVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+    >
+      {/* 2025 Enhanced Hero Section */}
       <motion.div 
-        className="text-center py-8 px-4 relative overflow-hidden"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="text-center py-16 px-4 relative overflow-hidden min-h-[700px] flex flex-col justify-center"
+        variants={itemVariants}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-        </div>
+        {/* Advanced Floating Background System */}
+        <FloatingElements />
         
-        {/* Premium App Icon */}
-        <motion.div 
-          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
-          initial={{ scale: 0, rotate: -180, opacity: 0 }}
-          animate={{ scale: 1, rotate: 0, opacity: 1 }}
-          transition={{ 
-            duration: 0.8, 
-            delay: 0.3,
-            type: "spring",
-            stiffness: 180,
-            damping: 12
-          }}
-          whileHover={{ scale: 1.05, rotate: 3 }}
-        >
-          <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
-          <Crown className="text-white text-2xl relative z-10" />
-          
-          {/* Premium Sparkle Effects */}
-          <motion.div 
-            className="absolute -top-2 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [-6, 6, -6],
-              scale: [1, 1.3, 1],
-              opacity: [0.8, 1, 0.8]
-            }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [4, -4, 4],
-              scale: [0.9, 1.2, 0.9],
-              opacity: [0.7, 1, 0.7]
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-        </motion.div>
-        
-        {/* Enhanced Headlines */}
+        {/* Enhanced Premium Icon */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.7 }}
+          variants={itemVariants}
+          transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
         >
-          <h1 className="text-3xl font-black mb-3 leading-tight tracking-tight">
-            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Premium</span>{" "}
-            <span className="text-gray-900">Bill Reduction</span>
-          </h1>
-          <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Save $2,000 - $35,000+ Per Bill
-          </h2>
+          <EnhancedPremiumIcon />
         </motion.div>
         
+        {/* 2025 Typography with Advanced Gradients */}
+        <motion.div
+          variants={itemVariants}
+          transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
+          className="relative z-10"
+        >
+          <motion.h1 
+            className="text-4xl md:text-6xl font-black mb-4 leading-tight tracking-tight"
+            animate={{
+              backgroundPosition: ["0%", "100%", "0%"],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              background: "linear-gradient(45deg, #f59e0b, #eab308, #10b981, #06b6d4, #8b5cf6, #f59e0b)",
+              backgroundSize: "400% 400%",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+            data-testid="text-premium-title"
+          >
+            Premium Bill Reduction
+          </motion.h1>
+          
+          <motion.h2 
+            className="text-2xl md:text-4xl font-bold mb-8 leading-tight"
+            variants={itemVariants}
+            transition={{ delay: 0.7 }}
+          >
+            <motion.span
+              className="inline-block"
+              animate={{
+                color: ["#10b981", "#06b6d4", "#8b5cf6", "#10b981"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              data-testid="text-savings-amount"
+            >
+              Save $2,000 - $35,000+ Per Bill
+            </motion.span>
+          </motion.h2>
+        </motion.div>
+        
+        {/* Enhanced Description */}
         <motion.p 
-          className="text-base text-gray-700 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          className="text-lg text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed font-medium relative z-10"
+          variants={itemVariants}
+          transition={{ delay: 0.9 }}
+          data-testid="text-description"
         >
           Professional bill negotiation strategies, insider knowledge from billing veterans, and AI-powered medical training.
         </motion.p>
         
-        {/* Massive Savings Highlight */}
+        {/* 2025 Enhanced Savings Highlight */}
         <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-8 max-w-sm mx-auto shadow-lg"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
+          className="relative max-w-md mx-auto mb-10"
+          variants={itemVariants}
+          transition={{ delay: 1.1 }}
         >
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Crown className="h-5 w-5 text-emerald-600" />
-              <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
+          <motion.div 
+            className="backdrop-blur-xl bg-gradient-to-br from-white/80 via-emerald-50/80 to-white/60 border border-white/40 rounded-3xl p-8 shadow-2xl overflow-hidden relative group"
+            whileHover={{ 
+              scale: 1.05, 
+              boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.3)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            {/* Enhanced Glassmorphism Shimmer */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+              animate={{ x: ["-100%", "200%"] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                repeatDelay: 2,
+              }}
+            />
+            
+            {/* Particle Effects on Hover */}
+            <motion.div 
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+              transition={{ duration: 0.3 }}
+            >
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-emerald-400/60 rounded-full"
+                  style={{
+                    left: `${20 + (i * 10)}%`,
+                    top: `${30 + (i % 3) * 20}%`,
+                  }}
+                  animate={{
+                    y: [-10, -20, -10],
+                    opacity: [0, 1, 0],
+                    scale: [0.5, 1, 0.5],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                />
+              ))}
+            </motion.div>
+            
+            <div className="text-center relative z-10">
+              <motion.div 
+                className="flex items-center justify-center space-x-3 mb-3"
+                animate={{ y: [0, -3, 0] }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
+                  <Crown className="h-7 w-7 text-emerald-600" />
+                </motion.div>
+                <span className="font-black text-emerald-700 text-2xl" data-testid="text-average-savings">
+                  Average User Saves $8,500
+                </span>
+              </motion.div>
+              <motion.p 
+                className="text-base text-emerald-600 font-semibold"
+                animate={{ opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                Subscription pays for itself instantly
+              </motion.p>
             </div>
-            <p className="text-sm text-emerald-600 font-semibold">Subscription pays for itself instantly</p>
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
 
@@ -1218,51 +1910,217 @@ function PremiumMarketing() {
         </motion.div>
       </motion.div>
 
-    </div>
+    </motion.div>
   );
 }
 
 function PremiumDashboard() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
   return (
-    <div className="space-y-6">
-      {/* Welcome Section */}
+    <motion.div 
+      ref={ref}
+      className="space-y-8 relative"
+      variants={containerVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+    >
+      {/* 2025 Enhanced Welcome Section */}
       <motion.div 
-        className="text-center py-6"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        className="text-center py-12 px-4 relative overflow-hidden min-h-[500px] flex flex-col justify-center"
+        variants={itemVariants}
       >
-        <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-orange-500/25"
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 0.3,
-            type: "spring",
-            stiffness: 200
-          }}
+        {/* Advanced Background System */}
+        <FloatingElements />
+        
+        {/* Enhanced Premium Crown with 2025 Effects */}
+        <motion.div
+          className="relative mx-auto mb-8"
+          variants={itemVariants}
+          transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
         >
-          <Crown className="h-8 w-8 text-white" />
+          <motion.div
+            className="w-20 h-20 relative"
+            whileHover="hover"
+            initial="initial"
+            animate="animate"
+          >
+            {/* Orbital Rings */}
+            <motion.div
+              className="absolute inset-0 border border-orange-400/30 rounded-full"
+              variants={{
+                initial: { scale: 1, opacity: 0.3 },
+                animate: { scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] },
+                hover: { scale: 1.3, opacity: 0.8 },
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="absolute inset-2 border border-red-400/30 rounded-full"
+              variants={{
+                initial: { scale: 1, opacity: 0.2 },
+                animate: { scale: [1, 1.15, 1], opacity: [0.2, 0.5, 0.2] },
+                hover: { scale: 1.25, opacity: 0.7 },
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1,
+              }}
+            />
+
+            {/* Main Icon Container */}
+            <motion.div
+              className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center shadow-xl shadow-orange-500/25 overflow-hidden"
+              variants={{
+                initial: { scale: 1, rotate: 0 },
+                animate: { 
+                  scale: [1, 1.05, 1],
+                  rotate: [0, 2, -2, 0],
+                },
+                hover: { 
+                  scale: 1.1, 
+                  rotate: 5,
+                  boxShadow: "0 25px 50px -12px rgba(249, 115, 22, 0.4)",
+                },
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <div className="absolute inset-0 bg-white/20 rounded-[1.25rem] backdrop-blur-sm" />
+              <Crown className="h-8 w-8 text-white relative z-10" />
+
+              {/* Shimmer Effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+                variants={shimmerVariants}
+                initial="initial"
+                animate="animate"
+              />
+
+              {/* Orbiting Particles */}
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-white/60 rounded-full"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                  }}
+                  animate={{
+                    rotate: 360,
+                    x: Math.cos((i * 60) * Math.PI / 180) * 35,
+                    y: Math.sin((i * 60) * Math.PI / 180) * 35,
+                  }}
+                  transition={{
+                    duration: 8 + i,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
         </motion.div>
         
-        <motion.h1 
-          className="text-2xl font-bold text-gray-900 mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
+        {/* 2025 Typography with Advanced Gradients */}
+        <motion.div
+          variants={itemVariants}
+          transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
+          className="relative z-10"
         >
-          Welcome, Premium Member!
-        </motion.h1>
+          <motion.h1 
+            className="text-3xl md:text-4xl font-black mb-4 leading-tight tracking-tight"
+            animate={{
+              backgroundPosition: ["0%", "100%", "0%"],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              background: "linear-gradient(45deg, #f59e0b, #ef4444, #f97316, #eab308, #f59e0b)",
+              backgroundSize: "400% 400%",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+            data-testid="text-welcome-title"
+          >
+            Welcome, Premium Member!
+          </motion.h1>
+        </motion.div>
         
+        {/* Enhanced Description */}
         <motion.p 
-          className="text-base text-gray-600 mb-8 max-w-sm mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
+          className="text-lg text-gray-700 mb-10 max-w-lg mx-auto leading-relaxed font-medium relative z-10"
+          variants={itemVariants}
+          transition={{ delay: 0.7 }}
+          data-testid="text-welcome-description"
         >
           Access expert bill negotiation strategies and unlimited medical training
         </motion.p>
+        
+        {/* 2025 Enhanced Status Badge */}
+        <motion.div 
+          className="relative max-w-sm mx-auto mb-8"
+          variants={itemVariants}
+          transition={{ delay: 0.9 }}
+        >
+          <motion.div 
+            className="backdrop-blur-xl bg-gradient-to-br from-green-50/80 via-white/60 to-emerald-50/80 border border-white/40 rounded-3xl p-6 shadow-2xl overflow-hidden relative group"
+            whileHover={{ 
+              scale: 1.05, 
+              boxShadow: "0 25px 50px -12px rgba(34, 197, 94, 0.3)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            {/* Glassmorphism Shimmer */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+              animate={{ x: ["-100%", "200%"] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                repeatDelay: 2,
+              }}
+            />
+            
+            <div className="text-center relative z-10">
+              <motion.div 
+                className="flex items-center justify-center space-x-3 mb-3"
+                animate={{ y: [0, -2, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
+                  <Check className="h-6 w-6 text-green-600" />
+                </motion.div>
+                <span className="font-black text-green-700 text-xl">Active Premium Subscription</span>
+              </motion.div>
+              <motion.p 
+                className="text-sm text-green-600 font-semibold"
+                animate={{ opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                Next billing: January 15, 2025
+              </motion.p>
+            </div>
+          </motion.div>
+        </motion.div>
       </motion.div>
 
       {/* Premium Features */}
