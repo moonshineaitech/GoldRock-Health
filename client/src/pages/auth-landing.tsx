@@ -1,8 +1,208 @@
 import { MobileButton } from "@/components/mobile-layout";
-import { NavigationDropdown } from "@/components/mobile-header";
-import { Apple, Mail, ArrowRight, Shield, DollarSign, Users, CheckCircle, Star, Award, Zap, Heart, TrendingDown, Target, AlertTriangle, FileText, MessageSquare, LogIn } from "lucide-react";
-import { motion } from "framer-motion";
+import { Apple, Mail, ArrowRight, Shield, DollarSign, Users, CheckCircle, Star, Award, Zap, Heart, TrendingDown, Target, AlertTriangle, FileText, MessageSquare, LogIn, Menu, Home, BookOpen, Crown as PremiumIcon, Gamepad2, Download, Phone, Search } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
+import { useState } from "react";
+
+// Pre-login Navigation Dropdown - redirects to login with return URL
+function PreLoginNavigationDropdown() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navigationItems = [
+    {
+      icon: Home,
+      label: "Home",
+      href: "/",
+      description: "Medical Bill AI & Overview"
+    },
+    {
+      icon: BookOpen,
+      label: "Cases",
+      href: "/training",
+      description: "Interactive Medical Training"
+    },
+    {
+      icon: FileText,
+      label: "Bill AI",
+      href: "/bill-ai",
+      description: "Find Medical Overcharges"
+    },
+    {
+      icon: Shield,
+      label: "Know Your Rights Hub",
+      href: "/rights-hub",
+      description: "Know Your Patient Rights",
+      featured: true
+    },
+    {
+      icon: Heart,
+      label: "Emergency Financial Help",
+      href: "/emergency-help",
+      description: "Crisis Financial Assistance"
+    },
+    {
+      icon: Search,
+      label: "Quick Bill Analyzer",
+      href: "/quick-analyzer",
+      description: "Free Bill Analysis"
+    },
+    {
+      icon: Phone,
+      label: "Provider Contact Database",
+      href: "/provider-contacts",
+      description: "Hospital Contact Database"
+    },
+    {
+      icon: PremiumIcon,
+      label: "Premium",
+      href: "/premium",
+      description: "Upgrade Your Account"
+    },
+    {
+      icon: Gamepad2,
+      label: "Pixel Doctor Game",
+      href: "/pixel-game",
+      description: "Fun Pixelated Diagnostics",
+      special: true
+    },
+    {
+      icon: TrendingDown,
+      label: "Bill Reduction Guide",
+      href: "/bill-reduction-guide",
+      description: "Expert Bill Reduction Strategies",
+      premium: true
+    },
+    {
+      icon: Download,
+      label: "Get Bills from Portal",
+      href: "/portal-access-guide",
+      description: "Access Insurance & Provider Portals"
+    }
+  ];
+
+  const handleNavigation = (href: string) => {
+    // Redirect to login with return URL
+    window.location.href = `/api/login?returnTo=${encodeURIComponent(href)}`;
+  };
+
+  return (
+    <div className="relative">
+      <motion.button
+        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
+        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.08, rotateZ: 2 }}
+        onClick={() => setIsOpen(!isOpen)}
+        data-testid="navigation-menu"
+      >
+        <Menu className="h-4 w-4 text-gray-700" />
+      </motion.button>
+
+      {/* Dropdown Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 z-40" 
+              onClick={() => setIsOpen(false)}
+            />
+            
+            {/* Menu */}
+            <motion.div
+              className="absolute left-0 top-full mt-3 w-72 sm:w-80 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+                left: 'max(-1rem, calc(-100vw + 100% + 2rem))',
+                right: 'auto',
+                maxHeight: 'calc(100vh - 100px)'
+              }}
+              initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
+              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              {/* Header */}
+              <div className="p-4 border-b border-white/20 flex-shrink-0">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Menu className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-900 leading-tight">Navigation</p>
+                    <p className="text-xs text-gray-600">Sign in to access features</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Menu Items - Scrollable */}
+              <div className="py-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 180px)' }}>
+                {navigationItems.map((item, index) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <motion.button
+                      key={item.label}
+                      className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-2xl mx-2 my-1 ${
+                        item.special
+                          ? 'text-purple-600 hover:bg-purple-50/80 hover:shadow-sm'
+                          : item.premium
+                            ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
+                            : item.featured
+                              ? 'text-blue-600 hover:bg-blue-50/80 hover:shadow-sm'
+                              : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
+                      }`}
+                      onClick={() => handleNavigation(item.href)}
+                      whileHover={{ x: 4, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.15 }}
+                      data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                        item.special 
+                          ? 'bg-gradient-to-br from-purple-100 to-pink-100'
+                          : item.premium
+                            ? 'bg-gradient-to-br from-orange-100 to-amber-100'
+                            : item.featured
+                              ? 'bg-gradient-to-br from-blue-100 to-cyan-100'
+                              : 'bg-gray-100'
+                      }`}>
+                        <IconComponent className={`h-4 w-4 ${
+                          item.special 
+                            ? 'text-purple-600' 
+                            : item.premium 
+                              ? 'text-orange-600'
+                              : item.featured
+                                ? 'text-blue-600'
+                                : 'text-gray-600'
+                        }`} />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <div className="font-semibold">{item.label}</div>
+                        <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
+                      </div>
+                      {(item.special || item.premium || item.featured) && (
+                        <motion.div
+                          className={`w-2.5 h-2.5 rounded-full shadow-sm ${
+                            item.special 
+                              ? 'bg-gradient-to-r from-purple-500 to-pink-500'
+                              : item.premium
+                                ? 'bg-gradient-to-r from-orange-500 to-amber-500'
+                                : 'bg-gradient-to-r from-blue-500 to-cyan-500'
+                          }`}
+                          animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function AuthLanding() {
   return (
@@ -64,7 +264,7 @@ export default function AuthLanding() {
         
         <div className="flex items-center justify-between h-16 px-5 relative max-w-7xl mx-auto">
           {/* Left - Menu */}
-          <NavigationDropdown />
+          <PreLoginNavigationDropdown />
 
           {/* Center - Logo */}
           <motion.div 
