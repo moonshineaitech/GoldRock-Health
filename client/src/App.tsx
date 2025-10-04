@@ -37,6 +37,7 @@ import RightsHub from "@/pages/rights-hub";
 import EmergencyHelp from "@/pages/emergency-help";
 import QuickAnalyzer from "@/pages/quick-analyzer";
 import ProviderContacts from "@/pages/provider-contacts";
+import CaseDetail from "@/pages/case-detail";
 
 // Define AI-protected routes that require AI agreement
 const AI_PROTECTED_ROUTES = [
@@ -104,6 +105,7 @@ function Router() {
           <Training />
         </AIRouteGuard>
       </Route>
+      <Route path="/cases/:id" component={CaseDetail} />
       <Route path="/ai-generator">
         <AIRouteGuard path="/ai-generator">
           <AIGenerator />
