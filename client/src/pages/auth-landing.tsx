@@ -68,13 +68,13 @@ export default function AuthLanding() {
 
           {/* Center - Logo */}
           <motion.div 
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <h1 className="text-lg font-black">
-              <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span>
+            <h1 className="text-base sm:text-lg font-black">
+              <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
             </h1>
           </motion.div>
 
