@@ -1,5 +1,5 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
-import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code, ShieldCheck, Hexagon, Triangle, Circle, Square } from "lucide-react";
+import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code, ShieldCheck, Hexagon, Triangle, Circle, Square, CheckCircle } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence, useAnimation, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -1400,12 +1400,12 @@ function PremiumMarketing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.3, duration: 0.6 }}
         >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
-            Real Success Stories
+          <h2 className="text-3xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
+            Real Victories We've Won
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
-          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
-            Actual premium members who saved massive amounts
+          <p className="text-lg text-gray-700 mt-3 max-w-2xl mx-auto font-medium">
+            See how our AI fighter has saved real people from crushing medical debt
           </p>
         </motion.div>
         
@@ -1510,6 +1510,66 @@ function PremiumMarketing() {
         </div>
       </motion.div>
 
+      {/* Trust & Security Section */}
+      <motion.div
+        className="px-4 py-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2 }}
+      >
+        <motion.div 
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-2xl font-black text-gray-900 mb-2">
+            Trusted By Thousands
+          </h2>
+          <p className="text-gray-600">
+            HIPAA-compliant • Bank-level security • A+ SSL rating
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
+          {[
+            { icon: ShieldCheck, text: "256-bit Encryption", color: "emerald" },
+            { icon: Lock, text: "HIPAA Compliant", color: "blue" },
+            { icon: CheckCircle, text: "95% Win Rate", color: "purple" },
+            { icon: Users, text: "10,000+ Users", color: "orange" }
+          ].map((item, idx) => {
+            const IconComponent = item.icon;
+            return (
+              <motion.div
+                key={item.text}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.3 + idx * 0.1 }}
+              >
+                <MobileCard className="text-center p-4 backdrop-blur-xl border-white/40">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
+                  <div className="relative z-10">
+                    <IconComponent className={`h-8 w-8 mx-auto mb-2 text-${item.color}-600`} />
+                    <p className="text-xs font-bold text-gray-700">{item.text}</p>
+                  </div>
+                </MobileCard>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <MobileCard className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 max-w-3xl mx-auto">
+          <div className="text-center p-4">
+            <div className="flex items-center justify-center space-x-2 text-blue-700 mb-2">
+              <ShieldCheck className="h-5 w-5" />
+              <span className="font-bold">Money-Back Guarantee</span>
+            </div>
+            <p className="text-sm text-blue-600">
+              If our AI doesn't find savings opportunities worth at least 10x your subscription cost, we'll refund you in full. No questions asked.
+            </p>
+          </div>
+        </MobileCard>
+      </motion.div>
+
       {/* Enhanced Pricing Section */}
       <motion.div
         className="space-y-6"
@@ -1524,12 +1584,12 @@ function PremiumMarketing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8, duration: 0.6 }}
         >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
-            Choose Your Premium Plan
+          <h2 className="text-3xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
+            Choose Your Fighter Plan
           </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto" />
-          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
-            Professional bill reduction + Medical training • Cancel anytime
+          <div className="h-1 w-24 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto" />
+          <p className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto font-medium">
+            Get unlimited AI-powered bill fighting • Cancel anytime • Money-back guarantee
           </p>
         </motion.div>
         
@@ -1694,8 +1754,8 @@ function PremiumMarketing() {
                         </>
                       ) : (
                         <>
-                          <Crown className="h-5 w-5 mr-2" />
-                          Start Saving Thousands
+                          <ShieldCheck className="h-5 w-5 mr-2" />
+                          Start Your Bill Fight
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </>
                       )}
@@ -1738,12 +1798,12 @@ function PremiumMarketing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.7, duration: 0.6 }}
         >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
-            Professional Features Included
+          <h2 className="text-3xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
+            Your AI Fighter's Arsenal
           </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
-          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
-            Everything you need to reduce medical bills by thousands
+          <div className="h-1 w-24 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
+          <p className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto font-medium">
+            Powerful tools our AI uses to battle billing departments and win you thousands in savings
           </p>
         </motion.div>
         
