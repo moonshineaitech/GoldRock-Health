@@ -64,7 +64,7 @@ const billReductionSpecialties = [
 ];
 
 const expertiseLevels = [
-  { value: "", label: "All Levels" },
+  { value: "all", label: "All Levels" },
   { value: "1", label: "Beginner" },
   { value: "2", label: "Intermediate" },
   { value: "3", label: "Advanced" }
@@ -73,7 +73,7 @@ const expertiseLevels = [
 export default function Training() {
   const [search, setSearch] = useState("");
   const [specialty, setSpecialty] = useState("All Categories");
-  const [difficulty, setDifficulty] = useState("");
+  const [difficulty, setDifficulty] = useState("all");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -90,7 +90,7 @@ export default function Training() {
     
     const matchesSpecialty = specialty === "All Categories" || caseStudy.category === specialty;
     
-    const matchesDifficulty = difficulty === "" || caseStudy.difficulty === parseInt(difficulty);
+    const matchesDifficulty = difficulty === "all" || caseStudy.difficulty === parseInt(difficulty);
     
     return matchesSearch && matchesSpecialty && matchesDifficulty;
   });
@@ -372,7 +372,7 @@ export default function Training() {
                 onClick={() => {
                   setSearch("");
                   setSpecialty("All Categories");
-                  setDifficulty("");
+                  setDifficulty("all");
                 }}
                 data-testid="button-clear-filters"
               >
