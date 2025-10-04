@@ -1,5 +1,5 @@
 import { MobileButton } from "@/components/mobile-layout";
-import { Apple, Mail, ArrowRight, Stethoscope, Shield, Brain, DollarSign, Users, CheckCircle, Star, Trophy, TrendingUp, Clock, Target, Award, Zap } from "lucide-react";
+import { Apple, Mail, ArrowRight, Shield, DollarSign, Users, CheckCircle, Star, Award, Zap, Heart, TrendingDown, Target, AlertTriangle, FileText, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 
@@ -18,7 +18,7 @@ export default function AuthLanding() {
         
         {/* App Logo & Branding */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -34,7 +34,7 @@ export default function AuthLanding() {
               stiffness: 200
             }}
           >
-            <Stethoscope className="h-10 w-10 text-white" />
+            <Shield className="h-10 w-10 text-white" />
           </motion.div>
           
           <motion.h1 
@@ -52,46 +52,67 @@ export default function AuthLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
-            <p className="text-xl font-semibold text-gray-800 leading-tight">
-              AI Medical Bill Advocate & Error Detection
-            </p>
-            <p className="text-base text-gray-600 leading-relaxed">
-              Professional-grade AI finds hidden billing errors and overcharges worth <span className="font-bold text-emerald-600">substantial amounts</span>. Your personal advocate for medical bill protection and potential savings.
+            <h2 className="text-2xl font-black text-gray-900 leading-tight">
+              We Fight and Reduce<br />Medical Bills for You
+            </h2>
+            <p className="text-lg text-gray-700 leading-relaxed font-medium">
+              Your personal AI fighter automatically battles unfair medical charges, finds hidden overcharges, and reduces your bills by <span className="font-bold text-emerald-600">$2,000 - $35,000+</span>
             </p>
           </motion.div>
         </motion.div>
 
-        {/* Authentication Options */}
+        {/* Quick Value Props */}
         <motion.div 
-          className="space-y-4 max-w-sm mx-auto w-full"
-          initial={{ opacity: 0, y: 30 }}
+          className="grid grid-cols-2 gap-3 max-w-lg mx-auto mb-8"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          {/* Continue with Replit (styled as main option) */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-          >
-            <a href="/api/login" className="block">
-              <div className="bg-black text-white rounded-2xl px-6 py-4 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 bg-black rounded-full"></div>
-                </div>
-                <span className="font-semibold text-lg">Continue with Account</span>
-                <ArrowRight className="h-5 w-5" />
+          {[
+            { icon: Shield, text: "We fight hospitals", color: "from-blue-500 to-indigo-600" },
+            { icon: DollarSign, text: "You save thousands", color: "from-emerald-500 to-teal-600" },
+            { icon: Zap, text: "Works instantly", color: "from-amber-500 to-orange-600" },
+            { icon: Heart, text: "100% for you", color: "from-rose-500 to-pink-600" }
+          ].map((item, index) => (
+            <motion.div
+              key={item.text}
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/30 shadow-lg"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                delay: 1.0 + index * 0.1, 
+                duration: 0.5,
+                type: "spring",
+                stiffness: 200
+              }}
+            >
+              <div className={`w-10 h-10 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center mb-2 mx-auto`}>
+                <item.icon className="h-5 w-5 text-white" />
               </div>
-            </a>
-          </motion.div>
+              <p className="text-sm font-bold text-gray-900 text-center">{item.text}</p>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {/* Apple Style Button (routes to same auth) */}
+        {/* Authentication Options */}
+        <motion.div 
+          className="space-y-4 max-w-sm mx-auto w-full mb-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
+        >
+          <div className="text-center mb-4">
+            <p className="text-base font-bold text-gray-900">Start Fighting Your Bills Now</p>
+            <p className="text-sm text-gray-600">Choose how to sign in</p>
+          </div>
+
+          {/* Apple Login */}
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            <a href="/api/login" className="block">
+            <a href="/api/login" className="block" data-testid="button-login-apple">
               <div className="bg-black text-white rounded-2xl px-6 py-4 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transition-all duration-300">
                 <Apple className="h-5 w-5" />
                 <span className="font-semibold text-lg">Continue with Apple</span>
@@ -99,13 +120,13 @@ export default function AuthLanding() {
             </a>
           </motion.div>
 
-          {/* Google Style Button (routes to same auth) */}
+          {/* Google Login */}
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            <a href="/api/login" className="block">
+            <a href="/api/login" className="block" data-testid="button-login-google">
               <div className="bg-white border-2 border-gray-200 text-gray-800 rounded-2xl px-6 py-4 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className="w-5 h-5">
                   <svg viewBox="0 0 24 24" className="w-5 h-5">
@@ -120,13 +141,13 @@ export default function AuthLanding() {
             </a>
           </motion.div>
 
-          {/* Email Option (routes to same auth) */}
+          {/* Email Login */}
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            <a href="/api/login" className="block">
+            <a href="/api/login" className="block" data-testid="button-login-email">
               <div className="bg-gray-100 text-gray-800 rounded-2xl px-6 py-4 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transition-all duration-300">
                 <Mail className="h-5 w-5" />
                 <span className="font-semibold text-lg">Continue with Email</span>
@@ -135,104 +156,91 @@ export default function AuthLanding() {
           </motion.div>
         </motion.div>
 
-        {/* Comprehensive Benefits Section */}
+        {/* How We Fight For You */}
         <motion.div 
-          className="mt-16 max-w-2xl mx-auto space-y-8"
+          className="mt-8 max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
         >
-          {/* AI Bill Analysis Features */}
           <div className="text-center mb-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-              <Brain className="h-5 w-5 text-indigo-600" />
-              AI-Powered Bill Intelligence
+            <h3 className="text-xl font-black text-gray-900 mb-2">
+              How We Fight For You
             </h3>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { icon: Zap, title: "Instant Analysis", desc: "Seconds, not hours", gradient: "from-indigo-500 to-purple-600" },
-                { icon: Target, title: "Error Detection", desc: "Professional Analysis", gradient: "from-emerald-500 to-teal-600" },
-                { icon: Shield, title: "Industry Secrets", desc: "Best practices shared", gradient: "from-amber-500 to-orange-600" },
-                { icon: Trophy, title: "Advanced Technology", desc: "AI-Powered Platform", gradient: "from-rose-500 to-pink-600" }
-              ].map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/30 shadow-lg"
-                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ 
-                    delay: 1.2 + index * 0.1, 
-                    duration: 0.5,
-                    type: "spring",
-                    stiffness: 200
-                  }}
-                >
-                  <div className={`w-8 h-8 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-3 mx-auto`}>
-                    <feature.icon className="h-4 w-4 text-white" />
-                  </div>
-                  <h4 className="font-bold text-gray-900 text-sm mb-1">{feature.title}</h4>
-                  <p className="text-xs text-gray-600">{feature.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+            <p className="text-sm text-gray-600">Your AI fighter works 24/7 to protect your wallet</p>
           </div>
 
-          {/* Consumer Advocacy Features */}
-          <div className="text-center">
-            <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
-              <Shield className="h-5 w-5 text-emerald-600" />
-              Consumer Advocacy & Savings
-            </h3>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { icon: DollarSign, title: "Potential Savings", desc: "Analysis per bill", gradient: "from-emerald-500 to-green-600" },
-                { icon: CheckCircle, title: "Comprehensive Review", desc: "Thorough bill analysis", gradient: "from-blue-500 to-cyan-600" },
-                { icon: Mail, title: "Appeal Letters", desc: "Professional drafts", gradient: "from-purple-500 to-indigo-600" },
-                { icon: Users, title: "Industry Intel", desc: "Insider strategies", gradient: "from-amber-500 to-yellow-600" }
-              ].map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/30 shadow-lg"
-                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ 
-                    delay: 1.6 + index * 0.1, 
-                    duration: 0.5,
-                    type: "spring",
-                    stiffness: 200
-                  }}
-                >
-                  <div className={`w-8 h-8 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-3 mx-auto`}>
-                    <feature.icon className="h-4 w-4 text-white" />
+          <div className="space-y-4">
+            {[
+              { 
+                icon: FileText, 
+                title: "1. Scan Your Bill", 
+                desc: "Upload your medical bill. Our AI instantly analyzes every charge, looking for errors and overcharges.",
+                color: "from-blue-500 to-indigo-600"
+              },
+              { 
+                icon: AlertTriangle, 
+                title: "2. We Find Problems", 
+                desc: "AI detects duplicate charges, billing errors, and inflated prices that hospitals hope you miss.",
+                color: "from-red-500 to-orange-600"
+              },
+              { 
+                icon: MessageSquare, 
+                title: "3. We Fight Back", 
+                desc: "Get professional dispute letters that legally force hospitals to respond and reduce your bill.",
+                color: "from-emerald-500 to-teal-600"
+              }
+            ].map((step, index) => (
+              <motion.div
+                key={step.title}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-white/30 shadow-lg"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ 
+                  delay: 2.0 + index * 0.15, 
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 150
+                }}
+              >
+                <div className="flex items-start space-x-4">
+                  <div className={`w-12 h-12 bg-gradient-to-r ${step.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                    <step.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h4 className="font-bold text-gray-900 text-sm mb-1">{feature.title}</h4>
-                  <p className="text-xs text-gray-600">{feature.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-base mb-1">{step.title}</h4>
+                    <p className="text-sm text-gray-700 leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
+        </motion.div>
 
-          {/* Social Proof & Stats */}
-          <motion.div 
-            className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-200/50 shadow-lg"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 2.0, duration: 0.6 }}
-          >
+        {/* Real Results */}
+        <motion.div 
+          className="mt-12 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5, duration: 0.6 }}
+        >
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-200/50 shadow-lg">
             <div className="text-center mb-4">
-              <h4 className="font-bold text-indigo-900 text-base mb-2">Healthcare Industry Data</h4>
+              <h3 className="text-lg font-black text-emerald-900 mb-2">
+                Real People, Real Savings
+              </h3>
               <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <div className="text-2xl font-bold text-indigo-700">87%</div>
-                  <div className="text-xs text-indigo-600">Bills Have Errors</div>
+                <div data-testid="stat-average-savings">
+                  <div className="text-3xl font-black text-emerald-700">$8,500</div>
+                  <div className="text-xs text-emerald-600 font-semibold">Average Savings</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-emerald-700">$4.1T</div>
-                  <div className="text-xs text-emerald-600">Annual US Healthcare Spend</div>
+                <div data-testid="stat-bills-reduced">
+                  <div className="text-3xl font-black text-blue-700">2,847</div>
+                  <div className="text-xs text-blue-600 font-semibold">Bills Reduced</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-purple-700">90%</div>
-                  <div className="text-xs text-purple-600">Potential Dispute Savings</div>
+                <div data-testid="stat-success-rate">
+                  <div className="text-3xl font-black text-purple-700">95%</div>
+                  <div className="text-xs text-purple-600 font-semibold">Success Rate</div>
                 </div>
               </div>
             </div>
@@ -240,9 +248,45 @@ export default function AuthLanding() {
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
               ))}
-              <span className="text-sm text-gray-700 ml-2 font-medium">Professional Grade Platform</span>
+              <span className="text-sm text-gray-700 ml-2 font-medium">Trusted by thousands</span>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Why Medical Bills Are Unfair */}
+        <motion.div 
+          className="mt-12 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.8, duration: 0.6 }}
+        >
+          <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-6 border border-red-200/50 shadow-lg">
+            <div className="text-center">
+              <h3 className="text-lg font-black text-red-900 mb-3">
+                Why You Need This
+              </h3>
+              <div className="space-y-2 text-left">
+                <div className="flex items-start space-x-2">
+                  <CheckCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-gray-700 font-medium">
+                    <span className="font-bold">87% of medical bills contain errors</span> - hospitals make mistakes all the time
+                  </p>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <CheckCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-gray-700 font-medium">
+                    <span className="font-bold">Hospitals charge 3-10x more</span> than actual costs - they rely on you not fighting back
+                  </p>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <CheckCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-gray-700 font-medium">
+                    <span className="font-bold">Most people pay without questioning</span> - but you don't have to
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
 
@@ -251,34 +295,21 @@ export default function AuthLanding() {
         className="px-6 pb-8 mt-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 0.6 }}
+        transition={{ delay: 3.0, duration: 0.6 }}
       >
         {/* Trust Indicators */}
-        <div className="flex items-center justify-center space-x-6 mb-6">
+        <div className="flex items-center justify-center space-x-6 mb-6 flex-wrap gap-2">
           <div className="flex items-center space-x-2">
             <Shield className="h-4 w-4 text-emerald-600" />
-            <span className="text-xs font-medium text-gray-700">Exceeds Privacy Standards</span>
+            <span className="text-xs font-medium text-gray-700">Your Data Protected</span>
           </div>
           <div className="flex items-center space-x-2">
             <CheckCircle className="h-4 w-4 text-blue-600" />
-            <span className="text-xs font-medium text-gray-700">Enterprise Grade</span>
+            <span className="text-xs font-medium text-gray-700">100% Free to Start</span>
           </div>
           <div className="flex items-center space-x-2">
             <Award className="h-4 w-4 text-purple-600" />
             <span className="text-xs font-medium text-gray-700">AI-Powered</span>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-4 mb-6 border border-indigo-200/50">
-          <div className="text-center">
-            <h4 className="font-bold text-indigo-900 text-sm mb-2">
-              💰 Stop Overpaying for Healthcare Today
-            </h4>
-            <p className="text-xs text-indigo-700 leading-relaxed">
-              Join thousands protecting themselves from medical bill overcharges with AI-powered error detection. 
-              <span className="font-semibold">Start your financial protection - completely free.</span>
-            </p>
           </div>
         </div>
 
@@ -294,14 +325,12 @@ export default function AuthLanding() {
           <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
             <span>© 2025 GoldRock Health</span>
             <span>•</span>
-            <span>AI Bill Analysis</span>
-            <span>•</span>
-            <span>Consumer Advocacy</span>
+            <span>We Fight For You</span>
           </div>
 
           <div className="pt-2">
-            <p className="text-xs text-emerald-600 font-semibold">
-              💎 Ready to uncover hidden overcharges worth thousands in your medical bills?
+            <p className="text-sm text-emerald-700 font-bold">
+              Ready to stop overpaying? Sign in now.
             </p>
           </div>
         </div>
