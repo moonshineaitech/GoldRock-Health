@@ -78,7 +78,7 @@ export function MobileBottomNav() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="flex items-center justify-around px-2 py-2">
-        {navItems.map((item, index) => {
+        {navItems.filter(item => item.id !== 'rights').map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.path);
           

@@ -40,7 +40,8 @@ export function NavigationDropdown() {
       icon: Shield,
       label: "Know Your Rights Hub",
       href: "/rights-hub",
-      description: "Know Your Patient Rights"
+      description: "Know Your Patient Rights",
+      featured: true
     },
     {
       icon: Heart,
@@ -116,7 +117,8 @@ export function NavigationDropdown() {
               style={{
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
                 left: 'max(-1rem, calc(-100vw + 100% + 2rem))',
-                right: 'auto'
+                right: 'auto',
+                maxHeight: 'calc(100vh - 100px)'
               }}
               initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
@@ -124,7 +126,7 @@ export function NavigationDropdown() {
               transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               {/* Header */}
-              <div className="p-4 border-b border-white/20">
+              <div className="p-4 border-b border-white/20 flex-shrink-0">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
                     <Menu className="h-4 w-4 text-white" />
@@ -136,8 +138,8 @@ export function NavigationDropdown() {
                 </div>
               </div>
 
-              {/* Menu Items */}
-              <div className="py-2">
+              {/* Menu Items - Scrollable */}
+              <div className="py-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 180px)' }}>
                 {navigationItems.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
@@ -148,7 +150,9 @@ export function NavigationDropdown() {
                           ? 'text-purple-600 hover:bg-purple-50/80 hover:shadow-sm'
                           : item.premium
                             ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
-                            : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
+                            : item.featured
+                              ? 'text-blue-600 hover:bg-blue-50/80 hover:shadow-sm'
+                              : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
                       }`}
                       onClick={() => {
                         navigate(item.href);
@@ -164,26 +168,32 @@ export function NavigationDropdown() {
                           ? 'bg-gradient-to-br from-purple-100 to-pink-100'
                           : item.premium
                             ? 'bg-gradient-to-br from-orange-100 to-amber-100'
-                            : 'bg-gray-100'
+                            : item.featured
+                              ? 'bg-gradient-to-br from-blue-100 to-cyan-100'
+                              : 'bg-gray-100'
                       }`}>
                         <IconComponent className={`h-4 w-4 ${
                           item.special 
                             ? 'text-purple-600' 
                             : item.premium 
-                              ? 'text-orange-600' 
-                              : 'text-gray-600'
+                              ? 'text-orange-600'
+                              : item.featured
+                                ? 'text-blue-600'
+                                : 'text-gray-600'
                         }`} />
                       </div>
                       <div className="flex-1 text-left">
                         <div className="font-semibold">{item.label}</div>
                         <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
                       </div>
-                      {(item.special || item.premium) && (
+                      {(item.special || item.premium || item.featured) && (
                         <motion.div
                           className={`w-2.5 h-2.5 rounded-full shadow-sm ${
                             item.special 
                               ? 'bg-gradient-to-r from-purple-500 to-pink-500'
-                              : 'bg-gradient-to-r from-orange-500 to-amber-500'
+                              : item.premium
+                                ? 'bg-gradient-to-r from-orange-500 to-amber-500'
+                                : 'bg-gradient-to-r from-blue-500 to-cyan-500'
                           }`}
                           animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
                           transition={{ duration: 2, repeat: Infinity }}
