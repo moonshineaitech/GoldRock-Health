@@ -1157,14 +1157,16 @@ function PremiumMarketing() {
             }}
             data-testid="text-premium-title"
           >
-            Premium Bill Reduction
+            Your AI-Powered Bill Fighter
           </motion.h1>
           
           <motion.h2 
-            className="text-2xl md:text-4xl font-bold mb-8 leading-tight"
+            className="text-2xl md:text-4xl font-bold mb-6 leading-tight text-gray-800"
             variants={itemVariants}
             transition={{ delay: 0.7 }}
           >
+            We Battle Insurance Companies & Hospitals
+            <br />
             <motion.span
               className="inline-block"
               animate={{
@@ -1177,19 +1179,22 @@ function PremiumMarketing() {
               }}
               data-testid="text-savings-amount"
             >
-              Save $2,000 - $35,000+ Per Bill
+              So You Don't Have To
             </motion.span>
           </motion.h2>
         </motion.div>
         
         {/* Enhanced Description */}
         <motion.p 
-          className="text-lg text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed font-medium relative z-10"
+          className="text-xl text-gray-700 mb-10 max-w-3xl mx-auto leading-relaxed font-medium relative z-10"
           variants={itemVariants}
           transition={{ delay: 0.9 }}
           data-testid="text-description"
         >
-          Professional bill negotiation strategies, insider knowledge from billing veterans, and AI-powered medical training.
+          Our AI analyzes every charge, finds errors and overcharges, then automatically fights to reduce your medical bills. 
+          <span className="block mt-2 text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            Average Reduction: $2,000 - $35,000+
+          </span>
         </motion.p>
         
         {/* 2025 Enhanced Savings Highlight */}
@@ -1259,10 +1264,10 @@ function PremiumMarketing() {
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                 >
-                  <Crown className="h-7 w-7 text-emerald-600" />
+                  <ShieldCheck className="h-8 w-8 text-emerald-600" />
                 </motion.div>
                 <span className="font-black text-emerald-700 text-2xl" data-testid="text-average-savings">
-                  Average User Saves $8,500
+                  We've Saved Clients $8,500 on Average
                 </span>
               </motion.div>
               <motion.p 
@@ -1270,10 +1275,115 @@ function PremiumMarketing() {
                 animate={{ opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
-                Subscription pays for itself instantly
+                From $2,000 ER bills to $35,000+ surgeries
               </motion.p>
             </div>
           </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* How It Works - The Fighter Process */}
+      <motion.div 
+        className="px-4 py-12"
+        variants={itemVariants}
+      >
+        <motion.div 
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-3xl font-black bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent mb-3">
+            How We Fight For You
+          </h2>
+          <div className="h-1 w-24 bg-gradient-to-r from-orange-500 to-red-600 rounded-full mx-auto" />
+          <p className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto font-medium">
+            Sit back and relax while our AI does the heavy lifting
+          </p>
+        </motion.div>
+
+        <div className="space-y-6 max-w-4xl mx-auto">
+          {[
+            {
+              step: "1",
+              title: "Upload Your Bill",
+              description: "Take a photo or upload your medical bill. Our system securely processes it in seconds.",
+              icon: FileText,
+              color: "from-blue-500 to-cyan-500",
+              delay: 0.2
+            },
+            {
+              step: "2",
+              title: "AI Analyzes & Finds Errors",
+              description: "Our AI scans every line item, cross-references billing codes, finds overcharges, duplicate charges, and insurance violations automatically.",
+              icon: Brain,
+              color: "from-purple-500 to-pink-500",
+              delay: 0.4
+            },
+            {
+              step: "3",
+              title: "We Fight On Your Behalf",
+              description: "Our system generates professional dispute letters, negotiates with billing departments, and leverages billing laws to reduce your charges—all automatically.",
+              icon: ShieldCheck,
+              color: "from-emerald-500 to-teal-500",
+              delay: 0.6
+            }
+          ].map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: item.delay, duration: 0.5 }}
+              >
+                <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative group hover:shadow-2xl transition-all">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+                  <div className={`absolute top-0 left-0 w-2 h-full bg-gradient-to-b ${item.color}`} />
+                  
+                  <div className="relative z-10 p-6">
+                    <div className="flex items-start space-x-4">
+                      <motion.div
+                        className={`flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <IconComponent className="h-7 w-7 text-white" />
+                      </motion.div>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <span className={`text-sm font-black bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
+                            STEP {item.step}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-700 leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </MobileCard>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Trust Signal */}
+        <motion.div 
+          className="text-center mt-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+        >
+          <MobileCard className="bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 max-w-2xl mx-auto">
+            <div className="flex items-center justify-center space-x-2 text-emerald-700">
+              <ShieldCheck className="h-5 w-5" />
+              <span className="font-bold">100% Automated • No Paperwork • No Phone Calls</span>
+            </div>
+          </MobileCard>
         </motion.div>
       </motion.div>
 
