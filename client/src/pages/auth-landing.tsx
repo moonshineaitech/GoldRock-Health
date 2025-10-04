@@ -254,18 +254,18 @@ export default function AuthLanding() {
                 ></motion.div>
                 <div className="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 rounded-2xl p-5 border-2 border-emerald-200/50 shadow-xl">
                   <h3 className="text-base font-black text-emerald-900 mb-3 text-center">Real People, Real Savings</h3>
-                  <div className="grid grid-cols-3 gap-3 mb-3">
-                    <div data-testid="stat-average-savings">
-                      <div className="text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">$8,500</div>
-                      <div className="text-xs text-emerald-700 font-bold">Avg Saved</div>
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
+                    <div data-testid="stat-average-savings" className="text-center">
+                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent leading-tight">$8,500</div>
+                      <div className="text-xs text-emerald-700 font-bold mt-1">Avg Saved</div>
                     </div>
-                    <div data-testid="stat-bills-reduced">
-                      <div className="text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">2,847</div>
-                      <div className="text-xs text-blue-700 font-bold">Bills Cut</div>
+                    <div data-testid="stat-bills-reduced" className="text-center">
+                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent leading-tight">2,847</div>
+                      <div className="text-xs text-blue-700 font-bold mt-1">Bills Cut</div>
                     </div>
-                    <div data-testid="stat-success-rate">
-                      <div className="text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">95%</div>
-                      <div className="text-xs text-purple-700 font-bold">Win Rate</div>
+                    <div data-testid="stat-success-rate" className="text-center">
+                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">95%</div>
+                      <div className="text-xs text-purple-700 font-bold mt-1">Win Rate</div>
                     </div>
                   </div>
                   <div className="flex items-center justify-center space-x-1">
