@@ -262,33 +262,37 @@ export default function AuthLanding() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 pointer-events-none" />
         
-        <div className="flex items-center justify-between h-16 px-5 relative max-w-7xl mx-auto">
+        <div className="grid grid-cols-3 items-center h-16 px-5 max-w-7xl mx-auto gap-4">
           {/* Left - Menu */}
-          <PreLoginNavigationDropdown />
+          <div className="flex justify-start">
+            <PreLoginNavigationDropdown />
+          </div>
 
           {/* Center - Logo */}
           <motion.div 
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center whitespace-nowrap"
+            className="flex justify-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <h1 className="text-base sm:text-lg font-black">
+            <h1 className="text-base sm:text-lg font-black whitespace-nowrap">
               <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span><span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span> <span className="text-gray-900">Health</span>
             </h1>
           </motion.div>
 
           {/* Right - Sign In */}
-          <motion.a
-            href="/api/login"
-            className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-bold shadow-lg shadow-indigo-500/30 hover:shadow-xl transition-all"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            data-testid="button-header-signin"
-          >
-            <LogIn className="h-4 w-4" />
-            <span>Sign In</span>
-          </motion.a>
+          <div className="flex justify-end">
+            <motion.a
+              href="/api/login"
+              className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-bold shadow-lg shadow-indigo-500/30 hover:shadow-xl transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="button-header-signin"
+            >
+              <LogIn className="h-4 w-4" />
+              <span>Sign In</span>
+            </motion.a>
+          </div>
         </div>
       </motion.header>
 
