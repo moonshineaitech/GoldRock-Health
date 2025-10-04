@@ -879,7 +879,7 @@ export default function BlitzDemo() {
                         <label className="text-sm font-medium text-gray-700 mb-2 block">
                           Service Type
                         </label>
-                        <Select onValueChange={(value) => setBillDetails(prev => ({ ...prev, serviceType: value }))}>
+                        <Select value={billDetails.serviceType} onValueChange={(value) => setBillDetails(prev => ({ ...prev, serviceType: value }))}>
                           <SelectTrigger data-testid="select-service-type" className="!bg-white">
                             <SelectValue placeholder="Select service type" />
                           </SelectTrigger>
@@ -927,7 +927,7 @@ export default function BlitzDemo() {
                         <label className="text-sm font-medium text-gray-700 mb-2 block">
                           Claim Status
                         </label>
-                        <Select onValueChange={(value) => setBillDetails(prev => ({ ...prev, claimStatus: value }))}>
+                        <Select value={billDetails.claimStatus} onValueChange={(value) => setBillDetails(prev => ({ ...prev, claimStatus: value }))}>
                           <SelectTrigger data-testid="select-claim-status" className="!bg-white">
                             <SelectValue placeholder="Insurance claim status" />
                           </SelectTrigger>
