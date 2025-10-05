@@ -243,11 +243,11 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           onClick={onStartChat}
           variant="outline"
           size="sm"
-          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
+          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200 text-gray-900"
           data-testid="start-chat-button"
         >
           <MessageCircle className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
-          <span className="text-xs lg:text-sm xl:text-base">Start Chat</span>
+          <span className="text-xs lg:text-sm xl:text-base font-semibold">Start Chat</span>
         </Button>
         <Link href="/blitz-demo" className="w-full">
           <Button
@@ -264,11 +264,11 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           onClick={() => {}}
           variant="outline"
           size="sm"
-          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200"
+          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200 text-gray-900"
           data-testid="view-all-workflows"
         >
           <Plus className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
-          <span className="text-xs lg:text-sm xl:text-base">All Tools</span>
+          <span className="text-xs lg:text-sm xl:text-base font-semibold">All Tools</span>
         </Button>
       </div>
 
