@@ -728,7 +728,7 @@ What aspect of your medical billing situation requires immediate attention?`;
                           key={index}
                           size="sm"
                           variant="outline"
-                          className="text-sm h-8 px-3 rounded-xl bg-white/50 hover:bg-white/80 border-gray-300"
+                          className="text-sm h-8 px-3 rounded-xl bg-white/50 hover:bg-white/80 border-gray-300 text-black font-semibold"
                           data-testid={`button-${button.action}-${index}`}
                         >
                           {button.text}
