@@ -762,7 +762,7 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
               transition={{ duration: 0.5 }}
             />
             
-            <div className="relative z-10 p-6">
+            <div className="relative z-10 p-3">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -1067,7 +1067,7 @@ function PremiumMarketing() {
         
         {/* Enhanced Payment Form Container */}
         <motion.div
-          className="px-4 pb-8"
+          className="px-2 pb-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0, duration: 0.8 }}
@@ -1091,9 +1091,9 @@ function PremiumMarketing() {
               }}
             />
             
-            <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative">
+            <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative !p-3">
               <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
-              <div className="relative z-10 p-6">
+              <div className="relative z-10">
                 <Elements stripe={stripePromise} options={{ clientSecret: setupData.clientSecret }}>
                   <SubscriptionForm 
                     planType={setupData.planType} 
