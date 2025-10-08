@@ -345,7 +345,7 @@ const subscriptionPlans = [
   {
     id: "monthly",
     name: "Monthly",
-    price: 20,
+    price: 25,
     period: "month",
     savings: null,
     popular: false,
@@ -361,9 +361,9 @@ const subscriptionPlans = [
   {
     id: "annual",
     name: "Annual",
-    price: 189,
+    price: 299,
     period: "year",
-    savings: "Save 21% (~2.6 months free)",
+    savings: "Best Value",
     popular: true,
     features: [
       "Everything in Monthly plan",
@@ -1282,6 +1282,221 @@ function PremiumMarketing() {
         </motion.div>
       </motion.div>
 
+      {/* Enhanced Pricing Section */}
+      <motion.div
+        className="space-y-6"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+        id="plans"
+      >
+        <motion.div 
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          <h2 className="text-3xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
+            Choose Your Fighter Plan
+          </h2>
+          <div className="h-1 w-24 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto" />
+          <p className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto font-medium">
+            Get unlimited AI-powered bill fighting • Cancel anytime • Money-back guarantee
+          </p>
+        </motion.div>
+        
+        {/* Value Proposition Banner */}
+        <motion.div 
+          className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center mb-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <TrendingDown className="h-5 w-5 text-emerald-600" />
+            <span className="font-black text-emerald-700 text-lg">ROI: 4,250% Average Return</span>
+          </div>
+          <p className="text-sm text-emerald-600 font-semibold">Your subscription pays for itself with first bill analysis</p>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-green-50/80" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/20" />
+            <div className="relative z-10 p-6 space-y-6">
+            {/* Enhanced Plan Toggle */}
+            <div className="bg-gradient-to-r from-white/80 via-white/60 to-white/80 backdrop-blur-sm rounded-2xl p-1.5 flex shadow-lg border border-white/50">
+              <motion.button 
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
+                  selectedPlan === 'monthly' 
+                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
+                }`}
+                onClick={() => setSelectedPlan('monthly')}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {selectedPlan === 'monthly' && (
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-green-400/20 rounded-xl"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+                <span className="relative z-10">Monthly</span>
+              </motion.button>
+              <motion.button 
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
+                  selectedPlan === 'annual' 
+                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
+                }`}
+                onClick={() => setSelectedPlan('annual')}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {selectedPlan === 'annual' && (
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-green-400/20 rounded-xl"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+                <span className="relative z-10">Annual</span>
+                <motion.span 
+                  className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg"
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, -5, 0]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  Best Value
+                </motion.span>
+              </motion.button>
+            </div>
+            
+            {/* Selected Plan Details */}
+            {selectedPlan && (() => {
+              const plan = subscriptionPlans.find(p => p.id === selectedPlan);
+              // Don't return null conditionally - this breaks React hooks rules
+              if (!plan) return <div>Plan not found</div>;
+              
+              return (
+                <motion.div 
+                  className="text-center space-y-6"
+                  key={selectedPlan}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {/* Enhanced Pricing Display */}
+                  <div className="relative">
+                    <div className="flex items-baseline justify-center mb-3">
+                      <span className="text-4xl font-black bg-gradient-to-r from-gray-900 via-emerald-700 to-gray-900 bg-clip-text text-transparent">${plan.price}</span>
+                      <span className="text-gray-600 ml-2 text-lg font-medium">/{plan.period}</span>
+                    </div>
+                    {plan.savings && (
+                      <motion.div 
+                        className="inline-flex items-center space-x-1 bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200 rounded-full px-3 py-1 mb-4"
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        <Sparkles className="h-3 w-3 text-orange-600" />
+                        <span className="text-orange-700 font-bold text-sm">{plan.savings}</span>
+                      </motion.div>
+                    )}
+                    {/* ROI Indicator */}
+                    <div className="text-center mb-4">
+                      <div className="inline-flex items-center space-x-1 bg-emerald-100 border border-emerald-200 rounded-full px-3 py-1">
+                        <TrendingDown className="h-3 w-3 text-emerald-600" />
+                        <span className="text-emerald-700 font-bold text-xs">Pays for itself in first analysis</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Enhanced Features List */}
+                  <div className="space-y-3 text-left bg-white/50 backdrop-blur-sm rounded-2xl p-4 border border-white/60">
+                    {plan.features.slice(0, 5).map((feature, idx) => (
+                      <motion.div 
+                        key={idx} 
+                        className="flex items-start space-x-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1, duration: 0.3 }}
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.2, rotate: 180 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Check className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        </motion.div>
+                        <span className="text-sm text-gray-800 font-medium leading-relaxed">{feature}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                  
+                  {/* Enhanced CTA Button */}
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <MobileButton 
+                      className="w-full shadow-2xl shadow-emerald-500/40 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 border-2 border-emerald-200"
+                      size="lg"
+                      onClick={() => handleSubscribe(plan.id)}
+                      disabled={createSubscription.isPending}
+                      data-testid={`subscribe-${plan.id}`}
+                    >
+                      {createSubscription.isPending ? (
+                        <>
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                          />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <ShieldCheck className="h-5 w-5 mr-2" />
+                          Start Your Bill Fight
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </>
+                      )}
+                    </MobileButton>
+                  </motion.div>
+                  
+                  {/* Trust Indicators */}
+                  <div className="flex items-center justify-center space-x-4 text-xs text-gray-600">
+                    <div className="flex items-center space-x-1">
+                      <ShieldCheck className="h-3 w-3" />
+                      <span>Secure Payment</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-3 w-3" />
+                      <span>Cancel Anytime</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Star className="h-3 w-3" />
+                      <span>95% Success Rate</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })()}
+            </div>
+          </MobileCard>
+        </motion.div>
+      </motion.div>
+
       {/* How It Works - The Fighter Process */}
       <motion.div 
         className="px-4 py-12"
@@ -1568,221 +1783,6 @@ function PremiumMarketing() {
             </p>
           </div>
         </MobileCard>
-      </motion.div>
-
-      {/* Enhanced Pricing Section */}
-      <motion.div
-        className="space-y-6"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.7, duration: 0.6 }}
-        id="plans"
-      >
-        <motion.div 
-          className="text-center mb-6"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.6 }}
-        >
-          <h2 className="text-3xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
-            Choose Your Fighter Plan
-          </h2>
-          <div className="h-1 w-24 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto" />
-          <p className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto font-medium">
-            Get unlimited AI-powered bill fighting • Cancel anytime • Money-back guarantee
-          </p>
-        </motion.div>
-        
-        {/* Value Proposition Banner */}
-        <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4 text-center mb-6"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.9, duration: 0.5 }}
-        >
-          <div className="flex items-center justify-center space-x-2 mb-2">
-            <TrendingDown className="h-5 w-5 text-emerald-600" />
-            <span className="font-black text-emerald-700 text-lg">ROI: 4,250% Average Return</span>
-          </div>
-          <p className="text-sm text-emerald-600 font-semibold">Your subscription pays for itself with first bill analysis</p>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.0, duration: 0.5 }}
-        >
-          <MobileCard className="backdrop-blur-xl border border-white/40 shadow-2xl overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-green-50/80" />
-            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/20" />
-            <div className="relative z-10 p-6 space-y-6">
-            {/* Enhanced Plan Toggle */}
-            <div className="bg-gradient-to-r from-white/80 via-white/60 to-white/80 backdrop-blur-sm rounded-2xl p-1.5 flex shadow-lg border border-white/50">
-              <motion.button 
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
-                  selectedPlan === 'monthly' 
-                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
-                }`}
-                onClick={() => setSelectedPlan('monthly')}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {selectedPlan === 'monthly' && (
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-green-400/20 rounded-xl"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
-                <span className="relative z-10">Monthly</span>
-              </motion.button>
-              <motion.button 
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
-                  selectedPlan === 'annual' 
-                    ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
-                }`}
-                onClick={() => setSelectedPlan('annual')}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {selectedPlan === 'annual' && (
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-green-400/20 rounded-xl"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
-                <span className="relative z-10">Annual</span>
-                <motion.span 
-                  className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg"
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, -5, 0]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  Save 21%
-                </motion.span>
-              </motion.button>
-            </div>
-            
-            {/* Selected Plan Details */}
-            {selectedPlan && (() => {
-              const plan = subscriptionPlans.find(p => p.id === selectedPlan);
-              // Don't return null conditionally - this breaks React hooks rules
-              if (!plan) return <div>Plan not found</div>;
-              
-              return (
-                <motion.div 
-                  className="text-center space-y-6"
-                  key={selectedPlan}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  {/* Enhanced Pricing Display */}
-                  <div className="relative">
-                    <div className="flex items-baseline justify-center mb-3">
-                      <span className="text-4xl font-black bg-gradient-to-r from-gray-900 via-emerald-700 to-gray-900 bg-clip-text text-transparent">${plan.price}</span>
-                      <span className="text-gray-600 ml-2 text-lg font-medium">/{plan.period}</span>
-                    </div>
-                    {plan.savings && (
-                      <motion.div 
-                        className="inline-flex items-center space-x-1 bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200 rounded-full px-3 py-1 mb-4"
-                        animate={{ scale: [1, 1.05, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      >
-                        <Sparkles className="h-3 w-3 text-orange-600" />
-                        <span className="text-orange-700 font-bold text-sm">{plan.savings}</span>
-                      </motion.div>
-                    )}
-                    {/* ROI Indicator */}
-                    <div className="text-center mb-4">
-                      <div className="inline-flex items-center space-x-1 bg-emerald-100 border border-emerald-200 rounded-full px-3 py-1">
-                        <TrendingDown className="h-3 w-3 text-emerald-600" />
-                        <span className="text-emerald-700 font-bold text-xs">Pays for itself in first analysis</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Enhanced Features List */}
-                  <div className="space-y-3 text-left bg-white/50 backdrop-blur-sm rounded-2xl p-4 border border-white/60">
-                    {plan.features.slice(0, 5).map((feature, idx) => (
-                      <motion.div 
-                        key={idx} 
-                        className="flex items-start space-x-3"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1, duration: 0.3 }}
-                      >
-                        <motion.div
-                          whileHover={{ scale: 1.2, rotate: 180 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <Check className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
-                        </motion.div>
-                        <span className="text-sm text-gray-800 font-medium leading-relaxed">{feature}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                  
-                  {/* Enhanced CTA Button */}
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <MobileButton 
-                      className="w-full shadow-2xl shadow-emerald-500/40 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 border-2 border-emerald-200"
-                      size="lg"
-                      onClick={() => handleSubscribe(plan.id)}
-                      disabled={createSubscription.isPending}
-                      data-testid={`subscribe-${plan.id}`}
-                    >
-                      {createSubscription.isPending ? (
-                        <>
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
-                          />
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          <ShieldCheck className="h-5 w-5 mr-2" />
-                          Start Your Bill Fight
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </>
-                      )}
-                    </MobileButton>
-                  </motion.div>
-                  
-                  {/* Trust Indicators */}
-                  <div className="flex items-center justify-center space-x-4 text-xs text-gray-600">
-                    <div className="flex items-center space-x-1">
-                      <ShieldCheck className="h-3 w-3" />
-                      <span>Secure Payment</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-3 w-3" />
-                      <span>Cancel Anytime</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-3 w-3" />
-                      <span>95% Success Rate</span>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })()}
-            </div>
-          </MobileCard>
-        </motion.div>
       </motion.div>
 
       {/* Enhanced Premium Features Section */}
