@@ -2,11 +2,70 @@ import { MobileLayout, MobileCard } from "@/components/mobile-layout";
 import { AccountDeletion } from "@/components/account-deletion";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
-import { Settings as SettingsIcon, User, Bell, Shield, FileText, HelpCircle, LogOut, AlertTriangle } from "lucide-react";
+import { Settings as SettingsIcon, User, Bell, Shield, FileText, HelpCircle, LogOut, AlertTriangle, Smartphone, Wifi, WifiOff } from "lucide-react";
 import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { Switch } from "@/components/ui/switch";
+import { notificationService } from "@/lib/notification-service";
+import { biometricService } from "@/lib/biometric-service";
+import { offlineService } from "@/lib/offline-service";
 
 export default function Settings() {
   const { user } = useAuth();
+  
+  // iOS Feature States
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [biometricsEnabled, setBiometricsEnabled] = useState(false);
+  const [biometricsAvailable, setBiometricsAvailable] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
+
+  useEffect(() => {
+    checkBiometricsAvailability();
+    checkNotificationStatus();
+    checkOnlineStatus();
+  }, []);
+
+  const checkBiometricsAvailability = async () => {
+    const available = await biometricService.isAvailable();
+    setBiometricsAvailable(available);
+    setBiometricsEnabled(biometricService.isEnrolled());
+  };
+
+  const checkNotificationStatus = () => {
+    setNotificationsEnabled(Notification.permission === 'granted');
+  };
+
+  const checkOnlineStatus = () => {
+    setIsOnline(offlineService.getOnlineStatus());
+    window.addEventListener('online', () => setIsOnline(true));
+    window.addEventListener('offline', () => setIsOnline(false));
+  };
+
+  const toggleNotifications = async () => {
+    if (!notificationsEnabled) {
+      const granted = await notificationService.requestPermission();
+      if (granted) {
+        setNotificationsEnabled(true);
+        await notificationService.registerPushToken();
+        await notificationService.showNotification({
+          title: '🔔 Notifications Enabled!',
+          body: 'You\'ll now receive updates on bill analysis and savings',
+        });
+      }
+    }
+  };
+
+  const toggleBiometrics = async () => {
+    if (!biometricsEnabled && user?.id) {
+      const enrolled = await biometricService.enroll(user.id);
+      if (enrolled) {
+        setBiometricsEnabled(true);
+      }
+    } else {
+      biometricService.disable();
+      setBiometricsEnabled(false);
+    }
+  };
 
   const settingsSections = [
     {
@@ -15,6 +74,35 @@ export default function Settings() {
       items: [
         { label: "Profile Information", value: user?.email || "Not available", icon: User },
         { label: "Subscription", value: user?.subscriptionStatus === 'active' ? "Premium Active" : "Free Plan", icon: Shield },
+      ]
+    },
+    {
+      title: "iOS Features",
+      icon: Smartphone,
+      items: [
+        { 
+          label: "Push Notifications", 
+          description: "Get alerts for bill analysis completion and savings updates",
+          icon: Bell,
+          toggle: true,
+          enabled: notificationsEnabled,
+          onToggle: toggleNotifications
+        },
+        { 
+          label: "Biometric Authentication", 
+          description: biometricsAvailable ? "Use Face ID or Touch ID to unlock app" : "Not available on this device",
+          icon: Shield,
+          toggle: true,
+          enabled: biometricsEnabled,
+          disabled: !biometricsAvailable,
+          onToggle: toggleBiometrics
+        },
+        { 
+          label: "Offline Mode", 
+          description: isOnline ? "Bills are cached for offline access" : "Currently offline - sync pending",
+          icon: isOnline ? Wifi : WifiOff,
+          value: isOnline ? "Online" : "Offline",
+        },
       ]
     },
     {
@@ -67,7 +155,7 @@ export default function Settings() {
             </h2>
             <MobileCard>
               <div className="divide-y divide-gray-100">
-                {section.items.map((item, itemIdx) => {
+                {section.items.map((item: any, itemIdx) => {
                   const ItemIcon = item.icon;
                   if (item.link) {
                     return (
@@ -90,11 +178,11 @@ export default function Settings() {
                   return (
                     <div key={itemIdx} className="py-3 px-1">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-3 flex-1">
                           <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
                             <ItemIcon className="h-4 w-4 text-gray-600" />
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <div className="font-medium text-gray-900">{item.label}</div>
                             {item.value && (
                               <div className="text-sm text-gray-500">{item.value}</div>
@@ -104,6 +192,14 @@ export default function Settings() {
                             )}
                           </div>
                         </div>
+                        {item.toggle && (
+                          <Switch
+                            checked={item.enabled || false}
+                            onCheckedChange={item.onToggle}
+                            disabled={item.disabled}
+                            data-testid={`toggle-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                          />
+                        )}
                       </div>
                     </div>
                   );
@@ -122,7 +218,7 @@ export default function Settings() {
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
             Danger Zone
           </h2>
-          <AccountDeletion userEmail={user?.email} />
+          <AccountDeletion userEmail={user?.email || undefined} />
         </motion.div>
 
         {/* Logout */}
