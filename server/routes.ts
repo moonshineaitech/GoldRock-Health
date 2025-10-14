@@ -173,6 +173,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Account Deletion endpoint (Apple App Store requirement)
+  app.delete('/api/account', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Cancel active Stripe subscription if exists
+      if (user.stripeSubscriptionId) {
+        try {
+          await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+          console.log(`Cancelled Stripe subscription: ${user.stripeSubscriptionId}`);
+        } catch (stripeError) {
+          console.error('Error canceling Stripe subscription:', stripeError);
+          // Continue with deletion even if subscription cancellation fails
+        }
+      }
+
+      // Delete all user data
+      await storage.deleteUser(userId);
+
+      // Log out user (revoke session)
+      req.logout(() => {
+        res.json({ 
+          message: 'Account successfully deleted',
+          success: true
+        });
+      });
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      res.status(500).json({ message: 'Failed to delete account. Please try again or contact support.' });
+    }
+  });
+
   // User Data Rights (GDPR/Privacy Compliance)
   app.post('/api/user/delete-data', isAuthenticated, async (req: any, res) => {
     try {

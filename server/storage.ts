@@ -76,6 +76,7 @@ export interface IStorage {
   getAllUsers(): Promise<User[]>;
   upsertUser(user: UpsertUser): Promise<User>;
   acceptAiTerms(userId: string, version: string): Promise<User>;
+  deleteUser(userId: string): Promise<void>;
 
   // Medical Cases
   getMedicalCases(filters?: { specialty?: string; difficulty?: number; search?: string }): Promise<MedicalCase[]>;
@@ -214,6 +215,48 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, userId))
       .returning();
     return user;
+  }
+
+  async deleteUser(userId: string): Promise<void> {
+    // Delete all user-related data in correct order (respecting foreign keys)
+    // 1. Delete user progress
+    await db.delete(userProgress).where(eq(userProgress.userId, userId));
+    
+    // 2. Delete image analysis progress
+    await db.delete(imageAnalysisProgress).where(eq(imageAnalysisProgress.userId, userId));
+    
+    // 3. Delete user achievements
+    await db.delete(userAchievements).where(eq(userAchievements.userId, userId));
+    
+    // 4. Delete user stats
+    await db.delete(userStats).where(eq(userStats.userId, userId));
+    
+    // 5. Delete board exam attempts
+    await db.delete(boardExamAttempts).where(eq(boardExamAttempts.userId, userId));
+    
+    // 6. Delete decision tree progress
+    await db.delete(decisionTreeProgress).where(eq(decisionTreeProgress.userId, userId));
+    
+    // 7. Delete study group memberships
+    await db.delete(studyGroupMembers).where(eq(studyGroupMembers.userId, userId));
+    
+    // 8. Delete medical bills
+    await db.delete(medicalBills).where(eq(medicalBills.userId, userId));
+    
+    // 9. Delete chat sessions (this will cascade to messages)
+    await db.delete(chatSessions).where(eq(chatSessions.userId, userId));
+    
+    // 10. Delete chat messages
+    await db.delete(chatMessages).where(eq(chatMessages.userId, userId));
+    
+    // 11. Delete synthetic patients
+    await db.delete(syntheticPatients).where(eq(syntheticPatients.userId, userId));
+    
+    // 12. Delete diagnostic sessions  
+    await db.delete(diagnosticSessions).where(eq(diagnosticSessions.userId, userId));
+    
+    // 13. Finally, delete the user
+    await db.delete(users).where(eq(users.id, userId));
   }
 
   // Medical Cases
