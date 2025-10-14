@@ -61,8 +61,17 @@ export class NotificationService {
         console.log('Service Worker registered successfully');
       } catch (error) {
         console.error('Service Worker registration failed:', error);
+        this.registration = null;
+        // Gracefully degrade - notifications will still work via browser API
       }
     }
+  }
+
+  /**
+   * Check if service worker is registered
+   */
+  isServiceWorkerRegistered(): boolean {
+    return this.registration !== null;
   }
 
   /**
@@ -144,11 +153,17 @@ export class NotificationService {
       await this.registerServiceWorker();
     }
 
+    // If still no registration, return null (will use fallback notifications)
+    if (!this.registration) {
+      console.log('Service Worker not available, using fallback notifications');
+      return null;
+    }
+
     try {
-      const subscription = await this.registration?.pushManager.subscribe({
+      const subscription = await this.registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: this.urlBase64ToUint8Array(
-          process.env.VAPID_PUBLIC_KEY || ''
+          import.meta.env.VITE_VAPID_PUBLIC_KEY || ''
         ),
       });
 

@@ -19,6 +19,21 @@ export class OfflineService {
   private constructor() {
     this.loadQueue();
     this.setupListeners();
+    this.registerServiceWorker(); // Register SW for offline caching
+  }
+
+  /**
+   * Register service worker for offline support
+   */
+  private async registerServiceWorker(): Promise<void> {
+    if ('serviceWorker' in navigator) {
+      try {
+        await navigator.serviceWorker.register('/sw.js');
+        console.log('Service Worker registered for offline support');
+      } catch (error) {
+        console.error('Service Worker registration failed:', error);
+      }
+    }
   }
 
   static getInstance(): OfflineService {

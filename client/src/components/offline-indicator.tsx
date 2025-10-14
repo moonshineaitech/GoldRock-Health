@@ -5,7 +5,7 @@ import { offlineService } from "@/lib/offline-service";
 
 export function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(true);
-  const [queueStatus, setQueueStatus] = useState({ pending: 0, actions: [] });
+  const [queueStatus, setQueueStatus] = useState<{ pending: number; actions: any[] }>({ pending: 0, actions: [] });
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
