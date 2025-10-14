@@ -1,24 +1,10 @@
-import { MobileLayout } from "@/components/mobile-layout";
+import { PublicLayout } from "@/components/public-layout";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
-import { Link } from "wouter";
 
 export default function PrivacyPolicy() {
   return (
-    <MobileLayout title="Privacy Policy" showBottomNav={false}>
-      <div className="px-4 py-6 max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center mb-6">
-          <Link href="/">
-            <button className="flex items-center text-gray-600 hover:text-gray-900 mr-4">
-              <ArrowLeft className="h-5 w-5 mr-1" />
-              Back
-            </button>
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Privacy Policy</h1>
-        </div>
-
-        <Card className="p-6 lg:p-8">
+    <PublicLayout title="Privacy Policy">
+      <Card className="p-6 lg:p-8">
           <div className="prose prose-gray max-w-none">
             <div className="text-sm text-gray-600 mb-6">
               <strong>Effective Date:</strong> January 1, 2025<br />
@@ -228,7 +214,6 @@ export default function PrivacyPolicy() {
             </div>
           </div>
         </Card>
-      </div>
-    </MobileLayout>
+    </PublicLayout>
   );
 }
