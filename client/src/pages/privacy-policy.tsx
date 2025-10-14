@@ -147,21 +147,70 @@ export default function PrivacyPolicy() {
               please contact us immediately.
             </p>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">10. International Users</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">10. Mobile App Specific Information</h2>
+            
+            <h3 className="text-lg font-medium text-gray-900 mb-3">iOS App Store Compliance</h3>
+            <p className="mb-4">
+              Our iOS mobile application is subject to Apple's App Store Review Guidelines and privacy requirements:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li><strong>Account Deletion:</strong> You can delete your account and all associated data directly within the app through Settings → Account Deletion. Deletion completes within 5 minutes and is irreversible.</li>
+              <li><strong>Data Types Collected:</strong> Medical bills (photos/documents), email address, name, payment information, usage analytics, device identifiers</li>
+              <li><strong>Data Linked to You:</strong> Email, name, medical bills, chat messages, subscription status</li>
+              <li><strong>Data Not Linked to You:</strong> Aggregated usage analytics, crash diagnostics</li>
+              <li><strong>Tracking:</strong> We do not use data for cross-app or cross-website tracking for advertising purposes</li>
+            </ul>
+
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Camera and Photo Library Access</h3>
+            <p className="mb-4">
+              Our iOS app requests permission to access your device camera and photo library solely to:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Capture photos of medical bills for analysis</li>
+              <li>Select existing bill images from your photo library</li>
+              <li>Scan documents using your device camera</li>
+            </ul>
+            <p className="mb-4">
+              We do not access your photos or camera for any other purpose. You can revoke these permissions 
+              at any time through iOS Settings. Images are processed on our secure servers and deleted 
+              according to our retention policy.
+            </p>
+
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Push Notifications</h3>
+            <p className="mb-4">
+              We may send push notifications to alert you when:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Your bill analysis is complete</li>
+              <li>You receive a response from our AI system</li>
+              <li>Important account or billing updates occur</li>
+            </ul>
+            <p className="mb-4">
+              You can disable push notifications at any time through iOS Settings → Notifications → GoldRock Health.
+            </p>
+
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Biometric Authentication (Face ID/Touch ID)</h3>
+            <p className="mb-4">
+              If you enable biometric authentication in the app, we use Apple's Secure Enclave to verify 
+              your identity. We do not store or access your biometric data. Authentication happens entirely 
+              on your device through iOS system APIs.
+            </p>
+
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">11. International Users</h2>
             <p className="mb-4">
               Our services are primarily intended for users in the United States. If you access our 
               service from outside the US, you consent to the transfer and processing of your 
               information in the United States.
             </p>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">11. Changes to This Policy</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">12. Changes to This Policy</h2>
             <p className="mb-4">
               We may update this privacy policy periodically. We will notify you of material changes 
               by email or through our platform. Your continued use of our service after changes 
               indicates acceptance of the updated policy.
             </p>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">12. Contact Us</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">13. Contact Us</h2>
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
               <p className="mb-2">Email: <strong>privacy@goldrockhealth.com</strong></p>

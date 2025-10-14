@@ -38,6 +38,8 @@ import EmergencyHelp from "@/pages/emergency-help";
 import QuickAnalyzer from "@/pages/quick-analyzer";
 import ProviderContacts from "@/pages/provider-contacts";
 import CaseDetail from "@/pages/case-detail";
+import Settings from "@/pages/settings";
+import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 
 // Define AI-protected routes that require AI agreement
 const AI_PROTECTED_ROUTES = [
@@ -68,7 +70,7 @@ function AIRouteGuard({ children, path }: { children: React.ReactNode; path: str
 }
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -156,6 +158,7 @@ function Router() {
       <Route path="/emergency-help" component={EmergencyHelp} />
       <Route path="/quick-analyzer" component={QuickAnalyzer} />
       <Route path="/provider-contacts" component={ProviderContacts} />
+      <Route path="/settings" component={Settings} />
       <Route path="/blitz-demo">
         <AIRouteGuard path="/blitz-demo">
           <BlitzDemo />
@@ -173,6 +176,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        <MedicalDisclaimer />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>

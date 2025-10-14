@@ -168,7 +168,61 @@ export default function TermsOfService() {
               of any third-party rights.
             </p>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">12. Termination</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">12. Mobile App Specific Terms</h2>
+            
+            <h3 className="text-lg font-medium text-gray-900 mb-3">iOS App Store</h3>
+            <p className="mb-4">
+              If you download our app from Apple's App Store, you acknowledge and agree that:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>These Terms are between you and Eldest AI LLC, not Apple</li>
+              <li>Apple has no obligation to provide maintenance or support for the app</li>
+              <li>Apple is not responsible for addressing any claims relating to the app</li>
+              <li>Apple and its subsidiaries are third-party beneficiaries of these Terms</li>
+              <li>You will comply with all applicable third-party terms when using the app</li>
+            </ul>
+
+            <h3 className="text-lg font-medium text-gray-900 mb-3">In-App Purchases</h3>
+            <p className="mb-4">
+              Subscriptions purchased through the iOS app are processed by Apple:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Payment will be charged to your Apple ID account at confirmation of purchase</li>
+              <li>Subscriptions automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period</li>
+              <li>Your account will be charged for renewal within 24 hours prior to the end of the current period</li>
+              <li>You can manage subscriptions and turn off auto-renewal in your Apple ID Account Settings</li>
+              <li>Cancellation of the current active subscription is not allowed during the subscription period</li>
+            </ul>
+
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Device Permissions</h3>
+            <p className="mb-4">
+              Our iOS app may request the following device permissions:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li><strong>Camera:</strong> To capture photos of medical bills</li>
+              <li><strong>Photo Library:</strong> To select and upload existing bill images</li>
+              <li><strong>Notifications:</strong> To alert you of bill analysis completion and updates</li>
+              <li><strong>Face ID/Touch ID:</strong> For secure app authentication (optional)</li>
+            </ul>
+            <p className="mb-4">
+              You can manage these permissions at any time through iOS Settings. Denying certain permissions 
+              may limit app functionality.
+            </p>
+
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Account Deletion</h3>
+            <p className="mb-4">
+              Per Apple's App Store requirements, you can delete your account and all associated data 
+              directly within the app:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Navigate to Settings → Account Deletion within the app</li>
+              <li>Follow the confirmation process to permanently delete your account</li>
+              <li>Deletion completes within 5 minutes and is irreversible</li>
+              <li>All personal data, medical bills, and chat history will be permanently deleted</li>
+              <li>Active subscriptions will be cancelled (refunds subject to Apple's policies)</li>
+            </ul>
+
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">13. Termination</h2>
             <p className="mb-4">
               Either party may terminate this agreement at any time. We may suspend or terminate your 
               account if you violate these Terms. Upon termination:
@@ -179,26 +233,26 @@ export default function TermsOfService() {
               <li>Surviving provisions (disclaimers, limitations, indemnification) remain in effect</li>
             </ul>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">13. Changes to Terms</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">14. Changes to Terms</h2>
             <p className="mb-4">
               We may modify these Terms at any time by posting updated Terms on our website. Material 
               changes will be notified via email or through our service. Continued use after changes 
               indicates acceptance of the updated Terms.
             </p>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">14. Governing Law and Disputes</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">15. Governing Law and Disputes</h2>
             <p className="mb-4">
               These Terms are governed by Colorado state law. Any disputes will be resolved through 
               binding arbitration in Colorado, except for claims that may be brought in small claims court.
             </p>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">15. Severability</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">16. Severability</h2>
             <p className="mb-4">
               If any provision of these Terms is found unenforceable, the remaining provisions will 
               continue in full force and effect.
             </p>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">16. Contact Information</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">17. Contact Information</h2>
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
               <p className="mb-2">Email: <strong>support@goldrockhealth.com</strong></p>

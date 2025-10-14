@@ -1,0 +1,117 @@
+{
+  "expo": {
+    "name": "GoldRock Health",
+    "slug": "goldrock-health",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eldestai.goldrockhealth",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "GoldRock Health needs camera access to capture photos of your medical bills for AI analysis.",
+        "NSPhotoLibraryUsageDescription": "GoldRock Health needs photo library access to select existing medical bill images for analysis.",
+        "NSFaceIDUsageDescription": "GoldRock Health uses Face ID to securely authenticate and protect your sensitive medical billing information.",
+        "UIBackgroundModes": [
+          "fetch",
+          "remote-notification"
+        ],
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false
+        }
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "associatedDomains": [
+        "applinks:goldrockhealth.com"
+      ],
+      "appStoreUrl": "https://apps.apple.com/app/goldrock-health/id123456789"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.eldestai.goldrockhealth",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow GoldRock Health to access your camera to capture medical bill photos."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow GoldRock Health to access your photos to select medical bill images."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#4F46E5",
+          "sounds": [
+            "./assets/notification.wav"
+          ]
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow GoldRock Health to use Face ID for secure authentication."
+        }
+      ],
+      "expo-document-picker"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-here"
+      },
+      "apiUrl": "https://goldrockhealth.com/api",
+      "stripePublishableKey": "pk_live_your_stripe_key",
+      "replitAuthClientId": "your_replit_auth_client_id"
+    },
+    "hooks": {
+      "postPublish": []
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/your-project-id"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "scheme": "goldrockhealth",
+    "primaryColor": "#4F46E5",
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#4F46E5",
+      "androidMode": "default",
+      "androidCollapsedTitle": "#{unread_notifications} new notifications"
+    }
+  }
+}

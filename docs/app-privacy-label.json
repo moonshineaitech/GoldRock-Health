@@ -1,0 +1,180 @@
+{
+  "privacyTypes": [
+    {
+      "privacyType": "Contact Info",
+      "identifier": "CONTACT_INFO_EMAIL",
+      "dataCategory": "Contact Info",
+      "dataType": "Email Address",
+      "purposes": [
+        "App Functionality",
+        "Analytics",
+        "Product Personalization",
+        "Developer Communications"
+      ],
+      "linked": true,
+      "tracking": false,
+      "mayCollect": true
+    },
+    {
+      "privacyType": "Contact Info",
+      "identifier": "CONTACT_INFO_NAME",
+      "dataCategory": "Contact Info",
+      "dataType": "Name",
+      "purposes": [
+        "App Functionality",
+        "Product Personalization"
+      ],
+      "linked": true,
+      "tracking": false,
+      "mayCollect": true
+    },
+    {
+      "privacyType": "Health & Fitness",
+      "identifier": "HEALTH_MEDICAL_BILLS",
+      "dataCategory": "Health & Fitness",
+      "dataType": "Health",
+      "purposes": [
+        "App Functionality",
+        "Product Personalization"
+      ],
+      "linked": true,
+      "tracking": false,
+      "mayCollect": true,
+      "description": "Medical bill images and documents uploaded by user for cost analysis"
+    },
+    {
+      "privacyType": "Financial Info",
+      "identifier": "FINANCIAL_PAYMENT",
+      "dataCategory": "Financial Info",
+      "dataType": "Payment Info",
+      "purposes": [
+        "App Functionality"
+      ],
+      "linked": true,
+      "tracking": false,
+      "mayCollect": true,
+      "description": "Payment information processed through Stripe for subscription management"
+    },
+    {
+      "privacyType": "User Content",
+      "identifier": "USER_CONTENT_PHOTOS",
+      "dataCategory": "User Content",
+      "dataType": "Photos or Videos",
+      "purposes": [
+        "App Functionality"
+      ],
+      "linked": true,
+      "tracking": false,
+      "mayCollect": true,
+      "description": "Photos of medical bills captured via camera or selected from photo library"
+    },
+    {
+      "privacyType": "User Content",
+      "identifier": "USER_CONTENT_MESSAGES",
+      "dataCategory": "User Content",
+      "dataType": "Customer Support",
+      "purposes": [
+        "App Functionality",
+        "Product Personalization"
+      ],
+      "linked": true,
+      "tracking": false,
+      "mayCollect": true,
+      "description": "Chat messages and interactions with AI bill analysis system"
+    },
+    {
+      "privacyType": "Identifiers",
+      "identifier": "IDENTIFIERS_USER_ID",
+      "dataCategory": "Identifiers",
+      "dataType": "User ID",
+      "purposes": [
+        "App Functionality",
+        "Analytics",
+        "Product Personalization"
+      ],
+      "linked": true,
+      "tracking": false,
+      "mayCollect": true
+    },
+    {
+      "privacyType": "Identifiers",
+      "identifier": "IDENTIFIERS_DEVICE_ID",
+      "dataCategory": "Identifiers",
+      "dataType": "Device ID",
+      "purposes": [
+        "App Functionality",
+        "Analytics"
+      ],
+      "linked": false,
+      "tracking": false,
+      "mayCollect": true,
+      "description": "Used for analytics and crash reporting only, not linked to user identity"
+    },
+    {
+      "privacyType": "Usage Data",
+      "identifier": "USAGE_PRODUCT_INTERACTION",
+      "dataCategory": "Usage Data",
+      "dataType": "Product Interaction",
+      "purposes": [
+        "Analytics",
+        "App Functionality",
+        "Product Personalization"
+      ],
+      "linked": false,
+      "tracking": false,
+      "mayCollect": true,
+      "description": "Aggregated usage patterns to improve AI analysis and user experience"
+    },
+    {
+      "privacyType": "Diagnostics",
+      "identifier": "DIAGNOSTICS_CRASH_DATA",
+      "dataCategory": "Diagnostics",
+      "dataType": "Crash Data",
+      "purposes": [
+        "App Functionality"
+      ],
+      "linked": false,
+      "tracking": false,
+      "mayCollect": true,
+      "description": "Crash logs and performance data for debugging"
+    },
+    {
+      "privacyType": "Diagnostics",
+      "identifier": "DIAGNOSTICS_PERFORMANCE",
+      "dataCategory": "Diagnostics",
+      "dataType": "Performance Data",
+      "purposes": [
+        "App Functionality",
+        "Analytics"
+      ],
+      "linked": false,
+      "tracking": false,
+      "mayCollect": true
+    }
+  ],
+  "tracking": false,
+  "thirdPartySDKs": [
+    {
+      "name": "Stripe",
+      "purpose": "Payment processing",
+      "dataShared": ["Email", "Name", "Payment Info"]
+    },
+    {
+      "name": "OpenAI",
+      "purpose": "AI analysis of medical bills",
+      "dataShared": ["Medical bill content", "Chat messages"]
+    },
+    {
+      "name": "Replit Auth",
+      "purpose": "User authentication",
+      "dataShared": ["Email", "User ID"]
+    }
+  ],
+  "notes": {
+    "accountDeletion": "Users can delete their account and all data within 5 minutes through Settings → Account Deletion in the app",
+    "dataRetention": "Medical bills and chat messages retained for 30 days by default unless user requests earlier deletion",
+    "noTracking": "We do NOT use data for cross-app or cross-site tracking for advertising purposes",
+    "medicalDisclaimer": "App provides educational information only, not medical advice. Users are shown disclaimer on first launch.",
+    "dataCollection": "All data collection is disclosed in our Privacy Policy and users can control permissions through iOS Settings"
+  }
+}

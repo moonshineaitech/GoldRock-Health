@@ -243,11 +243,19 @@ export class DatabaseStorage implements IStorage {
     // 8. Delete medical bills
     await db.delete(medicalBills).where(eq(medicalBills.userId, userId));
     
-    // 9. Delete chat sessions (this will cascade to messages)
-    await db.delete(chatSessions).where(eq(chatSessions.userId, userId));
+    // 9. Delete chat messages (must be deleted before sessions due to foreign key)
+    const userSessions = await db.select({ id: chatSessions.id })
+      .from(chatSessions)
+      .where(eq(chatSessions.userId, userId));
+    const sessionIds = userSessions.map(s => s.id);
+    if (sessionIds.length > 0) {
+      for (const sessionId of sessionIds) {
+        await db.delete(chatMessages).where(eq(chatMessages.sessionId, sessionId));
+      }
+    }
     
-    // 10. Delete chat messages
-    await db.delete(chatMessages).where(eq(chatMessages.userId, userId));
+    // 10. Delete chat sessions
+    await db.delete(chatSessions).where(eq(chatSessions.userId, userId));
     
     // 11. Delete synthetic patients
     await db.delete(syntheticPatients).where(eq(syntheticPatients.userId, userId));
