@@ -108,38 +108,15 @@ export async function setupAuth(app: Express) {
 
   app.get("/api/login", (req, res, next) => {
     passport.authenticate(`replitauth:${req.hostname}`, {
-      prompt: "select_account",
+      prompt: "login consent",
       scope: ["openid", "email", "profile", "offline_access"],
     })(req, res, next);
   });
 
   app.get("/api/callback", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, (err: any, user: any) => {
-      if (err) {
-        console.error('Auth callback error:', err);
-        return res.redirect("/api/login");
-      }
-      if (!user) {
-        console.error('Auth callback: no user returned');
-        return res.redirect("/api/login");
-      }
-      
-      req.logIn(user, (err: any) => {
-        if (err) {
-          console.error('Login error:', err);
-          return res.redirect("/api/login");
-        }
-        
-        console.log('User successfully logged in:', user.claims?.email);
-        
-        // Check if user needs to accept AI terms
-        if (user.needsAiAgreement) {
-          return res.redirect("/ai-agreement");
-        }
-        
-        // Proceed to main app
-        return res.redirect("/");
-      });
+    passport.authenticate(`replitauth:${req.hostname}`, {
+      successReturnToOrRedirect: "/",
+      failureRedirect: "/api/login",
     })(req, res, next);
   });
 
