@@ -1,5 +1,5 @@
 import { MobileButton } from "@/components/mobile-layout";
-import { Apple, Mail, ArrowRight, Shield, DollarSign, Users, CheckCircle, Star, Award, Zap, Heart, TrendingDown, Target, AlertTriangle, FileText, MessageSquare, LogIn, Menu, Home, BookOpen, Crown as PremiumIcon, Gamepad2, Download, Phone, Search } from "lucide-react";
+import { Apple, Mail, ArrowRight, Shield, DollarSign, Users, CheckCircle, Star, Award, Zap, Heart, TrendingDown, Target, AlertTriangle, FileText, MessageSquare, LogIn, Menu, Home, BookOpen, Crown as PremiumIcon, Gamepad2, Download, Phone, Search, User, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { useState } from "react";
@@ -201,6 +201,110 @@ function PreLoginNavigationDropdown() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+// Bottom Navigation Bar - requires login for all links
+function BottomNavBar() {
+  const navItems = [
+    { 
+      icon: LayoutDashboard, 
+      label: "Dashboard", 
+      href: "/",
+      testId: "nav-bottom-dashboard"
+    },
+    { 
+      icon: FileText, 
+      label: "Bill AI", 
+      href: "/bill-ai",
+      testId: "nav-bottom-bill-ai"
+    },
+    { 
+      icon: BookOpen, 
+      label: "Training", 
+      href: "/training",
+      testId: "nav-bottom-training"
+    },
+    { 
+      icon: PremiumIcon, 
+      label: "Premium", 
+      href: "/premium",
+      testId: "nav-bottom-premium"
+    },
+    { 
+      icon: User, 
+      label: "Profile", 
+      href: "/settings",
+      testId: "nav-bottom-profile"
+    }
+  ];
+
+  const handleNavClick = (href: string) => {
+    // Redirect to login with return URL
+    window.location.href = `/api/login?returnTo=${encodeURIComponent(href)}`;
+  };
+
+  return (
+    <motion.div 
+      className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-2xl border-t border-white/20 shadow-2xl shadow-black/10"
+      style={{
+        background: 'linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%)',
+      }}
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
+      <div className="flex items-center justify-around max-w-md mx-auto px-4 py-3 safe-area-inset-bottom">
+        {navItems.map((item, index) => {
+          const IconComponent = item.icon;
+          return (
+            <motion.button
+              key={item.label}
+              onClick={() => handleNavClick(item.href)}
+              className="flex flex-col items-center justify-center space-y-1 min-w-[60px] group"
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 + index * 0.05, duration: 0.3 }}
+              data-testid={item.testId}
+            >
+              <div className="relative">
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                {/* Icon container */}
+                <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-gray-100 to-gray-50 group-hover:from-indigo-100 group-hover:to-purple-100 transition-all duration-300 shadow-sm group-hover:shadow-md">
+                  <IconComponent className="h-5 w-5 text-gray-600 group-hover:text-indigo-600 transition-colors duration-300" />
+                </div>
+
+                {/* Login indicator badge */}
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <LogIn className="h-2.5 w-2.5 text-white" />
+                </div>
+              </div>
+              
+              <span className="text-xs font-semibold text-gray-600 group-hover:text-indigo-600 transition-colors duration-300">
+                {item.label}
+              </span>
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* Login required indicator */}
+      <motion.div 
+        className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-full shadow-lg opacity-0 pointer-events-none"
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{ duration: 3, delay: 1.5, repeat: 2 }}
+      >
+        <div className="flex items-center space-x-1">
+          <LogIn className="h-3 w-3" />
+          <span>Sign in to access features</span>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
