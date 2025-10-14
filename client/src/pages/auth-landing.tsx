@@ -208,10 +208,16 @@ function PreLoginNavigationDropdown() {
 function BottomNavBar() {
   const navItems = [
     { 
-      icon: LayoutDashboard, 
-      label: "Dashboard", 
+      icon: Home, 
+      label: "Home", 
       href: "/",
-      testId: "nav-bottom-dashboard"
+      testId: "nav-bottom-home"
+    },
+    { 
+      icon: BookOpen, 
+      label: "Cases", 
+      href: "/training",
+      testId: "nav-bottom-cases"
     },
     { 
       icon: FileText, 
@@ -220,22 +226,10 @@ function BottomNavBar() {
       testId: "nav-bottom-bill-ai"
     },
     { 
-      icon: BookOpen, 
-      label: "Training", 
-      href: "/training",
-      testId: "nav-bottom-training"
-    },
-    { 
       icon: PremiumIcon, 
       label: "Premium", 
       href: "/premium",
       testId: "nav-bottom-premium"
-    },
-    { 
-      icon: User, 
-      label: "Profile", 
-      href: "/settings",
-      testId: "nav-bottom-profile"
     }
   ];
 
@@ -660,6 +654,9 @@ export default function AuthLanding() {
           </motion.p>
         </motion.div>
       </div>
+
+      {/* Bottom Navigation Bar */}
+      <BottomNavBar />
     </div>
   );
 }
