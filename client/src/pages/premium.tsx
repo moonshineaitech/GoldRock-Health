@@ -927,17 +927,40 @@ function PremiumMarketing() {
       // Check platform and handle accordingly
       const method = paymentService.getPaymentMethod();
       
-      if (method === 'ios-redirect') {
-        // On iOS native, show message and redirect to web
+      if (method === 'revenuecat') {
+        // On iOS native, use RevenueCat/StoreKit
         const instructions = paymentService.getPaymentInstructions();
         toast({
           title: instructions.title,
           description: instructions.message,
-          duration: 8000,
+          duration: 5000,
         });
         
-        // Open web browser for subscription
-        await paymentService.initiateSubscription(planId as 'monthly' | 'annual');
+        try {
+          const result = await paymentService.initiateSubscription(planId as 'monthly' | 'annual');
+          
+          if (result.success && result.customerInfo) {
+            // Purchase successful! Show success message
+            toast({
+              title: "Subscription Activated! 🎉",
+              description: "Your Premium subscription is now active. Enjoy unlimited bill analysis and expert coaching!",
+              duration: 8000,
+            });
+            
+            // Sync with backend
+            window.location.reload(); // Reload to update subscription status
+          }
+        } catch (error: any) {
+          if (error.message === 'Purchase cancelled') {
+            toast({
+              title: "Purchase Cancelled",
+              description: "No worries! You can subscribe anytime to unlock Premium features.",
+              duration: 5000,
+            });
+          } else {
+            throw error; // Re-throw for error handler below
+          }
+        }
         return;
       }
       

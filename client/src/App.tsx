@@ -42,6 +42,8 @@ import Settings from "@/pages/settings";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
+import { useEffect } from "react";
+import { revenueCatService } from "@/lib/revenuecat-service";
 
 // Define AI-protected routes that require AI agreement
 const AI_PROTECTED_ROUTES = [
@@ -73,6 +75,16 @@ function AIRouteGuard({ children, path }: { children: React.ReactNode; path: str
 
 function Router() {
   const { isAuthenticated, isLoading, user } = useAuth();
+
+  // Initialize RevenueCat when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user?.id) {
+      // Initialize RevenueCat with user ID for iOS IAP
+      revenueCatService.initialize(user.id.toString()).catch((error) => {
+        console.error('Failed to initialize RevenueCat:', error);
+      });
+    }
+  }, [isAuthenticated, user?.id]);
 
   // Show loading state while checking authentication
   if (isLoading) {
