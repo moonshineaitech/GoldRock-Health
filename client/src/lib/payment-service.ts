@@ -1,15 +1,18 @@
 import { Capacitor } from "@capacitor/core";
+import { revenueCatService } from "./revenuecat-service";
 
 /**
  * Payment Service - Platform-aware subscription handling
  * 
- * Strategy for App Store compliance:
- * 1. iOS Native: Show message directing to web for subscription (external payment exemption)
- * 2. Web Browser: Use Stripe checkout (standard web payment)
+ * UPDATED Strategy for App Store compliance:
+ * 1. iOS Native: Use RevenueCat/StoreKit for in-app purchases (PRIMARY)
+ * 2. Web Browser: Use Stripe checkout (FALLBACK)
  * 
- * This qualifies for App Store external payment exemption under guideline 3.1.1
- * because the app includes substantial human expert coaching and dispute resolution services
- * that extend beyond the app itself.
+ * RevenueCat handles:
+ * - StoreKit 2 integration on iOS
+ * - Receipt validation via RevenueCat servers
+ * - Subscription status syncing
+ * - Cross-platform customer management
  */
 
 export const paymentService = {
@@ -23,13 +26,13 @@ export const paymentService = {
   /**
    * Get the appropriate payment method for the current platform
    */
-  getPaymentMethod(): 'stripe' | 'ios-redirect' | 'web' {
-    if (this.isIOSNative()) {
-      // On iOS, we need to use external payment (redirect to web)
-      // This is compliant with App Store guidelines for apps with external services
-      return 'ios-redirect';
+  getPaymentMethod(): 'revenuecat' | 'stripe' {
+    if (this.isIOSNative() && revenueCatService.isAvailable()) {
+      // Use RevenueCat/StoreKit on iOS native
+      return 'revenuecat';
     }
     
+    // Fallback to Stripe on web or if RevenueCat not available
     return 'stripe';
   },
 
@@ -41,17 +44,15 @@ export const paymentService = {
     title: string;
     message: string;
     actionLabel: string;
-    actionUrl?: string;
   } {
     const method = this.getPaymentMethod();
 
-    if (method === 'ios-redirect') {
+    if (method === 'revenuecat') {
       return {
-        method: 'ios-redirect',
-        title: 'Subscribe via Web Browser',
-        message: 'To subscribe to GoldRock Health Premium, please visit our website in your web browser. Your subscription includes AI analysis, expert coaching, and dispute resolution services.',
-        actionLabel: 'Open Website',
-        actionUrl: 'https://goldrock.health/premium', // Replace with actual domain
+        method: 'revenuecat',
+        title: 'Subscribe via App Store',
+        message: 'Your subscription will be managed through the Apple App Store and charged to your Apple ID.',
+        actionLabel: 'Continue to Subscribe',
       };
     }
 
@@ -65,21 +66,36 @@ export const paymentService = {
 
   /**
    * Handle subscription flow based on platform
-   * Returns true if handled internally, false if needs external action
+   * Throws error if purchase fails, returns CustomerInfo if successful
    */
-  async initiateSubscription(plan: 'monthly' | 'annual'): Promise<boolean> {
+  async initiateSubscription(plan: 'monthly' | 'annual'): Promise<{
+    method: 'revenuecat' | 'stripe';
+    success: boolean;
+    customerInfo?: any;
+  }> {
     const method = this.getPaymentMethod();
 
-    if (method === 'ios-redirect') {
-      // On iOS, open external browser for subscription
-      const url = `https://goldrock.health/premium?plan=${plan}`;
-      window.open(url, '_blank');
-      
-      return false; // Handled externally
+    if (method === 'revenuecat') {
+      try {
+        // Use RevenueCat to purchase via StoreKit
+        const customerInfo = await revenueCatService.purchaseByPlanType(plan);
+        
+        return {
+          method: 'revenuecat',
+          success: true,
+          customerInfo,
+        };
+      } catch (error: any) {
+        console.error('RevenueCat purchase failed:', error);
+        throw error;
+      }
     }
 
-    // On web, proceed with Stripe
-    return true; // Handled internally
+    // On web, Stripe flow will be handled by the calling code
+    return {
+      method: 'stripe',
+      success: false, // Stripe requires additional UI flow
+    };
   },
 
   /**
