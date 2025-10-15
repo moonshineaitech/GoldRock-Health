@@ -36,6 +36,7 @@ export const users = pgTable("users", {
   profileImageUrl: varchar("profile_image_url"),
   stripeCustomerId: varchar("stripe_customer_id"),
   stripeSubscriptionId: varchar("stripe_subscription_id"),
+  revenuecatCustomerId: varchar("revenuecat_customer_id"), // RevenueCat customer ID for iOS IAP
   subscriptionStatus: varchar("subscription_status").default("inactive"), // inactive, active, canceled, past_due
   subscriptionPlan: varchar("subscription_plan"), // monthly, annual
   subscriptionEndsAt: timestamp("subscription_ends_at"),

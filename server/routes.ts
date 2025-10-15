@@ -640,6 +640,111 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // RevenueCat webhook endpoint for iOS subscription events
+  app.post('/api/webhooks/revenuecat', express.json(), async (req, res) => {
+    try {
+      const event = req.body;
+      console.log('Received RevenueCat webhook:', event.type);
+
+      // RevenueCat sends different event types
+      // Documentation: https://www.revenuecat.com/docs/webhooks
+      
+      const eventType = event.type;
+      const appUserId = event.event?.app_user_id; // This is our user ID
+      const productId = event.event?.product_id;
+      const expirationDate = event.event?.expiration_at_ms;
+
+      switch (eventType) {
+        case 'INITIAL_PURCHASE':
+        case 'RENEWAL':
+        case 'NON_RENEWING_PURCHASE': {
+          // User purchased or renewed subscription
+          if (appUserId) {
+            const user = await storage.getUser(appUserId);
+            
+            if (user) {
+              console.log(`RevenueCat: ${eventType} for user ${user.id}`);
+              
+              // Determine plan type from product ID
+              let plan: 'monthly' | 'annual' = 'monthly';
+              if (productId?.toLowerCase().includes('annual') || productId?.toLowerCase().includes('yearly')) {
+                plan = 'annual';
+              }
+
+              await storage.upsertUser({
+                ...user,
+                revenuecatCustomerId: event.event?.original_app_user_id || appUserId,
+                subscriptionStatus: 'active',
+                subscriptionPlan: plan,
+                subscriptionEndsAt: expirationDate ? new Date(expirationDate) : null,
+              });
+            }
+          }
+          break;
+        }
+
+        case 'CANCELLATION':
+        case 'EXPIRATION': {
+          // Subscription cancelled or expired
+          if (appUserId) {
+            const user = await storage.getUser(appUserId);
+            
+            if (user) {
+              console.log(`RevenueCat: ${eventType} for user ${user.id}`);
+              await storage.upsertUser({
+                ...user,
+                subscriptionStatus: 'inactive',
+                subscriptionEndsAt: expirationDate ? new Date(expirationDate) : null,
+              });
+            }
+          }
+          break;
+        }
+
+        case 'UNCANCELLATION': {
+          // User re-enabled subscription
+          if (appUserId) {
+            const user = await storage.getUser(appUserId);
+            
+            if (user) {
+              console.log(`RevenueCat: Subscription reactivated for user ${user.id}`);
+              await storage.upsertUser({
+                ...user,
+                subscriptionStatus: 'active',
+                subscriptionEndsAt: expirationDate ? new Date(expirationDate) : null,
+              });
+            }
+          }
+          break;
+        }
+
+        case 'BILLING_ISSUE': {
+          // Payment failed
+          if (appUserId) {
+            const user = await storage.getUser(appUserId);
+            
+            if (user) {
+              console.log(`RevenueCat: Billing issue for user ${user.id}`);
+              await storage.upsertUser({
+                ...user,
+                subscriptionStatus: 'past_due',
+              });
+            }
+          }
+          break;
+        }
+
+        default:
+          console.log(`Unhandled RevenueCat webhook event type: ${eventType}`);
+      }
+
+      res.json({ received: true });
+    } catch (error) {
+      console.error('Error processing RevenueCat webhook:', error);
+      res.status(500).json({ error: 'Webhook processing failed' });
+    }
+  });
+
   // Medical Cases Routes
   app.get('/api/cases', async (req, res) => {
     try {
