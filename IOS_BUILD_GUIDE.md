@@ -1,7 +1,7 @@
 # GoldRock Health iOS App - Build & App Store Submission Guide
 
 ## Overview
-GoldRock Health uses **Capacitor** to wrap the React web app in a native iOS shell, achieving ~90% code reuse while providing native iOS features like camera access, Face ID, push notifications, and share functionality.
+GoldRock Health uses **Capacitor** to wrap the React web app in a native iOS shell, achieving ~90% code reuse while providing native iOS features like camera access, push notifications, and share functionality.
 
 ## Prerequisites
 
@@ -86,7 +86,6 @@ In Xcode, select the **App** target:
 
 2. **Add Capabilities** (if needed):
    - ✅ Push Notifications (already added)
-   - ✅ Face ID (NSFaceIDUsageDescription in Info.plist)
    - ✅ Camera (NSCameraUsageDescription in Info.plist)
 
 ### 2. Version & Build Number
@@ -110,9 +109,6 @@ The following permissions are already added to `ios/App/App/Info.plist`:
 
 <key>NSPhotoLibraryAddUsageDescription</key>
 <string>GoldRock Health can save analyzed bills and dispute letters to your photo library</string>
-
-<key>NSFaceIDUsageDescription</key>
-<string>GoldRock Health uses Face ID or Touch ID to securely protect your medical and financial information</string>
 
 <key>NSUserNotificationsUsageDescription</key>
 <string>GoldRock Health sends notifications when your bill analysis is complete or when you receive important updates about your medical bills</string>
@@ -216,7 +212,7 @@ SUBSCRIPTION OPTIONS:
 SECURITY & PRIVACY:
 • Bank-level encryption for all medical data
 • HIPAA-compliant data handling
-• Face ID/Touch ID protection
+• Secure authentication via Replit Auth
 • No data sold to third parties
 
 Perfect for patients, families, and anyone facing high medical costs. Join thousands saving on healthcare expenses.
@@ -281,31 +277,48 @@ If supporting iPad (currently iPhone-only in capacitor.config.ts)
 **Demo Account Credentials:**
 ```
 Email: appreviewer@goldrock.com
-Password: AppReview2025!
+Password: [Managed by Replit Auth - use Google/Apple/Email login with this email]
 ```
-⚠️ **IMPORTANT:** Create this demo account with Premium access for reviewers to test all features
+✅ **DEMO ACCOUNT IS PRE-CONFIGURED:**
+- Premium Annual subscription (active, no expiration)
+- 3 anonymized sample medical bills pre-loaded with AI analysis
+- Total potential savings displayed: $13,900 across all bills
+- Auto-seeds on server startup via `server/seed-demo-account.ts`
 
 **Notes for Reviewer:**
 ```
-GoldRock Health is a medical bill reduction platform using AI analysis.
+GoldRock Health is a medical bill reduction platform using AI analysis and human expert coaching.
 
-To test the app:
-1. Log in with provided credentials (has Premium access)
-2. Tap "Scan Bill" or "Upload Bill"
-3. Grant camera/photo permissions when prompted
-4. Upload sample medical bill (provided in demo account)
-5. Review AI analysis and savings recommendations
-6. Test dispute letter generation
+TESTING INSTRUCTIONS:
+1. Log in with appreviewer@goldrock.com (has Premium access - you'll see a "Demo Account" banner)
+2. View Dashboard to see 3 pre-analyzed sample bills showing $13,900+ potential savings
+3. Tap any bill to view detailed AI analysis with:
+   - Itemized overcharge breakdown
+   - Professional dispute letter templates
+   - Negotiation strategies
+4. Test camera features: Tap "Scan Bill" to use device camera (grant permission when prompted)
+5. Test bill upload: Import from photo library
+6. Navigate to Premium page to see subscription options
 
-The app uses:
-- Capacitor Camera plugin for bill scanning
-- Stripe for subscription payments (not Apple IAP)*
-- Face ID for biometric authentication
-- Push notifications for bill analysis completion
+NATIVE FEATURES USED:
+- Capacitor Camera plugin for bill scanning and photo upload
+- Local Notifications for bill analysis completion alerts
+- Share API for exporting dispute letters
+- Haptic feedback for UI interactions
+- Network detection for offline functionality
 
-*Note: We use Stripe for subscription payments as our service includes expert human coaching and external dispute resolution, qualifying as "services consumed outside the app" per App Store Review Guidelines 3.1.1. Premium subscriptions provide access to AI analysis tools plus ongoing human expert support.
+PAYMENT IMPLEMENTATION:
+- Web Browser: Stripe checkout (fully functional)
+- iOS Native: Platform detection guides users to web for subscription purchase
+- Premium service includes human expert coaching and dispute resolution services consumed outside the app, qualifying as "external services" per App Store Guidelines 3.1.1
 
-All medical data is encrypted and HIPAA-compliant.
+SECURITY & COMPLIANCE:
+- All medical data encrypted at rest and in transit
+- HIPAA-compliant data handling
+- Medical disclaimers displayed on first use (educational purpose only, not medical advice)
+- Privacy Manifest declares data collection for app functionality only (no tracking)
+
+The demo account demonstrates the full Premium experience without requiring subscription purchase.
 ```
 
 ### 8. Pricing & Availability
@@ -316,13 +329,71 @@ All medical data is encrypted and HIPAA-compliant.
 - Premium Monthly: $29.99/month
 - Premium Annual: $299.99/year (17% savings)
 
-⚠️ **Stripe vs Apple IAP:**  
-Current implementation uses Stripe for subscriptions. Apple may require StoreKit (IAP) if they consider Premium a "digital service consumed in-app." 
+⚠️ **Payment Strategy - External Payment with Platform Detection:**  
 
-**Strategy:**
-1. Submit with Stripe first (cite external expert coaching)
-2. If rejected, implement StoreKit IAP as fallback
-3. Stripe integration code is at `client/src/pages/premium.tsx`
+**Current Implementation:**
+- **Web Browser:** Stripe checkout (fully functional)
+- **iOS Native:** Platform detection redirects users to web browser for subscription purchase
+- **Justification:** GoldRock Health qualifies for external payment exemption per App Store Guidelines 3.1.1 as our Premium service includes human expert coaching and dispute resolution services consumed outside the app
+
+**How It Works:**
+1. User taps "Subscribe" on iOS native app
+2. Platform detection service (`client/src/lib/payment-service.ts`) identifies iOS native platform
+3. App displays message: "Visit goldrockhealth.com to subscribe and access Premium features"
+4. User completes subscription on web via Stripe
+5. Premium status syncs across all platforms via backend
+
+**Code Reference:**
+- Platform detection: `client/src/lib/payment-service.ts`
+- Premium page integration: `client/src/pages/premium.tsx` (handleSubscribe function)
+- Demo account banner: `client/src/components/demo-account-banner.tsx`
+
+**Optional: StoreKit IAP Fallback (If Apple Rejects External Payment):**
+
+If Apple requires IAP implementation, add StoreKit alongside Stripe:
+
+1. **Install StoreKit Plugin** (requires Capacitor 5 compatibility - manual setup needed):
+   ```bash
+   # Research Capacitor 7-compatible IAP plugin or downgrade if necessary
+   npm install @capacitor-community/in-app-purchases
+   ```
+
+2. **Configure In-App Products in App Store Connect:**
+   - Product ID: `goldrock_premium_monthly`
+   - Type: Auto-renewable subscription
+   - Price: $29.99/month
+   
+   - Product ID: `goldrock_premium_annual`
+   - Type: Auto-renewable subscription
+   - Price: $299.99/year
+
+3. **Update Payment Service** (`client/src/lib/payment-service.ts`):
+   ```typescript
+   async initiateSubscription(planType: 'monthly' | 'annual') {
+     const isNative = await Capacitor.isNativePlatform();
+     
+     if (isNative && IS_IOS) {
+       // Use StoreKit for iOS native
+       const productId = planType === 'monthly' 
+         ? 'goldrock_premium_monthly' 
+         : 'goldrock_premium_annual';
+       await InAppPurchases.purchaseProduct({ productId });
+     } else {
+       // Use Stripe for web
+       window.open(`${window.location.origin}/premium`, '_blank');
+     }
+   }
+   ```
+
+4. **Backend: Verify StoreKit Receipts:**
+   - Add endpoint: `POST /api/subscriptions/verify-ios`
+   - Validate receipts with Apple's verifyReceipt API
+   - Create/update subscription in database
+
+**Current Strategy Priority:**
+1. ✅ Submit with external payment (human coaching justification)
+2. ⏭️ Only implement StoreKit if Apple rejects external payment
+3. 📝 Document both approaches for flexibility
 
 **Availability:**
 - All territories (or select specific countries)
@@ -351,7 +422,7 @@ Current implementation uses Stripe for subscriptions. Apple may require StoreKit
 - [ ] Build uploaded to App Store Connect
 - [ ] Build processed successfully (no errors)
 - [ ] TestFlight testing completed
-- [ ] All native features tested (camera, Face ID, notifications)
+- [ ] All native features tested (camera, notifications, share)
 - [ ] Stripe payments tested on device
 - [ ] No crashes or critical bugs
 
