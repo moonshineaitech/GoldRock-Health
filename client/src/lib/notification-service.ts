@@ -1,12 +1,13 @@
 /**
  * Notification Service - Capacitor Push Notifications with web fallback
  * Handles push notifications for bill analysis completion, chat responses, etc.
- * iOS (Capacitor): Uses native Push Notifications
+ * iOS (Capacitor): Uses native Push Notifications + Local Notifications
  * Web: Uses Service Worker + Web Push API
  */
 
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 export interface NotificationPayload {
   title: string;
@@ -21,12 +22,23 @@ export class NotificationService {
   private registration: ServiceWorkerRegistration | null = null;
   private permission: NotificationPermission = 'default';
   private isNative: boolean;
+  private nativePermissionGranted: boolean = false;
+  private notificationIdCounter: number = 1; // Counter for native notification IDs
 
   private constructor() {
     this.isNative = Capacitor.isNativePlatform();
     if (!this.isNative && typeof Notification !== 'undefined') {
       this.permission = Notification.permission;
     }
+  }
+
+  /**
+   * Get next valid notification ID for iOS (1 to 999999999)
+   */
+  private getNextNotificationId(): number {
+    const id = this.notificationIdCounter;
+    this.notificationIdCounter = (this.notificationIdCounter % 999999999) + 1;
+    return id;
   }
 
   static getInstance(): NotificationService {
@@ -42,15 +54,25 @@ export class NotificationService {
   async requestPermission(): Promise<boolean> {
     if (this.isNative) {
       try {
-        const permStatus = await PushNotifications.checkPermissions();
+        // Request both push and local notification permissions
+        const [pushPermStatus, localPermStatus] = await Promise.all([
+          PushNotifications.checkPermissions(),
+          LocalNotifications.checkPermissions()
+        ]);
         
-        if (permStatus.receive === 'granted') {
+        if (pushPermStatus.receive === 'granted' && localPermStatus.display === 'granted') {
+          this.nativePermissionGranted = true;
           await this.registerPushNotifications();
           return true;
         }
 
-        const result = await PushNotifications.requestPermissions();
-        if (result.receive === 'granted') {
+        const [pushResult, localResult] = await Promise.all([
+          PushNotifications.requestPermissions(),
+          LocalNotifications.requestPermissions()
+        ]);
+        
+        if (pushResult.receive === 'granted' && localResult.display === 'granted') {
+          this.nativePermissionGranted = true;
           await this.registerPushNotifications();
           return true;
         }
@@ -141,13 +163,28 @@ export class NotificationService {
    * Show local notification
    */
   async showNotification(payload: NotificationPayload): Promise<void> {
-    if (this.permission !== 'granted') {
+    // Check permission based on platform
+    const hasPermission = this.isNative ? this.nativePermissionGranted : this.permission === 'granted';
+    
+    if (!hasPermission) {
       console.log('Notification permission not granted');
       return;
     }
 
     try {
-      if (this.registration) {
+      if (this.isNative) {
+        // Use Capacitor Local Notifications on native platforms
+        await LocalNotifications.schedule({
+          notifications: [{
+            title: payload.title,
+            body: payload.body,
+            id: this.getNextNotificationId(),
+            schedule: { at: new Date(Date.now() + 100) }, // Show immediately
+            sound: payload.sound,
+            extra: payload.data,
+          }]
+        });
+      } else if (this.registration) {
         await this.registration.showNotification(payload.title, {
           body: payload.body,
           icon: '/icon-192.png',
@@ -209,9 +246,16 @@ export class NotificationService {
   /**
    * Get push notification token (for backend registration)
    * Web: Returns subscription endpoint
-   * iOS: Would return APNs device token
+   * iOS: Returns APNs device token (handled in registerPushNotifications)
    */
   async getPushToken(): Promise<string | null> {
+    // On native platforms, token is handled via PushNotifications listener
+    if (this.isNative) {
+      console.log('Native platform - token sent via registration listener');
+      return null;
+    }
+
+    // Web platform - use service worker push
     if (!this.registration) {
       await this.registerServiceWorker();
     }
