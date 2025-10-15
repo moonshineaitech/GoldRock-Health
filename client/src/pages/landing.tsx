@@ -307,8 +307,8 @@ export default function Landing() {
             { 
               icon: Brain, 
               title: "AI Bill Analysis", 
-              desc: "Instantly identifies $2,000-$35,000+ in overcharges using proven detection algorithms", 
-              highlight: "Save thousands",
+              desc: "Users report average savings of $2,000-$35,000+ through AI-powered overcharge detection", 
+              highlight: "Results vary by individual case",
               color: "purple", 
               delay: 1.9
             },
