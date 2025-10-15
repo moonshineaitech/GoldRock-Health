@@ -51,8 +51,6 @@
         <string>GoldRock Health needs access to your photo library to import medical bills and receipts for analysis</string>
         <key>NSPhotoLibraryAddUsageDescription</key>
         <string>GoldRock Health can save analyzed bills and dispute letters to your photo library</string>
-        <key>NSFaceIDUsageDescription</key>
-        <string>GoldRock Health uses Face ID or Touch ID to securely protect your medical and financial information</string>
         <key>NSUserNotificationsUsageDescription</key>
         <string>GoldRock Health sends notifications when your bill analysis is complete or when you receive important updates about your medical bills</string>
         <key>ITSAppUsesNonExemptEncryption</key>

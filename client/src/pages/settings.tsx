@@ -7,7 +7,7 @@ import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { notificationService } from "@/lib/notification-service";
-import { biometricService } from "@/lib/biometric-service";
+// Biometric authentication removed - not needed for App Store submission
 import { offlineService } from "@/lib/offline-service";
 
 export default function Settings() {
@@ -15,21 +15,12 @@ export default function Settings() {
   
   // iOS Feature States
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [biometricsEnabled, setBiometricsEnabled] = useState(false);
-  const [biometricsAvailable, setBiometricsAvailable] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
 
   useEffect(() => {
-    checkBiometricsAvailability();
     checkNotificationStatus();
     checkOnlineStatus();
   }, []);
-
-  const checkBiometricsAvailability = async () => {
-    const available = await biometricService.isAvailable();
-    setBiometricsAvailable(available);
-    setBiometricsEnabled(biometricService.isEnrolled());
-  };
 
   const checkNotificationStatus = () => {
     setNotificationsEnabled(Notification.permission === 'granted');
@@ -55,18 +46,6 @@ export default function Settings() {
     }
   };
 
-  const toggleBiometrics = async () => {
-    if (!biometricsEnabled && user?.id) {
-      const enrolled = await biometricService.enroll(user.id);
-      if (enrolled) {
-        setBiometricsEnabled(true);
-      }
-    } else {
-      biometricService.disable();
-      setBiometricsEnabled(false);
-    }
-  };
-
   const settingsSections = [
     {
       title: "Account",
@@ -87,15 +66,6 @@ export default function Settings() {
           toggle: true,
           enabled: notificationsEnabled,
           onToggle: toggleNotifications
-        },
-        { 
-          label: "Biometric Authentication", 
-          description: biometricsAvailable ? "Use Face ID or Touch ID to unlock app" : "Not available on this device",
-          icon: Shield,
-          toggle: true,
-          enabled: biometricsEnabled,
-          disabled: !biometricsAvailable,
-          onToggle: toggleBiometrics
         },
         { 
           label: "Offline Mode", 
