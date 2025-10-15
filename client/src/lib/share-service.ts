@@ -1,8 +1,11 @@
 /**
- * Share Service - Native sharing capabilities
+ * Share Service - Capacitor Share with web fallback
+ * iOS (Capacitor): Uses native Share plugin  
  * Web: Uses Web Share API
- * iOS: Would use React Native Share and iOS Share Sheet
  */
+
+import { Capacitor } from '@capacitor/core';
+import { Share } from '@capacitor/share';
 
 export interface ShareContent {
   title?: string;
@@ -13,8 +16,11 @@ export interface ShareContent {
 
 export class ShareService {
   private static instance: ShareService;
+  private isNative: boolean;
 
-  private constructor() {}
+  private constructor() {
+    this.isNative = Capacitor.isNativePlatform();
+  }
 
   static getInstance(): ShareService {
     if (!ShareService.instance) {
@@ -26,7 +32,15 @@ export class ShareService {
   /**
    * Check if native sharing is available
    */
-  isAvailable(): boolean {
+  async isAvailable(): Promise<boolean> {
+    if (this.isNative) {
+      try {
+        const result = await Share.canShare();
+        return result.value;
+      } catch {
+        return false;
+      }
+    }
     return 'share' in navigator;
   }
 
@@ -35,7 +49,18 @@ export class ShareService {
    */
   async share(content: ShareContent): Promise<boolean> {
     try {
-      if (!this.isAvailable()) {
+      if (this.isNative) {
+        await Share.share({
+          title: content.title,
+          text: content.text,
+          url: content.url,
+          dialogTitle: content.title || 'Share',
+        });
+        return true;
+      }
+
+      const available = await this.isAvailable();
+      if (!available) {
         // Fallback to copy to clipboard
         await this.copyToClipboard(content.text || content.url || '');
         return true;

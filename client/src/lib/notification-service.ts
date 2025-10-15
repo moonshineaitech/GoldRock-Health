@@ -1,7 +1,12 @@
 /**
- * Notification Service - Web Push + iOS APNs ready
+ * Notification Service - Capacitor Push Notifications with web fallback
  * Handles push notifications for bill analysis completion, chat responses, etc.
+ * iOS (Capacitor): Uses native Push Notifications
+ * Web: Uses Service Worker + Web Push API
  */
+
+import { Capacitor } from '@capacitor/core';
+import { PushNotifications } from '@capacitor/push-notifications';
 
 export interface NotificationPayload {
   title: string;
@@ -15,9 +20,13 @@ export class NotificationService {
   private static instance: NotificationService;
   private registration: ServiceWorkerRegistration | null = null;
   private permission: NotificationPermission = 'default';
+  private isNative: boolean;
 
   private constructor() {
-    this.permission = Notification.permission;
+    this.isNative = Capacitor.isNativePlatform();
+    if (!this.isNative && typeof Notification !== 'undefined') {
+      this.permission = Notification.permission;
+    }
   }
 
   static getInstance(): NotificationService {
@@ -31,6 +40,28 @@ export class NotificationService {
    * Request notification permission
    */
   async requestPermission(): Promise<boolean> {
+    if (this.isNative) {
+      try {
+        const permStatus = await PushNotifications.checkPermissions();
+        
+        if (permStatus.receive === 'granted') {
+          await this.registerPushNotifications();
+          return true;
+        }
+
+        const result = await PushNotifications.requestPermissions();
+        if (result.receive === 'granted') {
+          await this.registerPushNotifications();
+          return true;
+        }
+        
+        return false;
+      } catch (error) {
+        console.error('Error requesting push permission:', error);
+        return false;
+      }
+    }
+
     if (!('Notification' in window)) {
       console.log('This browser does not support notifications');
       return false;
@@ -49,6 +80,38 @@ export class NotificationService {
     }
 
     return false;
+  }
+
+  /**
+   * Register native push notifications (iOS/Android)
+   */
+  private async registerPushNotifications(): Promise<void> {
+    if (!this.isNative) return;
+
+    try {
+      await PushNotifications.register();
+
+      // Add listeners for push notification events
+      PushNotifications.addListener('registration', (token) => {
+        console.log('Push registration success, token:', token.value);
+        // Send token to backend
+        this.sendTokenToBackend(token.value);
+      });
+
+      PushNotifications.addListener('registrationError', (error) => {
+        console.error('Error on registration:', error);
+      });
+
+      PushNotifications.addListener('pushNotificationReceived', (notification) => {
+        console.log('Push notification received:', notification);
+      });
+
+      PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+        console.log('Push notification action performed:', notification);
+      });
+    } catch (error) {
+      console.error('Error registering push notifications:', error);
+    }
   }
 
   /**
@@ -180,16 +243,23 @@ export class NotificationService {
   async registerPushToken(): Promise<void> {
     const token = await this.getPushToken();
     if (token) {
-      try {
-        await fetch('/api/push-token', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
-        });
-        console.log('Push token registered with backend');
-      } catch (error) {
-        console.error('Error registering push token:', error);
-      }
+      await this.sendTokenToBackend(token);
+    }
+  }
+
+  /**
+   * Send token to backend
+   */
+  private async sendTokenToBackend(token: string): Promise<void> {
+    try {
+      await fetch('/api/push-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      console.log('Push token registered with backend');
+    } catch (error) {
+      console.error('Error registering push token:', error);
     }
   }
 

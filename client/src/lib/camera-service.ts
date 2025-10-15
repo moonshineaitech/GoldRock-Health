@@ -1,9 +1,12 @@
 /**
- * Camera Service - Web version with iOS enhancement hooks
+ * Camera Service - Capacitor-enabled with web fallback
  * This provides camera and photo library access for bill scanning
+ * On iOS (Capacitor): Uses native Camera plugin
  * On web: Uses HTML5 Camera/File APIs
- * On iOS (React Native): Will use expo-camera and expo-image-picker
  */
+
+import { Capacitor } from '@capacitor/core';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 
 export interface CameraPhoto {
   uri: string;
@@ -14,8 +17,11 @@ export interface CameraPhoto {
 
 export class CameraService {
   private static instance: CameraService;
+  private isNative: boolean;
 
-  private constructor() {}
+  private constructor() {
+    this.isNative = Capacitor.isNativePlatform();
+  }
 
   static getInstance(): CameraService {
     if (!CameraService.instance) {
@@ -28,6 +34,15 @@ export class CameraService {
    * Check if camera is available on this device
    */
   async isCameraAvailable(): Promise<boolean> {
+    if (this.isNative) {
+      try {
+        const permissions = await Camera.checkPermissions();
+        return permissions.camera !== 'denied';
+      } catch (error) {
+        return false;
+      }
+    }
+
     try {
       if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -44,6 +59,16 @@ export class CameraService {
    * Request camera permissions
    */
   async requestCameraPermission(): Promise<boolean> {
+    if (this.isNative) {
+      try {
+        const permissions = await Camera.requestPermissions();
+        return permissions.camera === 'granted';
+      } catch (error) {
+        console.error('Camera permission denied:', error);
+        return false;
+      }
+    }
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: 'environment' } // Prefer back camera
@@ -60,10 +85,30 @@ export class CameraService {
 
   /**
    * Capture photo from camera
+   * iOS (Capacitor): Uses native Camera plugin
    * Web: Opens camera via file input
-   * iOS: Would use expo-camera
    */
   async capturePhoto(): Promise<CameraPhoto | null> {
+    if (this.isNative) {
+      try {
+        const photo = await Camera.getPhoto({
+          resultType: CameraResultType.Base64,
+          source: CameraSource.Camera,
+          quality: 90,
+          allowEditing: false,
+          saveToGallery: false,
+        });
+
+        return {
+          uri: `data:image/${photo.format};base64,${photo.base64String}`,
+          base64: `data:image/${photo.format};base64,${photo.base64String}`,
+        };
+      } catch (error) {
+        console.error('Error capturing photo:', error);
+        return null;
+      }
+    }
+
     return new Promise((resolve) => {
       const input = document.createElement('input');
       input.type = 'file';
@@ -92,10 +137,29 @@ export class CameraService {
 
   /**
    * Pick photo from library
+   * iOS (Capacitor): Uses native Photos picker
    * Web: Opens file picker
-   * iOS: Would use expo-image-picker
    */
   async pickFromLibrary(): Promise<CameraPhoto | null> {
+    if (this.isNative) {
+      try {
+        const photo = await Camera.getPhoto({
+          resultType: CameraResultType.Base64,
+          source: CameraSource.Photos,
+          quality: 90,
+          allowEditing: false,
+        });
+
+        return {
+          uri: `data:image/${photo.format};base64,${photo.base64String}`,
+          base64: `data:image/${photo.format};base64,${photo.base64String}`,
+        };
+      } catch (error) {
+        console.error('Error picking photo:', error);
+        return null;
+      }
+    }
+
     return new Promise((resolve) => {
       const input = document.createElement('input');
       input.type = 'file';
