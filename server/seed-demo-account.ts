@@ -560,13 +560,3 @@ export async function seedDemoAccount() {
     throw error;
   }
 }
-
-// Run if called directly
-if (require.main === module) {
-  seedDemoAccount()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error);
-      process.exit(1);
-    });
-}

@@ -41,6 +41,7 @@ import CaseDetail from "@/pages/case-detail";
 import Settings from "@/pages/settings";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
+import { DemoAccountBanner } from "@/components/demo-account-banner";
 
 // Define AI-protected routes that require AI agreement
 const AI_PROTECTED_ROUTES = [
@@ -100,7 +101,9 @@ function Router() {
 
   // Show main app for authenticated users
   return (
-    <Switch>
+    <>
+      <DemoAccountBanner />
+      <Switch>
       <Route path="/ai-agreement" component={AiUsageAgreement} />
       <Route path="/" component={Landing} />
       <Route path="/training">
@@ -169,6 +172,7 @@ function Router() {
       <Route path="/terms-of-service" component={TermsOfService} />
       <Route component={NotFound} />
     </Switch>
+    </>
   );
 }
 
