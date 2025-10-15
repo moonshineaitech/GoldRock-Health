@@ -99,9 +99,10 @@ All native services use `Capacitor.isNativePlatform()` to detect iOS and provide
 - **NSCameraUsageDescription**: Bill scanning and photo capture
 - **NSPhotoLibraryUsageDescription**: Import bills from photo library
 - **NSPhotoLibraryAddUsageDescription**: Save dispute letters to photos
-- **NSFaceIDUsageDescription**: Biometric authentication for security
 - **NSUserNotificationsUsageDescription**: Bill analysis completion alerts
 - **ITSAppUsesNonExemptEncryption**: false (no custom encryption)
+
+**Note**: Face ID permission removed (NSFaceIDUsageDescription) - unused permissions increase rejection risk
 
 ### Privacy Manifest (PrivacyInfo.xcprivacy)
 - **Data Collection**: Health info, financial info, email, name, photos (app functionality only, no tracking)
@@ -112,10 +113,14 @@ All native services use `Capacitor.isNativePlatform()` to detect iOS and provide
 - **Web Browser**: Replit SSO (Google/Apple/Email via OAuth2)
 - **iOS Native**: Same Replit SSO flows work in Capacitor WebView
 
-### Payment Processing
-- **Stripe Integration**: Web-based subscriptions ($29.99/month, $299.99/year Premium)
-- **App Store Policy**: Qualifies as "external service" (human coaching + dispute resolution)
-- **Note**: May require StoreKit (IAP) if App Review requires - documented in IOS_BUILD_GUIDE.md
+### Payment Processing (Platform-Aware External Payment Strategy)
+- **Web Browser**: Stripe checkout fully functional for all subscriptions
+- **iOS Native**: Platform detection redirects users to web browser for subscription purchase
+  - Implementation: `client/src/lib/payment-service.ts` detects iOS and guides users to web
+  - Justification: Premium service includes human expert coaching and dispute resolution (external services per App Store Guidelines 3.1.1)
+  - User flow: iOS users see "Visit goldrockhealth.com to subscribe" → complete purchase on web → Premium syncs across platforms
+- **Pricing**: $29.99/month or $299.99/year Premium subscription
+- **Fallback Plan**: StoreKit IAP implementation documented in IOS_BUILD_GUIDE.md if Apple rejects external payment approach
 
 ### Build Process
 1. Build web assets: `npm run build`
@@ -125,7 +130,17 @@ All native services use `Capacitor.isNativePlatform()` to detect iOS and provide
 
 ### App Store Submission
 - **Complete Guide**: See `IOS_BUILD_GUIDE.md` for full submission process
-- **Demo Account**: appreviewer@goldrock.com / AppReview2025! (Premium access)
+- **Demo Account**: appreviewer@goldrock.com (managed by Replit Auth)
+  - Premium Annual subscription (active, no expiration)
+  - 3 pre-loaded anonymized sample bills with AI analysis ($13,900 total potential savings)
+  - Auto-seeds on server startup via `server/seed-demo-account.ts`
+  - "Demo Account" banner displayed to reviewers for clarity
 - **Screenshots**: 6.7" (1290x2796) and 6.5" (1242x2688) required
 - **App Icon**: 1024x1024px PNG (located in Assets.xcassets/AppIcon.appiconset/)
 - **Category**: Medical / Health & Fitness
+
+### Medical Disclaimers & Compliance
+- **Disclaimer Component**: `client/src/components/medical-disclaimer.tsx` shows on first use
+- **Key Messages**: "Educational purpose only", "Not medical advice", "Results vary", "No guarantee of specific savings"
+- **Marketing Claims**: Softened language ("Users report average savings of $2,000-$35,000+" instead of direct guarantees)
+- **Legal Coverage**: Comprehensive disclaimers for educational content, emergency situations, bill analysis limitations
