@@ -1,8 +1,8 @@
-# GoldRock Health - Interactive Medical Diagnosis Training Platform
+# GoldRock Health - AI Medical Bill Reduction Platform
 
 ## Overview
 
-GoldRock Health is a professional-grade medical education platform that simulates real patient interactions for medical students, residents, and practicing physicians. The platform provides voice-enabled AI simulations across 60+ medical cases spanning 19 specialties, offering realistic patient interactions with real-time feedback and comprehensive progress tracking.
+GoldRock Health (Eldest AI LLC dba GoldRock AI) is an AI-powered medical bill reduction platform helping users save $2,000-$35,000+ through AI analysis, expert coaching, and dispute resolution. The platform is available as both a web application and native iOS app for App Store distribution.
 
 ## User Preferences
 
@@ -67,3 +67,65 @@ Preferred communication style: Simple, everyday language.
 - **Web Speech API**: Browser-native speech recognition capabilities
 - **Web Audio API**: Audio context management for voice playback
 - **WebSocket**: Real-time communication for voice features (via Neon serverless)
+
+## iOS Native App (Capacitor)
+
+### Platform Configuration
+- **Capacitor Version**: 7.4.3 - Wraps React web app in native iOS shell (~90% code reuse)
+- **Bundle ID**: com.goldrockhealth.app
+- **Minimum iOS Version**: 13.0
+- **Build Output**: Vite builds to `dist/public/`, Capacitor syncs to `ios/App/App/public/`
+
+### Native Plugins (10 installed)
+1. **@capacitor/camera** (7.0.2) - Bill scanning via device camera with native photo picker fallback
+2. **@capacitor/local-notifications** (7.0.3) - Local notifications for bill analysis completion, reminders
+3. **@capacitor/push-notifications** (7.0.3) - Remote push notifications for bill updates
+4. **@capacitor/share** (7.0.2) - Native share sheet for sharing bill analyses and dispute letters
+5. **@capacitor/haptics** (7.0.2) - Haptic feedback for button interactions
+6. **@capacitor/app** (7.1.0) - App lifecycle management (background/foreground)
+7. **@capacitor/status-bar** (7.0.3) - Status bar styling
+8. **@capacitor/splash-screen** (7.0.3) - Launch screen management
+9. **@capacitor/preferences** (7.0.2) - Local storage for user preferences
+10. **@capacitor/network** (7.0.2) - Network status monitoring
+
+### Native Services (Platform Detection)
+All native services use `Capacitor.isNativePlatform()` to detect iOS and provide web fallbacks:
+
+- **camera-service.ts**: Capacitor Camera plugin on iOS → File input on web
+- **notification-service.ts**: LocalNotifications + PushNotifications on iOS → Service Worker/Browser API on web
+- **share-service.ts**: Capacitor Share plugin on iOS → Web Share API on web
+
+### iOS Permissions (Info.plist)
+- **NSCameraUsageDescription**: Bill scanning and photo capture
+- **NSPhotoLibraryUsageDescription**: Import bills from photo library
+- **NSPhotoLibraryAddUsageDescription**: Save dispute letters to photos
+- **NSFaceIDUsageDescription**: Biometric authentication for security
+- **NSUserNotificationsUsageDescription**: Bill analysis completion alerts
+- **ITSAppUsesNonExemptEncryption**: false (no custom encryption)
+
+### Privacy Manifest (PrivacyInfo.xcprivacy)
+- **Data Collection**: Health info, financial info, email, name, photos (app functionality only, no tracking)
+- **API Usage**: File timestamps (C617.1), UserDefaults (CA92.1)
+- **Compliance**: HIPAA-compliant data handling with bank-level encryption
+
+### Authentication
+- **Web Browser**: Replit SSO (Google/Apple/Email via OAuth2)
+- **iOS Native**: Same Replit SSO flows work in Capacitor WebView
+
+### Payment Processing
+- **Stripe Integration**: Web-based subscriptions ($29.99/month, $299.99/year Premium)
+- **App Store Policy**: Qualifies as "external service" (human coaching + dispute resolution)
+- **Note**: May require StoreKit (IAP) if App Review requires - documented in IOS_BUILD_GUIDE.md
+
+### Build Process
+1. Build web assets: `npm run build`
+2. Sync to iOS: `npx cap sync ios`
+3. Open Xcode: `npx cap open ios`
+4. Archive for App Store: Product → Archive in Xcode
+
+### App Store Submission
+- **Complete Guide**: See `IOS_BUILD_GUIDE.md` for full submission process
+- **Demo Account**: appreviewer@goldrock.com / AppReview2025! (Premium access)
+- **Screenshots**: 6.7" (1290x2796) and 6.5" (1242x2688) required
+- **App Icon**: 1024x1024px PNG (located in Assets.xcassets/AppIcon.appiconset/)
+- **Category**: Medical / Health & Fitness
