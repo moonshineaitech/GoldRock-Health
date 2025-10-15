@@ -9,6 +9,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useState, useEffect, useRef } from "react";
 import { apiRequest } from "@/lib/queryClient";
+import { paymentService } from "@/lib/payment-service";
+import { AlertCircle } from "lucide-react";
 
 if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
   throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
@@ -921,6 +923,25 @@ function PremiumMarketing() {
   const handleSubscribe = async (planId: string) => {
     try {
       console.log(`Starting subscription for plan: ${planId}`);
+      
+      // Check platform and handle accordingly
+      const method = paymentService.getPaymentMethod();
+      
+      if (method === 'ios-redirect') {
+        // On iOS native, show message and redirect to web
+        const instructions = paymentService.getPaymentInstructions();
+        toast({
+          title: instructions.title,
+          description: instructions.message,
+          duration: 8000,
+        });
+        
+        // Open web browser for subscription
+        await paymentService.initiateSubscription(planId as 'monthly' | 'annual');
+        return;
+      }
+      
+      // On web, proceed with Stripe
       const data = await createSubscription.mutateAsync({ planType: planId });
       console.log('Subscription setup response:', data);
       
