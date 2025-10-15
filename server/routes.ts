@@ -124,6 +124,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const { MedicalImageService } = await import("./services/medicalImageData");
   await MedicalImageService.initializeImages();
   
+  // Initialize demo account for App Store reviewers
+  const { seedDemoAccount } = await import("./seed-demo-account");
+  await seedDemoAccount().catch(err => {
+    console.log("Demo account seeding skipped (may already exist):", err.message);
+  });
+  
   // Initialize board exams on startup
   const { BoardExamService } = await import("./services/boardExamData");
   await BoardExamService.initializeExams();
