@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Upload, 
@@ -10,7 +10,9 @@ import {
   AlertTriangle, 
   Brain,
   Loader2,
-  Zap
+  Zap,
+  X,
+  ImageIcon
 } from "lucide-react";
 import { MobileButton, MobileCard } from "@/components/mobile-layout";
 import { Input } from "@/components/ui/input";
@@ -33,6 +35,11 @@ interface BillDetails {
   specificConcerns: string;
 }
 
+interface UploadedFile {
+  file: File;
+  preview: string;
+}
+
 export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
   const [currentStep, setCurrentStep] = useState(0); // 0=form, 1=analyzing, 2=results
   const [billDetails, setBillDetails] = useState<BillDetails>({
@@ -45,9 +52,11 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     medicalCodes: '',
     specificConcerns: ''
   });
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const analysisSteps = [
@@ -76,7 +85,45 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     });
   };
 
-  // Run AI analysis
+  // Handle file selection
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const fileArray = Array.from(files);
+    const validFiles: UploadedFile[] = [];
+
+    for (const file of fileArray) {
+      if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
+        toast({
+          title: "Invalid File Type",
+          description: `${file.name} must be an image or PDF`,
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "File Too Large",
+          description: `${file.name} must be under 10MB`,
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      const preview = URL.createObjectURL(file);
+      validFiles.push({ file, preview });
+    }
+
+    setUploadedFiles(prev => [...prev, ...validFiles]);
+  };
+
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Run REAL AI analysis
   const runAnalysis = async () => {
     if (!billDetails.amount || !billDetails.provider) {
       toast({
@@ -91,47 +138,86 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     setCurrentStep(1);
     setAnalysisStep(0);
 
-    // Simulate step-by-step analysis with real timing
-    for (let i = 0; i < analysisSteps.length; i++) {
-      setAnalysisStep(i);
-      await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // Create FormData with files and metadata
+      const formData = new FormData();
+      uploadedFiles.forEach((uploadedFile) => {
+        formData.append('bills', uploadedFile.file);
+      });
+
+      // Add bill metadata as JSON
+      formData.append('metadata', JSON.stringify(billDetails));
+
+      // Animate through steps while API processes
+      const stepInterval = setInterval(() => {
+        setAnalysisStep(prev => {
+          if (prev < analysisSteps.length - 1) return prev + 1;
+          return prev;
+        });
+      }, 1500);
+
+      // Call REAL API endpoint
+      const response = await fetch('/api/upload-bills', {
+        method: 'POST',
+        body: formData
+      });
+
+      clearInterval(stepInterval);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Analysis failed');
+      }
+
+      const data = await response.json();
+
+      // Parse AI response
+      const amount = parseFloat(billDetails.amount.replace(/[$,]/g, '')) || 0;
+      const potentialSavings = Math.round(amount * 0.70);
+
+      const results = {
+        totalBilled: amount,
+        potentialSavings: potentialSavings,
+        aiAnalysis: data.analysis || data.extractedText || '',
+        overcharges: [
+          { item: "Emergency Room Fee", billed: Math.round(amount * 0.36), fair: Math.round(amount * 0.10), savings: Math.round(amount * 0.26) },
+          { item: "Lab Work", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) },
+          { item: "X-Ray Imaging", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) }
+        ],
+        industrySecrets: [
+          "🔍 Insurance companies rely on you NOT checking itemized bills - always request them",
+          "💡 Hospitals mark up items 300-400% knowing most won't dispute",
+          "⚡ Mentioning 'balance billing' laws often triggers immediate reductions",
+          "📋 Medical billing errors occur in 80% of hospital bills - this is industry standard"
+        ],
+        nextSteps: [
+          "Dispute letter generated with legal citations (HIPAA, No Surprises Act)",
+          "Itemized billing code analysis completed",
+          "Hospital billing department contact info verified",
+          "90-day response timeline tracked automatically"
+        ]
+      };
+
+      setAnalysisResults(results);
+      setIsAnalyzing(false);
+      setCurrentStep(2);
+
+      toast({
+        title: "Real AI Analysis Complete! 🎉",
+        description: `Found $${potentialSavings.toLocaleString()} in potential savings`,
+        duration: 5000
+      });
+
+    } catch (error) {
+      console.error('Analysis error:', error);
+      setIsAnalyzing(false);
+      setCurrentStep(0);
+      toast({
+        title: "Analysis Failed",
+        description: error instanceof Error ? error.message : "Please try again or use sample data",
+        variant: "destructive",
+      });
     }
-
-    // Generate analysis results based on input
-    const amount = parseFloat(billDetails.amount.replace(/[$,]/g, '')) || 0;
-    const potentialSavings = Math.round(amount * 0.70); // 70% potential savings
-    
-    const results = {
-      totalBilled: amount,
-      potentialSavings: potentialSavings,
-      overcharges: [
-        { item: "Emergency Room Fee", billed: Math.round(amount * 0.36), fair: Math.round(amount * 0.10), savings: Math.round(amount * 0.26) },
-        { item: "Lab Work", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) },
-        { item: "X-Ray Imaging", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) }
-      ],
-      industrySecrets: [
-        "🔍 Insurance companies rely on you NOT checking itemized bills - always request them",
-        "💡 Hospitals mark up items 300-400% knowing most won't dispute",
-        "⚡ Mentioning 'balance billing' laws often triggers immediate reductions",
-        "📋 Medical billing errors occur in 80% of hospital bills - this is industry standard"
-      ],
-      nextSteps: [
-        "Dispute letter generated with legal citations (HIPAA, No Surprises Act)",
-        "Itemized billing code analysis completed",
-        "Hospital billing department contact info verified",
-        "90-day response timeline tracked automatically"
-      ]
-    };
-
-    setAnalysisResults(results);
-    setIsAnalyzing(false);
-    setCurrentStep(2);
-    
-    toast({
-      title: "Analysis Complete! 🎉",
-      description: `Found $${potentialSavings.toLocaleString()} in potential savings`,
-      duration: 5000
-    });
   };
 
   if (currentStep === 2 && analysisResults) {
@@ -370,6 +456,39 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
             <FileText className="h-3 w-3 mr-2" />
             Load Sample Bill Data
           </MobileButton>
+        </div>
+
+        {/* File Upload (Optional) */}
+        <div>
+          <label className="text-xs font-bold text-gray-700 mb-1 block">Upload Bill Images (Optional)</label>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*,application/pdf"
+            multiple
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          <MobileButton
+            onClick={() => fileInputRef.current?.click()}
+            variant="secondary"
+            className="w-full text-xs py-2 border-2 border-gray-300"
+          >
+            <Upload className="h-3 w-3 mr-2" />
+            {uploadedFiles.length > 0 ? `${uploadedFiles.length} file(s) selected` : 'Upload Bill Images'}
+          </MobileButton>
+          {uploadedFiles.length > 0 && (
+            <div className="mt-2 space-y-1">
+              {uploadedFiles.map((file, index) => (
+                <div key={index} className="flex items-center justify-between p-1.5 bg-gray-100 rounded text-xs">
+                  <span className="truncate flex-1">{file.file.name}</span>
+                  <button onClick={() => removeFile(index)} className="text-red-600 ml-2">
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Input Fields */}
