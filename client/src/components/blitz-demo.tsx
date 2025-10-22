@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, Sparkles, DollarSign, FileText, ArrowRight, CheckCircle, Zap, Eye, AlertTriangle, Brain, TrendingDown } from "lucide-react";
+import { 
+  Upload, 
+  Sparkles, 
+  DollarSign, 
+  FileText, 
+  ArrowRight, 
+  CheckCircle, 
+  Zap, 
+  Eye, 
+  AlertTriangle, 
+  Brain
+} from "lucide-react";
 import { MobileButton, MobileCard } from "@/components/mobile-layout";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
