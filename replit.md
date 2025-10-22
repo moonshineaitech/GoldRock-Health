@@ -10,17 +10,28 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### October 22, 2025 - Real AI Bill Analysis Implementation
+- **AI Integration**: Replaced mock analysis with real OpenAI GPT-5 powered bill analysis
+  - Backend endpoint: POST `/api/analyze-bill-ai` using Replit AI Integrations (no separate API key needed)
+  - AI prompts incorporate strategies from "Never Pay the First Bill" by Marshall Allen
+  - Returns structured JSON: issues, recommendations, negotiation strategy, financial assistance, insider tactics
+- **Quick Analyzer Enhancement**: 
+  - Manual entry flow calls real AI endpoint with user bill details
+  - Upload flow guides to manual entry (OCR planned for future release)
+  - Added AI-generated insights: Negotiation Strategy, Financial Assistance Options, Insider Hospital Tactics
+  - Displays specific talking points, target reduction percentages, fallback options
+- **Discoverability**: Quick Analyzer now featured in:
+  - Home page quick actions (with "AI Powered" badge)
+  - Resources Hub quick actions
+  - Bottom navigation "Guides" tab
+- **User Experience**: Clear AI branding, actionable insights, honest messaging about OCR status
+
 ### October 22, 2025 - Conversion Optimization & Bug Fixes
-- **BlitzDemo Component** (Conversion Funnel): Created interactive demo showing 4-step process:
-  1. Upload Bill → User uploads medical bill photo/PDF
-  2. AI Analysis → GPT-4o Vision scans for errors and overcharges
-  3. Generate Templates → Dispute letters with legal citations
-  4. Industry Secrets → Insider negotiation tactics hospitals hide
-- **Button Sizing**: Reduced to `text-sm py-2.5` for cleaner, less bulky appearance
+- **BlitzDemo Component** (Conversion Funnel): Created interactive demo showing 4-step process
+- **Button Sizing**: Reduced to `text-sm py-2.5` for cleaner appearance
 - **Industry Secrets Section**: Added value-add content revealing insider billing tactics
-- **Demo Flow**: Progressive step animation with toast confirmations and example $8,700 savings
-- **Donation Button**: Verified `/api/create-donation-session` endpoint working (logs show 200 responses)
-- **Deployment**: BlitzDemo added to both `/` landing and `/auth-landing` pages for maximum visibility
+- **Demo Flow**: Progressive step animation with toast confirmations
+- **Deployment**: BlitzDemo added to both landing pages for maximum visibility
 
 ## System Architecture
 
