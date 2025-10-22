@@ -25,6 +25,7 @@ import IndustryInsights from "@/pages/industry-insights";
 import BlitzDemo from "@/pages/blitz-demo";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
+import Support from "@/pages/support";
 import AiUsageAgreement from "@/pages/ai-usage-agreement";
 import NotFound from "@/pages/not-found";
 import NegotiationCoaching from "@/pages/negotiation-coaching";
@@ -106,6 +107,7 @@ function Router() {
       <Switch>
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/terms-of-service" component={TermsOfService} />
+        <Route path="/support" component={Support} />
         <Route component={AuthLanding} />
       </Switch>
     );
@@ -182,6 +184,7 @@ function Router() {
       </Route>
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
+      <Route path="/support" component={Support} />
       <Route component={NotFound} />
     </Switch>
     </>
