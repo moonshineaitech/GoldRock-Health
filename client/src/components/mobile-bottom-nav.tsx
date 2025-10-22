@@ -8,7 +8,8 @@ import {
   User,
   Crown,
   Sparkles,
-  Shield
+  Shield,
+  Lightbulb
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -30,13 +31,6 @@ const navItems: NavItem[] = [
     color: "text-blue-600"
   },
   {
-    id: "training",
-    label: "Cases",
-    icon: BookOpen,
-    path: "/training",
-    color: "text-green-600"
-  },
-  {
     id: "billai",
     label: "Bill AI",
     icon: FileText,
@@ -44,11 +38,11 @@ const navItems: NavItem[] = [
     color: "text-purple-600"
   },
   {
-    id: "rights",
-    label: "Rights",
-    icon: Shield,
-    path: "/rights-hub",
-    color: "text-red-600"
+    id: "guides",
+    label: "Guides",
+    icon: Lightbulb,
+    path: "/resources-hub",
+    color: "text-indigo-600"
   },
   {
     id: "premium",
@@ -78,7 +72,7 @@ export function MobileBottomNav() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="flex items-center justify-around px-2 py-2">
-        {navItems.filter(item => item.id !== 'rights').map((item, index) => {
+        {navItems.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.path);
           

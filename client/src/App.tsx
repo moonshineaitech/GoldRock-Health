@@ -40,6 +40,9 @@ import QuickAnalyzer from "@/pages/quick-analyzer";
 import ProviderContacts from "@/pages/provider-contacts";
 import CaseDetail from "@/pages/case-detail";
 import Settings from "@/pages/settings";
+import ResourcesHub from "@/pages/resources-hub";
+import Templates from "@/pages/templates";
+import InsuranceDenials from "@/pages/insurance-denials";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -173,6 +176,9 @@ function Router() {
       <Route path="/code-mastery" component={CodeMastery} />
       <Route path="/analytics-dashboard" component={AnalyticsDashboard} />
       <Route path="/rights-hub" component={RightsHub} />
+      <Route path="/resources-hub" component={ResourcesHub} />
+      <Route path="/templates" component={Templates} />
+      <Route path="/insurance-denials" component={InsuranceDenials} />
       <Route path="/emergency-help" component={EmergencyHelp} />
       <Route path="/quick-analyzer" component={QuickAnalyzer} />
       <Route path="/provider-contacts" component={ProviderContacts} />

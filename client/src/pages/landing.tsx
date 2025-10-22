@@ -259,6 +259,131 @@ export default function Landing() {
         </motion.p>
       </motion.div>
 
+      {/* 💎 FEATURED RESOURCES - DoNotPay Style */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-8 bg-gradient-to-br from-blue-50/50 via-indigo-50/50 to-purple-50/50"
+      >
+        <div className="text-center mb-6">
+          <motion.h2 
+            className="text-3xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-3"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Bill Reduction Toolkit
+          </motion.h2>
+          <motion.div 
+            className="h-1.5 w-24 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full mx-auto mb-3"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          />
+          <p className="text-gray-600 font-medium">
+            Everything you need to fight medical bills
+          </p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-w-3xl mx-auto">
+          {[
+            { icon: Zap, label: "Analyze Bill", path: "/bill-ai", color: "from-purple-600 to-indigo-600", bgColor: "from-purple-50 to-indigo-50" },
+            { icon: FileText, label: "Templates", path: "/templates", color: "from-emerald-600 to-teal-600", bgColor: "from-emerald-50 to-teal-50" },
+            { icon: Target, label: "Guides", path: "/resources-hub", color: "from-blue-600 to-cyan-600", bgColor: "from-blue-50 to-cyan-50" },
+            { icon: Brain, label: "Industry Secrets", path: "/industry-insights", color: "from-amber-600 to-orange-600", bgColor: "from-amber-50 to-orange-50" },
+            { icon: Shield, label: "Denials Intel", path: "/insurance-denials", color: "from-red-600 to-pink-600", bgColor: "from-red-50 to-pink-50" },
+            { icon: Award, label: "Case Studies", path: "/bill-best-practices", color: "from-indigo-600 to-purple-600", bgColor: "from-indigo-50 to-purple-50" }
+          ].map((item, index) => (
+            <Link key={item.label} href={item.path}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05, duration: 0.4 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <MobileCard className={`bg-gradient-to-br ${item.bgColor} border-2 border-white/50 text-center h-full`}>
+                  <div className={`w-12 h-12 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg`}>
+                    <item.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-sm leading-tight">{item.label}</h3>
+                </MobileCard>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Popular Resources */}
+        <div className="max-w-2xl mx-auto space-y-3">
+          <h3 className="text-xl font-black text-gray-900 mb-4 flex items-center gap-2">
+            <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
+            Most Popular
+          </h3>
+
+          {[
+            { title: "Complete Bill Reduction Guide", desc: "Step-by-step guide to reducing bills 40-90%", path: "/bill-reduction-guide", icon: Target, savings: "$2K-$35K+", color: "from-emerald-600 to-teal-600" },
+            { title: "Industry Insider Secrets", desc: "Hospital revenue cycles, markup schemes, tactics", path: "/industry-insights", icon: Brain, savings: "$5K-$15K", color: "from-amber-600 to-orange-600" },
+            { title: "Premium Dispute Templates", desc: "Professional letters with legal citations", path: "/templates", icon: FileText, badge: "Premium", color: "from-purple-600 to-indigo-600" }
+          ].map((resource, index) => (
+            <Link key={resource.title} href={resource.path}>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 + index * 0.08, duration: 0.4 }}
+                whileHover={{ scale: 1.02, x: 4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <MobileCard className="bg-white border-2 border-white/80 shadow-lg">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${resource.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-md`}>
+                      <resource.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-black text-gray-900 text-sm mb-0.5">{resource.title}</h4>
+                      <p className="text-xs text-gray-600">{resource.desc}</p>
+                      {resource.savings && (
+                        <span className="inline-block text-xs font-black text-emerald-700 mt-1">
+                          💰 Potential: {resource.savings}
+                        </span>
+                      )}
+                      {resource.badge && (
+                        <span className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold mt-1">
+                          {resource.badge}
+                        </span>
+                      )}
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                  </div>
+                </MobileCard>
+              </motion.div>
+            </Link>
+          ))}
+
+          <Link href="/resources-hub">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <MobileButton className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-lg mt-2" data-testid="button-all-resources">
+                <ArrowRight className="h-4 w-4 mr-2" />
+                View All Resources & Guides
+                <ChevronRight className="h-4 w-4 ml-2" />
+              </MobileButton>
+            </motion.div>
+          </Link>
+        </div>
+      </motion.div>
+
       {/* 🎯 HOW IT WORKS - Visual Step Flow */}
       <motion.div
         initial={{ opacity: 0 }}
