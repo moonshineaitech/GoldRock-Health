@@ -423,10 +423,10 @@ export default function AuthLanding() {
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <h2 className="text-2xl font-black text-gray-900 leading-tight mb-3">
-              We Fight and Reduce<br />Medical Bills for You
+              We Help You Reduce<br />Medical Bills
             </h2>
             <p className="text-base text-gray-700 leading-relaxed font-medium max-w-xl mx-auto">
-              Your personal AI fighter automatically battles unfair medical charges, finds hidden overcharges, and reduces your bills by <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg">$2,000 - $35,000+</span>
+              AI-powered analysis helps you identify potential medical billing errors and find opportunities to reduce your bills. <span className="text-sm text-gray-600">Users report average savings of $2,000 - $35,000+*</span>
             </p>
           </motion.div>
         </motion.div>
@@ -441,10 +441,10 @@ export default function AuthLanding() {
             transition={{ delay: 0.6, duration: 0.5 }}
           >
             {[
-              { icon: Shield, text: "We fight hospitals", color: "from-blue-500 to-indigo-600" },
-              { icon: DollarSign, text: "You save thousands", color: "from-emerald-500 to-teal-600" },
-              { icon: Zap, text: "Works instantly", color: "from-amber-500 to-orange-600" },
-              { icon: Heart, text: "100% for you", color: "from-rose-500 to-pink-600" }
+              { icon: Shield, text: "Identify billing errors", color: "from-blue-500 to-indigo-600" },
+              { icon: DollarSign, text: "Find potential savings", color: "from-emerald-500 to-teal-600" },
+              { icon: Zap, text: "Fast AI analysis", color: "from-amber-500 to-orange-600" },
+              { icon: Heart, text: "Secure & private", color: "from-rose-500 to-pink-600" }
             ].map((item, index) => (
               <motion.div
                 key={item.text}
@@ -511,12 +511,12 @@ export default function AuthLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0, duration: 0.5 }}
           >
-            <h3 className="text-lg font-black text-gray-900 mb-3 text-center">How We Fight For You</h3>
+            <h3 className="text-lg font-black text-gray-900 mb-3 text-center">How It Works</h3>
             <div className="space-y-3">
               {[
-                { icon: FileText, title: "1. Scan Your Bill", desc: "Upload your medical bill. Our AI instantly analyzes every charge, looking for errors and overcharges.", color: "from-blue-500 to-indigo-600" },
-                { icon: AlertTriangle, title: "2. We Find Problems", desc: "AI detects duplicate charges, billing errors, and inflated prices that hospitals hope you miss.", color: "from-red-500 to-orange-600" },
-                { icon: MessageSquare, title: "3. We Fight Back", desc: "Get professional dispute letters that legally force hospitals to respond and reduce your bill.", color: "from-emerald-500 to-teal-600" }
+                { icon: FileText, title: "1. Upload Your Bill", desc: "Upload your medical bill. Our AI analyzes every charge to identify potential errors and overcharges.", color: "from-blue-500 to-indigo-600" },
+                { icon: AlertTriangle, title: "2. AI Identifies Issues", desc: "AI detects duplicate charges, billing errors, and pricing inconsistencies you should review.", color: "from-red-500 to-orange-600" },
+                { icon: MessageSquare, title: "3. Get Guidance", desc: "Receive professional dispute letter templates and step-by-step guidance for bill negotiations.", color: "from-emerald-500 to-teal-600" }
               ].map((step, index) => (
                 <motion.div
                   key={step.title}
@@ -558,16 +558,16 @@ export default function AuthLanding() {
                   <h3 className="text-base font-black text-emerald-900 mb-3 text-center">Real People, Real Savings</h3>
                   <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
                     <div data-testid="stat-average-savings" className="text-center">
-                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent leading-tight">$8,500</div>
-                      <div className="text-xs text-emerald-700 font-bold mt-1">Avg Saved</div>
+                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent leading-tight">$8,500*</div>
+                      <div className="text-xs text-emerald-700 font-bold mt-1">Users Report</div>
                     </div>
                     <div data-testid="stat-bills-reduced" className="text-center">
-                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent leading-tight">2,847</div>
-                      <div className="text-xs text-blue-700 font-bold mt-1">Bills Cut</div>
+                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent leading-tight">2,800+</div>
+                      <div className="text-xs text-blue-700 font-bold mt-1">Bills Analyzed</div>
                     </div>
                     <div data-testid="stat-success-rate" className="text-center">
-                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">95%</div>
-                      <div className="text-xs text-purple-700 font-bold mt-1">Win Rate</div>
+                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">High</div>
+                      <div className="text-xs text-purple-700 font-bold mt-1">Success Rate</div>
                     </div>
                   </div>
                   <div className="flex items-center justify-center space-x-1">
@@ -587,12 +587,12 @@ export default function AuthLanding() {
               transition={{ delay: 1.2, duration: 0.5 }}
             >
               <div className="relative bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 rounded-2xl p-5 border-2 border-red-200/50 shadow-xl">
-                <h3 className="text-base font-black text-red-900 mb-3 text-center">Why You Need This</h3>
+                <h3 className="text-base font-black text-red-900 mb-3 text-center">Why Review Your Bills</h3>
                 <div className="space-y-2">
                   {[
-                    { text: "87% of medical bills contain errors", subtext: "hospitals make mistakes all the time" },
-                    { text: "Hospitals charge 3-10x more", subtext: "than actual costs - they rely on you not fighting back" },
-                    { text: "Most people pay without questioning", subtext: "but you don't have to" }
+                    { text: "Medical bills frequently contain errors*", subtext: "billing mistakes happen more often than you think" },
+                    { text: "Healthcare costs vary significantly", subtext: "understanding your charges helps you make informed decisions" },
+                    { text: "Review before you pay", subtext: "you have the right to question charges" }
                   ].map((item, index) => (
                     <div key={index} className="flex items-start space-x-2 bg-white/60 rounded-lg p-3">
                       <CheckCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -642,7 +642,7 @@ export default function AuthLanding() {
           <div className="flex items-center justify-center space-x-2 text-xs text-gray-500 font-medium">
             <span>© 2025 GoldRock Health</span>
             <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-            <span>We Fight For You</span>
+            <span>We Help You Save</span>
           </div>
 
           <motion.p 
