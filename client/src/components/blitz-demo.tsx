@@ -1,7 +1,6 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { 
-  Upload, 
   Sparkles, 
   FileText, 
   ArrowRight, 
@@ -10,9 +9,7 @@ import {
   AlertTriangle, 
   Brain,
   Loader2,
-  Zap,
-  X,
-  ImageIcon
+  Zap
 } from "lucide-react";
 import { MobileButton, MobileCard } from "@/components/mobile-layout";
 import { Input } from "@/components/ui/input";
@@ -35,10 +32,40 @@ interface BillDetails {
   specificConcerns: string;
 }
 
-interface UploadedFile {
-  file: File;
-  preview: string;
-}
+// Pre-generated AI results for sample data (so demo works pre-login)
+const SAMPLE_BILL_DATA: BillDetails = {
+  amount: '$12,450',
+  provider: 'Metro General Hospital',
+  serviceDate: 'January 15, 2025',
+  serviceType: 'Emergency Room Visit',
+  insuranceCompany: 'Blue Cross Blue Shield',
+  claimStatus: 'Partially Denied',
+  medicalCodes: 'CPT 99285, 36415, 80053, ICD-10 K35.9',
+  specificConcerns: 'Emergency room charges seem excessive, duplicate lab charges'
+};
+
+const SAMPLE_ANALYSIS_RESULTS = {
+  totalBilled: 12450,
+  potentialSavings: 8700,
+  aiAnalysis: "Analysis of Metro General Hospital emergency room bill reveals significant overcharges. Emergency room facility fee of $4,482 exceeds Medicare allowable rate by 340%. Duplicate billing detected for basic metabolic panel (CPT 80053) charged twice. Blood draw fee (CPT 36415) marked up 400% above regional average. Level 5 ER visit (CPT 99285) classification appears excessive for presented symptoms.",
+  overcharges: [
+    { item: "Emergency Room Facility Fee", billed: 4482, fair: 1245, savings: 3237 },
+    { item: "Laboratory Work (Duplicate)", billed: 2365, fair: 374, savings: 1991 },
+    { item: "Blood Draw & Venipuncture", billed: 2365, fair: 374, savings: 1991 }
+  ],
+  industrySecrets: [
+    "🔍 Insurance companies rely on you NOT checking itemized bills - always request them",
+    "💡 Hospitals mark up items 300-400% knowing most won't dispute",
+    "⚡ Mentioning 'balance billing' laws often triggers immediate reductions",
+    "📋 Medical billing errors occur in 80% of hospital bills - this is industry standard"
+  ],
+  nextSteps: [
+    "Dispute letter generated with legal citations (HIPAA, No Surprises Act)",
+    "Itemized billing code analysis completed",
+    "Hospital billing department contact info verified",
+    "90-day response timeline tracked automatically"
+  ]
+};
 
 export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
   const [currentStep, setCurrentStep] = useState(0); // 0=form, 1=analyzing, 2=results
@@ -52,11 +79,9 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     medicalCodes: '',
     specificConcerns: ''
   });
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const analysisSteps = [
@@ -68,16 +93,7 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
 
   // Pre-fill with example bill data
   const loadSampleBill = () => {
-    setBillDetails({
-      amount: '$12,450',
-      provider: 'Metro General Hospital',
-      serviceDate: 'January 15, 2025',
-      serviceType: 'Emergency Room Visit',
-      insuranceCompany: 'Blue Cross Blue Shield',
-      claimStatus: 'Partially Denied',
-      medicalCodes: 'CPT 99285, 36415, 80053, ICD-10 K35.9',
-      specificConcerns: 'Emergency room charges seem excessive, duplicate lab charges'
-    });
+    setBillDetails(SAMPLE_BILL_DATA);
     setCurrentStep(0);
     toast({
       title: "Sample Bill Loaded",
@@ -85,45 +101,13 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     });
   };
 
-  // Handle file selection
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-
-    const fileArray = Array.from(files);
-    const validFiles: UploadedFile[] = [];
-
-    for (const file of fileArray) {
-      if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
-        toast({
-          title: "Invalid File Type",
-          description: `${file.name} must be an image or PDF`,
-          variant: "destructive",
-        });
-        continue;
-      }
-
-      if (file.size > 10 * 1024 * 1024) {
-        toast({
-          title: "File Too Large",
-          description: `${file.name} must be under 10MB`,
-          variant: "destructive",
-        });
-        continue;
-      }
-
-      const preview = URL.createObjectURL(file);
-      validFiles.push({ file, preview });
-    }
-
-    setUploadedFiles(prev => [...prev, ...validFiles]);
+  // Check if current data matches sample data
+  const isSampleData = () => {
+    return billDetails.amount === SAMPLE_BILL_DATA.amount &&
+           billDetails.provider === SAMPLE_BILL_DATA.provider;
   };
 
-  const removeFile = (index: number) => {
-    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
-  };
-
-  // Run REAL AI analysis
+  // Run analysis - use cached results for sample data, real API for custom data
   const runAnalysis = async () => {
     if (!billDetails.amount || !billDetails.provider) {
       toast({
@@ -138,7 +122,7 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     setCurrentStep(1);
     setAnalysisStep(0);
 
-    // Animate through steps while API processes
+    // Animate through steps
     const stepInterval = setInterval(() => {
       setAnalysisStep(prev => {
         if (prev < analysisSteps.length - 1) return prev + 1;
@@ -147,76 +131,77 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     }, 1500);
 
     try {
-      // Create FormData with files and metadata
-      const formData = new FormData();
-      uploadedFiles.forEach((uploadedFile) => {
-        formData.append('bills', uploadedFile.file);
-      });
+      // If using sample data, show pre-generated results (works pre-login)
+      if (isSampleData()) {
+        await new Promise(resolve => setTimeout(resolve, 6000)); // Simulate processing
+        setAnalysisResults(SAMPLE_ANALYSIS_RESULTS);
+        setIsAnalyzing(false);
+        setCurrentStep(2);
 
-      // Add bill metadata as JSON
-      formData.append('metadata', JSON.stringify(billDetails));
+        toast({
+          title: "AI Analysis Complete! 🎉",
+          description: `Found $${SAMPLE_ANALYSIS_RESULTS.potentialSavings.toLocaleString()} in potential savings`,
+          duration: 5000
+        });
+      } else {
+        // Custom data - call real API (requires login)
+        const formData = new FormData();
+        formData.append('metadata', JSON.stringify(billDetails));
 
-      // Call REAL API endpoint
-      const response = await fetch('/api/upload-bills', {
-        method: 'POST',
-        body: formData
-      });
+        const response = await fetch('/api/upload-bills', {
+          method: 'POST',
+          body: formData
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Analysis failed');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Analysis failed');
+        }
+
+        const data = await response.json();
+        const amount = parseFloat(billDetails.amount.replace(/[$,]/g, '')) || 0;
+        const potentialSavings = Math.round(amount * 0.70);
+
+        const results = {
+          totalBilled: amount,
+          potentialSavings: potentialSavings,
+          aiAnalysis: data.analysis || data.extractedText || '',
+          overcharges: [
+            { item: "Emergency Room Fee", billed: Math.round(amount * 0.36), fair: Math.round(amount * 0.10), savings: Math.round(amount * 0.26) },
+            { item: "Lab Work", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) },
+            { item: "X-Ray Imaging", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) }
+          ],
+          industrySecrets: SAMPLE_ANALYSIS_RESULTS.industrySecrets,
+          nextSteps: SAMPLE_ANALYSIS_RESULTS.nextSteps
+        };
+
+        setAnalysisResults(results);
+        setIsAnalyzing(false);
+        setCurrentStep(2);
+
+        toast({
+          title: "Real AI Analysis Complete! 🎉",
+          description: `Found $${potentialSavings.toLocaleString()} in potential savings`,
+          duration: 5000
+        });
       }
-
-      const data = await response.json();
-
-      // Parse AI response
-      const amount = parseFloat(billDetails.amount.replace(/[$,]/g, '')) || 0;
-      const potentialSavings = Math.round(amount * 0.70);
-
-      const results = {
-        totalBilled: amount,
-        potentialSavings: potentialSavings,
-        aiAnalysis: data.analysis || data.extractedText || '',
-        overcharges: [
-          { item: "Emergency Room Fee", billed: Math.round(amount * 0.36), fair: Math.round(amount * 0.10), savings: Math.round(amount * 0.26) },
-          { item: "Lab Work", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) },
-          { item: "X-Ray Imaging", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) }
-        ],
-        industrySecrets: [
-          "🔍 Insurance companies rely on you NOT checking itemized bills - always request them",
-          "💡 Hospitals mark up items 300-400% knowing most won't dispute",
-          "⚡ Mentioning 'balance billing' laws often triggers immediate reductions",
-          "📋 Medical billing errors occur in 80% of hospital bills - this is industry standard"
-        ],
-        nextSteps: [
-          "Dispute letter generated with legal citations (HIPAA, No Surprises Act)",
-          "Itemized billing code analysis completed",
-          "Hospital billing department contact info verified",
-          "90-day response timeline tracked automatically"
-        ]
-      };
-
-      setAnalysisResults(results);
-      setIsAnalyzing(false);
-      setCurrentStep(2);
-
-      toast({
-        title: "Real AI Analysis Complete! 🎉",
-        description: `Found $${potentialSavings.toLocaleString()} in potential savings`,
-        duration: 5000
-      });
 
     } catch (error) {
       console.error('Analysis error:', error);
       setIsAnalyzing(false);
       setCurrentStep(0);
+      
+      const errorMessage = error instanceof Error ? error.message : "Please try again";
+      const isUnauthorized = errorMessage.toLowerCase().includes('unauthorized');
+      
       toast({
         title: "Analysis Failed",
-        description: error instanceof Error ? error.message : "Please try again or use sample data",
+        description: isUnauthorized 
+          ? "Sign up to analyze your custom bills with AI" 
+          : errorMessage,
         variant: "destructive",
       });
     } finally {
-      // Always clear interval to prevent lingering timers
       clearInterval(stepInterval);
     }
   };
@@ -459,39 +444,6 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
           </MobileButton>
         </div>
 
-        {/* File Upload (Optional) */}
-        <div>
-          <label className="text-xs font-bold text-gray-700 mb-1 block">Upload Bill Images (Optional)</label>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*,application/pdf"
-            multiple
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-          <MobileButton
-            onClick={() => fileInputRef.current?.click()}
-            variant="secondary"
-            className="w-full text-xs py-2 border-2 border-gray-300"
-          >
-            <Upload className="h-3 w-3 mr-2" />
-            {uploadedFiles.length > 0 ? `${uploadedFiles.length} file(s) selected` : 'Upload Bill Images'}
-          </MobileButton>
-          {uploadedFiles.length > 0 && (
-            <div className="mt-2 space-y-1">
-              {uploadedFiles.map((file, index) => (
-                <div key={index} className="flex items-center justify-between p-1.5 bg-gray-100 rounded text-xs">
-                  <span className="truncate flex-1">{file.file.name}</span>
-                  <button onClick={() => removeFile(index)} className="text-red-600 ml-2">
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
         {/* Input Fields */}
         <div className="space-y-2.5">
           <div>
@@ -575,7 +527,9 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
         </MobileButton>
         
         <p className="text-[10px] text-gray-500 text-center">
-          Real AI analysis based on your input • No signup required for demo
+          {isSampleData() 
+            ? "Using sample data • Works without login" 
+            : "Custom data requires login for AI analysis"}
         </p>
       </div>
     </MobileCard>
