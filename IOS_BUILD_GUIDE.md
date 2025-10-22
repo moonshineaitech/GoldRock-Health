@@ -288,7 +288,31 @@ Password: [Managed by Replit Auth - use Google/Apple/Email login with this email
 
 **Notes for Reviewer:**
 ```
-GoldRock Health is a medical bill reduction platform using AI analysis and human expert coaching.
+IMPORTANT: GoldRock Health is a BILLING TECHNOLOGY PLATFORM - NOT a Medical Care Provider
+
+WHAT WE ARE:
+✅ Educational financial technology platform for medical bill analysis
+✅ AI-powered billing error detection and negotiation guidance tools
+✅ Consumer advocacy and financial literacy resource for healthcare costs
+✅ Technology service connecting users with billing information and resources
+
+WHAT WE ARE NOT:
+❌ NOT a medical care provider, healthcare service, or telemedicine platform
+❌ NOT diagnosing, treating, or preventing any medical conditions
+❌ NOT providing medical advice, clinical recommendations, or care plans
+❌ NOT a substitute for professional medical, legal, or financial advice
+
+APP CATEGORY: Health & Fitness > Medical (Bill Management subcategory)
+PRIMARY FUNCTION: Help users understand and potentially reduce medical billing charges through education and AI-powered analysis
+
+DISCLAIMERS SHOWN TO USERS:
+- "For educational purposes only - not medical advice"
+- "Results vary - no guarantee of specific savings amounts"
+- "We are not a medical provider, law firm, or financial advisor"
+- "In case of medical emergency, call 911 immediately"
+- Users must accept Medical AI Terms before using bill analysis features
+
+---
 
 TESTING INSTRUCTIONS:
 1. Log in with appreviewer@goldrock.com (has Premium access - you'll see a "Demo Account" banner)
@@ -296,31 +320,72 @@ TESTING INSTRUCTIONS:
 3. Tap any bill to view detailed AI analysis with:
    - Itemized overcharge breakdown
    - Professional dispute letter templates
-   - Negotiation strategies
+   - Negotiation strategies and educational resources
 4. Test camera features: Tap "Scan Bill" to use device camera (grant permission when prompted)
 5. Test bill upload: Import from photo library
-6. Navigate to Premium page to see subscription options
+6. Navigate to Premium page to see subscription options (StoreKit IAP via RevenueCat)
+7. Navigate to "Know Your Rights Hub" to see patient rights education
+8. Try "Quick Bill Analyzer" for free analysis without sign-up
 
 NATIVE FEATURES USED:
-- Capacitor Camera plugin for bill scanning and photo upload
-- Local Notifications for bill analysis completion alerts
-- Share API for exporting dispute letters
-- Haptic feedback for UI interactions
-- Network detection for offline functionality
+- Capacitor Camera plugin (v7.0.2) for bill scanning and photo upload
+- Local Notifications (v7.0.3) for bill analysis completion alerts
+- Push Notifications (v7.0.3) for bill updates and reminders
+- Share API (v7.0.2) for exporting dispute letters and analyses
+- Haptic feedback (v7.0.2) for UI interactions
+- Network detection (v7.0.2) for offline functionality
+- Status Bar (v7.0.3) and Splash Screen (v7.0.3) management
+- Preferences (v7.0.2) for local data storage
 
-PAYMENT IMPLEMENTATION:
-- Web Browser: Stripe checkout (fully functional)
-- iOS Native: StoreKit In-App Purchases via RevenueCat (native payment processing)
+PAYMENT IMPLEMENTATION (COMPLIES WITH APP STORE GUIDELINES):
+- iOS Native: StoreKit In-App Purchases via RevenueCat (PRIMARY - native payment processing)
+  - Product IDs: goldrock_premium_monthly ($29.99/mo), goldrock_premium_annual ($299.99/yr)
+  - RevenueCat handles receipt validation and subscription management
+  - Webhook endpoint: /api/webhooks/revenuecat for real-time sync
+- Web Browser: Stripe checkout (fully functional for web users only)
 - Cross-platform subscription sync: Premium status accessible on all platforms
-- Dual payment rails increase App Store approval probability to 90-95%
+- No external payment links in iOS app - fully App Store compliant
 
 SECURITY & COMPLIANCE:
-- All medical data encrypted at rest and in transit
-- HIPAA-compliant data handling
+- All medical data encrypted at rest (AES-256) and in transit (TLS 1.3)
+- HIPAA-compliant data handling with bank-level encryption
 - Medical disclaimers displayed on first use (educational purpose only, not medical advice)
-- Privacy Manifest declares data collection for app functionality only (no tracking)
+- Privacy Manifest (PrivacyInfo.xcprivacy) declares:
+  - Data collection: Health info, financial info for app functionality only
+  - API usage: File timestamps (C617.1), UserDefaults (CA92.1)
+  - No tracking or third-party analytics
+- ITSAppUsesNonExemptEncryption: false (no custom encryption beyond standard TLS)
+- All permissions justified in Info.plist with clear usage descriptions
 
-The demo account demonstrates the full Premium experience without requiring subscription purchase.
+DATA HANDLING:
+- User medical bills processed via GPT-4o Vision OCR for text extraction
+- AI analysis identifies potential billing errors (duplicate charges, coding errors, pricing inconsistencies)
+- NO medical diagnoses or clinical recommendations generated
+- NO personally identifiable information shared with third parties for marketing
+- Users can delete all data at any time via account settings
+
+REVENUE MODEL:
+- Free tier: Limited bill analyses (3 bills/month)
+- Premium subscription: Unlimited analyses, expert coaching access, priority support
+- In-app purchases managed via StoreKit (iOS) and Stripe (web)
+- No ads, no data selling, no hidden fees
+
+DEMO ACCOUNT FEATURES:
+The demo account (appreviewer@goldrock.com) demonstrates the full Premium experience:
+- Premium Annual subscription (active, no expiration required)
+- 3 anonymized sample medical bills pre-loaded with AI analysis
+- Total potential savings displayed: $13,900 across all bills
+- Auto-seeds on server startup via server/seed-demo-account.ts
+- "Demo Account" banner clearly displayed to distinguish from production accounts
+
+EDUCATIONAL DISCLAIMER COMPLIANCE:
+All user-facing pages include appropriate disclaimers:
+- Homepage: "Users report average savings..." (softened claims, no guarantees)
+- Bill Analysis: "For educational purposes only - not medical advice"
+- Dispute Letters: "Templates for informational purposes - consult attorney if needed"
+- Statistics: Footnoted with "*Results vary significantly based on individual circumstances"
+
+Thank you for reviewing GoldRock Health. We've designed this platform to empower users with financial literacy tools for healthcare billing, not to provide medical care or advice.
 ```
 
 ### 8. Pricing & Availability
