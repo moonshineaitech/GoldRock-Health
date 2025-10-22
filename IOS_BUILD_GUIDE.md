@@ -1,7 +1,7 @@
-# GoldRock Health iOS App - Build & App Store Submission Guide
+# GoldRock AI iOS App - Build & App Store Submission Guide
 
 ## Overview
-GoldRock Health uses **Capacitor** to wrap the React web app in a native iOS shell, achieving ~90% code reuse while providing native iOS features like camera access, push notifications, and share functionality.
+GoldRock AI uses **Capacitor** to wrap the React web app in a native iOS shell, achieving ~90% code reuse while providing native iOS features like camera access, push notifications, and share functionality.
 
 ## Prerequisites
 
@@ -55,7 +55,7 @@ iOS now uses a **single 1024x1024px icon** that automatically generates all size
 - File name: `AppIcon-512@2x.png` (already configured)
 
 **Design Guidelines:**
-- Medical theme with GoldRock Health branding
+- Medical theme with GoldRock AI branding
 - Use brand colors: Gold/Amber (#F59E0B) and Emerald (#10B981)
 - Include medical cross or health icon
 - Keep design simple and recognizable at small sizes
@@ -103,16 +103,16 @@ The following permissions are already added to `ios/App/App/Info.plist`:
 
 ```xml
 <key>NSCameraUsageDescription</key>
-<string>GoldRock Health needs camera access to scan and photograph your medical bills for AI analysis</string>
+<string>GoldRock AI needs camera access to scan and photograph your medical bills for AI analysis</string>
 
 <key>NSPhotoLibraryUsageDescription</key>
-<string>GoldRock Health needs access to your photo library to import medical bills and receipts for analysis</string>
+<string>GoldRock AI needs access to your photo library to import medical bills and receipts for analysis</string>
 
 <key>NSPhotoLibraryAddUsageDescription</key>
-<string>GoldRock Health can save analyzed bills and dispute letters to your photo library</string>
+<string>GoldRock AI can save analyzed bills and dispute letters to your photo library</string>
 
 <key>NSUserNotificationsUsageDescription</key>
-<string>GoldRock Health sends notifications when your bill analysis is complete or when you receive important updates about your medical bills</string>
+<string>GoldRock AI sends notifications when your bill analysis is complete or when you receive important updates about your medical bills</string>
 
 <key>ITSAppUsesNonExemptEncryption</key>
 <false/>
@@ -164,7 +164,7 @@ In Xcode:
 2. **My Apps** → **+** → **New App**
 3. Fill in:
    - **Platform:** iOS
-   - **Name:** GoldRock Health
+   - **Name:** GoldRock AI
    - **Primary Language:** English (U.S.)
    - **Bundle ID:** com.goldrockhealth.app
    - **SKU:** GOLDROCK-HEALTH-001 (unique identifier)
@@ -174,10 +174,10 @@ In Xcode:
 **Subcategory:** Health & Fitness
 
 **App Privacy Policy URL:**  
-`https://goldrockhealth.com/privacy-policy`
+`https://goldrock.ai/privacy-policy`
 
 **Support URL:**  
-`https://goldrockhealth.com/support` (or your support page)
+`https://goldrock.ai/support`
 
 ### 3. Age Rating
 - Medical/Treatment Information: Yes
@@ -186,11 +186,11 @@ In Xcode:
 ### 4. App Description
 
 **Subtitle (30 chars):**  
-"Save $1000s on Medical Bills"
+"AI Medical Bill Error Detection"
 
 **Description (4000 chars max):**
 ```
-GoldRock Health uses advanced AI to help you reduce medical bills by $2,000-$35,000+. Our platform analyzes your bills, identifies overcharges, and provides expert guidance to dispute unfair charges.
+GoldRock AI uses advanced AI to help you identify potential medical billing errors. Our platform analyzes your bills, identifies potential overcharges, and provides guidance to review charges with providers. Example potential savings: $2,000-$35,000+.
 
 KEY FEATURES:
 • AI Bill Analysis - Upload bills via camera or photo library
@@ -216,9 +216,9 @@ SECURITY & PRIVACY:
 • Secure authentication via Replit Auth
 • No data sold to third parties
 
-Perfect for patients, families, and anyone facing high medical costs. Join thousands saving on healthcare expenses.
+Perfect for patients, families, and anyone facing high medical costs. See example potential savings based on common billing scenarios.
 
-Download GoldRock Health and start reducing your medical bills today!
+Download GoldRock AI and start analyzing your medical bills today!
 ```
 
 **Keywords (100 chars):**
@@ -228,7 +228,7 @@ medical bills,healthcare,bill negotiation,savings,insurance,hospital bills,debt,
 
 **Promotional Text (170 chars):**
 ```
-New: AI-powered bill analysis with camera scanning! Upload bills instantly and get savings recommendations in seconds. Save thousands on medical expenses.
+New: AI-powered bill analysis with camera scanning! Upload bills instantly and get error detection recommendations in seconds. Example outcomes: $2,000-$35,000+ potential savings.
 ```
 
 ### 5. Screenshots (Required)
@@ -288,7 +288,7 @@ Password: [Managed by Replit Auth - use Google/Apple/Email login with this email
 
 **Notes for Reviewer:**
 ```
-IMPORTANT: GoldRock Health is a BILLING TECHNOLOGY PLATFORM - NOT a Medical Care Provider
+IMPORTANT: GoldRock AI is a BILLING TECHNOLOGY PLATFORM - NOT a Medical Care Provider
 
 WHAT WE ARE:
 ✅ Educational financial technology platform for medical bill analysis
@@ -380,12 +380,20 @@ The demo account (appreviewer@goldrock.com) demonstrates the full Premium experi
 
 EDUCATIONAL DISCLAIMER COMPLIANCE:
 All user-facing pages include appropriate disclaimers:
-- Homepage: "Users report average savings..." (softened claims, no guarantees)
+- Homepage: "Example potential savings..." (illustrative case studies, no claims of real user data)
 - Bill Analysis: "For educational purposes only - not medical advice"
 - Dispute Letters: "Templates for informational purposes - consult attorney if needed"
-- Statistics: Footnoted with "*Results vary significantly based on individual circumstances"
+- Statistics: All presented as "Example Outcomes" and "Sample Case Studies" - clearly marked as illustrative scenarios based on medical billing research
 
-Thank you for reviewing GoldRock Health. We've designed this platform to empower users with financial literacy tools for healthcare billing, not to provide medical care or advice.
+PRE-LAUNCH STATUS:
+This is a pre-launch app preparing for initial App Store submission:
+- All statistics and success stories are EXAMPLE CASE STUDIES, not real user data
+- Figures ($8,500 average, $2,000-$35,000+ range) represent potential outcomes based on medical billing research
+- Platform designed and tested with sample data demonstrating functionality
+- Demo account provides realistic preview of full app experience
+- No claims of existing user base - all language updated to reflect "potential outcomes" and "example scenarios"
+
+Thank you for reviewing GoldRock AI. We've designed this platform to empower users with financial literacy tools for healthcare billing, not to provide medical care or advice.
 ```
 
 ### 8. Pricing & Availability
@@ -400,7 +408,7 @@ Thank you for reviewing GoldRock Health. We've designed this platform to empower
 
 **Implementation Status: COMPLETE**
 
-GoldRock Health uses **dual payment rails** for maximum App Store approval probability:
+GoldRock AI uses **dual payment rails** for maximum App Store approval probability:
 - **iOS Native:** StoreKit In-App Purchases via RevenueCat (90%+ approval rate)
 - **Web Browser:** Stripe checkout (fully functional)
 
@@ -693,5 +701,5 @@ npx cap copy ios
 ---
 
 **Questions or Issues?**  
-Contact: [your-email@goldrockhealth.com]  
+Contact: contact@goldrock.ai  
 Last Updated: January 2025

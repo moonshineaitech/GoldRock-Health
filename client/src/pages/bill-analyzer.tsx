@@ -640,7 +640,7 @@ What aspect of your medical billing situation requires immediate attention?`;
                 </motion.div>
                 
                 <h2 className="text-xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
-                  Save Thousands on Medical Bills
+                  Identify Potential Billing Errors
                 </h2>
                 
                 <p className="text-sm text-gray-600 mb-6 px-6 leading-relaxed">

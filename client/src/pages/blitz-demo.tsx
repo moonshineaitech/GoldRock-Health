@@ -752,7 +752,7 @@ export default function BlitzDemo() {
               </div>
             </div>
             <p className="text-gray-600 text-sm">
-              See how AI finds thousands in hidden savings in under 60 seconds
+              See how AI identifies potential billing errors in under 60 seconds
             </p>
           </motion.div>
 

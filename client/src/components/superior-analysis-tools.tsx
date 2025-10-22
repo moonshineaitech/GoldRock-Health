@@ -938,7 +938,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
       {!isSubscribed && (
         <PremiumPaywallOverlay
           title="Tax Deduction Maximizer"
-          description="Professional tax optimization for medical expenses. Maximize deductions and identify tax strategies that save thousands annually."
+          description="Professional tax optimization for medical expenses. Maximize deductions and identify potential tax strategies. Example outcomes: $5,000-$50,000+ annually."
           featureName="Tax Optimization"
           savingsPotential="$5,000-$50,000+"
         />

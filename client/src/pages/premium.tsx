@@ -280,8 +280,8 @@ const premiumFeatures = [
   {
     icon: DollarSign,
     title: "Medical Bill AI Analysis",
-    description: "AI identifies $2,000-$35,000+ in billing overcharges using proven detection algorithms",
-    highlight: "Save thousands",
+    description: "AI identifies potential billing errors (example range: $2,000-$35,000+) using detection algorithms",
+    highlight: "Find savings",
     category: "billing",
     href: "/bill-ai"
   },
@@ -561,7 +561,7 @@ function LoginPrompt() {
                 >
                   <LogIn className="h-5 w-5 mr-3" />
                 </motion.div>
-                Sign In to Save Thousands
+                Sign In to Identify Potential Savings
                 <motion.div
                   animate={{ x: [0, 5, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -1053,7 +1053,7 @@ function PremiumMarketing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
-            Secure payment powered by Stripe • Start saving thousands today
+            Secure payment powered by Stripe • Start finding potential savings today
           </motion.p>
           
           {/* Enhanced Value Reminder with 2025 Glassmorphism */}
@@ -1660,11 +1660,11 @@ function PremiumMarketing() {
           transition={{ delay: 1.3, duration: 0.6 }}
         >
           <h2 className="text-3xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
-            Real Victories We've Won
+            Example Case Study Scenarios
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
           <p className="text-lg text-gray-700 mt-3 max-w-2xl mx-auto font-medium">
-            See how our AI fighter has saved real people from crushing medical debt
+            See example potential outcomes based on common medical billing scenarios
           </p>
         </motion.div>
         
@@ -1847,7 +1847,7 @@ function PremiumMarketing() {
           </h2>
           <div className="h-1 w-24 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
           <p className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto font-medium">
-            Powerful tools our AI uses to battle billing departments and win you thousands in savings
+            Powerful AI-powered tools to help identify billing errors and find potential savings opportunities
           </p>
         </motion.div>
         
@@ -2109,7 +2109,7 @@ function PremiumMarketing() {
               <span className="font-bold text-orange-800">Limited Time: Industry Insider Access</span>
             </div>
             <p className="text-sm text-orange-700 mb-3">
-              🔥 Get the same tools that billing lawyers charge $500/hour for. Save thousands on your first bill.
+              🔥 Access professional-grade analysis tools. Identify potential savings on your medical bills.
             </p>
             <div className="grid grid-cols-2 gap-2 text-xs text-orange-700">
               <div>✅ 500+ Hospital Insider Secrets</div>

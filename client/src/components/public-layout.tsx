@@ -43,9 +43,9 @@ export function PublicLayout({
             </h1>
           </div>
           
-          {/* GoldRock Health Logo/Brand */}
+          {/* GoldRock AI Logo/Brand */}
           <div className="text-sm font-semibold text-gray-600">
-            GoldRock Health
+            GoldRock AI
           </div>
         </div>
       </header>

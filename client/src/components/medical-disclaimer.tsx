@@ -55,7 +55,7 @@ export function MedicalDisclaimer() {
                   Educational Purpose Only
                 </h3>
                 <p className="text-sm text-yellow-800">
-                  GoldRock Health provides educational information and medical bill analysis services only. 
+                  GoldRock AI provides educational information and medical bill analysis services only. 
                   This app does NOT provide medical diagnosis, treatment, or professional medical advice.
                 </p>
               </div>

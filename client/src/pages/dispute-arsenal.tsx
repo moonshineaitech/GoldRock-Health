@@ -1156,9 +1156,9 @@ export default function DisputeArsenal() {
       {!isSubscribed && (
         <PremiumPaywallOverlay
           title="Professional Dispute Arsenal"
-          description="Access 50+ professional letter templates, automated dispute tracking, and advanced settlement negotiation tools that save thousands per case."
+          description="Access 50+ professional letter templates, automated dispute tracking, and advanced settlement negotiation tools. Example outcomes: $15,000-$50,000+ per dispute."
           featureName="Professional Dispute Arsenal"
-          savingsPotential="$15,000-$50,000+ per dispute"
+          savingsPotential="$15,000-$50,000+ example outcomes"
         />
       )}
 

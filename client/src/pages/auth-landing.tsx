@@ -426,7 +426,7 @@ export default function AuthLanding() {
               We Help You Reduce<br />Medical Bills
             </h2>
             <p className="text-base text-gray-700 leading-relaxed font-medium max-w-xl mx-auto">
-              AI-powered analysis helps you identify potential medical billing errors and find opportunities to reduce your bills. <span className="text-sm text-gray-600">Users report average savings of $2,000 - $35,000+*</span>
+              AI-powered analysis helps you identify potential medical billing errors and find opportunities to reduce your bills. <span className="text-sm text-gray-600">Example potential savings: $2,000 - $35,000+*</span>
             </p>
           </motion.div>
         </motion.div>
@@ -473,7 +473,7 @@ export default function AuthLanding() {
             transition={{ delay: 0.8, duration: 0.5 }}
           >
             <div className="text-center mb-3">
-              <p className="text-base font-black text-gray-900">Start Fighting Your Bills Now</p>
+              <p className="text-base font-black text-gray-900">Get Started with Your Bill Analysis</p>
             </div>
 
             {[
@@ -555,26 +555,26 @@ export default function AuthLanding() {
                   transition={{ duration: 3, repeat: Infinity }}
                 ></motion.div>
                 <div className="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 rounded-2xl p-5 border-2 border-emerald-200/50 shadow-xl">
-                  <h3 className="text-base font-black text-emerald-900 mb-3 text-center">Real People, Real Savings</h3>
+                  <h3 className="text-base font-black text-emerald-900 mb-3 text-center">Example Potential Outcomes</h3>
                   <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
                     <div data-testid="stat-average-savings" className="text-center">
                       <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent leading-tight">$8,500*</div>
-                      <div className="text-xs text-emerald-700 font-bold mt-1">Users Report</div>
+                      <div className="text-xs text-emerald-700 font-bold mt-1">Example Savings</div>
                     </div>
                     <div data-testid="stat-bills-reduced" className="text-center">
-                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent leading-tight">2,800+</div>
-                      <div className="text-xs text-blue-700 font-bold mt-1">Bills Analyzed</div>
+                      <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent leading-tight">Sample</div>
+                      <div className="text-xs text-blue-700 font-bold mt-1">Case Studies</div>
                     </div>
                     <div data-testid="stat-success-rate" className="text-center">
                       <div className="text-lg sm:text-2xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">High</div>
-                      <div className="text-xs text-purple-700 font-bold mt-1">Success Rate</div>
+                      <div className="text-xs text-purple-700 font-bold mt-1">Potential Rate</div>
                     </div>
                   </div>
                   <div className="flex items-center justify-center space-x-1">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="h-4 w-4 text-yellow-500 fill-current" />
                     ))}
-                    <span className="text-xs text-gray-700 ml-1 font-bold">Trusted by thousands</span>
+                    <span className="text-xs text-gray-700 ml-1 font-bold">AI-Powered Analysis</span>
                   </div>
                 </div>
               </div>
@@ -635,9 +635,9 @@ export default function AuthLanding() {
           <div className="bg-gray-50/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 max-w-2xl mx-auto">
             <p className="text-xs text-gray-600 leading-relaxed space-y-1">
               <span className="block font-bold text-gray-700">*Important Disclaimers:</span>
-              <span className="block">• <strong>Savings reported by users:</strong> Average savings of $8,500 and range of $2,000-$35,000+ are based on self-reported user outcomes. Individual results vary significantly based on bill complexity, provider response, and negotiation factors. No guarantee of specific savings amount.</span>
+              <span className="block">• <strong>Example outcomes:</strong> Figures of $8,500 average and $2,000-$35,000+ range represent illustrative examples based on case study analysis of medical billing scenarios. These are potential outcomes only. Individual results will vary significantly based on bill complexity, provider response, and negotiation factors. No guarantee of specific savings amount.</span>
               <span className="block">• <strong>Medical billing errors:</strong> Studies suggest medical bills frequently contain errors, though exact percentages vary by source and methodology. We recommend all patients review their bills carefully.</span>
-              <span className="block">• <strong>Educational platform:</strong> GoldRock Health provides educational information and AI-powered analysis tools. We are not a medical provider, law firm, or financial advisor. Results depend on individual circumstances.</span>
+              <span className="block">• <strong>Educational platform:</strong> GoldRock AI provides educational information and AI-powered analysis tools. We are not a medical provider, law firm, or financial advisor. Results depend on individual circumstances.</span>
             </p>
           </div>
 
@@ -650,7 +650,7 @@ export default function AuthLanding() {
           </p>
           
           <div className="flex items-center justify-center space-x-2 text-xs text-gray-500 font-medium">
-            <span>© 2025 GoldRock Health</span>
+            <span>© 2025 GoldRock AI</span>
             <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
             <span>We Help You Save</span>
           </div>

@@ -53,7 +53,7 @@ export class BiometricService {
   /**
    * Authenticate with biometrics
    */
-  async authenticate(reason: string = 'Authenticate to access GoldRock Health'): Promise<boolean> {
+  async authenticate(reason: string = 'Authenticate to access GoldRock AI'): Promise<boolean> {
     try {
       const available = await this.isAvailable();
       if (!available) {
@@ -91,7 +91,7 @@ export class BiometricService {
         publicKey: {
           challenge: this.generateChallenge(),
           rp: {
-            name: 'GoldRock Health',
+            name: 'GoldRock AI',
             id: window.location.hostname,
           },
           user: {
@@ -157,7 +157,7 @@ export class BiometricService {
       return false;
     }
 
-    return await this.authenticate('Unlock GoldRock Health');
+    return await this.authenticate('Unlock GoldRock AI');
   }
 }
 

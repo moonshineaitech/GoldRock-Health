@@ -40,10 +40,10 @@ export function PremiumPaywallOverlay({
         {savingsPotential && (
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
             <div className="text-emerald-700 font-semibold text-sm">
-              💰 Average user saves: {savingsPotential}
+              💰 Example outcomes: {savingsPotential}
             </div>
             <div className="text-xs text-emerald-600 mt-1">
-              Subscription pays for itself with first bill
+              Results vary by individual case
             </div>
           </div>
         )}
@@ -68,7 +68,7 @@ export function PremiumPaywallOverlay({
         
         {/* Help Text */}
         <p className="text-xs text-gray-500 max-w-xs mx-auto">
-          Get instant access to professional bill negotiation tools and save thousands on medical bills
+          Get instant access to professional bill negotiation tools and identify potential billing errors
         </p>
       </div>
     </motion.div>

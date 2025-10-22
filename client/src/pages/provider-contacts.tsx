@@ -826,7 +826,7 @@ export default function ProviderContacts() {
             <h3 className="font-semibold text-emerald-800 mb-1">100% Free Resource</h3>
             <p className="text-sm text-emerald-700 leading-relaxed">
               This comprehensive provider contact database is completely free for all users. 
-              Save thousands on medical bills by contacting the right people with proven scripts and templates.
+              Identify potential billing errors by contacting the right people with proven scripts and templates.
             </p>
           </div>
         </div>

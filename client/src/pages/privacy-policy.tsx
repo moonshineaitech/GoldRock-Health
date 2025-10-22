@@ -172,7 +172,7 @@ export default function PrivacyPolicy() {
               <li>Important account or billing updates occur</li>
             </ul>
             <p className="mb-4">
-              You can disable push notifications at any time through iOS Settings → Notifications → GoldRock Health.
+              You can disable push notifications at any time through iOS Settings → Notifications → GoldRock AI.
             </p>
 
             <h3 className="text-lg font-medium text-gray-900 mb-3">Biometric Authentication (Face ID/Touch ID)</h3>

@@ -51,7 +51,7 @@ export default function AiUsageAgreement() {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       toast({
         title: "Agreement Accepted",
-        description: "Thank you for accepting our AI usage terms. You can now access all features of GoldRock Health.",
+        description: "Thank you for accepting our AI usage terms. You can now access all features of GoldRock AI.",
       });
       setLocation("/");
     },
@@ -83,7 +83,7 @@ export default function AiUsageAgreement() {
             </h1>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Welcome to GoldRock Health! Please review our terms of service before getting started.
+            Welcome to GoldRock AI! Please review our terms of service before getting started.
             Most users just scroll through and click "Accept" - this is pretty standard stuff.
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function AiUsageAgreement() {
                   </h3>
                   
                   <p className="mb-4">
-                    GoldRock Health is a healthcare cost reduction platform that uses AI to help you save money on medical bills. 
+                    GoldRock AI is a healthcare cost reduction platform that uses AI to help you save money on medical bills. 
                     Pretty simple stuff - you upload your bills, we analyze them, and help you find ways to reduce costs.
                   </p>
                   
@@ -242,7 +242,7 @@ export default function AiUsageAgreement() {
                   </p>
 
                   <p className="mb-4">
-                    That's pretty much it! Thanks for using GoldRock Health.
+                    That's pretty much it! Thanks for using GoldRock AI.
                   </p>
                 </section>
 

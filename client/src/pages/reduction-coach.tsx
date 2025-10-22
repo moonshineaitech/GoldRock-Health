@@ -1684,9 +1684,9 @@ export default function ReductionCoach() {
         <div className="relative min-h-[600px]">
           <PremiumPaywallOverlay
             title="Personal Bill Reduction Coach"
-            description="Get 1-on-1 personalized guidance from billing experts with proven strategies that save thousands. This premium coaching system provides step-by-step guidance customized to your specific case."
+            description="Get 1-on-1 personalized guidance from billing experts. Example outcomes show potential savings. This premium coaching system provides step-by-step guidance customized to your specific case."
             featureName="Personal Coaching"
-            savingsPotential="$8,500+ average savings"
+            savingsPotential="$8,500+ example outcomes"
           />
         </div>
       </MobileLayout>

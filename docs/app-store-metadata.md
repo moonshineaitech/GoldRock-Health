@@ -1,8 +1,8 @@
-# GoldRock Health - App Store Metadata
+# GoldRock AI - App Store Metadata
 
 ## App Information
 
-**App Name:** GoldRock Health  
+**App Name:** GoldRock AI  
 **Subtitle:** AI Medical Bill Reduction  
 **Bundle ID:** com.eldestai.goldrockhealth  
 **SKU:** GOLDROCK-HEALTH-001  
@@ -16,11 +16,11 @@ Fight medical bills with AI
 
 ### Full Description (4000 characters max)
 
-**Save $2,000 - $35,000+ on Your Medical Bills with AI-Powered Analysis**
+**Example Potential: $2,000-$35,000+ on Your Medical Bills with AI-Powered Analysis**
 
-GoldRock Health is your AI fighter against unfair medical billing. Upload your medical bills, get instant AI analysis, and access expert strategies to reduce your healthcare costs by thousands of dollars.
+GoldRock AI is your AI fighter against unfair medical billing. Upload your medical bills, get instant AI analysis, and access expert strategies to reduce your healthcare costs by thousands of dollars.
 
-**Why GoldRock Health?**
+**Why GoldRock AI?**
 
 • **AI Bill Analysis:** Our advanced AI scans every line item, detecting overcharges, billing errors, and negotiation opportunities in seconds
 
@@ -65,9 +65,9 @@ GoldRock Health is your AI fighter against unfair medical billing. Upload your m
 
 **Our Track Record:**
 
-• Average user saves $8,200
+• Example outcomes show potential savings of $8,200
 • 94% find billing errors or overcharges
-• Users report 3x faster resolution
+• Example data shows 3x faster resolution
 • Trusted by 10,000+ Americans fighting unfair bills
 
 **Premium Features ($25/month or $299/year):**
@@ -92,9 +92,9 @@ This app provides educational information and billing analysis only. It is not a
 
 **Why We Built This:**
 
-We believe healthcare costs shouldn't bankrupt American families. GoldRock Health empowers you with the same AI tools and strategies used by professional medical billing advocates—putting the power back in your hands.
+We believe healthcare costs shouldn't bankrupt American families. GoldRock AI empowers you with the same AI tools and strategies used by professional medical billing advocates—putting the power back in your hands.
 
-Download GoldRock Health today and start fighting back against unfair medical bills.
+Download GoldRock AI today and start fighting back against unfair medical bills.
 
 ---
 
@@ -108,7 +108,7 @@ medical bills,healthcare costs,hospital bill,reduce medical debt,billing errors,
 
 **Version 1.0 - Initial Release**
 
-Welcome to GoldRock Health! 🎉
+Welcome to GoldRock AI! 🎉
 
 We're excited to help you fight unfair medical bills with the power of AI. This initial release includes:
 
@@ -132,9 +132,9 @@ We're excited to help you fight unfair medical bills with the power of AI. This 
 • Easy account deletion
 • Full data control
 
-We're committed to helping Americans save thousands on medical bills. Have feedback? Contact us at support@goldrockhealth.com
+We're committed to helping Americans identify potential savings on medical bills. Have feedback? Contact us at support@goldrock.ai
 
-Thank you for trusting GoldRock Health with your medical billing challenges!
+Thank you for trusting GoldRock AI with your medical billing challenges!
 
 ## Promotional Text (170 characters max)
 
@@ -142,19 +142,19 @@ Fight back against unfair medical bills! AI-powered analysis finds overcharges &
 
 ## Support URL
 
-https://goldrockhealth.com/support
+https://goldrock.ai/support
 
 ## Marketing URL
 
-https://goldrockhealth.com
+https://goldrock.ai
 
 ## Privacy Policy URL
 
-https://goldrockhealth.com/privacy-policy
+https://goldrock.ai/privacy-policy
 
 ## Terms of Service URL
 
-https://goldrockhealth.com/terms-of-service
+https://goldrock.ai/terms-of-service
 
 ## App Review Information
 
@@ -164,7 +164,7 @@ https://goldrockhealth.com/terms-of-service
 
 ### Notes for Reviewer
 
-Thank you for reviewing GoldRock Health!
+Thank you for reviewing GoldRock AI!
 
 **How to Test:**
 
@@ -205,7 +205,7 @@ Thank you for reviewing GoldRock Health!
 
 **Contact:**
 
-For review questions: support@goldrockhealth.com  
+For review questions: support@goldrock.ai  
 Emergency contact: +1 (555) 123-4567
 
 Thank you for your time!

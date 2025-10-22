@@ -104,7 +104,7 @@ export class ShareService {
   async shareBillAnalysis(billName: string, savings: number, summary: string): Promise<boolean> {
     return await this.share({
       title: `Bill Analysis - ${billName}`,
-      text: `I found $${savings.toFixed(2)} in potential savings on my ${billName}!\n\n${summary}\n\nAnalyzed with GoldRock Health`,
+      text: `I found $${savings.toFixed(2)} in potential savings on my ${billName}!\n\n${summary}\n\nAnalyzed with GoldRock AI`,
     });
   }
 
@@ -112,7 +112,7 @@ export class ShareService {
    * Share reduction strategies
    */
   async shareStrategies(billName: string, strategies: string[]): Promise<boolean> {
-    const text = `My Bill Reduction Strategies for ${billName}:\n\n${strategies.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nGet your own analysis at GoldRock Health`;
+    const text = `My Bill Reduction Strategies for ${billName}:\n\n${strategies.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nGet your own analysis at GoldRock AI`;
 
     return await this.share({
       title: `Reduction Strategies - ${billName}`,
@@ -125,9 +125,9 @@ export class ShareService {
    */
   async shareApp(): Promise<boolean> {
     return await this.share({
-      title: 'Fight Medical Bills with AI',
-      text: 'I\'m saving thousands on medical bills with GoldRock Health! Check it out:',
-      url: 'https://goldrockhealth.com',
+      title: 'Analyze Medical Bills with AI',
+      text: 'Check out GoldRock AI for medical bill analysis! Identify potential billing errors:',
+      url: 'https://goldrock.ai',
     });
   }
 

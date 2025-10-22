@@ -10,7 +10,7 @@ export default function Support() {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Contact Support</h1>
             <p className="text-gray-600">
-              Need help with GoldRock Health? We're here to assist you with any questions or issues.
+              Need help with GoldRock AI? We're here to assist you with any questions or issues.
             </p>
           </div>
 

@@ -44,7 +44,7 @@ export default function Landing() {
   }, []);
   
   return (
-    <MobileLayout title="GoldRock Health" showBottomNav={true}>
+    <MobileLayout title="GoldRock AI" showBottomNav={true}>
       {/* Hero Section - Pain Point & Massive Savings */}
       <motion.div 
         className="text-center py-8 px-4 relative overflow-hidden"
@@ -107,7 +107,7 @@ export default function Landing() {
             <span className="text-gray-900">Your Medical Bill</span>
           </h1>
           <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            By $2,000 - $35,000+ Instantly
+            Example Potential: $2,000 - $35,000+
           </h2>
         </motion.div>
         
@@ -131,9 +131,9 @@ export default function Landing() {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-2">
               <Crown className="h-5 w-5 text-emerald-600" />
-              <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
+              <span className="font-black text-emerald-700 text-lg">Example Potential: $8,500 Savings</span>
             </div>
-            <p className="text-sm text-emerald-600 font-semibold">AI finds billing errors worth thousands</p>
+            <p className="text-sm text-emerald-600 font-semibold">AI identifies potential billing errors</p>
           </div>
         </motion.div>
         
@@ -190,11 +190,11 @@ export default function Landing() {
           transition={{ delay: 1.4, duration: 0.6 }}
         >
           <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
-            Real Success Stories
+            Example Case Study Scenarios
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
           <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
-            Actual patients who saved thousands with our AI analysis
+            Common medical billing scenarios showing potential outcomes
           </p>
         </motion.div>
         
@@ -307,7 +307,7 @@ export default function Landing() {
             { 
               icon: Brain, 
               title: "AI Bill Analysis", 
-              desc: "Users report average savings of $2,000-$35,000+ through AI-powered overcharge detection", 
+              desc: "Example outcomes show potential savings of $2,000-$35,000+ through AI-powered overcharge detection", 
               highlight: "Results vary by individual case",
               color: "purple", 
               delay: 1.9
@@ -517,27 +517,27 @@ export default function Landing() {
               >
                 <Trophy className="h-6 w-6 text-amber-600" />
               </motion.div>
-              <h3 className="text-lg font-bold text-gray-900">Proven Results</h3>
+              <h3 className="text-lg font-bold text-gray-900">Example Outcomes</h3>
             </div>
             
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div className="text-center" data-testid="stat-users">
-                <div className="text-2xl font-black text-emerald-700">2,847</div>
-                <div className="text-xs text-gray-600 font-semibold">Bills Analyzed</div>
+                <div className="text-2xl font-black text-emerald-700">Sample</div>
+                <div className="text-xs text-gray-600 font-semibold">Case Studies</div>
               </div>
               <div className="text-center" data-testid="stat-savings">
-                <div className="text-2xl font-black text-blue-700">$24M</div>
-                <div className="text-xs text-gray-600 font-semibold">Total Saved</div>
+                <div className="text-2xl font-black text-blue-700">High</div>
+                <div className="text-xs text-gray-600 font-semibold">Potential Rate</div>
               </div>
               <div className="text-center" data-testid="stat-success">
-                <div className="text-2xl font-black text-purple-700">95%</div>
-                <div className="text-xs text-gray-600 font-semibold">Success Rate</div>
+                <div className="text-2xl font-black text-purple-700">$8.5K+</div>
+                <div className="text-xs text-gray-600 font-semibold">Avg Example</div>
               </div>
             </div>
             
             <div className="flex items-center justify-center space-x-1 text-sm text-gray-600">
               <Users className="h-4 w-4" />
-              <span className="font-medium">Trusted by thousands of patients nationwide</span>
+              <span className="font-medium">AI-powered medical billing analysis platform</span>
             </div>
           </div>
         </MobileCard>

@@ -392,7 +392,7 @@ export default function PortalAccessGuide() {
 
               <GuideStep
                 step={5}
-                title="Upload to GoldRock Health"
+                title="Upload to GoldRock AI"
                 description="Bring your bills to our AI analyzer"
                 isOpen={openStep === 5}
                 onToggle={() => handleStepToggle(5)}

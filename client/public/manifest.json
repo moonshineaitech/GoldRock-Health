@@ -1,6 +1,6 @@
 {
-  "name": "GoldRock Health - AI Medical Bill Analyzer",
-  "short_name": "GoldRock Health",
+  "name": "GoldRock AI - AI Medical Bill Analyzer",
+  "short_name": "GoldRock AI",
   "description": "AI-powered medical bill analysis to identify overcharges and reduce healthcare costs",
   "start_url": "/",
   "display": "standalone",
