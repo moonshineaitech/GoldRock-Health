@@ -631,6 +631,16 @@ export default function AuthLanding() {
             ))}
           </div>
 
+          {/* Disclaimers */}
+          <div className="bg-gray-50/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 max-w-2xl mx-auto">
+            <p className="text-xs text-gray-600 leading-relaxed space-y-1">
+              <span className="block font-bold text-gray-700">*Important Disclaimers:</span>
+              <span className="block">• <strong>Savings reported by users:</strong> Average savings of $8,500 and range of $2,000-$35,000+ are based on self-reported user outcomes. Individual results vary significantly based on bill complexity, provider response, and negotiation factors. No guarantee of specific savings amount.</span>
+              <span className="block">• <strong>Medical billing errors:</strong> Studies suggest medical bills frequently contain errors, though exact percentages vary by source and methodology. We recommend all patients review their bills carefully.</span>
+              <span className="block">• <strong>Educational platform:</strong> GoldRock Health provides educational information and AI-powered analysis tools. We are not a medical provider, law firm, or financial advisor. Results depend on individual circumstances.</span>
+            </p>
+          </div>
+
           {/* Legal */}
           <p className="text-xs text-gray-600 leading-relaxed">
             By continuing, you agree to our{" "}
