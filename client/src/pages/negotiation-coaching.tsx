@@ -758,7 +758,7 @@ export default function NegotiationCoaching() {
         <div className="relative">
           <PremiumPaywallOverlay
             title="Expert Negotiation Coaching"
-            description="Interactive coaching system with proven scripts, objection handlers, and step-by-step guidance for medical bill negotiations. Average user saves $15,000+ per bill."
+            description="Interactive coaching system with proven scripts, objection handlers, and step-by-step guidance for medical bill negotiations. Example outcomes show potential savings up to $15,000+ per bill."
             featureName="Negotiation Coaching"
             savingsPotential="$15,000+"
           />

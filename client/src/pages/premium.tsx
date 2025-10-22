@@ -321,7 +321,7 @@ const premiumFeatures = [
     icon: FileText,
     title: "Professional Dispute Arsenal",
     description: "Access 50+ proven letter templates that hospitals legally must respond to",
-    highlight: "95% success rate",
+    highlight: "Example results vary",
     category: "billing",
     href: "/dispute-arsenal"
   },
@@ -352,7 +352,7 @@ const subscriptionPlans = [
     savings: null,
     popular: false,
     features: [
-      "AI Bill Analysis (Avg. $8,500 saved per user)",
+      "AI Bill Analysis (Example outcomes: $8,500 potential)",
       "Expert negotiation coaching & proven scripts", 
       "Strategic timing guide for maximum success",
       "Billing code mastery & overcharge detection",
@@ -451,7 +451,7 @@ function LoginPrompt() {
               }}
               data-testid="text-savings-amount"
             >
-              Save $2,000 - $35,000+ Per Bill
+              Example Potential: $2,000 - $35,000+ Per Bill
             </motion.span>
           </motion.h2>
         </motion.div>
@@ -509,7 +509,7 @@ function LoginPrompt() {
                   <Crown className="h-6 w-6 text-emerald-600" />
                 </motion.div>
                 <span className="font-black text-emerald-700 text-xl" data-testid="text-average-savings">
-                  Average User Saves $8,500
+                  Example Outcomes: $8,500 Potential
                 </span>
               </motion.div>
               <motion.p 
@@ -1095,14 +1095,14 @@ function PremiumMarketing() {
                   >
                     <DollarSign className="h-5 w-5 text-emerald-600" />
                   </motion.div>
-                  <span className="font-black text-emerald-700 text-lg">Average User Saves $8,500</span>
+                  <span className="font-black text-emerald-700 text-lg">Example Outcomes: $8,500 Potential</span>
                 </motion.div>
                 <motion.p 
                   className="text-sm text-emerald-600 font-semibold"
                   animate={{ opacity: [0.7, 1, 0.7] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  Your subscription pays for itself instantly
+                  Results vary by individual case
                 </motion.p>
               </div>
             </motion.div>
@@ -1237,7 +1237,7 @@ function PremiumMarketing() {
         >
           Our AI analyzes every charge, finds errors and overcharges, then automatically fights to reduce your medical bills. 
           <span className="block mt-2 text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-            Average Reduction: $2,000 - $35,000+
+            Example Potential: $2,000 - $35,000+
           </span>
         </motion.p>
         
@@ -1311,7 +1311,7 @@ function PremiumMarketing() {
                   <ShieldCheck className="h-8 w-8 text-emerald-600" />
                 </motion.div>
                 <span className="font-black text-emerald-700 text-2xl" data-testid="text-average-savings">
-                  We've Saved Clients $8,500 on Average
+                  Example Outcomes: $8,500 Potential
                 </span>
               </motion.div>
               <motion.p 
@@ -1358,9 +1358,9 @@ function PremiumMarketing() {
         >
           <div className="flex items-center justify-center space-x-2 mb-2">
             <TrendingDown className="h-5 w-5 text-emerald-600" />
-            <span className="font-black text-emerald-700 text-lg">ROI: 4,250% Average Return</span>
+            <span className="font-black text-emerald-700 text-lg">Example Scenario: 4,250% Potential ROI</span>
           </div>
-          <p className="text-sm text-emerald-600 font-semibold">Your subscription pays for itself with first bill analysis</p>
+          <p className="text-sm text-emerald-600 font-semibold">Results vary by individual case</p>
         </motion.div>
         
         <motion.div
@@ -1530,7 +1530,7 @@ function PremiumMarketing() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Star className="h-3 w-3" />
-                      <span>95% Success Rate</span>
+                      <span>Results Vary</span>
                     </div>
                   </div>
                 </motion.div>
@@ -1793,8 +1793,8 @@ function PremiumMarketing() {
           {[
             { icon: ShieldCheck, text: "256-bit Encryption", color: "emerald" },
             { icon: Lock, text: "HIPAA Compliant", color: "blue" },
-            { icon: CheckCircle, text: "95% Win Rate", color: "purple" },
-            { icon: Users, text: "10,000+ Users", color: "orange" }
+            { icon: CheckCircle, text: "Example Outcomes", color: "purple" },
+            { icon: Users, text: "Pre-Launch Platform", color: "orange" }
           ].map((item, idx) => {
             const IconComponent = item.icon;
             return (
@@ -1865,9 +1865,9 @@ function PremiumMarketing() {
             >
               <TrendingDown className="h-6 w-6 text-emerald-600" />
             </motion.div>
-            <span className="font-black text-emerald-700 text-xl">$8,500+ Average Savings</span>
+            <span className="font-black text-emerald-700 text-xl">$8,500+ Example Outcomes</span>
           </div>
-          <p className="text-sm text-emerald-600 font-semibold">ROI: 4,250% • Pays for itself instantly</p>
+          <p className="text-sm text-emerald-600 font-semibold">Results vary by individual case</p>
         </motion.div>
 
         {/* Premium Intelligence Databases */}
@@ -1923,7 +1923,7 @@ function PremiumMarketing() {
                     icon: Target,
                     title: "Denial Reversal Intelligence", 
                     savings: "$75K+ Avg",
-                    desc: "92% success rate reversal strategies and appeal templates",
+                    desc: "Example-based reversal strategies and appeal templates",
                     color: "red",
                     delay: 3.1
                   }
