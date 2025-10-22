@@ -55,7 +55,8 @@ import {
   LineChart,
   Wallet,
   ShieldCheck,
-  Radar
+  Radar,
+  MessageCircle
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import { Link } from "wouter";
@@ -98,213 +99,64 @@ interface BillAnalysisData {
   analysisConfidence: number;
   categoryBreakdown: { [key: string]: number };
   recommendations: string[];
+  negotiationStrategy?: {
+    approach: string;
+    talkingPoints: string[];
+    targetReduction: string;
+    fallbackOptions: string[];
+  };
+  financialAssistance?: {
+    eligible: boolean;
+    programs: string[];
+    estimatedDiscount: string;
+  };
+  insiderTactics?: string[];
 }
 
-// Mock analysis function for demonstration
-const analyzeBill = (billData: any): BillAnalysisData => {
-  const totalAmount = parseFloat(billData.totalAmount) || 0;
-  const patientResponsibility = parseFloat(billData.patientResponsibility) || totalAmount;
-  
-  // Generate realistic line items based on bill type
-  const generateLineItems = (): BillLineItem[] => {
-    const items: BillLineItem[] = [];
-    const billType = billData.serviceType || 'emergency';
-    
-    if (billType === 'emergency') {
-      items.push(
-        {
-          id: '1',
-          description: 'Emergency Department Visit - Level 5',
-          amount: 2500,
-          code: '99285',
-          category: 'surgery',
-          riskLevel: 'high',
-          issuePotential: ['Level 5 coding without critical condition documentation']
-        },
-        {
-          id: '2', 
-          description: 'Room and Board - 2 days',
-          amount: 1800,
-          category: 'room',
-          quantity: 2,
-          unitPrice: 900,
-          riskLevel: 'medium',
-          issuePotential: ['Room charges during surgical procedure time']
-        },
-        {
-          id: '3',
-          description: 'IV Fluid Administration - 1000mL Normal Saline',
-          amount: 150,
-          category: 'supplies',
-          riskLevel: 'high',
-          issuePotential: ['500% markup over wholesale cost']
-        }
-      );
-    } else if (billType === 'surgery') {
-      items.push(
-        {
-          id: '1',
-          description: 'Operating Room Time - 4 hours',
-          amount: 8000,
-          category: 'surgery',
-          quantity: 4,
-          unitPrice: 2000,
-          riskLevel: 'medium',
-          issuePotential: ['OR time may include setup/cleanup periods']
-        },
-        {
-          id: '2',
-          description: 'Surgical Supplies Package',
-          amount: 2500,
-          category: 'supplies',
-          riskLevel: 'high',
-          issuePotential: ['Bundled supplies often include unused items']
-        }
-      );
-    }
-    
-    return items;
-  };
-
-  const lineItems = generateLineItems();
-  
-  // Generate analysis issues based on line items
-  const generateIssues = (): AnalysisResult[] => {
-    const issues: AnalysisResult[] = [];
-    
-    // Check for high-risk line items
-    lineItems.forEach(item => {
-      if (item.riskLevel === 'high') {
-        if (item.category === 'supplies' && item.amount > 100) {
-          issues.push({
-            id: `supply-overcharge-${item.id}`,
-            title: 'Medical Supply Overcharge',
-            description: `${item.description} appears significantly overpriced`,
-            category: 'overcharge',
-            riskLevel: 'high',
-            potentialSavings: item.amount * 0.6, // 60% potential reduction
-            confidence: 85,
-            priority: 1,
-            actionRequired: 'Request itemized supply breakdown and wholesale pricing',
-            evidence: [
-              'Price exceeds typical hospital markup of 200-300%',
-              'Similar supplies available at 40% lower cost',
-              'No quantity justification provided'
-            ],
-            nextSteps: [
-              'Contact billing department for detailed supply breakdown',
-              'Request wholesale cost documentation',
-              'Compare with Medicare reimbursement rates'
-            ]
-          });
-        }
-        
-        if (item.category === 'surgery' && item.description.includes('Level 5')) {
-          issues.push({
-            id: `coding-error-${item.id}`,
-            title: 'Potential Upcoding - Level 5 ED Visit',
-            description: 'Highest level emergency coding may not be justified',
-            category: 'coding_error',
-            riskLevel: 'high',
-            potentialSavings: 800,
-            confidence: 75,
-            priority: 1,
-            actionRequired: 'Verify medical documentation supports Level 5 coding',
-            evidence: [
-              'Level 5 requires life-threatening condition',
-              'Must have comprehensive exam documentation',
-              'High complexity medical decision making required'
-            ],
-            nextSteps: [
-              'Request complete medical records',
-              'Compare documentation against Level 5 criteria',
-              'Challenge if criteria not met'
-            ]
-          });
-        }
-      }
-      
-      if (item.category === 'room' && item.quantity && item.quantity > 1) {
-        issues.push({
-          id: `room-overlap-${item.id}`,
-          title: 'Room Billing During Surgery',
-          description: 'Room charges may overlap with operating room time',
-          category: 'duplicate',
-          riskLevel: 'medium',
-          potentialSavings: (item.unitPrice || 0) * 0.5,
-          confidence: 70,
-          priority: 2,
-          actionRequired: 'Verify room charges don\'t overlap with OR time',
-          evidence: [
-              'Room charges during surgical procedure periods',
-              'Duplicate facility fees possible',
-              'Timeline analysis needed'
-            ],
-            nextSteps: [
-              'Request detailed timeline of all charges',
-              'Identify overlapping facility fees',
-              'Challenge duplicate room charges'
-            ]
-        });
-      }
+// AI-powered bill analysis function using real AI endpoint
+const analyzeBillWithAI = async (billData: any): Promise<BillAnalysisData> => {
+  try {
+    const response = await fetch('/api/analyze-bill-ai', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        totalAmount: billData.totalAmount,
+        patientResponsibility: billData.patientResponsibility,
+        providerName: billData.providerName,
+        serviceDate: billData.serviceDate,
+        serviceType: billData.serviceType,
+        billDescription: billData.billDescription || ''
+      }),
     });
 
-    // Add general bill analysis issues
-    if (totalAmount > 10000) {
-      issues.push({
-        id: 'large-bill-review',
-        title: 'Large Bill Comprehensive Review',
-        description: 'Bills over $10,000 typically contain 3-8 billing errors',
-        category: 'overcharge',
-        riskLevel: 'high',
-        potentialSavings: totalAmount * 0.25, // 25% potential reduction
-        confidence: 90,
-        priority: 1,
-        actionRequired: 'Comprehensive line-by-line analysis required',
-        evidence: [
-          '80% of large bills contain correctable errors',
-          'Average error value: $2,000-$35,000',
-          'Professional review recommended'
-        ],
-        nextSteps: [
-          'Request complete itemized bill',
-          'Cross-reference with medical records',
-          'Consider professional bill review'
-        ]
-      });
+    if (!response.ok) {
+      throw new Error('Failed to analyze bill');
     }
 
-    return issues;
-  };
+    const result = await response.json();
+    const aiAnalysis = result.analysis;
 
-  const issues = generateIssues();
-  const potentialSavings = issues.reduce((total, issue) => total + issue.potentialSavings, 0);
-  
-  // Calculate category breakdown
-  const categoryBreakdown: { [key: string]: number } = {};
-  lineItems.forEach(item => {
-    categoryBreakdown[item.category] = (categoryBreakdown[item.category] || 0) + item.amount;
-  });
-
-  const riskScore = Math.min(100, Math.round((issues.filter(i => i.riskLevel === 'high').length * 40) + 
-    (issues.filter(i => i.riskLevel === 'medium').length * 20)));
-
-  return {
-    totalAmount,
-    patientResponsibility,
-    lineItems,
-    issues,
-    potentialSavings,
-    riskScore,
-    analysisConfidence: 85,
-    categoryBreakdown,
-    recommendations: [
-      'Request complete itemized bill with CPT codes',
-      'Compare charges against regional pricing averages',
-      'Apply for charity care if eligible',
-      'Negotiate payment plan with identified errors'
-    ]
-  };
+    // Transform AI response to match BillAnalysisData interface
+    return {
+      totalAmount: parseFloat(billData.totalAmount) || 0,
+      patientResponsibility: parseFloat(billData.patientResponsibility) || 0,
+      lineItems: [], // AI focuses on issues rather than line items
+      issues: aiAnalysis.issues || [],
+      potentialSavings: aiAnalysis.potentialSavings || 0,
+      riskScore: aiAnalysis.riskScore || 0,
+      analysisConfidence: aiAnalysis.analysisConfidence || 85,
+      categoryBreakdown: {},
+      recommendations: aiAnalysis.recommendations || [],
+      negotiationStrategy: aiAnalysis.negotiationStrategy,
+      financialAssistance: aiAnalysis.financialAssistance,
+      insiderTactics: aiAnalysis.insiderTactics
+    };
+  } catch (error) {
+    console.error('Error calling AI analysis:', error);
+    throw error;
+  }
 };
 
 // Upload component
@@ -315,44 +167,48 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
     patientResponsibility: '',
     providerName: '',
     serviceDate: '',
-    serviceType: 'emergency'
+    serviceType: 'emergency',
+    billDescription: ''
   });
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (file: File) => {
-    setUploading(true);
+    // For now, show message that OCR is coming soon and guide to manual entry
+    toast({
+      title: "📸 Bill Uploaded",
+      description: "OCR coming soon! For now, please use manual entry below to analyze your bill with AI.",
+    });
     
-    // Simulate file processing
+    // Scroll to manual entry section
     setTimeout(() => {
-      const mockExtractedData = {
-        totalAmount: '15750.00',
-        patientResponsibility: '3150.00',
-        providerName: 'Central City Hospital',
-        serviceDate: '2024-01-15',
-        serviceType: 'emergency'
-      };
-      
-      setBillData(mockExtractedData);
-      const analysis = analyzeBill(mockExtractedData);
-      onBillAnalyzed(analysis);
-      setUploading(false);
-      
-      toast({
-        title: "Bill Analysis Complete",
-        description: `Found ${analysis.issues.length} potential issues worth $${analysis.potentialSavings.toFixed(0)} in savings.`
-      });
-    }, 2000);
+      const manualEntry = document.getElementById('totalAmount');
+      manualEntry?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      manualEntry?.focus();
+    }, 500);
   };
 
-  const handleManualAnalysis = () => {
-    const analysis = analyzeBill(billData);
-    onBillAnalyzed(analysis);
+  const handleManualAnalysis = async () => {
+    setUploading(true);
     
-    toast({
-      title: "Analysis Complete",
-      description: `Found ${analysis.issues.length} potential issues to review.`
-    });
+    try {
+      // Call real AI analysis endpoint
+      const analysis = await analyzeBillWithAI(billData);
+      onBillAnalyzed(analysis);
+      
+      toast({
+        title: "✨ AI Analysis Complete",
+        description: `Found ${analysis.issues.length} potential issues to review.`
+      });
+    } catch (error) {
+      toast({
+        title: "Analysis Error",
+        description: "Failed to analyze bill. Please check your inputs and try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -511,13 +367,44 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
             </div>
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="billDescription">Bill Details (Optional)</Label>
+            <Textarea
+              id="billDescription"
+              placeholder="Describe what's on your bill: specific procedures, medications, supplies, etc. More details = better AI analysis!"
+              value={billData.billDescription}
+              onChange={(e) => setBillData(prev => ({ ...prev, billDescription: e.target.value }))}
+              className="min-h-[80px]"
+              data-testid="input-bill-description"
+            />
+            <p className="text-xs text-gray-500">
+              💡 Pro tip: Include line items, CPT codes, or any charges that seem high
+            </p>
+          </div>
+
           <Button 
             onClick={handleManualAnalysis}
-            className="w-full bg-green-600 hover:bg-green-700"
+            disabled={uploading || !billData.totalAmount}
+            className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50"
             data-testid="button-analyze-manual"
           >
-            <Brain className="h-4 w-4 mr-2" />
-            Analyze Bill for Free
+            {uploading ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="mr-2"
+                >
+                  <Brain className="h-4 w-4" />
+                </motion.div>
+                AI Analyzing...
+              </>
+            ) : (
+              <>
+                <Brain className="h-4 w-4 mr-2" />
+                Analyze Bill with AI
+              </>
+            )}
           </Button>
         </CardContent>
       </Card>
@@ -698,6 +585,150 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Negotiation Strategy - AI Powered */}
+      {analysis.negotiationStrategy && (
+        <Card className="border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-amber-600" />
+              AI Negotiation Strategy
+            </CardTitle>
+            <CardDescription>
+              From "Never Pay the First Bill" by Marshall Allen
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                <Target className="h-4 w-4 text-amber-600" />
+                Recommended Approach
+              </h4>
+              <p className="text-sm text-gray-700">{analysis.negotiationStrategy.approach}</p>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold text-sm mb-2">Key Talking Points:</h4>
+              <ul className="space-y-1.5">
+                {analysis.negotiationStrategy.talkingPoints.map((point, index) => (
+                  <li key={index} className="flex items-start gap-2 text-sm">
+                    <MessageCircle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-amber-100 p-3 rounded-lg">
+              <div className="flex items-center gap-2 mb-1">
+                <TrendingDown className="h-5 w-5 text-amber-700" />
+                <span className="font-bold text-amber-900">Target Reduction: {analysis.negotiationStrategy.targetReduction}</span>
+              </div>
+              <p className="text-xs text-amber-800">Based on industry benchmarks and Medicare rates</p>
+            </div>
+
+            {analysis.negotiationStrategy.fallbackOptions && analysis.negotiationStrategy.fallbackOptions.length > 0 && (
+              <div>
+                <h4 className="font-semibold text-sm mb-2">Fallback Options:</h4>
+                <div className="space-y-1.5">
+                  {analysis.negotiationStrategy.fallbackOptions.map((option, index) => (
+                    <div key={index} className="flex items-start gap-2 text-sm bg-white p-2 rounded border border-amber-200">
+                      <ArrowRight className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                      <span>{option}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Financial Assistance - AI Powered */}
+      {analysis.financialAssistance && (
+        <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-green-600" />
+              Financial Assistance Programs
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className={`p-3 rounded-lg ${analysis.financialAssistance.eligible ? 'bg-green-100' : 'bg-gray-100'}`}>
+              <div className="flex items-center gap-2 mb-1">
+                {analysis.financialAssistance.eligible ? (
+                  <>
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <span className="font-bold text-green-900">Likely Eligible for Assistance</span>
+                  </>
+                ) : (
+                  <>
+                    <Info className="h-5 w-5 text-gray-600" />
+                    <span className="font-bold text-gray-900">Check Eligibility</span>
+                  </>
+                )}
+              </div>
+              <p className="text-sm text-gray-700">
+                Estimated discount: {analysis.financialAssistance.estimatedDiscount}
+              </p>
+            </div>
+
+            {analysis.financialAssistance.programs && analysis.financialAssistance.programs.length > 0 && (
+              <div>
+                <h4 className="font-semibold text-sm mb-2">Available Programs:</h4>
+                <div className="space-y-2">
+                  {analysis.financialAssistance.programs.map((program, index) => (
+                    <div key={index} className="flex items-start gap-2 text-sm bg-white p-3 rounded border border-green-200">
+                      <Heart className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span>{program}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <Alert>
+              <Lightbulb className="h-4 w-4" />
+              <AlertDescription>
+                Most hospitals must provide financial assistance. Apply before paying - it's your legal right!
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Insider Tactics - AI Powered */}
+      {analysis.insiderTactics && analysis.insiderTactics.length > 0 && (
+        <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-indigo-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-purple-600" />
+              Insider Tactics
+            </CardTitle>
+            <CardDescription>
+              Industry secrets revealed by "Never Pay the First Bill"
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {analysis.insiderTactics.map((tactic, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-start gap-3 bg-white p-3 rounded-lg border border-purple-200"
+                >
+                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Eye className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <span className="text-sm">{tactic}</span>
+                </motion.div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Premium Upgrade CTA */}
       {!isSubscribed && (

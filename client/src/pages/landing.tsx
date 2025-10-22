@@ -291,9 +291,9 @@ export default function Landing() {
         {/* Quick Actions */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-w-3xl mx-auto">
           {[
-            { icon: Zap, label: "Analyze Bill", path: "/bill-ai", color: "from-purple-600 to-indigo-600", bgColor: "from-purple-50 to-indigo-50" },
+            { icon: Zap, label: "Quick Analyzer", path: "/quick-analyzer", color: "from-blue-600 to-indigo-600", bgColor: "from-blue-50 to-indigo-50" },
             { icon: FileText, label: "Templates", path: "/templates", color: "from-emerald-600 to-teal-600", bgColor: "from-emerald-50 to-teal-50" },
-            { icon: Target, label: "Guides", path: "/resources-hub", color: "from-blue-600 to-cyan-600", bgColor: "from-blue-50 to-cyan-50" },
+            { icon: Target, label: "Guides", path: "/resources-hub", color: "from-cyan-600 to-sky-600", bgColor: "from-cyan-50 to-sky-50" },
             { icon: Brain, label: "Industry Secrets", path: "/industry-insights", color: "from-amber-600 to-orange-600", bgColor: "from-amber-50 to-orange-50" },
             { icon: Shield, label: "Denials Intel", path: "/insurance-denials", color: "from-red-600 to-pink-600", bgColor: "from-red-50 to-pink-50" },
             { icon: Award, label: "Case Studies", path: "/bill-best-practices", color: "from-indigo-600 to-purple-600", bgColor: "from-indigo-50 to-purple-50" }

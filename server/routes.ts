@@ -3813,6 +3813,128 @@ Make it clinically accurate and educationally valuable.`;
     }
   });
 
+  // AI-powered medical bill analysis endpoint
+  // Integrates lessons from "Never Pay the First Bill" by Marshall Allen
+  app.post('/api/analyze-bill-ai', express.json(), async (req, res) => {
+    try {
+      const { 
+        totalAmount, 
+        patientResponsibility, 
+        providerName, 
+        serviceDate, 
+        serviceType,
+        billDescription 
+      } = req.body;
+
+      console.log('Analyzing bill with AI:', { totalAmount, serviceType });
+
+      // Create comprehensive prompt based on "Never Pay the First Bill" principles
+      const analysisPrompt = `You are a medical billing expert trained in the strategies from "Never Pay the First Bill" by Marshall Allen. Analyze this medical bill and provide a comprehensive assessment.
+
+BILL DETAILS:
+- Total Amount: $${totalAmount}
+- Patient Responsibility: $${patientResponsibility}
+- Provider: ${providerName}
+- Service Date: ${serviceDate}
+- Type of Care: ${serviceType}
+- Additional Details: ${billDescription || 'Not provided'}
+
+KEY PRINCIPLES FROM "NEVER PAY THE FIRST BILL":
+1. Hospital charges are often inflated 2x-10x actual costs
+2. Chargemaster prices are arbitrary and negotiable
+3. Common billing errors: duplicate charges, unbundling, upcoding, phantom charges
+4. Insurance "allowed amounts" reveal true negotiated rates
+5. Financial assistance programs available for most patients
+6. Timing matters - negotiate BEFORE paying
+7. Always request itemized bills with CPT codes
+8. Compare prices against Medicare rates and fair health pricing databases
+
+ANALYZE AND PROVIDE JSON OUTPUT WITH:
+{
+  "potentialSavings": <number>,
+  "riskScore": <0-100>,
+  "analysisConfidence": <0-100>,
+  "issues": [
+    {
+      "id": "<unique-id>",
+      "title": "<issue-title>",
+      "description": "<detailed-description>",
+      "category": "duplicate|overcharge|unbundling|coding_error|phantom|timing",
+      "riskLevel": "low|medium|high",
+      "potentialSavings": <number>,
+      "confidence": <0-100>,
+      "priority": <1-3>,
+      "actionRequired": "<specific-action>",
+      "evidence": ["<evidence-1>", "<evidence-2>"],
+      "nextSteps": ["<step-1>", "<step-2>", "<step-3>"]
+    }
+  ],
+  "recommendations": [
+    "<recommendation-1>",
+    "<recommendation-2>",
+    "<recommendation-3>"
+  ],
+  "negotiationStrategy": {
+    "approach": "<negotiation-approach>",
+    "talkingPoints": ["<point-1>", "<point-2>"],
+    "targetReduction": "<percentage>",
+    "fallbackOptions": ["<option-1>", "<option-2>"]
+  },
+  "financialAssistance": {
+    "eligible": <boolean>,
+    "programs": ["<program-1>", "<program-2>"],
+    "estimatedDiscount": "<percentage-range>"
+  },
+  "insiderTactics": [
+    "<tactic-1-from-book>",
+    "<tactic-2-from-book>"
+  ]
+}
+
+Focus on actionable insights and specific dollar amounts. Be realistic but advocate strongly for the patient.`;
+
+      // Call OpenAI API using the openAI service
+      // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+      const completion = await openAIService.openai.chat.completions.create({
+        model: "gpt-5",
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a medical billing expert specializing in reducing patient costs using strategies from "Never Pay the First Bill" by Marshall Allen. Provide detailed, actionable analysis with specific savings opportunities.'
+          },
+          {
+            role: 'user',
+            content: analysisPrompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_completion_tokens: 8192
+      });
+
+      const analysisResult = JSON.parse(completion.choices[0].message.content || '{}');
+
+      console.log('AI analysis complete:', {
+        potentialSavings: analysisResult.potentialSavings,
+        issuesFound: analysisResult.issues?.length || 0
+      });
+
+      // Return the analysis
+      res.json({
+        success: true,
+        analysis: analysisResult,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('Error in AI bill analysis:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Failed to analyze bill with AI', 
+        error: (error as Error).message 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

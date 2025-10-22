@@ -113,9 +113,18 @@ const resources: Resource[] = [
 
 const quickActions: Resource[] = [
   {
-    title: "Analyze My Bill",
-    description: "Upload your bill and get instant AI analysis",
+    title: "Quick Bill Analyzer",
+    description: "AI-powered analysis with insights from 'Never Pay the First Bill'",
     icon: Zap,
+    path: "/quick-analyzer",
+    color: "from-blue-600 to-indigo-600",
+    bgColor: "from-blue-50 to-indigo-50",
+    tag: "AI Powered"
+  },
+  {
+    title: "Full Bill Analysis",
+    description: "Upload your bill and get comprehensive AI analysis",
+    icon: FileText,
     path: "/bill-ai",
     color: "from-purple-600 to-indigo-600",
     bgColor: "from-purple-50 to-indigo-50"
