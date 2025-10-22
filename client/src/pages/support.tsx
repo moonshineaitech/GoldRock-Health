@@ -115,7 +115,7 @@ export default function Support() {
           <div className="mt-8 p-4 bg-gray-50 rounded-lg">
             <h3 className="text-sm font-semibold text-gray-900 mb-2">Business Information</h3>
             <p className="text-sm text-gray-600">
-              <strong>Company:</strong> Eldest AI LLC dba GoldRock Health<br />
+              <strong>Company:</strong> Eldest AI LLC dba GoldRock AI<br />
               <strong>Location:</strong> Colorado, United States<br />
               <strong>Email:</strong> <a href="mailto:contact@goldrock.ai" className="text-cyan-600 hover:text-cyan-700">contact@goldrock.ai</a>
             </p>
