@@ -96,7 +96,7 @@ interface AIMessage {
   createdAt: Date;
 }
 
-// Elite iOS Suggestion Chip Component with Premium Animation
+// Ultra-Bold 2025 Modern Suggestion Chip Component
 const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }: {
   icon: any;
   label: string;
@@ -107,25 +107,25 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
   
   const variants = {
     default: {
-      bg: "bg-white/80 backdrop-blur-2xl",
-      border: "border-blue-200/60",
-      text: "text-blue-700",
-      icon: "text-blue-600",
-      hover: "hover:bg-blue-50/90 hover:border-blue-300/80 hover:shadow-xl hover:shadow-blue-500/20"
+      bg: "bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600",
+      text: "text-white",
+      icon: "text-white",
+      shadow: "shadow-2xl shadow-blue-500/50",
+      glow: "hover:shadow-blue-500/70"
     },
     premium: {
-      bg: "bg-gradient-to-br from-purple-50/80 via-pink-50/80 to-amber-50/80 backdrop-blur-2xl",
-      border: "border-purple-300/60",
-      text: "text-purple-800",
-      icon: "text-purple-600",
-      hover: "hover:from-purple-100/90 hover:via-pink-100/90 hover:to-amber-100/90 hover:border-purple-400/80 hover:shadow-xl hover:shadow-purple-500/30"
+      bg: "bg-gradient-to-br from-purple-600 via-pink-600 to-amber-500",
+      text: "text-white",
+      icon: "text-white",
+      shadow: "shadow-2xl shadow-purple-500/50",
+      glow: "hover:shadow-purple-500/70"
     },
     action: {
-      bg: "bg-gradient-to-br from-teal-50/80 via-cyan-50/80 to-blue-50/80 backdrop-blur-2xl",
-      border: "border-teal-300/60",
-      text: "text-teal-800",
-      icon: "text-teal-600",
-      hover: "hover:from-teal-100/90 hover:via-cyan-100/90 hover:to-blue-100/90 hover:border-teal-400/80 hover:shadow-xl hover:shadow-teal-500/30"
+      bg: "bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-500",
+      text: "text-white",
+      icon: "text-white",
+      shadow: "shadow-2xl shadow-teal-500/50",
+      glow: "hover:shadow-teal-500/70"
     }
   };
 
@@ -133,30 +133,69 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
 
   return (
     <motion.button
-      whileHover={{ scale: 1.08, y: -4 }}
-      whileTap={{ scale: 0.92 }}
+      whileHover={{ scale: 1.12, y: -6 }}
+      whileTap={{ scale: 0.88 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       onClick={onClick}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-      className={`flex items-center gap-2.5 px-5 py-3 rounded-full border-2 shadow-lg transition-all duration-300 relative overflow-hidden ${currentVariant.bg} ${currentVariant.border} ${currentVariant.hover}`}
+      transition={{ type: "spring", stiffness: 500, damping: 20 }}
+      className={`relative flex items-center gap-3 px-6 py-3.5 rounded-full overflow-hidden ${currentVariant.bg} ${currentVariant.shadow} ${currentVariant.glow} transition-all duration-300`}
+      data-testid={`chip-${label.toLowerCase().replace(/\s+/g, '-')}`}
     >
-      {/* Premium glow effect */}
+      {/* Shimmer effect */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isHovered ? 0.4 : 0 }}
-        className="absolute inset-0 bg-gradient-to-r from-white/50 via-white/30 to-transparent"
+        initial={{ x: "-100%" }}
+        animate={{ x: isHovered ? "200%" : "-100%" }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
       />
       
+      {/* Pulsing glow */}
       <motion.div
-        animate={{ rotate: isHovered ? 360 : 0 }}
-        transition={{ duration: 0.6, type: "spring" }}
+        animate={{ opacity: isHovered ? [0.5, 0.8, 0.5] : 0 }}
+        transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0 }}
+        className="absolute inset-0 bg-white/20 blur-xl"
+      />
+      
+      {/* Icon with pulse */}
+      <motion.div
+        animate={{ 
+          scale: isHovered ? [1, 1.2, 1] : 1,
+          rotate: isHovered ? [0, 5, -5, 0] : 0
+        }}
+        transition={{ duration: 0.5, type: "spring" }}
+        className="relative z-10"
       >
-        <Icon className={`h-5 w-5 flex-shrink-0 ${currentVariant.icon}`} />
+        <Icon className={`h-5 w-5 flex-shrink-0 ${currentVariant.icon} drop-shadow-lg`} />
       </motion.div>
-      <span className={`text-sm font-semibold whitespace-nowrap relative z-10 ${currentVariant.text}`}>
+      
+      <span className={`text-base font-black whitespace-nowrap relative z-10 ${currentVariant.text} drop-shadow-md tracking-wide`}>
         {label}
       </span>
+      
+      {/* Particle effect on hover */}
+      {isHovered && (
+        <>
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ 
+                opacity: [0, 1, 0],
+                scale: [0, 1.5, 0],
+                x: [0, (Math.random() - 0.5) * 40],
+                y: [0, (Math.random() - 0.5) * 40]
+              }}
+              transition={{ duration: 0.8, delay: i * 0.1 }}
+              className="absolute w-1.5 h-1.5 bg-white rounded-full"
+              style={{
+                left: '50%',
+                top: '50%',
+              }}
+            />
+          ))}
+        </>
+      )}
     </motion.button>
   );
 };
@@ -1284,6 +1323,7 @@ export default function BillAI() {
   // Premium Tools Modal States (moved from prominent display to optional modals)
   const [showPremiumAutomationModal, setShowPremiumAutomationModal] = useState(false);
   const [showPremiumTemplatesModal, setShowPremiumTemplatesModal] = useState(false);
+  const [showTipsModal, setShowTipsModal] = useState(false);
   
   // Comprehensive Workflow State Management
   const [selectedWorkflow, setSelectedWorkflow] = useState<BillWorkflow | null>(null);
@@ -2275,7 +2315,12 @@ What would you like to do first? I'm here to help you find every possible saving
                   variant="default"
                   onClick={() => {
                     const itemizedWorkflow = BILL_AI_WORKFLOWS.find(w => w.id === 'itemized-bill-request');
-                    if (itemizedWorkflow) initializeWorkflowConversation(itemizedWorkflow, true);
+                    if (itemizedWorkflow) {
+                      // Auto-generate and send the itemized bill request prompt
+                      const hospitalName = intakeState.provider || "[Hospital Name]";
+                      const billDate = intakeState.date || "recently";
+                      sendMessage(`I need help requesting an itemized medical bill. The bill is from ${hospitalName} ${billDate}. Can you generate a professional request letter for me?`);
+                    }
                   }}
                 />
               )}
@@ -2291,7 +2336,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 icon={Info}
                 label="Show tips"
                 variant="default"
-                onClick={() => setShowHelpSidebar(!showHelpSidebar)}
+                onClick={() => setShowTipsModal(true)}
               />
             </motion.div>
           )}
@@ -2485,6 +2530,204 @@ What would you like to do first? I'm here to help you find every possible saving
           isVisible={showHelpSidebar && conversationStarted}
           onClose={() => setShowHelpSidebar(false)}
         />
+
+        {/* Ultra-Modern 2025 Tips Modal */}
+        <AnimatePresence>
+          {showTipsModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowTipsModal(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
+              data-testid="tips-modal-overlay"
+            >
+              <motion.div
+                initial={{ scale: 0.9, y: 50, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.95, y: 30, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-white via-blue-50/50 to-teal-50/50 backdrop-blur-3xl rounded-[32px] shadow-2xl border border-white/60"
+                data-testid="tips-modal-content"
+              >
+                {/* Premium gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-teal-500/5 pointer-events-none" />
+                
+                {/* Animated particles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  {[...Array(8)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1 h-1 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full"
+                      animate={{
+                        x: [Math.random() * 400, Math.random() * 400],
+                        y: [Math.random() * 400, Math.random() * 400],
+                        opacity: [0, 1, 0],
+                      }}
+                      transition={{
+                        duration: 3 + Math.random() * 2,
+                        repeat: Infinity,
+                        delay: Math.random() * 2,
+                      }}
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Header */}
+                <div className="relative z-10 bg-gradient-to-r from-blue-600 via-teal-600 to-cyan-600 p-8">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", delay: 0.2 }}
+                        className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-xl rounded-3xl mb-4 shadow-lg"
+                      >
+                        <Sparkles className="w-8 h-8 text-white" />
+                      </motion.div>
+                      <h2 className="text-4xl font-black text-white mb-2 leading-tight">
+                        Pro Tips
+                      </h2>
+                      <p className="text-blue-100 text-lg font-medium">
+                        Expert strategies to maximize your savings
+                      </p>
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.1, rotate: 90 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setShowTipsModal(false)}
+                      className="w-12 h-12 flex items-center justify-center bg-white/20 backdrop-blur-xl rounded-2xl hover:bg-white/30 transition-colors"
+                      data-testid="button-close-tips"
+                    >
+                      <XCircle className="w-6 h-6 text-white" />
+                    </motion.button>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10 p-8 overflow-y-auto max-h-[60vh]">
+                  <div className="space-y-6">
+                    {/* Contextual Tip */}
+                    <motion.div
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-3xl p-6 shadow-lg"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                          <Target className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">
+                            Request Itemized Bills First
+                          </h3>
+                          <p className="text-gray-700 text-base leading-relaxed">
+                            Always request an itemized bill before negotiating. Hospitals charge{" "}
+                            <strong className="text-amber-700">200-500% markups</strong> on medications and{" "}
+                            <strong className="text-amber-700">300-800% on supplies</strong>. An itemized bill reveals these overcharges.
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Quick Action Tips */}
+                    <motion.div
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="space-y-4"
+                    >
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
+                        Quick Actions
+                      </h3>
+                      
+                      {[
+                        {
+                          icon: FileText,
+                          title: "Use the 'Request Itemized Bill' button",
+                          description: "Automatically generates a professional, legally-compliant request letter",
+                          color: "from-blue-500 to-indigo-600"
+                        },
+                        {
+                          icon: CheckCircle,
+                          title: "Check for duplicate charges",
+                          description: "Look for repeated line items with identical dates and amounts",
+                          color: "from-teal-500 to-cyan-600"
+                        },
+                        {
+                          icon: AlertTriangle,
+                          title: "Question 'miscellaneous' fees",
+                          description: "These vague charges often hide billing errors and can be disputed",
+                          color: "from-purple-500 to-pink-600"
+                        },
+                        {
+                          icon: DollarSign,
+                          title: "Negotiate before paying",
+                          description: "Hospitals often accept 30-50% less, especially for uninsured patients",
+                          color: "from-emerald-500 to-green-600"
+                        }
+                      ].map((tip, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ x: -50, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.3 + index * 0.1 }}
+                          whileHover={{ scale: 1.02, x: 8 }}
+                          className="bg-white/80 backdrop-blur-xl border-2 border-gray-100 rounded-2xl p-5 hover:shadow-xl hover:border-blue-200 transition-all cursor-pointer group"
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className={`w-12 h-12 bg-gradient-to-br ${tip.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform`}>
+                              <tip.icon className="w-6 h-6 text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="text-lg font-bold text-gray-900 mb-1">
+                                {tip.title}
+                              </h4>
+                              <p className="text-gray-600 text-sm leading-relaxed">
+                                {tip.description}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+
+                    {/* CTA */}
+                    <motion.div
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.7 }}
+                      className="bg-gradient-to-br from-blue-600 via-teal-600 to-cyan-600 rounded-3xl p-6 shadow-2xl"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-2xl font-black text-white mb-2">
+                            Ready to Save?
+                          </h3>
+                          <p className="text-blue-100 font-medium">
+                            Use the buttons below to get started
+                          </p>
+                        </div>
+                        <motion.div
+                          animate={{ scale: [1, 1.1, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <ArrowRight className="w-10 h-10 text-white" />
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </MobileLayout>
   );
