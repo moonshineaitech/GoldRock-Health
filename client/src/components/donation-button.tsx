@@ -21,18 +21,32 @@ export function DonationButton({ variant = "default", className = "" }: Donation
     setIsProcessing(true);
     
     try {
-      const response = await apiRequest("POST", "/api/create-donation-session", { amount }) as { sessionId: string; url: string };
+      const response = await fetch('/api/create-donation-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount }),
+      });
 
-      if (response.url) {
-        window.location.href = response.url;
+      if (!response.ok) {
+        throw new Error('Failed to create donation session');
+      }
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
       }
     } catch (error) {
+      console.error('Donation error:', error);
       toast({
         title: "Error",
         description: "Unable to process donation. Please try again.",
         variant: "destructive"
       });
-    } finally {
       setIsProcessing(false);
     }
   };
