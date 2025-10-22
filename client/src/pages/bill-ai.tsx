@@ -147,14 +147,14 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
         initial={{ x: "-100%" }}
         animate={{ x: isHovered ? "200%" : "-100%" }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
       />
       
       {/* Pulsing glow */}
       <motion.div
         animate={{ opacity: isHovered ? [0.5, 0.8, 0.5] : 0 }}
         transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0 }}
-        className="absolute inset-0 bg-white/20 blur-xl"
+        className="absolute inset-0 bg-white/20 blur-xl pointer-events-none"
       />
       
       {/* Icon with pulse */}
@@ -187,7 +187,7 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
                 y: [0, (Math.random() - 0.5) * 40]
               }}
               transition={{ duration: 0.8, delay: i * 0.1 }}
-              className="absolute w-1.5 h-1.5 bg-white rounded-full"
+              className="absolute w-1.5 h-1.5 bg-white rounded-full pointer-events-none"
               style={{
                 left: '50%',
                 top: '50%',
