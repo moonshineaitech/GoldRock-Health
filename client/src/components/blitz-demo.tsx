@@ -107,7 +107,7 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
            billDetails.provider === SAMPLE_BILL_DATA.provider;
   };
 
-  // Run analysis - use cached results for sample data, real API for custom data
+  // Run analysis - use cached results for sample data, redirect to full platform for custom
   const runAnalysis = async () => {
     if (!billDetails.amount || !billDetails.provider) {
       toast({
@@ -144,45 +144,16 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
           duration: 5000
         });
       } else {
-        // Custom data - call real API (requires login)
-        const formData = new FormData();
-        formData.append('metadata', JSON.stringify(billDetails));
-
-        const response = await fetch('/api/upload-bills', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Analysis failed');
-        }
-
-        const data = await response.json();
-        const amount = parseFloat(billDetails.amount.replace(/[$,]/g, '')) || 0;
-        const potentialSavings = Math.round(amount * 0.70);
-
-        const results = {
-          totalBilled: amount,
-          potentialSavings: potentialSavings,
-          aiAnalysis: data.analysis || data.extractedText || '',
-          overcharges: [
-            { item: "Emergency Room Fee", billed: Math.round(amount * 0.36), fair: Math.round(amount * 0.10), savings: Math.round(amount * 0.26) },
-            { item: "Lab Work", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) },
-            { item: "X-Ray Imaging", billed: Math.round(amount * 0.19), fair: Math.round(amount * 0.03), savings: Math.round(amount * 0.16) }
-          ],
-          industrySecrets: SAMPLE_ANALYSIS_RESULTS.industrySecrets,
-          nextSteps: SAMPLE_ANALYSIS_RESULTS.nextSteps
-        };
-
-        setAnalysisResults(results);
+        // Custom data - show message to use full platform
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        clearInterval(stepInterval);
         setIsAnalyzing(false);
-        setCurrentStep(2);
-
+        setCurrentStep(0);
+        
         toast({
-          title: "Real AI Analysis Complete! 🎉",
-          description: `Found $${potentialSavings.toLocaleString()} in potential savings`,
-          duration: 5000
+          title: "Sign Up for Custom Analysis",
+          description: "Create a free account to analyze your own bills with AI + upload photos",
+          duration: 6000,
         });
       }
 
@@ -190,15 +161,9 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
       console.error('Analysis error:', error);
       setIsAnalyzing(false);
       setCurrentStep(0);
-      
-      const errorMessage = error instanceof Error ? error.message : "Please try again";
-      const isUnauthorized = errorMessage.toLowerCase().includes('unauthorized');
-      
       toast({
-        title: "Analysis Failed",
-        description: isUnauthorized 
-          ? "Sign up to analyze your custom bills with AI" 
-          : errorMessage,
+        title: "Demo Error",
+        description: "Please try the sample data or sign up for custom analysis",
         variant: "destructive",
       });
     } finally {
@@ -528,8 +493,8 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
         
         <p className="text-[10px] text-gray-500 text-center">
           {isSampleData() 
-            ? "Using sample data • Works without login" 
-            : "Custom data requires login for AI analysis"}
+            ? "✓ Using sample data • Works without login" 
+            : "⚠️ Sign up to analyze custom bills with AI + upload photos"}
         </p>
       </div>
     </MobileCard>
