@@ -96,6 +96,211 @@ interface AIMessage {
   createdAt: Date;
 }
 
+// Smart Suggestion Chip Component
+const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }: {
+  icon: any;
+  label: string;
+  onClick: () => void;
+  variant?: "default" | "premium" | "action";
+}) => {
+  const variants = {
+    default: "bg-white/90 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300",
+    premium: "bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 text-amber-800 hover:from-amber-100 hover:to-orange-100",
+    action: "bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-teal-100"
+  };
+
+  return (
+    <motion.button
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={onClick}
+      className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl border backdrop-blur-sm shadow-sm transition-all duration-200 ${variants[variant]}`}
+    >
+      <Icon className="h-4 w-4 flex-shrink-0" />
+      <span className="text-sm font-medium whitespace-nowrap">{label}</span>
+    </motion.button>
+  );
+};
+
+// Floating Help Sidebar Component
+const FloatingHelpSidebar = ({ workflow, isVisible, onClose }: {
+  workflow: BillWorkflow | null;
+  isVisible: boolean;
+  onClose: () => void;
+}) => {
+  if (!isVisible) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      className="fixed right-4 top-24 bottom-24 w-80 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden z-40 hidden lg:flex flex-col"
+    >
+      {/* Header */}
+      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 border-b border-emerald-100">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3">
+            {workflow?.icon && <workflow.icon className="h-6 w-6 text-emerald-600" />}
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Quick Guide</h3>
+              <p className="text-xs text-gray-600">{workflow?.title || "General Tips"}</p>
+            </div>
+          </div>
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="sm"
+            className="w-8 h-8 p-0 rounded-xl hover:bg-emerald-100"
+          >
+            <XCircle className="h-4 w-4 text-gray-500" />
+          </Button>
+        </div>
+        <Badge className="bg-emerald-600 text-white text-xs">
+          <Target className="h-3 w-3 mr-1" />
+          {workflow?.savingsPotential || "$2K-$35K Savings"}
+        </Badge>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        {/* Best Practices */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-emerald-600" />
+            Best Practices
+          </h4>
+          <ul className="space-y-2 text-sm text-gray-700">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <span>Upload clear, full-page bill images for best results</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <span>Provide exact amounts and dates from your bill</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <span>Mention specific charges that seem excessive</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <span>Request itemized bill if you haven't received one</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Example Questions */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <MessageCircle className="h-4 w-4 text-blue-600" />
+            Example Questions
+          </h4>
+          <div className="space-y-2">
+            <div className="bg-blue-50 rounded-xl p-3 text-sm text-gray-700">
+              "My ER bill shows a Level 5 charge for $2,800. Is this correct for a minor injury?"
+            </div>
+            <div className="bg-purple-50 rounded-xl p-3 text-sm text-gray-700">
+              "I see duplicate charges for the same medication on different dates. Can you help?"
+            </div>
+            <div className="bg-amber-50 rounded-xl p-3 text-sm text-gray-700">
+              "How do I request an itemized bill from the hospital billing department?"
+            </div>
+          </div>
+        </div>
+
+        {/* Success Stories */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <Star className="h-4 w-4 text-amber-500" />
+            Success Stories
+          </h4>
+          <div className="space-y-2">
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-3 border border-emerald-200">
+              <p className="text-xs font-semibold text-emerald-800 mb-1">$34,000 → $11,900</p>
+              <p className="text-xs text-gray-700">Surgery bill reduced 65% through error detection</p>
+            </div>
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-3 border border-blue-200">
+              <p className="text-xs font-semibold text-blue-800 mb-1">$12,500 → $0</p>
+              <p className="text-xs text-gray-700">ER bill eliminated via charity care qualification</p>
+            </div>
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-3 border border-purple-200">
+              <p className="text-xs font-semibold text-purple-800 mb-1">$8,200 → $2,400</p>
+              <p className="text-xs text-gray-700">Duplicate charges removed, 71% savings</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Strategic Timing */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-orange-600" />
+            Strategic Timing
+          </h4>
+          <div className="bg-orange-50 rounded-xl p-3 border border-orange-200 text-sm text-gray-700 space-y-2">
+            <p><strong>Best:</strong> Days 30-60 after bill (peak pressure)</p>
+            <p><strong>Great:</strong> Last week of month (quotas)</p>
+            <p><strong>Excellent:</strong> Q4 Oct-Dec (fiscal year-end)</p>
+            <p className="text-xs text-orange-700 mt-2">💡 Hospitals have internal collection targets</p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Animated Progress Visualization Component
+const SavingsProgressVisualization = ({ intakeState, estimatedSavings }: {
+  intakeState: IntakeState;
+  estimatedSavings: number;
+}) => {
+  const completionPercentage = Object.keys(intakeState).length * 16.67; // 6 fields = 100%
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 rounded-2xl p-4 border border-emerald-200 mb-4"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          >
+            <Target className="h-5 w-5 text-emerald-600" />
+          </motion.div>
+          <span className="text-sm font-semibold text-gray-900">Savings Analysis Progress</span>
+        </div>
+        <Badge className="bg-emerald-600 text-white">
+          {Math.round(completionPercentage)}%
+        </Badge>
+      </div>
+      
+      <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden mb-3">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${completionPercentage}%` }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="absolute h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 rounded-full"
+        />
+      </div>
+
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-gray-600">Estimated potential:</span>
+        <motion.span
+          initial={{ scale: 1 }}
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="text-lg font-bold text-emerald-600"
+        >
+          ${estimatedSavings.toLocaleString()}+
+        </motion.span>
+      </div>
+    </motion.div>
+  );
+};
+
 interface IntakeState {
   amount?: string;
   provider?: string;
@@ -1025,6 +1230,10 @@ export default function BillAI() {
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [showOptionalIntakePopup, setShowOptionalIntakePopup] = useState(false);
   
+  // New UI Enhancement States
+  const [showHelpSidebar, setShowHelpSidebar] = useState(true);
+  const [estimatedSavings, setEstimatedSavings] = useState(12000);
+  
   // Premium Insight Database States
   const [showHospitalBillsDatabase, setShowHospitalBillsDatabase] = useState(false);
   const [showInsuranceClaimsDatabase, setShowInsuranceClaimsDatabase] = useState(false);
@@ -1696,7 +1905,15 @@ What would you like to do first? I'm here to help you find every possible saving
 
         {/* Chat Messages Area - iOS Style */}
         <div className="flex-1 overflow-y-auto bg-gray-50/30 px-4 pt-4 lg:px-8 lg:py-6">
-          <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8">
+          <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8 lg:max-w-4xl lg:mx-auto">
+            
+            {/* Savings Progress Visualization */}
+            {conversationStarted && intakeState.amount && (
+              <SavingsProgressVisualization
+                intakeState={intakeState}
+                estimatedSavings={estimatedSavings}
+              />
+            )}
             
             {/* Welcome State with Enhanced Call-to-Action */}
             {localMessages.length === 0 && !conversationStarted && showWorkflowSelection && (
@@ -1948,6 +2165,68 @@ What would you like to do first? I'm here to help you find every possible saving
             </motion.div>
           )}
           
+          {/* Smart Suggestion Chips */}
+          {conversationStarted && localMessages.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 flex flex-wrap gap-2 justify-center"
+            >
+              {!intakeState.amount && (
+                <SmartSuggestionChip
+                  icon={DollarSign}
+                  label="Share bill amount"
+                  variant="action"
+                  onClick={() => {
+                    sendMessage("I need help with my medical bill. Let me provide the details.");
+                    setShowOptionalIntakePopup(true);
+                  }}
+                />
+              )}
+              {intakeState.amount && !intakeState.provider && (
+                <SmartSuggestionChip
+                  icon={Building2}
+                  label="Add hospital name"
+                  variant="action"
+                  onClick={() => sendMessage("The bill is from [hospital name]. Can you help analyze it?")}
+                />
+              )}
+              {intakeState.amount && intakeState.provider && (
+                <SmartSuggestionChip
+                  icon={AlertTriangle}
+                  label="Find errors"
+                  variant="default"
+                  onClick={() => sendMessage("Please analyze my bill for common errors, overcharges, and potential savings opportunities.")}
+                />
+              )}
+              {localMessages.length > 2 && (
+                <SmartSuggestionChip
+                  icon={FileText}
+                  label="Request itemized bill"
+                  variant="default"
+                  onClick={() => {
+                    const itemizedWorkflow = BILL_AI_WORKFLOWS.find(w => w.id === 'itemized-bill-request');
+                    if (itemizedWorkflow) initializeWorkflowConversation(itemizedWorkflow, true);
+                  }}
+                />
+              )}
+              {!isSubscribed && (
+                <SmartSuggestionChip
+                  icon={Crown}
+                  label="Unlock Premium Tools"
+                  variant="premium"
+                  onClick={() => window.location.href = '/premium'}
+                />
+              )}
+              <SmartSuggestionChip
+                icon={Info}
+                label="Show tips"
+                variant="default"
+                onClick={() => setShowHelpSidebar(!showHelpSidebar)}
+              />
+            </motion.div>
+          )}
+
           <div className="flex items-center space-x-3">
             <Button
               variant="ghost"
@@ -2129,6 +2408,13 @@ What would you like to do first? I'm here to help you find every possible saving
           onClose={() => setShowOptionalIntakePopup(false)}
           onSubmit={handleOptionalIntakeSubmit}
           onFileUpload={handleFileUpload}
+        />
+
+        {/* Floating Help Sidebar */}
+        <FloatingHelpSidebar
+          workflow={selectedWorkflow}
+          isVisible={showHelpSidebar && conversationStarted}
+          onClose={() => setShowHelpSidebar(false)}
         />
       </div>
     </MobileLayout>
