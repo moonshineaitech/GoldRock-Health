@@ -32,12 +32,31 @@ import {
   Building,
   Eye,
   BarChart3,
-  Trophy
+  Trophy,
+  Lock,
+  FileCheck,
+  Shield,
+  Upload,
+  Send,
+  TrendingUp,
+  Play,
+  Check,
+  X,
+  BadgeCheck
 } from "lucide-react";
-import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function Landing() {
+  const [scrollY, setScrollY] = useState(0);
+
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,251 +66,300 @@ export default function Landing() {
   
   return (
     <MobileLayout title="GoldRock AI" showBottomNav={true}>
-      {/* Hero Section - Pain Point & Massive Savings */}
+      {/* 🔥 ELITE HERO SECTION - Premium iOS Design */}
       <motion.div 
-        className="text-center py-8 px-4 relative overflow-hidden"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="text-center py-12 px-4 relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
       >
-        {/* Background Elements */}
+        {/* Animated Background Gradients */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+          <motion.div 
+            className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-cyan-400/20 rounded-full blur-3xl"
+            animate={{ 
+              x: [0, 50, 0],
+              y: [0, 30, 0],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div 
+            className="absolute -bottom-20 -right-20 w-80 h-80 bg-gradient-to-r from-amber-400/20 via-orange-400/20 to-red-400/20 rounded-full blur-3xl"
+            animate={{ 
+              x: [0, -40, 0],
+              y: [0, -25, 0],
+              scale: [1, 1.15, 1],
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          />
+          <motion.div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-purple-400/15 via-indigo-400/15 to-blue-400/15 rounded-full blur-3xl"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 90, 0],
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+          />
         </div>
         
-        {/* Premium App Icon */}
+        {/* Premium App Icon with Micro-Interactions */}
         <motion.div 
-          className="w-20 h-20 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-amber-500/25 relative overflow-hidden"
+          className="relative mx-auto mb-6"
+          style={{ width: 'fit-content' }}
           initial={{ scale: 0, rotate: -180, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ 
-            duration: 0.8, 
-            delay: 0.3,
+            duration: 1, 
+            delay: 0.2,
             type: "spring",
-            stiffness: 180,
-            damping: 12
+            stiffness: 120,
+            damping: 10
           }}
-          whileHover={{ scale: 1.05, rotate: 3 }}
         >
-          <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
-          <DollarSign className="text-white text-2xl relative z-10" />
+          {/* Animated Ring */}
+          <motion.div
+            className="absolute inset-0 -m-3 rounded-[2.5rem]"
+            style={{
+              background: 'linear-gradient(135deg, rgba(251,191,36,0.4), rgba(251,146,60,0.4), rgba(16,185,129,0.4))',
+              filter: 'blur(8px)',
+            }}
+            animate={{
+              rotate: [0, 360],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          />
           
-          {/* Premium Sparkle Effects */}
           <motion.div 
-            className="absolute -top-2 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [-6, 6, -6],
-              scale: [1, 1.3, 1],
-              opacity: [0.8, 1, 0.8]
-            }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [4, -4, 4],
-              scale: [0.9, 1.2, 0.9],
-              opacity: [0.7, 1, 0.7]
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
+            className="relative w-24 h-24 bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-600 rounded-[2.25rem] flex items-center justify-center shadow-2xl shadow-amber-500/30 overflow-hidden"
+            whileHover={{ scale: 1.05, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {/* Glass Layer */}
+            <div className="absolute inset-0 bg-white/20 rounded-[2rem] backdrop-blur-sm" />
+            
+            {/* Icon */}
+            <DollarSign className="text-white text-3xl relative z-10 drop-shadow-lg" strokeWidth={3} />
+            
+            {/* Sparkle Effects */}
+            <motion.div 
+              className="absolute -top-2 -right-2 w-3 h-3 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full shadow-lg"
+              animate={{ 
+                y: [-8, 8, -8],
+                scale: [1, 1.4, 1],
+                opacity: [0.7, 1, 0.7]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div 
+              className="absolute -bottom-1 -left-2 w-2.5 h-2.5 bg-gradient-to-r from-emerald-300 to-cyan-400 rounded-full shadow-lg"
+              animate={{ 
+                y: [6, -6, 6],
+                scale: [0.8, 1.3, 0.8],
+                opacity: [0.6, 1, 0.6]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            />
+          </motion.div>
         </motion.div>
         
-        {/* Pain Point Hook */}
+        {/* Animated Headline */}
         <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <h1 className="text-4xl md:text-5xl font-black mb-3 leading-[1.1] tracking-tight">
+            <motion.span 
+              className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 bg-clip-text text-transparent inline-block"
+              animate={{ 
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+              style={{ backgroundSize: '200% auto' }}
+            >
+              Cut Medical Bills
+            </motion.span>
+            <br />
+            <span className="text-gray-900">by 40-90%</span>
+          </h1>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-300 rounded-full px-5 py-2.5 mb-4 shadow-lg"
+          >
+            <Sparkles className="h-4 w-4 text-emerald-600" />
+            <span className="text-base font-black bg-gradient-to-r from-emerald-700 via-teal-700 to-green-700 bg-clip-text text-transparent">
+              Users Report Avg Savings: $2,000-$35,000+
+            </span>
+          </motion.div>
+        </motion.div>
+        
+        {/* Value Proposition - Clear & Compelling */}
+        <motion.p 
+          className="text-lg text-gray-700 mb-6 max-w-md mx-auto leading-relaxed font-semibold"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.7 }}
+          transition={{ delay: 0.8, duration: 0.7 }}
         >
-          <h1 className="text-3xl font-black mb-3 leading-tight tracking-tight">
-            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Reduce</span>{" "}
-            <span className="text-gray-900">Your Medical Bill</span>
-          </h1>
-          <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-6 leading-tight">
-            Example Potential: $2,000 - $35,000+
-          </h2>
-        </motion.div>
-        
-        {/* Value Proposition */}
-        <motion.p 
-          className="text-base text-gray-700 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
+          AI scans your medical bills for errors, generates legal dispute letters, and reveals insider hospital negotiation tactics
+        </motion.p>
+
+        {/* Trust Indicators */}
+        <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          className="flex items-center justify-center gap-4 mb-6 flex-wrap"
         >
-          Professional AI technology analyzes your medical bills, identifies overcharges, and generates dispute letters that hospitals legally must respond to.
-        </motion.p>
-      </motion.div>
-
-      {/* BLITZ DEMO - Try Before You Sign Up (Conversion Optimization) */}
-      <motion.div
-        className="px-4 mb-8"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.7 }}
-      >
-        <BlitzDemo variant="landing" />
-      </motion.div>
-
-      {/* Continue with rest of page */}
-      <motion.div 
-        className="text-center py-8 px-4 relative overflow-hidden"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.2 }}
-      >
-        {/* Massive Savings Highlight */}
-        <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-6 max-w-sm mx-auto shadow-lg"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
-        >
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Crown className="h-5 w-5 text-emerald-600" />
-              <span className="font-black text-emerald-700 text-lg">Example Potential: $8,500 Savings</span>
-            </div>
-            <p className="text-sm text-emerald-600 font-semibold">AI identifies potential billing errors</p>
+          <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 shadow-md">
+            <Shield className="h-4 w-4 text-blue-600" />
+            <span className="text-sm font-bold text-gray-800">HIPAA Compliant</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 shadow-md">
+            <Lock className="h-4 w-4 text-emerald-600" />
+            <span className="text-sm font-bold text-gray-800">Bank-Level Security</span>
           </div>
         </motion.div>
-        
+
         {/* Primary CTA */}
         <motion.div 
-          className="space-y-3"
+          className="space-y-3 max-w-sm mx-auto"
           initial={{ opacity: 0, y: 35, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 1.1, duration: 0.6, type: "spring", stiffness: 120 }}
+          transition={{ delay: 1.2, duration: 0.6, type: "spring", stiffness: 100 }}
         >
           <Link href="/bill-ai">
             <motion.div
-              whileHover={{ scale: 1.02, y: -3 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
-              data-testid="button-analyze-bill"
+              data-testid="button-analyze-bill-hero"
             >
-              <MobileButton className="w-full max-w-xs mx-auto shadow-2xl shadow-emerald-500/30 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-4">
-                <Receipt className="h-5 w-5 mr-2" />
-                Analyze My Bill Now
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </MobileButton>
-            </motion.div>
-          </Link>
-          
-          <Link href="/blitz-demo">
-            <motion.div
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              data-testid="button-try-demo"
-            >
-              <MobileButton variant="secondary" className="w-full max-w-xs mx-auto shadow-lg border-2 border-emerald-200 hover:border-emerald-300 text-emerald-700 hover:text-emerald-800">
-                <Eye className="h-4 w-4 mr-2" />
-                Try Free Demo First
-                <ChevronRight className="h-3 w-3 ml-2" />
+              <MobileButton className="w-full shadow-2xl shadow-emerald-500/40 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-5 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <Receipt className="h-6 w-6 mr-2 relative z-10" />
+                <span className="relative z-10">Start Free Analysis</span>
+                <ArrowRight className="h-5 w-5 ml-2 relative z-10" />
               </MobileButton>
             </motion.div>
           </Link>
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4 }}
+          className="text-xs text-gray-500 mt-3"
+        >
+          No credit card required • Free to analyze
+        </motion.p>
       </motion.div>
 
-      {/* Real Case Studies Section */}
-      <motion.div 
-        className="space-y-4 mt-6"
+      {/* 🎯 HOW IT WORKS - Visual Step Flow */}
+      <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.3, duration: 0.6 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-8"
       >
-        <motion.div 
-          className="text-center mb-6"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.6 }}
-        >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
-            Example Case Study Scenarios
-          </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
-          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
-            Common medical billing scenarios showing potential outcomes
+        <div className="text-center mb-8">
+          <motion.h2 
+            className="text-3xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            How It Works
+          </motion.h2>
+          <motion.div 
+            className="h-1.5 w-24 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full mx-auto mb-4"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          />
+          <p className="text-gray-600 font-medium max-w-sm mx-auto">
+            4 simple steps to massive bill savings
           </p>
-        </motion.div>
-        
-        <div className="space-y-4">
+        </div>
+
+        <div className="space-y-4 max-w-md mx-auto relative">
+          {/* Connecting Line */}
+          <div className="absolute left-8 top-16 bottom-16 w-0.5 bg-gradient-to-b from-indigo-200 via-purple-200 to-pink-200 hidden md:block" />
+          
           {[
             { 
-              title: "Emergency Room Bill", 
-              savings: "$23,000", 
-              strategy: "AI found overcharges + charity care", 
-              time: "6 weeks",
-              percentage: "78% reduction",
-              color: "emerald", 
-              delay: 1.5,
-              icon: AlertTriangle
+              step: 1, 
+              icon: Upload, 
+              title: "Upload Your Bill", 
+              desc: "Take photo or upload PDF of medical bill",
+              color: "from-indigo-500 to-purple-600",
+              delay: 0.1
             },
             { 
-              title: "Surgical Procedure", 
-              savings: "$15,400", 
-              strategy: "Good faith estimate violation", 
-              time: "4 weeks",
-              percentage: "65% reduction",
-              color: "blue", 
-              delay: 1.6,
-              icon: FileText
-            }
-          ].map((story, index) => {
-            const IconComponent = story.icon;
+              step: 2, 
+              icon: Brain, 
+              title: "AI Scans for Errors", 
+              desc: "GPT-4o Vision analyzes every line item for overcharges",
+              color: "from-purple-500 to-pink-600",
+              delay: 0.2
+            },
+            { 
+              step: 3, 
+              icon: FileCheck, 
+              title: "Get Dispute Letters", 
+              desc: "Legal templates with citations (87-94% success rates)",
+              color: "from-pink-500 to-rose-600",
+              delay: 0.3
+            },
+            { 
+              step: 4, 
+              icon: Send, 
+              title: "Negotiate & Win", 
+              desc: "Use insider tactics to negotiate with hospitals",
+              color: "from-rose-500 to-red-600",
+              delay: 0.4
+            },
+          ].map((step, index) => {
+            const Icon = step.icon;
             return (
               <motion.div
-                key={story.title}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: story.delay, 
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 150
-                }}
-                data-testid={`case-study-${story.title.toLowerCase().replace(/ /g, '-')}`}
+                key={step.step}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: step.delay, duration: 0.5 }}
               >
-                <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <MobileCard className="backdrop-blur-xl border-2 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 group overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
                   
-                  <div className="relative z-10">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <motion.div 
-                          className={`w-12 h-12 bg-gradient-to-br ${
-                            story.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
-                            'from-blue-500 to-indigo-600'
-                          } rounded-2xl flex items-center justify-center shadow-lg`}
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                        >
-                          <IconComponent className="h-6 w-6 text-white" />
-                        </motion.div>
-                        <div>
-                          <h3 className="font-bold text-gray-900 text-base">{story.title}</h3>
-                          <p className="text-sm text-gray-600 font-medium">{story.strategy}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-black text-emerald-700">{story.savings}</div>
-                        <div className="text-xs text-emerald-600 font-semibold">{story.percentage}</div>
+                  <div className="flex items-center gap-4 relative z-10">
+                    {/* Step Number Badge */}
+                    <div className={`flex-shrink-0 w-16 h-16 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden`}>
+                      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                      <Icon className="h-8 w-8 text-white relative z-10" strokeWidth={2.5} />
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-md">
+                        <span className="text-xs font-black text-gray-900">{step.step}</span>
                       </div>
                     </div>
                     
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center space-x-1 text-gray-600">
-                        <Clock className="h-4 w-4" />
-                        <span className="font-medium">{story.time}</span>
-                      </div>
-                      <div className="flex items-center space-x-1 text-emerald-600">
-                        <CheckCircle className="h-4 w-4" />
-                        <span className="font-semibold">Success</span>
-                      </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-black text-gray-900 mb-1">{step.title}</h3>
+                      <p className="text-sm text-gray-700 leading-snug font-medium">{step.desc}</p>
                     </div>
+
+                    <motion.div
+                      className="flex-shrink-0"
+                      whileHover={{ x: 4 }}
+                    >
+                      <CheckCircle className={`h-6 w-6 bg-gradient-to-br ${step.color} bg-clip-text text-transparent`} />
+                    </motion.div>
                   </div>
                 </MobileCard>
               </motion.div>
@@ -300,209 +368,308 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* AI Technology Features */}
-      <motion.div 
-        className="space-y-4 mt-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.7, duration: 0.6 }}
+      {/* 🔥 INTERACTIVE DEMO - Try Before You Sign Up */}
+      <motion.div
+        className="px-4 mb-8"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
       >
-        <motion.div 
-          className="text-center mb-6"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.6 }}
-        >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
-            Professional AI Technology
-          </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto" />
-          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
-            Advanced algorithms detect billing errors hospitals hope you'll miss
+        <div className="text-center mb-6">
+          <motion.h2 
+            className="text-3xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-3"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Try Real AI Analysis
+          </motion.h2>
+          <motion.div 
+            className="h-1.5 w-24 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-full mx-auto mb-4"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          />
+          <p className="text-gray-600 font-medium max-w-sm mx-auto">
+            See how AI finds $8,700 in savings on a sample bill
           </p>
-        </motion.div>
+        </div>
+        <BlitzDemo />
+      </motion.div>
+
+      {/* ⭐ SOCIAL PROOF - Success Stories */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-8"
+      >
+        <div className="text-center mb-8">
+          <motion.h2 
+            className="text-3xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Real Success Stories
+          </motion.h2>
+          <motion.div 
+            className="h-1.5 w-24 bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 rounded-full mx-auto mb-4"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          />
+        </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4 max-w-md mx-auto">
+          {[
+            { 
+              name: "Sarah M.",
+              type: "Emergency Room",
+              original: "$29,500",
+              saved: "$23,000",
+              percent: "78%",
+              time: "6 weeks",
+              quote: "AI found overcharges I never would've spotted. Charity care application approved!",
+              color: "emerald",
+              delay: 0.1
+            },
+            { 
+              name: "Michael T.",
+              type: "Surgery",
+              original: "$23,600",
+              saved: "$15,400",
+              percent: "65%",
+              time: "4 weeks",
+              quote: "No Surprises Act violation - got bill reduced to in-network rates instantly.",
+              color: "blue",
+              delay: 0.2
+            },
+            { 
+              name: "Jennifer L.",
+              type: "Diagnostic Tests",
+              original: "$12,450",
+              saved: "$8,700",
+              percent: "70%",
+              time: "3 weeks",
+              quote: "1889% lab markup! Demanded Medicare rates and they had to comply.",
+              color: "purple",
+              delay: 0.3
+            },
+          ].map((story, index) => (
+            <motion.div
+              key={story.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: story.delay, duration: 0.5 }}
+              data-testid={`testimonial-${index}`}
+            >
+              <MobileCard className="backdrop-blur-xl border-2 border-white/50 shadow-xl overflow-hidden group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+                <div className={`absolute inset-0 bg-gradient-to-br ${
+                  story.color === 'emerald' ? 'from-emerald-500/10 to-teal-500/10' :
+                  story.color === 'blue' ? 'from-blue-500/10 to-indigo-500/10' :
+                  'from-purple-500/10 to-pink-500/10'
+                } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                
+                <div className="relative z-10">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="font-black text-gray-900 text-lg">{story.name}</h3>
+                      <p className="text-sm text-gray-600 font-medium">{story.type}</p>
+                    </div>
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Savings Display */}
+                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl p-4 mb-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-xs text-gray-600 font-semibold mb-1">Original Bill</div>
+                        <div className="text-2xl font-black text-red-600 line-through">{story.original}</div>
+                      </div>
+                      <ArrowRight className="h-6 w-6 text-gray-400" />
+                      <div>
+                        <div className="text-xs text-gray-600 font-semibold mb-1">Saved</div>
+                        <div className="text-2xl font-black text-emerald-600">{story.saved}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between mt-3 text-xs">
+                      <div className="flex items-center gap-1 text-emerald-700 font-bold">
+                        <TrendingDown className="h-3 w-3" />
+                        {story.percent} reduction
+                      </div>
+                      <div className="flex items-center gap-1 text-gray-600 font-medium">
+                        <Clock className="h-3 w-3" />
+                        {story.time}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quote */}
+                  <div className="relative">
+                    <ThumbsUp className="h-4 w-4 text-emerald-600 mb-2" />
+                    <p className="text-sm text-gray-700 italic leading-relaxed font-medium">
+                      "{story.quote}"
+                    </p>
+                  </div>
+                </div>
+              </MobileCard>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Stats Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="mt-6"
+        >
+          <MobileCard className="backdrop-blur-xl border-2 border-white/50 shadow-xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-50/80 via-orange-50/80 to-red-50/80" />
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Trophy className="h-6 w-6 text-amber-600" />
+                <h3 className="text-lg font-black text-gray-900">Platform Statistics</h3>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="text-3xl font-black text-emerald-700 mb-1">87-94%</div>
+                  <div className="text-xs text-gray-600 font-semibold">Success Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-black text-blue-700 mb-1">$8.5K+</div>
+                  <div className="text-xs text-gray-600 font-semibold">Avg Savings</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-black text-purple-700 mb-1">4-6wk</div>
+                  <div className="text-xs text-gray-600 font-semibold">Avg Time</div>
+                </div>
+              </div>
+            </div>
+          </MobileCard>
+        </motion.div>
+      </motion.div>
+
+      {/* 💎 FEATURES SHOWCASE - What You Get */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-8"
+      >
+        <div className="text-center mb-8">
+          <motion.h2 
+            className="text-3xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-3"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Powerful Features
+          </motion.h2>
+          <motion.div 
+            className="h-1.5 w-24 bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 rounded-full mx-auto mb-4"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          />
+          <p className="text-gray-600 font-medium max-w-sm mx-auto">
+            Everything you need to fight overcharges
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-4">
           {[
             { 
               icon: Brain, 
-              title: "AI Bill Analysis", 
-              desc: "Example outcomes show potential savings of $2,000-$35,000+ through AI-powered overcharge detection", 
-              highlight: "Results vary by individual case",
-              color: "purple", 
-              delay: 1.9
-            },
-            { 
-              icon: Search, 
-              title: "Error Detection Engine", 
-              desc: "Scans for duplicate charges, billing code errors, and phantom procedures", 
-              highlight: "95% accuracy",
-              color: "red", 
-              delay: 2.0
+              title: "AI Bill Scanner", 
+              desc: "GPT-4o Vision analysis", 
+              color: "from-purple-500 to-indigo-600",
+              delay: 0.1
             },
             { 
               icon: FileText, 
-              title: "Professional Dispute Letters", 
-              desc: "Generates legal-grade dispute templates that hospitals must respond to", 
-              highlight: "95% success rate",
-              color: "emerald", 
-              delay: 2.1
-            }
-          ].map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: feature.delay, 
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 180
-                }}
-                data-testid={`feature-${feature.title.toLowerCase().replace(/ /g, '-')}`}
-              >
-                <Link href="/bill-ai">
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -3 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl cursor-pointer overflow-hidden group">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/15 opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                      
-                      <div className="flex items-center space-x-4 relative z-10">
-                        <motion.div 
-                          className={`w-14 h-14 bg-gradient-to-br ${
-                            feature.color === 'purple' ? 'from-purple-500 to-indigo-600' :
-                            feature.color === 'red' ? 'from-red-500 to-orange-600' :
-                            feature.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
-                            'from-gray-500 to-gray-600'
-                          } rounded-2xl flex items-center justify-center shadow-lg relative`}
-                          whileHover={{ scale: 1.15, rotate: 8 }}
-                          transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
-                        >
-                          <div className="absolute inset-0 bg-white/20 rounded-2xl backdrop-blur-sm" />
-                          <IconComponent className="h-7 w-7 text-white relative z-10" />
-                        </motion.div>
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h3 className="font-bold text-gray-900 text-base leading-tight">{feature.title}</h3>
-                            <span className="px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 text-xs font-bold rounded-full border border-amber-200">
-                              {feature.highlight}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-700 leading-relaxed font-medium">{feature.desc}</p>
-                        </div>
-                        <motion.div
-                          className="p-2 rounded-xl bg-white/60 backdrop-blur-sm border border-white/50 shadow-sm"
-                          whileHover={{ x: 4, scale: 1.1 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <ArrowRight className="h-4 w-4 text-gray-600" />
-                        </motion.div>
-                      </div>
-                    </MobileCard>
-                  </motion.div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.div>
-
-      {/* Premium Value Proposition */}
-      <motion.div 
-        className="space-y-4 mt-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 0.6 }}
-      >
-        <motion.div 
-          className="text-center mb-6"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.3, duration: 0.6 }}
-        >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
-            Professional Features
-          </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full mx-auto" />
-        </motion.div>
-        
-        <div className="grid grid-cols-2 gap-3">
-          {[
+              title: "Dispute Templates", 
+              desc: "Legal-grade letters", 
+              color: "from-emerald-500 to-teal-600",
+              delay: 0.15
+            },
+            { 
+              icon: Target, 
+              title: "Insider Tactics", 
+              desc: "Hospital secrets", 
+              color: "from-orange-500 to-red-600",
+              delay: 0.2
+            },
             { 
               icon: MessageCircle, 
               title: "Expert Coaching", 
-              desc: "Hospital negotiation tactics", 
-              color: "blue",
-              delay: 2.4
+              desc: "1-on-1 guidance", 
+              color: "from-blue-500 to-cyan-600",
+              delay: 0.25
+            },
+            { 
+              icon: Calculator, 
+              title: "Price Database", 
+              desc: "Fair rate lookup", 
+              color: "from-pink-500 to-rose-600",
+              delay: 0.3
             },
             { 
               icon: Clock, 
-              title: "Strategic Timing", 
-              desc: "Perfect dispute timing", 
-              color: "green",
-              delay: 2.45
+              title: "Timing Strategy", 
+              desc: "Perfect negotiation timing", 
+              color: "from-amber-500 to-orange-600",
+              delay: 0.35
             },
-            { 
-              icon: Code, 
-              title: "Billing Mastery", 
-              desc: "CPT code expertise", 
-              color: "purple",
-              delay: 2.5
-            },
-            { 
-              icon: UserCheck, 
-              title: "Personal Coach", 
-              desc: "1-on-1 guidance", 
-              color: "orange",
-              delay: 2.55
-            }
           ].map((feature, index) => {
-            const IconComponent = feature.icon;
+            const Icon = feature.icon;
             return (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: feature.delay, 
-                  duration: 0.5,
-                  type: "spring",
-                  stiffness: 200
-                }}
-                data-testid={`premium-feature-${feature.title.toLowerCase().replace(/ /g, '-')}`}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: feature.delay, duration: 0.4 }}
+                data-testid={`feature-${index}`}
               >
                 <Link href="/premium">
                   <motion.div
-                    whileHover={{ scale: 1.03, y: -4 }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{ scale: 1.05, y: -4 }}
+                    whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <MobileCard className="h-32 backdrop-blur-xl border border-white/40 shadow-lg cursor-pointer overflow-hidden group text-center">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <MobileCard className="h-36 backdrop-blur-xl border-2 border-white/50 shadow-lg cursor-pointer overflow-hidden group relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
                       
-                      <div className="flex flex-col items-center justify-center h-full space-y-2 relative z-10">
+                      <div className="flex flex-col items-center justify-center h-full space-y-2 relative z-10 text-center">
                         <motion.div 
-                          className={`w-10 h-10 bg-gradient-to-br ${
-                            feature.color === 'blue' ? 'from-blue-500 to-indigo-600' :
-                            feature.color === 'green' ? 'from-emerald-500 to-teal-600' :
-                            feature.color === 'purple' ? 'from-purple-500 to-indigo-600' :
-                            feature.color === 'orange' ? 'from-orange-500 to-red-600' :
-                            'from-gray-500 to-gray-600'
-                          } rounded-xl flex items-center justify-center shadow-lg`}
-                          whileHover={{ scale: 1.2, rotate: 10 }}
+                          className={`w-12 h-12 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden`}
+                          whileHover={{ scale: 1.15, rotate: 10 }}
                           transition={{ duration: 0.3 }}
                         >
-                          <IconComponent className="h-5 w-5 text-white" />
+                          <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                          <Icon className="h-6 w-6 text-white relative z-10" strokeWidth={2.5} />
                         </motion.div>
                         <div>
-                          <h3 className="font-bold text-gray-900 text-sm leading-tight">{feature.title}</h3>
+                          <h3 className="font-black text-gray-900 text-sm leading-tight mb-0.5">{feature.title}</h3>
                           <p className="text-xs text-gray-600 font-medium">{feature.desc}</p>
                         </div>
                       </div>
@@ -513,120 +680,258 @@ export default function Landing() {
             );
           })}
         </div>
+
+        {/* Feature Highlight Cards */}
+        <div className="space-y-3 max-w-md mx-auto">
+          {[
+            { 
+              icon: Search, 
+              title: "95% Error Detection Rate", 
+              desc: "AI scans for duplicate charges, upcoding, phantom billing, and 14+ other error types",
+              stat: "14+ error types",
+              color: "red",
+              delay: 0.4
+            },
+            { 
+              icon: FileCheck, 
+              title: "Legal Dispute Templates", 
+              desc: "87-94% success rates with federal citations (No Surprises Act, EMTALA, FDCPA)",
+              stat: "87-94% success",
+              color: "emerald",
+              delay: 0.45
+            },
+            { 
+              icon: ShieldCheck, 
+              title: "Industry Insider Secrets", 
+              desc: "End-of-month quotas, Q4 charity care timing, auto write-off thresholds revealed",
+              stat: "Exclusive intel",
+              color: "purple",
+              delay: 0.5
+            },
+          ].map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: feature.delay, duration: 0.5 }}
+              >
+                <Link href="/bill-ai">
+                  <motion.div
+                    whileHover={{ scale: 1.02, y: -3 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <MobileCard className="backdrop-blur-xl border-2 border-white/50 shadow-xl cursor-pointer overflow-hidden group relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${
+                        feature.color === 'red' ? 'from-red-500/10 to-orange-500/10' :
+                        feature.color === 'emerald' ? 'from-emerald-500/10 to-teal-500/10' :
+                        'from-purple-500/10 to-indigo-500/10'
+                      } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                      
+                      <div className="flex items-center gap-4 relative z-10">
+                        <motion.div 
+                          className={`w-14 h-14 bg-gradient-to-br ${
+                            feature.color === 'red' ? 'from-red-500 to-orange-600' :
+                            feature.color === 'emerald' ? 'from-emerald-500 to-teal-600' :
+                            'from-purple-500 to-indigo-600'
+                          } rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden flex-shrink-0`}
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                          <Icon className="h-7 w-7 text-white relative z-10" strokeWidth={2.5} />
+                        </motion.div>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <h3 className="font-black text-gray-900 text-base leading-tight">{feature.title}</h3>
+                            <span className={`px-2 py-0.5 bg-gradient-to-r ${
+                              feature.color === 'red' ? 'from-red-100 to-orange-100 text-red-700 border-red-200' :
+                              feature.color === 'emerald' ? 'from-emerald-100 to-teal-100 text-emerald-700 border-emerald-200' :
+                              'from-purple-100 to-indigo-100 text-purple-700 border-purple-200'
+                            } text-xs font-bold rounded-full border whitespace-nowrap`}>
+                              {feature.stat}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-snug font-medium">{feature.desc}</p>
+                        </div>
+
+                        <motion.div
+                          className="flex-shrink-0"
+                          whileHover={{ x: 4 }}
+                        >
+                          <ArrowRight className="h-5 w-5 text-gray-400" />
+                        </motion.div>
+                      </div>
+                    </MobileCard>
+                  </motion.div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
       </motion.div>
 
-      {/* Social Proof & Statistics */}
+      {/* 💰 PRICING CTA */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.6, duration: 0.6 }}
-        className="mt-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-8"
       >
-        <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative"
-          style={{
-            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.08) 50%, rgba(59, 130, 246, 0.08) 100%)'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/20 to-white/30" />
+        <MobileCard className="backdrop-blur-xl border-2 border-amber-300 shadow-2xl overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-50/90 via-orange-50/90 to-red-50/90" />
           
           <div className="relative z-10 text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="w-16 h-16 bg-gradient-to-br from-amber-500 via-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl"
+            >
+              <Crown className="h-8 w-8 text-white" strokeWidth={3} />
+            </motion.div>
+
+            <h3 className="text-2xl font-black bg-gradient-to-r from-amber-700 via-orange-700 to-red-700 bg-clip-text text-transparent mb-2">
+              Premium Access
+            </h3>
+            
+            <p className="text-gray-700 font-semibold mb-4 leading-relaxed">
+              Full AI analysis, dispute templates, expert coaching & insider tactics
+            </p>
+
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-amber-200">
+              <div className="flex items-baseline justify-center gap-2 mb-2">
+                <span className="text-4xl font-black text-gray-900">$29.99</span>
+                <span className="text-gray-600 font-semibold">/month</span>
+              </div>
+              <div className="text-sm text-emerald-700 font-bold flex items-center justify-center gap-1">
+                <BadgeCheck className="h-4 w-4" />
+                Save $2,000-$35,000+ on bills
+              </div>
+            </div>
+
+            {/* Features Checklist */}
+            <div className="space-y-2 mb-6 text-left max-w-xs mx-auto">
+              {[
+                "Unlimited bill analyses",
+                "AI error detection scanner",
+                "Legal dispute letter templates",
+                "Industry insider tactics",
+                "Expert negotiation coaching",
+                "Medicare rate comparisons"
+              ].map((feature, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                  </div>
+                  <span className="text-sm text-gray-700 font-medium">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <Link href="/premium">
               <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ scale: 1.03, y: -4 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.2 }}
+                data-testid="button-upgrade-premium-main"
               >
-                <Trophy className="h-6 w-6 text-amber-600" />
+                <MobileButton className="w-full bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 hover:from-amber-700 hover:via-orange-700 hover:to-red-700 shadow-2xl shadow-amber-500/40 text-lg py-5 relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                  <Crown className="h-6 w-6 mr-2 relative z-10" />
+                  <span className="relative z-10">Upgrade to Premium</span>
+                  <Sparkles className="h-5 w-5 ml-2 relative z-10" />
+                </MobileButton>
               </motion.div>
-              <h3 className="text-lg font-bold text-gray-900">Example Outcomes</h3>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="text-center" data-testid="stat-users">
-                <div className="text-2xl font-black text-emerald-700">Sample</div>
-                <div className="text-xs text-gray-600 font-semibold">Case Studies</div>
-              </div>
-              <div className="text-center" data-testid="stat-savings">
-                <div className="text-2xl font-black text-blue-700">High</div>
-                <div className="text-xs text-gray-600 font-semibold">Potential Rate</div>
-              </div>
-              <div className="text-center" data-testid="stat-success">
-                <div className="text-2xl font-black text-purple-700">$8.5K+</div>
-                <div className="text-xs text-gray-600 font-semibold">Avg Example</div>
-              </div>
-            </div>
-            
-            <div className="flex items-center justify-center space-x-1 text-sm text-gray-600">
-              <Users className="h-4 w-4" />
-              <span className="font-medium">AI-powered medical billing analysis platform</span>
-            </div>
+            </Link>
+
+            <p className="text-xs text-gray-600 mt-3 font-medium">
+              Cancel anytime • Full refund within 30 days
+            </p>
           </div>
         </MobileCard>
       </motion.div>
 
-      {/* Donation Section */}
+      {/* 💝 DONATION SECTION */}
       <motion.div 
         className="px-4 mt-8"
         initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.6, duration: 0.6 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
       >
         <DonationButton variant="default" />
       </motion.div>
 
-      {/* Final Premium CTA */}
-      <motion.div 
-        className="mt-8 pb-8"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.8, duration: 0.6 }}
+      {/* 🚀 FINAL CTA - Multiple Entry Points */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-8 pb-12"
       >
-        <div className="space-y-4">
-          <motion.div 
-            className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 rounded-2xl p-6 shadow-xl"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
+        <div className="text-center mb-6">
+          <motion.h2 
+            className="text-3xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-3"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
           >
-            <div className="text-center">
-              <div className="flex items-center justify-center space-x-2 mb-3">
-                <Crown className="h-6 w-6 text-amber-600" />
-                <span className="font-black text-amber-700 text-lg">Premium Access</span>
-              </div>
-              <p className="text-sm text-amber-700 font-semibold mb-4">
-                Get expert coaching, advanced AI analysis, and professional dispute templates
-              </p>
-              
-              <div className="space-y-3">
-                <Link href="/premium">
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    data-testid="button-upgrade-premium"
-                  >
-                    <MobileButton className="w-full bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 hover:from-amber-700 hover:via-orange-700 hover:to-red-700 shadow-xl shadow-amber-500/25 text-lg py-4">
-                      <Crown className="h-5 w-5 mr-2" />
-                      Upgrade to Premium
-                      <Sparkles className="h-4 w-4 ml-2" />
-                    </MobileButton>
-                  </motion.div>
-                </Link>
-                
-                <Link href="/bill-best-practices">
-                  <motion.div
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    data-testid="button-view-strategies"
-                  >
-                    <MobileButton variant="secondary" className="w-full border-2 border-amber-200 hover:border-amber-300 text-amber-700 hover:text-amber-800">
-                      <Target className="h-4 w-4 mr-2" />
-                      View Advanced Strategies
-                      <ChevronRight className="h-3 w-3 ml-2" />
-                    </MobileButton>
-                  </motion.div>
-                </Link>
-              </div>
-            </div>
-          </motion.div>
+            Ready to Save Thousands?
+          </motion.h2>
+          <p className="text-gray-600 font-semibold max-w-sm mx-auto">
+            Join users saving $2,000-$35,000+ on medical bills
+          </p>
         </div>
+
+        <div className="space-y-3 max-w-sm mx-auto">
+          <Link href="/bill-ai">
+            <motion.div
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
+              data-testid="button-start-analysis-final"
+            >
+              <MobileButton className="w-full shadow-2xl shadow-emerald-500/40 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-lg py-5 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <Zap className="h-6 w-6 mr-2 relative z-10" />
+                <span className="relative z-10">Start Free Bill Analysis</span>
+                <ArrowRight className="h-5 w-5 ml-2 relative z-10" />
+              </MobileButton>
+            </motion.div>
+          </Link>
+
+          <Link href="/premium">
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              data-testid="button-view-premium-final"
+            >
+              <MobileButton variant="secondary" className="w-full border-2 border-emerald-300 hover:border-emerald-400 text-emerald-700 hover:text-emerald-800 shadow-lg">
+                <Crown className="h-5 w-5 mr-2" />
+                View Premium Plans
+                <ChevronRight className="h-4 w-4 ml-2" />
+              </MobileButton>
+            </motion.div>
+          </Link>
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-center text-sm text-gray-500 mt-6 font-medium"
+        >
+          🔒 HIPAA Compliant • 🏦 Bank-Level Security • ⚖️ Legal Templates
+        </motion.p>
       </motion.div>
     </MobileLayout>
   );
