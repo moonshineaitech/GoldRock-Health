@@ -96,28 +96,67 @@ interface AIMessage {
   createdAt: Date;
 }
 
-// Smart Suggestion Chip Component
+// Elite iOS Suggestion Chip Component with Premium Animation
 const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }: {
   icon: any;
   label: string;
   onClick: () => void;
   variant?: "default" | "premium" | "action";
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
   const variants = {
-    default: "bg-white/90 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300",
-    premium: "bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 text-amber-800 hover:from-amber-100 hover:to-orange-100",
-    action: "bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-teal-100"
+    default: {
+      bg: "bg-white/80 backdrop-blur-2xl",
+      border: "border-blue-200/60",
+      text: "text-blue-700",
+      icon: "text-blue-600",
+      hover: "hover:bg-blue-50/90 hover:border-blue-300/80 hover:shadow-xl hover:shadow-blue-500/20"
+    },
+    premium: {
+      bg: "bg-gradient-to-br from-purple-50/80 via-pink-50/80 to-amber-50/80 backdrop-blur-2xl",
+      border: "border-purple-300/60",
+      text: "text-purple-800",
+      icon: "text-purple-600",
+      hover: "hover:from-purple-100/90 hover:via-pink-100/90 hover:to-amber-100/90 hover:border-purple-400/80 hover:shadow-xl hover:shadow-purple-500/30"
+    },
+    action: {
+      bg: "bg-gradient-to-br from-teal-50/80 via-cyan-50/80 to-blue-50/80 backdrop-blur-2xl",
+      border: "border-teal-300/60",
+      text: "text-teal-800",
+      icon: "text-teal-600",
+      hover: "hover:from-teal-100/90 hover:via-cyan-100/90 hover:to-blue-100/90 hover:border-teal-400/80 hover:shadow-xl hover:shadow-teal-500/30"
+    }
   };
+
+  const currentVariant = variants[variant];
 
   return (
     <motion.button
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.08, y: -4 }}
+      whileTap={{ scale: 0.92 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
       onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl border backdrop-blur-sm shadow-sm transition-all duration-200 ${variants[variant]}`}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      className={`flex items-center gap-2.5 px-5 py-3 rounded-full border-2 shadow-lg transition-all duration-300 relative overflow-hidden ${currentVariant.bg} ${currentVariant.border} ${currentVariant.hover}`}
     >
-      <Icon className="h-4 w-4 flex-shrink-0" />
-      <span className="text-sm font-medium whitespace-nowrap">{label}</span>
+      {/* Premium glow effect */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isHovered ? 0.4 : 0 }}
+        className="absolute inset-0 bg-gradient-to-r from-white/50 via-white/30 to-transparent"
+      />
+      
+      <motion.div
+        animate={{ rotate: isHovered ? 360 : 0 }}
+        transition={{ duration: 0.6, type: "spring" }}
+      >
+        <Icon className={`h-5 w-5 flex-shrink-0 ${currentVariant.icon}`} />
+      </motion.div>
+      <span className={`text-sm font-semibold whitespace-nowrap relative z-10 ${currentVariant.text}`}>
+        {label}
+      </span>
     </motion.button>
   );
 };
@@ -1903,9 +1942,12 @@ What would you like to do first? I'm here to help you find every possible saving
           </div>
         )}
 
-        {/* Chat Messages Area - iOS Style */}
-        <div className="flex-1 overflow-y-auto bg-gray-50/30 px-4 pt-4 lg:px-8 lg:py-6">
-          <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8 lg:max-w-4xl lg:mx-auto">
+        {/* Elite Medical Chat Interface */}
+        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-blue-50/40 via-teal-50/30 to-cyan-50/40 px-4 pt-4 lg:px-8 lg:py-6 relative">
+          {/* Premium background pattern */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(56,189,248,0.1),rgba(255,255,255,0))] pointer-events-none" />
+          
+          <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8 lg:max-w-4xl lg:mx-auto relative z-10">
             
             {/* Savings Progress Visualization */}
             {conversationStarted && intakeState.amount && (
@@ -1972,20 +2014,35 @@ What would you like to do first? I'm here to help you find every possible saving
               </motion.div>
             )}
 
-            {/* iOS-Style Chat Messages */}
+            {/* Elite iOS Healthcare Chat Messages */}
             {localMessages.map((message, index) => (
               <motion.div
                 key={message.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.3, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  delay: index * 0.08, 
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 24
+                }}
                 className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mb-4`}
               >
-                <div className={`max-w-[80%] group ${
+                <div className={`max-w-[85%] group relative ${
                   message.role === "user" 
-                    ? "bg-gradient-to-br from-green-500 via-green-600 to-emerald-600 text-white rounded-3xl rounded-br-lg shadow-lg shadow-green-200/40" 
-                    : "bg-white/95 backdrop-blur-sm border border-gray-200/50 text-gray-900 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30"
-                } px-5 py-4 relative`}>
+                    ? "bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 text-white rounded-[28px] rounded-br-md shadow-2xl shadow-blue-500/30" 
+                    : "bg-white/80 backdrop-blur-2xl border border-white/60 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10"
+                } px-6 py-5 relative overflow-hidden`}>
+                  {/* Premium Glass Effect Layer */}
+                  <div className={`absolute inset-0 ${
+                    message.role === "user"
+                      ? "bg-gradient-to-br from-white/20 via-transparent to-transparent"
+                      : "bg-gradient-to-br from-white/60 via-white/30 to-transparent"
+                  } pointer-events-none`} />
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
                   {message.role === "assistant" && (
                     <div className="flex items-center space-x-2.5 mb-3">
                       <div className="w-7 h-7 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-sm">
@@ -2093,45 +2150,57 @@ What would you like to do first? I'm here to help you find every possible saving
                       )}
                     </div>
                   </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
 
-            {/* iOS-Style Typing Indicator */}
+            {/* Elite Premium Typing Indicator */}
             {isTyping && (
               <motion.div
-                initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                exit={{ opacity: 0, y: -15, scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300, damping: 24 }}
                 className="flex justify-start mb-4"
               >
-                <div className="bg-white/95 backdrop-blur-sm border border-gray-200/50 text-gray-900 rounded-3xl rounded-bl-lg shadow-lg shadow-gray-200/30 px-5 py-4 max-w-[80%]">
-                  <div className="flex items-center space-x-2.5 mb-3">
-                    <div className="w-7 h-7 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-sm">
-                      <Bot className="h-4 w-4 text-emerald-700" />
+                <div className="bg-white/80 backdrop-blur-2xl border border-white/60 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10 px-6 py-5 max-w-[85%] relative overflow-hidden">
+                  {/* Glass effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/30 to-transparent pointer-events-none" />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <motion.div 
+                        className="w-8 h-8 bg-gradient-to-br from-blue-400 via-teal-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Bot className="h-5 w-5 text-white" />
+                      </motion.div>
+                      <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
+                        Medical Bill AI
+                      </span>
                     </div>
-                    <span className="text-sm font-semibold text-emerald-600 tracking-tight">Medical Bill Expert</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="flex space-x-1">
-                      <motion.div
-                        className="w-2 h-2 bg-emerald-500 rounded-full"
-                        animate={{ y: [-2, 2, -2] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: 0 }}
-                      />
-                      <motion.div
-                        className="w-2 h-2 bg-emerald-500 rounded-full"
-                        animate={{ y: [-2, 2, -2] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
-                      />
-                      <motion.div
-                        className="w-2 h-2 bg-emerald-500 rounded-full"
-                        animate={{ y: [-2, 2, -2] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
-                      />
+                    <div className="flex items-center space-x-3">
+                      <div className="flex space-x-1.5">
+                        <motion.div
+                          className="w-2.5 h-2.5 bg-gradient-to-r from-blue-500 to-teal-500 rounded-full shadow-lg"
+                          animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
+                          transition={{ duration: 1.2, repeat: Infinity, delay: 0 }}
+                        />
+                        <motion.div
+                          className="w-2.5 h-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full shadow-lg"
+                          animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
+                          transition={{ duration: 1.2, repeat: Infinity, delay: 0.3 }}
+                        />
+                        <motion.div
+                          className="w-2.5 h-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full shadow-lg"
+                          animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
+                          transition={{ duration: 1.2, repeat: Infinity, delay: 0.6 }}
+                        />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">Analyzing medical bill...</span>
                     </div>
-                    <span className="text-sm text-gray-600">Analyzing your bill details...</span>
                   </div>
                 </div>
               </motion.div>
