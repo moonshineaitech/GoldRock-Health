@@ -805,83 +805,101 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               </h3>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3 lg:gap-6 xl:gap-8">
-                <Button
+                <motion.button
                   onClick={() => setShowHospitalBillsDatabase(!showHospitalBillsDatabase)}
-                  variant="outline"
-                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 overflow-hidden"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/70 transition-all duration-300"
                   data-testid="hospital-bills-database"
                 >
-                  <Building2 className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-blue-600" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
-                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Hospital Bills Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Insider billing patterns</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  <Building2 className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
+                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Hospital Bills Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-blue-100 font-medium">Insider billing patterns</div>
                   </div>
-                </Button>
+                </motion.button>
 
-                <Button
+                <motion.button
                   onClick={() => setShowInsuranceClaimsDatabase(!showInsuranceClaimsDatabase)}
-                  variant="outline"
-                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 overflow-hidden"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-600 to-blue-600 shadow-2xl shadow-indigo-500/50 hover:shadow-indigo-500/70 transition-all duration-300"
                   data-testid="insurance-claims-database"
                 >
-                  <Shield className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-indigo-600" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
-                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Insurance Claims Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Company-specific tactics</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  <Shield className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
+                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Insurance Claims Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-indigo-100 font-medium">Company-specific tactics</div>
                   </div>
-                </Button>
+                </motion.button>
 
-                <Button
+                <motion.button
                   onClick={() => setShowInsuranceDenialsIntelligence(!showInsuranceDenialsIntelligence)}
-                  variant="outline"
-                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 overflow-hidden"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-red-500 via-pink-600 to-rose-600 shadow-2xl shadow-red-500/50 hover:shadow-red-500/70 transition-all duration-300"
                   data-testid="insurance-denials-intelligence"
                 >
-                  <XCircle className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-red-600" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
-                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Insurance Denials Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Reversal strategies</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  <XCircle className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
+                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Insurance Denials Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-red-100 font-medium">Reversal strategies</div>
                   </div>
-                </Button>
+                </motion.button>
 
-                <Button
+                <motion.button
                   onClick={() => setShowEmergencyCareBillingDatabase(!showEmergencyCareBillingDatabase)}
-                  variant="outline"
-                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 overflow-hidden"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-orange-500 via-amber-600 to-yellow-600 shadow-2xl shadow-orange-500/50 hover:shadow-orange-500/70 transition-all duration-300"
                   data-testid="emergency-care-billing-database"
                 >
-                  <Siren className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-orange-600" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
-                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Emergency Care Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">No Surprises Act tactics</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  <Siren className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
+                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Emergency Care Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-orange-100 font-medium">No Surprises Act tactics</div>
                   </div>
-                </Button>
+                </motion.button>
 
-                <Button
+                <motion.button
                   onClick={() => setShowSpecialtyCareIntelligence(!showSpecialtyCareIntelligence)}
-                  variant="outline"
-                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 overflow-hidden"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-purple-500 via-violet-600 to-fuchsia-600 shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 transition-all duration-300"
                   data-testid="specialty-care-intelligence"
                 >
-                  <Stethoscope className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-purple-600" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
-                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Specialty Care Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">High-cost procedures</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  <Stethoscope className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
+                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Specialty Care Intelligence</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-purple-100 font-medium">High-cost procedures</div>
                   </div>
-                </Button>
+                </motion.button>
 
-                <Button
+                <motion.button
                   onClick={() => setShowPharmaceuticalDeviceDatabase(!showPharmaceuticalDeviceDatabase)}
-                  variant="outline"
-                  className="!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-6 xl:p-8 2xl:p-10 flex-col space-y-2 lg:space-y-3 xl:space-y-4 text-left justify-start rounded-2xl lg:rounded-3xl border-green-200 hover:shadow-lg transition-all duration-200 hover:border-green-300 hover:bg-green-50/50 overflow-hidden"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-600 to-green-600 shadow-2xl shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all duration-300"
                   data-testid="pharmaceutical-device-database"
                 >
-                  <Pill className="h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-green-600" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
-                    <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words">Pharmaceutical & Device Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">Drug & device pricing</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  <Pill className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
+                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
+                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Pharmaceutical & Device Database</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-emerald-100 font-medium">Drug & device pricing</div>
                   </div>
-                </Button>
+                </motion.button>
               </div>
             </div>
             </>
