@@ -1,4 +1,5 @@
 import { MobileButton } from "@/components/mobile-layout";
+import { DonationButton } from "@/components/donation-button";
 import { Apple, Mail, ArrowRight, Shield, DollarSign, Users, CheckCircle, Star, Award, Zap, Heart, TrendingDown, Target, AlertTriangle, FileText, MessageSquare, LogIn, Menu, Home, BookOpen, Crown as PremiumIcon, Gamepad2, Download, Phone, Search, User, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
@@ -606,6 +607,16 @@ export default function AuthLanding() {
             </motion.div>
           </div>
         </div>
+
+        {/* Donation Section */}
+        <motion.div
+          className="max-w-2xl mx-auto px-4 my-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+        >
+          <DonationButton variant="default" />
+        </motion.div>
 
         {/* Footer - Condensed */}
         <motion.div

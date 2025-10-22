@@ -68,17 +68,26 @@ export const paymentService = {
    * Handle subscription flow based on platform
    * Throws error if purchase fails, returns CustomerInfo if successful
    */
-  async initiateSubscription(plan: 'monthly' | 'annual'): Promise<{
+  async initiateSubscription(plan: 'monthly' | 'annual' | 'lifetime'): Promise<{
     method: 'revenuecat' | 'stripe';
     success: boolean;
     customerInfo?: any;
   }> {
     const method = this.getPaymentMethod();
 
+    // Lifetime plans are always handled by Stripe (not available via RevenueCat/StoreKit)
+    if (plan === 'lifetime' || method === 'stripe') {
+      // On web or for lifetime plans, Stripe flow will be handled by the calling code
+      return {
+        method: 'stripe',
+        success: false, // Stripe requires additional UI flow
+      };
+    }
+
     if (method === 'revenuecat') {
       try {
-        // Use RevenueCat to purchase via StoreKit
-        const customerInfo = await revenueCatService.purchaseByPlanType(plan);
+        // Use RevenueCat to purchase via StoreKit (monthly/annual only)
+        const customerInfo = await revenueCatService.purchaseByPlanType(plan as 'monthly' | 'annual');
         
         return {
           method: 'revenuecat',
@@ -91,7 +100,7 @@ export const paymentService = {
       }
     }
 
-    // On web, Stripe flow will be handled by the calling code
+    // Fallback to Stripe
     return {
       method: 'stripe',
       success: false, // Stripe requires additional UI flow
@@ -101,22 +110,30 @@ export const paymentService = {
   /**
    * Platform-specific pricing display
    */
-  getPricingDisplay(plan: 'monthly' | 'annual'): {
+  getPricingDisplay(plan: 'monthly' | 'annual' | 'lifetime'): {
     amount: string;
     period: string;
     savings?: string;
   } {
     if (plan === 'monthly') {
       return {
-        amount: '$29.99',
+        amount: '$25',
         period: 'per month',
       };
     }
 
+    if (plan === 'lifetime') {
+      return {
+        amount: '$747',
+        period: 'one-time',
+        savings: 'Pay once, save forever',
+      };
+    }
+
     return {
-      amount: '$299.99',
+      amount: '$249',
       period: 'per year',
-      savings: 'Save $60 vs monthly',
+      savings: 'Save 17% vs monthly',
     };
   },
 };

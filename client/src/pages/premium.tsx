@@ -1,5 +1,5 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
-import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code, ShieldCheck, Hexagon, Triangle, Circle, Square, CheckCircle } from "lucide-react";
+import { Crown, Star, Zap, Lock, Check, ArrowRight, Sparkles, LogIn, Brain, Target, BarChart3, Users, DollarSign, FileText, AlertTriangle, TrendingDown, Stethoscope, MessageCircle, Clock, Search, UserCheck, Phone, Calendar, Code, ShieldCheck, Hexagon, Triangle, Circle, Square, CheckCircle, Copy } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence, useAnimation, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { apiRequest } from "@/lib/queryClient";
 import { paymentService } from "@/lib/payment-service";
 import { AlertCircle } from "lucide-react";
+import { Capacitor } from "@capacitor/core";
 
 if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
   throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
@@ -343,7 +344,7 @@ const premiumFeatures = [
   }
 ];
 
-const subscriptionPlans = [
+const allSubscriptionPlans = [
   {
     id: "monthly",
     name: "Monthly",
@@ -363,9 +364,9 @@ const subscriptionPlans = [
   {
     id: "annual",
     name: "Annual",
-    price: 299,
+    price: 249,
     period: "year",
-    savings: "Best Value",
+    savings: "Save 17% • Best Value",
     popular: true,
     features: [
       "Everything in Monthly plan",
@@ -375,8 +376,32 @@ const subscriptionPlans = [
       "Insurance company negotiation playbook",
       "Unlimited medical training (all specialties)"
     ]
+  },
+  {
+    id: "lifetime",
+    name: "Lifetime Access",
+    price: 747,
+    period: "one-time",
+    savings: "Pay Once, Save Forever",
+    popular: false,
+    features: [
+      "Everything in Annual plan",
+      "Lifetime access to all future updates",
+      "Priority support & feature requests",
+      "Exclusive lifetime member benefits",
+      "Never pay again for bill reduction tools",
+      "Locked-in pricing (never increases)"
+    ]
   }
 ];
+
+// Filter plans based on platform - exclude lifetime on iOS for App Store compliance
+const getAvailablePlans = () => {
+  const isIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
+  return isIOS ? allSubscriptionPlans.filter(p => p.id !== 'lifetime') : allSubscriptionPlans;
+};
+
+const subscriptionPlans = getAvailablePlans();
 
 function LoginPrompt() {
   const ref = useRef(null);
@@ -914,6 +939,7 @@ function PremiumMarketing() {
     setupIntentId: string;
     planType: string;
   } | null>(null);
+  // Default to 'annual' on all platforms (lifetime only available on web)
   const [selectedPlan, setSelectedPlan] = useState<string>("annual");
   
   // These hooks were previously AFTER the conditional return - causing the error!
@@ -1230,7 +1256,7 @@ function PremiumMarketing() {
         
         {/* Enhanced Description */}
         <motion.p 
-          className="text-xl text-gray-700 mb-10 max-w-3xl mx-auto leading-relaxed font-medium relative z-10"
+          className="text-xl text-gray-700 mb-6 max-w-3xl mx-auto leading-relaxed font-medium relative z-10"
           variants={itemVariants}
           transition={{ delay: 0.9 }}
           data-testid="text-description"
@@ -1240,6 +1266,31 @@ function PremiumMarketing() {
             Example Potential: $2,000 - $35,000+
           </span>
         </motion.p>
+
+        {/* Free Access Banner */}
+        <motion.div 
+          className="max-w-2xl mx-auto mb-10"
+          variants={itemVariants}
+          transition={{ delay: 1.0 }}
+        >
+          <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-2 border-blue-200 rounded-2xl p-6 shadow-lg">
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-black text-gray-900 mb-2">
+                  Platform Currently Free • iOS App Free
+                </h3>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  Access the GoldRock AI platform at no cost. Premium features require subscription. iOS app is currently free (planned $8.99 one-time purchase in future). Premium access works across both web and iOS.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
         
         {/* 2025 Enhanced Savings Highlight */}
         <motion.div 
@@ -1375,7 +1426,7 @@ function PremiumMarketing() {
             {/* Enhanced Plan Toggle */}
             <div className="bg-gradient-to-r from-white/80 via-white/60 to-white/80 backdrop-blur-sm rounded-2xl p-1.5 flex shadow-lg border border-white/50">
               <motion.button 
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
+                className={`flex-1 py-3 px-3 rounded-xl text-xs font-bold transition-all duration-300 relative overflow-hidden ${
                   selectedPlan === 'monthly' 
                     ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
                     : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
@@ -1395,7 +1446,7 @@ function PremiumMarketing() {
                 <span className="relative z-10">Monthly</span>
               </motion.button>
               <motion.button 
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
+                className={`flex-1 py-3 px-3 rounded-xl text-xs font-bold transition-all duration-300 relative overflow-hidden ${
                   selectedPlan === 'annual' 
                     ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white shadow-xl' 
                     : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
@@ -1414,16 +1465,48 @@ function PremiumMarketing() {
                 )}
                 <span className="relative z-10">Annual</span>
                 <motion.span 
-                  className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg"
+                  className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold shadow-lg"
                   animate={{ 
                     scale: [1, 1.1, 1],
                     rotate: [0, 5, -5, 0]
                   }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  Best Value
+                  17% Off
                 </motion.span>
               </motion.button>
+              {/* Lifetime plan only available on web (not iOS) for App Store compliance */}
+              {!Capacitor.isNativePlatform() && (
+                <motion.button 
+                  className={`flex-1 py-3 px-3 rounded-xl text-xs font-bold transition-all duration-300 relative overflow-hidden ${
+                    selectedPlan === 'lifetime' 
+                      ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white shadow-xl' 
+                      : 'text-gray-700 hover:text-gray-900 hover:bg-white/50'
+                  }`}
+                  onClick={() => setSelectedPlan('lifetime')}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {selectedPlan === 'lifetime' && (
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-orange-400/20 to-red-400/20 rounded-xl"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  )}
+                  <span className="relative z-10">Lifetime</span>
+                  <motion.span 
+                    className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-1.5 py-0.5 rounded-full font-bold shadow-lg"
+                    animate={{ 
+                      scale: [1, 1.05, 1],
+                    }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    ⭐
+                  </motion.span>
+                </motion.button>
+              )}
             </div>
             
             {/* Selected Plan Details */}
@@ -1536,6 +1619,49 @@ function PremiumMarketing() {
                 </motion.div>
               );
             })()}
+            </div>
+          </MobileCard>
+        </motion.div>
+
+        {/* Discount Code Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="mt-6"
+        >
+          <MobileCard className="backdrop-blur-xl border-2 border-amber-300 shadow-2xl overflow-hidden relative bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+            <div className="relative z-10 p-6 text-center">
+              <div className="flex items-center justify-center space-x-2 mb-3">
+                <Sparkles className="h-6 w-6 text-amber-600" />
+                <h3 className="text-2xl font-black bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
+                  Extra 10% Off Premium
+                </h3>
+                <Sparkles className="h-6 w-6 text-amber-600" />
+              </div>
+              <p className="text-gray-700 font-medium mb-4">
+                Use code at checkout for additional savings on any Premium subscription
+              </p>
+              <div className="bg-white border-2 border-dashed border-amber-400 rounded-xl p-4 inline-block">
+                <div className="flex items-center space-x-3">
+                  <code className="text-2xl font-black text-amber-700 tracking-wider">
+                    HEALTHBOX10
+                  </code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText('HEALTHBOX10');
+                      toast({ title: "Copied!", description: "Discount code copied to clipboard" });
+                    }}
+                    className="p-2 hover:bg-amber-100 rounded-lg transition-colors"
+                    data-testid="button-copy-discount-code"
+                  >
+                    <Copy className="h-5 w-5 text-amber-600" />
+                  </button>
+                </div>
+              </div>
+              <p className="text-xs text-gray-600 mt-3">
+                Valid on monthly, annual, and lifetime Premium subscriptions
+              </p>
             </div>
           </MobileCard>
         </motion.div>

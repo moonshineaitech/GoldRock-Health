@@ -1,4 +1,5 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
+import { DonationButton } from "@/components/donation-button";
 import { Link } from "wouter";
 import { 
   DollarSign, 
@@ -541,6 +542,16 @@ export default function Landing() {
             </div>
           </div>
         </MobileCard>
+      </motion.div>
+
+      {/* Donation Section */}
+      <motion.div 
+        className="px-4 mt-8"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.6, duration: 0.6 }}
+      >
+        <DonationButton variant="default" />
       </motion.div>
 
       {/* Final Premium CTA */}

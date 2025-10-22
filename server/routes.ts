@@ -26,28 +26,29 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 // Store Stripe price IDs
 let MONTHLY_PRICE_ID: string;
 let ANNUAL_PRICE_ID: string;
+let LIFETIME_PRICE_ID: string;
 
 // Setup Stripe prices on startup
 async function setupStripe() {
   try {
     console.log('Setting up Stripe prices...');
     
-    // Create or retrieve monthly price ($20)
+    // Create or retrieve monthly price ($25)
     const existingPrices = await stripe.prices.list({ limit: 100 });
     
     let monthlyPrice = existingPrices.data.find(
-      price => price.metadata?.plan === 'monthly' && price.unit_amount === 2000
+      price => price.metadata?.plan === 'monthly' && price.unit_amount === 2500
     );
     
     if (!monthlyPrice) {
       console.log('Creating monthly price...');
       const product = await stripe.products.create({
-        name: 'MedTrainer Premium Monthly',
-        description: 'Monthly subscription for MedTrainer Premium features including medical bill AI analysis and unlimited medical training',
+        name: 'GoldRock AI Premium Monthly',
+        description: 'Monthly subscription for GoldRock AI Premium features including medical bill AI analysis and unlimited medical training',
       });
       
       monthlyPrice = await stripe.prices.create({
-        unit_amount: 2000, // $20.00
+        unit_amount: 2500, // $25.00
         currency: 'usd',
         recurring: {
           interval: 'month',
@@ -60,18 +61,18 @@ async function setupStripe() {
     }
     
     let annualPrice = existingPrices.data.find(
-      price => price.metadata?.plan === 'annual' && price.unit_amount === 18900
+      price => price.metadata?.plan === 'annual' && price.unit_amount === 24900
     );
     
     if (!annualPrice) {
       console.log('Creating annual price...');
       const product = await stripe.products.create({
-        name: 'MedTrainer Premium Annual',
-        description: 'Annual subscription for MedTrainer Premium features including medical bill AI analysis and unlimited medical training (Save 21%)',
+        name: 'GoldRock AI Premium Annual',
+        description: 'Annual subscription for GoldRock AI Premium features including medical bill AI analysis and unlimited medical training (Save 17%)',
       });
       
       annualPrice = await stripe.prices.create({
-        unit_amount: 18900, // $189.00
+        unit_amount: 24900, // $249.00
         currency: 'usd',
         recurring: {
           interval: 'year',
@@ -83,12 +84,36 @@ async function setupStripe() {
       });
     }
     
+    // Create or retrieve lifetime price ($747)
+    let lifetimePrice = existingPrices.data.find(
+      price => price.metadata?.plan === 'lifetime' && price.unit_amount === 74700
+    );
+    
+    if (!lifetimePrice) {
+      console.log('Creating lifetime price...');
+      const product = await stripe.products.create({
+        name: 'GoldRock AI Premium Lifetime',
+        description: 'Lifetime access to GoldRock AI Premium features - pay once, use forever',
+      });
+      
+      lifetimePrice = await stripe.prices.create({
+        unit_amount: 74700, // $747.00
+        currency: 'usd',
+        product: product.id,
+        metadata: {
+          plan: 'lifetime',
+        },
+      });
+    }
+    
     MONTHLY_PRICE_ID = monthlyPrice.id;
     ANNUAL_PRICE_ID = annualPrice.id;
+    LIFETIME_PRICE_ID = lifetimePrice.id;
     
     console.log(`Stripe setup complete:
     - Monthly Price ID: ${MONTHLY_PRICE_ID}
-    - Annual Price ID: ${ANNUAL_PRICE_ID}`);
+    - Annual Price ID: ${ANNUAL_PRICE_ID}
+    - Lifetime Price ID: ${LIFETIME_PRICE_ID}`);
     
   } catch (error) {
     console.error('Failed to setup Stripe prices:', error);
@@ -289,6 +314,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Donation checkout session
+  app.post("/api/create-donation-session", async (req, res) => {
+    try {
+      const { amount } = req.body;
+      
+      if (!amount || amount < 100) {
+        return res.status(400).json({ message: "Minimum donation is $1" });
+      }
+
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: 'Support GoldRock AI',
+                description: 'Your donation helps keep the platform free and accessible',
+              },
+              unit_amount: amount, // Amount already in cents
+            },
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        success_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/auth-landing?donation=success`,
+        cancel_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/auth-landing?donation=cancelled`,
+      });
+
+      res.json({ sessionId: session.id, url: session.url });
+    } catch (error: any) {
+      console.error('Error creating donation session:', error);
+      res.status(500).json({ message: "Error creating donation session: " + error.message });
+    }
+  });
+
   // REBUILT SUBSCRIPTION SYSTEM - SetupIntent approach for reliable payment flow
   app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
     try {
@@ -296,8 +357,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { planType } = req.body;
       
       // Validate planType against allowlist
-      if (!planType || !['monthly', 'annual'].includes(planType)) {
-        return res.status(400).json({ message: 'Invalid plan type. Must be "monthly" or "annual"' });
+      if (!planType || !['monthly', 'annual', 'lifetime'].includes(planType)) {
+        return res.status(400).json({ message: 'Invalid plan type. Must be "monthly", "annual", or "lifetime"' });
+      }
+      
+      // Handle lifetime plan differently - it's a one-time payment, not a subscription
+      if (planType === 'lifetime') {
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ['card'],
+          line_items: [
+            {
+              price: LIFETIME_PRICE_ID,
+              quantity: 1,
+            },
+          ],
+          mode: 'payment',
+          success_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/premium?success=true&plan=lifetime`,
+          cancel_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/premium?cancelled=true`,
+          client_reference_id: userId,
+          metadata: {
+            userId,
+            planType: 'lifetime',
+          },
+        });
+        
+        return res.json({
+          sessionId: session.id,
+          sessionUrl: session.url,
+        });
       }
       
       let user = await storage.getUser(userId);
