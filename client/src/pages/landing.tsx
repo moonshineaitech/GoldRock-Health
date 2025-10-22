@@ -1,5 +1,6 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import { DonationButton } from "@/components/donation-button";
+import { BlitzDemo } from "@/components/blitz-demo";
 import { Link } from "wouter";
 import { 
   DollarSign, 
@@ -121,7 +122,25 @@ export default function Landing() {
         >
           Professional AI technology analyzes your medical bills, identifies overcharges, and generates dispute letters that hospitals legally must respond to.
         </motion.p>
-        
+      </motion.div>
+
+      {/* BLITZ DEMO - Try Before You Sign Up (Conversion Optimization) */}
+      <motion.div
+        className="px-4 mb-8"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.7 }}
+      >
+        <BlitzDemo variant="landing" />
+      </motion.div>
+
+      {/* Continue with rest of page */}
+      <motion.div 
+        className="text-center py-8 px-4 relative overflow-hidden"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.2 }}
+      >
         {/* Massive Savings Highlight */}
         <motion.div 
           className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-6 max-w-sm mx-auto shadow-lg"

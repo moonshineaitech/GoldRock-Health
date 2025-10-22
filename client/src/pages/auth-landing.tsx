@@ -1,5 +1,6 @@
 import { MobileButton } from "@/components/mobile-layout";
 import { DonationButton } from "@/components/donation-button";
+import { BlitzDemo } from "@/components/blitz-demo";
 import { Apple, Mail, ArrowRight, Shield, DollarSign, Users, CheckCircle, Star, Award, Zap, Heart, TrendingDown, Target, AlertTriangle, FileText, MessageSquare, LogIn, Menu, Home, BookOpen, Crown as PremiumIcon, Gamepad2, Download, Phone, Search, User, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
@@ -430,6 +431,16 @@ export default function AuthLanding() {
               AI-powered analysis helps you identify potential medical billing errors and find opportunities to reduce your bills. <span className="text-sm text-gray-600">Example potential savings: $2,000 - $35,000+*</span>
             </p>
           </motion.div>
+        </motion.div>
+
+        {/* BLITZ DEMO - Try Before You Sign Up (Conversion Optimization) */}
+        <motion.div
+          className="mb-8 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
+        >
+          <BlitzDemo variant="auth-landing" />
         </motion.div>
 
         {/* Value Props + Auth - Side by Side */}
