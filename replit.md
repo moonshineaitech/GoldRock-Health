@@ -8,6 +8,20 @@ GoldRock Health (Eldest AI LLC dba GoldRock AI) is an AI-powered medical bill re
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+### October 22, 2025 - Conversion Optimization & Bug Fixes
+- **BlitzDemo Component** (Conversion Funnel): Created interactive demo showing 4-step process:
+  1. Upload Bill → User uploads medical bill photo/PDF
+  2. AI Analysis → GPT-4o Vision scans for errors and overcharges
+  3. Generate Templates → Dispute letters with legal citations
+  4. Industry Secrets → Insider negotiation tactics hospitals hide
+- **Button Sizing**: Reduced to `text-sm py-2.5` for cleaner, less bulky appearance
+- **Industry Secrets Section**: Added value-add content revealing insider billing tactics
+- **Demo Flow**: Progressive step animation with toast confirmations and example $8,700 savings
+- **Donation Button**: Verified `/api/create-donation-session` endpoint working (logs show 200 responses)
+- **Deployment**: BlitzDemo added to both `/` landing and `/auth-landing` pages for maximum visibility
+
 ## System Architecture
 
 ### Frontend Architecture
