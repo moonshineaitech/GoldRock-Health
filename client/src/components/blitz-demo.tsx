@@ -138,6 +138,14 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
     setCurrentStep(1);
     setAnalysisStep(0);
 
+    // Animate through steps while API processes
+    const stepInterval = setInterval(() => {
+      setAnalysisStep(prev => {
+        if (prev < analysisSteps.length - 1) return prev + 1;
+        return prev;
+      });
+    }, 1500);
+
     try {
       // Create FormData with files and metadata
       const formData = new FormData();
@@ -148,21 +156,11 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
       // Add bill metadata as JSON
       formData.append('metadata', JSON.stringify(billDetails));
 
-      // Animate through steps while API processes
-      const stepInterval = setInterval(() => {
-        setAnalysisStep(prev => {
-          if (prev < analysisSteps.length - 1) return prev + 1;
-          return prev;
-        });
-      }, 1500);
-
       // Call REAL API endpoint
       const response = await fetch('/api/upload-bills', {
         method: 'POST',
         body: formData
       });
-
-      clearInterval(stepInterval);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -217,6 +215,9 @@ export function BlitzDemo({ variant = "landing" }: BlitzDemoProps) {
         description: error instanceof Error ? error.message : "Please try again or use sample data",
         variant: "destructive",
       });
+    } finally {
+      // Always clear interval to prevent lingering timers
+      clearInterval(stepInterval);
     }
   };
 

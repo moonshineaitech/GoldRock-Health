@@ -130,11 +130,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       files: 5, // Maximum 5 files
     },
     fileFilter: (req, file, cb) => {
-      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
       if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
       } else {
-        cb(new Error("Invalid file type. Only JPEG, PNG, and WebP image files are allowed."));
+        cb(new Error("Invalid file type. Only JPEG, PNG, WebP images and PDF files are allowed."));
       }
     },
   });
