@@ -511,16 +511,6 @@ export function BlitzDemo() {
           <p className="text-blue-100 text-sm mb-4">
             Sign up free to analyze your actual bills with AI + access complete template library
           </p>
-          <Link href="/auth-landing">
-            <MobileButton
-              className="w-full bg-white text-blue-600 hover:bg-gray-100 font-bold text-sm py-3"
-              data-testid="button-signup-results"
-            >
-              <Zap className="h-4 w-4 mr-2" />
-              Sign Up Free - Analyze Real Bills
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </MobileButton>
-          </Link>
           <button
             onClick={() => {
               setCurrentStep(0);
