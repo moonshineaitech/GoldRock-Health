@@ -994,6 +994,14 @@ function PremiumMarketing() {
       const data = await createSubscription.mutateAsync({ planType: planId });
       console.log('Subscription setup response:', data);
       
+      // Handle lifetime plan (Stripe Checkout Session)
+      if (data.sessionUrl) {
+        console.log('Redirecting to Stripe Checkout for lifetime plan:', data.sessionUrl);
+        window.location.href = data.sessionUrl;
+        return;
+      }
+      
+      // Handle recurring plans (SetupIntent flow)
       if (data.clientSecret && data.setupIntentId) {
         setSetupData({
           clientSecret: data.clientSecret,

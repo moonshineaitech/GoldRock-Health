@@ -21,11 +21,7 @@ export function DonationButton({ variant = "default", className = "" }: Donation
     setIsProcessing(true);
     
     try {
-      const response = await apiRequest<{ sessionId: string; url: string }>({
-        url: "/api/create-donation-session",
-        method: "POST",
-        body: { amount }
-      });
+      const response = await apiRequest("POST", "/api/create-donation-session", { amount }) as { sessionId: string; url: string };
 
       if (response.url) {
         window.location.href = response.url;
