@@ -1866,10 +1866,12 @@ What would you like to do first? I'm here to help you find every possible saving
           </div>
         )}
 
-        {/* Elite Medical Chat Interface */}
-        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50/40 via-teal-50/30 to-green-50/40 px-4 pt-4 lg:px-8 lg:py-6 relative">
-          {/* Premium background pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(16,185,129,0.1),rgba(255,255,255,0))] pointer-events-none" />
+        {/* Ultra-Premium iOS Chat Interface */}
+        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50/30 via-teal-50/20 to-white px-4 pt-6 lg:px-8 lg:py-8 relative">
+          {/* Animated Premium Background Pattern */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(16,185,129,0.08),rgba(255,255,255,0))] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(20,184,166,0.06),rgba(255,255,255,0))] pointer-events-none" />
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-200/30 to-transparent" />
           
           <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8 lg:max-w-4xl lg:mx-auto relative z-10">
             
@@ -1881,88 +1883,141 @@ What would you like to do first? I'm here to help you find every possible saving
               />
             )}
             
-            {/* Welcome State with Enhanced Call-to-Action */}
+            {/* iOS-Style Welcome Hero Card */}
             {localMessages.length === 0 && !conversationStarted && showWorkflowSelection && (
-              <div className="text-center py-8 lg:py-16">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="space-y-4"
-                >
-                  <div className="w-16 h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-100 via-teal-100 to-green-200 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
-                    <Brain className="h-8 w-8 lg:h-12 lg:w-12 text-emerald-700" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-2 lg:mb-4">Ready to Save on Your Medical Bills?</h3>
-                    <p className="text-sm lg:text-lg text-gray-600 mb-4 lg:mb-8 max-w-md lg:max-w-3xl mx-auto">
-                      Our AI has helped patients save over $50M in billing errors. Select a workflow above or start chatting!
-                    </p>
-                    <div className="flex items-center justify-center gap-6 lg:gap-12 text-xs lg:text-sm">
-                      <div className="flex items-center gap-1">
-                        <Target className="h-3 w-3 text-emerald-600" />
-                        <span className="text-gray-600">94% Success Rate</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <DollarSign className="h-3 w-3 text-emerald-600" />
-                        <span className="text-gray-600">$12K Avg Savings</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Shield className="h-3 w-3 text-emerald-600" />
-                        <span className="text-gray-600">HIPAA Secure</span>
-                      </div>
+              <motion.div
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
+                className="mx-auto max-w-2xl"
+              >
+                <div className="relative bg-white/70 backdrop-blur-2xl border border-emerald-200/50 rounded-[32px] p-8 lg:p-12 shadow-2xl shadow-emerald-500/10 overflow-hidden">
+                  {/* Glassmorphic Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-teal-50/50 to-green-50/60 pointer-events-none" />
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-teal-400/10 rounded-full blur-3xl" />
+                  
+                  <div className="relative z-10 text-center space-y-6">
+                    {/* Animated Icon */}
+                    <motion.div 
+                      className="w-20 h-20 lg:w-28 lg:h-28 bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 rounded-[24px] flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/30"
+                      animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <Brain className="h-10 w-10 lg:h-14 lg:w-14 text-white" strokeWidth={2} />
+                    </motion.div>
+                    
+                    {/* Heading */}
+                    <div>
+                      <h3 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-3 lg:mb-4 leading-tight">
+                        Ready to Save on Your<br />Medical Bills?
+                      </h3>
+                      <p className="text-base lg:text-xl text-gray-700 mb-6 lg:mb-8 max-w-lg mx-auto leading-relaxed">
+                        Our AI has helped patients save over <span className="font-bold text-emerald-600">$50M</span> in billing errors
+                      </p>
+                    </div>
+                    
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-3 gap-4 lg:gap-6 max-w-xl mx-auto">
+                      <motion.div 
+                        className="bg-white/90 backdrop-blur-sm border border-emerald-200/50 rounded-2xl p-4 shadow-lg"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                          <Target className="h-5 w-5 text-emerald-600" />
+                        </div>
+                        <div className="text-2xl lg:text-3xl font-bold text-emerald-600 mb-1">94%</div>
+                        <div className="text-xs text-gray-600">Success</div>
+                      </motion.div>
+                      
+                      <motion.div 
+                        className="bg-white/90 backdrop-blur-sm border border-teal-200/50 rounded-2xl p-4 shadow-lg"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                          <DollarSign className="h-5 w-5 text-teal-600" />
+                        </div>
+                        <div className="text-2xl lg:text-3xl font-bold text-teal-600 mb-1">$12K</div>
+                        <div className="text-xs text-gray-600">Avg Save</div>
+                      </motion.div>
+                      
+                      <motion.div 
+                        className="bg-white/90 backdrop-blur-sm border border-green-200/50 rounded-2xl p-4 shadow-lg"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                          <Shield className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div className="text-lg lg:text-xl font-bold text-green-600 mb-1">HIPAA</div>
+                        <div className="text-xs text-gray-600">Secure</div>
+                      </motion.div>
                     </div>
                   </div>
-                </motion.div>
-              </div>
-            )}
-
-            {/* iOS-Style Upload Suggestion */}
-            {localMessages.length === 1 && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="text-center pb-4"
-              >
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  variant="outline"
-                  size="sm"
-                  className="h-10 px-4 rounded-2xl bg-white/80 backdrop-blur-sm border-gray-200/50 text-gray-600 hover:text-emerald-600 hover:border-emerald-200 shadow-sm"
-                  data-testid="quick-upload-button"
-                >
-                  <Camera className="h-4 w-4 mr-2" />
-                  Upload Bill Images
-                </Button>
+                </div>
               </motion.div>
             )}
 
-            {/* Elite iOS Healthcare Chat Messages */}
+            {/* Premium Upload Prompt */}
+            {localMessages.length === 1 && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.5, type: "spring", stiffness: 300 }}
+                className="flex justify-center pb-4"
+              >
+                <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    variant="outline"
+                    className="h-11 px-6 rounded-[20px] bg-gradient-to-br from-white/90 to-emerald-50/80 backdrop-blur-xl border border-emerald-200/60 text-emerald-700 hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-300 shadow-lg hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-300 font-semibold"
+                    data-testid="quick-upload-button"
+                  >
+                    <Camera className="h-5 w-5 mr-2.5" strokeWidth={2.5} />
+                    Upload Bill Images
+                  </Button>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Ultra-Premium iOS Chat Messages */}
             {localMessages.map((message, index) => (
               <motion.div
                 key={message.id}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                initial={{ opacity: 0, y: 25, scale: 0.92 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ 
-                  delay: index * 0.08, 
-                  duration: 0.5,
+                  delay: index * 0.06, 
+                  duration: 0.4,
                   type: "spring",
-                  stiffness: 300,
-                  damping: 24
+                  stiffness: 350,
+                  damping: 25
                 }}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mb-4`}
+                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} mb-3 lg:mb-4`}
               >
-                <div className={`max-w-[85%] group relative ${
-                  message.role === "user" 
-                    ? "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 text-white rounded-[28px] rounded-br-md shadow-2xl shadow-emerald-500/30" 
-                    : "bg-white/90 backdrop-blur-2xl border border-emerald-100/40 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10"
-                } px-6 py-5 relative overflow-hidden`}>
-                  {/* Premium Glass Effect Layer */}
+                <motion.div 
+                  className={`max-w-[85%] lg:max-w-[75%] group relative ${
+                    message.role === "user" 
+                      ? "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 rounded-[26px] rounded-br-lg shadow-xl shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/40" 
+                      : "bg-white/95 backdrop-blur-2xl border border-emerald-100/50 rounded-[26px] rounded-bl-lg shadow-xl shadow-gray-900/8 hover:shadow-2xl hover:shadow-gray-900/12"
+                  } px-5 lg:px-6 py-4 lg:py-5 relative overflow-hidden transition-shadow duration-300`}
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 500 }}
+                >
+                  {/* Ultra-Refined Glass Effect Layer */}
                   <div className={`absolute inset-0 ${
                     message.role === "user"
-                      ? "bg-gradient-to-br from-white/25 via-transparent to-transparent"
-                      : "bg-gradient-to-br from-emerald-50/40 via-white/50 to-transparent"
+                      ? "bg-gradient-to-br from-white/20 via-white/5 to-transparent"
+                      : "bg-gradient-to-br from-emerald-50/60 via-white/40 to-transparent"
+                  } pointer-events-none`} />
+                  
+                  {/* Subtle Border Glow */}
+                  <div className={`absolute inset-0 rounded-[26px] ${
+                    message.role === "user" 
+                      ? "rounded-br-lg ring-1 ring-inset ring-white/20" 
+                      : "rounded-bl-lg ring-1 ring-inset ring-emerald-100/30"
                   } pointer-events-none`} />
                   
                   {/* Content */}
@@ -2075,7 +2130,7 @@ What would you like to do first? I'm here to help you find every possible saving
                     </div>
                   </div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
 
@@ -2133,28 +2188,55 @@ What would you like to do first? I'm here to help you find every possible saving
           </div>
         </div>
 
-        {/* iOS-Style Input Composer */}
-        <div className="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-emerald-100/30 p-4 lg:p-6 safe-area-inset-bottom lg:relative lg:bg-gradient-to-r lg:from-white lg:to-emerald-50/20 lg:border lg:border-emerald-100/30 lg:rounded-2xl lg:m-4 lg:shadow-lg">
-          {/* Quick Upload Hint */}
+        {/* Ultra-Modern iOS Input Composer */}
+        <div className="sticky bottom-0 bg-gradient-to-b from-transparent via-white/80 to-white/95 backdrop-blur-2xl border-t border-emerald-100/30 p-4 lg:p-6 safe-area-inset-bottom">
+          {/* Premium Pro Tip Card */}
           {localMessages.length === 0 && !conversationStarted && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-3 text-center"
+              initial={{ opacity: 0, y: 15, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              className="mb-4"
             >
-              <p className="text-sm lg:text-base text-gray-600 mb-2 lg:mb-3">
-                💡 <span className="font-medium">Pro Tip:</span> Upload bill images for instant AI analysis
-              </p>
-              <Button
-                onClick={() => setShowOptionalIntakePopup(true)}
-                variant="outline"
-                size="sm"
-                className="h-9 lg:h-11 px-4 lg:px-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 hover:border-emerald-300 lg:text-base"
-                data-testid="quick-capture-button"
-              >
-                <Camera className="h-4 w-4 mr-2" />
-                Quick Info Capture
-              </Button>
+              <div className="relative bg-gradient-to-br from-emerald-50/90 via-teal-50/80 to-green-50/70 backdrop-blur-xl border border-emerald-200/50 rounded-3xl p-4 lg:p-5 shadow-lg shadow-emerald-500/10 overflow-hidden">
+                {/* Animated Background Elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl animate-pulse" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-teal-400/10 rounded-full blur-2xl animate-pulse delay-700" />
+                
+                <div className="relative z-10 flex items-center gap-3 lg:gap-4">
+                  {/* Animated Bulb Icon */}
+                  <motion.div 
+                    className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30 flex-shrink-0"
+                    animate={{ rotate: [0, 10, -10, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Sparkles className="h-6 w-6 lg:h-7 lg:w-7 text-white" strokeWidth={2.5} />
+                  </motion.div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs lg:text-sm font-bold text-emerald-700 tracking-tight">Pro Tip</span>
+                      <div className="h-1 w-1 rounded-full bg-emerald-400" />
+                      <span className="text-xs text-emerald-600">Upload for instant analysis</span>
+                    </div>
+                    <p className="text-sm lg:text-base text-gray-700 font-medium leading-snug">
+                      Upload bill images for instant AI analysis
+                    </p>
+                  </div>
+                  
+                  {/* Enhanced Quick Capture Button */}
+                  <Button
+                    onClick={() => setShowOptionalIntakePopup(true)}
+                    size="sm"
+                    className="h-12 lg:h-14 px-5 lg:px-6 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 hover:from-emerald-600 hover:via-teal-600 hover:to-green-700 text-white shadow-xl shadow-emerald-500/40 hover:shadow-2xl hover:shadow-emerald-500/50 border-0 font-semibold text-sm lg:text-base transition-all duration-300 flex-shrink-0"
+                    data-testid="quick-capture-button"
+                  >
+                    <Camera className="h-4 w-4 lg:h-5 lg:w-5 mr-2" strokeWidth={2.5} />
+                    <span className="hidden sm:inline">Quick Info Capture</span>
+                    <span className="sm:hidden">Capture</span>
+                  </Button>
+                </div>
+              </div>
             </motion.div>
           )}
           
@@ -2202,7 +2284,7 @@ What would you like to do first? I'm here to help you find every possible saving
                     if (itemizedWorkflow) {
                       // Auto-generate and send the itemized bill request prompt
                       const hospitalName = intakeState.provider || "[Hospital Name]";
-                      const billDate = intakeState.date || "recently";
+                      const billDate = intakeState.dates || "recently";
                       sendMessage(`I need help requesting an itemized medical bill. The bill is from ${hospitalName} ${billDate}. Can you generate a professional request letter for me?`);
                     }
                   }}
@@ -2225,52 +2307,73 @@ What would you like to do first? I'm here to help you find every possible saving
             </motion.div>
           )}
 
-          <div className="flex items-center space-x-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => fileInputRef.current?.click()}
-              className="w-11 h-11 lg:w-14 lg:h-14 p-0 rounded-2xl bg-gray-100/80 hover:bg-gray-200/80 border-0"
-              data-testid="attach-file-button"
-              disabled={uploadingFiles}
-            >
-              <Paperclip className="h-5 w-5 lg:h-6 lg:w-6 text-gray-600" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowOptionalIntakePopup(true)}
-              className="w-11 h-11 lg:w-14 lg:h-14 p-0 rounded-2xl bg-emerald-100/80 hover:bg-emerald-200/80 border-0"
-              data-testid="quick-info-button"
-              title="Quick Info Capture"
-            >
-              <Brain className="h-5 w-5 lg:h-6 lg:w-6 text-emerald-600" />
-            </Button>
-            
-            <div className="flex-1 relative">
-              <Input
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Tell me about your bill..."
-                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-emerald-200/40 bg-white/80 backdrop-blur-sm focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 placeholder:text-gray-500 text-gray-900 text-base lg:text-lg shadow-sm transition-all duration-200"
-                disabled={isTyping}
-                data-testid="message-input"
-              />
+          {/* Enhanced iOS Input Bar */}
+          <div className="flex items-center gap-2 lg:gap-3">
+            {/* Upload Button - iOS Style */}
+            <motion.div whileTap={{ scale: 0.92 }}>
               <Button
-                onClick={() => sendMessage()}
-                disabled={!inputMessage.trim() || isTyping}
+                variant="ghost"
                 size="sm"
-                className="absolute right-1.5 lg:right-2 top-1.5 lg:top-2 w-8 h-8 lg:w-10 lg:h-10 p-0 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-md hover:shadow-lg transition-all duration-200"
-                data-testid="send-message-button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-12 h-12 lg:w-14 lg:h-14 p-0 rounded-[18px] bg-white/90 backdrop-blur-sm hover:bg-gray-50 border border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200"
+                data-testid="attach-file-button"
+                disabled={uploadingFiles}
               >
-                {isTyping ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Send className="h-4 w-4" />
-                )}
+                <Paperclip className="h-5 w-5 lg:h-6 lg:w-6 text-gray-600" strokeWidth={2} />
               </Button>
+            </motion.div>
+            
+            {/* Quick Capture Button - Emerald */}
+            <motion.div whileTap={{ scale: 0.92 }}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowOptionalIntakePopup(true)}
+                className="w-12 h-12 lg:w-14 lg:h-14 p-0 rounded-[18px] bg-gradient-to-br from-emerald-100 to-teal-100 hover:from-emerald-200 hover:to-teal-200 border border-emerald-200/50 shadow-sm hover:shadow-md transition-all duration-200"
+                data-testid="quick-info-button"
+                title="Quick Info Capture"
+              >
+                <Brain className="h-5 w-5 lg:h-6 lg:w-6 text-emerald-600" strokeWidth={2.5} />
+              </Button>
+            </motion.div>
+            
+            {/* Premium Message Input Container */}
+            <div className="flex-1 relative">
+              <div className="relative bg-white/90 backdrop-blur-xl border border-emerald-200/50 rounded-[24px] shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                {/* Glassmorphic gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/30 via-transparent to-teal-50/30 pointer-events-none" />
+                
+                <Input
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Tell me about your bill..."
+                  className="relative z-10 h-12 lg:h-14 pr-14 lg:pr-16 pl-5 lg:pl-6 rounded-[24px] border-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-emerald-500/40 placeholder:text-gray-500 text-gray-900 text-base lg:text-lg font-medium"
+                  disabled={isTyping}
+                  data-testid="message-input"
+                />
+                
+                {/* iOS-Style Send Button */}
+                <motion.div
+                  className="absolute right-1.5 lg:right-2 top-1.5 lg:top-2"
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Button
+                    onClick={() => sendMessage()}
+                    disabled={!inputMessage.trim() || isTyping}
+                    size="sm"
+                    className="w-9 h-9 lg:w-10 lg:h-10 p-0 rounded-[16px] bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 hover:from-emerald-600 hover:via-teal-600 hover:to-green-700 shadow-lg hover:shadow-xl shadow-emerald-500/40 hover:shadow-emerald-500/60 border-0 transition-all duration-300 disabled:opacity-50 disabled:shadow-none"
+                    data-testid="send-message-button"
+                  >
+                    {isTyping ? (
+                      <Loader2 className="h-4 w-4 lg:h-5 lg:w-5 animate-spin text-white" strokeWidth={2.5} />
+                    ) : (
+                      <Send className="h-4 w-4 lg:h-5 lg:w-5 text-white" strokeWidth={2.5} />
+                    )}
+                  </Button>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
