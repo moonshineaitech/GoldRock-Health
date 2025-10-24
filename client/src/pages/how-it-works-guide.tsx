@@ -247,9 +247,9 @@ export default function HowItWorksGuide() {
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <span className="font-semibold text-gray-700">Progress</span>
-              <span className="font-bold text-emerald-600">{completedSteps.length} / {JOURNEY_STEPS.length} Steps</span>
+              <span className="font-bold text-emerald-600" data-testid="text-progress-count">{completedSteps.length} / {JOURNEY_STEPS.length} Steps</span>
             </div>
-            <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-3 bg-gray-200 rounded-full overflow-hidden" data-testid="progress-bar">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
@@ -315,21 +315,21 @@ export default function HowItWorksGuide() {
                         <CheckCircle className="h-4 w-4 text-emerald-600" />
                       )}
                     </div>
-                    <h3 className="text-2xl font-black text-gray-900 mb-1">{currentStepData.title}</h3>
-                    <p className="text-sm font-semibold text-gray-600">{currentStepData.subtitle}</p>
+                    <h3 className="text-2xl font-black text-gray-900 mb-1" data-testid={`text-step-title-${currentStepData.id}`}>{currentStepData.title}</h3>
+                    <p className="text-sm font-semibold text-gray-600" data-testid={`text-step-subtitle-${currentStepData.id}`}>{currentStepData.subtitle}</p>
                   </div>
                 </div>
 
                 {/* Meta Info */}
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-white px-3 py-1 rounded-full text-xs font-semibold text-gray-700 flex items-center gap-1">
+                  <span className="bg-white px-3 py-1 rounded-full text-xs font-semibold text-gray-700 flex items-center gap-1" data-testid={`badge-time-${currentStepData.id}`}>
                     <Clock className="h-3 w-3" />
                     {currentStepData.timeEstimate}
                   </span>
-                  <span className="bg-white px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
+                  <span className="bg-white px-3 py-1 rounded-full text-xs font-semibold text-gray-700" data-testid={`badge-difficulty-${currentStepData.id}`}>
                     {currentStepData.difficulty}
                   </span>
-                  <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                  <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1" data-testid={`badge-success-${currentStepData.id}`}>
                     <Star className="h-3 w-3" />
                     {currentStepData.successRate} Success
                   </span>
@@ -338,7 +338,7 @@ export default function HowItWorksGuide() {
 
               {/* Description */}
               <MobileCard className="p-6">
-                <p className="text-base text-gray-700 leading-relaxed">{currentStepData.description}</p>
+                <p className="text-base text-gray-700 leading-relaxed" data-testid={`text-step-description-${currentStepData.id}`}>{currentStepData.description}</p>
               </MobileCard>
 
               {/* Detailed Information */}
@@ -351,7 +351,7 @@ export default function HowItWorksGuide() {
                   {currentStepData.detailedInfo.map((info, index) => (
                     <li key={index} className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{info}</span>
+                      <span className="text-sm text-gray-700" data-testid={`text-step-detail-${currentStepData.id}-${index}`}>{info}</span>
                     </li>
                   ))}
                 </ul>
@@ -365,7 +365,7 @@ export default function HowItWorksGuide() {
                 </h4>
                 <ul className="space-y-2">
                   {currentStepData.tips.map((tip, index) => (
-                    <li key={index} className="text-sm text-amber-900 font-medium">
+                    <li key={index} className="text-sm text-amber-900 font-medium" data-testid={`text-step-tip-${currentStepData.id}-${index}`}>
                       {tip}
                     </li>
                   ))}
@@ -413,21 +413,21 @@ export default function HowItWorksGuide() {
             animate={{ opacity: 1, scale: 1 }}
             className="mt-6"
           >
-            <MobileCard className="p-8 bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-center">
+            <MobileCard className="p-8 bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-center" data-testid="completion-card">
               <Award className="h-16 w-16 mx-auto mb-4" />
-              <h3 className="text-2xl font-black mb-2">Congratulations! 🎉</h3>
-              <p className="text-emerald-50 mb-6">
+              <h3 className="text-2xl font-black mb-2" data-testid="text-completion-title">Congratulations! 🎉</h3>
+              <p className="text-emerald-50 mb-6" data-testid="text-completion-message">
                 You've learned the complete process. Ready to start saving thousands?
               </p>
               <div className="space-y-3">
                 <Link href="/bill-ai">
-                  <MobileButton className="w-full bg-white text-emerald-600 hover:bg-emerald-50">
+                  <MobileButton className="w-full bg-white text-emerald-600 hover:bg-emerald-50" data-testid="button-upload-first-bill">
                     <Upload className="h-4 w-4 mr-2" />
                     Upload Your First Bill
                   </MobileButton>
                 </Link>
                 <Link href="/">
-                  <MobileButton variant="secondary" className="w-full bg-emerald-700 hover:bg-emerald-800 text-white border-white">
+                  <MobileButton variant="secondary" className="w-full bg-emerald-700 hover:bg-emerald-800 text-white border-white" data-testid="button-back-home">
                     Back to Home
                   </MobileButton>
                 </Link>
@@ -444,15 +444,15 @@ export default function HowItWorksGuide() {
           </h3>
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-black text-emerald-600 mb-1">$12K</div>
+              <div className="text-2xl font-black text-emerald-600 mb-1" data-testid="stat-avg-savings">$12K</div>
               <div className="text-xs text-gray-600">Avg Savings</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-black text-blue-600 mb-1">87%</div>
+              <div className="text-2xl font-black text-blue-600 mb-1" data-testid="stat-success-rate">87%</div>
               <div className="text-xs text-gray-600">Success Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-black text-purple-600 mb-1">30d</div>
+              <div className="text-2xl font-black text-purple-600 mb-1" data-testid="stat-avg-resolution">30d</div>
               <div className="text-xs text-gray-600">Avg Resolution</div>
             </div>
           </div>
