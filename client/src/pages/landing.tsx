@@ -259,6 +259,80 @@ export default function Landing() {
         </motion.p>
       </motion.div>
 
+      {/* 🎯 EASILY LOWER YOUR MEDICAL BILLS - GrantedHealth Style */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-12 bg-gradient-to-br from-emerald-50/80 via-teal-50/80 to-cyan-50/80"
+        data-testid="section-how-we-help"
+      >
+        <div className="max-w-2xl mx-auto text-center">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-black text-gray-900 mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Easily lower your medical bills
+          </motion.h2>
+          
+          <motion.p
+            className="text-lg text-gray-700 mb-8 font-medium"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            AI analyzes your bills, finds savings opportunities, and provides expert negotiation strategies
+          </motion.p>
+
+          {/* Checkmarked Benefits Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {[
+              { label: "Billing errors", desc: "Catch duplicate charges and incorrect coding" },
+              { label: "Early-pay discounts", desc: "Negotiate upfront payment reductions" },
+              { label: "Insurance denials", desc: "Get professional appeal templates" },
+              { label: "Income-based discounts", desc: "Qualify for financial assistance programs" }
+            ].map((benefit, index) => (
+              <motion.div
+                key={benefit.label}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 + index * 0.05 }}
+                className="flex items-start gap-3 bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-emerald-100 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="flex-shrink-0 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mt-0.5">
+                  <Check className="h-5 w-5 text-white" strokeWidth={3} />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-bold text-gray-900 text-base mb-1">{benefit.label}</h3>
+                  <p className="text-sm text-gray-600">{benefit.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <Link href="/bill-ai">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <MobileButton className="mx-auto max-w-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold shadow-xl" data-testid="button-find-savings">
+                Find Savings
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </MobileButton>
+            </motion.div>
+          </Link>
+        </div>
+      </motion.div>
+
       {/* 💎 FEATURED RESOURCES - DoNotPay Style */}
       <motion.div
         initial={{ opacity: 0 }}
