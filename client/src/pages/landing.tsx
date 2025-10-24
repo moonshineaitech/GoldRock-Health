@@ -288,7 +288,7 @@ export default function Landing() {
           </p>
         </div>
 
-        {/* Quick Actions */}
+        {/* Quick Actions - Enhanced Glassmorphism */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-w-3xl mx-auto">
           {[
             { icon: Zap, label: "Quick Analyzer", path: "/quick-analyzer", color: "from-blue-600 to-indigo-600", bgColor: "from-blue-50 to-indigo-50" },
@@ -303,16 +303,30 @@ export default function Landing() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.05, duration: 0.4 }}
+                transition={{ 
+                  delay: index * 0.05, 
+                  duration: 0.4,
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25
+                }}
                 whileHover={{ scale: 1.05, y: -4 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <MobileCard className={`bg-gradient-to-br ${item.bgColor} border-2 border-white/50 text-center h-full`}>
-                  <div className={`w-12 h-12 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg`}>
-                    <item.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
+                <div className={`relative overflow-hidden bg-white/90 backdrop-blur-2xl border border-white/40 rounded-2xl p-4 text-center h-full shadow-xl hover:shadow-2xl transition-all duration-300 group`}>
+                  {/* Glassmorphic overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.bgColor} opacity-40 pointer-events-none`} />
+                  
+                  {/* Inset ring */}
+                  <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
+                  
+                  <div className="relative z-10">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <item.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
+                    </div>
+                    <h3 className="font-black text-gray-900 text-sm leading-tight">{item.label}</h3>
                   </div>
-                  <h3 className="font-black text-gray-900 text-sm leading-tight">{item.label}</h3>
-                </MobileCard>
+                </div>
               </motion.div>
             </Link>
           ))}
@@ -335,13 +349,26 @@ export default function Landing() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.1 + index * 0.08, duration: 0.4 }}
-                whileHover={{ scale: 1.02, x: 4 }}
+                transition={{ 
+                  delay: 0.1 + index * 0.08, 
+                  duration: 0.4,
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25
+                }}
+                whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
+                className="block"
               >
-                <MobileCard className="bg-white border-2 border-white/80 shadow-lg">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 bg-gradient-to-r ${resource.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-md`}>
+                <div className="relative overflow-hidden bg-white/95 backdrop-blur-2xl border border-white/40 rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                  {/* Glassmorphic overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/30 via-white/20 to-transparent pointer-events-none" />
+                  
+                  {/* Inset ring */}
+                  <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-emerald-100/30 pointer-events-none" />
+                  
+                  <div className="flex items-center gap-3 relative z-10">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${resource.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300`}>
                       <resource.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
                     </div>
                     <div className="flex-1">
@@ -358,9 +385,9 @@ export default function Landing() {
                         </span>
                       )}
                     </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
-                </MobileCard>
+                </div>
               </motion.div>
             </Link>
           ))}
@@ -567,20 +594,29 @@ export default function Landing() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: feature.delay, duration: 0.4 }}
+                transition={{ 
+                  delay: feature.delay, 
+                  duration: 0.4,
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25
+                }}
                 data-testid={`feature-${index}`}
               >
                 <Link href="/premium">
                   <motion.div
                     whileHover={{ scale: 1.05, y: -4 }}
                     whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    <MobileCard className="h-36 backdrop-blur-xl border-2 border-white/50 shadow-lg cursor-pointer overflow-hidden group relative">
+                    <div className="h-36 backdrop-blur-xl bg-white/90 border border-white/40 rounded-2xl shadow-lg cursor-pointer overflow-hidden group relative">
                       <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
                       <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
                       
-                      <div className="flex flex-col items-center justify-center h-full space-y-2 relative z-10 text-center">
+                      {/* Inset ring */}
+                      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
+                      
+                      <div className="flex flex-col items-center justify-center h-full space-y-2 relative z-10 text-center px-3">
                         <motion.div 
                           className={`w-12 h-12 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden`}
                           whileHover={{ scale: 1.15, rotate: 10 }}
@@ -594,7 +630,7 @@ export default function Landing() {
                           <p className="text-xs text-gray-600 font-medium">{feature.desc}</p>
                         </div>
                       </div>
-                    </MobileCard>
+                    </div>
                   </motion.div>
                 </Link>
               </motion.div>
@@ -637,21 +673,30 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: feature.delay, duration: 0.5 }}
+                transition={{ 
+                  delay: feature.delay, 
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25
+                }}
               >
                 <Link href="/bill-ai">
                   <motion.div
                     whileHover={{ scale: 1.02, y: -3 }}
                     whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    <MobileCard className="backdrop-blur-xl border-2 border-white/50 shadow-xl cursor-pointer overflow-hidden group relative">
+                    <div className="backdrop-blur-xl bg-white/95 border border-white/40 rounded-2xl p-4 shadow-xl cursor-pointer overflow-hidden group relative">
                       <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
                       <div className={`absolute inset-0 bg-gradient-to-br ${
                         feature.color === 'red' ? 'from-red-500/10 to-orange-500/10' :
                         feature.color === 'emerald' ? 'from-emerald-500/10 to-teal-500/10' :
                         'from-purple-500/10 to-indigo-500/10'
                       } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                      
+                      {/* Inset ring */}
+                      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
                       
                       <div className="flex items-center gap-4 relative z-10">
                         <motion.div 
@@ -688,7 +733,7 @@ export default function Landing() {
                           <ArrowRight className="h-5 w-5 text-gray-400" />
                         </motion.div>
                       </div>
-                    </MobileCard>
+                    </div>
                   </motion.div>
                 </Link>
               </motion.div>
