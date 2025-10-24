@@ -2280,12 +2280,9 @@ What would you like to do first? I'm here to help you find every possible saving
                   label="Request itemized bill"
                   variant="default"
                   onClick={() => {
-                    const itemizedWorkflow = BILL_AI_WORKFLOWS.find(w => w.id === 'itemized-bill-request');
+                    const itemizedWorkflow = BILL_AI_WORKFLOWS.find(w => w.id === 'get-itemized-bill');
                     if (itemizedWorkflow) {
-                      // Auto-generate and send the itemized bill request prompt
-                      const hospitalName = intakeState.provider || "[Hospital Name]";
-                      const billDate = intakeState.dates || "recently";
-                      sendMessage(`I need help requesting an itemized medical bill. The bill is from ${hospitalName} ${billDate}. Can you generate a professional request letter for me?`);
+                      initializeWorkflowConversation(itemizedWorkflow);
                     }
                   }}
                 />
@@ -2770,7 +2767,7 @@ What would you like to do first? I'm here to help you find every possible saving
                       title: "Request Itemized",
                       desc: "Generate request letter",
                       onClick: () => {
-                        const workflow = BILL_AI_WORKFLOWS.find(w => w.id === 'itemized-bill-request');
+                        const workflow = BILL_AI_WORKFLOWS.find(w => w.id === 'get-itemized-bill');
                         if (workflow) initializeWorkflowConversation(workflow);
                         setShowFloatingQuickActions(false);
                       },

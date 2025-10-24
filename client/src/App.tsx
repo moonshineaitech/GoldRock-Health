@@ -44,6 +44,7 @@ import ResourcesHub from "@/pages/resources-hub";
 import Templates from "@/pages/templates";
 import InsuranceDenials from "@/pages/insurance-denials";
 import ImportantDisclaimer from "@/pages/important-disclaimer";
+import HowItWorksGuide from "@/pages/how-it-works-guide";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -185,6 +186,7 @@ function Router() {
       <Route path="/quick-analyzer" component={QuickAnalyzer} />
       <Route path="/provider-contacts" component={ProviderContacts} />
       <Route path="/settings" component={Settings} />
+      <Route path="/how-it-works-guide" component={HowItWorksGuide} />
       <Route path="/blitz-demo">
         <AIRouteGuard path="/blitz-demo">
           <BlitzDemo />
