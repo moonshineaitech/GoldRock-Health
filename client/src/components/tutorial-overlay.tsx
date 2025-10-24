@@ -59,16 +59,14 @@ export function TutorialOverlay({
 
           // Scroll element into view
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-          // Calculate tooltip position based on step position
-          const tooltipPos = calculateTooltipPosition(rect, currentStep.position);
-          setTooltipPosition(tooltipPos);
         } else {
-          // Element not found, show center tooltip anyway
+          // Element not found
           setHighlightRect(null);
-          setTooltipPosition(null);
         }
-      }, 500); // Increased wait time for navigation and rendering
+        
+        // Always center the tooltip regardless of element position
+        setTooltipPosition(null);
+      }, 500);
 
       return () => clearTimeout(timeout);
     } else {
