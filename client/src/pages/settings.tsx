@@ -1,17 +1,22 @@
 import { MobileLayout, MobileCard } from "@/components/mobile-layout";
 import { AccountDeletion } from "@/components/account-deletion";
 import { useAuth } from "@/hooks/useAuth";
+import { useTutorial } from "@/hooks/useTutorial";
 import { motion } from "framer-motion";
-import { Settings as SettingsIcon, User, Bell, Shield, FileText, HelpCircle, LogOut, AlertTriangle, Smartphone, Wifi, WifiOff } from "lucide-react";
+import { Settings as SettingsIcon, User, Bell, Shield, FileText, HelpCircle, LogOut, AlertTriangle, Smartphone, Wifi, WifiOff, GraduationCap, RefreshCw, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { notificationService } from "@/lib/notification-service";
 // Biometric authentication removed - not needed for App Store submission
 import { offlineService } from "@/lib/offline-service";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Settings() {
   const { user } = useAuth();
+  const tutorial = useTutorial();
+  const { toast } = useToast();
   
   // iOS Feature States
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -46,6 +51,14 @@ export default function Settings() {
     }
   };
 
+  const handleRestartTutorial = () => {
+    tutorial.restartTutorial();
+    toast({
+      title: "🎓 Tutorial Restarted",
+      description: "Let's take the interactive tour again!",
+    });
+  };
+
   const settingsSections = [
     {
       title: "Account",
@@ -53,6 +66,20 @@ export default function Settings() {
       items: [
         { label: "Profile Information", value: user?.email || "Not available", icon: User },
         { label: "Subscription", value: user?.subscriptionStatus === 'active' ? "Premium Active" : "Free Plan", icon: Shield },
+      ]
+    },
+    {
+      title: "Tutorial & Onboarding",
+      icon: GraduationCap,
+      items: [
+        {
+          label: "Interactive Tutorial",
+          description: tutorial.tutorialCompleted 
+            ? `Completed ${tutorial.completedSteps.length} steps - Great job!`
+            : `${tutorial.completedSteps.length} of ${tutorial.completedSteps.length + (tutorial.tutorialCompleted ? 0 : 1)} steps completed`,
+          icon: tutorial.tutorialCompleted ? CheckCircle2 : GraduationCap,
+          customAction: true,
+        },
       ]
     },
     {
@@ -169,6 +196,18 @@ export default function Settings() {
                             disabled={item.disabled}
                             data-testid={`toggle-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                           />
+                        )}
+                        {item.customAction && (
+                          <Button
+                            onClick={handleRestartTutorial}
+                            variant="outline"
+                            size="sm"
+                            className="ml-2"
+                            data-testid="button-restart-tutorial"
+                          >
+                            <RefreshCw className="h-4 w-4 mr-1" />
+                            Restart
+                          </Button>
                         )}
                       </div>
                     </div>

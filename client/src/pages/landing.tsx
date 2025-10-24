@@ -289,7 +289,7 @@ export default function Landing() {
         </div>
 
         {/* Quick Actions - Enhanced Glassmorphism */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-w-3xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-w-3xl mx-auto" data-testid="section-quick-actions">
           {[
             { icon: Zap, label: "Quick Analyzer", path: "/quick-analyzer", color: "from-blue-600 to-indigo-600", bgColor: "from-blue-50 to-indigo-50" },
             { icon: FileText, label: "Templates", path: "/templates", color: "from-emerald-600 to-teal-600", bgColor: "from-emerald-50 to-teal-50" },
@@ -418,6 +418,7 @@ export default function Landing() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
         className="px-4 py-8"
+        data-testid="section-how-it-works"
       >
         <div className="text-center mb-8">
           <motion.h2 
