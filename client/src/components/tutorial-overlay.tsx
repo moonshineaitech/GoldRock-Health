@@ -81,35 +81,52 @@ export function TutorialOverlay({
   const calculateTooltipPosition = (rect: DOMRect, position: string) => {
     const padding = 20;
     const tooltipWidth = 400;
-    const tooltipHeight = 250;
+    const tooltipHeight = 300; // Increased to account for content
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
+
+    let top = 0;
+    let left = 0;
 
     switch (position) {
       case 'top':
-        return {
-          top: rect.top - tooltipHeight - padding,
-          left: rect.left + rect.width / 2 - tooltipWidth / 2,
-        };
+        top = rect.top - tooltipHeight - padding;
+        left = rect.left + rect.width / 2 - tooltipWidth / 2;
+        break;
       case 'bottom':
-        return {
-          top: rect.bottom + padding,
-          left: rect.left + rect.width / 2 - tooltipWidth / 2,
-        };
+        top = rect.bottom + padding;
+        left = rect.left + rect.width / 2 - tooltipWidth / 2;
+        break;
       case 'left':
-        return {
-          top: rect.top + rect.height / 2 - tooltipHeight / 2,
-          left: rect.left - tooltipWidth - padding,
-        };
+        top = rect.top + rect.height / 2 - tooltipHeight / 2;
+        left = rect.left - tooltipWidth - padding;
+        break;
       case 'right':
-        return {
-          top: rect.top + rect.height / 2 - tooltipHeight / 2,
-          left: rect.right + padding,
-        };
+        top = rect.top + rect.height / 2 - tooltipHeight / 2;
+        left = rect.right + padding;
+        break;
       default:
         return {
-          top: window.innerHeight / 2 - tooltipHeight / 2,
-          left: window.innerWidth / 2 - tooltipWidth / 2,
+          top: viewportHeight / 2 - tooltipHeight / 2,
+          left: viewportWidth / 2 - tooltipWidth / 2,
         };
     }
+
+    // Clamp to viewport bounds to prevent off-screen positioning
+    // If tooltip would go off bottom, position it above the element instead
+    if (top + tooltipHeight > viewportHeight - padding) {
+      top = Math.max(padding, rect.top - tooltipHeight - padding);
+    }
+    
+    // If tooltip would go off top, position it below instead
+    if (top < padding) {
+      top = Math.min(viewportHeight - tooltipHeight - padding, rect.bottom + padding);
+    }
+
+    // Clamp horizontal position
+    left = Math.max(padding, Math.min(left, viewportWidth - tooltipWidth - padding));
+
+    return { top, left };
   };
 
   const handleNext = () => {
