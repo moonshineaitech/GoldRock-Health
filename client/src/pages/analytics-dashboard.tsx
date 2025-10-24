@@ -35,7 +35,9 @@ import {
   Flame,
   TrendingUp as Growth,
   ShieldCheck,
-  Bookmark
+  Bookmark,
+  PlayCircle,
+  Sparkles
 } from "lucide-react";
 import { 
   LineChart as RechartsLineChart, 
@@ -884,6 +886,151 @@ export default function AnalyticsDashboard() {
                               </div>
                             </motion.div>
                           ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </motion.div>
+                </MobileCard>
+
+                {/* Coaching Progress - NEW */}
+                <MobileCard className="p-6 bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 border-2 border-emerald-200">
+                  <motion.div variants={itemVariants}>
+                    <CardHeader className="px-0 pt-0">
+                      <CardTitle className="flex items-center space-x-2">
+                        <Users className="h-5 w-5 text-emerald-600" />
+                        <span>Premium 1:1 Coaching Progress</span>
+                        <Badge className="ml-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
+                          Active
+                        </Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="px-0 pb-0">
+                      <div className="space-y-4">
+                        {/* Active Coaching Session */}
+                        <div className="bg-white p-4 rounded-xl border-2 border-emerald-200">
+                          <div className="flex items-center justify-between mb-3">
+                            <div>
+                              <h4 className="font-bold text-gray-900" data-testid="text-coaching-case-name">Current Case: Hospital ABC</h4>
+                              <p className="text-sm text-gray-600" data-testid="text-coaching-bill-amount">Bill Amount: $25,000</p>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-2xl font-bold text-emerald-600" data-testid="text-coaching-estimated-savings">$8,750</div>
+                              <p className="text-xs text-emerald-700">Est. Savings</p>
+                            </div>
+                          </div>
+
+                          {/* Journey Progress */}
+                          <div className="mb-4">
+                            <div className="flex items-center justify-between text-sm mb-2">
+                              <span className="font-medium text-gray-700" data-testid="text-coaching-step-count">Step 3 of 6</span>
+                              <span className="text-emerald-600 font-medium" data-testid="text-coaching-completion-percent">50% Complete</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-3" data-testid="progress-coaching-journey">
+                              <motion.div
+                                className="bg-gradient-to-r from-emerald-500 to-teal-500 h-3 rounded-full"
+                                initial={{ width: 0 }}
+                                animate={{ width: "50%" }}
+                                transition={{ duration: 1.5, delay: 0.3 }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Coaching Steps */}
+                          <div className="space-y-2 mb-4">
+                            {[
+                              { step: "Personalized Assessment", status: "completed", icon: CheckCircle2 },
+                              { step: "Bill Analysis Review", status: "completed", icon: CheckCircle2 },
+                              { step: "Negotiation Strategy", status: "in-progress", icon: Target },
+                              { step: "Document Preparation", status: "pending", icon: FileText },
+                              { step: "Execution & Coaching Call", status: "pending", icon: Phone },
+                              { step: "Follow-up & Escalation", status: "pending", icon: TrendingUp }
+                            ].map((item, index) => (
+                              <div 
+                                key={item.step}
+                                className={`flex items-center space-x-3 p-2 rounded-lg transition-all ${
+                                  item.status === 'completed' ? 'bg-green-50 border border-green-200' :
+                                  item.status === 'in-progress' ? 'bg-blue-50 border-2 border-blue-400' :
+                                  'bg-gray-50'
+                                }`}
+                                data-testid={`step-coaching-${item.step.toLowerCase().replace(/\s+/g, '-')}-${item.status}`}
+                              >
+                                <item.icon className={`h-4 w-4 ${
+                                  item.status === 'completed' ? 'text-green-600' :
+                                  item.status === 'in-progress' ? 'text-blue-600' :
+                                  'text-gray-400'
+                                }`} />
+                                <span className={`text-sm flex-1 ${
+                                  item.status === 'completed' ? 'text-green-900 font-medium' :
+                                  item.status === 'in-progress' ? 'text-blue-900 font-bold' :
+                                  'text-gray-600'
+                                }`}>
+                                  {item.step}
+                                </span>
+                                {item.status === 'in-progress' && (
+                                  <Badge className="bg-blue-500 text-white" data-testid="badge-current-step">Current</Badge>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Coaching Stats */}
+                          <div className="grid grid-cols-3 gap-3 mb-4">
+                            <div className="text-center bg-gradient-to-br from-purple-50 to-indigo-50 p-3 rounded-xl">
+                              <Clock className="h-5 w-5 text-purple-600 mx-auto mb-1" />
+                              <div className="text-sm font-bold text-gray-900" data-testid="text-coaching-time-invested">2.5 hrs</div>
+                              <div className="text-xs text-gray-600">Time Invested</div>
+                            </div>
+                            <div className="text-center bg-gradient-to-br from-emerald-50 to-teal-50 p-3 rounded-xl">
+                              <Target className="h-5 w-5 text-emerald-600 mx-auto mb-1" />
+                              <div className="text-sm font-bold text-gray-900" data-testid="text-coaching-success-rate">85%</div>
+                              <div className="text-xs text-gray-600">Success Rate</div>
+                            </div>
+                            <div className="text-center bg-gradient-to-br from-amber-50 to-orange-50 p-3 rounded-xl">
+                              <Star className="h-5 w-5 text-amber-600 mx-auto mb-1" />
+                              <div className="text-sm font-bold text-gray-900" data-testid="text-coaching-level">Expert</div>
+                              <div className="text-xs text-gray-600">Coach Level</div>
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="grid grid-cols-2 gap-3">
+                            <Button 
+                              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
+                              data-testid="button-resume-coaching"
+                            >
+                              <PlayCircle className="h-4 w-4 mr-2" />
+                              Resume Coaching
+                            </Button>
+                            <Button 
+                              variant="outline"
+                              className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                              data-testid="button-view-templates"
+                            >
+                              <FileText className="h-4 w-4 mr-2" />
+                              View Templates
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Coaching Impact Summary */}
+                        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4 rounded-xl text-white">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center space-x-2">
+                              <Trophy className="h-5 w-5" />
+                              <h4 className="font-bold">Coaching Impact</h4>
+                            </div>
+                            <Sparkles className="h-5 w-5" />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <div className="text-2xl font-bold" data-testid="text-coaching-total-savings">$43,650</div>
+                              <div className="text-emerald-100 text-sm">Total Savings with Coaching</div>
+                            </div>
+                            <div>
+                              <div className="text-2xl font-bold" data-testid="text-coaching-bills-negotiated">23 Bills</div>
+                              <div className="text-emerald-100 text-sm">Successfully Negotiated</div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
