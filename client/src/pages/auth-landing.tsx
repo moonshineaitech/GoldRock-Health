@@ -1,6 +1,7 @@
 import { MobileButton } from "@/components/mobile-layout";
 import { DonationButton } from "@/components/donation-button";
 import { BlitzDemo } from "@/components/blitz-demo";
+import { LandingNavigation } from "@/components/landing-navigation";
 import { Apple, Mail, LogIn, Menu, Shield, DollarSign, Zap, Heart, CheckCircle, Star, Crown, Sparkles, ArrowRight, Trophy, Lock, BadgeCheck, TrendingDown, Clock, ThumbsUp, AlertTriangle, FileText, MessageCircle, Upload, Brain, Send, FileCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
@@ -8,7 +9,9 @@ import { useState } from "react";
 
 export default function AuthLanding() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pb-20">
+      <LandingNavigation />
+      
       {/* 🎨 ANIMATED BACKGROUND - Premium iOS Style */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
@@ -38,41 +41,6 @@ export default function AuthLanding() {
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 5 }}
         />
       </div>
-
-      {/* Header with Sign In */}
-      <motion.header 
-        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl border-b border-white/20 shadow-xl"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
-        }}
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <motion.h1 
-            className="text-lg font-black"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <span className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent">Gold</span>
-            <span className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">Rock</span>
-            <span className="text-gray-900"> Health</span>
-          </motion.h1>
-
-          <motion.a
-            href="/api/login"
-            className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-bold shadow-lg shadow-indigo-500/30 hover:shadow-xl transition-all"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            data-testid="button-header-signin"
-          >
-            <LogIn className="h-4 w-4" />
-            <span>Sign In</span>
-          </motion.a>
-        </div>
-      </motion.header>
 
       {/* Main Content */}
       <div className="relative z-10 px-6 pt-24 pb-24 max-w-4xl mx-auto">
