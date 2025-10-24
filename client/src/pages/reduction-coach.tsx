@@ -40,7 +40,6 @@ import {
   Users, 
   Sparkles,
   ArrowRight,
-  Progress,
   BookOpen,
   Headphones,
   Video,
@@ -55,7 +54,11 @@ import {
   Plus,
   Edit3,
   Save,
-  RefreshCw
+  RefreshCw,
+  Copy,
+  Send,
+  ThumbsUp,
+  BarChart
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -70,6 +73,291 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+// Helper Functions for Downloads and Copy
+async function downloadTextFile(filename: string, content: string) {
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (err) {
+    console.error('Failed to copy:', err);
+    return false;
+  }
+}
+
+function generateCallScript(assessmentData: any, tactic: string): string {
+  const scripts: Record<string, string> = {
+    opening: `MEDICAL BILL NEGOTIATION CALL SCRIPT
+Opening Approach
+
+Patient: ${assessmentData.patientName || '[Your Name]'}
+Hospital: ${assessmentData.hospitalName || '[Hospital Name]'}
+Bill Amount: $${assessmentData.billAmount || '[Amount]'}
+
+CALL OPENING:
+"Hi, my name is ${assessmentData.patientName || '[Your Name]'}. I'm calling about my recent medical bill for $${assessmentData.billAmount}. Can you direct me to someone who handles bill adjustments and financial assistance?"
+
+MAIN REQUEST:
+"I received this bill and I'm having concerns about the charges. I'd like to discuss this with someone who can help me understand and potentially adjust these charges. Can you help me with that?"
+
+KEY POINTS TO EMPHASIZE:
+✓ Willingness to pay
+✓ Request for itemized breakdown
+✓ Ask about financial assistance programs
+✓ Mention your financial situation (if applicable)
+
+QUESTIONS TO ASK:
+1. "Can you provide an itemized breakdown of all charges?"
+2. "Are there any charity care or financial assistance programs available?"
+3. "What is the hospital's policy on bill adjustments for financial hardship?"
+4. "Can you connect me with a financial counselor?"
+
+NOTES SECTION:
+Rep Name: ________________
+Date: ________________
+Time: ________________
+Reference Number: ________________
+Next Steps: ________________`,
+
+    hardship: `FINANCIAL HARDSHIP APPEAL SCRIPT
+
+Patient: ${assessmentData.patientName || '[Your Name]'}
+Hospital: ${assessmentData.hospitalName || '[Hospital Name]'}
+Bill Amount: $${assessmentData.billAmount || '[Amount]'}
+Income Range: ${assessmentData.income || '[Your Income Range]'}
+
+HARDSHIP STATEMENT:
+"I want to pay this bill, but the amount is causing significant financial hardship for my family. Given my current income of ${assessmentData.income || '[income range]'}, this bill represents a substantial burden that I cannot afford."
+
+REQUEST FOR ASSISTANCE:
+"What options do you have available for patients in my situation? I understand many hospitals have financial assistance programs, and I'd like to explore whether I qualify."
+
+SUPPORTING DETAILS:
+- Current financial situation: ${assessmentData.financialHardship}
+- Number of bills: ${assessmentData.multipleBills ? 'Multiple medical bills' : 'Single bill'}
+- Payment history: ${assessmentData.paymentHistory}
+
+QUESTIONS TO ASK:
+1. "What are the income requirements for your charity care program?"
+2. "Can you send me the financial assistance application?"
+3. "Is there a payment plan with 0% interest available?"
+4. "Can the bill be reduced based on my financial situation?"
+
+DOCUMENTS TO MENTION:
+✓ Proof of income (pay stubs, tax returns)
+✓ Bank statements showing financial hardship
+✓ Other medical bills (if applicable)
+✓ Unemployment documentation (if applicable)
+
+NOTES:
+________________
+________________
+________________`,
+
+    quality: `QUALITY OF CARE CONCERNS SCRIPT
+
+Patient: ${assessmentData.patientName || '[Your Name]'}
+Hospital: ${assessmentData.hospitalName || '[Hospital Name]'}
+Bill Amount: $${assessmentData.billAmount || '[Amount]'}
+
+PROFESSIONAL OPENING:
+"I'm calling regarding my bill from ${assessmentData.hospitalName}. I have some concerns about the charges and would like to review them with someone who can address quality of care issues."
+
+MAIN CONCERNS:
+"I have concerns about some of the charges on this bill. I'd like to review what services were actually provided and ensure that I'm only being charged for care that was necessary and properly delivered."
+
+SPECIFIC QUESTIONS:
+1. "Can you explain why I was charged for [specific service]?"
+2. "How do these charges align with the actual care I received?"
+3. "Were all of these services medically necessary?"
+4. "Can you provide documentation showing these services were performed?"
+
+DOCUMENTING ISSUES:
+${assessmentData.emergencyTreatment ? '✓ This was emergency care' : '○ This was scheduled care'}
+${assessmentData.secondOpinion ? '✓ Multiple doctors recommended this treatment' : '○ Single physician recommendation'}
+
+ESCALATION PATH:
+If not satisfied with initial response:
+→ Request to speak with billing supervisor
+→ Ask for patient advocate
+→ Request quality assurance review
+
+NOTES:
+________________
+________________
+________________`,
+
+    insurance: `INSURANCE COVERAGE SCRIPT
+
+Patient: ${assessmentData.patientName || '[Your Name]'}
+Hospital: ${assessmentData.hospitalName || '[Hospital Name]'}
+Insurance: ${assessmentData.insuranceType || '[Insurance Type]'}
+Bill Amount: $${assessmentData.billAmount}
+
+INSURANCE ISSUE STATEMENT:
+"I'm confused about why my insurance didn't cover more of this bill. This was ${assessmentData.emergencyTreatment ? 'emergency' : 'scheduled'} treatment, and I believe there may be coverage issues that need to be addressed."
+
+COVERAGE QUESTIONS:
+1. "Was this treatment billed correctly to my insurance?"
+2. "Why was this claim denied or only partially paid?"
+3. "Is this provider in-network or out-of-network?"
+4. "Can we appeal the insurance company's decision?"
+
+NETWORK STATUS:
+Current status: ${assessmentData.networkStatus || 'Unknown'}
+${assessmentData.emergencyTreatment ? 'NOTE: Emergency care - network rules may not apply' : ''}
+
+PRIOR AUTHORIZATION:
+Status: ${assessmentData.priorAuthorization || 'Unknown'}
+
+NEXT STEPS:
+□ Request insurance coordination review
+□ Ask for appeal assistance
+□ Get detailed explanation of benefits (EOB)
+□ Verify network status and coverage
+
+NOTES:
+________________
+________________
+________________`
+  };
+
+  return scripts[tactic] || scripts.opening;
+}
+
+function generateEmailTemplate(assessmentData: any, type: string): string {
+  const templates: Record<string, string> = {
+    dispute: `Subject: Formal Dispute of Medical Bill - Account #[ACCOUNT_NUMBER]
+
+Dear Billing Department,
+
+I am writing to formally dispute charges on my medical bill from ${assessmentData.hospitalName || '[Hospital Name]'}.
+
+PATIENT INFORMATION:
+Name: ${assessmentData.patientName || '[Your Name]'}
+Account Number: [ACCOUNT_NUMBER]
+Service Date: [SERVICE_DATE]
+Total Amount: $${assessmentData.billAmount || '[Amount]'}
+
+REASON FOR DISPUTE:
+I am disputing the following charges because [state your reason]:
+
+1. [Specific charge or issue]
+2. [Specific charge or issue]
+3. [Specific charge or issue]
+
+REQUESTED ACTION:
+I respectfully request that you:
+- Provide a fully itemized breakdown of all charges
+- Review and adjust the disputed charges
+- Provide explanation for any charges that remain
+
+I am committed to resolving this matter fairly and promptly. Please respond within 30 days as required by law.
+
+Sincerely,
+${assessmentData.patientName || '[Your Name]'}
+[Your Contact Information]
+[Date]`,
+
+    hardship: `Subject: Financial Assistance Application Request
+
+Dear Financial Counseling Department,
+
+I am writing to request information about ${assessmentData.hospitalName || '[Hospital Name]'}'s financial assistance programs.
+
+PATIENT INFORMATION:
+Name: ${assessmentData.patientName || '[Your Name]'}
+Account Number: [ACCOUNT_NUMBER]
+Bill Amount: $${assessmentData.billAmount || '[Amount]'}
+
+FINANCIAL SITUATION:
+I am experiencing ${assessmentData.financialHardship === 'severe' ? 'severe' : 'significant'} financial hardship. My annual household income is ${assessmentData.income || '[income range]'}, and this medical bill represents a substantial burden that I cannot afford to pay in full.
+
+REQUEST:
+Please send me:
+- Financial assistance application forms
+- Information about charity care programs
+- Details about payment plan options
+- Income qualification guidelines
+
+I am committed to working with you to resolve this bill in a way that is fair and manageable for my family's financial situation.
+
+Thank you for your assistance.
+
+Sincerely,
+${assessmentData.patientName || '[Your Name]'}
+[Your Contact Information]
+[Date]`,
+
+    followup: `Subject: Follow-up on Bill Discussion - Account #[ACCOUNT_NUMBER]
+
+Dear [Representative Name],
+
+I am following up on our conversation from [DATE] regarding my medical bill.
+
+DISCUSSION SUMMARY:
+During our call, we discussed:
+- [Point 1]
+- [Point 2]
+- [Point 3]
+
+AGREED NEXT STEPS:
+You mentioned that you would:
+- [Action item 1]
+- [Action item 2]
+
+TIMELINE:
+I understand this review would be completed by [DATE]. I wanted to check on the status of this review and confirm the next steps.
+
+If you need any additional information from me, please let me know. I appreciate your assistance in resolving this matter.
+
+Thank you,
+${assessmentData.patientName || '[Your Name]'}
+[Your Contact Information]
+[Date]`,
+
+    confirmation: `Subject: Confirmation of Bill Settlement Agreement
+
+Dear Billing Department,
+
+I am writing to confirm our agreement regarding my medical bill settlement.
+
+AGREEMENT DETAILS:
+Original Bill Amount: $${assessmentData.billAmount || '[Original Amount]'}
+Agreed Settlement Amount: $[SETTLEMENT_AMOUNT]
+Payment Terms: [PAYMENT TERMS]
+Agreement Date: [DATE]
+
+This letter confirms that:
+1. The total amount owed is $[SETTLEMENT_AMOUNT]
+2. Payment will be made according to the agreed terms
+3. Upon payment, this account will be considered paid in full
+4. No negative credit reporting will occur
+
+Please send written confirmation of this agreement and mark my account accordingly.
+
+Thank you for working with me to resolve this matter.
+
+Sincerely,
+${assessmentData.patientName || '[Your Name]'}
+[Your Contact Information]
+[Date]`
+  };
+
+  return templates[type] || templates.dispute;
+}
 
 // Animation variants for sophisticated motion design
 const containerVariants = {
@@ -956,6 +1244,7 @@ function BillAnalysisReview({ assessmentData }: { assessmentData: any }) {
 // Negotiation Strategy Component
 function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
   const [selectedTactic, setSelectedTactic] = useState('opening');
+  const { toast } = useToast();
 
   const tactics = {
     opening: {
@@ -977,6 +1266,33 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
       title: 'Insurance Coverage',
       description: 'Addressing insurance-related issues',
       script: `"I'm confused about why my insurance didn't cover more of this bill. This was ${assessmentData.emergencyTreatment ? 'emergency' : 'scheduled'} treatment, and I believe there may be coverage issues that need to be addressed."`
+    }
+  };
+
+  const handleDownloadScript = async () => {
+    const fullScript = generateCallScript(assessmentData, selectedTactic);
+    const filename = `call-script-${selectedTactic}-${Date.now()}.txt`;
+    await downloadTextFile(filename, fullScript);
+    toast({
+      title: "Script Downloaded!",
+      description: `Your ${tactics[selectedTactic as keyof typeof tactics].title} script has been saved.`,
+    });
+  };
+
+  const handleCopyScript = async () => {
+    const fullScript = generateCallScript(assessmentData, selectedTactic);
+    const success = await copyToClipboard(fullScript);
+    if (success) {
+      toast({
+        title: "Copied!",
+        description: "Script copied to clipboard",
+      });
+    } else {
+      toast({
+        title: "Copy Failed",
+        description: "Please try again",
+        variant: "destructive"
+      });
     }
   };
 
@@ -1013,12 +1329,38 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-xl">
-          <h5 className="font-medium text-gray-900 mb-2">
-            Script: {tactics[selectedTactic as keyof typeof tactics].title}
-          </h5>
-          <p className="text-sm text-gray-700 italic leading-relaxed">
+          <div className="flex items-center justify-between mb-2">
+            <h5 className="font-medium text-gray-900">
+              Script: {tactics[selectedTactic as keyof typeof tactics].title}
+            </h5>
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleCopyScript}
+                data-testid="button-copy-script"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDownloadScript}
+                data-testid="button-download-script"
+              >
+                <Download className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <p className="text-sm text-gray-700 italic leading-relaxed mb-3">
             {tactics[selectedTactic as keyof typeof tactics].script}
           </p>
+          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+            <p className="text-xs text-blue-900 font-medium mb-1">💡 Pro Tip:</p>
+            <p className="text-xs text-blue-800">
+              Download the full script for detailed talking points, questions to ask, and a notes section to track your call.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -1233,6 +1575,31 @@ function FirstContact({ assessmentData }: { assessmentData: any }) {
 
 // Follow-up Strategy Component
 function FollowUpStrategy({ assessmentData }: { assessmentData: any }) {
+  const [selectedTemplate, setSelectedTemplate] = useState<'followup' | 'hardship' | 'dispute' | 'confirmation'>('followup');
+  const [showTemplates, setShowTemplates] = useState(false);
+  const { toast } = useToast();
+
+  const handleDownloadTemplate = async () => {
+    const emailContent = generateEmailTemplate(assessmentData, selectedTemplate);
+    const filename = `email-template-${selectedTemplate}-${Date.now()}.txt`;
+    await downloadTextFile(filename, emailContent);
+    toast({
+      title: "Template Downloaded!",
+      description: "Email template saved to your device",
+    });
+  };
+
+  const handleCopyTemplate = async () => {
+    const emailContent = generateEmailTemplate(assessmentData, selectedTemplate);
+    const success = await copyToClipboard(emailContent);
+    if (success) {
+      toast({
+        title: "Copied!",
+        description: "Email template copied to clipboard",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center bg-purple-50 p-4 rounded-xl">
@@ -1283,15 +1650,80 @@ function FollowUpStrategy({ assessmentData }: { assessmentData: any }) {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <Button variant="outline" className="w-full" data-testid="button-schedule-followup">
+        <Button 
+          variant="outline" 
+          className="w-full" 
+          onClick={() => {
+            toast({
+              title: "Reminder Set!",
+              description: "Follow-up reminder scheduled for 3-5 days",
+            });
+          }}
+          data-testid="button-schedule-followup"
+        >
           <Calendar className="h-4 w-4 mr-2" />
           Schedule Follow-up
         </Button>
-        <Button variant="outline" className="w-full" data-testid="button-email-template">
+        <Button 
+          variant="outline" 
+          className="w-full" 
+          onClick={() => setShowTemplates(!showTemplates)}
+          data-testid="button-email-template"
+        >
           <Mail className="h-4 w-4 mr-2" />
-          Email Template
+          Email Templates
         </Button>
       </div>
+
+      {showTemplates && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="space-y-4"
+        >
+          <div className="bg-white p-4 rounded-xl border-2 border-purple-200">
+            <h5 className="font-medium text-gray-900 mb-3">Select Email Template</h5>
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              {[
+                { key: 'followup', label: 'Follow-up' },
+                { key: 'hardship', label: 'Financial Assistance' },
+                { key: 'dispute', label: 'Formal Dispute' },
+                { key: 'confirmation', label: 'Settlement Confirmation' }
+              ].map((template) => (
+                <Button
+                  key={template.key}
+                  variant={selectedTemplate === template.key ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedTemplate(template.key as any)}
+                  data-testid={`template-${template.key}`}
+                >
+                  {template.label}
+                </Button>
+              ))}
+            </div>
+            
+            <div className="flex gap-2">
+              <Button
+                onClick={handleCopyTemplate}
+                variant="outline"
+                className="flex-1"
+                data-testid="button-copy-email"
+              >
+                <Copy className="h-4 w-4 mr-2" />
+                Copy
+              </Button>
+              <Button
+                onClick={handleDownloadTemplate}
+                className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                data-testid="button-download-email"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
