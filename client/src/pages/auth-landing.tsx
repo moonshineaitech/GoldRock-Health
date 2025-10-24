@@ -70,6 +70,7 @@ const PremiumFeatureCard = ({ icon: Icon, title, description, color, delay = 0 }
 
 export default function AuthLanding() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [pricingTab, setPricingTab] = useState<'monthly' | 'annual' | 'lifetime'>('monthly');
 
   return (
     <div className="min-h-screen bg-white">
@@ -676,11 +677,54 @@ export default function AuthLanding() {
                 Full AI analysis, 50+ dispute templates, expert coaching & insider tactics
               </p>
 
+              {/* Pricing Tab Selector */}
+              <div className="flex justify-center mb-6">
+                <div className="inline-flex bg-white/20 backdrop-blur-sm rounded-2xl p-1.5 border border-white/30">
+                  {[
+                    { id: 'monthly' as const, label: 'Monthly' },
+                    { id: 'annual' as const, label: 'Annual' },
+                    { id: 'lifetime' as const, label: 'Lifetime' }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setPricingTab(tab.id)}
+                      className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                        pricingTab === tab.id
+                          ? 'bg-white text-indigo-700 shadow-lg'
+                          : 'text-white/80 hover:text-white'
+                      }`}
+                      data-testid={`button-pricing-tab-${tab.id}`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pricing Display */}
               <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-white/30">
                 <div className="flex items-baseline justify-center gap-2 mb-3">
-                  <span className="text-6xl font-black">$29.99</span>
-                  <span className="text-2xl font-bold">/month</span>
+                  <span className="text-6xl font-black">
+                    {pricingTab === 'monthly' && '$25'}
+                    {pricingTab === 'annual' && '$249'}
+                    {pricingTab === 'lifetime' && '$747'}
+                  </span>
+                  <span className="text-2xl font-bold">
+                    {pricingTab === 'monthly' && '/month'}
+                    {pricingTab === 'annual' && '/year'}
+                    {pricingTab === 'lifetime' && 'one-time'}
+                  </span>
                 </div>
+                {pricingTab === 'annual' && (
+                  <p className="text-emerald-200 font-bold mb-2">
+                    Save $51 per year vs monthly
+                  </p>
+                )}
+                {pricingTab === 'lifetime' && (
+                  <p className="text-emerald-200 font-bold mb-2">
+                    Unlimited access forever • Best value
+                  </p>
+                )}
                 <p className="text-white/90 font-bold">
                   Professional medical bill reduction platform
                 </p>

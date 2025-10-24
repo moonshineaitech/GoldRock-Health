@@ -49,6 +49,7 @@ import { useEffect, useState } from "react";
 
 export default function Landing() {
   const [scrollY, setScrollY] = useState(0);
+  const [pricingTab, setPricingTab] = useState<'monthly' | 'annual' | 'lifetime'>('monthly');
 
   // Parallax scroll effect
   useEffect(() => {
@@ -1117,14 +1118,58 @@ export default function Landing() {
               Full AI analysis, dispute templates, expert coaching & insider tactics
             </p>
 
+            {/* Pricing Tab Selector */}
+            <div className="flex justify-center mb-4">
+              <div className="inline-flex bg-white/60 backdrop-blur-sm rounded-xl p-1 border border-amber-200">
+                {[
+                  { id: 'monthly' as const, label: 'Monthly' },
+                  { id: 'annual' as const, label: 'Annual' },
+                  { id: 'lifetime' as const, label: 'Lifetime' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setPricingTab(tab.id)}
+                    className={`px-4 py-2 rounded-lg font-bold text-xs transition-all ${
+                      pricingTab === tab.id
+                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                        : 'text-gray-700 hover:text-gray-900'
+                    }`}
+                    data-testid={`button-pricing-tab-${tab.id}`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Pricing Display */}
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-amber-200">
               <div className="flex items-baseline justify-center gap-2 mb-2">
-                <span className="text-4xl font-black text-gray-900">$29.99</span>
-                <span className="text-gray-600 font-semibold">/month</span>
+                <span className="text-4xl font-black text-gray-900">
+                  {pricingTab === 'monthly' && '$25'}
+                  {pricingTab === 'annual' && '$249'}
+                  {pricingTab === 'lifetime' && '$747'}
+                </span>
+                <span className="text-gray-600 font-semibold">
+                  {pricingTab === 'monthly' && '/month'}
+                  {pricingTab === 'annual' && '/year'}
+                  {pricingTab === 'lifetime' && 'one-time'}
+                </span>
               </div>
-              <div className="text-sm text-emerald-700 font-bold flex items-center justify-center gap-1">
-                <BadgeCheck className="h-4 w-4" />
-                Save $2,000-$35,000+ on bills
+              {pricingTab === 'annual' && (
+                <div className="text-sm text-emerald-700 font-bold flex items-center justify-center gap-1 mb-1">
+                  <BadgeCheck className="h-4 w-4" />
+                  Save $51 per year vs monthly
+                </div>
+              )}
+              {pricingTab === 'lifetime' && (
+                <div className="text-sm text-emerald-700 font-bold flex items-center justify-center gap-1 mb-1">
+                  <BadgeCheck className="h-4 w-4" />
+                  Unlimited access forever • Best value
+                </div>
+              )}
+              <div className="text-xs text-gray-600 font-medium">
+                Professional medical bill reduction
               </div>
             </div>
 
@@ -1196,10 +1241,10 @@ export default function Landing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            Ready to Save Thousands?
+            Ready to Fight Your Bills?
           </motion.h2>
           <p className="text-gray-600 font-semibold max-w-sm mx-auto">
-            Join users saving $2,000-$35,000+ on medical bills
+            Professional AI analysis & expert strategies
           </p>
         </div>
 
