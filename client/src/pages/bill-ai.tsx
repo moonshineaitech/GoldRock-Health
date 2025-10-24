@@ -55,7 +55,8 @@ import {
   Pill,
   Siren,
   XCircle,
-  ArrowRight
+  ArrowRight,
+  Search
 } from "lucide-react";
 import { MobileLayout } from "@/components/mobile-layout";
 import type { MedicalBill } from "@shared/schema";
@@ -402,14 +403,20 @@ interface AssessmentIssue {
 
 type NextRequiredField = 'amount' | 'provider' | 'dates' | 'insurance' | 'codes' | 'itemized' | 'complete';
 
-// Workflow Selection Panel Component
+// iOS-Style Workflow Selection Panel Component
 const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   onWorkflowSelect: (workflow: BillWorkflow) => void;
   onStartChat: () => void;
 }) => {
   const { isSubscribed } = useSubscription();
   
-  // Add missing state variables for database visibility
+  // Tab navigation state
+  const [activeTab, setActiveTab] = useState<'spotlight' | 'browse' | 'insurance' | 'financial' | 'legal'>('spotlight');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchSheet, setShowSearchSheet] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  
+  // Database visibility states
   const [showHospitalBillsDatabase, setShowHospitalBillsDatabase] = useState(false);
   const [showInsuranceClaimsDatabase, setShowInsuranceClaimsDatabase] = useState(false);
   const [showInsuranceDenialsIntelligence, setShowInsuranceDenialsIntelligence] = useState(false);
@@ -417,6 +424,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   const [showSpecialtyCareIntelligence, setShowSpecialtyCareIntelligence] = useState(false);
   const [showPharmaceuticalDeviceDatabase, setShowPharmaceuticalDeviceDatabase] = useState(false);
   
+  // Organize workflows by category
   const coreWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'core');
   const beginnerWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'beginner');
   const specialtyWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'specialty');
@@ -429,8 +437,6 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   const coverageExpansionWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'coverage-expansion');
   const insuranceIntelligenceWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'insurance-intelligence');
   const automatedToolsWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'automated-tools');
-  
-  // NEW PREMIUM CATEGORIES
   const hospitalInsiderWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'hospital-insider');
   const codingIntelligenceWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'coding-intelligence');
   const hardshipMasteryWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'hardship-mastery');
@@ -438,636 +444,495 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
   const financialModelingWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'financial-modeling');
   const dataIntelligenceWorkflows = BILL_AI_WORKFLOWS.filter(w => w.category === 'data-intelligence');
 
+  // Featured workflows for hero carousel (top 3 most impactful)
+  const featuredWorkflows = [
+    BILL_AI_WORKFLOWS.find(w => w.id === 'upload-medical-bill'),
+    BILL_AI_WORKFLOWS.find(w => w.id === 'find-overcharges'),
+    BILL_AI_WORKFLOWS.find(w => w.id === 'get-itemized-bill')
+  ].filter(Boolean) as BillWorkflow[];
+
+  // Toggle category expansion
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories(prev => 
+      prev.includes(categoryId) 
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  // Filter workflows based on search query
+  const filterWorkflows = (workflows: BillWorkflow[]) => {
+    if (!searchQuery.trim()) return workflows;
+    
+    const query = searchQuery.toLowerCase();
+    return workflows.filter(workflow => 
+      workflow.title.toLowerCase().includes(query) ||
+      workflow.subtitle.toLowerCase().includes(query) ||
+      workflow.description.toLowerCase().includes(query) ||
+      workflow.tags.some(tag => tag.toLowerCase().includes(query))
+    );
+  };
+
+  // Apply search filter to all workflow categories
+  const filteredCoreWorkflows = filterWorkflows(coreWorkflows);
+  const filteredSpecialtyWorkflows = filterWorkflows(specialtyWorkflows);
+  const filteredFinancialWorkflows = filterWorkflows(financialWorkflows);
+  const filteredLegalWorkflows = filterWorkflows(legalWorkflows);
+  const filteredInsuranceWorkflows = filterWorkflows(insuranceWorkflows);
+
   return (
-    <div className="space-y-6 lg:space-y-10 xl:space-y-12 2xl:space-y-16">
-      {/* Header */}
-      <div className="text-center space-y-3 lg:space-y-6 xl:space-y-8">
-        <div className="flex items-center justify-center gap-3 lg:gap-4">
-          <div className="w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16 bg-gradient-to-br from-emerald-100 via-teal-100 to-green-200 rounded-2xl flex items-center justify-center shadow-lg">
-            <Brain className="h-5 w-5 lg:h-7 lg:w-7 xl:h-8 xl:w-8 text-emerald-700" />
+    <div className="space-y-4">
+      {/* Compact iOS Header */}
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center gap-2">
+          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <Brain className="h-6 w-6 text-white" />
           </div>
-          <div>
-            <h1 className="text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900">Medical Bill AI</h1>
-            <Badge className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-xs lg:text-sm xl:text-base">
-              <Shield className="h-3 w-3 lg:h-4 lg:w-4 mr-1" />
-              Exceeds HIPAA Standards
+          <div className="text-left">
+            <h1 className="text-2xl font-bold text-gray-900">Bill AI</h1>
+            <Badge className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-xs">
+              <Shield className="h-3 w-3 mr-1" />
+              HIPAA Secure
             </Badge>
           </div>
         </div>
-        <p className="text-sm lg:text-xl xl:text-2xl 2xl:text-3xl text-gray-600 max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto">
-          Professional-grade bill analysis and advocacy. Professional AI-powered dispute templates.
+        <p className="text-sm text-gray-600 max-w-sm mx-auto">
+          Save $2K-$35K+ on medical bills with AI-powered analysis
         </p>
-        <div className="flex items-center justify-center gap-4 lg:gap-12 xl:gap-16 text-xs lg:text-base xl:text-lg">
-          <div className="flex items-center gap-2 lg:gap-3">
-            <Target className="h-3 w-3 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-emerald-600" />
-            <span className="text-gray-600">AI-Powered Analysis</span>
-          </div>
-          <div className="flex items-center gap-2 lg:gap-3">
-            <DollarSign className="h-3 w-3 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-emerald-600" />
-            <span className="text-gray-600">Advanced Technology</span>
-          </div>
-        </div>
       </div>
 
-      {/* Core Workflows */}
-      <div className="space-y-3 lg:space-y-6 xl:space-y-8">
-        <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-900 flex items-center gap-2 lg:gap-4">
-          <Sparkles className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-emerald-600" />
-          Essential Workflows
-        </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3 lg:gap-6 xl:gap-8 justify-items-center mx-auto max-w-md lg:max-w-4xl">
-          {coreWorkflows.map((workflow) => (
-            <WorkflowCard
-              key={workflow.id}
-              workflow={workflow}
-              onClick={() => onWorkflowSelect(workflow)}
-            />
+      {/* iOS-Style Segmented Control */}
+      <div className="sticky top-0 z-30 bg-gradient-to-b from-white via-white to-transparent pb-2">
+        <div className="bg-gray-100/80 backdrop-blur-xl rounded-full p-1 flex gap-1">
+          {[
+            { id: 'spotlight', label: '⭐️ Spotlight', icon: Sparkles },
+            { id: 'browse', label: '📚 Browse', icon: List },
+            { id: 'insurance', label: '🛡️ Insurance', icon: Shield }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex-1 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
+                activeTab === tab.id
+                  ? 'bg-white text-emerald-600 shadow-md'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+              data-testid={`tab-${tab.id}`}
+            >
+              {tab.label}
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Beginner-Friendly Workflows */}
-      {beginnerWorkflows.length > 0 && (
-        <div className="space-y-3 lg:space-y-6 xl:space-y-8">
-          <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-900 flex items-center gap-2 lg:gap-4">
-            <Star className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-yellow-600" />
-            Getting Started (Perfect for First-Time Users)
-          </h3>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 lg:p-8 xl:p-10 mb-3">
-            <p className="text-xs lg:text-base xl:text-lg text-yellow-800 text-center">
-              🎓 New to medical bill analysis? Start here! These beginner-friendly tools help you learn step-by-step.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3 lg:gap-6 xl:gap-8">
-            {beginnerWorkflows.slice(0, 4).map((workflow) => (
-              <WorkflowListItem
-                key={workflow.id}
-                workflow={workflow}
-                onClick={() => onWorkflowSelect(workflow)}
-              />
-            ))}
-          </div>
-          {beginnerWorkflows.length > 4 && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="!bg-white w-full lg:w-auto lg:mx-auto lg:px-8 text-yellow-700 border-yellow-200 hover:bg-yellow-50"
-              onClick={() => {}}
-            >
-              View All {beginnerWorkflows.length} Beginner Tools
-            </Button>
-          )}
-        </div>
+      {/* Tab Content - Spotlight */}
+      {activeTab === 'spotlight' && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-4"
+          >
+            {/* Hero Carousel - Swipeable Featured Workflows */}
+            <div className="relative">
+              <h3 className="text-sm font-semibold text-gray-900 mb-2 px-1">Featured Tools</h3>
+              <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-2">
+                {featuredWorkflows.map((workflow, idx) => (
+                  <motion.div
+                    key={workflow.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: idx * 0.1, type: "spring", stiffness: 300 }}
+                    className="flex-shrink-0 w-[85%] snap-center"
+                  >
+                    <button
+                      onClick={() => onWorkflowSelect(workflow)}
+                      className="w-full h-40 rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 p-4 flex flex-col justify-between relative overflow-hidden shadow-lg active:scale-95 transition-transform"
+                      data-testid={`hero-workflow-${workflow.id}`}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+                      <div className="flex justify-between items-start relative z-10">
+                        <Badge className="bg-white/20 backdrop-blur-sm text-white border-white/30">
+                          {workflow.successRate} Success
+                        </Badge>
+                        <workflow.icon className="h-8 w-8 text-white/90" />
+                      </div>
+                      <div className="relative z-10">
+                        <h4 className="text-lg font-bold text-white mb-1">{workflow.title}</h4>
+                        <p className="text-sm text-emerald-50 mb-2">{workflow.subtitle}</p>
+                        <div className="flex items-center justify-between text-xs text-white/90">
+                          <span>💰 {workflow.savingsPotential}</span>
+                          <span>⏱️ {workflow.estimatedTime}</span>
+                        </div>
+                      </div>
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-2 px-1">Quick Actions</h3>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={onStartChat}
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white border-2 border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all active:scale-95"
+                  data-testid="quick-action-chat"
+                >
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                    <MessageCircle className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-xs font-medium text-gray-700">Chat</span>
+                </button>
+                <button
+                  onClick={() => onWorkflowSelect(coreWorkflows[0])}
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white border-2 border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all active:scale-95"
+                  data-testid="quick-action-upload"
+                >
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-green-500 flex items-center justify-center">
+                    <Upload className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-xs font-medium text-gray-700">Upload</span>
+                </button>
+                <button
+                  onClick={() => onWorkflowSelect(coreWorkflows[1])}
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white border-2 border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all active:scale-95"
+                  data-testid="quick-action-analyze"
+                >
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                    <Target className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-xs font-medium text-gray-700">Analyze</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Getting Started Section */}
+            {beginnerWorkflows.length > 0 && (
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-2 px-1">Getting Started</h3>
+                <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-2xl p-3 mb-3">
+                  <p className="text-xs text-yellow-800">🎓 New user? These tools help you learn step-by-step</p>
+                </div>
+                <div className="space-y-2">
+                  {beginnerWorkflows.slice(0, 3).map((workflow) => (
+                    <motion.button
+                      key={workflow.id}
+                      onClick={() => onWorkflowSelect(workflow)}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full flex items-center gap-3 p-3 rounded-2xl bg-white border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
+                      data-testid={`beginner-workflow-${workflow.id}`}
+                    >
+                      <div className={`w-10 h-10 rounded-full ${workflow.bgColor} flex items-center justify-center flex-shrink-0`}>
+                        <workflow.icon className={`h-5 w-5 ${workflow.color}`} />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <div className="text-sm font-semibold text-gray-900">{workflow.title}</div>
+                        <div className="text-xs text-gray-600">{workflow.subtitle}</div>
+                      </div>
+                      <Badge className="text-xs bg-gray-100 text-gray-700">{workflow.successRate}</Badge>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       )}
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 lg:gap-4 xl:gap-6 max-w-md lg:max-w-none mx-auto">
-        <Button
-          onClick={onStartChat}
-          variant="outline"
-          size="sm"
-          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200 text-gray-900"
-          data-testid="start-chat-button"
-        >
-          <MessageCircle className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
-          <span className="text-xs lg:text-sm xl:text-base font-semibold">Start Chat</span>
-        </Button>
-        <Link href="/blitz-demo" className="w-full">
-          <Button
-            variant="outline"
-            size="sm"
-            className="!bg-white w-full h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-orange-200 text-orange-600 hover:bg-orange-50"
-            data-testid="blitz-demo-button"
+      {/* Tab Content - Browse (All Workflows Organized) */}
+      {activeTab === 'browse' && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-3"
           >
-            <Zap className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
-            <span className="text-xs lg:text-sm xl:text-base">Blitz Demo</span>
-          </Button>
-        </Link>
-        <Button
-          onClick={() => {}}
-          variant="outline"
-          size="sm"
-          className="!bg-white h-12 lg:h-16 xl:h-20 flex-col space-y-1 lg:space-y-2 rounded-2xl border-gray-200 text-gray-900"
-          data-testid="view-all-workflows"
-        >
-          <Plus className="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8" />
-          <span className="text-xs lg:text-sm xl:text-base font-semibold">All Tools</span>
-        </Button>
-      </div>
-
-      {/* Comprehensive Workflow Categories */}
-      <div className="space-y-4 lg:space-y-12 xl:space-y-16 2xl:space-y-24">
-        {/* Specialty Analysis */}
-        {specialtyWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="Specialty Analysis"
-            icon={AlertTriangle}
-            iconColor="text-emerald-600"
-            workflows={specialtyWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={3}
-          />
-        )}
-
-        {/* Insurance Appeals */}
-        {insuranceWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="Insurance Appeals"
-            icon={Shield}
-            iconColor="text-indigo-600"
-            workflows={insuranceWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={3}
-          />
-        )}
-
-        {/* Financial Assistance */}
-        {financialWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="Financial Assistance"
-            icon={DollarSign}
-            iconColor="text-green-600"
-            workflows={financialWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={3}
-          />
-        )}
-
-        {/* Legal & Disputes */}
-        {legalWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="Legal & Disputes"
-            icon={FileText}
-            iconColor="text-purple-600"
-            workflows={legalWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={3}
-          />
-        )}
-
-        {/* Emergency Bills */}
-        {emergencyWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="Emergency Bills"
-            icon={AlertTriangle}
-            iconColor="text-red-600"
-            workflows={emergencyWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={2}
-          />
-        )}
-
-        {/* PREMIUM INSURANCE ADVOCACY SUITE */}
-        
-        {/* Hospital Industry Insider Knowledge */}
-        {hospitalInsiderWorkflows.length > 0 && (
-          <>
-            <div className="bg-gradient-to-r from-purple-50 to-red-50 border border-purple-200 rounded-2xl p-4 mb-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Shield className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-bold text-purple-800">Hospital Industry Insider Secrets</span>
-                <Badge className="bg-purple-100 text-purple-800 text-xs">
-                  <Lock className="h-3 w-3 mr-1" />
-                  Premium Only
-                </Badge>
-              </div>
-              <p className="text-xs text-purple-700 mb-2">
-                🏥 Insider knowledge from hospital revenue departments. Secrets they don't want you to know!
-              </p>
-              <div className="text-xs text-purple-600 space-y-1">
-                <div>• Charge master pricing algorithm decoder</div>
-                <div>• Revenue cycle vulnerability exploitation</div>
-                <div>• Hospital board pressure tactics</div>
-              </div>
-            </div>
-            <WorkflowCategory
-              title="🔓 Hospital Insider Secrets (Professional Analysis)"
-              icon={Shield}
-              iconColor="text-purple-700"
-              workflows={hospitalInsiderWorkflows}
-              onWorkflowSelect={onWorkflowSelect}
-              maxVisible={3}
-            />
-          </>
-        )}
-
-        {/* Medical Coding Intelligence */}
-        {codingIntelligenceWorkflows.length > 0 && (
-          <>
-            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 mb-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Brain className="h-4 w-4 text-emerald-600" />
-                <span className="text-sm font-bold text-emerald-800">Medical Coding Intelligence</span>
-                <Badge className="bg-emerald-100 text-emerald-800 text-xs">
-                  <Crown className="h-3 w-3 mr-1" />
-                  Expert Level
-                </Badge>
-              </div>
-              <p className="text-xs text-emerald-700 mb-2">
-                🧬 Professional coding analysis that catches fraud worth $20-200 billion annually
-              </p>
-              <div className="text-xs text-emerald-600 space-y-1">
-                <div>• Upcoding fraud detection & reversal</div>
-                <div>• Bundling error profit recapture</div>
-                <div>• Medical necessity challenges</div>
-              </div>
-            </div>
-            <WorkflowCategory
-              title="🧬 Medical Coding Intelligence (Advanced Technology)"
-              icon={Brain}
-              iconColor="text-emerald-700"
-              workflows={codingIntelligenceWorkflows}
-              onWorkflowSelect={onWorkflowSelect}
-              maxVisible={3}
-            />
-          </>
-        )}
-
-        {/* Financial Hardship Mastery */}
-        {hardshipMasteryWorkflows.length > 0 && (
-          <>
-            <div className="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-4 mb-3">
-              <div className="flex items-center gap-2 mb-2">
-                <HeartHandshake className="h-4 w-4 text-pink-600" />
-                <span className="text-sm font-bold text-pink-800">Financial Hardship Mastery</span>
-                <Badge className="bg-pink-100 text-pink-800 text-xs">
-                  <Star className="h-3 w-3 mr-1" />
-                  Professional Tools
-                </Badge>
-              </div>
-              <p className="text-xs text-pink-700 mb-2">
-                💝 Professional strategies to qualify for maximum charity care and financial assistance
-              </p>
-              <div className="text-xs text-pink-600 space-y-1">
-                <div>• Charity care qualification optimization</div>
-                <div>• Asset protection while claiming hardship</div>
-                <div>• Income documentation engineering</div>
-              </div>
-            </div>
-            <WorkflowCategory
-              title="💝 Financial Hardship Mastery (Professional Methods)"
-              icon={HeartHandshake}
-              iconColor="text-pink-700"
-              workflows={hardshipMasteryWorkflows}
-              onWorkflowSelect={onWorkflowSelect}
-              maxVisible={3}
-            />
-          </>
-        )}
-        
-        {/* Advanced Appeal System */}
-        {appealSystemWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="🏆 Advanced Appeal System (Advanced Analysis)"
-            icon={CheckCircle}
-            iconColor="text-emerald-700"
-            workflows={appealSystemWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={2}
-          />
-        )}
-
-        {/* Denial Reversal Arsenal */}
-        {denialReversalWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="💊 Denial Reversal Arsenal (Professional Methods)"
-            icon={Stethoscope}
-            iconColor="text-teal-700"
-            workflows={denialReversalWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={2}
-          />
-        )}
-
-        {/* Coverage Expansion Strategies */}
-        {coverageExpansionWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="🌐 Coverage Expansion Strategies (Comprehensive Tools)"
-            icon={Network}
-            iconColor="text-teal-700"
-            workflows={coverageExpansionWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={2}
-          />
-        )}
-
-        {/* Premium Insurance Intelligence */}
-        {insuranceIntelligenceWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="🕵️ Insurance Intelligence Database (Insider Knowledge)"
-            icon={Radar}
-            iconColor="text-indigo-700"
-            workflows={insuranceIntelligenceWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={2}
-          />
-        )}
-
-        {/* Automated Insurance Tools */}
-        {automatedToolsWorkflows.length > 0 && (
-          <WorkflowCategory
-            title="⚙️ Automated Insurance Tools (Automation Suite)"
-            icon={Settings}
-            iconColor="text-purple-700"
-            workflows={automatedToolsWorkflows}
-            onWorkflowSelect={onWorkflowSelect}
-            maxVisible={2}
-          />
-        )}
-
-        {/* PREMIUM INSIGHT DATABASES */}
-        {isSubscribed && (
-          <>
-            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 mb-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Database className="h-4 w-4 text-emerald-600" />
-                <span className="text-sm font-bold text-emerald-800">Premium Insight Databases</span>
-                <Badge className="bg-emerald-100 text-emerald-800 text-xs">
-                  <Crown className="h-3 w-3 mr-1" />
-                  Exclusive Intelligence
-                </Badge>
-              </div>
-              <p className="text-xs text-emerald-700 mb-2">
-                🎯 Comprehensive billing intelligence databases with insider knowledge, proven strategies, and massive savings potential.
-              </p>
-              <div className="text-xs text-emerald-600 space-y-1">
-                <div>• Hospital billing patterns & vulnerabilities</div>
-                <div>• Insurance company tactics & countermeasures</div>
-                <div>• Emergency care billing protections</div>
-                <div>• Specialty care & pharmaceutical intelligence</div>
-              </div>
+            {/* Search Bar */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search workflows..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-full border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm"
+                data-testid="workflow-search"
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
 
-            <div className="space-y-3">
-              <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-900 flex items-center gap-2 lg:gap-4">
-                <Database className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-emerald-600" />
-                Premium Intelligence Databases (Exclusive Access)
-              </h3>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3 lg:gap-6 xl:gap-8">
-                <motion.button
-                  onClick={() => setShowHospitalBillsDatabase(!showHospitalBillsDatabase)}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 shadow-2xl shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all duration-300"
-                  data-testid="hospital-bills-database"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
-                  <Building2 className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
-                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Hospital Bills Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-emerald-100 font-medium">Insider billing patterns</div>
-                  </div>
-                </motion.button>
-
-                <motion.button
-                  onClick={() => setShowInsuranceClaimsDatabase(!showInsuranceClaimsDatabase)}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-teal-500 via-green-600 to-emerald-600 shadow-2xl shadow-teal-500/50 hover:shadow-teal-500/70 transition-all duration-300"
-                  data-testid="insurance-claims-database"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
-                  <Shield className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
-                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Insurance Claims Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-teal-100 font-medium">Company-specific tactics</div>
-                  </div>
-                </motion.button>
-
-                <motion.button
-                  onClick={() => setShowInsuranceDenialsIntelligence(!showInsuranceDenialsIntelligence)}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-red-500 via-pink-600 to-rose-600 shadow-2xl shadow-red-500/50 hover:shadow-red-500/70 transition-all duration-300"
-                  data-testid="insurance-denials-intelligence"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
-                  <XCircle className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
-                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Insurance Denials Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-red-100 font-medium">Reversal strategies</div>
-                  </div>
-                </motion.button>
-
-                <motion.button
-                  onClick={() => setShowEmergencyCareBillingDatabase(!showEmergencyCareBillingDatabase)}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-orange-500 via-amber-600 to-yellow-600 shadow-2xl shadow-orange-500/50 hover:shadow-orange-500/70 transition-all duration-300"
-                  data-testid="emergency-care-billing-database"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
-                  <Siren className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
-                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Emergency Care Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-orange-100 font-medium">No Surprises Act tactics</div>
-                  </div>
-                </motion.button>
-
-                <motion.button
-                  onClick={() => setShowSpecialtyCareIntelligence(!showSpecialtyCareIntelligence)}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-purple-500 via-violet-600 to-fuchsia-600 shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 transition-all duration-300"
-                  data-testid="specialty-care-intelligence"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
-                  <Stethoscope className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
-                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Specialty Care Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-purple-100 font-medium">High-cost procedures</div>
-                  </div>
-                </motion.button>
-
-                <motion.button
-                  onClick={() => setShowPharmaceuticalDeviceDatabase(!showPharmaceuticalDeviceDatabase)}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-600 to-green-600 shadow-2xl shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all duration-300"
-                  data-testid="pharmaceutical-device-database"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
-                  <Pill className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
-                  <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
-                    <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Pharmaceutical & Device Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-emerald-100 font-medium">Drug & device pricing</div>
-                  </div>
-                </motion.button>
+            {/* Search Results Message */}
+            {searchQuery && (
+              <div className="text-sm text-gray-600 px-1">
+                Found {filteredCoreWorkflows.length + filteredSpecialtyWorkflows.length + filteredFinancialWorkflows.length + filteredLegalWorkflows.length + filteredInsuranceWorkflows.length} workflows matching "{searchQuery}"
               </div>
-            </div>
-            </>
-          )}
+            )}
 
-          {/* Premium Discovery Section for Non-Subscribers */}
-          {!isSubscribed && (
-            <>
-              <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 border border-amber-200 rounded-2xl p-4 mb-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Crown className="h-4 w-4 text-amber-600" />
-                  <span className="text-sm font-bold text-amber-800">Unlock Premium Intelligence Tools</span>
-                  <Badge className="bg-amber-100 text-amber-800 text-xs">
-                    <Lock className="h-3 w-3 mr-1" />
-                    Premium Only
-                  </Badge>
+            {/* No Results Message */}
+            {searchQuery && filteredCoreWorkflows.length === 0 && filteredSpecialtyWorkflows.length === 0 && filteredFinancialWorkflows.length === 0 && filteredLegalWorkflows.length === 0 && filteredInsuranceWorkflows.length === 0 && (
+              <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+                <Search className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                <div className="text-gray-600 font-medium mb-1">No workflows found</div>
+                <div className="text-sm text-gray-500">Try a different search term</div>
+              </div>
+            )}
+
+            {/* Collapsible Categories with Progressive Disclosure */}
+            <div className="space-y-2">
+              {/* Core Workflows */}
+              {filteredCoreWorkflows.length > 0 && (
+                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                  <button
+                    onClick={() => toggleCategory('core')}
+                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                    data-testid="category-core"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                        <Sparkles className="h-5 w-5 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-gray-900">Essential Tools</div>
+                        <div className="text-xs text-gray-600">{filteredCoreWorkflows.length} workflows</div>
+                      </div>
+                    </div>
+                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('core') ? 'rotate-180' : ''}`} />
+                  </button>
+                  {expandedCategories.includes('core') && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="border-t border-gray-100"
+                    >
+                      {filteredCoreWorkflows.map((workflow) => (
+                        <button
+                          key={workflow.id}
+                          onClick={() => onWorkflowSelect(workflow)}
+                          className="w-full flex items-center gap-3 p-4 hover:bg-emerald-50/50 transition-colors border-b border-gray-100 last:border-0"
+                          data-testid={`browse-workflow-${workflow.id}`}
+                        >
+                          <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
+                            <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
+                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                          </div>
+                          <Badge className="text-xs">{workflow.successRate}</Badge>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
                 </div>
-                <p className="text-xs text-amber-700 mb-3">
-                  🚀 Access 6 comprehensive intelligence databases and 100+ professional workflows that have saved users $10K-$500K+ per bill.
-                </p>
-                <div className="grid grid-cols-2 gap-2 text-xs text-amber-700 mb-3">
-                  <div>• Hospital Insider Secrets</div>
-                  <div>• Insurance Company Tactics</div>
-                  <div>• Emergency Care Protections</div>
-                  <div>• Pharmaceutical Intelligence</div>
-                  <div>• Professional Dispute Templates</div>
-                  <div>• Automated Analysis Tools</div>
+              )}
+
+              {/* Specialty Analysis */}
+              {filteredSpecialtyWorkflows.length > 0 && (
+                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                  <button
+                    onClick={() => toggleCategory('specialty')}
+                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <AlertTriangle className="h-5 w-5 text-emerald-600" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-gray-900">Specialty Analysis</div>
+                        <div className="text-xs text-gray-600">{filteredSpecialtyWorkflows.length} workflows</div>
+                      </div>
+                    </div>
+                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('specialty') ? 'rotate-180' : ''}`} />
+                  </button>
+                  {expandedCategories.includes('specialty') && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      className="border-t border-gray-100"
+                    >
+                      {filteredSpecialtyWorkflows.map((workflow) => (
+                        <button
+                          key={workflow.id}
+                          onClick={() => onWorkflowSelect(workflow)}
+                          className="w-full flex items-center gap-3 p-4 hover:bg-emerald-50/50 transition-colors border-b border-gray-100 last:border-0"
+                        >
+                          <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
+                            <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
+                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                          </div>
+                          {workflow.isPremium && <Crown className="h-4 w-4 text-purple-600" />}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
                 </div>
-                <Link href="/premium" className="w-full">
-                  <Button className="w-full bg-gradient-to-r from-amber-100 to-orange-100 hover:from-amber-200 hover:to-orange-200 text-amber-800 shadow-lg" size="sm">
-                    <Crown className="h-4 w-4 mr-2" />
-                    Unlock All Premium Tools - Save $10K+
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </Link>
-              </div>
+              )}
 
-              <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                  <Database className="h-4 w-4 text-amber-600" />
-                  Premium Intelligence Databases (Preview)
-                </h3>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <Link href="/premium" className="w-full">
-                    <Button
-                      variant="outline"
-                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-emerald-200 hover:shadow-lg transition-all duration-200 hover:border-emerald-300 hover:bg-emerald-50/50 relative"
-                      data-testid="preview-hospital-bills-database"
+              {/* Financial Assistance */}
+              {filteredFinancialWorkflows.length > 0 && (
+                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                  <button
+                    onClick={() => toggleCategory('financial')}
+                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                        <DollarSign className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-gray-900">Financial Assistance</div>
+                        <div className="text-xs text-gray-600">{filteredFinancialWorkflows.length} workflows</div>
+                      </div>
+                    </div>
+                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('financial') ? 'rotate-180' : ''}`} />
+                  </button>
+                  {expandedCategories.includes('financial') && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      className="border-t border-gray-100"
                     >
-                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $50K+ Avg
-                      </div>
-                      <Building2 className="h-5 w-5 text-emerald-600" />
-                      <div className="text-center w-full">
-                        <div className="text-xs font-semibold text-gray-900">Hospital Bills Intelligence</div>
-                        <div className="text-xs text-gray-600 truncate">500+ hospital insider secrets</div>
-                      </div>
-                    </Button>
-                  </Link>
-
-                  <Link href="/premium" className="w-full">
-                    <Button
-                      variant="outline"
-                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-indigo-200 hover:shadow-lg transition-all duration-200 hover:border-indigo-300 hover:bg-indigo-50/50 relative"
-                      data-testid="preview-insurance-claims-database"
-                    >
-                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $35K+ Avg
-                      </div>
-                      <Shield className="h-5 w-5 text-indigo-600" />
-                      <div className="text-center w-full">
-                        <div className="text-xs font-semibold text-gray-900">Insurance Claims Database</div>
-                        <div className="text-xs text-gray-600 truncate">Company-specific tactics</div>
-                      </div>
-                    </Button>
-                  </Link>
-
-                  <Link href="/premium" className="w-full">
-                    <Button
-                      variant="outline"
-                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-red-200 hover:shadow-lg transition-all duration-200 hover:border-red-300 hover:bg-red-50/50 relative"
-                      data-testid="preview-insurance-denials-intelligence"
-                    >
-                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $75K+ Avg
-                      </div>
-                      <XCircle className="h-5 w-5 text-red-600" />
-                      <div className="text-center w-full">
-                        <div className="text-xs font-semibold text-gray-900">Denial Reversal Intelligence</div>
-                        <div className="text-xs text-gray-600 truncate">92% success rate</div>
-                      </div>
-                    </Button>
-                  </Link>
-
-                  <Link href="/premium" className="w-full">
-                    <Button
-                      variant="outline"
-                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-orange-200 hover:shadow-lg transition-all duration-200 hover:border-orange-300 hover:bg-orange-50/50 relative"
-                      data-testid="preview-emergency-care-billing-database"
-                    >
-                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $85K+ Avg
-                      </div>
-                      <Siren className="h-5 w-5 text-orange-600" />
-                      <div className="text-center w-full">
-                        <div className="text-xs font-semibold text-gray-900">Emergency Care Intelligence</div>
-                        <div className="text-xs text-gray-600 truncate">EMTALA violations & tactics</div>
-                      </div>
-                    </Button>
-                  </Link>
-
-                  <Link href="/premium" className="w-full">
-                    <Button
-                      variant="outline"
-                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-teal-200 hover:shadow-lg transition-all duration-200 hover:border-teal-300 hover:bg-teal-50/50 relative"
-                      data-testid="preview-specialty-care-intelligence"
-                    >
-                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $45K+ Avg
-                      </div>
-                      <Stethoscope className="h-5 w-5 text-teal-600" />
-                      <div className="text-center w-full">
-                        <div className="text-xs font-semibold text-gray-900">Specialty Care Intelligence</div>
-                        <div className="text-xs text-gray-600 truncate">Cardiology, oncology & more</div>
-                      </div>
-                    </Button>
-                  </Link>
-
-                  <Link href="/premium" className="w-full">
-                    <Button
-                      variant="outline"
-                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-purple-200 hover:shadow-lg transition-all duration-200 hover:border-purple-300 hover:bg-purple-50/50 relative"
-                      data-testid="preview-pharmaceutical-device-database"
-                    >
-                      <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                        $25K+ Avg
-                      </div>
-                      <Pill className="h-5 w-5 text-purple-600" />
-                      <div className="text-center w-full">
-                        <div className="text-xs font-semibold text-gray-900">Pharmaceutical Intelligence</div>
-                        <div className="text-xs text-gray-600 truncate">Drug pricing & device markups</div>
-                      </div>
-                    </Button>
-                  </Link>
+                      {filteredFinancialWorkflows.map((workflow) => (
+                        <button
+                          key={workflow.id}
+                          onClick={() => onWorkflowSelect(workflow)}
+                          className="w-full flex items-center gap-3 p-4 hover:bg-green-50/50 transition-colors border-b border-gray-100 last:border-0"
+                        >
+                          <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
+                            <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
+                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
                 </div>
-              </div>
-            </>
-          )}
-        </div>
+              )}
 
-      {/* View All Workflows Button */}
-      <div className="pt-4 border-t border-gray-200">
-        <Button
-          onClick={() => {}}
-          variant="outline"
-          className="!bg-white w-full h-12 rounded-2xl border-gray-200 text-gray-600 hover:text-emerald-600"
-          data-testid="view-all-workflows-full"
-        >
-          <List className="h-4 w-4 mr-2" />
-          View All {BILL_AI_WORKFLOWS.length} Workflows
-          <ChevronDown className="h-4 w-4 ml-2" />
-        </Button>
-      </div>
+              {/* Legal & Disputes */}
+              {filteredLegalWorkflows.length > 0 && (
+                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                  <button
+                    onClick={() => toggleCategory('legal')}
+                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                        <FileText className="h-5 w-5 text-purple-600" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-gray-900">Legal & Disputes</div>
+                        <div className="text-xs text-gray-600">{filteredLegalWorkflows.length} workflows</div>
+                      </div>
+                    </div>
+                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('legal') ? 'rotate-180' : ''}`} />
+                  </button>
+                  {expandedCategories.includes('legal') && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      className="border-t border-gray-100"
+                    >
+                      {filteredLegalWorkflows.map((workflow) => (
+                        <button
+                          key={workflow.id}
+                          onClick={() => onWorkflowSelect(workflow)}
+                          className="w-full flex items-center gap-3 p-4 hover:bg-purple-50/50 transition-colors border-b border-gray-100 last:border-0"
+                        >
+                          <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
+                            <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
+                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      )}
+
+      {/* Tab Content - Insurance */}
+      {activeTab === 'insurance' && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-3"
+          >
+            {/* Insurance-Specific Workflows */}
+            <div className="space-y-2">
+              {/* Insurance Appeals */}
+              {filteredInsuranceWorkflows.length > 0 && (
+                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                  <button
+                    onClick={() => toggleCategory('insurance')}
+                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-indigo-600" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-gray-900">Insurance Appeals</div>
+                        <div className="text-xs text-gray-600">{filteredInsuranceWorkflows.length} workflows</div>
+                      </div>
+                    </div>
+                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('insurance') ? 'rotate-180' : ''}`} />
+                  </button>
+                  {expandedCategories.includes('insurance') && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      className="border-t border-gray-100"
+                    >
+                      {filteredInsuranceWorkflows.map((workflow) => (
+                        <button
+                          key={workflow.id}
+                          onClick={() => onWorkflowSelect(workflow)}
+                          className="w-full flex items-center gap-3 p-4 hover:bg-indigo-50/50 transition-colors border-b border-gray-100 last:border-0"
+                        >
+                          <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
+                            <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
+                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      )}
     </div>
   );
 };
 
+// Enhanced Workflow Card Component with interactions
 // Enhanced Workflow Card Component with interactions
 const WorkflowCard = ({ workflow, onClick }: {
   workflow: BillWorkflow;
