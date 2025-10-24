@@ -678,7 +678,7 @@ What aspect of your medical billing situation requires immediate attention?`;
                 
                 <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-xl py-3 px-4">
                   <Shield className="h-4 w-4 text-emerald-600" />
-                  <span className="font-medium">Secure • Private • Exceeds HIPAA Standards</span>
+                  <span className="font-medium">Secure • Private • Enterprise-grade</span>
                 </div>
               </motion.div>
             )}

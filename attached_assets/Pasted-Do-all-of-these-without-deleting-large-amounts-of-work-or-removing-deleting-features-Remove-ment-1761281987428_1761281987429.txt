@@ -1,0 +1,19 @@
+Do all of these without deleting large amounts of work or removing/deleting features:
+-	Remove mentions of HIPAA and bank-level security across entire app
+-	Improve the initial agreement term popup to be smaller (pre-login page first time users) and simple (ask if they agree, and then link to what the popup says on another page)
+-	Improve images/panels animation UI UX design and fullness of pre-login page
+-	Premium 1:1 coaching (is more like a roadmap builder) needs to be expanded out in full, and then the progress made there needs to flow into the individual user’s dashboard on Saving Analytics for premium features – you need to build out all of the steps and workflows and outputs and extensive advice for each situation and all features including strategy and templates and assessing the situation- this may require you to hold more data/expand out user data
+
+
+**template generation, expert bill reducer, industry knowledge, tactics for manuevering bills and paying less, needs to be WAY more clear and to support these goals. 
+Add in more workflows to Bill-AI, 
+The buttons aren’t working on Bill-AI, like itemize buttons.
+Requires double clicking on buttons in chat to work, and the coloration on all those popups are wrong and need to be updated to new design
+Remove the bouncing on the home page under “How It Works”, the panels shouldn’t be bouncing.
+Savings Analytics doesn’t work (I don’t think we actually track the progress of the actual cases, right?) – base this off the 
+Add in a better explainer page, interactive step by step explainer of process
+**template generation, expert bill reducer, industry knowledge, tactics for manuevering bills and paying less, needs to be WAY more clear and to support these goals. 
+
+Professional Dispute Arsenal – doesn’t actually generate any documents and has no where to generate them – view, send, generate all don’t work – and this app shouldn’t send any automatically, it should generate the templates for download (iOS and computer download mostly)
+Explain more the benefits of reducing these medical bills, using industry knowledge to guide you through the process and generate templates and strategize with you to help you fight bills. 
+•	It needs more emotion, more pizazz and flash, capitalize on the hatred of the current medical system, big bills, people feeling scared from bills

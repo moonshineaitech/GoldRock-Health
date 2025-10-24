@@ -1056,7 +1056,7 @@ export default function BlitzDemo() {
                       </div>
                       <div className="flex items-center gap-1">
                         <Shield className="h-3 w-3 text-blue-600" />
-                        <span className="text-gray-600">HIPAA Compliant</span>
+                        <span className="text-gray-600">Private & Secure</span>
                       </div>
                     </div>
                   </div>

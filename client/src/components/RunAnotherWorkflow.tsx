@@ -511,7 +511,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
               </div>
               <div className="flex items-center gap-1">
                 <Shield className="h-3 w-3 text-emerald-600" />
-                <span>HIPAA Secure</span>
+                <span>Private & Secure</span>
               </div>
             </div>
           </div>

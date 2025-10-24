@@ -1919,14 +1919,14 @@ function PremiumMarketing() {
             Trusted By Thousands
           </h2>
           <p className="text-gray-600">
-            HIPAA-compliant • Bank-level security • A+ SSL rating
+            Private & Secure • Enterprise-grade encryption • A+ SSL rating
           </p>
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
           {[
             { icon: ShieldCheck, text: "256-bit Encryption", color: "emerald" },
-            { icon: Lock, text: "HIPAA Compliant", color: "blue" },
+            { icon: Lock, text: "Private & Secure", color: "blue" },
             { icon: CheckCircle, text: "Example Outcomes", color: "purple" },
             { icon: Users, text: "Pre-Launch Platform", color: "orange" }
           ].map((item, idx) => {

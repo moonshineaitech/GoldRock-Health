@@ -271,7 +271,7 @@ export default function AuthLanding() {
               { icon: TrendingDown, text: "40-90% Savings", color: "text-emerald-600", bg: "bg-emerald-50" },
               { icon: Clock, text: "5 Min Setup", color: "text-blue-600", bg: "bg-blue-50" },
               { icon: Award, text: "Expert Tactics", color: "text-purple-600", bg: "bg-purple-50" },
-              { icon: BadgeCheck, text: "HIPAA Secure", color: "text-orange-600", bg: "bg-orange-50" }
+              { icon: BadgeCheck, text: "Private & Secure", color: "text-orange-600", bg: "bg-orange-50" }
             ].map((item, index) => (
               <motion.div
                 key={item.text}
@@ -350,12 +350,12 @@ export default function AuthLanding() {
           <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-gray-50/80 backdrop-blur-sm border border-gray-200/50">
             <div className="flex items-center gap-1.5">
               <Lock className="h-3.5 w-3.5 text-gray-600" />
-              <span className="text-xs font-semibold text-gray-700">Bank-Level Security</span>
+              <span className="text-xs font-semibold text-gray-700">Enterprise Security</span>
             </div>
             <div className="w-px h-4 bg-gray-300" />
             <div className="flex items-center gap-1.5">
               <Shield className="h-3.5 w-3.5 text-gray-600" />
-              <span className="text-xs font-semibold text-gray-700">HIPAA Compliant</span>
+              <span className="text-xs font-semibold text-gray-700">Private & Secure</span>
             </div>
           </div>
         </motion.div>

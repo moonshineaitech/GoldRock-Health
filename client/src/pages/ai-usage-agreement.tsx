@@ -169,9 +169,9 @@ export default function AiUsageAgreement() {
                   </div>
 
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
-                    <p className="font-medium text-gray-800 mb-2">HIPAA Status</p>
+                    <p className="font-medium text-gray-800 mb-2">Privacy Notice</p>
                     <p className="text-gray-700 text-sm">
-                      We're not a HIPAA-covered entity. Don't upload sensitive medical records or personal health info.
+                      We focus on bill analysis, not medical records. Don't upload sensitive medical records or detailed personal health information.
                     </p>
                   </div>
 

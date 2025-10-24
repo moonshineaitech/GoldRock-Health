@@ -492,7 +492,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             <h1 className="text-2xl font-bold text-gray-900">Bill AI</h1>
             <Badge className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-xs">
               <Shield className="h-3 w-3 mr-1" />
-              HIPAA Secure
+              Private & Secure
             </Badge>
           </div>
         </div>
@@ -1951,8 +1951,8 @@ What would you like to do first? I'm here to help you find every possible saving
                         <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
                           <Shield className="h-5 w-5 text-green-600" />
                         </div>
-                        <div className="text-lg lg:text-xl font-bold text-green-600 mb-1">HIPAA</div>
-                        <div className="text-xs text-gray-600">Secure</div>
+                        <div className="text-lg lg:text-xl font-bold text-green-600 mb-1">Secure</div>
+                        <div className="text-xs text-gray-600">Private</div>
                       </motion.div>
                     </div>
                   </div>

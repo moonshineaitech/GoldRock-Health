@@ -217,11 +217,11 @@ export default function Landing() {
         >
           <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 shadow-md">
             <Shield className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-bold text-gray-800">HIPAA Compliant</span>
+            <span className="text-sm font-bold text-gray-800">Private & Secure</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 shadow-md">
             <Lock className="h-4 w-4 text-emerald-600" />
-            <span className="text-sm font-bold text-gray-800">Bank-Level Security</span>
+            <span className="text-sm font-bold text-gray-800">Enterprise Security</span>
           </div>
         </motion.div>
 
@@ -896,7 +896,7 @@ export default function Landing() {
           transition={{ delay: 0.2 }}
           className="text-center text-sm text-gray-500 mt-6 font-medium"
         >
-          🔒 HIPAA Compliant • 🏦 Bank-Level Security • ⚖️ Legal Templates
+          🔒 Private & Secure • ⚡ AI-Powered • ⚖️ Legal Templates
         </motion.p>
       </motion.div>
     </MobileLayout>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, Shield, X, Check } from "lucide-react";
+import { AlertTriangle, Check, ExternalLink } from "lucide-react";
 import { MobileButton } from "./mobile-layout";
+import { Link } from "wouter";
 
 export function MedicalDisclaimer() {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,73 +31,69 @@ export function MedicalDisclaimer() {
         data-testid="medical-disclaimer-overlay"
       >
         <motion.div
-          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          initial={{ scale: 0.95, opacity: 0, y: 10 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          className="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+          exit={{ scale: 0.95, opacity: 0, y: 10 }}
+          transition={{ type: "spring", stiffness: 350, damping: 25 }}
+          className="backdrop-blur-xl bg-white/95 rounded-2xl shadow-2xl max-w-sm w-full border border-white/40 overflow-hidden"
         >
-          <div className="p-6">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <AlertTriangle className="h-6 w-6 text-red-600" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">Important Medical Notice</h2>
-                  <p className="text-sm text-gray-600">Please read carefully</p>
-                </div>
-              </div>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
+          
+          <div className="relative z-10 p-6">
+            {/* Icon & Title */}
+            <div className="flex flex-col items-center text-center mb-5">
+              <motion.div 
+                className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mb-3 shadow-lg relative overflow-hidden"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                <AlertTriangle className="h-7 w-7 text-white relative z-10" strokeWidth={2.5} />
+              </motion.div>
+              <h2 className="text-lg font-black text-gray-900 mb-1">Before You Start</h2>
+              <p className="text-sm text-gray-600 font-medium">Quick agreement required</p>
             </div>
 
-            <div className="space-y-4 mb-6">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
-                <h3 className="font-bold text-yellow-900 mb-2 flex items-center">
-                  <Shield className="h-4 w-4 mr-2" />
-                  Educational Purpose Only
-                </h3>
-                <p className="text-sm text-yellow-800">
-                  GoldRock AI provides educational information and medical bill analysis services only. 
-                  This app does NOT provide medical diagnosis, treatment, or professional medical advice.
-                </p>
-              </div>
-
-              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
-                <h3 className="font-bold text-blue-900 mb-2">Always Consult Healthcare Professionals</h3>
-                <p className="text-sm text-blue-800">
-                  Always consult a licensed physician, healthcare provider, or qualified medical professional 
-                  before making any healthcare decisions or taking any action based on information from this app.
-                </p>
-              </div>
-
-              <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
-                <h3 className="font-bold text-red-900 mb-2">Emergency Situations</h3>
-                <p className="text-sm text-red-800">
-                  <strong>In case of emergency, call 911 immediately.</strong> Do not rely on this app 
-                  for emergency medical assistance or urgent health matters.
-                </p>
-              </div>
-
-              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4">
-                <h3 className="font-bold text-gray-900 mb-2">Bill Analysis Disclaimer</h3>
-                <p className="text-sm text-gray-700">
-                  Our AI-powered bill analysis is designed to help identify potential billing errors and 
-                  overcharges. Results are informational only and should be verified with healthcare providers 
-                  and billing departments. We do not guarantee specific savings or outcomes.
-                </p>
-              </div>
+            {/* Simple Summary */}
+            <div className="bg-gray-50/80 backdrop-blur-sm rounded-xl p-4 mb-4 border border-gray-200/50">
+              <p className="text-sm text-gray-700 leading-relaxed text-center font-medium">
+                This app is for <strong>educational purposes</strong> and <strong>bill analysis only</strong>. 
+                Not medical advice. Always consult healthcare professionals.
+              </p>
             </div>
 
+            {/* View Full Terms Link */}
+            <Link href="/important-disclaimer">
+              <motion.button
+                className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-emerald-50 transition-colors mb-4"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setIsVisible(false)}
+                data-testid="view-full-disclaimer-link"
+              >
+                <ExternalLink className="h-4 w-4" />
+                View Full Disclaimer & Terms
+              </motion.button>
+            </Link>
+
+            {/* Agreement Question */}
+            <p className="text-sm text-gray-700 font-semibold text-center mb-4">
+              Do you agree to these terms?
+            </p>
+
+            {/* Accept Button */}
             <MobileButton
-              className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
+              className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg"
               onClick={handleAccept}
               data-testid="accept-medical-disclaimer"
             >
               <Check className="h-5 w-5 mr-2" />
-              I Understand & Accept
+              I Agree
             </MobileButton>
 
-            <p className="text-xs text-gray-500 text-center mt-4">
-              By continuing, you acknowledge that you have read and understood this medical disclaimer.
+            <p className="text-xs text-gray-500 text-center mt-3">
+              By continuing, you accept our terms
             </p>
           </div>
         </motion.div>

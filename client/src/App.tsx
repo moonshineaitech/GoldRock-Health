@@ -43,6 +43,7 @@ import Settings from "@/pages/settings";
 import ResourcesHub from "@/pages/resources-hub";
 import Templates from "@/pages/templates";
 import InsuranceDenials from "@/pages/insurance-denials";
+import ImportantDisclaimer from "@/pages/important-disclaimer";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -108,6 +109,7 @@ function Router() {
   if (!isAuthenticated) {
     return (
       <Switch>
+        <Route path="/important-disclaimer" component={ImportantDisclaimer} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/terms-of-service" component={TermsOfService} />
         <Route path="/support" component={Support} />
@@ -188,6 +190,7 @@ function Router() {
           <BlitzDemo />
         </AIRouteGuard>
       </Route>
+      <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
       <Route path="/support" component={Support} />
