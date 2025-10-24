@@ -1,7 +1,8 @@
 import { LandingNavigation } from "@/components/landing-navigation";
-import { Apple, Mail, Sparkles, Shield, DollarSign, Zap, Brain, Heart, Lock, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Apple, Mail, Sparkles, Shield, DollarSign, Zap, Brain, Heart, Lock, ArrowRight, Upload, FileCheck, TrendingDown, Users, Star, CheckCircle, Clock, Award, BadgeCheck, ChevronRight } from "lucide-react";
+import { motion, useAnimation } from "framer-motion";
 import { Link } from "wouter";
+import { useEffect } from "react";
 
 export default function AuthLanding() {
   return (
@@ -10,7 +11,6 @@ export default function AuthLanding() {
       
       {/* Premium iOS Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle gradient orbs */}
         <motion.div 
           className="absolute top-20 left-10 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/10 via-purple-400/10 to-pink-400/10 rounded-full blur-3xl"
           animate={{ 
@@ -48,7 +48,6 @@ export default function AuthLanding() {
             damping: 15
           }}
         >
-          {/* Animated glow ring */}
           <motion.div
             className="absolute inset-0 -m-4 rounded-[3rem]"
             style={{
@@ -67,12 +66,11 @@ export default function AuthLanding() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-white/20 backdrop-blur-sm pointer-events-none" />
             <DollarSign className="w-14 h-14 text-white relative z-10 drop-shadow-2xl" strokeWidth={2.5} />
             
-            {/* Sparkle accents */}
             <motion.div 
-              className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full"
+              className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full pointer-events-none"
               animate={{ 
                 scale: [1, 1.5, 1],
                 opacity: [0.6, 1, 0.6]
@@ -80,7 +78,7 @@ export default function AuthLanding() {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div 
-              className="absolute -bottom-2 -left-2 w-3 h-3 bg-gradient-to-r from-emerald-300 to-cyan-400 rounded-full"
+              className="absolute -bottom-2 -left-2 w-3 h-3 bg-gradient-to-r from-emerald-300 to-cyan-400 rounded-full pointer-events-none"
               animate={{ 
                 scale: [0.8, 1.4, 0.8],
                 opacity: [0.5, 1, 0.5]
@@ -92,7 +90,7 @@ export default function AuthLanding() {
 
         {/* Premium Headline */}
         <motion.div
-          className="text-center mb-10"
+          className="text-center mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.7 }}
@@ -107,7 +105,6 @@ export default function AuthLanding() {
             </span>
           </h1>
           
-          {/* Savings badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -130,9 +127,29 @@ export default function AuthLanding() {
           </motion.p>
         </motion.div>
 
+        {/* Social Proof - Compact */}
+        <motion.div
+          className="flex items-center justify-center gap-6 mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.5 }}
+        >
+          <div className="flex items-center gap-1.5">
+            <Users className="h-4 w-4 text-emerald-600" />
+            <span className="text-xs font-bold text-gray-900">12K+ Users</span>
+          </div>
+          <div className="w-px h-4 bg-gray-300" />
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+            ))}
+            <span className="text-xs font-bold text-gray-900 ml-1">4.9</span>
+          </div>
+        </motion.div>
+
         {/* Premium Login Buttons */}
         <motion.div 
-          className="space-y-3 mb-10"
+          className="space-y-3 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.6 }}
@@ -165,73 +182,190 @@ export default function AuthLanding() {
             </motion.a>
           ))}
           
-          <p className="text-xs text-gray-500 text-center pt-2 font-medium">
+          <p className="text-xs text-gray-500 text-center pt-1 font-medium">
             Free to start • No credit card required
           </p>
         </motion.div>
 
-        {/* Elite Feature Cards */}
-        <motion.div 
-          className="space-y-3 mb-10"
+        {/* How It Works - Premium Cards */}
+        <motion.div
+          className="mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.4, duration: 0.6 }}
         >
-          {[
-            { icon: Brain, title: "AI Bill Analysis", desc: "Finds errors instantly", gradient: "from-blue-500 to-indigo-600" },
-            { icon: Shield, title: "Expert Dispute Letters", desc: "Professional templates", gradient: "from-purple-500 to-pink-600" },
-            { icon: Zap, title: "Negotiation Strategy", desc: "Proven tactics", gradient: "from-emerald-500 to-teal-600" }
-          ].map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              className="relative group"
-              initial={{ opacity: 0, x: -15 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.5 + index * 0.1, duration: 0.5 }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-4 border border-gray-200/50 shadow-sm hover:shadow-md transition-all">
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${feature.gradient} rounded-[1rem] flex items-center justify-center shadow-lg flex-shrink-0`}>
-                    <feature.icon className="h-6 w-6 text-white" strokeWidth={2} />
+          <h2 className="text-xl font-black text-gray-900 text-center mb-5">
+            How It Works
+          </h2>
+          
+          <div className="space-y-3">
+            {[
+              { 
+                step: "1", 
+                icon: Upload, 
+                title: "Upload Your Bill", 
+                desc: "Photo or PDF in seconds",
+                gradient: "from-blue-500 to-indigo-600",
+                iconBg: "from-blue-50 to-indigo-50"
+              },
+              { 
+                step: "2", 
+                icon: Brain, 
+                title: "AI Finds Errors", 
+                desc: "Instant overcharge detection",
+                gradient: "from-purple-500 to-pink-600",
+                iconBg: "from-purple-50 to-pink-50"
+              },
+              { 
+                step: "3", 
+                icon: FileCheck, 
+                title: "Get Dispute Letter", 
+                desc: "Professional templates ready",
+                gradient: "from-emerald-500 to-teal-600",
+                iconBg: "from-emerald-50 to-teal-50"
+              }
+            ].map((step, index) => (
+              <motion.div
+                key={step.step}
+                className="relative group"
+                initial={{ opacity: 0, x: -15 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.5 + index * 0.1, duration: 0.5 }}
+                whileHover={{ scale: 1.02, x: 4 }}
+              >
+                <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-4 border border-gray-200/50 shadow-sm hover:shadow-md transition-all">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-shrink-0 relative">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${step.iconBg} rounded-[1rem] flex items-center justify-center shadow-sm border border-gray-100`}>
+                        <step.icon className={`h-6 w-6 bg-gradient-to-br ${step.gradient} bg-clip-text text-transparent`} strokeWidth={2.5} style={{ WebkitTextStroke: '0.5px', WebkitTextStrokeColor: 'currentColor' }} />
+                      </div>
+                      <div className="absolute -top-1 -left-1 w-5 h-5 bg-gradient-to-br from-gray-900 to-gray-700 rounded-full flex items-center justify-center shadow-lg">
+                        <span className="text-[10px] font-black text-white">{step.step}</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-gray-900 text-sm leading-tight">{step.title}</h3>
+                      <p className="text-xs text-gray-600 font-medium mt-0.5">{step.desc}</p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0" strokeWidth={2.5} />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-gray-900 text-sm">{feature.title}</h3>
-                    <p className="text-xs text-gray-600 font-medium">{feature.desc}</p>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-colors" strokeWidth={2} />
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Value Props - Compact Grid */}
+        <motion.div
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+        >
+          <h2 className="text-xl font-black text-gray-900 text-center mb-5">
+            Why Users Love Us
+          </h2>
+          
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { icon: TrendingDown, text: "40-90% Savings", color: "text-emerald-600", bg: "bg-emerald-50" },
+              { icon: Clock, text: "5 Min Setup", color: "text-blue-600", bg: "bg-blue-50" },
+              { icon: Award, text: "Expert Tactics", color: "text-purple-600", bg: "bg-purple-50" },
+              { icon: BadgeCheck, text: "HIPAA Secure", color: "text-orange-600", bg: "bg-orange-50" }
+            ].map((item, index) => (
+              <motion.div
+                key={item.text}
+                className="relative"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.9 + index * 0.08, duration: 0.4 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className={`${item.bg} rounded-xl p-4 border border-gray-100 shadow-sm`}>
+                  <item.icon className={`h-6 w-6 ${item.color} mb-2`} strokeWidth={2} />
+                  <p className="text-xs font-bold text-gray-900 leading-tight">{item.text}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Urgency Banner - Subtle */}
+        <motion.div
+          className="mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.1, duration: 0.5 }}
+        >
+          <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 rounded-2xl p-4 border border-orange-200/50 shadow-sm">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0">
+                <motion.div
+                  className="w-2 h-2 bg-orange-500 rounded-full"
+                  animate={{ 
+                    scale: [1, 1.3, 1],
+                    opacity: [0.6, 1, 0.6]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
               </div>
-            </motion.div>
-          ))}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-gray-900 mb-1">Don't Pay Full Price</p>
+                <p className="text-xs text-gray-700 font-medium leading-relaxed">
+                  Medical bills have 30-90 day dispute windows. Start your analysis today before it's too late.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Final CTA */}
+        <motion.div
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.3, duration: 0.5 }}
+        >
+          <motion.a
+            href="/api/login"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-[1.125rem] bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-lg hover:shadow-xl transition-all relative overflow-hidden group w-full"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            data-testid="button-final-cta"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
+            <Sparkles className="h-5 w-5 relative z-10" strokeWidth={2.5} />
+            <span className="relative z-10">Start Free Analysis Now</span>
+            <ArrowRight className="h-5 w-5 relative z-10" strokeWidth={2.5} />
+          </motion.a>
         </motion.div>
 
         {/* Trust Badge */}
         <motion.div
-          className="text-center"
+          className="text-center mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 0.6 }}
+          transition={{ delay: 2.5, duration: 0.6 }}
         >
           <div className="inline-flex items-center gap-4 px-6 py-3 rounded-full bg-gray-50/80 backdrop-blur-sm border border-gray-200/50">
             <div className="flex items-center gap-1.5">
               <Lock className="h-3.5 w-3.5 text-gray-600" />
-              <span className="text-xs font-semibold text-gray-700">Secure</span>
+              <span className="text-xs font-semibold text-gray-700">Bank-Level Security</span>
             </div>
             <div className="w-px h-4 bg-gray-300" />
             <div className="flex items-center gap-1.5">
               <Shield className="h-3.5 w-3.5 text-gray-600" />
-              <span className="text-xs font-semibold text-gray-700">Private</span>
+              <span className="text-xs font-semibold text-gray-700">HIPAA Compliant</span>
             </div>
           </div>
         </motion.div>
 
         {/* Footer */}
         <motion.div
-          className="text-center mt-12 space-y-3"
+          className="text-center space-y-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 0.6 }}
+          transition={{ delay: 2.7, duration: 0.6 }}
         >
           <p className="text-xs text-gray-500 leading-relaxed">
             By continuing, you agree to our{" "}
