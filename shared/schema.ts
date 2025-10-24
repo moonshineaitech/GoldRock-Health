@@ -43,6 +43,13 @@ export const users = pgTable("users", {
   acceptedAiTerms: boolean("accepted_ai_terms").default(false),
   aiTermsAcceptedAt: timestamp("ai_terms_accepted_at"),
   aiTermsVersion: varchar("ai_terms_version"), // track version of terms accepted
+  tutorialCompleted: boolean("tutorial_completed").default(false),
+  tutorialProgress: jsonb("tutorial_progress").$type<{
+    currentStep: number;
+    completedSteps: string[];
+    skippedSteps: string[];
+    lastAccessedAt: string;
+  }>().default({ currentStep: 0, completedSteps: [], skippedSteps: [], lastAccessedAt: new Date().toISOString() }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

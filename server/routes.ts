@@ -3935,6 +3935,34 @@ Focus on actionable insights and specific dollar amounts. Be realistic but advoc
     }
   });
 
+  // Tutorial progress endpoint
+  app.post('/api/tutorial/progress', isAuthenticated, express.json(), async (req, res) => {
+    try {
+      const user = (req as any).user;
+      if (!user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+
+      const { currentStep, completedSteps, skippedSteps, tutorialCompleted } = req.body;
+
+      // Update user tutorial progress
+      await storage.updateUser(user.id, {
+        tutorialProgress: {
+          currentStep: currentStep || 0,
+          completedSteps: completedSteps || [],
+          skippedSteps: skippedSteps || [],
+          lastAccessedAt: new Date().toISOString(),
+        },
+        tutorialCompleted: tutorialCompleted || false,
+      });
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error saving tutorial progress:', error);
+      res.status(500).json({ message: 'Failed to save tutorial progress' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
