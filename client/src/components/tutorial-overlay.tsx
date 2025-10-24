@@ -64,11 +64,11 @@ export function TutorialOverlay({
           const tooltipPos = calculateTooltipPosition(rect, currentStep.position);
           setTooltipPosition(tooltipPos);
         } else {
-          // Element not found, show center tooltip
+          // Element not found, show center tooltip anyway
           setHighlightRect(null);
           setTooltipPosition(null);
         }
-      }, 300); // Wait for navigation
+      }, 500); // Increased wait time for navigation and rendering
 
       return () => clearTimeout(timeout);
     } else {
@@ -145,7 +145,9 @@ export function TutorialOverlay({
     });
   };
 
-  if (!isActive || !currentStep) return null;
+  if (!isActive || !currentStep) {
+    return null;
+  }
 
   return (
     <AnimatePresence>

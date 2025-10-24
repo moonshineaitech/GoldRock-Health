@@ -82,8 +82,12 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         },
       });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+    onSuccess: (data, variables) => {
+      // Only invalidate when tutorial completes or is skipped
+      // Don't invalidate on every step to avoid resetting local state
+      if (variables.tutorialCompleted) {
+        queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+      }
     },
   });
 
