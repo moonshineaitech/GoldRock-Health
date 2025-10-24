@@ -161,7 +161,7 @@ export function TutorialOverlay({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/60 pointer-events-auto"
+          className="absolute inset-0 z-[1] bg-black/60 pointer-events-auto"
           onClick={handleSkip}
           data-testid="tutorial-backdrop"
         />
@@ -172,7 +172,7 @@ export function TutorialOverlay({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="absolute border-4 border-emerald-400 rounded-xl shadow-2xl pointer-events-none"
+            className="absolute z-[2] border-4 border-emerald-400 rounded-xl shadow-2xl pointer-events-none"
             style={{
               top: highlightRect.top - 8,
               left: highlightRect.left - 8,
@@ -184,13 +184,13 @@ export function TutorialOverlay({
           />
         )}
 
-        {/* Tooltip Card */}
+        {/* Tooltip Card - Always on top */}
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="absolute bg-white rounded-2xl shadow-2xl pointer-events-auto overflow-hidden"
+          className="absolute z-[3] bg-white rounded-2xl shadow-2xl pointer-events-auto overflow-hidden"
           style={{
             top: tooltipPosition?.top ?? window.innerHeight / 2 - 200,
             left: tooltipPosition?.left ?? window.innerWidth / 2 - 200,
