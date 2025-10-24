@@ -303,6 +303,7 @@ export default function Landing() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 + index * 0.05 }}
                 className="flex items-start gap-3 bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-emerald-100 shadow-sm hover:shadow-md transition-shadow"
+                data-testid={`card-benefit-${benefit.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 <div className="flex-shrink-0 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mt-0.5">
                   <Check className="h-5 w-5 text-white" strokeWidth={3} />
@@ -882,6 +883,7 @@ export default function Landing() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-shadow"
+                data-testid={`card-testimonial-${testimonial.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
               >
                 {/* 5-Star Rating */}
                 <div className="flex gap-1 mb-3">
@@ -928,6 +930,162 @@ export default function Landing() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </motion.div>
+
+      {/* 🎓 EXPERT CREDENTIALS - GrantedHealth Style */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-12 bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/80"
+        data-testid="section-expert-credentials"
+      >
+        <div className="max-w-2xl mx-auto text-center">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-black text-gray-900 mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Powered by AI & Medical Billing Experts
+          </motion.h2>
+          
+          <motion.p
+            className="text-lg text-gray-700 mb-8 font-medium max-w-xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            Our platform combines <strong className="text-emerald-700">cutting-edge AI technology</strong> with proven medical billing strategies to help you save thousands
+          </motion.p>
+
+          {/* Credentials Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { icon: Brain, label: "AI-Powered Analysis", desc: "GPT-4 medical bill scanner", color: "from-purple-600 to-indigo-600" },
+              { icon: Award, label: "Expert Strategies", desc: "Marshall Allen's tactics", color: "from-emerald-600 to-teal-600" },
+              { icon: ShieldCheck, label: "Legal Templates", desc: "87-94% success rates", color: "from-blue-600 to-cyan-600" }
+            ].map((credential, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-shadow"
+                data-testid={`card-credential-${credential.label.toLowerCase().replace(/\s+/g, '-')}`}
+              >
+                <div className={`w-14 h-14 bg-gradient-to-r ${credential.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                  <credential.icon className="h-7 w-7 text-white" strokeWidth={2.5} />
+                </div>
+                <h3 className="font-black text-gray-900 mb-2">{credential.label}</h3>
+                <p className="text-sm text-gray-600">{credential.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Trust Signals */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-4"
+          >
+            <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-full border border-blue-200 shadow-sm" data-testid="badge-hipaa-aligned">
+              <Shield className="h-5 w-5 text-blue-600" />
+              <span className="text-sm font-bold text-gray-800">HIPAA-Aligned</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-full border border-emerald-200 shadow-sm" data-testid="badge-bank-encryption">
+              <Lock className="h-5 w-5 text-emerald-600" />
+              <span className="text-sm font-bold text-gray-800">Bank-Level Encryption</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-full border border-purple-200 shadow-sm" data-testid="badge-data-ownership">
+              <Eye className="h-5 w-5 text-purple-600" />
+              <span className="text-sm font-bold text-gray-800">You Own Your Data</span>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* ❓ FAQ SECTION - GrantedHealth Style */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-12 bg-white"
+        data-testid="section-faq"
+      >
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-black text-gray-900 mb-3"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Frequently Asked Questions
+            </motion.h2>
+            <motion.p
+              className="text-gray-700 font-medium"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Everything you need to know about GoldRock Health
+            </motion.p>
+          </div>
+
+          {/* FAQ Items */}
+          <div className="space-y-4">
+            {[
+              {
+                question: "How does GoldRock Health work?",
+                answer: "Upload your medical bill and our AI analyzes it for billing errors, overcharges, and negotiation opportunities. You'll receive a detailed analysis, legal dispute templates, and expert negotiation strategies to reduce your bill by 40-90%."
+              },
+              {
+                question: "How much can I save on my medical bills?",
+                answer: "Users typically report savings between $2,000-$35,000+ depending on their bill size. Our AI identifies billing errors, coding mistakes, and negotiation opportunities that most people miss."
+              },
+              {
+                question: "Is my health information private and secure?",
+                answer: "Yes. We align with HIPAA standards and use bank-level encryption to protect your data. You own your data completely and can delete it at any time. We never share or sell your information."
+              },
+              {
+                question: "Do I need insurance to use GoldRock Health?",
+                answer: "No! GoldRock Health works for everyone - with or without insurance. We help reduce bills from hospitals, urgent care, labs, and more. Our strategies work for both insured and uninsured patients."
+              },
+              {
+                question: "What's included in the Premium plan?",
+                answer: "Premium includes unlimited bill analyses, AI error detection, legal dispute letter templates with citations, industry insider tactics, expert negotiation coaching, and Medicare rate comparisons. Most users save 10-100x the subscription cost on a single bill."
+              },
+              {
+                question: "Can I cancel anytime?",
+                answer: "Yes! Cancel your Premium subscription anytime with no penalties. We also offer a full refund within 30 days if you're not satisfied with the platform."
+              }
+            ].map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                data-testid={`card-faq-${index + 1}`}
+              >
+                <h3 className="font-black text-gray-900 mb-3 flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span>{faq.question}</span>
+                </h3>
+                <p className="text-gray-700 leading-relaxed pl-8">{faq.answer}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.div>
 
