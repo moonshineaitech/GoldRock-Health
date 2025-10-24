@@ -3946,7 +3946,9 @@ Focus on actionable insights and specific dollar amounts. Be realistic but advoc
       const { currentStep, completedSteps, skippedSteps, tutorialCompleted } = req.body;
 
       // Update user tutorial progress
-      await storage.updateUser(user.id, {
+      await storage.upsertUser({
+        id: user.id,
+        email: user.email,
         tutorialProgress: {
           currentStep: currentStep || 0,
           completedSteps: completedSteps || [],

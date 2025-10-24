@@ -10,6 +10,21 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### October 24, 2025 - Interactive Tutorial System
+- **Tutorial Implementation**: Built comprehensive interactive onboarding tutorial for new users
+  - 17 tutorial steps covering all major platform features (Home, Bill-AI, Coaching, Dispute Arsenal, Analytics)
+  - Auto-starts for new users 2 seconds after login
+  - Progress tracking with database persistence across sessions
+  - Settings page includes tutorial restart button with completion status
+- **Backend API**: POST `/api/tutorial/progress` endpoint saves progress using `storage.upsertUser`
+- **UI Components**:
+  - TutorialOverlay component with adaptive tooltip positioning (top, bottom, left, right, center)
+  - Spotlight highlighting on target elements with emerald border and backdrop blur
+  - Progress bar showing completion percentage
+  - Navigation buttons: Previous, Next/Complete, Skip Tour
+  - Celebration confetti animation on tutorial completion
+- **Integration**: TutorialProvider context manages state, Settings page allows restart, data-testids added to key sections
+
 ### October 22, 2025 - Real AI Bill Analysis Implementation
 - **AI Integration**: Replaced mock analysis with real OpenAI GPT-5 powered bill analysis
   - Backend endpoint: POST `/api/analyze-bill-ai` using Replit AI Integrations (no separate API key needed)

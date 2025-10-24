@@ -240,47 +240,49 @@ export function TutorialOverlay({
             )}
 
             {/* Navigation Buttons */}
-            <div className="flex items-center justify-between gap-3">
-              <Button
-                variant="outline"
-                onClick={onPrevious}
-                disabled={isFirstStep}
-                className="flex-1"
-                data-testid="button-tutorial-previous"
-              >
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                Previous
-              </Button>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="outline"
+                  onClick={onPrevious}
+                  disabled={isFirstStep}
+                  className="flex-1 text-sm"
+                  data-testid="button-tutorial-previous"
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Previous
+                </Button>
+
+                <Button
+                  onClick={handleNext}
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-sm font-semibold"
+                  data-testid="button-tutorial-next"
+                >
+                  {isLastStep ? (
+                    <>
+                      <CheckCircle2 className="h-4 w-4 mr-1" />
+                      {currentStep.ctaText || 'Complete'}
+                    </>
+                  ) : (
+                    <>
+                      {currentStep.ctaText || 'Next'}
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </>
+                  )}
+                </Button>
+              </div>
 
               {!isLastStep && (
                 <Button
                   variant="ghost"
                   onClick={handleSkip}
-                  className="flex-1 text-gray-600"
+                  className="w-full text-gray-600 text-sm"
                   data-testid="button-tutorial-skip-all"
                 >
-                  <SkipForward className="h-4 w-4 mr-2" />
+                  <SkipForward className="h-4 w-4 mr-1" />
                   Skip Tour
                 </Button>
               )}
-
-              <Button
-                onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
-                data-testid="button-tutorial-next"
-              >
-                {isLastStep ? (
-                  <>
-                    <CheckCircle2 className="h-4 w-4 mr-2" />
-                    {currentStep.ctaText || 'Complete'}
-                  </>
-                ) : (
-                  <>
-                    {currentStep.ctaText || 'Next'}
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </>
-                )}
-              </Button>
             </div>
           </div>
 
