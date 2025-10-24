@@ -107,11 +107,11 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
   
   const variants = {
     default: {
-      bg: "bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600",
+      bg: "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600",
       text: "text-white",
       icon: "text-white",
-      shadow: "shadow-2xl shadow-blue-500/50",
-      glow: "hover:shadow-blue-500/70"
+      shadow: "shadow-2xl shadow-emerald-500/50",
+      glow: "hover:shadow-emerald-500/70"
     },
     premium: {
       bg: "bg-gradient-to-br from-purple-600 via-pink-600 to-amber-500",
@@ -121,7 +121,7 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
       glow: "hover:shadow-purple-500/70"
     },
     action: {
-      bg: "bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-500",
+      bg: "bg-gradient-to-br from-teal-500 via-emerald-500 to-green-500",
       text: "text-white",
       icon: "text-white",
       shadow: "shadow-2xl shadow-teal-500/50",
@@ -271,11 +271,11 @@ const FloatingHelpSidebar = ({ workflow, isVisible, onClose }: {
         {/* Example Questions */}
         <div className="space-y-3">
           <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <MessageCircle className="h-4 w-4 text-blue-600" />
+            <MessageCircle className="h-4 w-4 text-emerald-600" />
             Example Questions
           </h4>
           <div className="space-y-2">
-            <div className="bg-blue-50 rounded-xl p-3 text-sm text-gray-700">
+            <div className="bg-emerald-50 rounded-xl p-3 text-sm text-gray-700">
               "My ER bill shows a Level 5 charge for $2,800. Is this correct for a minor injury?"
             </div>
             <div className="bg-purple-50 rounded-xl p-3 text-sm text-gray-700">
@@ -298,8 +298,8 @@ const FloatingHelpSidebar = ({ workflow, isVisible, onClose }: {
               <p className="text-xs font-semibold text-emerald-800 mb-1">$34,000 → $11,900</p>
               <p className="text-xs text-gray-700">Surgery bill reduced 65% through error detection</p>
             </div>
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-3 border border-blue-200">
-              <p className="text-xs font-semibold text-blue-800 mb-1">$12,500 → $0</p>
+            <div className="bg-gradient-to-r from-teal-50 to-green-50 rounded-xl p-3 border border-teal-200">
+              <p className="text-xs font-semibold text-teal-800 mb-1">$12,500 → $0</p>
               <p className="text-xs text-gray-700">ER bill eliminated via charity care qualification</p>
             </div>
             <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-3 border border-purple-200">
@@ -338,7 +338,7 @@ const SavingsProgressVisualization = ({ intakeState, estimatedSavings }: {
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 rounded-2xl p-4 border border-emerald-200 mb-4"
+      className="bg-gradient-to-r from-emerald-50 via-teal-50 to-green-50 rounded-2xl p-4 border border-emerald-200 mb-4"
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -360,7 +360,7 @@ const SavingsProgressVisualization = ({ intakeState, estimatedSavings }: {
           initial={{ width: 0 }}
           animate={{ width: `${completionPercentage}%` }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 rounded-full"
+          className="absolute h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 rounded-full"
         />
       </div>
 
@@ -443,8 +443,8 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       {/* Header */}
       <div className="text-center space-y-3 lg:space-y-6 xl:space-y-8">
         <div className="flex items-center justify-center gap-3 lg:gap-4">
-          <div className="w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16 bg-gradient-to-br from-emerald-100 via-teal-100 to-blue-200 rounded-2xl flex items-center justify-center shadow-lg">
-            <Brain className="h-5 w-5 lg:h-7 lg:w-7 xl:h-8 xl:w-8 text-white" />
+          <div className="w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16 bg-gradient-to-br from-emerald-100 via-teal-100 to-green-200 rounded-2xl flex items-center justify-center shadow-lg">
+            <Brain className="h-5 w-5 lg:h-7 lg:w-7 xl:h-8 xl:w-8 text-emerald-700" />
           </div>
           <div>
             <h1 className="text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900">Medical Bill AI</h1>
@@ -562,7 +562,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <WorkflowCategory
             title="Specialty Analysis"
             icon={AlertTriangle}
-            iconColor="text-blue-600"
+            iconColor="text-emerald-600"
             workflows={specialtyWorkflows}
             onWorkflowSelect={onWorkflowSelect}
             maxVisible={3}
@@ -732,7 +732,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           <WorkflowCategory
             title="💊 Denial Reversal Arsenal (Professional Methods)"
             icon={Stethoscope}
-            iconColor="text-blue-700"
+            iconColor="text-teal-700"
             workflows={denialReversalWorkflows}
             onWorkflowSelect={onWorkflowSelect}
             maxVisible={2}
@@ -778,19 +778,19 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
         {/* PREMIUM INSIGHT DATABASES */}
         {isSubscribed && (
           <>
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl p-4 mb-3">
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 mb-3">
               <div className="flex items-center gap-2 mb-2">
-                <Database className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-bold text-blue-800">Premium Insight Databases</span>
-                <Badge className="bg-blue-100 text-blue-800 text-xs">
+                <Database className="h-4 w-4 text-emerald-600" />
+                <span className="text-sm font-bold text-emerald-800">Premium Insight Databases</span>
+                <Badge className="bg-emerald-100 text-emerald-800 text-xs">
                   <Crown className="h-3 w-3 mr-1" />
                   Exclusive Intelligence
                 </Badge>
               </div>
-              <p className="text-xs text-blue-700 mb-2">
+              <p className="text-xs text-emerald-700 mb-2">
                 🎯 Comprehensive billing intelligence databases with insider knowledge, proven strategies, and massive savings potential.
               </p>
-              <div className="text-xs text-blue-600 space-y-1">
+              <div className="text-xs text-emerald-600 space-y-1">
                 <div>• Hospital billing patterns & vulnerabilities</div>
                 <div>• Insurance company tactics & countermeasures</div>
                 <div>• Emergency care billing protections</div>
@@ -800,7 +800,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
 
             <div className="space-y-3">
               <h3 className="text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-900 flex items-center gap-2 lg:gap-4">
-                <Database className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-blue-600" />
+                <Database className="h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 text-emerald-600" />
                 Premium Intelligence Databases (Exclusive Access)
               </h3>
               
@@ -810,14 +810,14 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   whileHover={{ scale: 1.05, y: -4 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/70 transition-all duration-300"
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 shadow-2xl shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all duration-300"
                   data-testid="hospital-bills-database"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
                   <Building2 className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
                     <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Hospital Bills Intelligence</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-blue-100 font-medium">Insider billing patterns</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-emerald-100 font-medium">Insider billing patterns</div>
                   </div>
                 </motion.button>
 
@@ -826,14 +826,14 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   whileHover={{ scale: 1.05, y: -4 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-600 to-blue-600 shadow-2xl shadow-indigo-500/50 hover:shadow-indigo-500/70 transition-all duration-300"
+                  className="relative h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] p-4 lg:p-6 xl:p-8 flex flex-col items-center justify-center space-y-2 lg:space-y-3 xl:space-y-4 rounded-3xl overflow-hidden bg-gradient-to-br from-teal-500 via-green-600 to-emerald-600 shadow-2xl shadow-teal-500/50 hover:shadow-teal-500/70 transition-all duration-300"
                   data-testid="insurance-claims-database"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
                   <Shield className="h-6 w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="text-center w-full flex-1 space-y-1 lg:space-y-2 relative z-10">
                     <div className="text-sm lg:text-lg xl:text-xl font-black text-white leading-tight">Insurance Claims Database</div>
-                    <div className="text-xs lg:text-sm xl:text-base text-indigo-100 font-medium">Company-specific tactics</div>
+                    <div className="text-xs lg:text-sm xl:text-base text-teal-100 font-medium">Company-specific tactics</div>
                   </div>
                 </motion.button>
 
@@ -947,13 +947,13 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   <Link href="/premium" className="w-full">
                     <Button
                       variant="outline"
-                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-blue-200 hover:shadow-lg transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 relative"
+                      className="!bg-white w-full h-20 p-3 flex-col space-y-2 text-left justify-start rounded-2xl border-emerald-200 hover:shadow-lg transition-all duration-200 hover:border-emerald-300 hover:bg-emerald-50/50 relative"
                       data-testid="preview-hospital-bills-database"
                     >
                       <div className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
                         $50K+ Avg
                       </div>
-                      <Building2 className="h-5 w-5 text-blue-600" />
+                      <Building2 className="h-5 w-5 text-emerald-600" />
                       <div className="text-center w-full">
                         <div className="text-xs font-semibold text-gray-900">Hospital Bills Intelligence</div>
                         <div className="text-xs text-gray-600 truncate">500+ hospital insider secrets</div>
@@ -1128,7 +1128,7 @@ const WorkflowCard = ({ workflow, onClick }: {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setShowPreview(false)}
         >
           <motion.div
@@ -1259,7 +1259,7 @@ const WorkflowListItem = ({ workflow, onClick }: {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setShowQuickPreview(false)}
         >
           <motion.div
@@ -1348,6 +1348,7 @@ export default function BillAI() {
   const [workflowIntakeData, setWorkflowIntakeData] = useState<Record<string, any>>({});
   const [showWorkflowSelection, setShowWorkflowSelection] = useState(true);
   const [showAllWorkflows, setShowAllWorkflows] = useState(false);
+  const [showFloatingQuickActions, setShowFloatingQuickActions] = useState(false);
   const [workflowFilter, setWorkflowFilter] = useState<string>('all');
   
   // Intake State Management
@@ -2001,9 +2002,9 @@ What would you like to do first? I'm here to help you find every possible saving
         )}
 
         {/* Elite Medical Chat Interface */}
-        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-blue-50/40 via-teal-50/30 to-cyan-50/40 px-4 pt-4 lg:px-8 lg:py-6 relative">
+        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50/40 via-teal-50/30 to-green-50/40 px-4 pt-4 lg:px-8 lg:py-6 relative">
           {/* Premium background pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(56,189,248,0.1),rgba(255,255,255,0))] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(16,185,129,0.1),rgba(255,255,255,0))] pointer-events-none" />
           
           <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8 lg:max-w-4xl lg:mx-auto relative z-10">
             
@@ -2024,8 +2025,8 @@ What would you like to do first? I'm here to help you find every possible saving
                   transition={{ delay: 0.3 }}
                   className="space-y-4"
                 >
-                  <div className="w-16 h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-100 via-teal-100 to-blue-200 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
-                    <Brain className="h-8 w-8 lg:h-12 lg:w-12 text-white" />
+                  <div className="w-16 h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-100 via-teal-100 to-green-200 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
+                    <Brain className="h-8 w-8 lg:h-12 lg:w-12 text-emerald-700" />
                   </div>
                   <div>
                     <h3 className="text-lg lg:text-2xl xl:text-3xl font-bold text-gray-900 mb-2 lg:mb-4">Ready to Save on Your Medical Bills?</h3>
@@ -2089,24 +2090,24 @@ What would you like to do first? I'm here to help you find every possible saving
               >
                 <div className={`max-w-[85%] group relative ${
                   message.role === "user" 
-                    ? "bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 text-white rounded-[28px] rounded-br-md shadow-2xl shadow-blue-500/30" 
-                    : "bg-white/80 backdrop-blur-2xl border border-white/60 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10"
+                    ? "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 text-white rounded-[28px] rounded-br-md shadow-2xl shadow-emerald-500/30" 
+                    : "bg-white/90 backdrop-blur-2xl border border-emerald-100/40 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10"
                 } px-6 py-5 relative overflow-hidden`}>
                   {/* Premium Glass Effect Layer */}
                   <div className={`absolute inset-0 ${
                     message.role === "user"
-                      ? "bg-gradient-to-br from-white/20 via-transparent to-transparent"
-                      : "bg-gradient-to-br from-white/60 via-white/30 to-transparent"
+                      ? "bg-gradient-to-br from-white/25 via-transparent to-transparent"
+                      : "bg-gradient-to-br from-emerald-50/40 via-white/50 to-transparent"
                   } pointer-events-none`} />
                   
                   {/* Content */}
                   <div className="relative z-10">
                   {message.role === "assistant" && (
                     <div className="flex items-center space-x-2.5 mb-3">
-                      <div className="w-7 h-7 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-sm">
-                        <Bot className="h-4 w-4 text-emerald-700" />
+                      <div className="w-8 h-8 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-md">
+                        <Bot className="h-4 w-4 text-emerald-700" strokeWidth={2.5} />
                       </div>
-                      <span className="text-sm font-semibold text-emerald-600 tracking-tight">Medical Bill Expert</span>
+                      <span className="text-sm font-bold text-emerald-700 tracking-tight">Bill Expert</span>
                     </div>
                   )}
                   <p className={`text-[15px] leading-relaxed whitespace-pre-wrap ${
@@ -2127,7 +2128,7 @@ What would you like to do first? I'm here to help you find every possible saving
                         }}
                         variant="ghost"
                         size="sm"
-                        className="h-8 px-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/50 text-blue-700 hover:from-blue-100 hover:to-indigo-100 text-xs"
+                        className="h-8 px-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/50 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 text-xs"
                         data-testid="customize-response-button"
                       >
                         <Settings className="h-3 w-3 mr-1.5" />
@@ -2222,37 +2223,37 @@ What would you like to do first? I'm here to help you find every possible saving
                 transition={{ type: "spring", stiffness: 300, damping: 24 }}
                 className="flex justify-start mb-4"
               >
-                <div className="bg-white/80 backdrop-blur-2xl border border-white/60 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10 px-6 py-5 max-w-[85%] relative overflow-hidden">
+                <div className="bg-white/90 backdrop-blur-2xl border border-emerald-100/40 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10 px-6 py-5 max-w-[85%] relative overflow-hidden">
                   {/* Glass effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/30 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/40 via-white/50 to-transparent pointer-events-none" />
                   
                   <div className="relative z-10">
                     <div className="flex items-center space-x-3 mb-3">
                       <motion.div 
-                        className="w-8 h-8 bg-gradient-to-br from-blue-400 via-teal-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg"
+                        className="w-8 h-8 bg-gradient-to-br from-emerald-400 via-teal-400 to-green-400 rounded-xl flex items-center justify-center shadow-lg"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                       >
-                        <Bot className="h-5 w-5 text-white" />
+                        <Bot className="h-5 w-5 text-white" strokeWidth={2.5} />
                       </motion.div>
-                      <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
-                        Medical Bill AI
+                      <span className="text-sm font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                        Bill Expert
                       </span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="flex space-x-1.5">
                         <motion.div
-                          className="w-2.5 h-2.5 bg-gradient-to-r from-blue-500 to-teal-500 rounded-full shadow-lg"
+                          className="w-2.5 h-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full shadow-lg"
                           animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
                           transition={{ duration: 1.2, repeat: Infinity, delay: 0 }}
                         />
                         <motion.div
-                          className="w-2.5 h-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full shadow-lg"
+                          className="w-2.5 h-2.5 bg-gradient-to-r from-teal-500 to-green-500 rounded-full shadow-lg"
                           animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
                           transition={{ duration: 1.2, repeat: Infinity, delay: 0.3 }}
                         />
                         <motion.div
-                          className="w-2.5 h-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full shadow-lg"
+                          className="w-2.5 h-2.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full shadow-lg"
                           animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
                           transition={{ duration: 1.2, repeat: Infinity, delay: 0.6 }}
                         />
@@ -2268,7 +2269,7 @@ What would you like to do first? I'm here to help you find every possible saving
         </div>
 
         {/* iOS-Style Input Composer */}
-        <div className="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-gray-200/30 p-4 lg:p-6 safe-area-inset-bottom lg:relative lg:bg-white lg:border lg:rounded-2xl lg:m-4 lg:shadow-lg">
+        <div className="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-emerald-100/30 p-4 lg:p-6 safe-area-inset-bottom lg:relative lg:bg-gradient-to-r lg:from-white lg:to-emerald-50/20 lg:border lg:border-emerald-100/30 lg:rounded-2xl lg:m-4 lg:shadow-lg">
           {/* Quick Upload Hint */}
           {localMessages.length === 0 && !conversationStarted && (
             <motion.div
@@ -2388,7 +2389,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Tell me about your bill..."
-                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-gray-200/50 bg-gray-50/80 focus:border-emerald-500/50 focus:bg-white placeholder:text-gray-500 text-gray-900 text-base lg:text-lg"
+                className="h-11 lg:h-14 pr-12 lg:pr-16 rounded-2xl border-emerald-200/40 bg-white/80 backdrop-blur-sm focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 placeholder:text-gray-500 text-gray-900 text-base lg:text-lg shadow-sm transition-all duration-200"
                 disabled={isTyping}
                 data-testid="message-input"
               />
@@ -2396,7 +2397,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 onClick={() => sendMessage()}
                 disabled={!inputMessage.trim() || isTyping}
                 size="sm"
-                className="absolute right-1.5 lg:right-2 top-1.5 lg:top-2 w-8 h-8 lg:w-10 lg:h-10 p-0 rounded-xl bg-emerald-500 hover:bg-emerald-600 shadow-sm"
+                className="absolute right-1.5 lg:right-2 top-1.5 lg:top-2 w-8 h-8 lg:w-10 lg:h-10 p-0 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-md hover:shadow-lg transition-all duration-200"
                 data-testid="send-message-button"
               >
                 {isTyping ? (
@@ -2419,7 +2420,7 @@ What would you like to do first? I'm here to help you find every possible saving
         {/* Drag and Drop Area */}
         {dragActive && (
           <div 
-            className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center"
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
@@ -2437,8 +2438,8 @@ What would you like to do first? I'm here to help you find every possible saving
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Drop Medical Bills Here</h3>
                   <p className="text-sm text-gray-600">Drop up to 5 medical bill images for instant AI analysis</p>
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-xs text-blue-800 text-center">
+                  <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                    <p className="text-xs text-emerald-800 text-center">
                       <strong>Data Processing Notice:</strong> Your uploaded images will be processed by AI systems (including OpenAI) for analysis. Data is retained for 30 days maximum.
                     </p>
                   </div>
@@ -2459,7 +2460,7 @@ What would you like to do first? I'm here to help you find every possible saving
 
         {/* Upload Progress Overlay */}
         {uploadingFiles && (
-          <div className="fixed inset-0 bg-blue-100/80 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -2566,18 +2567,18 @@ What would you like to do first? I'm here to help you find every possible saving
                 exit={{ scale: 0.95, y: 30, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-white via-blue-50/50 to-teal-50/50 backdrop-blur-3xl rounded-[32px] shadow-2xl border border-white/60"
+                className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-white via-emerald-50/50 to-teal-50/50 backdrop-blur-3xl rounded-[32px] shadow-2xl border border-white/60"
                 data-testid="tips-modal-content"
               >
                 {/* Premium gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-teal-500/5 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5 pointer-events-none" />
                 
                 {/* Animated particles */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   {[...Array(8)].map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-1 h-1 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full"
+                      className="absolute w-1 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"
                       animate={{
                         x: [Math.random() * 400, Math.random() * 400],
                         y: [Math.random() * 400, Math.random() * 400],
@@ -2597,7 +2598,7 @@ What would you like to do first? I'm here to help you find every possible saving
                 </div>
 
                 {/* Header */}
-                <div className="relative z-10 bg-gradient-to-r from-blue-600 via-teal-600 to-cyan-600 p-8">
+                <div className="relative z-10 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 p-8">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <motion.div
@@ -2611,7 +2612,7 @@ What would you like to do first? I'm here to help you find every possible saving
                       <h2 className="text-4xl font-black text-white mb-2 leading-tight">
                         Pro Tips
                       </h2>
-                      <p className="text-blue-100 text-lg font-medium">
+                      <p className="text-emerald-100 text-lg font-medium">
                         Expert strategies to maximize your savings
                       </p>
                     </div>
@@ -2661,7 +2662,7 @@ What would you like to do first? I'm here to help you find every possible saving
                       transition={{ delay: 0.2 }}
                       className="space-y-4"
                     >
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                         Quick Actions
                       </h3>
                       
@@ -2670,13 +2671,13 @@ What would you like to do first? I'm here to help you find every possible saving
                           icon: FileText,
                           title: "Use the 'Request Itemized Bill' button",
                           description: "Automatically generates a professional, legally-compliant request letter",
-                          color: "from-blue-500 to-indigo-600"
+                          color: "from-emerald-500 to-teal-600"
                         },
                         {
                           icon: CheckCircle,
                           title: "Check for duplicate charges",
                           description: "Look for repeated line items with identical dates and amounts",
-                          color: "from-teal-500 to-cyan-600"
+                          color: "from-teal-500 to-green-600"
                         },
                         {
                           icon: AlertTriangle,
@@ -2697,7 +2698,7 @@ What would you like to do first? I'm here to help you find every possible saving
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.3 + index * 0.1 }}
                           whileHover={{ scale: 1.02, x: 8 }}
-                          className="bg-white/80 backdrop-blur-xl border-2 border-gray-100 rounded-2xl p-5 hover:shadow-xl hover:border-blue-200 transition-all cursor-pointer group"
+                          className="bg-white/80 backdrop-blur-xl border-2 border-gray-100 rounded-2xl p-5 hover:shadow-xl hover:border-emerald-200 transition-all cursor-pointer group"
                         >
                           <div className="flex items-start gap-4">
                             <div className={`w-12 h-12 bg-gradient-to-br ${tip.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform`}>
@@ -2721,14 +2722,14 @@ What would you like to do first? I'm here to help you find every possible saving
                       initial={{ y: 50, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.7 }}
-                      className="bg-gradient-to-br from-blue-600 via-teal-600 to-cyan-600 rounded-3xl p-6 shadow-2xl"
+                      className="bg-gradient-to-br from-emerald-600 via-teal-600 to-green-600 rounded-3xl p-6 shadow-2xl"
                     >
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="text-2xl font-black text-white mb-2">
                             Ready to Save?
                           </h3>
-                          <p className="text-blue-100 font-medium">
+                          <p className="text-emerald-100 font-medium">
                             Use the buttons below to get started
                           </p>
                         </div>
@@ -2746,6 +2747,119 @@ What would you like to do first? I'm here to help you find every possible saving
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Floating Green Chatbot Quick Actions Button */}
+        <>
+          <motion.button
+            className="fixed right-4 z-40 w-14 h-14 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full shadow-2xl flex items-center justify-center"
+            style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom))' }}
+            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            onClick={() => setShowFloatingQuickActions(!showFloatingQuickActions)}
+            data-testid="bill-ai-quick-actions-button"
+          >
+            <motion.div
+              animate={{ rotate: showFloatingQuickActions ? 45 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <MessageCircle className="h-6 w-6 text-white" />
+            </motion.div>
+          </motion.button>
+
+          <AnimatePresence>
+            {showFloatingQuickActions && (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowFloatingQuickActions(false)}
+                />
+                
+                {/* Quick Actions Menu */}
+                <motion.div
+                  className="fixed bottom-36 right-4 z-40 space-y-3"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {[
+                    {
+                      icon: Upload,
+                      title: "Upload Bill",
+                      desc: "Scan bill images",
+                      onClick: () => {
+                        fileInputRef.current?.click();
+                        setShowFloatingQuickActions(false);
+                      },
+                      gradient: "from-emerald-500 to-teal-600"
+                    },
+                    {
+                      icon: FileText,
+                      title: "Request Itemized",
+                      desc: "Generate request letter",
+                      onClick: () => {
+                        const workflow = BILL_AI_WORKFLOWS.find(w => w.id === 'itemized-bill-request');
+                        if (workflow) initializeWorkflowConversation(workflow);
+                        setShowFloatingQuickActions(false);
+                      },
+                      gradient: "from-teal-500 to-green-600"
+                    },
+                    {
+                      icon: Shield,
+                      title: "Find Errors",
+                      desc: "Detect overcharges",
+                      onClick: () => {
+                        sendMessage("Please analyze my bill for common errors, overcharges, and potential savings opportunities.");
+                        setShowFloatingQuickActions(false);
+                      },
+                      gradient: "from-green-500 to-emerald-600"
+                    },
+                    {
+                      icon: Crown,
+                      title: "Premium Tools",
+                      desc: "Advanced features",
+                      onClick: () => {
+                        window.location.href = '/premium';
+                      },
+                      gradient: "from-purple-500 to-pink-600"
+                    }
+                  ].map((action, index) => {
+                    const IconComponent = action.icon;
+                    return (
+                      <motion.div
+                        key={action.title}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
+                        <motion.button
+                          onClick={action.onClick}
+                          className="bg-white/95 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/30 flex items-center space-x-3 min-w-56"
+                          whileTap={{ scale: 0.95 }}
+                          whileHover={{ scale: 1.02 }}
+                          data-testid={`quick-action-${action.title.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          <div className={`w-10 h-10 bg-gradient-to-br ${action.gradient} rounded-xl flex items-center justify-center shadow-md`}>
+                            <IconComponent className="h-5 w-5 text-white" />
+                          </div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-sm text-gray-900">{action.title}</div>
+                            <div className="text-xs text-gray-600">{action.desc}</div>
+                          </div>
+                        </motion.button>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </>
       </div>
     </MobileLayout>
   );
