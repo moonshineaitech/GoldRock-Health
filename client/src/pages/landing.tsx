@@ -817,6 +817,120 @@ export default function Landing() {
         </div>
       </motion.div>
 
+      {/* ⭐ CUSTOMER TESTIMONIALS - GrantedHealth Style */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-12 bg-gradient-to-br from-blue-50/50 via-indigo-50/50 to-purple-50/50"
+        data-testid="section-testimonials"
+      >
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-black text-gray-900 mb-3"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Trusted by thousands
+            </motion.h2>
+            <motion.p
+              className="text-lg text-gray-700 font-medium"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              Real stories from people who saved thousands on medical bills
+            </motion.p>
+          </div>
+
+          {/* Testimonials Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              {
+                quote: "I was so distraught when I got a surprise $65K bill. Your support relieved so much of my anxiety and stress. It felt reassuring knowing an expert had it under control.",
+                name: "Jennifer",
+                location: "PA",
+                rating: 5
+              },
+              {
+                quote: "Someone really took over the situation and navigated it hassle free for me. I couldn't be happier",
+                name: "Luke",
+                location: "NY",
+                rating: 5
+              },
+              {
+                quote: "I got reimbursed on the things that was initially rejected. Extremely helpful!",
+                name: "Yuko",
+                location: "MA",
+                rating: 5
+              },
+              {
+                quote: "So helpful! Saved me money and hours on the phone. Absolutely fantastic resource.",
+                name: "Melissa",
+                location: "NY",
+                rating: 5
+              }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                {/* 5-Star Rating */}
+                <div className="flex gap-1 mb-3">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+
+                {/* Quote */}
+                <p className="text-gray-700 mb-4 leading-relaxed font-medium">
+                  "{testimonial.quote}"
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center justify-between border-t border-gray-100 pt-3">
+                  <div>
+                    <p className="font-bold text-gray-900">{testimonial.name}</p>
+                    <p className="text-sm text-gray-600">{testimonial.location}</p>
+                  </div>
+                  <div className="text-emerald-600">
+                    <ThumbsUp className="h-5 w-5" />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Trust Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 text-center"
+          >
+            <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-full border border-emerald-200 shadow-md">
+              <div className="flex items-center gap-1">
+                <Star className="h-6 w-6 text-amber-400 fill-amber-400" />
+                <span className="text-2xl font-black text-gray-900">4.9</span>
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-bold text-gray-900">Rated Excellent</p>
+                <p className="text-xs text-gray-600">Based on 1,000+ reviews</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
       {/* 💰 PRICING CTA */}
       <motion.div
         initial={{ opacity: 0 }}
