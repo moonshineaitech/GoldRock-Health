@@ -110,58 +110,41 @@ export default function AuthLanding() {
             </motion.div>
           </motion.div>
 
-          {/* Headline */}
+          {/* Headline - iOS Professional Style */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            <h1 className="text-4xl font-black mb-3 leading-[1.1] tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-black mb-4 leading-[1.05] tracking-tight">
               <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Cut Medical Bills
+                Reduce Medical Bills
               </span>
               <br />
-              <span className="text-gray-900">by 40-90%</span>
+              <span className="text-gray-900">40-90%</span>
             </h1>
             
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-300 rounded-full px-5 py-2.5 mb-4 shadow-lg"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-300 rounded-full px-6 py-3 mb-6 shadow-lg"
             >
-              <Sparkles className="h-4 w-4 text-emerald-600" />
-              <span className="text-sm font-black bg-gradient-to-r from-emerald-700 via-teal-700 to-green-700 bg-clip-text text-transparent">
-                Users Report: $2,000-$35,000+ Savings
+              <Sparkles className="h-5 w-5 text-emerald-600" />
+              <span className="text-base font-black bg-gradient-to-r from-emerald-700 via-teal-700 to-green-700 bg-clip-text text-transparent">
+                Avg Savings: $2,000-$35,000+
               </span>
             </motion.div>
           </motion.div>
 
           <motion.p 
-            className="text-base text-gray-700 mb-6 max-w-lg mx-auto leading-relaxed font-semibold"
+            className="text-lg text-gray-600 mb-8 max-w-md mx-auto leading-relaxed font-medium"
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7 }}
           >
-            AI scans your medical bills for errors, generates legal dispute letters, and reveals insider hospital negotiation tactics
+            AI-powered bill analysis finds errors and overcharges. Get dispute letters and expert negotiation strategies.
           </motion.p>
-
-          {/* Trust Indicators */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.6 }}
-            className="flex items-center justify-center gap-4 mb-6 flex-wrap"
-          >
-            <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 shadow-md">
-              <Shield className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-bold text-gray-800">HIPAA Compliant</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50 shadow-md">
-              <Lock className="h-4 w-4 text-emerald-600" />
-              <span className="text-sm font-bold text-gray-800">Bank-Level Security</span>
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* 🎯 SIGN IN SECTION - MOVED ABOVE FEATURE PANELS */}
