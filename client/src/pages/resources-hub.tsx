@@ -204,11 +204,19 @@ export default function ResourcesHub() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-300 rounded-full px-6 py-3 shadow-lg"
+          transition={{ 
+            delay: 0.8, 
+            duration: 0.5,
+            type: "spring",
+            stiffness: 350,
+            damping: 25
+          }}
+          className="inline-flex items-center gap-3 backdrop-blur-xl bg-white/90 border border-white/40 rounded-full px-6 py-3 shadow-lg relative overflow-hidden"
         >
-          <CheckCircle className="h-5 w-5 text-emerald-600" />
-          <span className="text-sm font-black bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10" />
+          <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/20 pointer-events-none" />
+          <CheckCircle className="h-5 w-5 text-emerald-600 relative z-10" />
+          <span className="text-sm font-black bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent relative z-10">
             Users Save $2K-$35K+ With These Guides
           </span>
         </motion.div>
@@ -227,32 +235,54 @@ export default function ResourcesHub() {
         </h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {quickActions.map((action, index) => (
-            <Link key={action.title} href={action.path}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.1 + index * 0.1, duration: 0.4 }}
-                whileHover={{ scale: 1.03, y: -3 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <MobileCard className={`bg-gradient-to-br ${action.bgColor} border-2 border-white/50 relative overflow-hidden`}>
-                  {action.premium && !isSubscribed && (
-                    <div className="absolute top-2 right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1">
-                      <Crown className="h-3 w-3" />
-                      Premium
+          {quickActions.map((action, index) => {
+            const Icon = action.icon;
+            return (
+              <Link key={action.title} href={action.path}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ 
+                    delay: 1.1 + index * 0.1, 
+                    duration: 0.4,
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 25
+                  }}
+                  whileHover={{ scale: 1.03, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="backdrop-blur-xl bg-white/95 border border-white/40 rounded-2xl p-4 relative overflow-hidden shadow-lg">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${action.color} opacity-0 hover:opacity-5 transition-opacity duration-300`} />
+                    <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
+                    
+                    {action.premium && !isSubscribed && (
+                      <div className="absolute top-2 right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1 z-10">
+                        <Crown className="h-3 w-3" />
+                        Premium
+                      </div>
+                    )}
+                    
+                    {action.tag && (
+                      <div className="absolute top-2 right-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs px-2 py-1 rounded-full font-bold z-10">
+                        {action.tag}
+                      </div>
+                    )}
+                    
+                    <div className="relative z-10">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${action.color} rounded-xl flex items-center justify-center mb-3 shadow-lg relative overflow-hidden`}>
+                        <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                        <Icon className="h-6 w-6 text-white relative z-10" strokeWidth={2.5} />
+                      </div>
+                      <h3 className="font-black text-gray-900 text-sm mb-1">{action.title}</h3>
+                      <p className="text-xs text-gray-600 leading-relaxed font-medium">{action.description}</p>
                     </div>
-                  )}
-                  
-                  <div className={`w-12 h-12 bg-gradient-to-r ${action.color} rounded-xl flex items-center justify-center mb-3 shadow-lg`}>
-                    <action.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
                   </div>
-                  <h3 className="font-black text-gray-900 text-sm mb-1">{action.title}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{action.description}</p>
-                </MobileCard>
-              </motion.div>
-            </Link>
-          ))}
+                </motion.div>
+              </Link>
+            );
+          })}
         </div>
       </motion.div>
 
@@ -268,65 +298,79 @@ export default function ResourcesHub() {
         </h2>
 
         <div className="space-y-3">
-          {resources.map((resource, index) => (
-            <Link key={resource.title} href={resource.path}>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.4 + index * 0.08, duration: 0.4 }}
-                whileHover={{ scale: 1.02, x: 4 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <MobileCard className={`bg-gradient-to-br ${resource.bgColor} border-2 border-white/50 relative overflow-hidden`}>
-                  <div className="flex items-start gap-4">
-                    <div className={`w-14 h-14 bg-gradient-to-r ${resource.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
-                      <resource.icon className="h-7 w-7 text-white" strokeWidth={2.5} />
-                    </div>
+          {resources.map((resource, index) => {
+            const Icon = resource.icon;
+            return (
+              <Link key={resource.title} href={resource.path}>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ 
+                    delay: 1.4 + index * 0.08, 
+                    duration: 0.4,
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 25
+                  }}
+                  whileHover={{ scale: 1.02, x: 4 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="backdrop-blur-xl bg-white/95 border border-white/40 rounded-2xl p-4 relative overflow-hidden shadow-lg">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${resource.color} opacity-0 hover:opacity-5 transition-opacity duration-300`} />
+                    <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
+                    
+                    <div className="flex items-start gap-4 relative z-10">
+                      <div className={`w-14 h-14 bg-gradient-to-br ${resource.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg relative overflow-hidden`}>
+                        <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                        <Icon className="h-7 w-7 text-white relative z-10" strokeWidth={2.5} />
+                      </div>
 
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-black text-gray-900 text-base">{resource.title}</h3>
-                        {resource.tag && (
-                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                            resource.tag === 'Premium' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' :
-                            resource.tag === 'Most Popular' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white' :
-                            resource.tag === 'Expert' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white' :
-                            'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                          }`}>
-                            {resource.tag}
-                          </span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-black text-gray-900 text-base">{resource.title}</h3>
+                          {resource.tag && (
+                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                              resource.tag === 'Premium' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' :
+                              resource.tag === 'Most Popular' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white' :
+                              resource.tag === 'Expert' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white' :
+                              'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                            }`}>
+                              {resource.tag}
+                            </span>
+                          )}
+                        </div>
+                        
+                        <p className="text-sm text-gray-700 leading-relaxed mb-2 font-medium">
+                          {resource.description}
+                        </p>
+
+                        {resource.savings && (
+                          <div className="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full">
+                            <DollarSign className="h-3.5 w-3.5 text-emerald-600" />
+                            <span className="text-xs font-black text-emerald-700">
+                              Potential: {resource.savings}
+                            </span>
+                          </div>
+                        )}
+
+                        {resource.premium && !isSubscribed && (
+                          <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-orange-100 to-red-100 border border-orange-300 px-3 py-1 rounded-full">
+                            <Crown className="h-3.5 w-3.5 text-orange-600" />
+                            <span className="text-xs font-black text-orange-700">
+                              Premium Required
+                            </span>
+                          </div>
                         )}
                       </div>
-                      
-                      <p className="text-sm text-gray-700 leading-relaxed mb-2 font-medium">
-                        {resource.description}
-                      </p>
 
-                      {resource.savings && (
-                        <div className="inline-flex items-center gap-1.5 bg-white/80 px-3 py-1 rounded-full">
-                          <DollarSign className="h-3.5 w-3.5 text-emerald-600" />
-                          <span className="text-xs font-black text-emerald-700">
-                            Potential: {resource.savings}
-                          </span>
-                        </div>
-                      )}
-
-                      {resource.premium && !isSubscribed && (
-                        <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-orange-100 to-red-100 border border-orange-300 px-3 py-1 rounded-full">
-                          <Crown className="h-3.5 w-3.5 text-orange-600" />
-                          <span className="text-xs font-black text-orange-700">
-                            Premium Required
-                          </span>
-                        </div>
-                      )}
+                      <ChevronRight className="h-5 w-5 text-gray-400 flex-shrink-0" />
                     </div>
-
-                    <ChevronRight className="h-5 w-5 text-gray-400 flex-shrink-0" />
                   </div>
-                </MobileCard>
-              </motion.div>
-            </Link>
-          ))}
+                </motion.div>
+              </Link>
+            );
+          })}
         </div>
       </motion.div>
 
@@ -336,22 +380,43 @@ export default function ResourcesHub() {
           className="mt-8 mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, duration: 0.6 }}
+          transition={{ 
+            delay: 2, 
+            duration: 0.6,
+            type: "spring",
+            stiffness: 350,
+            damping: 25
+          }}
         >
-          <MobileCard className="bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 text-white text-center">
-            <Crown className="h-12 w-12 mx-auto mb-3" />
-            <h3 className="text-xl font-black mb-2">Unlock All Premium Resources</h3>
-            <p className="text-purple-100 mb-4 text-sm">
-              Get unlimited access to all templates, guides, and AI-powered tools
-            </p>
-            <Link href="/premium">
-              <MobileButton className="w-full bg-white text-purple-600 hover:bg-gray-100 font-bold">
-                <Sparkles className="h-4 w-4 mr-2" />
-                Upgrade to Premium
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </MobileButton>
-            </Link>
-          </MobileCard>
+          <div className="backdrop-blur-xl bg-white/95 border border-white/40 rounded-2xl p-6 text-center relative overflow-hidden shadow-xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-indigo-500/10 to-blue-500/10" />
+            <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
+            
+            <div className="relative z-10">
+              <motion.div
+                className="w-16 h-16 bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg relative overflow-hidden"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                <Crown className="h-8 w-8 text-white relative z-10" strokeWidth={2.5} />
+              </motion.div>
+              
+              <h3 className="text-xl font-black mb-2 bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 bg-clip-text text-transparent">
+                Unlock All Premium Resources
+              </h3>
+              <p className="text-gray-700 mb-4 text-sm font-medium">
+                Get unlimited access to all templates, guides, and AI-powered tools
+              </p>
+              <Link href="/premium">
+                <MobileButton className="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white hover:from-purple-700 hover:via-indigo-700 hover:to-blue-700 font-bold shadow-lg">
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Upgrade to Premium
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </MobileButton>
+              </Link>
+            </div>
+          </div>
         </motion.div>
       )}
     </MobileLayout>
