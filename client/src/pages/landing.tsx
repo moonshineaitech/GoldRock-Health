@@ -171,6 +171,8 @@ export default function Landing() {
           transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h1 className="text-4xl md:text-5xl font-black mb-3 leading-[1.1] tracking-tight">
+            <span className="text-gray-900">Cut through the</span>
+            <br />
             <motion.span 
               className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 bg-clip-text text-transparent inline-block"
               animate={{ 
@@ -179,10 +181,8 @@ export default function Landing() {
               transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
               style={{ backgroundSize: '200% auto' }}
             >
-              Cut Medical Bills
+              medical bill chaos
             </motion.span>
-            <br />
-            <span className="text-gray-900">by 40-90%</span>
           </h1>
           
           <motion.div
@@ -205,7 +205,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.7 }}
         >
-          AI scans your medical bills for errors, generates legal dispute letters, and reveals insider hospital negotiation tactics
+          We handle medical billing chaos so you don't have to. Save time, energy, and money
         </motion.p>
 
         {/* Trust Indicators */}
