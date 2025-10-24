@@ -413,35 +413,6 @@ export function LandingNavigation() {
           </motion.a>
         </div>
       </motion.header>
-
-      {/* Bottom Navigation - Fixed to bottom */}
-      <motion.nav
-        className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-2xl"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-4 gap-1 py-2">
-            {[
-              { href: "/api/login", icon: Home, label: "Home", color: "text-gray-600", testId: "bottom-nav-home" },
-              { href: "/api/login?redirect=/bill-ai", icon: Brain, label: "Bill AI", color: "text-blue-600", testId: "bottom-nav-bill-ai" },
-              { href: "/api/login?redirect=/resources-hub", icon: BookOpen, label: "Guides", color: "text-emerald-600", testId: "bottom-nav-guides" },
-              { href: "/api/login?redirect=/premium", icon: Crown, label: "Premium", color: "text-purple-600", testId: "bottom-nav-premium" }
-            ].map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="flex flex-col items-center justify-center py-2 px-3 rounded-xl hover:bg-gray-50 transition-all group"
-                data-testid={item.testId}
-              >
-                <item.icon className={`h-6 w-6 ${item.color} group-hover:scale-110 transition-transform mb-1`} />
-                <span className="text-xs font-bold text-gray-700 group-hover:text-gray-900">{item.label}</span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </motion.nav>
     </>
   );
 }
