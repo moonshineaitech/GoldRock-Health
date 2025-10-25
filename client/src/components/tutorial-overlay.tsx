@@ -206,13 +206,26 @@ export function TutorialOverlay({
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ duration: 0.3, delay: 0.1 }}
           className="absolute z-[3] bg-white rounded-2xl shadow-2xl pointer-events-auto overflow-hidden"
-          style={{
-            top: tooltipPosition?.top ?? window.innerHeight / 2 - 200,
-            left: tooltipPosition?.left ?? window.innerWidth / 2 - 200,
-            width: currentStep.position === 'center' ? 500 : 400,
-            maxWidth: '90vw',
-            maxHeight: '80vh',
-          }}
+          style={
+            currentStep.position === 'center' || !tooltipPosition
+              ? {
+                  // Center position using transform for proper centering
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '90vw',
+                  maxWidth: '500px',
+                  maxHeight: '80vh',
+                }
+              : {
+                  // Element-relative positioning
+                  top: tooltipPosition.top,
+                  left: tooltipPosition.left,
+                  width: '90vw',
+                  maxWidth: '400px',
+                  maxHeight: '80vh',
+                }
+          }
           data-testid="tutorial-tooltip"
         >
           {/* Header with Progress */}
