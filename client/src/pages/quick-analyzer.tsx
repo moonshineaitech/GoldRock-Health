@@ -131,11 +131,13 @@ const analyzeBillWithAI = async (billData: any): Promise<BillAnalysisData> => {
       }),
     });
 
+    const result = await response.json();
+    
     if (!response.ok) {
-      throw new Error('Failed to analyze bill');
+      // Propagate the actual error message from the server
+      throw new Error(result.error || result.message || 'Failed to analyze bill');
     }
 
-    const result = await response.json();
     const aiAnalysis = result.analysis;
 
     // Transform AI response to match BillAnalysisData interface
@@ -200,12 +202,29 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
         title: "✨ AI Analysis Complete",
         description: `Found ${analysis.issues.length} potential issues to review.`
       });
-    } catch (error) {
-      toast({
-        title: "Analysis Error",
-        description: "Failed to analyze bill. Please check your inputs and try again.",
-        variant: "destructive"
-      });
+    } catch (error: any) {
+      const errorMessage = error.message || 'Unknown error';
+      
+      // Check for specific error types
+      if (errorMessage.includes('quota') || errorMessage.includes('429')) {
+        toast({
+          title: "⚠️ AI Service Temporarily Unavailable",
+          description: "Our AI service is experiencing high demand. Please try again in a few moments, or contact support.",
+          variant: "destructive"
+        });
+      } else if (errorMessage.includes('401') || errorMessage.includes('403')) {
+        toast({
+          title: "Authentication Error",
+          description: "Please log in again to continue using AI analysis.",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Analysis Error",
+          description: "Failed to analyze bill. Please check your inputs and try again.",
+          variant: "destructive"
+        });
+      }
     } finally {
       setUploading(false);
     }
