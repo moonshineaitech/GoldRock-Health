@@ -138,11 +138,11 @@ export default function Landing() {
             whileHover={{ scale: 1.05, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Glass Layer */}
-            <div className="absolute inset-0 bg-white/20 rounded-[2rem] backdrop-blur-sm" />
+            {/* Subtle highlight layer - no blur for crisp icon */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-[2rem]" />
             
-            {/* Icon */}
-            <DollarSign className="text-white text-3xl relative z-10 drop-shadow-lg" strokeWidth={3} />
+            {/* Icon - crisp and sharp */}
+            <DollarSign className="text-white h-12 w-12 relative z-10" strokeWidth={3} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }} />
             
             {/* Sparkle Effects */}
             <motion.div 
