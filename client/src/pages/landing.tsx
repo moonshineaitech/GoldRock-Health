@@ -138,17 +138,17 @@ export default function Landing() {
           transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h1 className="text-4xl md:text-5xl font-black mb-3 leading-[1.1] tracking-tight">
-            <span className="text-gray-900">Cut through the</span>
+            <span className="text-gray-900">Your Complete</span>
             <br />
             <motion.span 
-              className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 bg-clip-text text-transparent inline-block"
+              className="bg-gradient-to-r from-amber-500 via-orange-500 to-emerald-500 bg-clip-text text-transparent inline-block"
               animate={{ 
                 backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
               }}
               transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
               style={{ backgroundSize: '200% auto' }}
             >
-              medical bill chaos
+              Health AI Platform
             </motion.span>
           </h1>
           
@@ -156,23 +156,35 @@ export default function Landing() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6, duration: 0.6 }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-300 rounded-full px-5 py-2.5 mb-4 shadow-lg"
+            className="flex flex-wrap items-center justify-center gap-2 mb-4"
           >
-            <Sparkles className="h-4 w-4 text-emerald-600" />
-            <span className="text-base font-black bg-gradient-to-r from-emerald-700 via-teal-700 to-green-700 bg-clip-text text-transparent">
-              Users Report Avg Savings: $2,000-$35,000+
+            <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-100 to-teal-100 border border-emerald-300 rounded-full px-3 py-1.5 shadow-md">
+              <DollarSign className="h-3.5 w-3.5 text-emerald-600" />
+              <span className="text-sm font-bold text-emerald-700">Bill Savings</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-purple-100 to-indigo-100 border border-purple-300 rounded-full px-3 py-1.5 shadow-md">
+              <Brain className="h-3.5 w-3.5 text-purple-600" />
+              <span className="text-sm font-bold text-purple-700">AI Diagnostics</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-pink-100 to-rose-100 border border-pink-300 rounded-full px-3 py-1.5 shadow-md">
+              <Stethoscope className="h-3.5 w-3.5 text-pink-600" />
+              <span className="text-sm font-bold text-pink-700">Medical Training</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-full px-3 py-1.5 shadow-md">
+              <Trophy className="h-3.5 w-3.5 text-amber-600" />
+              <span className="text-sm font-bold text-amber-700">Gamified Learning</span>
             </span>
           </motion.div>
         </motion.div>
         
         {/* Value Proposition - Clear & Compelling */}
         <motion.p 
-          className="text-lg text-gray-700 mb-6 max-w-md mx-auto leading-relaxed font-semibold"
+          className="text-lg text-gray-700 mb-6 max-w-lg mx-auto leading-relaxed font-semibold"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.7 }}
         >
-          We handle medical billing chaos so you don't have to. Save time, energy, and money
+          Fight medical bills, master diagnostic skills, and access AI-powered health insights all in one platform
         </motion.p>
 
         {/* Trust Indicators */}
@@ -222,8 +234,137 @@ export default function Landing() {
           transition={{ delay: 1.4 }}
           className="text-xs text-gray-500 mt-3"
         >
-          No credit card required • Free to analyze
+          No credit card required. Free to start
         </motion.p>
+      </motion.div>
+
+      {/* PLATFORM OVERVIEW - Four Pillars */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-12 bg-gradient-to-br from-gray-50 via-white to-gray-50"
+        data-testid="section-platform-overview"
+      >
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <span className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
+              <Sparkles className="h-4 w-4" />
+              Complete Health AI Platform
+            </span>
+            <h2 className="text-3xl font-black text-gray-900 mb-3">
+              More Than Just Bill Analysis
+            </h2>
+            <p className="text-lg text-gray-600 font-medium">
+              Four powerful pillars to transform your healthcare experience
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Pillar 1: Financial Defense */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-5 text-white shadow-xl"
+            >
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <DollarSign className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Financial Defense Suite</h3>
+              <p className="text-white/90 text-sm mb-3">AI bill analysis, dispute templates, and negotiation strategies</p>
+              <div className="flex flex-wrap gap-1.5">
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Bill AI</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Templates</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Disputes</span>
+              </div>
+            </motion.div>
+
+            {/* Pillar 2: Clinical Intelligence */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-5 text-white shadow-xl"
+            >
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Clinical Intelligence</h3>
+              <p className="text-white/90 text-sm mb-3">Health insights, medical knowledge, and second opinions</p>
+              <div className="flex flex-wrap gap-1.5">
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Health AI</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Insights</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Resources</span>
+              </div>
+            </motion.div>
+
+            {/* Pillar 3: Diagnostic Mastery */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl p-5 text-white shadow-xl"
+            >
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Diagnostic Mastery</h3>
+              <p className="text-white/90 text-sm mb-3">Interactive training with AI patients and full diagnosis mode</p>
+              <div className="flex flex-wrap gap-1.5">
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">AI Patients</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Training</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Scoring</span>
+              </div>
+            </motion.div>
+
+            {/* Pillar 4: Gamified Learning */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-5 text-white shadow-xl"
+            >
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Trophy className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Gamified Learning</h3>
+              <p className="text-white/90 text-sm mb-3">Pixel Doctor game, achievements, and skill progression</p>
+              <div className="flex flex-wrap gap-1.5">
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Pixel Doctor</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">Achievements</span>
+                <span className="bg-white/20 text-xs px-2 py-1 rounded-full">XP System</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Explore All Features CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-8"
+          >
+            <Link href="/patient-diagnostics">
+              <MobileButton className="bg-white border-2 border-purple-300 text-purple-700 hover:bg-purple-50 font-bold shadow-lg">
+                <Brain className="h-5 w-5 mr-2" />
+                Try AI Diagnostics
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </MobileButton>
+            </Link>
+          </motion.div>
+        </div>
       </motion.div>
 
       {/* 🎯 EASILY LOWER YOUR MEDICAL BILLS - GrantedHealth Style */}

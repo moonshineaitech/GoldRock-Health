@@ -5,7 +5,7 @@ import {
   Gavel, Lock, Network, Crosshair, Calculator, MessageCircle, Crown, Sparkles,
   ArrowRight, Play, FileCheck, TrendingDown, Award, BadgeCheck, ChevronRight,
   FileX, CreditCard, Wrench, Puzzle, Heart, Search, Users, Settings, BarChart3,
-  Pill, Stethoscope, Activity, Microscope, Baby, Car, Home as HomeIcon
+  Pill, Stethoscope, Activity, Microscope, Baby, Car, Home as HomeIcon, Trophy
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
@@ -112,12 +112,37 @@ export default function AuthLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <span className="text-gray-900">Fight Back Against</span>
+            <span className="text-gray-900">Your Complete</span>
             <br />
-            <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
-              Medical Bill Overcharges
+            <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-emerald-600 bg-clip-text text-transparent">
+              Health AI Command Center
             </span>
           </motion.h1>
+
+          {/* Feature Pills */}
+          <motion.div
+            className="flex flex-wrap items-center justify-center gap-3 mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <span className="inline-flex items-center gap-2 bg-emerald-100 border border-emerald-300 rounded-full px-4 py-2">
+              <DollarSign className="h-4 w-4 text-emerald-600" />
+              <span className="text-sm font-bold text-emerald-700">Bill Analysis</span>
+            </span>
+            <span className="inline-flex items-center gap-2 bg-purple-100 border border-purple-300 rounded-full px-4 py-2">
+              <Brain className="h-4 w-4 text-purple-600" />
+              <span className="text-sm font-bold text-purple-700">AI Diagnostics</span>
+            </span>
+            <span className="inline-flex items-center gap-2 bg-pink-100 border border-pink-300 rounded-full px-4 py-2">
+              <Stethoscope className="h-4 w-4 text-pink-600" />
+              <span className="text-sm font-bold text-pink-700">Medical Training</span>
+            </span>
+            <span className="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 rounded-full px-4 py-2">
+              <Trophy className="h-4 w-4 text-amber-600" />
+              <span className="text-sm font-bold text-amber-700">Gamified Learning</span>
+            </span>
+          </motion.div>
 
           {/* Subheadline */}
           <motion.p 
@@ -126,7 +151,7 @@ export default function AuthLanding() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            AI-powered analysis, expert negotiation tactics, and professional dispute templates to reduce your medical bills
+            Reduce medical bills, master diagnostic skills, train with AI patients, and access expert health insights all in one powerful platform
           </motion.p>
 
           {/* CTA Buttons */}
@@ -171,8 +196,117 @@ export default function AuthLanding() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            Free to start • Professional tools • No credit card required
+            Free to start. Professional tools. No credit card required
           </motion.p>
+        </div>
+      </section>
+
+      {/* PLATFORM OVERVIEW - Four Pillars */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50" id="features" data-testid="section-platform-overview">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <span className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
+              <Sparkles className="h-4 w-4" />
+              Complete Health AI Platform
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+              More Than Just Bill Analysis
+            </h2>
+            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
+              Four powerful pillars to transform your healthcare experience
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Pillar 1: Financial Defense */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <DollarSign className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Financial Defense</h3>
+              <p className="text-white/90 text-sm mb-4 leading-relaxed">AI bill analysis, dispute templates, and negotiation strategies to save $2K-$35K+</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Bill AI</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Templates</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Disputes</span>
+              </div>
+            </motion.div>
+
+            {/* Pillar 2: Clinical Intelligence */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Brain className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Clinical Intelligence</h3>
+              <p className="text-white/90 text-sm mb-4 leading-relaxed">Health insights, medical knowledge engines, and AI-powered second opinions</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Health AI</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Insights</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Resources</span>
+              </div>
+            </motion.div>
+
+            {/* Pillar 3: Diagnostic Mastery */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Target className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Diagnostic Mastery</h3>
+              <p className="text-white/90 text-sm mb-4 leading-relaxed">Interactive training with AI patients, step-by-step workups, and full diagnosis mode</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">AI Patients</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Training</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Scoring</span>
+              </div>
+            </motion.div>
+
+            {/* Pillar 4: Gamified Learning */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-6 text-white shadow-2xl"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Trophy className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Gamified Learning</h3>
+              <p className="text-white/90 text-sm mb-4 leading-relaxed">Pixel Doctor game, achievements, XP progression, and skill building</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Pixel Doctor</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Achievements</span>
+                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">XP System</span>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
