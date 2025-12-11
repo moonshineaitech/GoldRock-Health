@@ -81,7 +81,7 @@ export class AICaseGenerator {
     const prompt = this.buildCaseGenerationPrompt(request, ageRange, gender);
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o", // Using gpt-4o for reliable medical case generation
+      model: "gpt-5.2", // Using gpt-5.2 for reliable medical case generation
       messages: [
         {
           role: "system",

@@ -1376,7 +1376,7 @@ Respond with ONLY a JSON object:
 }`;
 
           const response = await openAIService.openai.chat.completions.create({
-            model: "gpt-4o",
+            model: "gpt-5.2",
             messages: [
               {
                 role: "system",
@@ -2319,7 +2319,7 @@ RESPONSE FORMAT:
 You help patients save thousands of dollars through expert guidance on medical bill reduction strategies.`;
 
         const response = await openAIService.openai.chat.completions.create({
-          model: "gpt-4o", // Using gpt-4o as it's the most current available model
+          model: "gpt-5.2", // Using gpt-5.2 as it's the most current available model
           messages: [
             {
               role: "system",
@@ -2382,7 +2382,7 @@ You help patients save thousands of dollars through expert guidance on medical b
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              model: 'gpt-4o',
+              model: 'gpt-5.2',
               messages: [
                 {
                   role: 'user',
@@ -2566,7 +2566,7 @@ Extract every specific detail from the bill including exact account numbers, pat
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              model: 'gpt-4o',
+              model: 'gpt-5.2',
               messages: [
                 {
                   role: 'system',
@@ -2675,7 +2675,7 @@ Extract every specific detail from the bill including exact account numbers, pat
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                model: 'gpt-4o',
+                model: 'gpt-5.2',
                 messages: [
                   {
                     role: 'user',
@@ -2836,7 +2836,7 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              model: 'gpt-4o',
+              model: 'gpt-5.2',
               messages: [
                 {
                   role: 'system',
@@ -3039,7 +3039,7 @@ Respond with complete, detailed advice AND proactive offers to generate document
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              model: 'gpt-4o',
+              model: 'gpt-5.2',
               messages: [
                 {
                   role: 'system',
@@ -3395,7 +3395,7 @@ Generate this as a single, well-structured JSON object with ALL fields populated
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-5',
+          model: 'gpt-5.2',
           messages: [
             {
               role: 'system',
@@ -3586,7 +3586,7 @@ Make it clinically accurate and educationally valuable.`;
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
+          model: 'gpt-5.2',
           messages: [
             {
               role: 'system',
@@ -3894,9 +3894,9 @@ ANALYZE AND PROVIDE JSON OUTPUT WITH:
 Focus on actionable insights and specific dollar amounts. Be realistic but advocate strongly for the patient.`;
 
       // Call OpenAI API using the openAI service
-      // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+      // the newest OpenAI model is "gpt-5.2" which was released December 11, 2025. do not change this unless explicitly requested by the user
       const completion = await openAIService.openai.chat.completions.create({
-        model: "gpt-5",
+        model: "gpt-5.2",
         messages: [
           {
             role: 'system',

@@ -65,7 +65,7 @@ Respond in JSON format:
 }`;
 
       const response = await openAIService.openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-5.2",
         messages: [
           {
             role: "system",
@@ -127,7 +127,7 @@ Respond in JSON format:
 }`;
 
       const response = await openAIService.openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-5.2",
         messages: [
           {
             role: "system",

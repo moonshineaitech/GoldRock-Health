@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-// The newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+// The newest OpenAI model is "gpt-5.2" which was released December 11, 2025. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export interface PatientResponse {
@@ -56,7 +56,7 @@ Respond in JSON format:
 }`;
 
       const response = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-5.2",
         messages: [
           {
             role: "system",
@@ -125,7 +125,7 @@ Provide comprehensive feedback in JSON format:
 Focus on educational value, clinical reasoning, and constructive guidance.`;
 
       const response = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-5.2",
         messages: [
           {
             role: "system",
@@ -205,7 +205,7 @@ Provide personalized recommendations in JSON format:
 }`;
 
       const response = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-5.2",
         messages: [
           {
             role: "system",
