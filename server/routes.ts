@@ -3859,6 +3859,70 @@ Focus on actionable insights and specific dollar amounts. Be realistic but advoc
     }
   });
 
+  // Health Insights AI Chat - Educational health information (not medical advice)
+  app.post('/api/health-insights-chat', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
+    try {
+      const { message, sessionType, conversationHistory } = req.body;
+      
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ message: 'Message is required' });
+      }
+
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(503).json({ message: 'AI service is currently unavailable' });
+      }
+
+      const systemPrompt = `You are a friendly health education assistant. You help people understand health topics, symptoms, and medical terminology so they can have better conversations with their doctors.
+
+IMPORTANT RULES:
+1. You are NOT a doctor and cannot diagnose or prescribe
+2. Always recommend consulting a healthcare professional for medical decisions
+3. For emergencies, tell them to call 911 or go to the ER immediately
+4. Provide educational information only
+5. Be warm, empathetic, and reassuring
+
+FORMATTING RULES:
+1. Write in plain conversational English
+2. No markdown formatting (no asterisks, hashtags, or dashes)
+3. Use simple numbered lists when helpful
+4. Keep responses concise and easy to understand
+5. Use occasional emojis to be friendly but not excessive
+
+SESSION TYPE: ${sessionType || 'general'}
+
+When discussing symptoms:
+- Ask clarifying questions to understand better
+- Provide general educational information
+- Suggest questions they might ask their doctor
+- Never diagnose or suggest specific treatments
+
+End each response with an offer to help further or a gentle reminder to consult their doctor if needed.`;
+
+      const messages = [
+        { role: "system" as const, content: systemPrompt },
+        ...(conversationHistory || []).slice(-10).map((msg: any) => ({
+          role: msg.role as "user" | "assistant",
+          content: msg.content
+        })),
+        { role: "user" as const, content: message }
+      ];
+
+      const response = await openAIService.openai.chat.completions.create({
+        model: "gpt-5.2",
+        messages,
+        max_completion_tokens: 1000,
+        temperature: 0.7
+      });
+
+      const aiResponse = response.choices[0].message.content || "I'm here to help. Could you tell me more about what you're experiencing?";
+      
+      res.json({ response: aiResponse });
+    } catch (error) {
+      console.error('Health insights error:', error);
+      res.status(500).json({ message: 'Failed to process your request' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

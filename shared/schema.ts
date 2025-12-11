@@ -1558,6 +1558,110 @@ export type UserAchievement = typeof userAchievements.$inferSelect;
 export type InsertUserAchievement = z.infer<typeof insertUserAchievementSchema>;
 export type PlatformStats = typeof platformStats.$inferSelect;
 
+// Provider Intelligence Database - Known billing patterns by hospital/provider
+export const providerIntelligence = pgTable("provider_intelligence", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  providerName: text("provider_name").notNull(),
+  providerType: varchar("provider_type", { length: 50 }), // hospital, clinic, surgery_center, lab, imaging
+  city: varchar("city", { length: 100 }),
+  state: varchar("state", { length: 2 }),
+  zipCode: varchar("zip_code", { length: 10 }),
+  averageBillAmount: decimal("average_bill_amount", { precision: 10, scale: 2 }),
+  averageSavingsAchieved: decimal("average_savings_achieved", { precision: 10, scale: 2 }),
+  disputeSuccessRate: integer("dispute_success_rate"), // percentage
+  commonIssues: jsonb("common_issues").$type<Array<{
+    issue: string;
+    frequency: number; // percentage of bills with this issue
+    averageSaving: number;
+  }>>().default([]),
+  billingPatterns: jsonb("billing_patterns").$type<{
+    knownOvercharges: string[];
+    commonCodes: string[];
+    negotiationTips: string[];
+    charityCarePolicySummary?: string;
+    bestContactMethod?: string;
+  }>(),
+  userReports: integer("user_reports").default(0), // number of users who reported data
+  lastUpdated: timestamp("last_updated").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Dispute Templates Library - Pre-written dispute letter templates
+export const disputeTemplates = pgTable("dispute_templates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  category: varchar("category", { length: 50 }).notNull(), // dispute_letter, appeal, charity_care, payment_plan, complaint
+  subcategory: varchar("subcategory", { length: 50 }), // billing_error, overcharge, insurance_denial, etc.
+  description: text("description"),
+  templateContent: text("template_content").notNull(), // Template with placeholders like {{providerName}}
+  placeholders: jsonb("placeholders").$type<Array<{
+    key: string;
+    label: string;
+    type: "text" | "date" | "amount" | "select";
+    options?: string[];
+    required: boolean;
+  }>>().default([]),
+  legalCitations: jsonb("legal_citations").$type<string[]>().default([]),
+  successRate: integer("success_rate"), // percentage
+  timesUsed: integer("times_used").default(0),
+  isPremium: boolean("is_premium").default(false),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// User Savings Outcomes - Track actual savings achieved by users
+export const userSavingsOutcomes = pgTable("user_savings_outcomes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  billId: varchar("bill_id").references(() => medicalBills.id),
+  originalAmount: decimal("original_amount", { precision: 10, scale: 2 }).notNull(),
+  finalAmount: decimal("final_amount", { precision: 10, scale: 2 }),
+  totalSaved: decimal("total_saved", { precision: 10, scale: 2 }),
+  savingsMethod: varchar("savings_method", { length: 50 }), // negotiation, dispute, charity_care, insurance_appeal, etc.
+  providerName: text("provider_name"),
+  strategyUsed: text("strategy_used"), // Description of what worked
+  timeToResolve: integer("time_to_resolve"), // days
+  status: varchar("status", { length: 20 }).default("in_progress"), // in_progress, resolved, abandoned
+  userNotes: text("user_notes"),
+  verifiedSavings: boolean("verified_savings").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  resolvedAt: timestamp("resolved_at"),
+});
+
+// Health Insights Sessions - AI health analysis conversations (not medical advice)
+export const healthInsightsSessions = pgTable("health_insights_sessions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  sessionType: varchar("session_type", { length: 30 }).notNull(), // symptom_check, second_opinion, wellness_review, medication_review
+  title: text("title"),
+  symptoms: jsonb("symptoms").$type<Array<{
+    symptom: string;
+    duration: string;
+    severity: number; // 1-10
+    notes?: string;
+  }>>().default([]),
+  healthContext: jsonb("health_context").$type<{
+    age?: number;
+    gender?: string;
+    existingConditions?: string[];
+    currentMedications?: string[];
+    allergies?: string[];
+    recentProcedures?: string[];
+  }>(),
+  aiInsights: jsonb("ai_insights").$type<{
+    possibleCauses: string[];
+    recommendedActions: string[];
+    urgencyLevel: "low" | "moderate" | "high" | "emergency";
+    questionsToAskDoctor: string[];
+    lifestyleSuggestions?: string[];
+  }>(),
+  disclaimerAccepted: boolean("disclaimer_accepted").default(false),
+  completed: boolean("completed").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Medical Bill Analyzer Type exports
 export type MedicalBill = typeof medicalBills.$inferSelect;
 export type InsertMedicalBill = typeof medicalBills.$inferInsert;
@@ -1574,6 +1678,16 @@ export type ChatSession = typeof chatSessions.$inferSelect;
 export type InsertChatSession = typeof chatSessions.$inferInsert;
 export type ChatMessage = typeof chatMessages.$inferSelect;
 export type InsertChatMessage = typeof chatMessages.$inferInsert;
+
+// New feature types
+export type ProviderIntelligence = typeof providerIntelligence.$inferSelect;
+export type InsertProviderIntelligence = typeof providerIntelligence.$inferInsert;
+export type DisputeTemplate = typeof disputeTemplates.$inferSelect;
+export type InsertDisputeTemplate = typeof disputeTemplates.$inferInsert;
+export type UserSavingsOutcome = typeof userSavingsOutcomes.$inferSelect;
+export type InsertUserSavingsOutcome = typeof userSavingsOutcomes.$inferInsert;
+export type HealthInsightsSession = typeof healthInsightsSessions.$inferSelect;
+export type InsertHealthInsightsSession = typeof healthInsightsSessions.$inferInsert;
 
 // Synthetic Patient Diagnostics Insert Schemas
 export const insertSyntheticPatientSchema = createInsertSchema(syntheticPatients).omit({

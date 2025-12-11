@@ -45,6 +45,7 @@ import Templates from "@/pages/templates";
 import InsuranceDenials from "@/pages/insurance-denials";
 import ImportantDisclaimer from "@/pages/important-disclaimer";
 import HowItWorksGuide from "@/pages/how-it-works-guide";
+import HealthInsights from "@/pages/health-insights";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -61,7 +62,8 @@ const AI_PROTECTED_ROUTES = [
   '/image-analysis',
   '/training',
   '/game',
-  '/blitz-demo'
+  '/blitz-demo',
+  '/health-insights'
 ];
 
 // Component wrapper to protect AI routes
@@ -189,6 +191,11 @@ function Router() {
       <Route path="/provider-contacts" component={ProviderContacts} />
       <Route path="/settings" component={Settings} />
       <Route path="/how-it-works-guide" component={HowItWorksGuide} />
+      <Route path="/health-insights">
+        <AIRouteGuard path="/health-insights">
+          <HealthInsights />
+        </AIRouteGuard>
+      </Route>
       <Route path="/blitz-demo">
         <AIRouteGuard path="/blitz-demo">
           <BlitzDemo />
