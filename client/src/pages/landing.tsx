@@ -119,50 +119,14 @@ export default function Landing() {
             damping: 10
           }}
         >
-          {/* Animated Ring */}
-          <motion.div
-            className="absolute inset-0 -m-3 rounded-[2.5rem]"
-            style={{
-              background: 'linear-gradient(135deg, rgba(251,191,36,0.4), rgba(251,146,60,0.4), rgba(16,185,129,0.4))',
-              filter: 'blur(8px)',
-            }}
-            animate={{
-              rotate: [0, 360],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          />
-          
+          {/* Clean icon container - no blur effects */}
           <motion.div 
-            className="relative w-24 h-24 bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-600 rounded-[2.25rem] flex items-center justify-center shadow-2xl shadow-amber-500/30 overflow-hidden"
+            className="relative w-24 h-24 bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-amber-500/30"
             whileHover={{ scale: 1.05, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Subtle highlight layer - no blur for crisp icon */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-[2rem]" />
-            
-            {/* Icon - crisp and sharp */}
-            <DollarSign className="text-white h-12 w-12 relative z-10" strokeWidth={3} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }} />
-            
-            {/* Sparkle Effects */}
-            <motion.div 
-              className="absolute -top-2 -right-2 w-3 h-3 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full shadow-lg"
-              animate={{ 
-                y: [-8, 8, -8],
-                scale: [1, 1.4, 1],
-                opacity: [0.7, 1, 0.7]
-              }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div 
-              className="absolute -bottom-1 -left-2 w-2.5 h-2.5 bg-gradient-to-r from-emerald-300 to-cyan-400 rounded-full shadow-lg"
-              animate={{ 
-                y: [6, -6, 6],
-                scale: [0.8, 1.3, 0.8],
-                opacity: [0.6, 1, 0.6]
-              }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            />
+            {/* Crisp $ icon */}
+            <DollarSign className="text-white h-12 w-12" strokeWidth={3} />
           </motion.div>
         </motion.div>
         
