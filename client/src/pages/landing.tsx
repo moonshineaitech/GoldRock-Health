@@ -369,11 +369,11 @@ export default function Landing() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 max-w-3xl mx-auto" data-testid="section-quick-actions">
           {[
             { icon: Zap, label: "Quick Analyzer", path: "/quick-analyzer", color: "from-blue-600 to-indigo-600", bgColor: "from-blue-50 to-indigo-50" },
-            { icon: Brain, label: "AI Diagnostics", path: "/patient-diagnostics", color: "from-purple-600 to-indigo-600", bgColor: "from-purple-50 to-indigo-50" },
+            { icon: Brain, label: "AI Diagnostics", path: "/patient-diagnostics", color: "from-purple-600 to-indigo-600", bgColor: "from-purple-50 to-indigo-50", badge: "Train" },
+            { icon: Stethoscope, label: "Pixel Doctor", path: "/pixel-game", color: "from-pink-600 to-rose-600", bgColor: "from-pink-50 to-rose-50", badge: "Game" },
             { icon: FileText, label: "Templates", path: "/templates", color: "from-emerald-600 to-teal-600", bgColor: "from-emerald-50 to-teal-50" },
             { icon: Target, label: "Guides", path: "/resources-hub", color: "from-cyan-600 to-sky-600", bgColor: "from-cyan-50 to-sky-50" },
-            { icon: Shield, label: "Denials Intel", path: "/insurance-denials", color: "from-red-600 to-pink-600", bgColor: "from-red-50 to-pink-50" },
-            { icon: Award, label: "Case Studies", path: "/bill-best-practices", color: "from-indigo-600 to-purple-600", bgColor: "from-indigo-50 to-purple-50" }
+            { icon: Shield, label: "Denials Intel", path: "/insurance-denials", color: "from-red-600 to-pink-600", bgColor: "from-red-50 to-pink-50" }
           ].map((item, index) => (
             <Link key={item.label} href={item.path}>
               <motion.div
@@ -398,8 +398,15 @@ export default function Landing() {
                   <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
                   
                   <div className="relative z-10">
-                    <div className={`w-12 h-12 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      <item.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
+                    <div className="relative">
+                      <div className={`w-12 h-12 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                        <item.icon className="h-6 w-6 text-white" strokeWidth={2.5} />
+                      </div>
+                      {(item as any).badge && (
+                        <span className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold shadow-md">
+                          {(item as any).badge}
+                        </span>
+                      )}
                     </div>
                     <h3 className="font-black text-gray-900 text-sm leading-tight">{item.label}</h3>
                   </div>

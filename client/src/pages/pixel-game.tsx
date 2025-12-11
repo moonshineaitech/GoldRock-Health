@@ -7,6 +7,7 @@ import { DifferentialDiagnosisPanel } from "@/components/differential-diagnosis"
 import { PhysicalExamSimulator } from "@/components/physical-exam-simulator";
 import { ClinicalReasoningPanel } from "@/components/clinical-reasoning-panel";
 import { apiRequest } from "@/lib/queryClient";
+import { Link } from "wouter";
 import { 
   Heart, 
   Zap, 
@@ -248,7 +249,7 @@ export default function PixelGame() {
   };
 
   const checkAchievements = (streak: number, points: number) => {
-    const newAchievements = [];
+    const newAchievements: string[] = [];
     
     if (streak >= 3 && !gameState.achievements.includes('Triple Threat')) {
       newAchievements.push('Triple Threat');
@@ -423,6 +424,26 @@ export default function PixelGame() {
             >
               START GAME
             </MobileButton>
+
+            {/* Link to Training Hub */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-4"
+            >
+              <Link href="/patient-diagnostics">
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 text-center hover:bg-white/20 transition-colors cursor-pointer">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Brain className="h-5 w-5 text-purple-300" />
+                    <span className="text-white font-bold text-sm">Want Serious Training?</span>
+                  </div>
+                  <p className="text-white/70 text-xs">
+                    Try our AI Diagnostics Training Hub for step-by-step case studies with scoring and feedback.
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
           </motion.div>
         )}
 
@@ -571,8 +592,9 @@ export default function PixelGame() {
                 >
                   <div className="h-96">
                     <ChatInterface 
-                      caseId={gameState.currentCase.id}
-                      onQuestionAsked={handleQuestionAsked}
+                      medicalCase={gameState.currentCase}
+                      onQuestionAsked={() => handleQuestionAsked("question")}
+                      onTimeUpdate={() => {}}
                     />
                   </div>
                 </motion.div>

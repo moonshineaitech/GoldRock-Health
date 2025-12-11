@@ -1214,18 +1214,114 @@ export default function SyntheticPatientDiagnostics() {
 
   const dashboardView = (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="text-center space-y-4">
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl shadow-lg"
-        >
-          <Brain className="h-8 w-8 text-white" />
-        </motion.div>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Synthetic Patient Diagnostics</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">AI-powered medical training with realistic patient profiles</p>
+      {/* Welcome Hub Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 p-6 text-white shadow-2xl">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-xl" />
+        </div>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <Brain className="h-7 w-7 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold">Medical Training Hub</h1>
+                <p className="text-white/80 text-sm">Master diagnostic skills</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold">{patients.length}</div>
+              <div className="text-white/70 text-xs">Patients</div>
+            </div>
+          </div>
+          
+          {/* Quick Stats */}
+          <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">
+              <Trophy className="h-5 w-5 mx-auto mb-1 text-amber-300" />
+              <div className="text-lg font-bold">6</div>
+              <div className="text-[10px] text-white/70">Demo Cases</div>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">
+              <Zap className="h-5 w-5 mx-auto mb-1 text-yellow-300" />
+              <div className="text-lg font-bold">2</div>
+              <div className="text-[10px] text-white/70">Modes</div>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">
+              <Target className="h-5 w-5 mx-auto mb-1 text-emerald-300" />
+              <div className="text-lg font-bold">AI</div>
+              <div className="text-[10px] text-white/70">Powered</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mode Selection Cards */}
+      <div>
+        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+          <Stethoscope className="h-5 w-5 text-purple-600" />
+          Choose Your Mode
+        </h3>
+        <div className="grid grid-cols-1 gap-4">
+          {/* Interactive Training Mode */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-700 rounded-2xl p-5 cursor-pointer"
+            onClick={() => setShowDemoPatients(true)}
+          >
+            <div className="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+              RECOMMENDED
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Interactive Training Mode</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  Step-by-step diagnostic workup. Request history, order labs, and submit your diagnosis like a real case.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded-full">Scoring System</span>
+                  <span className="bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded-full">Learning Points</span>
+                  <span className="bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded-full">Efficiency Tracking</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* AI Full Diagnosis Mode */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-2 border-purple-200 dark:border-purple-700 rounded-2xl p-5 cursor-pointer"
+            onClick={() => {
+              if (patients.length > 0) {
+                setSelectedPatient(patients[0]);
+                setActiveView("analyze");
+              }
+            }}
+          >
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-1">AI Full Diagnosis Mode</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  Get comprehensive AI-powered analysis for custom patient profiles. Complete differential diagnosis and treatment recommendations.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full">Full Analysis</span>
+                  <span className="bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full">Differentials</span>
+                  <span className="bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full">Treatment Plan</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
 
@@ -1234,23 +1330,23 @@ export default function SyntheticPatientDiagnostics() {
         <Button 
           onClick={generateAIPatient}
           disabled={isGenerating}
-          className="h-20 flex-col space-y-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          className="h-16 flex-col space-y-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl"
         >
           {isGenerating ? (
-            <RefreshCw className="h-6 w-6 animate-spin" />
+            <RefreshCw className="h-5 w-5 animate-spin" />
           ) : (
-            <Sparkles className="h-6 w-6" />
+            <Sparkles className="h-5 w-5" />
           )}
-          <span className="text-sm font-medium">Generate AI Patient</span>
+          <span className="text-xs font-medium">Generate AI Patient</span>
         </Button>
         
         <Button 
           onClick={() => setActiveView("create")}
           variant="outline"
-          className="h-20 flex-col space-y-2"
+          className="h-16 flex-col space-y-1 rounded-xl border-2"
         >
-          <UserPlus className="h-6 w-6 text-emerald-600" />
-          <span className="text-sm font-medium">Create Custom</span>
+          <UserPlus className="h-5 w-5 text-emerald-600" />
+          <span className="text-xs font-medium">Create Custom</span>
         </Button>
       </div>
 
