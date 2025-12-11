@@ -39,10 +39,10 @@ const navItems: NavItem[] = [
     color: "text-purple-600"
   },
   {
-    id: "health",
-    label: "Health",
+    id: "diagnostics",
+    label: "Diagnose",
     icon: Brain,
-    path: "/health-insights",
+    path: "/patient-diagnostics",
     color: "text-teal-600"
   },
   {

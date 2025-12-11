@@ -30,7 +30,8 @@ import {
   Lightbulb,
   Search,
   Filter,
-  RefreshCw
+  RefreshCw,
+  Trophy
 } from "lucide-react";
 import { Link } from "wouter";
 import { MobileLayout } from "@/components/mobile-layout";
@@ -321,10 +322,7 @@ export default function SyntheticPatientDiagnostics() {
   const generateAIPatient = async () => {
     setIsGenerating(true);
     try {
-      const result = await apiRequest("/api/synthetic-patients/generate", {
-        method: "POST",
-        body: { generationType: "ai_generated" }
-      });
+      await apiRequest("POST", "/api/synthetic-patients/generate", { generationType: "ai_generated" });
       queryClient.invalidateQueries({ queryKey: ["/api/synthetic-patients"] });
       toast({ title: "AI Patient Generated!", description: "New synthetic patient profile created successfully." });
     } catch (error) {
@@ -337,19 +335,15 @@ export default function SyntheticPatientDiagnostics() {
   // Custom Patient Creation
   const createCustomPatient = async () => {
     try {
-      await apiRequest("/api/synthetic-patients", {
-        method: "POST",
-        body: {
-          ...formData,
-          generationType: "custom_created",
-          age: parseInt(formData.age),
-          complexity: parseInt(formData.complexity)
-        }
+      await apiRequest("POST", "/api/synthetic-patients", {
+        ...formData,
+        generationType: "custom_created",
+        age: parseInt(formData.age),
+        complexity: parseInt(formData.complexity)
       });
       queryClient.invalidateQueries({ queryKey: ["/api/synthetic-patients"] });
       setActiveView("dashboard");
       toast({ title: "Patient Created!", description: "Custom patient profile created successfully." });
-      // Reset form
       setFormData({
         profileName: "", age: "", gender: "", ethnicity: "", occupation: "",
         chiefComplaint: "", symptoms: "", medicalHistory: "", medications: "",
@@ -363,6 +357,72 @@ export default function SyntheticPatientDiagnostics() {
   const handleInputChange = (field: keyof PatientFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  // Demo patient profiles for training
+  const demoPatients: Partial<SyntheticPatient>[] = [
+    {
+      id: "demo-1",
+      profileName: "Maria Chen",
+      age: 52,
+      gender: "Female",
+      chiefComplaint: "Crushing chest pain radiating to left arm for 45 minutes",
+      complexity: 3,
+      specialty: "Cardiology",
+      generationType: "demo"
+    },
+    {
+      id: "demo-2", 
+      profileName: "James Wilson",
+      age: 34,
+      gender: "Male",
+      chiefComplaint: "Severe headache with visual disturbances and neck stiffness",
+      complexity: 4,
+      specialty: "Neurology",
+      generationType: "demo"
+    },
+    {
+      id: "demo-3",
+      profileName: "Sarah Thompson",
+      age: 28,
+      gender: "Female", 
+      chiefComplaint: "Shortness of breath and productive cough for 5 days",
+      complexity: 2,
+      specialty: "Pulmonology",
+      generationType: "demo"
+    },
+    {
+      id: "demo-4",
+      profileName: "Robert Garcia",
+      age: 67,
+      gender: "Male",
+      chiefComplaint: "Progressive fatigue, weight loss, and night sweats for 2 months",
+      complexity: 4,
+      specialty: "Oncology",
+      generationType: "demo"
+    },
+    {
+      id: "demo-5",
+      profileName: "Emily Davis",
+      age: 45,
+      gender: "Female",
+      chiefComplaint: "Severe abdominal pain, nausea, and jaundice",
+      complexity: 3,
+      specialty: "Gastroenterology",
+      generationType: "demo"
+    },
+    {
+      id: "demo-6",
+      profileName: "Michael Brown",
+      age: 58,
+      gender: "Male",
+      chiefComplaint: "Sudden confusion, slurred speech, and right-sided weakness",
+      complexity: 5,
+      specialty: "Emergency Medicine",
+      generationType: "demo"
+    }
+  ];
+
+  const [showDemoPatients, setShowDemoPatients] = useState(true);
 
   const dashboardView = (
     <div className="space-y-6">
@@ -404,6 +464,75 @@ export default function SyntheticPatientDiagnostics() {
           <UserPlus className="h-6 w-6 text-emerald-600" />
           <span className="text-sm font-medium">Create Custom</span>
         </Button>
+      </div>
+
+      {/* Demo Training Cases */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-amber-500" />
+            Training Cases
+          </h3>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => setShowDemoPatients(!showDemoPatients)}
+          >
+            {showDemoPatients ? "Hide" : "Show"}
+          </Button>
+        </div>
+        
+        <AnimatePresence>
+          {showDemoPatients && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="space-y-3"
+            >
+              {demoPatients.map((patient, idx) => (
+                <motion.div
+                  key={patient.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                  <Card className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-800 hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">{patient.profileName}</h4>
+                            <span className="px-2 py-0.5 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 text-xs rounded-full font-medium">
+                              Demo
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{patient.chiefComplaint}</p>
+                          <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                            <span>{patient.age} yo {patient.gender}</span>
+                            <span>Complexity: {patient.complexity}/5</span>
+                            <span className="text-amber-600 dark:text-amber-400 font-medium">{patient.specialty}</span>
+                          </div>
+                        </div>
+                        <Button 
+                          size="sm"
+                          onClick={() => {
+                            setSelectedPatient(patient as SyntheticPatient);
+                            setActiveView("analyze");
+                          }}
+                          className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                        >
+                          <Stethoscope className="h-4 w-4 mr-1" />
+                          Train
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Patient List */}

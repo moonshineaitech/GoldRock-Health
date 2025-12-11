@@ -46,6 +46,7 @@ import InsuranceDenials from "@/pages/insurance-denials";
 import ImportantDisclaimer from "@/pages/important-disclaimer";
 import HowItWorksGuide from "@/pages/how-it-works-guide";
 import HealthInsights from "@/pages/health-insights";
+import SyntheticPatientDiagnostics from "@/pages/synthetic-patient-diagnostics";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -63,7 +64,8 @@ const AI_PROTECTED_ROUTES = [
   '/training',
   '/game',
   '/blitz-demo',
-  '/health-insights'
+  '/health-insights',
+  '/patient-diagnostics'
 ];
 
 // Component wrapper to protect AI routes
@@ -194,6 +196,11 @@ function Router() {
       <Route path="/health-insights">
         <AIRouteGuard path="/health-insights">
           <HealthInsights />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/patient-diagnostics">
+        <AIRouteGuard path="/patient-diagnostics">
+          <SyntheticPatientDiagnostics />
         </AIRouteGuard>
       </Route>
       <Route path="/blitz-demo">
