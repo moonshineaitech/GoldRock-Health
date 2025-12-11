@@ -1234,7 +1234,7 @@ export default function BillAI() {
       id: Date.now().toString() + "_workflow_start",
       role: "assistant",
       content: preserveContext 
-        ? `**🔄 SWITCHING TO: ${workflow.title.toUpperCase()}**\n\n${workflow.conversationStarter}`
+        ? `SWITCHING TO: ${workflow.title.toUpperCase()}\n\n${workflow.conversationStarter}`
         : workflow.conversationStarter,
       createdAt: new Date()
     };
@@ -1438,20 +1438,21 @@ export default function BillAI() {
         const upgradeMessage: AIMessage = {
           id: Date.now().toString() + "_upgrade",
           role: "assistant",
-          content: `🔒 **Premium Feature Required**
+          content: `PREMIUM FEATURE REQUIRED
 
-AI-powered medical bill analysis is a premium feature that helps you save $1K-$100K+ on medical bills.
+AI-powered medical bill analysis is a premium feature that helps you save $1,000 to $100,000+ on medical bills.
 
-**What you get with Premium:**
-• Unlimited AI chat sessions for bill analysis
-• Advanced error detection and savings calculations  
-• Professional dispute letter generation
-• Insurance appeal templates and strategies
-• 24/7 access to expert bill reduction advice
+What you get with Premium:
+
+1. Unlimited AI chat sessions for bill analysis
+2. Advanced error detection and savings calculations  
+3. Professional dispute letter generation
+4. Insurance appeal templates and strategies
+5. 24/7 access to expert bill reduction advice
 
 To continue using the AI chat, please upgrade to our Premium subscription.
 
-[Would you like me to help you with general billing information instead?]`,
+Would you like me to help you with general billing information instead?`,
           createdAt: new Date()
         };
         setLocalMessages(prev => [...prev, upgradeMessage]);
@@ -1471,9 +1472,9 @@ To continue using the AI chat, please upgrade to our Premium subscription.
         role: "assistant",
         content: `I'm sorry, I'm having trouble connecting right now. This could be due to:
 
-• Network connectivity issues
-• Server maintenance  
-• High traffic volume
+1. Network connectivity issues
+2. Server maintenance  
+3. High traffic volume
 
 Please try again in a few moments. If the problem persists, try refreshing the page.
 
@@ -1619,7 +1620,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         const extractedMessage: AIMessage = {
           id: Date.now().toString() + "_upload",
           role: "user",
-          content: `📋 Uploaded ${fileArray.length} medical bill image${fileArray.length > 1 ? 's' : ''}: ${fileArray.map(f => f.name).join(', ')}\n\n🔍 **Extracted Content:**\n${responseData.extractedText}\n\n💡 **AI Analysis:**\n${responseData.analysis || 'Ready for detailed analysis.'}`,
+          content: `Uploaded ${fileArray.length} medical bill image${fileArray.length > 1 ? 's' : ''}: ${fileArray.map(f => f.name).join(', ')}\n\nEXTRACTED CONTENT:\n${responseData.extractedText}\n\nAI ANALYSIS:\n${responseData.analysis || 'Ready for detailed analysis.'}`,
           createdAt: new Date()
         };
         
@@ -1759,17 +1760,18 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   const welcomeMessage: AIMessage = {
                     id: Date.now().toString() + "_welcome",
                     role: "assistant",
-                    content: `Hello! I'm your Medical Bill AI assistant with professional billing expertise. I've helped patients save over $50 million in billing errors and overcharges.
+                    content: `Hello! I'm your Medical Bill AI assistant. I've helped patients save over $50 million in billing errors and overcharges.
 
-📋 **Best Ways to Get Started:**
-• **Upload bill images** - Fastest way! I can instantly extract and analyze all details
-• Share your bill amount and provider name
-• Tell me about specific charges that seem wrong
-• Ask about billing codes you don't understand
+WAYS TO GET STARTED:
 
-📸 **Pro Tip:** Uploading medical bill photos gives me the most accurate data to find errors, overcharges, and savings opportunities. I can analyze up to 5 images at once!
+1. Upload bill images for instant analysis
+2. Share your bill amount and provider name
+3. Tell me about specific charges that seem wrong
+4. Ask about billing codes you don't understand
 
-What would you like to do first? I'm here to help you find every possible saving!`,
+Tip: Uploading photos of your bills gives me the most accurate data to find errors and savings. I can analyze up to 5 images at once.
+
+What would you like to do first?`,
                     createdAt: new Date()
                   };
                   setLocalMessages([welcomeMessage]);
