@@ -266,7 +266,91 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
     return demoData[patientId] || null;
   };
 
-  const patientData = isDemo ? getDemoPatientData(patient.id || "") : null;
+  // Get patient data from demo cases OR from actual SyntheticPatient structure
+  const getPatientData = () => {
+    // For demo patients, use hardcoded data
+    if (isDemo && patient.id?.startsWith("demo-")) {
+      return getDemoPatientData(patient.id);
+    }
+    
+    // For real synthetic patients, map their actual stored data
+    const fullPatient = patient as SyntheticPatient;
+    const mh = fullPatient.medicalHistory;
+    const pe = fullPatient.physicalExam;
+    const symptoms = fullPatient.presentingSymptoms;
+    
+    // Build history from structured medicalHistory object
+    const history = {
+      allergies: mh?.allergies?.length 
+        ? mh.allergies.map(a => `${a.allergen} (${a.reaction})`).join(", ")
+        : "No known allergies",
+      medications: mh?.medications?.length
+        ? mh.medications.map(m => `${m.name} ${m.dosage} ${m.frequency}`).join(", ")
+        : "None reported",
+      surgeries: mh?.surgicalHistory?.length
+        ? mh.surgicalHistory.map(s => `${s.procedure} (${s.date})`).join(", ")
+        : "None",
+      familyHistory: mh?.familyHistory?.length
+        ? mh.familyHistory.map(f => `${f.relationship}: ${f.condition}`).join(", ")
+        : "Non-contributory",
+      socialHistory: mh?.socialHistory
+        ? `Smoking: ${mh.socialHistory.smoking?.status || "Unknown"}, Alcohol: ${mh.socialHistory.alcohol?.status || "Unknown"}, Exercise: ${mh.socialHistory.exercise || "Unknown"}`
+        : "No significant social history"
+    };
+    
+    // Build vitals from physicalExam
+    const vitals = pe?.vitals ? {
+      bp: pe.vitals.bloodPressure || "120/80",
+      hr: pe.vitals.heartRate || "72",
+      rr: pe.vitals.respiratoryRate || "16",
+      temp: pe.vitals.temperature || "98.6F",
+      o2: pe.vitals.oxygenSaturation || "98% RA"
+    } : { bp: "120/80", hr: "72", rr: "16", temp: "98.6F", o2: "98% RA" };
+    
+    // Build physical exam from systems
+    const physicalExam = {
+      general: pe?.general?.appearance 
+        ? `${pe.general.appearance}, ${pe.general.distress || "no acute distress"}`
+        : "Alert and oriented, no acute distress",
+      cardiac: pe?.systems?.cardiovascular 
+        ? Object.values(pe.systems.cardiovascular).join(", ")
+        : "Regular rate and rhythm, no murmurs",
+      lungs: pe?.systems?.pulmonary
+        ? Object.values(pe.systems.pulmonary).join(", ")
+        : "Clear to auscultation bilaterally",
+      neuro: pe?.systems?.neurological
+        ? Object.values(pe.systems.neurological).join(", ")
+        : "Alert and oriented x3, no focal deficits",
+      abdomen: pe?.systems?.abdominal
+        ? Object.values(pe.systems.abdominal).join(", ")
+        : "Soft, non-tender, non-distended"
+    };
+    
+    // Presenting symptoms summary
+    const symptomsText = symptoms?.length
+      ? symptoms.map(s => `${s.symptom} (severity ${s.severity}/10, ${s.duration})`).join("; ")
+      : fullPatient.chiefComplaint || "Chief complaint as stated";
+    
+    return {
+      history,
+      vitals,
+      physicalExam,
+      labs: {
+        cbc: "Order if needed",
+        bmp: "Order if needed",
+        lft: "Order if needed"
+      },
+      imaging: {
+        cxr: "Order if needed",
+        ekg: "Order if needed"
+      },
+      correctDiagnosis: "Use AI Diagnosis mode for complete analysis",
+      differentials: ["Use AI Diagnosis for differential diagnosis"],
+      symptomsDetail: symptomsText
+    };
+  };
+
+  const patientData = getPatientData();
 
   const requestInfo = (category: string, item: string) => {
     const key = `${category}_${item}`;
