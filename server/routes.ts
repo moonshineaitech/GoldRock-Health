@@ -3992,6 +3992,284 @@ End each response with an offer to help further or a gentle reminder to consult 
     }
   });
 
+  // =====================================================
+  // CLINICAL COMMAND CENTER APIs
+  // =====================================================
+
+  // Lab Results Analysis API
+  app.post('/api/analyze-labs', isAuthenticated, requiresAiAgreement, express.json(), async (req: any, res) => {
+    try {
+      const { type, values } = req.body;
+
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(503).json({ message: 'AI lab analysis service is currently unavailable' });
+      }
+
+      const labPrompt = `You are a clinical laboratory specialist providing educational interpretation of lab results. 
+      
+${type === 'manual' ? `
+The patient has provided these lab values:
+${values}
+` : `
+Panel Type: ${type}
+Lab Values: ${JSON.stringify(values, null, 2)}
+`}
+
+Analyze these results and provide a comprehensive, educational interpretation. 
+
+IMPORTANT DISCLAIMERS TO INCLUDE:
+- This is educational information only
+- Always consult your healthcare provider
+- Context matters - isolated values don't tell the whole story
+
+Provide your analysis in this JSON format:
+{
+  "summary": "Brief 2-3 sentence overall summary of the results",
+  "overallHealth": "good|concerning|requires-attention",
+  "values": [
+    {
+      "name": "Test name",
+      "value": "actual value",
+      "unit": "unit",
+      "normalRange": "normal range",
+      "status": "normal|low|high|critical"
+    }
+  ],
+  "insights": [
+    "Key insight about the results",
+    "Another important observation",
+    "Pattern or trend to note"
+  ],
+  "recommendations": [
+    "Lifestyle or dietary recommendation",
+    "Monitoring suggestion",
+    "General health tip"
+  ],
+  "followUp": [
+    "Question to ask your doctor",
+    "Additional tests that might be helpful"
+  ]
+}`;
+
+      const response = await openAIService.openai.chat.completions.create({
+        model: "gpt-5.2",
+        messages: [
+          {
+            role: "system",
+            content: "You are a clinical laboratory specialist providing educational lab result interpretations. Always emphasize this is for educational purposes only and encourage consulting healthcare providers."
+          },
+          {
+            role: "user",
+            content: labPrompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_completion_tokens: 2000,
+        temperature: 0.3
+      });
+
+      const result = JSON.parse(response.choices[0].message.content || '{}');
+      res.json(result);
+    } catch (error) {
+      console.error('Lab analysis error:', error);
+      res.status(500).json({ message: 'Failed to analyze lab results' });
+    }
+  });
+
+  // Drug Interaction Checker API
+  app.post('/api/check-drug-interactions', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const { medications } = req.body;
+
+      if (!medications || !Array.isArray(medications) || medications.length < 2) {
+        return res.status(400).json({ message: 'At least 2 medications are required' });
+      }
+
+      // Common drug interactions database (not AI-based for safety)
+      const KNOWN_INTERACTIONS: Record<string, { drugs: string[], severity: string, description: string, mechanism?: string, management?: string }[]> = {
+        'warfarin': [
+          { drugs: ['aspirin'], severity: 'major', description: 'Increased risk of bleeding when combined', mechanism: 'Both medications affect blood clotting through different mechanisms', management: 'Monitor closely for signs of bleeding. Your doctor may adjust doses.' },
+          { drugs: ['ibuprofen', 'naproxen', 'nsaid'], severity: 'major', description: 'NSAIDs increase bleeding risk with warfarin', mechanism: 'NSAIDs inhibit platelet function and can cause GI bleeding', management: 'Avoid NSAIDs if possible. Use acetaminophen for pain instead.' },
+          { drugs: ['vitamin k'], severity: 'moderate', description: 'Vitamin K reduces warfarin effectiveness', mechanism: 'Vitamin K is needed for clotting factor production', management: 'Maintain consistent vitamin K intake. Inform your doctor of dietary changes.' }
+        ],
+        'lisinopril': [
+          { drugs: ['potassium', 'spironolactone'], severity: 'moderate', description: 'Risk of high potassium levels (hyperkalemia)', mechanism: 'ACE inhibitors reduce potassium excretion', management: 'Monitor potassium levels regularly. Watch for muscle weakness.' },
+          { drugs: ['ibuprofen', 'naproxen', 'nsaid'], severity: 'moderate', description: 'NSAIDs may reduce blood pressure lowering effect', mechanism: 'NSAIDs cause sodium and fluid retention', management: 'Use NSAIDs sparingly. Monitor blood pressure.' }
+        ],
+        'metformin': [
+          { drugs: ['alcohol'], severity: 'moderate', description: 'Increased risk of lactic acidosis with heavy alcohol use', mechanism: 'Both can affect lactate metabolism', management: 'Limit alcohol consumption. Avoid binge drinking.' },
+          { drugs: ['contrast dye'], severity: 'major', description: 'Risk of kidney damage with IV contrast', mechanism: 'Both can stress kidney function', management: 'Stop metformin before and after contrast procedures as directed.' }
+        ],
+        'simvastatin': [
+          { drugs: ['grapefruit'], severity: 'moderate', description: 'Grapefruit increases statin levels in blood', mechanism: 'Grapefruit inhibits CYP3A4 enzyme that metabolizes statins', management: 'Avoid grapefruit and grapefruit juice.' },
+          { drugs: ['amiodarone'], severity: 'major', description: 'Increased risk of muscle damage (rhabdomyolysis)', mechanism: 'Amiodarone inhibits statin metabolism', management: 'Lower statin dose may be needed. Report muscle pain immediately.' }
+        ],
+        'fluoxetine': [
+          { drugs: ['tramadol'], severity: 'major', description: 'Risk of serotonin syndrome', mechanism: 'Both increase serotonin levels', management: 'Watch for agitation, rapid heartbeat, fever. Seek immediate care if symptoms occur.' },
+          { drugs: ['maoi', 'phenelzine', 'tranylcypromine'], severity: 'major', description: 'Severe serotonin syndrome risk', mechanism: 'MAOIs prevent serotonin breakdown', management: 'Never combine. Wait 5 weeks after stopping fluoxetine before starting MAOI.' }
+        ],
+        'metoprolol': [
+          { drugs: ['verapamil', 'diltiazem'], severity: 'major', description: 'Risk of very slow heart rate and low blood pressure', mechanism: 'Both slow heart rate through different mechanisms', management: 'Monitor heart rate closely. Watch for dizziness.' }
+        ],
+        'omeprazole': [
+          { drugs: ['clopidogrel', 'plavix'], severity: 'moderate', description: 'May reduce clopidogrel effectiveness', mechanism: 'Omeprazole inhibits CYP2C19 needed to activate clopidogrel', management: 'Consider alternative PPI like pantoprazole if needed.' }
+        ]
+      };
+
+      const interactions: any[] = [];
+      const normalizedMeds = medications.map(m => m.toLowerCase().trim());
+
+      // Check each pair of medications
+      for (let i = 0; i < normalizedMeds.length; i++) {
+        for (let j = i + 1; j < normalizedMeds.length; j++) {
+          const med1 = normalizedMeds[i];
+          const med2 = normalizedMeds[j];
+
+          // Check if med1 has interactions with med2
+          if (KNOWN_INTERACTIONS[med1]) {
+            for (const interaction of KNOWN_INTERACTIONS[med1]) {
+              if (interaction.drugs.some(d => med2.includes(d) || d.includes(med2))) {
+                interactions.push({
+                  drug1: medications[i],
+                  drug2: medications[j],
+                  severity: interaction.severity,
+                  description: interaction.description,
+                  mechanism: interaction.mechanism,
+                  management: interaction.management
+                });
+              }
+            }
+          }
+
+          // Check reverse (med2 with med1)
+          if (KNOWN_INTERACTIONS[med2]) {
+            for (const interaction of KNOWN_INTERACTIONS[med2]) {
+              if (interaction.drugs.some(d => med1.includes(d) || d.includes(med1))) {
+                // Avoid duplicates
+                const exists = interactions.some(i => 
+                  (i.drug1.toLowerCase() === medications[j].toLowerCase() && i.drug2.toLowerCase() === medications[i].toLowerCase())
+                );
+                if (!exists) {
+                  interactions.push({
+                    drug1: medications[j],
+                    drug2: medications[i],
+                    severity: interaction.severity,
+                    description: interaction.description,
+                    mechanism: interaction.mechanism,
+                    management: interaction.management
+                  });
+                }
+              }
+            }
+          }
+        }
+      }
+
+      const safetyNotes = [
+        'Always inform your healthcare providers about all medications, supplements, and vitamins you take',
+        'This check may not include all possible interactions',
+        'Some interactions depend on dosage and individual factors',
+        'Report any unusual symptoms to your doctor promptly'
+      ];
+
+      res.json({
+        medications,
+        interactions,
+        safetyNotes,
+        disclaimer: 'This drug interaction checker is for educational purposes only. It may not include all possible interactions. Always consult your pharmacist or healthcare provider for complete medication safety guidance.'
+      });
+    } catch (error) {
+      console.error('Drug interaction check error:', error);
+      res.status(500).json({ message: 'Failed to check drug interactions' });
+    }
+  });
+
+  // Symptom Checker API
+  app.post('/api/analyze-symptoms', isAuthenticated, requiresAiAgreement, express.json(), async (req: any, res) => {
+    try {
+      const { symptoms, age, gender, bodyPart, duration, severity, additionalInfo } = req.body;
+
+      if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
+        return res.status(400).json({ message: 'At least one symptom is required' });
+      }
+
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(503).json({ message: 'AI symptom analysis service is currently unavailable' });
+      }
+
+      const symptomPrompt = `You are a medical triage AI providing educational health information. A person is seeking to understand their symptoms.
+
+PATIENT INFORMATION:
+- Age: ${age || 'Not specified'}
+- Gender: ${gender || 'Not specified'}
+- Primary Area Affected: ${bodyPart || 'Not specified'}
+- Symptoms: ${symptoms.join(', ')}
+- Duration: ${duration || 'Not specified'}
+- Severity (1-10): ${severity || 'Not specified'}
+- Additional Context: ${additionalInfo || 'None provided'}
+
+CRITICAL INSTRUCTIONS:
+1. This is for EDUCATIONAL purposes only - not diagnosis
+2. Always err on the side of caution
+3. If symptoms suggest emergency, urgency must be "emergency"
+4. Red flags (chest pain, difficulty breathing, severe bleeding, stroke symptoms, etc.) = emergency
+5. Provide general health education, not specific medical advice
+6. Recommend professional consultation appropriately
+
+Provide analysis in this JSON format:
+{
+  "urgency": "emergency|urgent|soon|routine",
+  "summary": "Brief explanation of what these symptoms might indicate and why they need attention at the indicated urgency level",
+  "possibleConditions": [
+    {
+      "name": "Condition name",
+      "likelihood": "high|moderate|low",
+      "description": "Brief description of the condition",
+      "commonSymptoms": ["symptom1", "symptom2"],
+      "whenToSeek": "When to seek care for this condition"
+    }
+  ],
+  "redFlags": [
+    "Warning sign to watch for",
+    "Another concerning symptom to monitor"
+  ],
+  "selfCareAdvice": [
+    "General self-care suggestion",
+    "Comfort measure",
+    "Monitoring tip"
+  ],
+  "questions": [
+    "Question to ask your doctor",
+    "Another relevant question"
+  ],
+  "disclaimer": "This symptom checker provides general health information for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. If you are experiencing a medical emergency, call 911 or go to the nearest emergency room immediately."
+}`;
+
+      const response = await openAIService.openai.chat.completions.create({
+        model: "gpt-5.2",
+        messages: [
+          {
+            role: "system",
+            content: "You are a medical triage AI. Your role is to provide educational health information and help people understand when and how urgently they should seek medical care. Always prioritize safety and encourage professional consultation. Never diagnose or prescribe treatment."
+          },
+          {
+            role: "user",
+            content: symptomPrompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_completion_tokens: 2000,
+        temperature: 0.3
+      });
+
+      const result = JSON.parse(response.choices[0].message.content || '{}');
+      res.json(result);
+    } catch (error) {
+      console.error('Symptom analysis error:', error);
+      res.status(500).json({ message: 'Failed to analyze symptoms' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

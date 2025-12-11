@@ -47,6 +47,11 @@ import ImportantDisclaimer from "@/pages/important-disclaimer";
 import HowItWorksGuide from "@/pages/how-it-works-guide";
 import HealthInsights from "@/pages/health-insights";
 import SyntheticPatientDiagnostics from "@/pages/synthetic-patient-diagnostics";
+import ClinicalCommandCenter from "@/pages/clinical-command-center";
+import LabAnalyzer from "@/pages/lab-analyzer";
+import DrugInteractions from "@/pages/drug-interactions";
+import SymptomChecker from "@/pages/symptom-checker";
+import HealthMetrics from "@/pages/health-metrics";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -65,7 +70,11 @@ const AI_PROTECTED_ROUTES = [
   '/game',
   '/blitz-demo',
   '/health-insights',
-  '/patient-diagnostics'
+  '/patient-diagnostics',
+  '/clinical-command',
+  '/lab-analyzer',
+  '/drug-interactions',
+  '/symptom-checker'
 ];
 
 // Component wrapper to protect AI routes
@@ -208,6 +217,27 @@ function Router() {
           <BlitzDemo />
         </AIRouteGuard>
       </Route>
+      <Route path="/clinical-command">
+        <AIRouteGuard path="/clinical-command">
+          <ClinicalCommandCenter />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/lab-analyzer">
+        <AIRouteGuard path="/lab-analyzer">
+          <LabAnalyzer />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/drug-interactions">
+        <AIRouteGuard path="/drug-interactions">
+          <DrugInteractions />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/symptom-checker">
+        <AIRouteGuard path="/symptom-checker">
+          <SymptomChecker />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/health-metrics" component={HealthMetrics} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

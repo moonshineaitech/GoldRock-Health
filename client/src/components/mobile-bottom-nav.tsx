@@ -10,7 +10,8 @@ import {
   Sparkles,
   Shield,
   Lightbulb,
-  Brain
+  Brain,
+  Stethoscope
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -46,10 +47,10 @@ const navItems: NavItem[] = [
     color: "text-teal-600"
   },
   {
-    id: "guides",
-    label: "Guides",
-    icon: Lightbulb,
-    path: "/resources-hub",
+    id: "clinical",
+    label: "Clinical",
+    icon: Stethoscope,
+    path: "/clinical-command",
     color: "text-indigo-600"
   },
   {
