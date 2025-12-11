@@ -6,480 +6,372 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Activity, ArrowLeft, Heart, Thermometer, Scale, TrendingUp, TrendingDown,
-  Plus, Calendar, Clock, Droplet, Wind, Brain, Sparkles, BarChart3
+  Activity, ArrowLeft, Heart, Thermometer, Scale, TrendingDown,
+  Plus, BarChart3
 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
 
-interface HealthMetric {
-  id: string;
-  type: string;
-  value: number;
-  unit: string;
-  timestamp: Date;
-  notes?: string;
-}
-
-const DEMO_BP_DATA = [
-  { date: 'Mon', systolic: 128, diastolic: 82 },
-  { date: 'Tue', systolic: 125, diastolic: 80 },
-  { date: 'Wed', systolic: 130, diastolic: 85 },
-  { date: 'Thu', systolic: 122, diastolic: 78 },
-  { date: 'Fri', systolic: 126, diastolic: 81 },
-  { date: 'Sat', systolic: 124, diastolic: 79 },
-  { date: 'Today', systolic: 120, diastolic: 76 },
+const DEMO_BP = [
+  { day: 'Mon', sys: 128, dia: 82 },
+  { day: 'Tue', sys: 125, dia: 80 },
+  { day: 'Wed', sys: 130, dia: 85 },
+  { day: 'Thu', sys: 122, dia: 78 },
+  { day: 'Fri', sys: 126, dia: 81 },
+  { day: 'Sat', sys: 124, dia: 79 },
+  { day: 'Today', sys: 120, dia: 76 },
 ];
 
-const DEMO_HR_DATA = [
-  { date: 'Mon', value: 72 },
-  { date: 'Tue', value: 75 },
-  { date: 'Wed', value: 68 },
-  { date: 'Thu', value: 70 },
-  { date: 'Fri', value: 74 },
-  { date: 'Sat', value: 71 },
-  { date: 'Today', value: 69 },
+const DEMO_HR = [
+  { day: 'Mon', bpm: 72 },
+  { day: 'Tue', bpm: 75 },
+  { day: 'Wed', bpm: 68 },
+  { day: 'Thu', bpm: 70 },
+  { day: 'Fri', bpm: 74 },
+  { day: 'Sat', bpm: 71 },
+  { day: 'Today', bpm: 69 },
 ];
 
-const DEMO_WEIGHT_DATA = [
-  { date: 'Week 1', value: 175 },
-  { date: 'Week 2', value: 174.5 },
-  { date: 'Week 3', value: 173.8 },
-  { date: 'Week 4', value: 173.2 },
+const DEMO_WEIGHT = [
+  { week: 'Wk 1', lbs: 175 },
+  { week: 'Wk 2', lbs: 174.5 },
+  { week: 'Wk 3', lbs: 173.8 },
+  { week: 'Wk 4', lbs: 173.2 },
 ];
 
 export default function HealthMetrics() {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("overview");
-  const [showAddModal, setShowAddModal] = useState(false);
-  
-  // Form states for adding new readings
-  const [newBpSystolic, setNewBpSystolic] = useState("");
-  const [newBpDiastolic, setNewBpDiastolic] = useState("");
-  const [newHeartRate, setNewHeartRate] = useState("");
-  const [newWeight, setNewWeight] = useState("");
-  const [newTemp, setNewTemp] = useState("");
+  const [showLogForm, setShowLogForm] = useState(false);
+  const [bpSys, setBpSys] = useState("");
+  const [bpDia, setBpDia] = useState("");
+  const [hr, setHr] = useState("");
+  const [weight, setWeight] = useState("");
+  const [temp, setTemp] = useState("");
 
-  const getBpStatus = (systolic: number, diastolic: number) => {
-    if (systolic < 120 && diastolic < 80) return { status: 'Normal', color: 'bg-green-500' };
-    if (systolic < 130 && diastolic < 80) return { status: 'Elevated', color: 'bg-yellow-500' };
-    if (systolic < 140 || diastolic < 90) return { status: 'High Stage 1', color: 'bg-orange-500' };
-    return { status: 'High Stage 2', color: 'bg-red-500' };
+  const currentBp = DEMO_BP[DEMO_BP.length - 1];
+  const currentHr = DEMO_HR[DEMO_HR.length - 1];
+  const currentWeight = DEMO_WEIGHT[DEMO_WEIGHT.length - 1];
+
+  const getBpStatus = (sys: number) => {
+    if (sys < 120) return { label: 'Normal', color: 'bg-green-500' };
+    if (sys < 130) return { label: 'Elevated', color: 'bg-yellow-500' };
+    if (sys < 140) return { label: 'High', color: 'bg-orange-500' };
+    return { label: 'Very High', color: 'bg-red-500' };
   };
 
-  const handleAddReading = (type: string) => {
-    toast({
-      title: "Reading Added",
-      description: `Your ${type} reading has been logged successfully`,
-    });
-    // Reset form
-    setNewBpSystolic("");
-    setNewBpDiastolic("");
-    setNewHeartRate("");
-    setNewWeight("");
-    setNewTemp("");
-  };
+  const bpStatus = getBpStatus(currentBp.sys);
 
-  const currentBp = DEMO_BP_DATA[DEMO_BP_DATA.length - 1];
-  const bpStatus = getBpStatus(currentBp.systolic, currentBp.diastolic);
+  const handleLog = (type: string) => {
+    toast({ title: "Logged", description: `${type} recorded successfully` });
+    setBpSys(""); setBpDia(""); setHr(""); setWeight(""); setTemp("");
+    setShowLogForm(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 pb-24">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 pt-12 pb-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-lg mx-auto">
           <Link href="/clinical-command">
-            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-4 -ml-2" data-testid="button-back">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Clinical Command Center
+            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
+              <ArrowLeft className="h-4 w-4 mr-1" /> Back
             </Button>
           </Link>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <Activity className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center">
+                <Activity className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold" data-testid="heading-health-metrics">Health Tracker</h1>
+                <p className="text-white/80 text-xs">Your vital signs at a glance</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold" data-testid="heading-health-metrics">Health Metrics Dashboard</h1>
-              <p className="text-white/80 text-sm">Track and visualize your vital signs</p>
-            </div>
+            <Button
+              onClick={() => setShowLogForm(!showLogForm)}
+              className="bg-white/20 hover:bg-white/30 h-9"
+              data-testid="button-log"
+            >
+              <Plus className="h-4 w-4 mr-1" /> Log
+            </Button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-4 w-full">
-            <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
-            <TabsTrigger value="vitals" className="text-xs">Vitals</TabsTrigger>
-            <TabsTrigger value="weight" className="text-xs">Weight</TabsTrigger>
-            <TabsTrigger value="log" className="text-xs">Log</TabsTrigger>
-          </TabsList>
-
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-4">
-            {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              {/* Blood Pressure Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <Card className="bg-gradient-to-br from-red-500 to-pink-600 text-white">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Heart className="h-5 w-5" />
-                      <span className="text-sm font-medium text-white/80">Blood Pressure</span>
-                    </div>
-                    <div className="text-2xl font-bold">
-                      {currentBp.systolic}/{currentBp.diastolic}
-                    </div>
-                    <div className="text-xs text-white/70">mmHg</div>
-                    <Badge className={`${bpStatus.color} mt-2 text-xs`}>
-                      {bpStatus.status}
-                    </Badge>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Heart Rate Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <Card className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Activity className="h-5 w-5" />
-                      <span className="text-sm font-medium text-white/80">Heart Rate</span>
-                    </div>
-                    <div className="text-2xl font-bold">
-                      {DEMO_HR_DATA[DEMO_HR_DATA.length - 1].value}
-                    </div>
-                    <div className="text-xs text-white/70">bpm</div>
-                    <Badge className="bg-green-500 mt-2 text-xs">Normal</Badge>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Weight Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Card className="bg-gradient-to-br from-blue-500 to-cyan-600 text-white">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Scale className="h-5 w-5" />
-                      <span className="text-sm font-medium text-white/80">Weight</span>
-                    </div>
-                    <div className="text-2xl font-bold">
-                      {DEMO_WEIGHT_DATA[DEMO_WEIGHT_DATA.length - 1].value}
-                    </div>
-                    <div className="text-xs text-white/70">lbs</div>
-                    <div className="flex items-center gap-1 mt-2 text-xs text-green-300">
-                      <TrendingDown className="h-3 w-3" />
-                      -1.8 lbs this month
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Temperature Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Card className="bg-gradient-to-br from-orange-500 to-amber-600 text-white">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Thermometer className="h-5 w-5" />
-                      <span className="text-sm font-medium text-white/80">Temperature</span>
-                    </div>
-                    <div className="text-2xl font-bold">98.6</div>
-                    <div className="text-xs text-white/70">F</div>
-                    <Badge className="bg-green-500 mt-2 text-xs">Normal</Badge>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
-
-            {/* Blood Pressure Trend Chart */}
+      <div className="max-w-lg mx-auto px-4 py-5 space-y-4">
+        {/* Log Form */}
+        {showLogForm && (
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-red-500" />
-                  Blood Pressure Trend (7 Days)
-                </CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Log New Reading</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={DEMO_BP_DATA}>
-                      <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                      <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                      <YAxis domain={[60, 150]} tick={{ fontSize: 12 }} />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="systolic" stroke="#ef4444" fill="#fee2e2" name="Systolic" />
-                      <Area type="monotone" dataKey="diastolic" stroke="#3b82f6" fill="#dbeafe" name="Diastolic" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Heart Rate Trend */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-purple-500" />
-                  Heart Rate Trend (7 Days)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[150px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={DEMO_HR_DATA}>
-                      <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                      <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                      <YAxis domain={[50, 100]} tick={{ fontSize: 12 }} />
-                      <Tooltip />
-                      <Line type="monotone" dataKey="value" stroke="#8b5cf6" strokeWidth={2} dot={{ fill: '#8b5cf6' }} name="BPM" />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Vitals Tab */}
-          <TabsContent value="vitals" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Log Vital Signs</CardTitle>
-                <CardDescription>Record your current measurements</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-4">
                 {/* Blood Pressure */}
-                <div className="space-y-3">
-                  <Label className="flex items-center gap-2">
-                    <Heart className="h-4 w-4 text-red-500" />
-                    Blood Pressure
+                <div className="space-y-2">
+                  <Label className="text-sm flex items-center gap-2">
+                    <Heart className="h-4 w-4 text-red-500" /> Blood Pressure
                   </Label>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <Input
                       type="number"
-                      placeholder="Systolic"
-                      value={newBpSystolic}
-                      onChange={(e) => setNewBpSystolic(e.target.value)}
-                      className="w-24"
-                      data-testid="input-bp-systolic"
+                      placeholder="120"
+                      value={bpSys}
+                      onChange={(e) => setBpSys(e.target.value)}
+                      className="w-20"
+                      data-testid="input-bp-sys"
                     />
                     <span className="text-gray-400">/</span>
                     <Input
                       type="number"
-                      placeholder="Diastolic"
-                      value={newBpDiastolic}
-                      onChange={(e) => setNewBpDiastolic(e.target.value)}
-                      className="w-24"
-                      data-testid="input-bp-diastolic"
+                      placeholder="80"
+                      value={bpDia}
+                      onChange={(e) => setBpDia(e.target.value)}
+                      className="w-20"
+                      data-testid="input-bp-dia"
                     />
-                    <span className="text-sm text-gray-500">mmHg</span>
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleAddReading('blood pressure')}
-                      className="bg-red-500 hover:bg-red-600"
-                      data-testid="button-add-bp"
-                    >
-                      <Plus className="h-4 w-4" />
+                    <span className="text-xs text-gray-500">mmHg</span>
+                    <Button size="sm" onClick={() => handleLog('Blood pressure')} className="bg-red-500 hover:bg-red-600 h-8">
+                      <Plus className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
 
                 {/* Heart Rate */}
-                <div className="space-y-3">
-                  <Label className="flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-purple-500" />
-                    Heart Rate
+                <div className="space-y-2">
+                  <Label className="text-sm flex items-center gap-2">
+                    <Activity className="h-4 w-4 text-purple-500" /> Heart Rate
                   </Label>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <Input
                       type="number"
-                      placeholder="BPM"
-                      value={newHeartRate}
-                      onChange={(e) => setNewHeartRate(e.target.value)}
-                      className="w-24"
-                      data-testid="input-heart-rate"
+                      placeholder="70"
+                      value={hr}
+                      onChange={(e) => setHr(e.target.value)}
+                      className="w-20"
+                      data-testid="input-hr"
                     />
-                    <span className="text-sm text-gray-500">bpm</span>
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleAddReading('heart rate')}
-                      className="bg-purple-500 hover:bg-purple-600"
-                      data-testid="button-add-hr"
-                    >
-                      <Plus className="h-4 w-4" />
+                    <span className="text-xs text-gray-500">bpm</span>
+                    <Button size="sm" onClick={() => handleLog('Heart rate')} className="bg-purple-500 hover:bg-purple-600 h-8">
+                      <Plus className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Weight */}
+                <div className="space-y-2">
+                  <Label className="text-sm flex items-center gap-2">
+                    <Scale className="h-4 w-4 text-blue-500" /> Weight
+                  </Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      step="0.1"
+                      placeholder="170"
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
+                      className="w-24"
+                      data-testid="input-weight"
+                    />
+                    <span className="text-xs text-gray-500">lbs</span>
+                    <Button size="sm" onClick={() => handleLog('Weight')} className="bg-blue-500 hover:bg-blue-600 h-8">
+                      <Plus className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
 
                 {/* Temperature */}
-                <div className="space-y-3">
-                  <Label className="flex items-center gap-2">
-                    <Thermometer className="h-4 w-4 text-orange-500" />
-                    Temperature
+                <div className="space-y-2">
+                  <Label className="text-sm flex items-center gap-2">
+                    <Thermometer className="h-4 w-4 text-orange-500" /> Temperature
                   </Label>
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <Input
                       type="number"
                       step="0.1"
                       placeholder="98.6"
-                      value={newTemp}
-                      onChange={(e) => setNewTemp(e.target.value)}
+                      value={temp}
+                      onChange={(e) => setTemp(e.target.value)}
                       className="w-24"
-                      data-testid="input-temperature"
+                      data-testid="input-temp"
                     />
-                    <span className="text-sm text-gray-500">F</span>
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleAddReading('temperature')}
-                      className="bg-orange-500 hover:bg-orange-600"
-                      data-testid="button-add-temp"
-                    >
-                      <Plus className="h-4 w-4" />
+                    <span className="text-xs text-gray-500">F</span>
+                    <Button size="sm" onClick={() => handleLog('Temperature')} className="bg-orange-500 hover:bg-orange-600 h-8">
+                      <Plus className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </motion.div>
+        )}
 
-            {/* Reference Ranges */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Normal Ranges Reference</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between items-center py-2 border-b">
-                    <span className="font-medium">Blood Pressure</span>
-                    <span className="text-gray-600">Less than 120/80 mmHg</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b">
-                    <span className="font-medium">Resting Heart Rate</span>
-                    <span className="text-gray-600">60-100 bpm</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b">
-                    <span className="font-medium">Body Temperature</span>
-                    <span className="text-gray-600">97.8-99.1 F</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2">
-                    <span className="font-medium">Respiratory Rate</span>
-                    <span className="text-gray-600">12-20 breaths/min</span>
-                  </div>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 gap-3">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <Card className="bg-gradient-to-br from-red-500 to-pink-600 text-white">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Heart className="h-4 w-4" />
+                  <span className="text-xs text-white/80">Blood Pressure</span>
+                </div>
+                <div className="text-2xl font-bold">{currentBp.sys}/{currentBp.dia}</div>
+                <div className="text-xs text-white/70 mb-1">mmHg</div>
+                <Badge className={`${bpStatus.color} text-xs`}>{bpStatus.label}</Badge>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+            <Card className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Activity className="h-4 w-4" />
+                  <span className="text-xs text-white/80">Heart Rate</span>
+                </div>
+                <div className="text-2xl font-bold">{currentHr.bpm}</div>
+                <div className="text-xs text-white/70 mb-1">bpm</div>
+                <Badge className="bg-green-500 text-xs">Normal</Badge>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <Card className="bg-gradient-to-br from-blue-500 to-cyan-600 text-white">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Scale className="h-4 w-4" />
+                  <span className="text-xs text-white/80">Weight</span>
+                </div>
+                <div className="text-2xl font-bold">{currentWeight.lbs}</div>
+                <div className="text-xs text-white/70 mb-1">lbs</div>
+                <div className="flex items-center gap-1 text-xs text-green-300">
+                  <TrendingDown className="h-3 w-3" /> -1.8 this month
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </motion.div>
 
-          {/* Weight Tab */}
-          <TabsContent value="weight" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Scale className="h-5 w-5 text-blue-500" />
-                  Weight Tracking
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2 items-center">
-                  <Input
-                    type="number"
-                    step="0.1"
-                    placeholder="Enter weight"
-                    value={newWeight}
-                    onChange={(e) => setNewWeight(e.target.value)}
-                    className="w-32"
-                    data-testid="input-weight"
-                  />
-                  <span className="text-sm text-gray-500">lbs</span>
-                  <Button 
-                    onClick={() => handleAddReading('weight')}
-                    className="bg-blue-500 hover:bg-blue-600"
-                    data-testid="button-add-weight"
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Log Weight
-                  </Button>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+            <Card className="bg-gradient-to-br from-orange-500 to-amber-600 text-white">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Thermometer className="h-4 w-4" />
+                  <span className="text-xs text-white/80">Temperature</span>
                 </div>
-
-                <div className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={DEMO_WEIGHT_DATA}>
-                      <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                      <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                      <YAxis domain={['dataMin - 5', 'dataMax + 5']} tick={{ fontSize: 12 }} />
-                      <Tooltip />
-                      <Line type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6' }} name="Weight (lbs)" />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Weight Stats */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-3 bg-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-gray-900">173.2</div>
-                    <div className="text-xs text-gray-500">Current</div>
-                  </div>
-                  <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">-1.8</div>
-                    <div className="text-xs text-gray-500">This Month</div>
-                  </div>
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">170</div>
-                    <div className="text-xs text-gray-500">Goal</div>
-                  </div>
-                </div>
+                <div className="text-2xl font-bold">98.6</div>
+                <div className="text-xs text-white/70 mb-1">F</div>
+                <Badge className="bg-green-500 text-xs">Normal</Badge>
               </CardContent>
             </Card>
-          </TabsContent>
+          </motion.div>
+        </div>
 
-          {/* Log Tab */}
-          <TabsContent value="log" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Recent Readings</CardTitle>
-                <CardDescription>Your health measurements history</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {[
-                    { type: 'Blood Pressure', value: '120/76 mmHg', time: 'Today, 8:30 AM', icon: Heart, color: 'text-red-500' },
-                    { type: 'Heart Rate', value: '69 bpm', time: 'Today, 8:30 AM', icon: Activity, color: 'text-purple-500' },
-                    { type: 'Weight', value: '173.2 lbs', time: 'Today, 7:00 AM', icon: Scale, color: 'text-blue-500' },
-                    { type: 'Blood Pressure', value: '124/79 mmHg', time: 'Yesterday, 9:15 AM', icon: Heart, color: 'text-red-500' },
-                    { type: 'Heart Rate', value: '71 bpm', time: 'Yesterday, 9:15 AM', icon: Activity, color: 'text-purple-500' },
-                  ].map((reading, index) => (
-                    <div key={index} className="flex items-center justify-between py-3 border-b last:border-0">
-                      <div className="flex items-center gap-3">
-                        <reading.icon className={`h-5 w-5 ${reading.color}`} />
-                        <div>
-                          <div className="font-medium">{reading.type}</div>
-                          <div className="text-xs text-gray-500">{reading.time}</div>
-                        </div>
-                      </div>
-                      <div className="font-semibold">{reading.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        {/* Blood Pressure Chart */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <BarChart3 className="h-4 w-4 text-red-500" /> Blood Pressure (7 Days)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[160px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={DEMO_BP}>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                  <XAxis dataKey="day" tick={{ fontSize: 10 }} />
+                  <YAxis domain={[60, 150]} tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="sys" stroke="#ef4444" fill="#fee2e2" name="Systolic" />
+                  <Area type="monotone" dataKey="dia" stroke="#3b82f6" fill="#dbeafe" name="Diastolic" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Heart Rate Chart */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Activity className="h-4 w-4 text-purple-500" /> Heart Rate (7 Days)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[120px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={DEMO_HR}>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                  <XAxis dataKey="day" tick={{ fontSize: 10 }} />
+                  <YAxis domain={[50, 100]} tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="bpm" stroke="#8b5cf6" strokeWidth={2} dot={{ fill: '#8b5cf6', r: 3 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Weight Chart */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Scale className="h-4 w-4 text-blue-500" /> Weight Trend
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[120px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={DEMO_WEIGHT}>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                  <XAxis dataKey="week" tick={{ fontSize: 10 }} />
+                  <YAxis domain={['dataMin - 3', 'dataMax + 3']} tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="lbs" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6', r: 3 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="grid grid-cols-3 gap-2 mt-3">
+              <div className="text-center p-2 bg-gray-50 rounded-lg">
+                <div className="font-bold text-gray-900">{currentWeight.lbs}</div>
+                <div className="text-xs text-gray-500">Current</div>
+              </div>
+              <div className="text-center p-2 bg-green-50 rounded-lg">
+                <div className="font-bold text-green-600">-1.8</div>
+                <div className="text-xs text-gray-500">Change</div>
+              </div>
+              <div className="text-center p-2 bg-blue-50 rounded-lg">
+                <div className="font-bold text-blue-600">170</div>
+                <div className="text-xs text-gray-500">Goal</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Reference Card */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Normal Ranges</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between py-1.5 border-b">
+                <span>Blood Pressure</span>
+                <span className="text-gray-600">Below 120/80 mmHg</span>
+              </div>
+              <div className="flex justify-between py-1.5 border-b">
+                <span>Resting Heart Rate</span>
+                <span className="text-gray-600">60-100 bpm</span>
+              </div>
+              <div className="flex justify-between py-1.5">
+                <span>Body Temperature</span>
+                <span className="text-gray-600">97.8-99.1 F</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <MobileBottomNav />

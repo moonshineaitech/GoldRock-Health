@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import {
   Pill, ArrowLeft, AlertTriangle, XCircle, AlertCircle, Info, Plus,
-  Trash2, Loader2, Shield, Search, CheckCircle, Sparkles
+  Trash2, Loader2, Shield, Search, CheckCircle
 } from "lucide-react";
 
 interface DrugInteraction {
@@ -30,13 +30,15 @@ interface InteractionResult {
   disclaimer: string;
 }
 
+const COMMON_MEDS = ['Lisinopril', 'Metformin', 'Atorvastatin', 'Omeprazole', 'Metoprolol', 'Warfarin', 'Aspirin', 'Ibuprofen'];
+
 export default function DrugInteractions() {
   const { toast } = useToast();
   const [medications, setMedications] = useState<string[]>([]);
   const [currentMed, setCurrentMed] = useState("");
   const [result, setResult] = useState<InteractionResult | null>(null);
 
-  const checkInteractionsMutation = useMutation({
+  const checkMutation = useMutation({
     mutationFn: async (meds: string[]) => {
       const response = await apiRequest("POST", "/api/check-drug-interactions", { medications: meds });
       return response.json();
@@ -44,163 +46,123 @@ export default function DrugInteractions() {
     onSuccess: (data) => {
       setResult(data);
       if (data.interactions.length === 0) {
-        toast({
-          title: "No Interactions Found",
-          description: "No known interactions detected between your medications",
-        });
+        toast({ title: "All Clear", description: "No interactions found between your medications" });
       } else {
-        toast({
-          title: "Interactions Detected",
-          description: `Found ${data.interactions.length} potential interaction(s)`,
-          variant: "destructive",
-        });
+        toast({ title: "Warning", description: `Found ${data.interactions.length} interaction(s)`, variant: "destructive" });
       }
     },
-    onError: (error: any) => {
-      toast({
-        title: "Check Failed",
-        description: error.message || "Unable to check drug interactions",
-        variant: "destructive",
-      });
+    onError: () => {
+      toast({ title: "Error", description: "Could not check interactions", variant: "destructive" });
     }
   });
 
-  const addMedication = () => {
+  const addMed = () => {
     const med = currentMed.trim();
     if (!med) return;
-    if (medications.includes(med.toLowerCase())) {
-      toast({
-        title: "Already Added",
-        description: "This medication is already in your list",
-        variant: "destructive",
-      });
+    if (medications.some(m => m.toLowerCase() === med.toLowerCase())) {
+      toast({ title: "Already Added", description: "This medication is in your list", variant: "destructive" });
       return;
     }
     setMedications([...medications, med]);
     setCurrentMed("");
   };
 
-  const removeMedication = (index: number) => {
+  const removeMed = (index: number) => {
     setMedications(medications.filter((_, i) => i !== index));
     setResult(null);
   };
 
+  const quickAdd = (med: string) => {
+    if (!medications.some(m => m.toLowerCase() === med.toLowerCase())) {
+      setMedications([...medications, med]);
+    }
+  };
+
   const handleCheck = () => {
     if (medications.length < 2) {
-      toast({
-        title: "Add More Medications",
-        description: "You need at least 2 medications to check for interactions",
-        variant: "destructive",
-      });
+      toast({ title: "Add More", description: "Need at least 2 medications to check", variant: "destructive" });
       return;
     }
-    checkInteractionsMutation.mutate(medications);
+    checkMutation.mutate(medications);
   };
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'major':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'moderate':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'minor':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
-  const getSeverityIcon = (severity: string) => {
-    switch (severity) {
-      case 'major':
-        return <XCircle className="h-5 w-5 text-red-500" />;
-      case 'moderate':
-        return <AlertCircle className="h-5 w-5 text-orange-500" />;
-      case 'minor':
-        return <Info className="h-5 w-5 text-yellow-600" />;
-      default:
-        return <Info className="h-5 w-5 text-gray-500" />;
-    }
+  const reset = () => {
+    setMedications([]);
+    setResult(null);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-indigo-50 pb-24">
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-4 pt-12 pb-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-lg mx-auto">
           <Link href="/clinical-command">
-            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-4 -ml-2" data-testid="button-back">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Clinical Command Center
+            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
+              <ArrowLeft className="h-4 w-4 mr-1" /> Back
             </Button>
           </Link>
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <Pill className="h-6 w-6 text-white" />
+            <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center">
+              <Pill className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold" data-testid="heading-drug-interactions">Drug Interaction Checker</h1>
-              <p className="text-white/80 text-sm">Check for dangerous medication interactions</p>
+              <h1 className="text-xl font-bold" data-testid="heading-drug-interactions">Drug Interaction Checker</h1>
+              <p className="text-white/80 text-xs">Check if your medications are safe together</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-lg mx-auto px-4 py-5 space-y-4">
         {/* Disclaimer */}
-        <Card className="border-amber-200 bg-amber-50">
-          <CardContent className="p-4 flex items-start gap-3">
-            <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-amber-800">
-              <strong>Important:</strong> This tool uses drug interaction databases but may not include all medications or interactions. Always consult your pharmacist or doctor about potential drug interactions, especially for new prescriptions.
+        <Card className="border-amber-200 bg-amber-50/80">
+          <CardContent className="p-3 flex items-start gap-2">
+            <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-800">
+              <strong>Safety tool.</strong> This uses drug databases but may not catch everything. Always check with your pharmacist.
             </p>
           </CardContent>
         </Card>
 
-        {/* Medication Input */}
+        {/* Input Card */}
         <Card>
-          <CardHeader>
+          <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
               <Pill className="h-5 w-5 text-purple-600" />
               Your Medications
             </CardTitle>
-            <CardDescription>
-              Add your medications to check for interactions
+            <CardDescription className="text-xs">
+              Add each medication you take
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex gap-2">
               <Input
-                placeholder="Enter medication name (e.g., Lisinopril, Metformin)"
+                placeholder="Type medication name..."
                 value={currentMed}
                 onChange={(e) => setCurrentMed(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && addMedication()}
+                onKeyDown={(e) => e.key === 'Enter' && addMed()}
                 className="flex-1"
                 data-testid="input-medication"
               />
-              <Button onClick={addMedication} className="bg-purple-600 hover:bg-purple-700" data-testid="button-add-med">
-                <Plus className="h-4 w-4 mr-1" />
-                Add
+              <Button onClick={addMed} className="bg-purple-600 hover:bg-purple-700" data-testid="button-add-med">
+                <Plus className="h-4 w-4" />
               </Button>
             </div>
 
-            {/* Medication List */}
+            {/* Medication Pills */}
             {medications.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {medications.map((med, index) => (
+                {medications.map((med, i) => (
                   <motion.div
-                    key={index}
+                    key={i}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-1 bg-purple-100 text-purple-800 rounded-full px-3 py-1.5"
+                    className="flex items-center gap-1.5 bg-purple-100 text-purple-800 rounded-full px-3 py-1.5"
                   >
                     <Pill className="h-3 w-3" />
                     <span className="text-sm font-medium">{med}</span>
-                    <button
-                      onClick={() => removeMedication(index)}
-                      className="ml-1 text-purple-600 hover:text-purple-800"
-                      data-testid={`button-remove-${index}`}
-                    >
+                    <button onClick={() => removeMed(i)} className="text-purple-600 hover:text-purple-800 ml-1">
                       <Trash2 className="h-3 w-3" />
                     </button>
                   </motion.div>
@@ -208,49 +170,38 @@ export default function DrugInteractions() {
               </div>
             )}
 
+            {/* Quick Add */}
+            {medications.length === 0 && (
+              <div className="pt-2">
+                <p className="text-xs text-gray-500 mb-2">Quick add common medications:</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {COMMON_MEDS.map((med) => (
+                    <button
+                      key={med}
+                      onClick={() => quickAdd(med)}
+                      className="text-xs bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 rounded-full px-2.5 py-1 transition-colors"
+                    >
+                      + {med}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <Button
               onClick={handleCheck}
-              disabled={medications.length < 2 || checkInteractionsMutation.isPending}
-              className="w-full bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700"
+              disabled={medications.length < 2 || checkMutation.isPending}
+              className="w-full bg-gradient-to-r from-purple-600 to-violet-600"
               data-testid="button-check-interactions"
             >
-              {checkInteractionsMutation.isPending ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Checking Interactions...
-                </>
+              {checkMutation.isPending ? (
+                <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Checking...</>
               ) : (
-                <>
-                  <Search className="h-4 w-4 mr-2" />
-                  Check for Interactions
-                </>
+                <><Search className="h-4 w-4 mr-2" /> Check for Interactions</>
               )}
             </Button>
           </CardContent>
         </Card>
-
-        {/* Common Medication Examples */}
-        {medications.length === 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-gray-600">Common Medications to Check</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {['Lisinopril', 'Metformin', 'Atorvastatin', 'Omeprazole', 'Amlodipine', 'Metoprolol', 'Warfarin', 'Aspirin'].map((med) => (
-                  <button
-                    key={med}
-                    onClick={() => setMedications([...medications, med])}
-                    className="text-xs bg-gray-100 hover:bg-purple-100 text-gray-700 hover:text-purple-700 rounded-full px-3 py-1.5 transition-colors"
-                    data-testid={`button-quick-add-${med.toLowerCase()}`}
-                  >
-                    + {med}
-                  </button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
         {/* Results */}
         <AnimatePresence>
@@ -258,78 +209,74 @@ export default function DrugInteractions() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
               className="space-y-4"
             >
-              {/* No Interactions Found */}
+              {/* No Interactions */}
               {result.interactions.length === 0 ? (
                 <Card className="border-green-200 bg-green-50">
-                  <CardContent className="p-6 text-center">
-                    <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-3" />
-                    <h3 className="text-lg font-bold text-green-800 mb-2">No Known Interactions</h3>
-                    <p className="text-green-700">
-                      No major interactions were found between your medications in our database.
-                      However, always inform your healthcare providers about all medications you take.
+                  <CardContent className="p-5 text-center">
+                    <CheckCircle className="h-10 w-10 text-green-500 mx-auto mb-2" />
+                    <h3 className="font-bold text-green-800 mb-1">No Known Interactions</h3>
+                    <p className="text-sm text-green-700">
+                      These medications appear safe to take together. Still, always tell your doctor about all medications you take.
                     </p>
                   </CardContent>
                 </Card>
               ) : (
                 <>
-                  {/* Summary */}
+                  {/* Warning Header */}
                   <Card className="border-red-200 bg-red-50">
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2 text-red-800">
-                        <AlertTriangle className="h-5 w-5" />
-                        {result.interactions.length} Interaction(s) Found
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-red-700 text-sm">
-                        Review the interactions below and discuss them with your healthcare provider.
-                      </p>
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <AlertTriangle className="h-6 w-6 text-red-500 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-bold text-red-800">{result.interactions.length} Interaction(s) Found</h3>
+                        <p className="text-sm text-red-700">Talk to your doctor or pharmacist about these</p>
+                      </div>
                     </CardContent>
                   </Card>
 
                   {/* Interaction Cards */}
-                  {result.interactions.map((interaction, index) => (
+                  {result.interactions.map((interaction, i) => (
                     <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: i * 0.1 }}
                     >
-                      <Card className={`border-2 ${getSeverityColor(interaction.severity)}`}>
-                        <CardHeader className="pb-2">
+                      <Card className={`border-2 ${
+                        interaction.severity === 'major' ? 'border-red-300 bg-red-50' :
+                        interaction.severity === 'moderate' ? 'border-orange-300 bg-orange-50' :
+                        'border-yellow-300 bg-yellow-50'
+                      }`}>
+                        <CardContent className="p-4 space-y-3">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              {getSeverityIcon(interaction.severity)}
-                              <CardTitle className="text-base">
-                                {interaction.drug1} + {interaction.drug2}
-                              </CardTitle>
+                              {interaction.severity === 'major' ? <XCircle className="h-5 w-5 text-red-500" /> :
+                               interaction.severity === 'moderate' ? <AlertCircle className="h-5 w-5 text-orange-500" /> :
+                               <Info className="h-5 w-5 text-yellow-600" />}
+                              <span className="font-bold">{interaction.drug1} + {interaction.drug2}</span>
                             </div>
                             <Badge className={
                               interaction.severity === 'major' ? 'bg-red-500' :
-                              interaction.severity === 'moderate' ? 'bg-orange-500' :
-                              'bg-yellow-500'
+                              interaction.severity === 'moderate' ? 'bg-orange-500' : 'bg-yellow-500'
                             }>
                               {interaction.severity.toUpperCase()}
                             </Badge>
                           </div>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                          <p className="text-gray-700">{interaction.description}</p>
+                          
+                          <p className="text-sm text-gray-700">{interaction.description}</p>
                           
                           {interaction.mechanism && (
-                            <div className="bg-white/50 rounded-lg p-3">
-                              <h4 className="text-sm font-semibold text-gray-700 mb-1">How it happens:</h4>
-                              <p className="text-sm text-gray-600">{interaction.mechanism}</p>
+                            <div className="bg-white/60 rounded-lg p-3">
+                              <p className="text-xs font-semibold text-gray-600 mb-1">Why this happens:</p>
+                              <p className="text-sm text-gray-700">{interaction.mechanism}</p>
                             </div>
                           )}
                           
                           {interaction.management && (
-                            <div className="bg-white/50 rounded-lg p-3">
-                              <h4 className="text-sm font-semibold text-gray-700 mb-1">What to do:</h4>
-                              <p className="text-sm text-gray-600">{interaction.management}</p>
+                            <div className="bg-white/60 rounded-lg p-3">
+                              <p className="text-xs font-semibold text-gray-600 mb-1">What to do:</p>
+                              <p className="text-sm text-gray-700">{interaction.management}</p>
                             </div>
                           )}
                         </CardContent>
@@ -340,19 +287,18 @@ export default function DrugInteractions() {
               )}
 
               {/* Safety Notes */}
-              {result.safetyNotes && result.safetyNotes.length > 0 && (
+              {result.safetyNotes?.length > 0 && (
                 <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-blue-600" />
-                      General Safety Notes
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-blue-600" /> Safety Tips
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2">
-                      {result.safetyNotes.map((note, index) => (
-                        <li key={index} className="flex items-start gap-2 text-gray-700">
-                          <Info className="h-4 w-4 text-blue-500 mt-1 flex-shrink-0" />
+                    <ul className="space-y-1.5">
+                      {result.safetyNotes.map((note, i) => (
+                        <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                          <Info className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
                           {note}
                         </li>
                       ))}
@@ -361,14 +307,10 @@ export default function DrugInteractions() {
                 </Card>
               )}
 
-              {/* Disclaimer */}
-              <Card className="border-gray-200 bg-gray-50">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-600 text-center">
-                    {result.disclaimer || "This information is for educational purposes only and does not replace professional medical advice. Always consult your pharmacist or healthcare provider."}
-                  </p>
-                </CardContent>
-              </Card>
+              {/* Check Again */}
+              <Button onClick={reset} variant="outline" className="w-full" data-testid="button-check-again">
+                Check Different Medications
+              </Button>
             </motion.div>
           )}
         </AnimatePresence>
