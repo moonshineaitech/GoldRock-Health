@@ -119,9 +119,10 @@ export default function Landing() {
             damping: 10
           }}
         >
-          {/* Clean icon container - no blur effects */}
+          {/* Clean icon container - isolated to prevent blur bleeding from background */}
           <motion.div 
             className="relative w-24 h-24 bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-amber-500/30"
+            style={{ isolation: 'isolate' }}
             whileHover={{ scale: 1.05, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
           >

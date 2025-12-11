@@ -100,9 +100,8 @@ export default function AuthLanding() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", stiffness: 200 }}
           >
-            <div className="w-28 h-28 bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-500 rounded-[2.75rem] flex items-center justify-center shadow-2xl mx-auto">
-              <div className="absolute inset-0 bg-white/20 backdrop-blur-sm rounded-[2.75rem]" />
-              <DollarSign className="w-14 h-14 text-white relative z-10" strokeWidth={2.5} />
+            <div className="w-28 h-28 bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-500 rounded-[2.75rem] flex items-center justify-center shadow-2xl mx-auto" style={{ isolation: 'isolate' }}>
+              <DollarSign className="w-14 h-14 text-white" strokeWidth={2.5} />
             </div>
           </motion.div>
 
