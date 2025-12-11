@@ -97,6 +97,25 @@ interface AIMessage {
   createdAt: Date;
 }
 
+// Helper to send messages in human-like chunks with small delays
+const sendChunkedMessages = (
+  messages: string[],
+  setMessages: React.Dispatch<React.SetStateAction<AIMessage[]>>,
+  baseDelay: number = 400
+) => {
+  messages.forEach((content, index) => {
+    setTimeout(() => {
+      const msg: AIMessage = {
+        id: `${Date.now()}_chunk_${index}`,
+        role: "assistant",
+        content,
+        createdAt: new Date()
+      };
+      setMessages(prev => [...prev, msg]);
+    }, index * baseDelay);
+  });
+};
+
 // Ultra-Bold 2025 Modern Suggestion Chip Component
 const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }: {
   icon: any;
@@ -1434,28 +1453,14 @@ export default function BillAI() {
           description: "AI chat is a premium feature. Please upgrade your subscription to continue.",
           variant: "destructive",
         });
-        // Add a subscription upgrade message to chat
-        const upgradeMessage: AIMessage = {
-          id: Date.now().toString() + "_upgrade",
-          role: "assistant",
-          content: `PREMIUM FEATURE REQUIRED
-
-AI-powered medical bill analysis is a premium feature that helps you save $1,000 to $100,000+ on medical bills.
-
-What you get with Premium:
-
-1. Unlimited AI chat sessions for bill analysis
-2. Advanced error detection and savings calculations  
-3. Professional dispute letter generation
-4. Insurance appeal templates and strategies
-5. 24/7 access to expert bill reduction advice
-
-To continue using the AI chat, please upgrade to our Premium subscription.
-
-Would you like me to help you with general billing information instead?`,
-          createdAt: new Date()
-        };
-        setLocalMessages(prev => [...prev, upgradeMessage]);
+        // Send premium upgrade messages in conversational chunks
+        const premiumChunks = [
+          "🔒 This is a Premium feature",
+          "AI-powered bill analysis can save you $1,000 to $100,000+ on medical bills.",
+          "With Premium you get:\n\n1. Unlimited AI chat sessions\n2. Advanced error detection\n3. Dispute letter generation\n4. Insurance appeal templates\n5. 24/7 expert advice",
+          "Want me to help with general billing info in the meantime?"
+        ];
+        sendChunkedMessages(premiumChunks, setLocalMessages, 400);
         return;
       }
       
@@ -1466,22 +1471,14 @@ Would you like me to help you with general billing information instead?`,
         variant: "destructive",
       });
       
-      // Add a helpful error message to chat
-      const errorMessage: AIMessage = {
-        id: Date.now().toString() + "_error",
-        role: "assistant",
-        content: `I'm sorry, I'm having trouble connecting right now. This could be due to:
-
-1. Network connectivity issues
-2. Server maintenance  
-3. High traffic volume
-
-Please try again in a few moments. If the problem persists, try refreshing the page.
-
-In the meantime, I can still help you with general medical billing questions if you'd like to try again.`,
-        createdAt: new Date()
-      };
-      setLocalMessages(prev => [...prev, errorMessage]);
+      // Send error messages in friendly chunks
+      const errorChunks = [
+        "Hmm, having trouble connecting right now 😕",
+        "Could be network issues, maintenance, or high traffic.",
+        "Try again in a moment. If it keeps happening, refresh the page.",
+        "I'm still here to help when you're ready!"
+      ];
+      sendChunkedMessages(errorChunks, setLocalMessages, 350);
     } finally {
       setIsTyping(false);
     }
@@ -1757,24 +1754,16 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   setShowWorkflowSelection(false);
                   setConversationStarted(true);
                   
-                  const welcomeMessage: AIMessage = {
-                    id: Date.now().toString() + "_welcome",
-                    role: "assistant",
-                    content: `Hello! I'm your Medical Bill AI assistant. I've helped patients save over $50 million in billing errors and overcharges.
-
-WAYS TO GET STARTED:
-
-1. Upload bill images for instant analysis
-2. Share your bill amount and provider name
-3. Tell me about specific charges that seem wrong
-4. Ask about billing codes you don't understand
-
-Tip: Uploading photos of your bills gives me the most accurate data to find errors and savings. I can analyze up to 5 images at once.
-
-What would you like to do first?`,
-                    createdAt: new Date()
-                  };
-                  setLocalMessages([welcomeMessage]);
+                  // Send welcome messages in human-like chunks
+                  const welcomeChunks = [
+                    "Hey! 👋 I'm your medical bill advocate.",
+                    "I've helped patients save over $50 million finding billing errors and overcharges.",
+                    "Here's how I can help:\n\n1. Upload bill images for instant analysis\n2. Share your bill amount and provider\n3. Tell me about charges that seem off\n4. Ask about any codes you don't understand",
+                    "📸 Pro tip: uploading photos gives me the most accurate data. I can analyze up to 5 at once!",
+                    "What would you like to do first?"
+                  ];
+                  
+                  sendChunkedMessages(welcomeChunks, setLocalMessages, 500);
                 }}
               />
             </div>
