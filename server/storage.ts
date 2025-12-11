@@ -21,6 +21,7 @@ import {
   chatMessages,
   syntheticPatients,
   diagnosticSessions,
+  userSavingsOutcomes,
   type MedicalCase, 
   type InsertMedicalCase,
   type UserProgress,
@@ -64,7 +65,9 @@ import {
   type SyntheticPatient,
   type InsertSyntheticPatient,
   type DiagnosticSession,
-  type InsertDiagnosticSession
+  type InsertDiagnosticSession,
+  type UserSavingsOutcome,
+  type InsertUserSavingsOutcome
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count } from "drizzle-orm";
@@ -170,6 +173,12 @@ export interface IStorage {
   deleteAllUserData(userId: string): Promise<{ success: boolean; deletedCount: number }>;
   exportUserData(userId: string): Promise<{ userData: any; medicalData: any; chatData: any; createdAt: string }>;
   cleanupOldData(retentionDays: number): Promise<{ billsDeleted: number; chatsDeleted: number; voiceCacheCleared: boolean }>;
+
+  // User Savings Outcomes
+  createSavingsOutcome(userId: string, outcome: Omit<InsertUserSavingsOutcome, 'userId' | 'id' | 'createdAt'>): Promise<UserSavingsOutcome>;
+  getSavingsOutcomes(userId: string): Promise<UserSavingsOutcome[]>;
+  updateSavingsOutcome(outcomeId: string, userId: string, updates: Partial<InsertUserSavingsOutcome>): Promise<UserSavingsOutcome | undefined>;
+  deleteSavingsOutcome(outcomeId: string, userId: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1070,6 +1079,41 @@ export class DatabaseStorage implements IStorage {
       console.error('Error cleaning up old data:', error);
       return { billsDeleted: 0, chatsDeleted: 0, voiceCacheCleared: false };
     }
+  }
+
+  // User Savings Outcomes
+  async createSavingsOutcome(userId: string, outcome: Omit<InsertUserSavingsOutcome, 'userId' | 'id' | 'createdAt'>): Promise<UserSavingsOutcome> {
+    const [savedOutcome] = await db.insert(userSavingsOutcomes).values({
+      ...outcome,
+      userId
+    }).returning();
+    return savedOutcome;
+  }
+
+  async getSavingsOutcomes(userId: string): Promise<UserSavingsOutcome[]> {
+    return await db.select().from(userSavingsOutcomes)
+      .where(eq(userSavingsOutcomes.userId, userId))
+      .orderBy(desc(userSavingsOutcomes.createdAt));
+  }
+
+  async updateSavingsOutcome(outcomeId: string, userId: string, updates: Partial<InsertUserSavingsOutcome>): Promise<UserSavingsOutcome | undefined> {
+    const [updated] = await db.update(userSavingsOutcomes)
+      .set(updates)
+      .where(and(
+        eq(userSavingsOutcomes.id, outcomeId),
+        eq(userSavingsOutcomes.userId, userId)
+      ))
+      .returning();
+    return updated;
+  }
+
+  async deleteSavingsOutcome(outcomeId: string, userId: string): Promise<boolean> {
+    const result = await db.delete(userSavingsOutcomes)
+      .where(and(
+        eq(userSavingsOutcomes.id, outcomeId),
+        eq(userSavingsOutcomes.userId, userId)
+      ));
+    return true;
   }
 }
 

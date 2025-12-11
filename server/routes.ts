@@ -3923,6 +3923,75 @@ End each response with an offer to help further or a gentle reminder to consult 
     }
   });
 
+  // Savings Outcomes API
+  app.get('/api/savings-outcomes', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const outcomes = await storage.getSavingsOutcomes(userId);
+      res.json(outcomes);
+    } catch (error) {
+      console.error('Get savings outcomes error:', error);
+      res.status(500).json({ message: 'Failed to get savings outcomes' });
+    }
+  });
+
+  app.post('/api/savings-outcomes', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { originalAmount, finalAmount, totalSaved, savingsMethod, providerName, strategyUsed, status, userNotes } = req.body;
+      
+      if (!originalAmount) {
+        return res.status(400).json({ message: 'Original amount is required' });
+      }
+
+      const outcome = await storage.createSavingsOutcome(userId, {
+        originalAmount: originalAmount.toString(),
+        finalAmount: finalAmount?.toString() || null,
+        totalSaved: totalSaved?.toString() || null,
+        savingsMethod: savingsMethod || null,
+        providerName: providerName || null,
+        strategyUsed: strategyUsed || null,
+        status: status || 'in_progress',
+        userNotes: userNotes || null
+      });
+
+      res.json(outcome);
+    } catch (error) {
+      console.error('Create savings outcome error:', error);
+      res.status(500).json({ message: 'Failed to create savings outcome' });
+    }
+  });
+
+  app.patch('/api/savings-outcomes/:id', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const outcomeId = req.params.id;
+      const updates = req.body;
+
+      const outcome = await storage.updateSavingsOutcome(outcomeId, userId, updates);
+      if (!outcome) {
+        return res.status(404).json({ message: 'Outcome not found' });
+      }
+      res.json(outcome);
+    } catch (error) {
+      console.error('Update savings outcome error:', error);
+      res.status(500).json({ message: 'Failed to update savings outcome' });
+    }
+  });
+
+  app.delete('/api/savings-outcomes/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const outcomeId = req.params.id;
+
+      const success = await storage.deleteSavingsOutcome(outcomeId, userId);
+      res.json({ success });
+    } catch (error) {
+      console.error('Delete savings outcome error:', error);
+      res.status(500).json({ message: 'Failed to delete savings outcome' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
