@@ -9,7 +9,8 @@ import {
   Crown,
   Sparkles,
   Shield,
-  Lightbulb
+  Lightbulb,
+  Brain
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -36,6 +37,13 @@ const navItems: NavItem[] = [
     icon: FileText,
     path: "/bill-ai",
     color: "text-purple-600"
+  },
+  {
+    id: "health",
+    label: "Health",
+    icon: Brain,
+    path: "/health-insights",
+    color: "text-teal-600"
   },
   {
     id: "guides",
@@ -117,6 +125,7 @@ export function MobileBottomNav() {
                         item.color === 'text-red-600' ? '#DC2626' :
                         item.color === 'text-orange-600' ? '#F59E0B' :
                         item.color === 'text-indigo-600' ? '#6366F1' :
+                        item.color === 'text-teal-600' ? '#14B8A6' :
                         '#6366F1'
                       ) : '#6B7280'
                     }}
