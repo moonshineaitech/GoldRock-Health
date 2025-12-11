@@ -139,7 +139,7 @@ export default function LabAnalyzer() {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">
-          <Link href="/clinical-command">
+          <Link href="/clinical-command-center">
             <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
               <ArrowLeft className="h-4 w-4 mr-1" /> Back
             </Button>
