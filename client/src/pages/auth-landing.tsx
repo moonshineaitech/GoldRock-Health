@@ -224,13 +224,15 @@ export default function AuthLanding() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pillar 1: Financial Defense */}
-            <motion.div
+            <motion.a
+              href="/api/login?redirect=/bill-ai"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl"
+              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-financial-defense"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <DollarSign className="h-7 w-7 text-white" />
@@ -242,16 +244,22 @@ export default function AuthLanding() {
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Templates</span>
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Disputes</span>
               </div>
-            </motion.div>
+              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
+            </motion.a>
 
             {/* Pillar 2: Clinical Intelligence */}
-            <motion.div
+            <motion.a
+              href="/api/login?redirect=/clinical-command-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl"
+              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-clinical-intelligence"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Brain className="h-7 w-7 text-white" />
@@ -263,16 +271,22 @@ export default function AuthLanding() {
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Insights</span>
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Resources</span>
               </div>
-            </motion.div>
+              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
+            </motion.a>
 
             {/* Pillar 3: Diagnostic Mastery */}
-            <motion.div
+            <motion.a
+              href="/api/login?redirect=/patient-diagnostics"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl"
+              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-diagnostic-mastery"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Target className="h-7 w-7 text-white" />
@@ -284,16 +298,22 @@ export default function AuthLanding() {
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Training</span>
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Scoring</span>
               </div>
-            </motion.div>
+              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
+            </motion.a>
 
             {/* Pillar 4: Gamified Learning */}
-            <motion.div
+            <motion.a
+              href="/api/login?redirect=/game"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-6 text-white shadow-2xl"
+              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-gamified-learning"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Trophy className="h-7 w-7 text-white" />
@@ -305,7 +325,11 @@ export default function AuthLanding() {
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Achievements</span>
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">XP System</span>
               </div>
-            </motion.div>
+              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
+            </motion.a>
           </div>
         </div>
       </section>
@@ -339,13 +363,18 @@ export default function AuthLanding() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl block"
+              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-lab-analyzer"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Activity className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-xl font-black mb-2">Lab Results Analyzer</h3>
-              <p className="text-white/90 text-sm leading-relaxed">AI interprets your bloodwork and explains what your test results mean in plain language</p>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">AI interprets your bloodwork and explains what your test results mean in plain language</p>
+              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
             </motion.a>
 
             <motion.a
@@ -355,13 +384,18 @@ export default function AuthLanding() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl block"
+              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-drug-interactions"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Pill className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-xl font-black mb-2">Drug Interaction Checker</h3>
-              <p className="text-white/90 text-sm leading-relaxed">Check if your medications are safe to take together using trusted drug databases</p>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">Check if your medications are safe to take together using trusted drug databases</p>
+              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
             </motion.a>
 
             <motion.a
@@ -371,13 +405,18 @@ export default function AuthLanding() {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl block"
+              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-symptom-checker"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Brain className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-xl font-black mb-2">Symptom Checker</h3>
-              <p className="text-white/90 text-sm leading-relaxed">Describe your symptoms and get AI-powered triage guidance and next steps</p>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">Describe your symptoms and get AI-powered triage guidance and next steps</p>
+              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
             </motion.a>
 
             <motion.a
@@ -387,13 +426,18 @@ export default function AuthLanding() {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl p-6 text-white shadow-2xl block"
+              className="bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
+              data-testid="card-health-metrics"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Heart className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-xl font-black mb-2">Health Metrics Tracker</h3>
-              <p className="text-white/90 text-sm leading-relaxed">Track blood pressure, heart rate, weight, and temperature with trend charts</p>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">Track blood pressure, heart rate, weight, and temperature with trend charts</p>
+              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
+                <span>Sign in to access</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
             </motion.a>
           </div>
 
