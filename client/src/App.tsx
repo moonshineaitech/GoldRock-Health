@@ -69,7 +69,7 @@ const AI_PROTECTED_ROUTES = [
   '/blitz-demo',
   '/health-insights',
   '/patient-diagnostics',
-  '/clinical-command',
+  '/clinical-command-center',
   '/lab-analyzer',
   '/drug-interactions',
   '/symptom-checker'
@@ -215,8 +215,8 @@ function Router() {
           <BlitzDemo />
         </AIRouteGuard>
       </Route>
-      <Route path="/clinical-command">
-        <AIRouteGuard path="/clinical-command">
+      <Route path="/clinical-command-center">
+        <AIRouteGuard path="/clinical-command-center">
           <ClinicalCommandCenter />
         </AIRouteGuard>
       </Route>
