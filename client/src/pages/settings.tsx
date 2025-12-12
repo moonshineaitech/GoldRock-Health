@@ -1,7 +1,6 @@
 import { MobileLayout, MobileCard } from "@/components/mobile-layout";
 import { AccountDeletion } from "@/components/account-deletion";
 import { useAuth } from "@/hooks/useAuth";
-import { useTutorial } from "@/hooks/useTutorial";
 import { motion } from "framer-motion";
 import { Settings as SettingsIcon, User, Bell, Shield, FileText, HelpCircle, LogOut, AlertTriangle, Smartphone, Wifi, WifiOff, GraduationCap, RefreshCw, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";

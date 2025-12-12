@@ -55,8 +55,6 @@ import HealthMetrics from "@/pages/health-metrics";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
-import { TutorialOverlay } from "@/components/tutorial-overlay";
-import { TutorialProvider, useTutorial } from "@/hooks/useTutorial";
 import { useEffect } from "react";
 import { revenueCatService } from "@/lib/revenuecat-service";
 
@@ -248,35 +246,14 @@ function Router() {
   );
 }
 
-// Tutorial wrapper component that uses the tutorial context
-function TutorialWrapper() {
-  const tutorial = useTutorial();
-
-  return (
-    <>
-      <Router />
-      <TutorialOverlay
-        currentStepId={tutorial.currentStepId}
-        onNext={tutorial.nextStep}
-        onPrevious={tutorial.previousStep}
-        onSkip={tutorial.skipTutorial}
-        onComplete={tutorial.completeTutorial}
-        isActive={tutorial.isActive}
-      />
-    </>
-  );
-}
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <TutorialProvider>
-          <Toaster />
-          <MedicalDisclaimer />
-          <OfflineIndicator />
-          <TutorialWrapper />
-        </TutorialProvider>
+        <Toaster />
+        <MedicalDisclaimer />
+        <OfflineIndicator />
+        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );
