@@ -33,32 +33,32 @@ interface Message {
 const sessionTypes = [
   {
     id: "symptom_check",
-    title: "Symptom Checker",
-    description: "Describe what you're experiencing",
+    title: "Symptom Library",
+    description: "Browse information about symptoms",
     icon: Stethoscope,
     color: "from-blue-500 to-cyan-500",
     emoji: "🩺"
   },
   {
-    id: "second_opinion",
-    title: "Second Opinion",
-    description: "Get another perspective on a diagnosis",
+    id: "research_topics",
+    title: "Research Topics",
+    description: "Explore health topics and learn more",
     icon: Brain,
     color: "from-purple-500 to-indigo-500",
     emoji: "🧠"
   },
   {
     id: "medication_review",
-    title: "Medication Review",
-    description: "Questions about your medications",
+    title: "Medication Information",
+    description: "Look up medication details",
     icon: Pill,
     color: "from-emerald-500 to-teal-500",
     emoji: "💊"
   },
   {
     id: "wellness_tips",
-    title: "Wellness Insights",
-    description: "General health and lifestyle tips",
+    title: "Wellness Resources",
+    description: "General health and lifestyle information",
     icon: Heart,
     color: "from-rose-500 to-pink-500",
     emoji: "❤️"
@@ -210,9 +210,9 @@ export default function HealthInsights() {
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
                 <Brain className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">Health Insights AI</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Health Information</h1>
               <p className="text-gray-500 mt-2">
-                Get helpful health information and second opinions
+                Browse educational health resources and wellness information
               </p>
             </div>
 

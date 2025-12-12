@@ -106,8 +106,8 @@ export default function DrugInteractions() {
               <Pill className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold" data-testid="heading-drug-interactions">Drug Interaction Checker</h1>
-              <p className="text-white/80 text-xs">Check if your medications are safe together</p>
+              <h1 className="text-xl font-bold" data-testid="heading-drug-interactions">Medication Information</h1>
+              <p className="text-white/80 text-xs">Look up medication information and known interactions</p>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function DrugInteractions() {
           <CardContent className="p-3 flex items-start gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
             <p className="text-xs text-amber-800">
-              <strong>Safety tool.</strong> This uses drug databases but may not catch everything. Always check with your pharmacist.
+              <strong>Reference information only.</strong> This uses published drug databases for educational purposes. Not a substitute for professional advice.
             </p>
           </CardContent>
         </Card>

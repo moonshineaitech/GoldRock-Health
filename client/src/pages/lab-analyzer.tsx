@@ -149,8 +149,8 @@ export default function LabAnalyzer() {
               <FlaskConical className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold" data-testid="heading-lab-analyzer">Lab Results Analyzer</h1>
-              <p className="text-white/80 text-xs">AI helps you understand your bloodwork</p>
+              <h1 className="text-xl font-bold" data-testid="heading-lab-analyzer">Lab Reference Guide</h1>
+              <p className="text-white/80 text-xs">Look up lab values and medical terminology</p>
             </div>
           </div>
         </div>

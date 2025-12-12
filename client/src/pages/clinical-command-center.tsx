@@ -52,10 +52,10 @@ export default function ClinicalCommandCenter() {
             <Stethoscope className="h-7 w-7 text-white" />
           </div>
           <h1 className="text-2xl font-black mb-2" data-testid="heading-clinical-command">
-            Clinical Command Center
+            Health Information Center
           </h1>
           <p className="text-white/90 text-sm">
-            AI-powered tools to understand your health
+            Educational reference tools for health topics
           </p>
         </div>
       </div>
@@ -75,32 +75,32 @@ export default function ClinicalCommandCenter() {
         <div className="grid grid-cols-2 gap-3">
           <ToolCard
             icon={Beaker}
-            title="Lab Results"
-            description="Understand your bloodwork and test results"
+            title="Lab Reference"
+            description="Look up lab values and terminology"
             href="/lab-analyzer"
             gradient="from-blue-500 to-indigo-600"
-            badge="AI Powered"
+            badge="Reference Guide"
           />
           <ToolCard
             icon={Pill}
-            title="Drug Check"
-            description="Check if your medications interact"
+            title="Medication Info"
+            description="Look up medication information"
             href="/drug-interactions"
             gradient="from-purple-500 to-violet-600"
-            badge="Safety Database"
+            badge="Drug Database"
           />
           <ToolCard
             icon={Brain}
-            title="Symptoms"
-            description="Describe symptoms and get guidance"
+            title="Symptom Library"
+            description="Browse symptom information"
             href="/symptom-checker"
             gradient="from-emerald-500 to-teal-600"
-            badge="AI Triage"
+            badge="Educational"
           />
           <ToolCard
             icon={Activity}
-            title="Health Tracking"
-            description="Track blood pressure, weight, and more"
+            title="Health Journal"
+            description="Log blood pressure, weight, and more"
             href="/health-metrics"
             gradient="from-rose-500 to-pink-600"
           />

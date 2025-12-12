@@ -135,8 +135,8 @@ export default function SymptomChecker() {
               <Stethoscope className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold" data-testid="heading-symptom-checker">Symptom Checker</h1>
-              <p className="text-white/80 text-xs">Describe symptoms and get AI guidance</p>
+              <h1 className="text-xl font-bold" data-testid="heading-symptom-checker">Symptom Library</h1>
+              <p className="text-white/80 text-xs">Browse symptom information for educational purposes</p>
             </div>
           </div>
         </div>

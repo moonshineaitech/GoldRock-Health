@@ -132,11 +132,11 @@ export default function AuthLanding() {
             </span>
             <span className="inline-flex items-center gap-2 bg-purple-100 border border-purple-300 rounded-full px-4 py-2">
               <Brain className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-bold text-purple-700">AI Diagnostics</span>
+              <span className="text-sm font-bold text-purple-700">Medical Training</span>
             </span>
             <span className="inline-flex items-center gap-2 bg-pink-100 border border-pink-300 rounded-full px-4 py-2">
               <Stethoscope className="h-4 w-4 text-pink-600" />
-              <span className="text-sm font-bold text-pink-700">Medical Training</span>
+              <span className="text-sm font-bold text-pink-700">Health Education</span>
             </span>
             <span className="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 rounded-full px-4 py-2">
               <Trophy className="h-4 w-4 text-amber-600" />
@@ -151,7 +151,7 @@ export default function AuthLanding() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Reduce medical bills, master diagnostic skills, train with AI patients, and access expert health insights all in one powerful platform
+            Reduce medical bills, build medical knowledge, train with AI patient simulations, and browse health information all in one platform
           </motion.p>
 
           {/* CTA Buttons */}
@@ -264,8 +264,8 @@ export default function AuthLanding() {
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Brain className="h-7 w-7 text-white" />
               </div>
-              <h3 className="text-xl font-black mb-2">Clinical Intelligence</h3>
-              <p className="text-white/90 text-sm mb-4 leading-relaxed">Health insights, medical knowledge engines, and AI-powered second opinions</p>
+              <h3 className="text-xl font-black mb-2">Health Information</h3>
+              <p className="text-white/90 text-sm mb-4 leading-relaxed">Health reference library, medical encyclopedias, and educational resources</p>
               <div className="flex flex-wrap gap-2">
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Health AI</span>
                 <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Insights</span>
@@ -345,13 +345,13 @@ export default function AuthLanding() {
           >
             <span className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
               <Stethoscope className="h-4 w-4" />
-              Clinical Command Center
+              Health Information Center
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              Understand Your Health Better
+              Your Health Reference Library
             </h2>
             <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
-              AI-powered tools to help you make sense of lab results, medications, symptoms, and vital signs
+              Educational tools to look up lab terminology, medication information, symptoms, and health topics
             </p>
           </motion.div>
 
@@ -369,8 +369,8 @@ export default function AuthLanding() {
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Activity className="h-7 w-7 text-white" />
               </div>
-              <h3 className="text-xl font-black mb-2">Lab Results Analyzer</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">AI interprets your bloodwork and explains what your test results mean in plain language</p>
+              <h3 className="text-xl font-black mb-2">Lab Reference Guide</h3>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">Look up what common lab values and medical terminology mean in plain language</p>
               <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
                 <span>Sign in to access</span>
                 <ArrowRight className="h-4 w-4" />
@@ -390,8 +390,8 @@ export default function AuthLanding() {
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Pill className="h-7 w-7 text-white" />
               </div>
-              <h3 className="text-xl font-black mb-2">Drug Interaction Checker</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">Check if your medications are safe to take together using trusted drug databases</p>
+              <h3 className="text-xl font-black mb-2">Medication Information</h3>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">Look up medication information and known interactions from published references</p>
               <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
                 <span>Sign in to access</span>
                 <ArrowRight className="h-4 w-4" />
@@ -411,8 +411,8 @@ export default function AuthLanding() {
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Brain className="h-7 w-7 text-white" />
               </div>
-              <h3 className="text-xl font-black mb-2">Symptom Checker</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">Describe your symptoms and get AI-powered triage guidance and next steps</p>
+              <h3 className="text-xl font-black mb-2">Symptom Library</h3>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">Browse our library of symptom information for educational purposes</p>
               <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
                 <span>Sign in to access</span>
                 <ArrowRight className="h-4 w-4" />
@@ -432,8 +432,8 @@ export default function AuthLanding() {
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
                 <Heart className="h-7 w-7 text-white" />
               </div>
-              <h3 className="text-xl font-black mb-2">Health Metrics Tracker</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">Track blood pressure, heart rate, weight, and temperature with trend charts</p>
+              <h3 className="text-xl font-black mb-2">Health Metrics Journal</h3>
+              <p className="text-white/90 text-sm leading-relaxed mb-3">Log and track blood pressure, heart rate, weight, and temperature over time</p>
               <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
                 <span>Sign in to access</span>
                 <ArrowRight className="h-4 w-4" />
