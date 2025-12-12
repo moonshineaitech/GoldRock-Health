@@ -310,6 +310,115 @@ export default function AuthLanding() {
         </div>
       </section>
 
+      {/* CLINICAL COMMAND CENTER - Health Tools Showcase */}
+      <section className="py-20 bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50" data-testid="section-clinical-command">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <span className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
+              <Stethoscope className="h-4 w-4" />
+              Clinical Command Center
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+              Understand Your Health Better
+            </h2>
+            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
+              AI-powered tools to help you make sense of lab results, medications, symptoms, and vital signs
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <motion.a
+              href="/api/login?redirect=/lab-analyzer"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl block"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Activity className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Lab Results Analyzer</h3>
+              <p className="text-white/90 text-sm leading-relaxed">AI interprets your bloodwork and explains what your test results mean in plain language</p>
+            </motion.a>
+
+            <motion.a
+              href="/api/login?redirect=/drug-interactions"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl block"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Pill className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Drug Interaction Checker</h3>
+              <p className="text-white/90 text-sm leading-relaxed">Check if your medications are safe to take together using trusted drug databases</p>
+            </motion.a>
+
+            <motion.a
+              href="/api/login?redirect=/symptom-checker"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl block"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Brain className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Symptom Checker</h3>
+              <p className="text-white/90 text-sm leading-relaxed">Describe your symptoms and get AI-powered triage guidance and next steps</p>
+            </motion.a>
+
+            <motion.a
+              href="/api/login?redirect=/health-metrics"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl p-6 text-white shadow-2xl block"
+            >
+              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Heart className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2">Health Metrics Tracker</h3>
+              <p className="text-white/90 text-sm leading-relaxed">Track blood pressure, heart rate, weight, and temperature with trend charts</p>
+            </motion.a>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="text-center"
+          >
+            <motion.a
+              href="/api/login?redirect=/clinical-command-center"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-black text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all"
+              data-testid="button-clinical-hub"
+            >
+              <Stethoscope className="h-5 w-5" />
+              Explore Clinical Hub
+              <ArrowRight className="h-5 w-5" />
+            </motion.a>
+          </motion.div>
+        </div>
+      </section>
+
       {/* 3-STEP PROCESS - Glassmorphism cards */}
       <section className="py-20 bg-gradient-to-b from-blue-50 to-white" data-testid="section-how-it-works">
         <div className="max-w-6xl mx-auto px-6">

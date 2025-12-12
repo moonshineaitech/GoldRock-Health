@@ -50,7 +50,7 @@ const navItems: NavItem[] = [
     id: "clinical",
     label: "Clinical",
     icon: Stethoscope,
-    path: "/clinical-command",
+    path: "/clinical-command-center",
     color: "text-indigo-600"
   },
   {

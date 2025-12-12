@@ -367,7 +367,123 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* 🎯 EASILY LOWER YOUR MEDICAL BILLS - GrantedHealth Style */}
+      {/* CLINICAL COMMAND CENTER - New Health Tools */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-12 bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50"
+        data-testid="section-clinical-command"
+      >
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <span className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
+              <Stethoscope className="h-4 w-4" />
+              Clinical Command Center
+            </span>
+            <h2 className="text-3xl font-black text-gray-900 mb-3">
+              Understand Your Health Better
+            </h2>
+            <p className="text-lg text-gray-600 font-medium">
+              AI-powered tools to help you make sense of lab results, medications, and symptoms
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <Link href="/lab-analyzer">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-4 text-white shadow-lg cursor-pointer"
+              >
+                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-2">
+                  <BarChart3 className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="font-bold text-sm mb-1">Lab Results</h3>
+                <p className="text-white/80 text-xs">Understand your bloodwork</p>
+              </motion.div>
+            </Link>
+
+            <Link href="/drug-interactions">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15 }}
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl p-4 text-white shadow-lg cursor-pointer"
+              >
+                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-2">
+                  <Shield className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="font-bold text-sm mb-1">Drug Check</h3>
+                <p className="text-white/80 text-xs">Check medication safety</p>
+              </motion.div>
+            </Link>
+
+            <Link href="/symptom-checker">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-lg cursor-pointer"
+              >
+                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-2">
+                  <Brain className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="font-bold text-sm mb-1">Symptoms</h3>
+                <p className="text-white/80 text-xs">Get AI guidance</p>
+              </motion.div>
+            </Link>
+
+            <Link href="/health-metrics">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.25 }}
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl p-4 text-white shadow-lg cursor-pointer"
+              >
+                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-2">
+                  <Heart className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="font-bold text-sm mb-1">Health Tracking</h3>
+                <p className="text-white/80 text-xs">Track vital signs</p>
+              </motion.div>
+            </Link>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-center"
+          >
+            <Link href="/clinical-command-center">
+              <MobileButton className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold shadow-lg">
+                <Stethoscope className="h-5 w-5 mr-2" />
+                Open Clinical Hub
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </MobileButton>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* EASILY LOWER YOUR MEDICAL BILLS - GrantedHealth Style */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
