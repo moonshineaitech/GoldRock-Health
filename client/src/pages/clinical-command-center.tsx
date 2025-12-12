@@ -163,8 +163,9 @@ export default function ClinicalCommandCenter() {
                 </Button>
               </Link>
               <Link href="/dispute-arsenal">
-                <Button variant="outline" className="border-white/50 text-white hover:bg-white/20" data-testid="button-dispute">
-                  Dispute Letters
+                <Button className="bg-white/20 text-white border border-white/50 hover:bg-white/30" data-testid="button-dispute">
+                  Disputes
+                  <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>
               </Link>
             </div>
