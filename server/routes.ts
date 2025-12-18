@@ -5,6 +5,7 @@ import { storage } from "./storage";
 import { elevenLabsService } from "./services/elevenlabs";
 import { medicalCasesService } from "./services/medicalCases";
 import { openAIService } from "./services/openai";
+import { aiProvider } from "./services/aiProvider";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
@@ -2287,10 +2288,6 @@ Respond with ONLY a JSON object:
         return res.status(400).json({ message: 'Message is required' });
       }
 
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(503).json({ message: 'AI chat service is currently unavailable' });
-      }
-
       try {
         const systemPrompt = `You are a friendly medical bill expert who helps people save money. You have 20+ years of experience with billing errors, hospital negotiations, charity care programs, and dispute letters.
 
@@ -2313,26 +2310,13 @@ Bad: "Hello, I am [PATIENT NAME] calling regarding account number [ACCOUNT] to d
 
 You help patients save thousands through expert guidance. Be their advocate and ally.`;
 
-        const response = await openAIService.openai.chat.completions.create({
-          model: "gpt-5.2", // Using gpt-5.2 as it's the most current available model
-          messages: [
-            {
-              role: "system",
-              content: systemPrompt
-            },
-            {
-              role: "user",
-              content: message
-            }
-          ],
-          max_completion_tokens: 1000
+        const aiResponse = await aiProvider.generateText(message, systemPrompt, {
+          maxTokens: 1000
         });
 
-        const aiResponse = response.choices[0].message.content || "I apologize, but I'm having trouble processing your request right now. Please try asking your question again.";
-        
-        res.json({ response: aiResponse });
+        res.json({ response: aiResponse || "I apologize, but I'm having trouble processing your request right now. Please try asking your question again." });
       } catch (aiError) {
-        console.error('OpenAI API error:', aiError);
+        console.error('AI provider error:', aiError);
         res.status(500).json({ message: 'AI service temporarily unavailable. Please try again.' });
       }
     } catch (error) {
@@ -3165,10 +3149,6 @@ What specific insurance issue are you facing? I can provide exact templates and 
     try {
       const userId = req.user.claims.sub;
 
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(500).json({ message: 'AI patient generation is not available - OpenAI API key not configured' });
-      }
-
       // Generate a comprehensive synthetic patient using AI
       const aiPrompt = `Generate a realistic, anonymous synthetic patient profile for medical training purposes. Create an extremely comprehensive patient with the following structure:
 
@@ -3282,45 +3262,32 @@ CASE CHARACTERISTICS:
 
 Generate this as a single, well-structured JSON object with ALL fields populated with realistic, medically accurate, clinically relevant details. Make it educationally valuable and diagnostically challenging.`;
 
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'gpt-5.2',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a medical education AI that creates realistic synthetic patient profiles for training purposes. Generate comprehensive, medically accurate patient data in valid JSON format.'
-            },
-            {
-              role: 'user',
-              content: aiPrompt
-            }
-          ],
-          max_completion_tokens: 2500,
-          temperature: 0.8
-        })
-      });
-
-      const aiData = await response.json();
-      let aiPatientData;
+      const systemPrompt = 'You are a medical education AI that creates realistic synthetic patient profiles for training purposes. Generate comprehensive, medically accurate patient data in valid JSON format.';
       
+      let aiPatientData;
       try {
-        if (!aiData || !aiData.choices || !aiData.choices[0] || !aiData.choices[0].message || !aiData.choices[0].message.content) {
-          throw new Error('Invalid AI response structure');
-        }
-        const aiContent = aiData.choices[0].message.content.trim();
-        // Clean up the response to ensure it's valid JSON
-        const jsonStart = aiContent.indexOf('{');
-        const jsonEnd = aiContent.lastIndexOf('}') + 1;
-        const jsonString = aiContent.slice(jsonStart, jsonEnd);
-        aiPatientData = JSON.parse(jsonString);
+        aiPatientData = await aiProvider.generateJSON<{
+          profileName?: string;
+          age?: number;
+          gender?: string;
+          ethnicity?: string;
+          occupation?: string;
+          maritalStatus?: string;
+          chiefComplaint?: string;
+          presentingSymptoms?: any[];
+          medicalHistory?: any;
+          physicalExam?: any;
+          riskFactors?: any[];
+          comorbidities?: any[];
+          complexity?: number;
+          specialty?: string;
+          tags?: string[];
+        }>(aiPrompt, systemPrompt, {
+          maxTokens: 2500,
+          temperature: 0.8
+        });
       } catch (parseError) {
-        console.error('Error parsing AI response:', parseError);
-        // Fallback to template patient if AI parsing fails
+        console.error('Error generating AI patient:', parseError);
         aiPatientData = {
           age: Math.floor(Math.random() * 50) + 25,
           gender: Math.random() > 0.5 ? 'Male' : 'Female',
@@ -3787,25 +3754,20 @@ ANALYZE AND PROVIDE JSON OUTPUT WITH:
 
 Focus on actionable insights and specific dollar amounts. Be realistic but advocate strongly for the patient.`;
 
-      // Call OpenAI API using the openAI service
-      // the newest OpenAI model is "gpt-5.2" which was released December 11, 2025. do not change this unless explicitly requested by the user
-      const completion = await openAIService.openai.chat.completions.create({
-        model: "gpt-5.2",
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a friendly medical bill expert. Respond with clean JSON only. In text fields, write in plain English without markdown formatting, asterisks, em dashes, or special characters. Keep recommendations concise and actionable.'
-          },
-          {
-            role: 'user',
-            content: analysisPrompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: 8192
-      });
+      const systemPromptBillAnalysis = 'You are a friendly medical bill expert. Respond with clean JSON only. In text fields, write in plain English without markdown formatting, asterisks, em dashes, or special characters. Keep recommendations concise and actionable.';
 
-      const analysisResult = JSON.parse(completion.choices[0].message.content || '{}');
+      const analysisResult = await aiProvider.generateJSON<{
+        potentialSavings?: number;
+        riskScore?: number;
+        analysisConfidence?: number;
+        issues?: any[];
+        recommendations?: string[];
+        negotiationStrategy?: any;
+        financialAssistance?: any;
+        insiderTactics?: string[];
+      }>(analysisPrompt, systemPromptBillAnalysis, {
+        maxTokens: 8192
+      });
 
       console.log('AI analysis complete:', {
         potentialSavings: analysisResult.potentialSavings,
@@ -3868,10 +3830,6 @@ Focus on actionable insights and specific dollar amounts. Be realistic but advoc
         return res.status(400).json({ message: 'Message is required' });
       }
 
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(503).json({ message: 'AI service is currently unavailable' });
-      }
-
       const systemPrompt = `You are a friendly health education assistant. You help people understand health topics, symptoms, and medical terminology so they can have better conversations with their doctors.
 
 IMPORTANT RULES:
@@ -3898,23 +3856,18 @@ When discussing symptoms:
 
 End each response with an offer to help further or a gentle reminder to consult their doctor if needed.`;
 
-      const messages = [
-        { role: "system" as const, content: systemPrompt },
-        ...(conversationHistory || []).slice(-10).map((msg: any) => ({
-          role: msg.role as "user" | "assistant",
-          content: msg.content
-        })),
-        { role: "user" as const, content: message }
-      ];
+      const conversationContext = (conversationHistory || []).slice(-10).map((msg: any) => 
+        `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
+      ).join('\n');
+      
+      const fullPrompt = conversationContext 
+        ? `Previous conversation:\n${conversationContext}\n\nUser: ${message}`
+        : message;
 
-      const response = await openAIService.openai.chat.completions.create({
-        model: "gpt-5.2",
-        messages,
-        max_completion_tokens: 1000,
+      const aiResponse = await aiProvider.generateText(fullPrompt, systemPrompt, {
+        maxTokens: 1000,
         temperature: 0.7
-      });
-
-      const aiResponse = response.choices[0].message.content || "I'm here to help. Could you tell me more about what you're experiencing?";
+      }) || "I'm here to help. Could you tell me more about what you're experiencing?";
       
       res.json({ response: aiResponse });
     } catch (error) {
@@ -4001,10 +3954,6 @@ End each response with an offer to help further or a gentle reminder to consult 
     try {
       const { type, values } = req.body;
 
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(503).json({ message: 'AI lab analysis service is currently unavailable' });
-      }
-
       const labPrompt = `You are a clinical laboratory specialist providing educational interpretation of lab results. 
       
 ${type === 'manual' ? `
@@ -4051,24 +4000,25 @@ Provide your analysis in this JSON format:
   ]
 }`;
 
-      const response = await openAIService.openai.chat.completions.create({
-        model: "gpt-5.2",
-        messages: [
-          {
-            role: "system",
-            content: "You are a clinical laboratory specialist providing educational lab result interpretations. Always emphasize this is for educational purposes only and encourage consulting healthcare providers."
-          },
-          {
-            role: "user",
-            content: labPrompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: 2000,
+      const labSystemPrompt = "You are a clinical laboratory specialist providing educational lab result interpretations. Always emphasize this is for educational purposes only and encourage consulting healthcare providers.";
+
+      const result = await aiProvider.generateJSON<{
+        summary: string;
+        overallHealth: string;
+        values: Array<{
+          name: string;
+          value: string;
+          unit: string;
+          normalRange: string;
+          status: string;
+        }>;
+        insights: string[];
+        recommendations: string[];
+        followUp: string[];
+      }>(labPrompt, labSystemPrompt, {
+        maxTokens: 2000,
         temperature: 0.3
       });
-
-      const result = JSON.parse(response.choices[0].message.content || '{}');
       res.json(result);
     } catch (error) {
       console.error('Lab analysis error:', error);
