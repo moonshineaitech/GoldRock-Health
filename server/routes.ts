@@ -4220,6 +4220,609 @@ Provide analysis in this JSON format:
     }
   });
 
+  // ============================================================================
+  // Medicare/Medicaid Enrollment API Endpoints
+  // ============================================================================
+
+  // POST /api/enrollment/sessions - Create new enrollment session
+  app.post('/api/enrollment/sessions', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const { programType, voiceEnabled } = req.body;
+      const userId = req.user?.id;
+
+      if (!programType) {
+        return res.status(400).json({ message: 'programType is required' });
+      }
+
+      const validProgramTypes = ['medicare_part_a', 'medicare_part_b', 'medicare_part_c', 'medicare_part_d', 'medicaid', 'chip', 'marketplace'];
+      if (!validProgramTypes.includes(programType)) {
+        return res.status(400).json({ message: 'Invalid programType. Must be one of: ' + validProgramTypes.join(', ') });
+      }
+
+      const session = await storage.createEnrollmentSession(userId, {
+        programType,
+        voiceEnabled: voiceEnabled || false,
+      });
+
+      res.status(201).json(session);
+    } catch (error) {
+      console.error('Error creating enrollment session:', error);
+      res.status(500).json({ message: 'Failed to create enrollment session' });
+    }
+  });
+
+  // GET /api/enrollment/sessions - Get user's enrollment sessions
+  app.get('/api/enrollment/sessions', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.id;
+      const sessions = await storage.getEnrollmentSessions(userId);
+      res.json(sessions);
+    } catch (error) {
+      console.error('Error fetching enrollment sessions:', error);
+      res.status(500).json({ message: 'Failed to fetch enrollment sessions' });
+    }
+  });
+
+  // GET /api/enrollment/sessions/:id - Get specific enrollment session with responses
+  app.get('/api/enrollment/sessions/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.id;
+      const sessionId = req.params.id;
+
+      const session = await storage.getEnrollmentSession(sessionId, userId);
+      if (!session) {
+        return res.status(404).json({ message: 'Enrollment session not found' });
+      }
+
+      const responses = await storage.getEnrollmentResponses(sessionId);
+      res.json({ ...session, responses });
+    } catch (error) {
+      console.error('Error fetching enrollment session:', error);
+      res.status(500).json({ message: 'Failed to fetch enrollment session' });
+    }
+  });
+
+  // PATCH /api/enrollment/sessions/:id - Update enrollment session
+  app.patch('/api/enrollment/sessions/:id', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user?.id;
+      const sessionId = req.params.id;
+      const updates = req.body;
+
+      // Verify session belongs to user
+      const existingSession = await storage.getEnrollmentSession(sessionId, userId);
+      if (!existingSession) {
+        return res.status(404).json({ message: 'Enrollment session not found' });
+      }
+
+      const updatedSession = await storage.updateEnrollmentSession(sessionId, userId, updates);
+      res.json(updatedSession);
+    } catch (error) {
+      console.error('Error updating enrollment session:', error);
+      res.status(500).json({ message: 'Failed to update enrollment session' });
+    }
+  });
+
+  // POST /api/enrollment/sessions/:id/responses - Add a response to a session
+  app.post('/api/enrollment/sessions/:id/responses', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user?.id;
+      const sessionId = req.params.id;
+      const { questionKey, questionText, response, responseType } = req.body;
+
+      if (!questionKey) {
+        return res.status(400).json({ message: 'questionKey is required' });
+      }
+
+      // Verify session belongs to user
+      const session = await storage.getEnrollmentSession(sessionId, userId);
+      if (!session) {
+        return res.status(404).json({ message: 'Enrollment session not found' });
+      }
+
+      const enrollmentResponse = await storage.createEnrollmentResponse({
+        sessionId,
+        questionKey,
+        questionText,
+        response,
+        responseType,
+      });
+
+      res.status(201).json(enrollmentResponse);
+    } catch (error) {
+      console.error('Error creating enrollment response:', error);
+      res.status(500).json({ message: 'Failed to create enrollment response' });
+    }
+  });
+
+  // POST /api/enrollment/sessions/:id/submit - Submit the enrollment application
+  app.post('/api/enrollment/sessions/:id/submit', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user?.id;
+      const sessionId = req.params.id;
+
+      // Verify session belongs to user
+      const session = await storage.getEnrollmentSession(sessionId, userId);
+      if (!session) {
+        return res.status(404).json({ message: 'Enrollment session not found' });
+      }
+
+      if (session.status === 'submitted') {
+        return res.status(400).json({ message: 'Session has already been submitted' });
+      }
+
+      // Generate confirmation number
+      const confirmationNumber = `GR-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
+      // Create applicant record from session data
+      const applicantData = session.applicantData || {};
+      const applicant = await storage.createEnrollmentApplicant({
+        sessionId,
+        userId,
+        programType: session.programType,
+        fullName: applicantData.firstName && applicantData.lastName 
+          ? `${applicantData.firstName} ${applicantData.lastName}` 
+          : undefined,
+        dateOfBirth: applicantData.dob,
+        contactEmail: applicantData.email,
+        contactPhone: applicantData.phone,
+        mailingAddress: applicantData.address,
+        applicationData: applicantData,
+        status: 'pending',
+        confirmationNumber,
+      });
+
+      // Update session status
+      await storage.updateEnrollmentSession(sessionId, userId, {
+        status: 'submitted',
+        submittedAt: new Date(),
+        completedAt: new Date(),
+      });
+
+      res.json({
+        applicant,
+        confirmationNumber,
+        message: 'Application submitted successfully',
+      });
+    } catch (error) {
+      console.error('Error submitting enrollment application:', error);
+      res.status(500).json({ message: 'Failed to submit enrollment application' });
+    }
+  });
+
+  // POST /api/enrollment/eligibility-check - AI-powered eligibility check
+  app.post('/api/enrollment/eligibility-check', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const { programType, age, income, householdSize, state, currentCoverage, hasDisability } = req.body;
+
+      if (!programType || age === undefined || income === undefined || householdSize === undefined || !state) {
+        return res.status(400).json({ 
+          message: 'Missing required fields: programType, age, income, householdSize, and state are required' 
+        });
+      }
+
+      const prompt = `You are a Medicare/Medicaid eligibility expert. Analyze the following information to determine eligibility for healthcare programs.
+
+APPLICANT INFORMATION:
+- Requested Program: ${programType}
+- Age: ${age}
+- Annual Household Income: $${income}
+- Household Size: ${householdSize}
+- State: ${state}
+- Current Coverage: ${currentCoverage || 'None specified'}
+- Has Disability: ${hasDisability ? 'Yes' : 'No'}
+
+FEDERAL POVERTY LEVEL GUIDELINES (2024):
+- 1 person: $15,060
+- 2 people: $20,440
+- 3 people: $25,820
+- 4 people: $31,200
+- Each additional: +$5,380
+
+MEDICARE ELIGIBILITY CRITERIA:
+- Part A: Age 65+ OR disability for 24+ months OR ESRD/ALS
+- Part B: Same as Part A, optional enrollment
+- Part C (Medicare Advantage): Must have Part A and B
+- Part D: Must have Part A or B
+
+MEDICAID ELIGIBILITY:
+- Income-based, varies by state
+- Generally up to 138% FPL in expansion states
+- Special categories for children (CHIP), pregnant women, elderly, disabled
+
+Analyze and provide a JSON response with:
+{
+  "eligible": boolean (true if likely eligible for the requested program),
+  "reasons": ["array of specific reasons for eligibility determination"],
+  "recommendedPrograms": ["array of programs they may qualify for"],
+  "nextSteps": ["array of actionable next steps to apply"]
+}`;
+
+      const result = await aiProvider.generateJSON(prompt, {
+        eligible: false,
+        reasons: [],
+        recommendedPrograms: [],
+        nextSteps: []
+      });
+
+      res.json(result);
+    } catch (error) {
+      console.error('Error checking eligibility:', error);
+      res.status(500).json({ message: 'Failed to check eligibility' });
+    }
+  });
+
+  // ===============================================
+  // INSURANCE BENEFITS API ENDPOINTS
+  // ===============================================
+
+  // GET /api/insurance/providers - Get all insurance providers
+  app.get('/api/insurance/providers', async (req, res) => {
+    try {
+      const { type, state } = req.query;
+      const providers = await storage.getInsuranceProviders({
+        type: type as string | undefined,
+        state: state as string | undefined,
+      });
+      res.json(providers);
+    } catch (error) {
+      console.error('Error fetching insurance providers:', error);
+      res.status(500).json({ message: 'Failed to fetch insurance providers' });
+    }
+  });
+
+  // GET /api/insurance/providers/:id - Get specific provider with their plans
+  app.get('/api/insurance/providers/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const provider = await storage.getInsuranceProvider(id);
+      
+      if (!provider) {
+        return res.status(404).json({ message: 'Provider not found' });
+      }
+      
+      const plans = await storage.getInsurancePlans({ providerId: id });
+      
+      res.json({
+        ...provider,
+        plans,
+      });
+    } catch (error) {
+      console.error('Error fetching insurance provider:', error);
+      res.status(500).json({ message: 'Failed to fetch insurance provider' });
+    }
+  });
+
+  // GET /api/insurance/plans - Get insurance plans
+  app.get('/api/insurance/plans', async (req, res) => {
+    try {
+      const { providerId, planType, metalLevel, maxPremium, state } = req.query;
+      
+      const plans = await storage.getInsurancePlans({
+        providerId: providerId as string | undefined,
+        planType: planType as string | undefined,
+        metalLevel: metalLevel as string | undefined,
+        maxPremium: maxPremium ? parseFloat(maxPremium as string) : undefined,
+        state: state as string | undefined,
+      });
+      
+      // Get provider info for each plan
+      const providerIds = [...new Set(plans.map(p => p.providerId).filter(Boolean))] as string[];
+      const providers = await Promise.all(providerIds.map(id => storage.getInsuranceProvider(id)));
+      const providerMap = new Map(providers.filter(Boolean).map(p => [p!.id, p]));
+      
+      const plansWithProviders = plans.map(plan => ({
+        ...plan,
+        provider: plan.providerId ? providerMap.get(plan.providerId) : null,
+      }));
+      
+      res.json(plansWithProviders);
+    } catch (error) {
+      console.error('Error fetching insurance plans:', error);
+      res.status(500).json({ message: 'Failed to fetch insurance plans' });
+    }
+  });
+
+  // GET /api/insurance/plans/:id - Get specific plan with all benefits
+  app.get('/api/insurance/plans/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const plan = await storage.getInsurancePlan(id);
+      
+      if (!plan) {
+        return res.status(404).json({ message: 'Plan not found' });
+      }
+      
+      const [provider, benefits, categories] = await Promise.all([
+        plan.providerId ? storage.getInsuranceProvider(plan.providerId) : null,
+        storage.getPlanBenefits(id),
+        storage.getBenefitCategories(),
+      ]);
+      
+      // Group benefits by category
+      const categoryMap = new Map(categories.map(c => [c.id, { ...c, benefits: [] as typeof benefits }]));
+      const uncategorizedBenefits: typeof benefits = [];
+      
+      for (const benefit of benefits) {
+        if (benefit.categoryId && categoryMap.has(benefit.categoryId)) {
+          categoryMap.get(benefit.categoryId)!.benefits.push(benefit);
+        } else {
+          uncategorizedBenefits.push(benefit);
+        }
+      }
+      
+      const benefitsByCategory = Array.from(categoryMap.values())
+        .filter(cat => cat.benefits.length > 0)
+        .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+      
+      if (uncategorizedBenefits.length > 0) {
+        benefitsByCategory.push({
+          id: 'uncategorized',
+          name: 'Other Benefits',
+          description: null,
+          icon: null,
+          displayOrder: 999,
+          benefits: uncategorizedBenefits,
+        });
+      }
+      
+      res.json({
+        ...plan,
+        provider,
+        benefitsByCategory,
+      });
+    } catch (error) {
+      console.error('Error fetching insurance plan:', error);
+      res.status(500).json({ message: 'Failed to fetch insurance plan' });
+    }
+  });
+
+  // GET /api/insurance/benefit-categories - Get all benefit categories
+  app.get('/api/insurance/benefit-categories', async (req, res) => {
+    try {
+      const categories = await storage.getBenefitCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error('Error fetching benefit categories:', error);
+      res.status(500).json({ message: 'Failed to fetch benefit categories' });
+    }
+  });
+
+  // POST /api/insurance/explain-benefit - AI explanation of a specific benefit
+  app.post('/api/insurance/explain-benefit', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const { planId, benefitId, question } = req.body;
+      
+      if (!planId || !benefitId) {
+        return res.status(400).json({ message: 'planId and benefitId are required' });
+      }
+      
+      const [plan, benefit] = await Promise.all([
+        storage.getInsurancePlan(planId),
+        storage.getPlanBenefit(benefitId),
+      ]);
+      
+      if (!plan) {
+        return res.status(404).json({ message: 'Plan not found' });
+      }
+      
+      if (!benefit) {
+        return res.status(404).json({ message: 'Benefit not found' });
+      }
+      
+      const prompt = `You are a health insurance expert. Explain the following insurance benefit in plain English that anyone can understand.
+
+PLAN INFORMATION:
+- Plan Name: ${plan.name}
+- Plan Type: ${plan.planType || 'Not specified'}
+- Metal Level: ${plan.metalLevel || 'Not specified'}
+- Deductible: $${plan.deductible || 'Not specified'}
+- Out-of-Pocket Max: $${plan.outOfPocketMax || 'Not specified'}
+
+BENEFIT DETAILS:
+- Benefit Name: ${benefit.benefitName}
+- Coverage Type: ${benefit.coverageType || 'Not specified'}
+- Coverage Details: ${benefit.coverageDetails || 'Not specified'}
+- Copay Amount: $${benefit.copayAmount || 'None'}
+- Coinsurance: ${benefit.coinsurancePercent ? benefit.coinsurancePercent + '%' : 'None'}
+- Annual Limit: $${benefit.annualLimit || 'None'}
+- Requires Pre-Authorization: ${benefit.requiresPreAuth ? 'Yes' : 'No'}
+- In-Network Only: ${benefit.inNetworkOnly ? 'Yes' : 'No'}
+- Notes: ${benefit.notes || 'None'}
+
+${question ? `USER'S SPECIFIC QUESTION: ${question}` : ''}
+
+Provide a JSON response with:
+{
+  "explanation": "A clear, jargon-free explanation of this benefit and what it means for the member",
+  "examples": ["2-3 real-world examples of when this benefit would apply"],
+  "relatedBenefits": ["List any related benefits they might want to know about"]
+}`;
+
+      const result = await aiProvider.generateJSON<{
+        explanation: string;
+        examples: string[];
+        relatedBenefits?: string[];
+      }>(prompt, {
+        explanation: '',
+        examples: [],
+        relatedBenefits: []
+      });
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Error explaining benefit:', error);
+      res.status(500).json({ message: 'Failed to explain benefit' });
+    }
+  });
+
+  // POST /api/insurance/compare-plans - AI-powered plan comparison
+  app.post('/api/insurance/compare-plans', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const { planIds, focusAreas } = req.body;
+      
+      if (!planIds || !Array.isArray(planIds) || planIds.length < 2) {
+        return res.status(400).json({ message: 'At least 2 planIds are required for comparison' });
+      }
+      
+      if (planIds.length > 5) {
+        return res.status(400).json({ message: 'Maximum 5 plans can be compared at once' });
+      }
+      
+      const plans = await storage.getInsurancePlansByIds(planIds);
+      
+      if (plans.length !== planIds.length) {
+        return res.status(404).json({ message: 'One or more plans not found' });
+      }
+      
+      // Get benefits for all plans
+      const planBenefitsMap = new Map<string, Awaited<ReturnType<typeof storage.getPlanBenefits>>>();
+      await Promise.all(plans.map(async (plan) => {
+        const benefits = await storage.getPlanBenefits(plan.id);
+        planBenefitsMap.set(plan.id, benefits);
+      }));
+      
+      const plansDescription = plans.map(plan => {
+        const benefits = planBenefitsMap.get(plan.id) || [];
+        return `
+PLAN: ${plan.name}
+- Type: ${plan.planType || 'Not specified'}
+- Metal Level: ${plan.metalLevel || 'Not specified'}
+- Monthly Premium: $${plan.monthlyPremium || 'Not specified'}
+- Deductible: $${plan.deductible || 'Not specified'}
+- Family Deductible: $${plan.familyDeductible || 'Not specified'}
+- Out-of-Pocket Max: $${plan.outOfPocketMax || 'Not specified'}
+- Primary Care Copay: $${plan.copayPrimary || 'Not specified'}
+- Specialist Copay: $${plan.copaySpecialist || 'Not specified'}
+- ER Copay: $${plan.copayER || 'Not specified'}
+- Network Type: ${plan.networkType || 'Not specified'}
+- Number of Benefits Covered: ${benefits.length}`;
+      }).join('\n\n');
+
+      const prompt = `You are a health insurance expert. Compare the following insurance plans and help the user understand which might be best for their needs.
+
+${plansDescription}
+
+${focusAreas && focusAreas.length > 0 ? `USER'S FOCUS AREAS: ${focusAreas.join(', ')}` : ''}
+
+Provide a comprehensive comparison in JSON format:
+{
+  "comparison": "A clear narrative comparison of these plans, highlighting key differences",
+  "prosConsPerPlan": [
+    {
+      "planName": "Plan Name",
+      "pros": ["List of advantages"],
+      "cons": ["List of disadvantages"],
+      "bestFor": "Description of who this plan is best suited for"
+    }
+  ],
+  "recommendation": "A balanced recommendation considering different user needs and situations"
+}`;
+
+      const result = await aiProvider.generateJSON<{
+        comparison: string;
+        prosConsPerPlan: Array<{
+          planName: string;
+          pros: string[];
+          cons: string[];
+          bestFor: string;
+        }>;
+        recommendation?: string;
+      }>(prompt, {
+        comparison: '',
+        prosConsPerPlan: [],
+        recommendation: ''
+      });
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Error comparing plans:', error);
+      res.status(500).json({ message: 'Failed to compare plans' });
+    }
+  });
+
+  // GET /api/insurance/user-plans - Get user's saved insurance plans
+  app.get('/api/insurance/user-plans', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const userPlans = await storage.getUserInsurancePlans(userId);
+      
+      // Get full plan details for each saved plan
+      const planIds = userPlans.map(up => up.planId).filter(Boolean) as string[];
+      const plans = await storage.getInsurancePlansByIds(planIds);
+      const planMap = new Map(plans.map(p => [p.id, p]));
+      
+      // Get provider info for each plan
+      const providerIds = [...new Set(plans.map(p => p.providerId).filter(Boolean))] as string[];
+      const providers = await Promise.all(providerIds.map(id => storage.getInsuranceProvider(id)));
+      const providerMap = new Map(providers.filter(Boolean).map(p => [p!.id, p]));
+      
+      const userPlansWithDetails = userPlans.map(userPlan => {
+        const plan = userPlan.planId ? planMap.get(userPlan.planId) : null;
+        const provider = plan?.providerId ? providerMap.get(plan.providerId) : null;
+        
+        return {
+          ...userPlan,
+          plan: plan ? {
+            ...plan,
+            provider,
+          } : null,
+        };
+      });
+      
+      res.json(userPlansWithDetails);
+    } catch (error) {
+      console.error('Error fetching user insurance plans:', error);
+      res.status(500).json({ message: 'Failed to fetch user insurance plans' });
+    }
+  });
+
+  // POST /api/insurance/user-plans - Save a plan to user's profile
+  app.post('/api/insurance/user-plans', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { planId, isPrimary, memberNumber, groupNumber, effectiveDate } = req.body;
+      
+      if (!planId) {
+        return res.status(400).json({ message: 'planId is required' });
+      }
+      
+      // Verify the plan exists
+      const plan = await storage.getInsurancePlan(planId);
+      if (!plan) {
+        return res.status(404).json({ message: 'Plan not found' });
+      }
+      
+      const userPlan = await storage.createUserInsurancePlan({
+        userId,
+        planId,
+        isPrimary: isPrimary ?? true,
+        memberNumber: memberNumber || null,
+        groupNumber: groupNumber || null,
+        effectiveDate: effectiveDate ? new Date(effectiveDate) : null,
+      });
+      
+      res.status(201).json(userPlan);
+    } catch (error) {
+      console.error('Error saving user insurance plan:', error);
+      res.status(500).json({ message: 'Failed to save insurance plan' });
+    }
+  });
+
+  // DELETE /api/insurance/user-plans/:id - Remove a saved plan
+  app.delete('/api/insurance/user-plans/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id } = req.params;
+      
+      await storage.deleteUserInsurancePlan(id, userId);
+      res.json({ message: 'Insurance plan removed successfully' });
+    } catch (error) {
+      console.error('Error deleting user insurance plan:', error);
+      res.status(500).json({ message: 'Failed to delete insurance plan' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -67,10 +67,32 @@ import {
   type DiagnosticSession,
   type InsertDiagnosticSession,
   type UserSavingsOutcome,
-  type InsertUserSavingsOutcome
+  type InsertUserSavingsOutcome,
+  enrollmentSessions,
+  enrollmentResponses,
+  enrollmentApplicants,
+  type EnrollmentSession,
+  type InsertEnrollmentSession,
+  type EnrollmentResponse,
+  type InsertEnrollmentResponse,
+  type EnrollmentApplicant,
+  type InsertEnrollmentApplicant,
+  insuranceProviders,
+  insurancePlans,
+  benefitCategories,
+  planBenefits,
+  userInsurancePlans,
+  type InsuranceProvider,
+  type InsertInsuranceProvider,
+  type InsurancePlan,
+  type InsertInsurancePlan,
+  type BenefitCategory,
+  type PlanBenefit,
+  type UserInsurancePlan,
+  type InsertUserInsurancePlan
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and, sql, count } from "drizzle-orm";
+import { eq, desc, and, sql, count, lte, inArray, asc } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (IMPORTANT) these user operations are mandatory for Replit Auth.
@@ -179,6 +201,28 @@ export interface IStorage {
   getSavingsOutcomes(userId: string): Promise<UserSavingsOutcome[]>;
   updateSavingsOutcome(outcomeId: string, userId: string, updates: Partial<InsertUserSavingsOutcome>): Promise<UserSavingsOutcome | undefined>;
   deleteSavingsOutcome(outcomeId: string, userId: string): Promise<boolean>;
+
+  // Medicare/Medicaid Enrollment
+  createEnrollmentSession(userId: string, data: { programType: string; voiceEnabled?: boolean }): Promise<EnrollmentSession>;
+  getEnrollmentSessions(userId: string): Promise<EnrollmentSession[]>;
+  getEnrollmentSession(sessionId: string, userId: string): Promise<EnrollmentSession | undefined>;
+  updateEnrollmentSession(sessionId: string, userId: string, updates: Partial<EnrollmentSession>): Promise<EnrollmentSession | undefined>;
+  createEnrollmentResponse(response: InsertEnrollmentResponse): Promise<EnrollmentResponse>;
+  getEnrollmentResponses(sessionId: string): Promise<EnrollmentResponse[]>;
+  createEnrollmentApplicant(applicant: InsertEnrollmentApplicant): Promise<EnrollmentApplicant>;
+
+  // Insurance Benefits
+  getInsuranceProviders(filters?: { type?: string; state?: string }): Promise<InsuranceProvider[]>;
+  getInsuranceProvider(id: string): Promise<InsuranceProvider | undefined>;
+  getInsurancePlans(filters?: { providerId?: string; planType?: string; metalLevel?: string; maxPremium?: number; state?: string }): Promise<InsurancePlan[]>;
+  getInsurancePlan(id: string): Promise<InsurancePlan | undefined>;
+  getInsurancePlansByIds(ids: string[]): Promise<InsurancePlan[]>;
+  getBenefitCategories(): Promise<BenefitCategory[]>;
+  getPlanBenefits(planId: string): Promise<PlanBenefit[]>;
+  getPlanBenefit(benefitId: string): Promise<PlanBenefit | undefined>;
+  getUserInsurancePlans(userId: string): Promise<UserInsurancePlan[]>;
+  createUserInsurancePlan(data: InsertUserInsurancePlan): Promise<UserInsurancePlan>;
+  deleteUserInsurancePlan(id: string, userId: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1113,6 +1157,152 @@ export class DatabaseStorage implements IStorage {
         eq(userSavingsOutcomes.id, outcomeId),
         eq(userSavingsOutcomes.userId, userId)
       ));
+    return true;
+  }
+
+  // Medicare/Medicaid Enrollment
+  async createEnrollmentSession(userId: string, data: { programType: string; voiceEnabled?: boolean }): Promise<EnrollmentSession> {
+    const [session] = await db.insert(enrollmentSessions).values({
+      userId,
+      programType: data.programType,
+      voiceEnabled: data.voiceEnabled || false,
+      status: 'in_progress',
+    }).returning();
+    return session;
+  }
+
+  async getEnrollmentSessions(userId: string): Promise<EnrollmentSession[]> {
+    return await db.select().from(enrollmentSessions)
+      .where(eq(enrollmentSessions.userId, userId))
+      .orderBy(desc(enrollmentSessions.createdAt));
+  }
+
+  async getEnrollmentSession(sessionId: string, userId: string): Promise<EnrollmentSession | undefined> {
+    const [session] = await db.select().from(enrollmentSessions)
+      .where(and(
+        eq(enrollmentSessions.id, sessionId),
+        eq(enrollmentSessions.userId, userId)
+      ));
+    return session;
+  }
+
+  async updateEnrollmentSession(sessionId: string, userId: string, updates: Partial<EnrollmentSession>): Promise<EnrollmentSession | undefined> {
+    const [updated] = await db.update(enrollmentSessions)
+      .set({
+        ...updates,
+        updatedAt: new Date(),
+      })
+      .where(and(
+        eq(enrollmentSessions.id, sessionId),
+        eq(enrollmentSessions.userId, userId)
+      ))
+      .returning();
+    return updated;
+  }
+
+  async createEnrollmentResponse(response: InsertEnrollmentResponse): Promise<EnrollmentResponse> {
+    const [created] = await db.insert(enrollmentResponses).values(response).returning();
+    return created;
+  }
+
+  async getEnrollmentResponses(sessionId: string): Promise<EnrollmentResponse[]> {
+    return await db.select().from(enrollmentResponses)
+      .where(eq(enrollmentResponses.sessionId, sessionId))
+      .orderBy(enrollmentResponses.createdAt);
+  }
+
+  async createEnrollmentApplicant(applicant: InsertEnrollmentApplicant): Promise<EnrollmentApplicant> {
+    const [created] = await db.insert(enrollmentApplicants).values(applicant).returning();
+    return created;
+  }
+
+  // Insurance Benefits
+  async getInsuranceProviders(filters?: { type?: string; state?: string }): Promise<InsuranceProvider[]> {
+    const conditions = [];
+    
+    if (filters?.type) {
+      conditions.push(eq(insuranceProviders.type, filters.type));
+    }
+    
+    if (filters?.state) {
+      conditions.push(sql`${insuranceProviders.statesOperated} @> ${JSON.stringify([filters.state])}::jsonb`);
+    }
+    
+    if (conditions.length > 0) {
+      return await db.select().from(insuranceProviders).where(and(...conditions)).orderBy(insuranceProviders.name);
+    }
+    
+    return await db.select().from(insuranceProviders).orderBy(insuranceProviders.name);
+  }
+
+  async getInsuranceProvider(id: string): Promise<InsuranceProvider | undefined> {
+    const [provider] = await db.select().from(insuranceProviders).where(eq(insuranceProviders.id, id));
+    return provider;
+  }
+
+  async getInsurancePlans(filters?: { providerId?: string; planType?: string; metalLevel?: string; maxPremium?: number; state?: string }): Promise<InsurancePlan[]> {
+    const conditions = [eq(insurancePlans.isActive, true)];
+    
+    if (filters?.providerId) {
+      conditions.push(eq(insurancePlans.providerId, filters.providerId));
+    }
+    
+    if (filters?.planType) {
+      conditions.push(eq(insurancePlans.planType, filters.planType));
+    }
+    
+    if (filters?.metalLevel) {
+      conditions.push(eq(insurancePlans.metalLevel, filters.metalLevel));
+    }
+    
+    if (filters?.maxPremium) {
+      conditions.push(lte(insurancePlans.monthlyPremium, filters.maxPremium.toString()));
+    }
+    
+    return await db.select().from(insurancePlans).where(and(...conditions)).orderBy(insurancePlans.name);
+  }
+
+  async getInsurancePlan(id: string): Promise<InsurancePlan | undefined> {
+    const [plan] = await db.select().from(insurancePlans).where(eq(insurancePlans.id, id));
+    return plan;
+  }
+
+  async getInsurancePlansByIds(ids: string[]): Promise<InsurancePlan[]> {
+    if (ids.length === 0) return [];
+    return await db.select().from(insurancePlans).where(inArray(insurancePlans.id, ids));
+  }
+
+  async getBenefitCategories(): Promise<BenefitCategory[]> {
+    return await db.select().from(benefitCategories).orderBy(asc(benefitCategories.displayOrder));
+  }
+
+  async getPlanBenefits(planId: string): Promise<PlanBenefit[]> {
+    return await db.select().from(planBenefits).where(eq(planBenefits.planId, planId));
+  }
+
+  async getPlanBenefit(benefitId: string): Promise<PlanBenefit | undefined> {
+    const [benefit] = await db.select().from(planBenefits).where(eq(planBenefits.id, benefitId));
+    return benefit;
+  }
+
+  async getUserInsurancePlans(userId: string): Promise<UserInsurancePlan[]> {
+    return await db.select().from(userInsurancePlans)
+      .where(eq(userInsurancePlans.userId, userId))
+      .orderBy(desc(userInsurancePlans.createdAt));
+  }
+
+  async createUserInsurancePlan(data: InsertUserInsurancePlan): Promise<UserInsurancePlan> {
+    const [created] = await db.insert(userInsurancePlans).values(data).returning();
+    return created;
+  }
+
+  async deleteUserInsurancePlan(id: string, userId: string): Promise<boolean> {
+    await db.delete(userInsurancePlans).where(
+      and(
+        eq(userInsurancePlans.id, id),
+        eq(userInsurancePlans.userId, userId)
+      )
+    );
     return true;
   }
 }
