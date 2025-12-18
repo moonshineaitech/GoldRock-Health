@@ -43,6 +43,7 @@ import Settings from "@/pages/settings";
 import ResourcesHub from "@/pages/resources-hub";
 import Templates from "@/pages/templates";
 import InsuranceDenials from "@/pages/insurance-denials";
+import InsuranceBenefits from "@/pages/insurance-benefits";
 import ImportantDisclaimer from "@/pages/important-disclaimer";
 import HowItWorksGuide from "@/pages/how-it-works-guide";
 import HealthInsights from "@/pages/health-insights";
@@ -52,6 +53,7 @@ import LabAnalyzer from "@/pages/lab-analyzer";
 import DrugInteractions from "@/pages/drug-interactions";
 import SymptomChecker from "@/pages/symptom-checker";
 import HealthMetrics from "@/pages/health-metrics";
+import Enrollment from "@/pages/enrollment";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -195,6 +197,7 @@ function Router() {
       <Route path="/resources-hub" component={ResourcesHub} />
       <Route path="/templates" component={Templates} />
       <Route path="/insurance-denials" component={InsuranceDenials} />
+      <Route path="/insurance-benefits" component={InsuranceBenefits} />
       <Route path="/emergency-help" component={EmergencyHelp} />
       <Route path="/quick-analyzer" component={QuickAnalyzer} />
       <Route path="/provider-contacts" component={ProviderContacts} />
@@ -236,6 +239,7 @@ function Router() {
         </AIRouteGuard>
       </Route>
       <Route path="/health-metrics" component={HealthMetrics} />
+      <Route path="/enrollment" component={Enrollment} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
