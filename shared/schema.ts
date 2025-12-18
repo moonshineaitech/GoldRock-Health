@@ -1662,6 +1662,161 @@ export const healthInsightsSessions = pgTable("health_insights_sessions", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Medicare/Medicaid Enrollment Sessions - Tracks enrollment sessions
+export const enrollmentSessions = pgTable("enrollment_sessions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  programType: varchar("program_type", { length: 50 }).notNull(), // medicare_part_a, medicare_part_b, medicare_part_c, medicare_part_d, medicaid, chip, marketplace
+  status: varchar("status", { length: 30 }).default("in_progress"), // in_progress, completed, submitted, approved, denied
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  submittedAt: timestamp("submitted_at"),
+  applicantData: jsonb("applicant_data").$type<{
+    firstName?: string;
+    lastName?: string;
+    dob?: string;
+    ssn4Last?: string;
+    phone?: string;
+    email?: string;
+    address?: {
+      street?: string;
+      city?: string;
+      state?: string;
+      zip?: string;
+    };
+    income?: number;
+    householdSize?: number;
+  }>(),
+  eligibilityResult: jsonb("eligibility_result").$type<{
+    eligible: boolean;
+    reasons: string[];
+    recommendedPrograms: string[];
+  }>(),
+  voiceEnabled: boolean("voice_enabled").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Enrollment Responses - Stores individual question responses during enrollment
+export const enrollmentResponses = pgTable("enrollment_responses", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sessionId: varchar("session_id").notNull().references(() => enrollmentSessions.id),
+  questionKey: varchar("question_key", { length: 100 }).notNull(),
+  questionText: text("question_text"),
+  response: text("response"),
+  responseType: varchar("response_type", { length: 20 }), // text, date, number, boolean, select
+  validatedAt: timestamp("validated_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Enrollment Applicants - Stores submitted applications
+export const enrollmentApplicants = pgTable("enrollment_applicants", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sessionId: varchar("session_id").references(() => enrollmentSessions.id),
+  userId: varchar("user_id").references(() => users.id),
+  programType: varchar("program_type", { length: 50 }).notNull(),
+  fullName: text("full_name"),
+  dateOfBirth: varchar("date_of_birth", { length: 20 }),
+  contactEmail: varchar("contact_email", { length: 255 }),
+  contactPhone: varchar("contact_phone", { length: 30 }),
+  mailingAddress: jsonb("mailing_address").$type<{
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+  }>(),
+  applicationData: jsonb("application_data").$type<Record<string, any>>(),
+  status: varchar("status", { length: 30 }).default("pending"), // pending, under_review, approved, denied, needs_info
+  confirmationNumber: varchar("confirmation_number", { length: 50 }),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+  reviewedAt: timestamp("reviewed_at"),
+  notes: text("notes"),
+});
+
+// Insurance Providers Table - Insurance companies and carriers
+export const insuranceProviders = pgTable("insurance_providers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  shortName: varchar("short_name", { length: 20 }),
+  logoUrl: text("logo_url"),
+  type: varchar("type", { length: 30 }), // commercial, medicare_advantage, medicaid_managed, marketplace
+  website: text("website"),
+  phoneNumber: varchar("phone_number", { length: 30 }),
+  statesOperated: jsonb("states_operated").$type<string[]>().default([]),
+  rating: decimal("rating", { precision: 3, scale: 2 }),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Insurance Plans Table - Specific insurance plans offered by providers
+export const insurancePlans = pgTable("insurance_plans", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  providerId: varchar("provider_id").references(() => insuranceProviders.id),
+  name: text("name").notNull(),
+  planType: varchar("plan_type", { length: 30 }), // HMO, PPO, EPO, POS, HDHP, Medicare Advantage, Medicaid
+  metalLevel: varchar("metal_level", { length: 20 }), // bronze, silver, gold, platinum, catastrophic
+  monthlyPremium: decimal("monthly_premium", { precision: 10, scale: 2 }),
+  deductible: decimal("deductible", { precision: 10, scale: 2 }),
+  familyDeductible: decimal("family_deductible", { precision: 10, scale: 2 }),
+  outOfPocketMax: decimal("out_of_pocket_max", { precision: 10, scale: 2 }),
+  copayPrimary: decimal("copay_primary", { precision: 10, scale: 2 }),
+  copaySpecialist: decimal("copay_specialist", { precision: 10, scale: 2 }),
+  copayUrgentCare: decimal("copay_urgent_care", { precision: 10, scale: 2 }),
+  copayER: decimal("copay_er", { precision: 10, scale: 2 }),
+  prescriptionTiers: jsonb("prescription_tiers").$type<{
+    tier1: number;
+    tier2: number;
+    tier3: number;
+    tier4: number;
+  }>(),
+  networkType: varchar("network_type", { length: 20 }), // narrow, broad, national
+  isActive: boolean("is_active").default(true),
+  effectiveYear: integer("effective_year"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Benefit Categories Table - Types of benefits for lookup/reference
+export const benefitCategories = pgTable("benefit_categories", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  description: text("description"),
+  icon: varchar("icon", { length: 50 }),
+  displayOrder: integer("display_order"),
+});
+
+// Plan Benefits Table - Specific benefits covered by each plan
+export const planBenefits = pgTable("plan_benefits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  planId: varchar("plan_id").references(() => insurancePlans.id),
+  categoryId: varchar("category_id").references(() => benefitCategories.id),
+  benefitName: text("benefit_name").notNull(),
+  coverageType: varchar("coverage_type", { length: 20 }), // covered_100, copay, coinsurance, not_covered, limited
+  coverageDetails: text("coverage_details"),
+  copayAmount: decimal("copay_amount", { precision: 10, scale: 2 }),
+  coinsurancePercent: integer("coinsurance_percent"),
+  annualLimit: decimal("annual_limit", { precision: 10, scale: 2 }),
+  requiresPreAuth: boolean("requires_pre_auth").default(false),
+  inNetworkOnly: boolean("in_network_only").default(false),
+  notes: text("notes"),
+  aiExplanation: text("ai_explanation"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// User Insurance Plans Table - User's saved/selected insurance plans
+export const userInsurancePlans = pgTable("user_insurance_plans", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  planId: varchar("plan_id").references(() => insurancePlans.id),
+  isPrimary: boolean("is_primary").default(true),
+  memberNumber: varchar("member_number", { length: 50 }),
+  groupNumber: varchar("group_number", { length: 50 }),
+  effectiveDate: timestamp("effective_date"),
+  terminationDate: timestamp("termination_date"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Medical Bill Analyzer Type exports
 export type MedicalBill = typeof medicalBills.$inferSelect;
 export type InsertMedicalBill = typeof medicalBills.$inferInsert;
@@ -1700,4 +1855,68 @@ export const insertDiagnosticSessionSchema = createInsertSchema(diagnosticSessio
   id: true,
   createdAt: true,
   completedAt: true,
+});
+
+// Medicare/Medicaid Enrollment Type exports
+export type EnrollmentSession = typeof enrollmentSessions.$inferSelect;
+export type InsertEnrollmentSession = typeof enrollmentSessions.$inferInsert;
+export type EnrollmentResponse = typeof enrollmentResponses.$inferSelect;
+export type InsertEnrollmentResponse = typeof enrollmentResponses.$inferInsert;
+export type EnrollmentApplicant = typeof enrollmentApplicants.$inferSelect;
+export type InsertEnrollmentApplicant = typeof enrollmentApplicants.$inferInsert;
+
+// Enrollment Insert Schemas
+export const insertEnrollmentSessionSchema = createInsertSchema(enrollmentSessions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertEnrollmentResponseSchema = createInsertSchema(enrollmentResponses).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertEnrollmentApplicantSchema = createInsertSchema(enrollmentApplicants).omit({
+  id: true,
+  submittedAt: true,
+});
+
+// Insurance Benefits Type exports
+export type InsuranceProvider = typeof insuranceProviders.$inferSelect;
+export type InsertInsuranceProvider = typeof insuranceProviders.$inferInsert;
+export type InsurancePlan = typeof insurancePlans.$inferSelect;
+export type InsertInsurancePlan = typeof insurancePlans.$inferInsert;
+export type BenefitCategory = typeof benefitCategories.$inferSelect;
+export type InsertBenefitCategory = typeof benefitCategories.$inferInsert;
+export type PlanBenefit = typeof planBenefits.$inferSelect;
+export type InsertPlanBenefit = typeof planBenefits.$inferInsert;
+export type UserInsurancePlan = typeof userInsurancePlans.$inferSelect;
+export type InsertUserInsurancePlan = typeof userInsurancePlans.$inferInsert;
+
+// Insurance Benefits Insert Schemas
+export const insertInsuranceProviderSchema = createInsertSchema(insuranceProviders).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertInsurancePlanSchema = createInsertSchema(insurancePlans).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertBenefitCategorySchema = createInsertSchema(benefitCategories).omit({
+  id: true,
+});
+
+export const insertPlanBenefitSchema = createInsertSchema(planBenefits).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserInsurancePlanSchema = createInsertSchema(userInsurancePlans).omit({
+  id: true,
+  createdAt: true,
 });
