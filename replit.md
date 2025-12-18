@@ -10,6 +10,27 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### December 18, 2025 - Medicare/Medicaid Enrollment & Insurance Benefits
+- **Gemini 3 Flash AI Migration**: Upgraded all 6 AI endpoints to use Google Gemini 3 Flash as primary
+  - AI orchestration layer in `server/services/aiProvider.ts` with automatic OpenAI fallback
+  - Gemini service in `server/services/gemini.ts` for structured JSON generation
+  - Supports bill analysis, eligibility checks, benefit explanations, and plan comparisons
+- **Medicare/Medicaid Enrollment System**: Full voice-enabled enrollment wizard
+  - Database tables: `enrollment_sessions`, `enrollment_responses`, `enrollment_applicants`
+  - 7 API endpoints for sessions, progress, eligibility checks, and submission
+  - Multi-step UI at `/enrollment` with 5 steps (Program → Personal → Eligibility → AI Check → Review)
+  - Voice mode toggle using Web Speech API for hands-free enrollment
+  - AI-powered eligibility analysis with recommended programs and next steps
+  - Program types: Medicare Part A/B/C/D, Medicaid, CHIP, Marketplace
+- **Insurance Benefits Explainer**: Comprehensive coverage understanding tool
+  - Database tables: `insurance_providers`, `insurance_plans`, `insurance_benefits`, `insurance_copays`, `user_insurance_plans`
+  - 10 API endpoints (5 public reference + 5 authenticated user features)
+  - UI at `/insurance-benefits` with tabs: Browse, Details, Compare, My Plans
+  - AI-powered benefit explanations in plain English with examples
+  - Plan comparison tool with AI analysis of pros/cons
+  - Common terms explainer (deductible, copay, coinsurance, etc.)
+- **FDA-Compliant Educational Disclaimers**: All new features include appropriate disclaimers
+
 ### October 24, 2025 - Interactive Tutorial System
 - **Tutorial Implementation**: Built comprehensive interactive onboarding tutorial for new users
   - 17 tutorial steps covering all major platform features (Home, Bill-AI, Coaching, Dispute Arsenal, Analytics)
