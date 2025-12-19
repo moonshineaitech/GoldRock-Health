@@ -22,6 +22,30 @@ const getOidcConfig = memoize(
   { maxAge: 3600 * 1000 }
 );
 
+// Track registered domains to avoid duplicate strategy registration
+const registeredDomains = new Set<string>();
+
+// Function to dynamically register auth strategy for a domain
+async function registerDomainStrategy(domain: string, config: any, verify: VerifyFunction) {
+  if (registeredDomains.has(domain)) {
+    return; // Already registered
+  }
+  
+  console.log(`Registering auth strategy for domain: ${domain}`);
+  
+  const strategy = new Strategy(
+    {
+      name: `replitauth:${domain}`,
+      config,
+      scope: "openid email profile offline_access",
+      callbackURL: `https://${domain}/api/callback`,
+    },
+    verify,
+  );
+  passport.use(strategy);
+  registeredDomains.add(domain);
+}
+
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
   const pgStore = connectPg(session);
@@ -67,15 +91,19 @@ async function upsertUser(
   });
 }
 
+// Store verify function and config globally so they can be used for dynamic registration
+let globalVerify: VerifyFunction;
+let globalConfig: any;
+
 export async function setupAuth(app: Express) {
   app.set("trust proxy", 1);
   app.use(getSession());
   app.use(passport.initialize());
   app.use(passport.session());
 
-  const config = await getOidcConfig();
+  globalConfig = await getOidcConfig();
 
-  const verify: VerifyFunction = async (
+  globalVerify = async (
     tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers,
     verified: passport.AuthenticateCallback
   ) => {
@@ -89,32 +117,37 @@ export async function setupAuth(app: Express) {
     verified(null, user);
   };
 
-  for (const domain of process.env
-    .REPLIT_DOMAINS!.split(",")) {
-    const strategy = new Strategy(
-      {
-        name: `replitauth:${domain}`,
-        config,
-        scope: "openid email profile offline_access",
-        callbackURL: `https://${domain}/api/callback`,
-      },
-      verify,
-    );
-    passport.use(strategy);
+  // Pre-register strategies for domains in REPLIT_DOMAINS
+  for (const domain of process.env.REPLIT_DOMAINS!.split(",")) {
+    await registerDomainStrategy(domain, globalConfig, globalVerify);
   }
 
   passport.serializeUser((user: Express.User, cb) => cb(null, user));
   passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
-  app.get("/api/login", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
+  app.get("/api/login", async (req, res, next) => {
+    const hostname = req.hostname;
+    
+    // Dynamically register strategy for this domain if not already registered
+    if (!registeredDomains.has(hostname)) {
+      await registerDomainStrategy(hostname, globalConfig, globalVerify);
+    }
+    
+    passport.authenticate(`replitauth:${hostname}`, {
       prompt: "login consent",
       scope: ["openid", "email", "profile", "offline_access"],
     })(req, res, next);
   });
 
-  app.get("/api/callback", (req, res, next) => {
-    passport.authenticate(`replitauth:${req.hostname}`, {
+  app.get("/api/callback", async (req, res, next) => {
+    const hostname = req.hostname;
+    
+    // Dynamically register strategy for this domain if not already registered
+    if (!registeredDomains.has(hostname)) {
+      await registerDomainStrategy(hostname, globalConfig, globalVerify);
+    }
+    
+    passport.authenticate(`replitauth:${hostname}`, {
       successReturnToOrRedirect: "/",
       failureRedirect: "/api/login",
     })(req, res, next);
@@ -123,7 +156,7 @@ export async function setupAuth(app: Express) {
   app.get("/api/logout", (req, res) => {
     req.logout(() => {
       res.redirect(
-        client.buildEndSessionUrl(config, {
+        client.buildEndSessionUrl(globalConfig, {
           client_id: process.env.REPL_ID!,
           post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
         }).href
