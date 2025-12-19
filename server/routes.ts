@@ -2379,53 +2379,23 @@ You help patients save thousands through expert guidance. Be their advocate and 
         });
       }
       
-      // Process image files with OpenAI Vision
+      // Process image files with AI Vision (Gemini 3 Flash with OpenAI fallback)
       else if (file.mimetype.startsWith('image/')) {
-        if (!process.env.OPENAI_API_KEY) {
-          return res.status(500).json({ message: 'AI analysis service unavailable. Please try again later.' });
-        }
-
         try {
           const base64Image = file.buffer.toString('base64');
-          const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model: 'gpt-5.2',
-              messages: [
-                {
-                  role: 'user',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'Extract all text from this medical bill image. Provide the complete text content, including all charges, dates, procedure codes, patient information, and billing details. Be thorough and accurate.'
-                    },
-                    {
-                      type: 'image_url',
-                      image_url: {
-                        url: `data:${file.mimetype};base64,${base64Image}`
-                      }
-                    }
-                  ]
-                }
-              ],
-              max_completion_tokens: 2000
-            })
-          });
-
-          const visionData = await response.json();
-          billText = visionData.choices?.[0]?.message?.content || 'Unable to extract text from image';
+          billText = await aiProvider.generateWithImage(
+            'Extract all text from this medical bill image. Provide the complete text content, including all charges, dates, procedure codes, patient information, and billing details. Be thorough and accurate.',
+            base64Image,
+            file.mimetype
+          );
         } catch (visionError) {
           console.error('Vision API error:', visionError);
           return res.status(500).json({ message: 'Unable to analyze image. Please try again or upload a clearer image.' });
         }
       }
 
-      // Analyze the bill with expert AI prompting
-      if (process.env.OPENAI_API_KEY && billText) {
+      // Analyze the bill with expert AI prompting (Gemini 3 Flash with OpenAI fallback)
+      if (billText) {
         try {
           const analysisPrompt = `You are a medical bill reduction expert with 25+ years of experience. Analyze this bill to find errors and savings.
 
@@ -2470,31 +2440,11 @@ If applicable, explain charity care options and how to apply.
 
 Write everything in a friendly, empowering tone. The reader may be stressed about their bill, so be reassuring while being direct about what they can do.`;
 
-          const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model: 'gpt-5.2',
-              messages: [
-                {
-                  role: 'system',
-                  content: 'You are a friendly medical bill expert who helps people save money. Write in plain English without markdown formatting. No asterisks, em dashes, or special characters. Use simple numbered lists and clear section headers in CAPS. Be specific with dollar amounts and keep your tone warm and empowering.'
-                },
-                {
-                  role: 'user',
-                  content: analysisPrompt
-                }
-              ],
-              max_completion_tokens: 4000,
-              temperature: 0.3
-            })
-          });
-
-          const analysisResult = await analysisResponse.json();
-          analysisData.aiAnalysis = analysisResult.choices?.[0]?.message?.content || 'Analysis completed';
+          analysisData.aiAnalysis = await aiProvider.generateText(
+            analysisPrompt,
+            'You are a friendly medical bill expert who helps people save money. Write in plain English without markdown formatting. No asterisks, em dashes, or special characters. Use simple numbered lists and clear section headers in CAPS. Be specific with dollar amounts and keep your tone warm and empowering.',
+            { maxTokens: 4000, temperature: 0.3 }
+          );
         } catch (analysisError) {
           console.error('Bill analysis error:', analysisError);
           analysisData.aiAnalysis = 'Basic analysis completed. Advanced AI analysis temporarily unavailable.';
@@ -2569,208 +2519,49 @@ Write everything in a friendly, empowering tone. The reader may be stressed abou
       let combinedBillText = '';
       let analysisData: any = {};
 
-      // Process each image file with OpenAI Vision
-      if (process.env.OPENAI_API_KEY) {
-        const imageAnalyses: string[] = [];
+      // Process each image file with AI Vision (Gemini 3 Flash with OpenAI fallback)
+      const imageAnalyses: string[] = [];
 
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          try {
-            console.log(`Processing image ${i + 1}/${files.length}: ${file.originalname}`);
-            
-            const base64Image = file.buffer.toString('base64');
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                model: 'gpt-5.2',
-                messages: [
-                  {
-                    role: 'user',
-                    content: [
-                      {
-                        type: 'text',
-                        text: `Extract all text and billing information from this medical bill image (Page ${i + 1} of ${files.length}). Include all charges, CPT codes, dates, account numbers, patient information, provider details, and any other billing-related text. Be extremely thorough and accurate.`
-                      },
-                      {
-                        type: 'image_url',
-                        image_url: {
-                          url: `data:${file.mimetype};base64,${base64Image}`
-                        }
-                      }
-                    ]
-                  }
-                ],
-                max_completion_tokens: 2000
-              })
-            });
-
-            const visionData = await response.json();
-            const extractedText = visionData.choices?.[0]?.message?.content || `Unable to extract text from image ${i + 1}`;
-            
-            imageAnalyses.push(`\n\n=== PAGE ${i + 1} (${file.originalname}) ===\n${extractedText}`);
-            
-          } catch (visionError) {
-            console.error(`Vision API error for file ${i + 1}:`, visionError);
-            imageAnalyses.push(`\n\n=== PAGE ${i + 1} (${file.originalname}) ===\nError extracting text from this image. Please ensure the image is clear and try again.`);
-          }
-        }
-
-        // Combine all extracted text
-        combinedBillText = `COMPLETE MEDICAL BILL ANALYSIS - ${files.length} PAGE${files.length > 1 ? 'S' : ''}:\n\n${imageAnalyses.join('')}`;
-
-        // Comprehensive analysis of all pages together
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         try {
-          const comprehensiveAnalysisPrompt = `You are the world's leading medical bill reduction expert analyzing a complete ${files.length}-page medical bill. This is a comprehensive analysis of ALL pages provided.
+          console.log(`Processing image ${i + 1}/${files.length}: ${file.originalname}`);
+          
+          const base64Image = file.buffer.toString('base64');
+          const extractedText = await aiProvider.generateWithImage(
+            `Extract all text and billing information from this medical bill image (Page ${i + 1} of ${files.length}). Include all charges, CPT codes, dates, account numbers, patient information, provider details, and any other billing-related text. Be extremely thorough and accurate.`,
+            base64Image,
+            file.mimetype
+          );
+          
+          imageAnalyses.push(`\n\n=== PAGE ${i + 1} (${file.originalname}) ===\n${extractedText}`);
+          
+        } catch (visionError) {
+          console.error(`Vision API error for file ${i + 1}:`, visionError);
+          imageAnalyses.push(`\n\n=== PAGE ${i + 1} (${file.originalname}) ===\nError extracting text from this image. Please ensure the image is clear and try again.`);
+        }
+      }
 
-**COMPLETE BILL CONTENT (${files.length} PAGES):**
+      // Combine all extracted text
+      combinedBillText = `COMPLETE MEDICAL BILL ANALYSIS - ${files.length} PAGE${files.length > 1 ? 'S' : ''}:\n\n${imageAnalyses.join('')}`;
+
+      // Comprehensive analysis of all pages together (Gemini 3 Flash with OpenAI fallback)
+      try {
+        const comprehensiveAnalysisPrompt = `Analyze this ${files.length}-page medical bill. Identify cross-page billing errors, duplicates, upcoding, unbundling issues. Provide specific savings amounts, action priorities, phone scripts, and charity care options.
+
+BILL CONTENT (${files.length} PAGES):
 ${combinedBillText}
 
-**COMPREHENSIVE EXPERT ANALYSIS REQUIRED (minimum 2000 words for multi-page analysis):**
+Provide detailed analysis with specific dollar amounts, error categories, and priority actions.`;
 
-Since this is a ${files.length}-page medical bill, provide an EXTREMELY detailed forensic analysis that covers ALL pages and cross-references information between pages to identify discrepancies and maximize savings opportunities.
-
-## 1. CROSS-PAGE BILLING ERROR DETECTION
-
-**DUPLICATE CHARGES ACROSS PAGES** (Potential Savings: $2,000-$35,000):
-- Identify duplicate services that appear on multiple pages
-- Cross-reference dates and procedure codes across all pages
-- Calculate precise savings for each cross-page duplicate
-- Document page-to-page inconsistencies in billing
-
-**COMPREHENSIVE UPCODING ANALYSIS** (Potential Savings: $5,000-$75,000):
-- Analyze all CPT codes across every page against actual services
-- Cross-reference severity levels and medical necessity across pages
-- Identify progression inconsistencies between pages
-- Calculate total overcharge amounts with regulatory violations
-
-**MULTI-PAGE UNBUNDLING DETECTION** (Potential Savings: $3,000-$50,000):
-- Identify services spread across pages that should be bundled
-- Reference National Correct Coding Initiative (NCCI) comprehensive edits
-- Document systematic unbundling patterns across the entire bill
-- Calculate maximum bundling savings potential
-
-**PHANTOM CHARGES AND INCONSISTENCIES** (Potential Savings: $1,500-$25,000):
-- Cross-reference services mentioned on different pages for consistency
-- Identify charges that appear without supporting documentation
-- Verify timeline consistency across all pages
-- Document evidence gaps between pages
-
-**COMPREHENSIVE FACILITY ERROR ANALYSIS** (Potential Savings: $2,000-$20,000):
-- Analyze room/facility charges across multiple days and pages
-- Verify service level consistency throughout the bill
-- Identify inappropriate facility fee escalations
-- Cross-reference with Medicare prospective payment rates
-
-## 2. COMPREHENSIVE FINANCIAL OPPORTUNITIES (MULTI-PAGE ANALYSIS)
-
-**TOTAL POTENTIAL SAVINGS BREAKDOWN:**
-- Cross-page duplicate corrections: $[exact calculated amount]
-- Comprehensive upcoding corrections: $[amount across all pages]
-- Multi-page unbundling corrections: $[total bundling savings]
-- Facility and timing errors: $[comprehensive facility savings]
-- **MAXIMUM TOTAL SAVINGS: $[comprehensive total across all pages]**
-
-**ADVANCED MULTI-PAGE CHARITY CARE STRATEGY:**
-- Assess total bill amount across all pages for charity qualification
-- Identify highest-value pages for charity care focus
-- Calculate progressive discount opportunities
-- Document comprehensive financial hardship case
-
-**SOPHISTICATED NEGOTIATION LEVERAGE:**
-- Use cross-page inconsistencies as negotiation leverage
-- Benchmark total charges against regional and Medicare rates
-- Identify quality of care issues evidenced across pages
-- Document comprehensive compliance violations
-
-## 3. DETAILED MULTI-PAGE ACTION PLAN
-
-**COMPREHENSIVE PRIORITY DISPUTE SEQUENCE:**
-1. [Highest cross-page error] - Pages [numbers], Account #[number], Total Amount $[amount]
-2. [Major upcoding across pages] - Pages [numbers], CPT codes [list], Amount $[amount]
-3. [Systematic unbundling] - Pages [numbers], Bundling opportunity $[amount]
-4. [Continue for all significant multi-page errors]
-
-**ENHANCED DOCUMENTATION STRATEGY:**
-- Create cross-page error summary with specific references
-- Document timeline inconsistencies between pages
-- Prepare comprehensive evidence package from all pages
-- Generate page-by-page dispute documentation
-
-**COMPREHENSIVE COMMUNICATION SCRIPTS:**
-"I'm calling about account number [number]. I've conducted a forensic analysis of my complete ${files.length}-page medical bill and identified systematic billing errors totaling $[amount] across multiple pages. The errors include cross-page duplicates, systematic upcoding, and comprehensive unbundling violations.
-
-Specifically, I've documented:
-1. Cross-page duplicates on pages [numbers]: $[amount]
-2. Systematic upcoding violations across pages [numbers]: $[amount]
-3. Unbundling schemes spanning pages [numbers]: $[amount]
-
-I'm requesting immediate supervisor review, complete bill audit, and corrections within 7 business days."
-
-## 4. REGULATORY COMPLIANCE ACROSS ALL PAGES
-
-**COMPREHENSIVE BILLING TRANSPARENCY VIOLATIONS:**
-- Document No Surprises Act violations across all pages
-- Identify pricing transparency failures in multi-page billing
-- Cross-reference good faith estimate accuracy
-- Document systematic disclosure violations
-
-**MULTI-PAGE FRAUD PATTERN ANALYSIS:**
-- Identify False Claims Act patterns across pages
-- Document systematic compliance failures
-- Analyze intent indicators in cross-page billing patterns
-- Prepare comprehensive regulatory violation documentation
-
-## 5. FINAL COMPREHENSIVE RECOMMENDATIONS
-
-**IMMEDIATE PRIORITY ACTIONS:**
-- Submit comprehensive multi-page dispute with cross-references
-- Request complete audit of all pages simultaneously
-- Escalate systematic pattern violations to compliance
-- Document cross-page inconsistencies for maximum leverage
-
-**LONG-TERM PROTECTION STRATEGY:**
-- Monitor future bills for similar multi-page patterns
-- Establish systematic review process for complex bills
-- Document provider patterns for ongoing protection
-- Create comprehensive appeal strategy template
-
-Extract every detail from ALL ${files.length} pages including cross-page references, account numbers, patient information, dates, providers, insurance details, and amounts. Use current regulatory standards and provide specific word-for-word dispute language for all identified errors across the complete bill.`;
-
-          const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model: 'gpt-5.2',
-              messages: [
-                {
-                  role: 'system',
-                  content: `You are the world's leading medical bill reduction expert specializing in multi-page bill analysis. Provide comprehensive forensic analysis with cross-page error detection and maximum savings opportunities.`
-                },
-                {
-                  role: 'user',
-                  content: comprehensiveAnalysisPrompt
-                }
-              ],
-              max_completion_tokens: 4000,
-              temperature: 0.3
-            })
-          });
-
-          const analysisResult = await analysisResponse.json();
-          analysisData.aiAnalysis = analysisResult.choices?.[0]?.message?.content || 'Comprehensive multi-page analysis completed';
-        } catch (analysisError) {
-          console.error('Multi-page bill analysis error:', analysisError);
-          analysisData.aiAnalysis = `Multi-page bill analysis completed for ${files.length} images. Advanced comprehensive analysis temporarily unavailable.`;
-        }
-      } else {
-        return res.status(500).json({ message: 'AI analysis service unavailable. Please try again later.' });
+        analysisData.aiAnalysis = await aiProvider.generateText(
+          comprehensiveAnalysisPrompt,
+          `You are the world's leading medical bill reduction expert specializing in multi-page bill analysis. Provide comprehensive forensic analysis with cross-page error detection and maximum savings opportunities.`,
+          { maxTokens: 4000, temperature: 0.3 }
+        );
+      } catch (analysisError) {
+        console.error('Multi-page bill analysis error:', analysisError);
+        analysisData.aiAnalysis = `Multi-page bill analysis completed for ${files.length} images. Advanced comprehensive analysis temporarily unavailable.`;
       }
 
       // Create a comprehensive medical bill record
@@ -2847,10 +2638,9 @@ Extract every detail from ALL ${files.length} pages including cross-page referen
 
       let response = "I'm here to help with medical questions and insurance/healthcare billing. Please ask me about symptoms, treatments, or insurance-related concerns.";
 
-      // Use OpenAI for intelligent medical responses if available
-      if (process.env.OPENAI_API_KEY) {
-        try {
-          const prompt = `You are an expert bill reduction expert and medical bill advocate with 20+ years of experience. You provide both medical guidance and world-class medical billing advocacy.
+      // Use Gemini 3 Flash (via aiProvider) for intelligent medical responses
+      try {
+        const prompt = `You are an expert bill reduction expert and medical bill advocate with 20+ years of experience. You provide both medical guidance and world-class medical billing advocacy.
 
 **EXPERT MEDICAL BILL REDUCTION DATABASE:**
 
@@ -2943,77 +2733,13 @@ User question: ${message}
 
 Respond with complete, detailed advice AND proactive offers to generate documents:`;
 
-          const completion = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model: 'gpt-5.2',
-              messages: [
-                {
-                  role: 'system',
-                  content: 'You are an expert bill reduction expert and medical bill advocate. For medical questions, provide standard guidance with disclaimers. For billing questions, use your extensive database of expert strategies to provide consultancy-level advice that saves patients thousands of dollars. Always be specific, actionable, and include exact scripts and dollar amounts.'
-                },
-                {
-                  role: 'user',
-                  content: prompt
-                }
-              ],
-              max_completion_tokens: 1500
-            })
-          });
-
-          const data = await completion.json();
-          if (data.choices && data.choices[0] && data.choices[0].message) {
-            response = data.choices[0].message.content.trim();
-          }
-        } catch (aiError) {
-          console.warn('OpenAI API failed, using fallback response:', aiError);
-          
-          // Enhanced fallback responses with expert bill reduction knowledge
-          const messageLower = message.toLowerCase();
-          if (messageLower.includes('bill') || messageLower.includes('charge') || messageLower.includes('hospital') || messageLower.includes('cost') || messageLower.includes('reduce') || messageLower.includes('expensive')) {
-            response = `🚨 CRITICAL: Don't pay that bill immediately! 80% of medical bills contain errors worth $2,000-$35,000+.
-
-IMMEDIATE ACTION PLAN:
-1. REQUEST ITEMIZED BILL: Call and say "I need a complete itemized statement with all CPT and ICD-10 codes, service dates, and provider information within 5 business days."
-
-2. ERROR DETECTION: Look for duplicate charges, services not received, wrong procedure codes, and incorrect dates.
-
-3. CHARITY CARE: If income ≤$60,240 (individual) or ≤$124,800 (family of 4), you may qualify for 25-100% bill forgiveness - even WITH insurance!
-
-4. NEGOTIATION LEVERAGE: Present errors + fair market pricing research. Average reductions: 50-90%.
-
-5. TIMING ADVANTAGE: Bills don't go to collections for 90-120 days. Use this window to negotiate from strength.
-
-What's your total bill amount and what type of care was it for? I can provide a specific strategy tailored to your situation.`;
-          } else if (messageLower.includes('insurance') || messageLower.includes('claim') || messageLower.includes('denial') || messageLower.includes('appeal')) {
-            response = `For insurance claim appeals and denials, use these expert strategies:
-
-PROFESSIONAL APPEAL APPROACH:
-1. Request complete claims documentation from your insurer
-2. Get medical records from your provider showing medical necessity
-3. Write formal appeal letter referencing specific policy language
-4. Include peer-reviewed studies supporting the treatment if applicable
-5. Request external review if internal appeal is denied
-
-APPEAL SUCCESS RATES: 50-60% for internal appeals, 20-40% for external reviews.
-
-For medical bills after insurance, remember: 80% contain errors and average reductions are 50-90% with proper negotiation.
-
-What specific insurance issue are you facing? I can provide exact templates and strategies.`;
-          } else if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
-            response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.\n\nAs a medical bill reduction specialist, I also help patients save 50-90% on medical costs through expert negotiation strategies if you receive any bills from your care.";
-          } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
-            response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.\n\nIf you're concerned about prescription costs, I can also help with medical bill reduction strategies and pharmaceutical assistance programs.";
-          } else {
-            response = "I'm a bill reduction expert specializing in both health guidance and medical bill reduction. I help patients save $2,000-$35,000+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
-          }
-        }
-      } else {
-        // Enhanced fallback responses without OpenAI (same expert knowledge as above)
+        const systemPrompt = 'You are an expert bill reduction expert and medical bill advocate. For medical questions, provide standard guidance with disclaimers. For billing questions, use your extensive database of expert strategies to provide consultancy-level advice that saves patients thousands of dollars. Always be specific, actionable, and include exact scripts and dollar amounts.';
+        
+        response = await aiProvider.generateText(prompt, systemPrompt, { maxTokens: 1500 });
+      } catch (aiError) {
+        console.warn('AI API failed, using fallback response:', aiError);
+        
+        // Enhanced fallback responses with expert bill reduction knowledge
         const messageLower = message.toLowerCase();
         if (messageLower.includes('bill') || messageLower.includes('charge') || messageLower.includes('hospital') || messageLower.includes('cost') || messageLower.includes('reduce') || messageLower.includes('expensive')) {
           response = `🚨 CRITICAL: Don't pay that bill immediately! 80% of medical bills contain errors worth $2,000-$35,000+.
@@ -3035,7 +2761,7 @@ What's your total bill amount and what type of care was it for? I can provide a 
 
 PROFESSIONAL APPEAL APPROACH:
 1. Request complete claims documentation from your insurer
-2. Get medical records from your provider showing medical necessity  
+2. Get medical records from your provider showing medical necessity
 3. Write formal appeal letter referencing specific policy language
 4. Include peer-reviewed studies supporting the treatment if applicable
 5. Request external review if internal appeal is denied
@@ -3380,11 +3106,6 @@ Generate this as a single, well-structured JSON object with ALL fields populated
         return res.status(400).json({ message: 'Analysis type is required and must be a non-empty string' });
       }
 
-      if (!process.env.OPENAI_API_KEY) {
-        console.log('OpenAI API key not configured');
-        return res.status(500).json({ message: 'AI diagnostic analysis is not available - OpenAI API key not configured' });
-      }
-
       // Get the patient data
       const patient = await storage.getSyntheticPatientById(patientId);
       console.log('Patient data retrieved:', patient ? 'Found' : 'Not found');
@@ -3473,213 +3194,61 @@ Also include learning insights:
 
 Make it clinically accurate and educationally valuable.`;
 
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'gpt-5.2',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an expert medical AI providing comprehensive diagnostic analysis for educational purposes. Always respond with valid JSON format containing detailed medical analysis.'
-            },
-            {
-              role: 'user',
-              content: analysisPrompt
-            }
-          ],
-          max_completion_tokens: 3000
-        })
-      });
-
-      // Check if OpenAI returned an error
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('OpenAI API Error:', errorData);
-        throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
-      }
-
-      const aiData = await response.json();
-      console.log('OpenAI Response Status:', response.status);
-      console.log('OpenAI Response Data:', JSON.stringify(aiData, null, 2));
-      
-      let diagnosticAnalysis;
-      let learningPoints;
-      
-      try {
-        if (!aiData.choices || !aiData.choices[0] || !aiData.choices[0].message) {
-          throw new Error('Invalid OpenAI response structure');
-        }
-        
-        const aiContent = aiData.choices[0].message.content.trim();
-        console.log('Raw AI Content:', aiContent);
-        
-        // More robust JSON extraction
-        let jsonString = aiContent;
-        
-        // Remove markdown code blocks if present
-        if (jsonString.includes('```json')) {
-          const jsonMatch = jsonString.match(/```json\s*([\s\S]*?)\s*```/);
-          if (jsonMatch) {
-            jsonString = jsonMatch[1];
-          }
-        } else if (jsonString.includes('```')) {
-          const jsonMatch = jsonString.match(/```\s*([\s\S]*?)\s*```/);
-          if (jsonMatch) {
-            jsonString = jsonMatch[1];
-          }
-        }
-        
-        // Find JSON boundaries more reliably
-        const jsonStart = jsonString.indexOf('{');
-        const jsonEnd = jsonString.lastIndexOf('}') + 1;
-        
-        if (jsonStart !== -1 && jsonEnd > jsonStart) {
-          jsonString = jsonString.slice(jsonStart, jsonEnd);
-        }
-        
-        console.log('Cleaned JSON String:', jsonString);
-        
-        // Try to parse as a single JSON object first
-        try {
-          const parsedData = JSON.parse(jsonString);
-          
-          // Check if it contains the expected diagnostic analysis structure
-          if (parsedData.differentialDiagnoses) {
-            diagnosticAnalysis = parsedData;
-            learningPoints = parsedData.keyInsights ? {
-              keyInsights: parsedData.keyInsights,
-              clinicalPearls: parsedData.clinicalPearls,
-              commonMistakes: parsedData.commonMistakes,
-              literatureReferences: parsedData.literatureReferences
-            } : {
-              keyInsights: ["Comprehensive case analysis completed"],
-              clinicalPearls: ["Systematic approach improves diagnostic accuracy"],
-              commonMistakes: ["Not considering all differential diagnoses"],
-              literatureReferences: ["Evidence-based medicine guidelines"]
-            };
-          } else {
-            throw new Error('Parsed data does not contain expected diagnostic structure');
-          }
-        } catch (singleParseError) {
-          // Try splitting into multiple JSON objects
-          const jsonObjects = jsonString.split('\n\n').filter((section: string) => 
-            section.trim().startsWith('{') && section.trim().endsWith('}')
-          );
-          
-          if (jsonObjects.length >= 1) {
-            diagnosticAnalysis = JSON.parse(jsonObjects[0]);
-            learningPoints = jsonObjects.length > 1 ? JSON.parse(jsonObjects[1]) : {
-              keyInsights: ["Comprehensive case analysis completed"],
-              clinicalPearls: ["Systematic approach improves diagnostic accuracy"], 
-              commonMistakes: ["Not considering all differential diagnoses"],
-              literatureReferences: ["Evidence-based medicine guidelines"]
-            };
-          } else {
-            throw new Error('No valid JSON objects found in AI response');
-          }
-        }
-        
-      } catch (parseError) {
-        console.error('Error parsing AI diagnostic analysis:', parseError);
-        console.error('Parse Error Details:', (parseError as Error).message);
-        
-        // Comprehensive fallback analysis based on patient data
-        diagnosticAnalysis = {
-          differentialDiagnoses: [{
-            diagnosis: `Evaluation for ${patient.chiefComplaint}`,
-            probability: 60,
-            supportingEvidence: [
-              "Patient presentation consistent with chief complaint",
-              "Age and demographic factors",
-              "Medical history supports consideration"
-            ],
-            contraEvidence: ["Requires further diagnostic workup"],
-            requiredTests: [
-              "Complete Blood Count",
-              "Comprehensive Metabolic Panel",
-              "Appropriate imaging studies"
-            ],
-            urgency: "routine"
-          }, {
-            diagnosis: "Alternative diagnosis consideration",
-            probability: 30,
-            supportingEvidence: ["Some supporting clinical features"],
-            contraEvidence: ["Inconsistent with some findings"],
-            requiredTests: ["Targeted diagnostic tests"],
-            urgency: "routine"
-          }],
-          recommendedTests: [{
-            testName: "Comprehensive Diagnostic Panel",
-            category: "laboratory",
-            priority: "routine",
-            rationale: `Initial workup for ${patient.chiefComplaint}`,
-            expectedFindings: "Will help clarify diagnosis",
-            cost: "$200-500"
-          }, {
-            testName: "Imaging Study",
-            category: "imaging",
-            priority: "routine", 
-            rationale: "Evaluate structural abnormalities",
-            expectedFindings: "Variable based on underlying condition",
-            cost: "$300-800"
-          }],
-          riskAssessment: {
-            overallRisk: "moderate",
-            specificRisks: [{
-              risk: "Disease progression",
-              probability: 25,
-              mitigation: "Early intervention and monitoring"
-            }],
-            redFlags: ["Worsening symptoms", "New concerning symptoms"]
-          },
-          treatmentRecommendations: [{
-            intervention: "Symptomatic management",
-            type: "short_term",
-            evidenceLevel: "B",
-            contraindications: ["Patient-specific allergies"],
-            monitoringRequired: ["Symptom response", "Side effects"]
-          }, {
-            intervention: "Lifestyle modifications",
-            type: "long_term", 
-            evidenceLevel: "A",
-            contraindications: [],
-            monitoringRequired: ["Adherence", "Clinical response"]
-          }],
-          prognosis: {
-            shortTerm: "Good with appropriate treatment",
-            mediumTerm: "Depends on response to therapy",
-            longTerm: "Variable based on underlying condition",
-            factorsAffectingOutcome: ["Treatment compliance", "Early intervention", "Comorbidity management"]
-          }
+      // Use aiProvider (Gemini 3 Flash with OpenAI fallback)
+      const aiResult = await aiProvider.generateJSON<{
+        differentialDiagnoses: Array<{
+          diagnosis: string;
+          probability: number;
+          supportingEvidence: string[];
+          contraEvidence: string[];
+          requiredTests: string[];
+          urgency: 'low' | 'moderate' | 'high' | 'critical';
+        }>;
+        recommendedTests: Array<{
+          testName: string;
+          category: string;
+          priority: string;
+          rationale: string;
+          expectedFindings: string;
+          cost: string;
+        }>;
+        riskAssessment: {
+          overallRisk: string;
+          specificRisks: Array<{
+            risk: string;
+            probability: number;
+            mitigation: string;
+          }>;
+          redFlags: string[];
         };
-        
-        learningPoints = {
-          keyInsights: [
-            "AI analysis had parsing challenges - manual review recommended",
-            "Clinical correlation essential for accurate diagnosis",
-            "Systematic approach to diagnostic workup important"
-          ],
-          clinicalPearls: [
-            "Always verify AI-generated recommendations with clinical judgment",
-            "Consider differential diagnosis systematically",
-            "Patient presentation should guide diagnostic approach"
-          ],
-          commonMistakes: [
-            "Over-relying on AI without clinical correlation",
-            "Ignoring patient-specific factors",
-            "Failing to consider alternative diagnoses"
-          ],
-          literatureReferences: [
-            "Evidence-based clinical practice guidelines",
-            "Peer-reviewed diagnostic protocols",
-            "Specialty-specific treatment recommendations"
-          ]
+        treatmentRecommendations: Array<{
+          intervention: string;
+          type: string;
+          evidenceLevel: string;
+          contraindications: string[];
+          monitoringRequired: string[];
+        }>;
+        prognosis: {
+          shortTerm: string;
+          mediumTerm: string;
+          longTerm: string;
+          factorsAffectingOutcome: string[];
         };
-      }
+        keyInsights?: string[];
+        clinicalPearls?: string[];
+        commonMistakes?: string[];
+        literatureReferences?: string[];
+      }>(analysisPrompt, 'You are an expert medical AI providing comprehensive diagnostic analysis for educational purposes. Always respond with valid JSON format containing detailed medical analysis.', { maxTokens: 3000 });
+
+      console.log('AI diagnostic analysis result received');
+      
+      let diagnosticAnalysis = aiResult;
+      let learningPoints = {
+        keyInsights: aiResult.keyInsights || ["Comprehensive case analysis completed"],
+        clinicalPearls: aiResult.clinicalPearls || ["Systematic approach improves diagnostic accuracy"],
+        commonMistakes: aiResult.commonMistakes || ["Not considering all differential diagnoses"],
+        literatureReferences: aiResult.literatureReferences || ["Evidence-based medicine guidelines"]
+      };
 
       // Create diagnostic session
       const sessionData = {
@@ -4174,10 +3743,6 @@ Provide your analysis in this JSON format:
 
       if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
         return res.status(400).json({ message: 'At least one symptom is required' });
-      }
-
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(503).json({ message: 'AI symptom analysis service is currently unavailable' });
       }
 
       const symptomPrompt = `You are a medical triage AI providing educational health information. A person is seeking to understand their symptoms.
