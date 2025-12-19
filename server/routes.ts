@@ -4,7 +4,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { elevenLabsService } from "./services/elevenlabs";
 import { medicalCasesService } from "./services/medicalCases";
-import { openAIService } from "./services/openai";
+// OpenAI service is accessed via aiProvider for automatic Gemini 3 Flash fallback
 import { aiProvider } from "./services/aiProvider";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
@@ -1192,34 +1192,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let medicalAccuracy = 5;
       let suggestionForDoctor = undefined;
 
-      // Try OpenAI first for intelligent responses
-      if (process.env.OPENAI_API_KEY) {
-        try {
-          const aiResponse = await openAIService.generatePatientResponse(
-            question, 
-            medicalCase, 
-            conversationHistory
-          );
-          response = aiResponse.response;
-          medicalAccuracy = aiResponse.medicalAccuracy;
-          suggestionForDoctor = aiResponse.suggestionForDoctor;
-        } catch (aiError) {
-          console.warn('AI response failed, falling back to predefined responses:', aiError);
-          
-          // Fallback to predefined responses
-          const responses = medicalCase.responses || {};
-          const questionLower = question.toLowerCase();
-          
-          for (const [key, value] of Object.entries(responses)) {
-            if (questionLower.includes(key.toLowerCase()) || 
-                key.toLowerCase().includes(questionLower)) {
-              response = value;
-              break;
-            }
-          }
-        }
-      } else {
-        // Fallback to predefined responses if no OpenAI key
+      // Use AI provider (Gemini 3 Flash primary, OpenAI fallback) for intelligent responses
+      try {
+        const patientPrompt = `You are a patient in a medical training simulation. Based on the following case, respond to the doctor's question as the patient would.
+
+Case Information:
+- Chief Complaint: ${medicalCase.chiefComplaint}
+- Symptoms: ${(medicalCase.symptoms || []).join(', ')}
+- Medical History: ${medicalCase.medicalHistory || 'None provided'}
+- Physical Exam: ${JSON.stringify(medicalCase.physicalExam || {})}
+
+Previous conversation: ${conversationHistory.map((h: any) => `${h.role}: ${h.content}`).join('\n')}
+
+Doctor's question: "${question}"
+
+Respond as the patient would, staying in character. Rate the medical relevance of the question (1-10).
+
+Respond in JSON format:
+{
+  "response": "Patient's natural response",
+  "medicalAccuracy": 5,
+  "suggestionForDoctor": "Optional hint if the question is off-track"
+}`;
+
+        const aiResult = await aiProvider.generateJSON<{
+          response: string;
+          medicalAccuracy: number;
+          suggestionForDoctor?: string;
+        }>(patientPrompt, 'You are a patient simulator for medical training. Stay in character.', { temperature: 0.7 });
+        
+        response = aiResult.response;
+        medicalAccuracy = aiResult.medicalAccuracy;
+        suggestionForDoctor = aiResult.suggestionForDoctor;
+      } catch (aiError) {
+        console.warn('AI response failed, falling back to predefined responses:', aiError);
+        
+        // Fallback to predefined responses
         const responses = medicalCase.responses || {};
         const questionLower = question.toLowerCase();
         
@@ -1274,33 +1282,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let recommendations: string[] = [];
       let missedFindings: string[] = [];
 
-      // Use OpenAI for intelligent feedback if available
-      if (process.env.OPENAI_API_KEY) {
-        try {
-          const aiFeedback = await openAIService.provideDiagnosticFeedback(
-            diagnosis,
-            medicalCase.correctDiagnosis,
-            medicalCase,
-            questionsAsked,
-            timeElapsed
-          );
-          accuracy = aiFeedback.accuracy;
-          feedback = aiFeedback.feedback;
-          recommendations = aiFeedback.recommendations || [];
-          missedFindings = aiFeedback.missedFindings || [];
-        } catch (aiError) {
-          console.warn('AI feedback failed, using fallback logic:', aiError);
-          
-          // Fallback logic
-          const isCorrect = diagnosis.toLowerCase().includes(medicalCase.correctDiagnosis.toLowerCase()) ||
-                           medicalCase.correctDiagnosis.toLowerCase().includes(diagnosis.toLowerCase());
-          accuracy = isCorrect ? 85 : 25;
-          feedback = isCorrect ? 
-            "Excellent diagnosis! You correctly identified the condition." :
-            `The correct diagnosis is ${medicalCase.correctDiagnosis}. Review the key symptoms and clinical findings.`;
-        }
-      } else {
-        // Fallback logic without OpenAI
+      // Use AI provider (Gemini 3 Flash primary, OpenAI fallback) for intelligent feedback
+      try {
+        const feedbackPrompt = `You are a medical education AI providing feedback on a student's diagnosis.
+
+Student's Diagnosis: "${diagnosis}"
+Correct Diagnosis: "${medicalCase.correctDiagnosis}"
+
+Case Details:
+- Chief Complaint: ${medicalCase.chiefComplaint}
+- Symptoms: ${(medicalCase.symptoms || []).join(', ')}
+- Physical Exam: ${JSON.stringify(medicalCase.physicalExam || {})}
+- Questions Asked: ${questionsAsked.length} questions
+- Time Elapsed: ${timeElapsed} seconds
+
+Evaluate the diagnosis and provide constructive feedback.
+
+Respond in JSON format:
+{
+  "accuracy": 0-100,
+  "feedback": "Constructive feedback message",
+  "recommendations": ["Study recommendation 1", "Study recommendation 2"],
+  "missedFindings": ["Finding they should have caught", "Another missed clue"]
+}`;
+
+        const aiFeedback = await aiProvider.generateJSON<{
+          accuracy: number;
+          feedback: string;
+          recommendations?: string[];
+          missedFindings?: string[];
+        }>(feedbackPrompt, 'You are an expert medical educator providing constructive feedback.', { temperature: 0.3 });
+        
+        accuracy = aiFeedback.accuracy;
+        feedback = aiFeedback.feedback;
+        recommendations = aiFeedback.recommendations || [];
+        missedFindings = aiFeedback.missedFindings || [];
+      } catch (aiError) {
+        console.warn('AI feedback failed, using fallback logic:', aiError);
+        
+        // Fallback logic
         const isCorrect = diagnosis.toLowerCase().includes(medicalCase.correctDiagnosis.toLowerCase()) ||
                          medicalCase.correctDiagnosis.toLowerCase().includes(diagnosis.toLowerCase());
         accuracy = isCorrect ? 85 : 25;
@@ -1352,10 +1372,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       let isCorrect = false;
 
-      // Use OpenAI for intelligent diagnosis matching if available
-      if (process.env.OPENAI_API_KEY) {
-        try {
-          const prompt = `You are a medical education AI that needs to determine if a student's diagnosis is medically equivalent to the correct diagnosis.
+      // Use AI provider (Gemini 3 Flash primary, OpenAI fallback) for intelligent diagnosis matching
+      try {
+        const prompt = `You are a medical education AI that needs to determine if a student's diagnosis is medically equivalent to the correct diagnosis.
 
 Student's diagnosis: "${userDiagnosis}"
 Correct diagnosis: "${correctDiagnosis}"
@@ -1371,41 +1390,28 @@ Determine if the student's diagnosis is medically equivalent, close enough, or r
 
 Respond with ONLY a JSON object:
 {
-  "isCorrect": true/false,
-  "confidence": 0.0-1.0,
+  "isCorrect": true,
+  "confidence": 0.95,
   "reasoning": "brief explanation"
 }`;
 
-          const response = await openAIService.openai.chat.completions.create({
-            model: "gpt-5.2",
-            messages: [
-              {
-                role: "system",
-                content: "You are an expert medical educator evaluating student diagnoses for accuracy."
-              },
-              {
-                role: "user",
-                content: prompt
-              }
-            ],
-            response_format: { type: "json_object" },
-            temperature: 0.1,
-            max_completion_tokens: 200
-          });
-
-          const result = JSON.parse(response.choices[0].message.content || '{}');
-          isCorrect = result.isCorrect || false;
-          
-          res.json({ 
-            isCorrect, 
-            confidence: result.confidence || 0.5,
-            reasoning: result.reasoning || 'AI evaluation completed',
-            method: 'ai'
-          });
-          return;
-        } catch (aiError) {
-          console.warn('AI diagnosis check failed, using fallback logic:', aiError);
-        }
+        const result = await aiProvider.generateJSON<{
+          isCorrect: boolean;
+          confidence: number;
+          reasoning: string;
+        }>(prompt, 'You are an expert medical educator evaluating student diagnoses for accuracy.', { temperature: 0.1 });
+        
+        isCorrect = result.isCorrect || false;
+        
+        res.json({ 
+          isCorrect, 
+          confidence: result.confidence || 0.5,
+          reasoning: result.reasoning || 'AI evaluation completed',
+          method: 'ai'
+        });
+        return;
+      } catch (aiError) {
+        console.warn('AI diagnosis check failed, using fallback logic:', aiError);
       }
 
       // Fallback to simple text matching
@@ -1433,11 +1439,38 @@ Respond with ONLY a JSON object:
     try {
       const { userPerformance } = req.body;
       
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(503).json({ message: 'AI recommendations not available' });
-      }
+      const prompt = `Based on the following medical student performance data, generate personalized learning recommendations:
 
-      const recommendations = await openAIService.generateLearningRecommendations(userPerformance);
+Performance Data:
+${JSON.stringify(userPerformance, null, 2)}
+
+Provide recommendations in JSON format:
+{
+  "strengths": ["Area where student excels"],
+  "weaknesses": ["Area needing improvement"],
+  "recommendations": [
+    {
+      "topic": "Topic to study",
+      "priority": "high|medium|low",
+      "resources": ["Suggested resource"],
+      "rationale": "Why this is recommended"
+    }
+  ],
+  "nextSteps": ["Immediate action to take"]
+}`;
+
+      const recommendations = await aiProvider.generateJSON<{
+        strengths: string[];
+        weaknesses: string[];
+        recommendations: Array<{
+          topic: string;
+          priority: string;
+          resources: string[];
+          rationale: string;
+        }>;
+        nextSteps: string[];
+      }>(prompt, 'You are a medical education advisor providing personalized learning guidance.', { temperature: 0.5 });
+      
       res.json(recommendations);
     } catch (error) {
       console.error('Error generating learning recommendations:', error);
@@ -4195,24 +4228,22 @@ Provide analysis in this JSON format:
   "disclaimer": "This symptom checker provides general health information for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. If you are experiencing a medical emergency, call 911 or go to the nearest emergency room immediately."
 }`;
 
-      const response = await openAIService.openai.chat.completions.create({
-        model: "gpt-5.2",
-        messages: [
-          {
-            role: "system",
-            content: "You are a medical triage AI. Your role is to provide educational health information and help people understand when and how urgently they should seek medical care. Always prioritize safety and encourage professional consultation. Never diagnose or prescribe treatment."
-          },
-          {
-            role: "user",
-            content: symptomPrompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: 2000,
-        temperature: 0.3
-      });
-
-      const result = JSON.parse(response.choices[0].message.content || '{}');
+      const result = await aiProvider.generateJSON<{
+        urgency: string;
+        summary: string;
+        possibleConditions: Array<{
+          name: string;
+          likelihood: string;
+          description: string;
+          commonSymptoms: string[];
+          whenToSeek: string;
+        }>;
+        redFlags: string[];
+        selfCareAdvice: string[];
+        questions: string[];
+        disclaimer: string;
+      }>(symptomPrompt, 'You are a medical triage AI. Your role is to provide educational health information and help people understand when and how urgently they should seek medical care. Always prioritize safety and encourage professional consultation. Never diagnose or prescribe treatment.', { temperature: 0.3 });
+      
       res.json(result);
     } catch (error) {
       console.error('Symptom analysis error:', error);
@@ -4438,12 +4469,12 @@ Analyze and provide a JSON response with:
   "nextSteps": ["array of actionable next steps to apply"]
 }`;
 
-      const result = await aiProvider.generateJSON(prompt, {
-        eligible: false,
-        reasons: [],
-        recommendedPrograms: [],
-        nextSteps: []
-      });
+      const result = await aiProvider.generateJSON<{
+        eligible: boolean;
+        reasons: string[];
+        recommendedPrograms: string[];
+        nextSteps: string[];
+      }>(prompt, 'You are a government healthcare program eligibility expert. Analyze eligibility based on federal guidelines.', { temperature: 0.3 });
 
       res.json(result);
     } catch (error) {
@@ -4507,7 +4538,7 @@ Analyze and provide a JSON response with:
       });
       
       // Get provider info for each plan
-      const providerIds = [...new Set(plans.map(p => p.providerId).filter(Boolean))] as string[];
+      const providerIds = Array.from(new Set(plans.map(p => p.providerId).filter(Boolean))) as string[];
       const providers = await Promise.all(providerIds.map(id => storage.getInsuranceProvider(id)));
       const providerMap = new Map(providers.filter(Boolean).map(p => [p!.id, p]));
       
@@ -4643,11 +4674,7 @@ Provide a JSON response with:
         explanation: string;
         examples: string[];
         relatedBenefits?: string[];
-      }>(prompt, {
-        explanation: '',
-        examples: [],
-        relatedBenefits: []
-      });
+      }>(prompt, 'You are a health insurance benefits expert. Explain insurance benefits in plain, jargon-free language.', { temperature: 0.5 });
       
       res.json(result);
     } catch (error) {
@@ -4728,11 +4755,7 @@ Provide a comprehensive comparison in JSON format:
           bestFor: string;
         }>;
         recommendation?: string;
-      }>(prompt, {
-        comparison: '',
-        prosConsPerPlan: [],
-        recommendation: ''
-      });
+      }>(prompt, 'You are a health insurance comparison expert. Provide balanced, objective plan comparisons.', { temperature: 0.4 });
       
       res.json(result);
     } catch (error) {
@@ -4753,7 +4776,7 @@ Provide a comprehensive comparison in JSON format:
       const planMap = new Map(plans.map(p => [p.id, p]));
       
       // Get provider info for each plan
-      const providerIds = [...new Set(plans.map(p => p.providerId).filter(Boolean))] as string[];
+      const providerIds = Array.from(new Set(plans.map(p => p.providerId).filter(Boolean))) as string[];
       const providers = await Promise.all(providerIds.map(id => storage.getInsuranceProvider(id)));
       const providerMap = new Map(providers.filter(Boolean).map(p => [p!.id, p]));
       
