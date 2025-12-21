@@ -111,6 +111,7 @@ export interface IStorage {
 
   // User Progress
   getUserProgress(caseId: string, userId?: string): Promise<UserProgress[]>;
+  getUserProgressById(id: string): Promise<UserProgress | undefined>;
   createUserProgress(progress: InsertUserProgress): Promise<UserProgress>;
   updateUserProgress(id: string, updates: Partial<InsertUserProgress>): Promise<UserProgress | undefined>;
   getLatestProgress(caseId: string, userId?: string): Promise<UserProgress | undefined>;
@@ -382,6 +383,11 @@ export class DatabaseStorage implements IStorage {
       .from(userProgress)
       .where(and(...conditions))
       .orderBy(desc(userProgress.createdAt));
+  }
+
+  async getUserProgressById(id: string): Promise<UserProgress | undefined> {
+    const [progress] = await db.select().from(userProgress).where(eq(userProgress.id, id));
+    return progress;
   }
 
   async createUserProgress(progress: InsertUserProgress): Promise<UserProgress> {

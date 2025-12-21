@@ -299,13 +299,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Stripe payment routes
-  app.post("/api/create-payment-intent", async (req, res) => {
+  // Stripe payment routes - requires authentication to prevent abuse
+  app.post("/api/create-payment-intent", isAuthenticated, async (req: any, res) => {
     try {
       const { amount } = req.body;
+      
+      // Validate and coerce amount (frontend may send as string)
+      const numericAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+      if (isNaN(numericAmount) || numericAmount < 1 || numericAmount > 100000) {
+        return res.status(400).json({ message: 'Invalid amount. Must be between $1 and $100,000.' });
+      }
+      
+      const userId = req.user?.claims?.sub;
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(amount * 100), // Convert to cents
+        amount: Math.round(numericAmount * 100), // Convert to cents
         currency: "usd",
+        metadata: { userId },
       });
       res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error: any) {
@@ -731,6 +740,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // RevenueCat webhook endpoint for iOS subscription events
   app.post('/api/webhooks/revenuecat', express.json(), async (req, res) => {
     try {
+      // Verify webhook authorization header
+      // RevenueCat sends an Authorization header with a bearer token
+      const authHeader = req.headers.authorization;
+      const expectedToken = process.env.REVENUECAT_WEBHOOK_SECRET;
+      
+      if (expectedToken) {
+        if (!authHeader || authHeader !== `Bearer ${expectedToken}`) {
+          console.warn('RevenueCat webhook: Invalid or missing authorization');
+          return res.status(401).json({ error: 'Unauthorized' });
+        }
+      } else {
+        console.warn('REVENUECAT_WEBHOOK_SECRET not configured - webhook verification disabled');
+      }
+      
       const event = req.body;
       console.log('Received RevenueCat webhook:', event.type);
 
@@ -921,16 +944,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch('/api/progress/:id', async (req, res) => {
+  // Progress update requires authentication and ownership verification
+  app.patch('/api/progress/:id', isAuthenticated, async (req: any, res) => {
     try {
       const { id } = req.params;
+      const userId = req.user?.claims?.sub;
       const updates = req.body;
-      const progress = await storage.updateUserProgress(id, updates);
       
-      if (!progress) {
+      // Verify ownership - get progress record first
+      const existingProgress = await storage.getUserProgressById(id);
+      if (!existingProgress) {
         return res.status(404).json({ message: 'Progress record not found' });
       }
       
+      // Check if user owns this progress record (IDOR protection)
+      if (existingProgress.userId && existingProgress.userId !== userId) {
+        return res.status(403).json({ message: 'Access denied: You can only update your own progress' });
+      }
+      
+      const progress = await storage.updateUserProgress(id, updates);
       res.json(progress);
     } catch (error) {
       console.error('Error updating progress:', error);
@@ -971,13 +1003,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Serve cached voice files
+  // Serve cached voice files with path traversal protection
   app.get('/api/voice-cache/:filename', isAuthenticated, requiresAiAgreement, async (req, res) => {
     try {
       const { filename } = req.params;
       
-      if (!filename.endsWith('.mp3')) {
-        return res.status(400).json({ message: 'Invalid file format' });
+      // Path traversal protection
+      if (!filename.endsWith('.mp3') || filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+        return res.status(400).json({ message: 'Invalid file format or path' });
+      }
+      
+      // Validate filename format (alphanumeric, hyphens, underscores only)
+      if (!/^[a-zA-Z0-9_-]+\.mp3$/.test(filename)) {
+        return res.status(400).json({ message: 'Invalid filename format' });
       }
 
       const audioBuffer = await voiceCacheService.getCachedAudioFile(filename);
@@ -3227,7 +3265,8 @@ Make it clinically accurate and educationally valuable.`;
 
   // AI-powered medical bill analysis endpoint
   // Integrates lessons from "Never Pay the First Bill" by Marshall Allen
-  app.post('/api/analyze-bill-ai', express.json(), async (req, res) => {
+  // Requires authentication to prevent AI cost exploitation
+  app.post('/api/analyze-bill-ai', isAuthenticated, requiresAiAgreement, express.json(), async (req: any, res) => {
     try {
       const { 
         totalAmount, 
@@ -3237,6 +3276,11 @@ Make it clinically accurate and educationally valuable.`;
         serviceType,
         billDescription 
       } = req.body;
+      
+      // Input validation
+      if (typeof totalAmount !== 'number' || totalAmount < 0 || totalAmount > 10000000) {
+        return res.status(400).json({ success: false, message: 'Invalid total amount' });
+      }
 
       console.log('Analyzing bill with AI:', { totalAmount, serviceType });
 

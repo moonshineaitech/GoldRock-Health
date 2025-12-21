@@ -8,6 +8,7 @@ import { setupVite, serveStatic, log } from "./vite";
 const app = express();
 
 // Security headers with Helmet
+const isDev = process.env.NODE_ENV === 'development';
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -16,10 +17,18 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:", "blob:"],
-      connectSrc: ["'self'", "https://api.stripe.com", "https://api.openai.com", "https://api.anthropic.com", "https://generativelanguage.googleapis.com"],
+      connectSrc: [
+        "'self'", 
+        "https://api.stripe.com", 
+        "https://api.openai.com", 
+        "https://api.anthropic.com", 
+        "https://generativelanguage.googleapis.com",
+        // Allow WebSocket connections for Vite HMR in development
+        ...(isDev ? ["ws:", "wss:"] : []),
+      ],
       frameSrc: ["'self'", "https://js.stripe.com"],
       objectSrc: ["'none'"],
-      upgradeInsecureRequests: [],
+      upgradeInsecureRequests: [], // Always use empty array to avoid type issues
     },
   },
   crossOriginEmbedderPolicy: false, // Required for some external resources
