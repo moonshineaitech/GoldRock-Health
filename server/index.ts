@@ -23,8 +23,11 @@ app.use(helmet({
         "https://api.openai.com", 
         "https://api.anthropic.com", 
         "https://generativelanguage.googleapis.com",
-        // Allow WebSocket connections for Vite HMR in development
-        ...(isDev ? ["ws:", "wss:"] : []),
+        "https://*.replit.dev",
+        "https://*.replit.app",
+        "https://*.repl.co",
+        // Allow WebSocket connections
+        "ws:", "wss:",
       ],
       frameSrc: ["'self'", "https://js.stripe.com"],
       objectSrc: ["'none'"],
@@ -32,6 +35,8 @@ app.use(helmet({
     },
   },
   crossOriginEmbedderPolicy: false, // Required for some external resources
+  crossOriginResourcePolicy: { policy: "cross-origin" }, // Allow cross-origin resource loading
+  crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }, // Allow popups for OAuth
 }));
 
 // CORS configuration - permissive for Replit environment
