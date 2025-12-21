@@ -1,7 +1,13 @@
 import OpenAI from "openai";
 
+// Support both standard OPENAI_API_KEY and Replit's AI integration key
+const apiKey = process.env.OPENAI_API_KEY || process.env.AI_INTEGRATIONS_OPENAI_API_KEY;
+
 // The newest OpenAI model is "gpt-5.2" which was released December 11, 2025. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ 
+  apiKey,
+  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL || undefined,
+});
 
 export interface PatientResponse {
   response: string;

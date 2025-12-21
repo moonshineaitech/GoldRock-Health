@@ -25,7 +25,7 @@ class AIProvider {
   }
 
   private isOpenAIAvailable(): boolean {
-    return !!process.env.OPENAI_API_KEY;
+    return !!(process.env.OPENAI_API_KEY || process.env.AI_INTEGRATIONS_OPENAI_API_KEY);
   }
 
   private resolveProvider(options?: AIOptions): 'gemini' | 'openai' {

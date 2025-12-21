@@ -34,7 +34,7 @@ export class DiagnosticEngine {
     physicalExam: any,
     medicalHistory: any
   ): Promise<DifferentialDiagnosis[]> {
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.OPENAI_API_KEY && !process.env.AI_INTEGRATIONS_OPENAI_API_KEY) {
       return this.getFallbackDifferentials(chiefComplaint, symptoms);
     }
 
