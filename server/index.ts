@@ -34,23 +34,25 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false, // Required for some external resources
 }));
 
-// CORS configuration
-const allowedOrigins = process.env.REPLIT_DOMAINS 
-  ? process.env.REPLIT_DOMAINS.split(',').map(d => `https://${d}`)
-  : ['http://localhost:5000'];
-
+// CORS configuration - permissive for Replit environment
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, etc.)
+    // Allow requests with no origin (same-origin, mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
     
-    // Check if origin is allowed
-    if (allowedOrigins.some(allowed => origin.startsWith(allowed.replace('https://', 'https://')) || origin === allowed)) {
+    // Allow any Replit-related domains
+    const replitDomains = ['.replit.dev', '.replit.app', '.repl.co', 'riker.replit.dev', 'picard.replit.dev', 'kirk.replit.dev'];
+    if (replitDomains.some(domain => origin.includes(domain))) {
       return callback(null, true);
     }
     
-    // Also allow any replit.dev or replit.app domains
-    if (origin.includes('.replit.dev') || origin.includes('.replit.app') || origin.includes('.repl.co')) {
+    // Allow localhost for development
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return callback(null, true);
+    }
+    
+    // In development, be more permissive
+    if (isDev) {
       return callback(null, true);
     }
     
