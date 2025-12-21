@@ -1,8 +1,112 @@
 import express, { type Request, Response, NextFunction } from "express";
+import helmet from "helmet";
+import cors from "cors";
+import rateLimit from "express-rate-limit";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// Security headers with Helmet
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      connectSrc: ["'self'", "https://api.stripe.com", "https://api.openai.com", "https://api.anthropic.com", "https://generativelanguage.googleapis.com"],
+      frameSrc: ["'self'", "https://js.stripe.com"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Required for some external resources
+}));
+
+// CORS configuration
+const allowedOrigins = process.env.REPLIT_DOMAINS 
+  ? process.env.REPLIT_DOMAINS.split(',').map(d => `https://${d}`)
+  : ['http://localhost:5000'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is allowed
+    if (allowedOrigins.some(allowed => origin.startsWith(allowed.replace('https://', 'https://')) || origin === allowed)) {
+      return callback(null, true);
+    }
+    
+    // Also allow any replit.dev or replit.app domains
+    if (origin.includes('.replit.dev') || origin.includes('.replit.app') || origin.includes('.repl.co')) {
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
+// Global rate limiter - 100 requests per minute per IP
+const globalLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 100,
+  message: { message: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting for webhooks (they have their own verification)
+    return req.path === '/api/stripe-webhook' || req.path === '/api/webhooks/revenuecat';
+  },
+});
+
+// Strict rate limiter for auth and payment endpoints
+const strictLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  message: { message: 'Too many attempts, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// AI endpoint rate limiter - more restrictive due to cost
+const aiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 20,
+  message: { message: 'AI request limit reached. Please wait before making more requests.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply global rate limiter
+app.use('/api/', globalLimiter);
+
+// Apply strict limiter to sensitive endpoints
+app.use('/api/create-subscription', strictLimiter);
+app.use('/api/create-payment-intent', strictLimiter);
+app.use('/api/create-donation-session', strictLimiter);
+app.use('/api/admin/', strictLimiter);
+
+// Apply AI limiter to AI endpoints
+app.use('/api/bill-ai-chat', aiLimiter);
+app.use('/api/analyze-bill-ai', aiLimiter);
+app.use('/api/medical-chat', aiLimiter);
+app.use('/api/health-insights-chat', aiLimiter);
+app.use('/api/ai/', aiLimiter);
+app.use('/api/cases/:id/ask', aiLimiter);
+app.use('/api/cases/:id/diagnose', aiLimiter);
+app.use('/api/synthetic-patients/:id/analyze', aiLimiter);
+app.use('/api/analyze-labs', aiLimiter);
+app.use('/api/analyze-symptoms', aiLimiter);
+
+// Trust proxy for rate limiting behind reverse proxy
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
