@@ -10,30 +10,9 @@ const app = express();
 // Security headers with Helmet
 const isDev = process.env.NODE_ENV === 'development';
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https:", "blob:"],
-      connectSrc: [
-        "'self'", 
-        "https://api.stripe.com", 
-        "https://api.openai.com", 
-        "https://api.anthropic.com", 
-        "https://generativelanguage.googleapis.com",
-        "https://*.replit.dev",
-        "https://*.replit.app",
-        "https://*.repl.co",
-        // Allow WebSocket connections
-        "ws:", "wss:",
-      ],
-      frameSrc: ["'self'", "https://js.stripe.com"],
-      objectSrc: ["'none'"],
-      upgradeInsecureRequests: [], // Always use empty array to avoid type issues
-    },
-  },
+  // Disable CSP - Replit's CDN and deployment infrastructure requires flexible policies
+  // that are difficult to configure correctly with Helmet's CSP
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false, // Required for some external resources
   crossOriginResourcePolicy: { policy: "cross-origin" }, // Allow cross-origin resource loading
   crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }, // Allow popups for OAuth
