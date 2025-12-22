@@ -10,6 +10,7 @@ import {
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useState } from "react";
+import platformPromoVideo from "@assets/generated_videos/health_ai_platform_promo_video.mp4";
 
 // Premium Animated Feature Card matching bill-ai page design
 const PremiumFeatureCard = ({ icon: Icon, title, description, color, delay = 0 }: {
@@ -733,140 +734,192 @@ export default function AuthLanding() {
         </div>
       </section>
 
-      {/* COMPREHENSIVE FEATURES LIST */}
-      <section className="py-20 bg-gradient-to-b from-white to-slate-50" data-testid="section-all-features">
+      {/* COMPREHENSIVE FEATURES LIST - Card-based layout */}
+      <section className="py-16 bg-gradient-to-b from-white to-slate-50" data-testid="section-all-features">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+          <div className="text-center mb-10">
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-bold text-sm mb-4"
+            >
+              <Sparkles className="h-4 w-4" />
+              50+ Tools & Workflows
+            </motion.span>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
               Complete Platform Features
             </h2>
-            <p className="text-xl text-gray-700 font-semibold">
-              Over 50 specialized workflows and tools for every billing scenario
+            <p className="text-lg text-gray-600 font-medium max-w-xl mx-auto">
+              Everything you need to fight medical bills and build health knowledge
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12">
-            {/* Column 1: Core Features */}
-            <div>
-              <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
-                <Sparkles className="h-6 w-6 text-emerald-600" />
-                Core Features
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "AI Bill Analysis",
-                  "Quick Bill Analyzer",
-                  "Error Detection Engine",
-                  "Analytics Dashboard",
-                  "Resources Hub",
-                  "Savings Calculator",
-                  "Progress Tracker"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium">
-                    <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-                    {feature}
-                  </li>
-                ))}
+          {/* Feature cards grid - 2 columns on mobile, 3 on tablet, 5 on desktop */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {/* Core Features Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-lg"
+            >
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-sm font-black mb-2">Core Features</h3>
+              <ul className="space-y-1.5 text-xs text-white/90">
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />AI Bill Analysis</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Error Detection</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Analytics Dashboard</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Savings Calculator</li>
               </ul>
-            </div>
+            </motion.div>
 
-            {/* Column 2: Intelligence & Strategy */}
-            <div>
-              <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
-                <Brain className="h-6 w-6 text-purple-600" />
-                Intelligence & Strategy
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "Industry Insights",
-                  "Hospital Billing Intel",
-                  "Insurance Denials Database",
-                  "Medical Code Decoder",
-                  "Negotiation Coaching",
-                  "Timing Optimizer",
-                  "Provider Contact Database"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium">
-                    <CheckCircle className="h-5 w-5 text-purple-600 flex-shrink-0" />
-                    {feature}
-                  </li>
-                ))}
+            {/* Intelligence Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl p-4 text-white shadow-lg"
+            >
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Brain className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-sm font-black mb-2">Intelligence</h3>
+              <ul className="space-y-1.5 text-xs text-white/90">
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Industry Insights</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Billing Intel</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Code Decoder</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Negotiation Coach</li>
               </ul>
-            </div>
+            </motion.div>
 
-            {/* Column 3: Legal & Advocacy */}
-            <div>
-              <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
-                <Shield className="h-6 w-6 text-blue-600" />
-                Legal & Advocacy
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "50+ Dispute Templates",
-                  "Rights Hub (No Surprises Act)",
-                  "Appeal Letter Generators",
-                  "Claim Denial Reversals",
-                  "Emergency Financial Help",
-                  "Charity Care Applications",
-                  "Board Complaint Templates"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium">
-                    <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                    {feature}
-                  </li>
-                ))}
+            {/* Legal Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-4 text-white shadow-lg"
+            >
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Shield className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-sm font-black mb-2">Legal & Advocacy</h3>
+              <ul className="space-y-1.5 text-xs text-white/90">
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />50+ Dispute Letters</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Rights Hub</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Appeal Generators</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Charity Care Apps</li>
               </ul>
-            </div>
+            </motion.div>
+
+            {/* Education Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.25 }}
+              className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 text-white shadow-lg"
+            >
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Book className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-sm font-black mb-2">Guides & Education</h3>
+              <ul className="space-y-1.5 text-xs text-white/90">
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Bill Reduction Guide</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Best Practices</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Templates Library</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Case Studies</li>
+              </ul>
+            </motion.div>
+
+            {/* Premium Workflows Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-4 text-white shadow-lg col-span-2 md:col-span-1"
+            >
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+                <Crown className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-sm font-black mb-2">Premium Workflows</h3>
+              <ul className="space-y-1.5 text-xs text-white/90">
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />ER Bill Analysis</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Surgery Review</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Lab & Imaging</li>
+                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Specialty Care</li>
+              </ul>
+            </motion.div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-12 grid md:grid-cols-2 gap-12">
-            {/* Column 4: Guides & Education */}
-            <div>
-              <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
-                <Book className="h-6 w-6 text-amber-600" />
-                Guides & Education
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "Bill Reduction Guide",
-                  "Portal Access Guide",
-                  "Best Practices Library",
-                  "How It Works Guide",
-                  "Templates Library",
-                  "Case Studies & Examples"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium">
-                    <CheckCircle className="h-5 w-5 text-amber-600 flex-shrink-0" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* VIDEO SHOWCASE SECTION */}
+      <section className="py-16 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900" data-testid="section-video-showcase">
+        <div className="max-w-4xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <span className="inline-flex items-center gap-2 bg-white/10 text-white/90 px-4 py-2 rounded-full font-bold text-sm mb-4 backdrop-blur-sm">
+              <Play className="h-4 w-4" />
+              Platform Preview
+            </span>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3">
+              See GoldRock Health in Action
+            </h2>
+            <p className="text-lg text-white/70 font-medium max-w-xl mx-auto">
+              Your complete health AI command center for medical billing and education
+            </p>
+          </motion.div>
 
-            {/* Column 5: Specialized Workflows */}
-            <div>
-              <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
-                <Crown className="h-6 w-6 text-purple-600" />
-                Premium Workflows (50+)
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "Emergency Room Bill Analysis",
-                  "Surgery & Anesthesia Review",
-                  "Lab & Imaging Disputes",
-                  "Pharmacy & Medication Audits",
-                  "Maternity & Childbirth Claims",
-                  "Specialty Care (Cardiology, Oncology, etc.)",
-                  "Insurance Policy Exploitation"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium">
-                    <CheckCircle className="h-5 w-5 text-purple-600 flex-shrink-0" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="relative rounded-3xl overflow-hidden shadow-2xl shadow-indigo-500/20 border border-white/10"
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full aspect-video object-cover"
+              data-testid="video-platform-preview"
+            >
+              <source src={platformPromoVideo} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent pointer-events-none" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="text-center mt-8"
+          >
+            <motion.a
+              href="/api/login"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-lg rounded-2xl shadow-xl shadow-emerald-500/30 hover:shadow-2xl transition-all"
+              data-testid="button-start-free-video"
+            >
+              <Sparkles className="h-5 w-5" />
+              Start Free Today
+              <ArrowRight className="h-5 w-5" />
+            </motion.a>
+          </motion.div>
         </div>
       </section>
 
