@@ -40,6 +40,7 @@ import QuickAnalyzer from "@/pages/quick-analyzer";
 import ProviderContacts from "@/pages/provider-contacts";
 import CaseDetail from "@/pages/case-detail";
 import Settings from "@/pages/settings";
+import Admin from "@/pages/admin";
 import ResourcesHub from "@/pages/resources-hub";
 import Templates from "@/pages/templates";
 import InsuranceDenials from "@/pages/insurance-denials";
@@ -202,6 +203,7 @@ function Router() {
       <Route path="/quick-analyzer" component={QuickAnalyzer} />
       <Route path="/provider-contacts" component={ProviderContacts} />
       <Route path="/settings" component={Settings} />
+      <Route path="/admin" component={Admin} />
       <Route path="/how-it-works-guide" component={HowItWorksGuide} />
       <Route path="/health-insights">
         <AIRouteGuard path="/health-insights">

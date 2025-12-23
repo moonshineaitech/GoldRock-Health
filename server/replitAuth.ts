@@ -261,3 +261,41 @@ export const requiresSubscription: RequestHandler = async (req, res, next) => {
     return res.status(500).json({ message: "Failed to verify subscription status" });
   }
 };
+
+// Admin email whitelist - only these users can have admin access
+const ADMIN_EMAIL_WHITELIST = ['ryan@moonshineai.com'];
+
+// Middleware to check if user is an admin
+export const isAdmin: RequestHandler = async (req, res, next) => {
+  // First ensure user is authenticated
+  const user = req.user as any;
+  if (!req.isAuthenticated() || !user) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  try {
+    const { storage } = await import("./storage");
+    const userId = user.claims.sub;
+    const userData = await storage.getUser(userId);
+    
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if user's email is in the whitelist and they have admin flag
+    const isWhitelisted = userData.email && ADMIN_EMAIL_WHITELIST.includes(userData.email.toLowerCase());
+    
+    if (!userData.isAdmin || !isWhitelisted) {
+      return res.status(403).json({ 
+        message: "Admin access required",
+        code: "ADMIN_REQUIRED"
+      });
+    }
+
+    // User is admin, continue
+    return next();
+  } catch (error) {
+    console.error('Error checking admin status:', error);
+    return res.status(500).json({ message: "Failed to verify admin status" });
+  }
+};

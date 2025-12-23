@@ -10,7 +10,7 @@ import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
 import { insertUserProgressSchema } from "@shared/schema";
-import { setupAuth, isAuthenticated, requiresSubscription, requiresAiAgreement } from "./replitAuth";
+import { setupAuth, isAuthenticated, requiresSubscription, requiresAiAgreement, isAdmin } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
 import Stripe from "stripe";
 import { z } from "zod";
@@ -278,15 +278,229 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Data retention cleanup endpoint (admin use)
-  app.post('/api/admin/cleanup-old-data', async (req, res) => {
+  // ==================== USER PROFILE & PREFERENCES ====================
+  
+  // Update user profile
+  app.patch('/api/user/profile', isAuthenticated, async (req: any, res) => {
     try {
-      const { retentionDays = 30, adminKey } = req.body;
+      const userId = req.user.claims.sub;
+      const { firstName, lastName, email } = req.body;
       
-      // Simple admin key check for cleanup operations
-      if (adminKey !== process.env.ADMIN_CLEANUP_KEY) {
-        return res.status(403).json({ message: 'Unauthorized' });
+      const updated = await storage.updateUserProfile(userId, { firstName, lastName, email });
+      if (!updated) {
+        return res.status(404).json({ message: 'User not found' });
       }
+      
+      res.json(updated);
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      res.status(500).json({ message: 'Failed to update profile' });
+    }
+  });
+
+  // Update user preferences
+  app.patch('/api/user/preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const preferences = req.body;
+      
+      const updated = await storage.updateUserPreferences(userId, preferences);
+      if (!updated) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json(updated);
+    } catch (error) {
+      console.error('Error updating user preferences:', error);
+      res.status(500).json({ message: 'Failed to update preferences' });
+    }
+  });
+
+  // Get user preferences
+  app.get('/api/user/preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json(user.userPreferences || {
+        theme: 'system',
+        emailNotifications: true,
+        pushNotifications: true,
+        marketingEmails: false,
+        billReminders: true,
+        weeklyDigest: true,
+        language: 'en',
+        timezone: 'America/New_York',
+      });
+    } catch (error) {
+      console.error('Error getting user preferences:', error);
+      res.status(500).json({ message: 'Failed to get preferences' });
+    }
+  });
+
+  // ==================== ADMIN ROUTES ====================
+
+  // Check if current user is admin
+  app.get('/api/admin/check', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      const adminEmails = ['ryan@moonshineai.com'];
+      const isWhitelisted = user.email && adminEmails.includes(user.email.toLowerCase());
+      
+      res.json({ 
+        isAdmin: user.isAdmin && isWhitelisted,
+        email: user.email
+      });
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      res.status(500).json({ message: 'Failed to check admin status' });
+    }
+  });
+
+  // Get all users (admin only)
+  app.get('/api/admin/users', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      res.json(users);
+    } catch (error) {
+      console.error('Error getting users:', error);
+      res.status(500).json({ message: 'Failed to get users' });
+    }
+  });
+
+  // Get platform statistics (admin only)
+  app.get('/api/admin/stats', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      const platformStats = await storage.getPlatformStats();
+      
+      // Calculate user stats
+      const totalUsers = users.length;
+      const activeSubscribers = users.filter(u => u.subscriptionStatus === 'active').length;
+      const trialUsers = users.filter(u => u.subscriptionStatus === 'inactive').length;
+      const usersWithAiTerms = users.filter(u => u.acceptedAiTerms).length;
+      
+      // Calculate recent signups (last 7 days)
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const recentSignups = users.filter(u => u.createdAt && new Date(u.createdAt) >= weekAgo).length;
+      
+      // Calculate daily signups for the last 30 days
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const dailySignups: Record<string, number> = {};
+      users.forEach(u => {
+        if (u.createdAt) {
+          const date = new Date(u.createdAt).toISOString().split('T')[0];
+          if (new Date(date) >= thirtyDaysAgo) {
+            dailySignups[date] = (dailySignups[date] || 0) + 1;
+          }
+        }
+      });
+      
+      res.json({
+        totalUsers,
+        activeSubscribers,
+        trialUsers,
+        usersWithAiTerms,
+        recentSignups,
+        dailySignups,
+        platformStats,
+        subscriptionBreakdown: {
+          monthly: users.filter(u => u.subscriptionPlan === 'monthly').length,
+          annual: users.filter(u => u.subscriptionPlan === 'annual').length,
+          lifetime: users.filter(u => u.subscriptionPlan === 'lifetime').length,
+        }
+      });
+    } catch (error) {
+      console.error('Error getting admin stats:', error);
+      res.status(500).json({ message: 'Failed to get statistics' });
+    }
+  });
+
+  // Grant admin access to a user (admin only)
+  app.post('/api/admin/grant-admin', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const { userId, email } = req.body;
+      
+      // Only allow granting admin to whitelisted emails
+      const adminEmails = ['ryan@moonshineai.com'];
+      if (!adminEmails.includes(email?.toLowerCase())) {
+        return res.status(403).json({ message: 'Email not in admin whitelist' });
+      }
+      
+      const updated = await storage.setUserAdminStatus(userId, true);
+      if (!updated) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json({ message: 'Admin access granted', user: updated });
+    } catch (error) {
+      console.error('Error granting admin access:', error);
+      res.status(500).json({ message: 'Failed to grant admin access' });
+    }
+  });
+
+  // Revoke admin access (admin only)
+  app.post('/api/admin/revoke-admin', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const { userId } = req.body;
+      const currentUserId = req.user.claims.sub;
+      
+      // Prevent revoking own admin access
+      if (userId === currentUserId) {
+        return res.status(400).json({ message: 'Cannot revoke your own admin access' });
+      }
+      
+      const updated = await storage.setUserAdminStatus(userId, false);
+      if (!updated) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json({ message: 'Admin access revoked', user: updated });
+    } catch (error) {
+      console.error('Error revoking admin access:', error);
+      res.status(500).json({ message: 'Failed to revoke admin access' });
+    }
+  });
+
+  // Bootstrap admin user (one-time setup for ryan@moonshineai.com)
+  app.post('/api/admin/bootstrap', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      // Only allow bootstrapping for the designated admin email
+      if (user.email?.toLowerCase() !== 'ryan@moonshineai.com') {
+        return res.status(403).json({ message: 'Only designated admin can bootstrap' });
+      }
+      
+      const updated = await storage.setUserAdminStatus(userId, true);
+      res.json({ message: 'Admin access granted', user: updated });
+    } catch (error) {
+      console.error('Error bootstrapping admin:', error);
+      res.status(500).json({ message: 'Failed to bootstrap admin' });
+    }
+  });
+
+  // Data retention cleanup endpoint (admin use)
+  app.post('/api/admin/cleanup-old-data', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const { retentionDays = 30 } = req.body;
       
       const result = await storage.cleanupOldData(retentionDays);
       res.json({ 
@@ -298,6 +512,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: 'Failed to cleanup old data' });
     }
   });
+
+  // ==================== END ADMIN ROUTES ====================
 
   // Stripe payment routes
   app.post("/api/create-payment-intent", async (req, res) => {
