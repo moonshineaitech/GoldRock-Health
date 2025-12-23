@@ -97,11 +97,16 @@ import { eq, desc, and, sql, count, lte, inArray, asc } from "drizzle-orm";
 export interface IStorage {
   // User operations (IMPORTANT) these user operations are mandatory for Replit Auth.
   getUser(id: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   getUserByStripeCustomerId(stripeCustomerId: string): Promise<User | undefined>;
   getAllUsers(): Promise<User[]>;
   upsertUser(user: UpsertUser): Promise<User>;
   acceptAiTerms(userId: string, version: string): Promise<User>;
   deleteUser(userId: string): Promise<void>;
+  updateUserPreferences(userId: string, preferences: Partial<User['userPreferences']>): Promise<User | undefined>;
+  updateUserProfile(userId: string, updates: { firstName?: string; lastName?: string; email?: string }): Promise<User | undefined>;
+  setUserAdminStatus(userId: string, isAdmin: boolean): Promise<User | undefined>;
+  getAdminUsers(): Promise<User[]>;
 
   // Medical Cases
   getMedicalCases(filters?: { specialty?: string; difficulty?: number; search?: string }): Promise<MedicalCase[]>;
@@ -239,6 +244,59 @@ export class DatabaseStorage implements IStorage {
 
   async getAllUsers(): Promise<User[]> {
     return await db.select().from(users).orderBy(users.createdAt);
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async updateUserPreferences(userId: string, preferences: Partial<User['userPreferences']>): Promise<User | undefined> {
+    const user = await this.getUser(userId);
+    if (!user) return undefined;
+    
+    const currentPrefs = user.userPreferences || {
+      theme: 'system' as const,
+      emailNotifications: true,
+      pushNotifications: true,
+      marketingEmails: false,
+      billReminders: true,
+      weeklyDigest: true,
+      language: 'en',
+      timezone: 'America/New_York',
+    };
+    
+    const [updated] = await db
+      .update(users)
+      .set({ 
+        userPreferences: { ...currentPrefs, ...preferences },
+        updatedAt: new Date() 
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return updated;
+  }
+
+  async updateUserProfile(userId: string, updates: { firstName?: string; lastName?: string; email?: string }): Promise<User | undefined> {
+    const [updated] = await db
+      .update(users)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(users.id, userId))
+      .returning();
+    return updated;
+  }
+
+  async setUserAdminStatus(userId: string, isAdmin: boolean): Promise<User | undefined> {
+    const [updated] = await db
+      .update(users)
+      .set({ isAdmin, updatedAt: new Date() })
+      .where(eq(users.id, userId))
+      .returning();
+    return updated;
+  }
+
+  async getAdminUsers(): Promise<User[]> {
+    return await db.select().from(users).where(eq(users.isAdmin, true));
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {

@@ -50,6 +50,26 @@ export const users = pgTable("users", {
     skippedSteps: string[];
     lastAccessedAt: string;
   }>().default({ currentStep: 0, completedSteps: [], skippedSteps: [], lastAccessedAt: new Date().toISOString() }),
+  isAdmin: boolean("is_admin").default(false), // Admin access flag
+  userPreferences: jsonb("user_preferences").$type<{
+    theme: 'light' | 'dark' | 'system';
+    emailNotifications: boolean;
+    pushNotifications: boolean;
+    marketingEmails: boolean;
+    billReminders: boolean;
+    weeklyDigest: boolean;
+    language: string;
+    timezone: string;
+  }>().default({
+    theme: 'system',
+    emailNotifications: true,
+    pushNotifications: true,
+    marketingEmails: false,
+    billReminders: true,
+    weeklyDigest: true,
+    language: 'en',
+    timezone: 'America/New_York',
+  }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
