@@ -11,7 +11,8 @@ import {
   Shield,
   Lightbulb,
   Brain,
-  Stethoscope
+  Stethoscope,
+  Dna
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -45,6 +46,13 @@ const navItems: NavItem[] = [
     icon: Brain,
     path: "/patient-diagnostics",
     color: "text-teal-600"
+  },
+  {
+    id: "lunafold",
+    label: "LunaFold",
+    icon: Dna,
+    path: "/lunafold",
+    color: "text-cyan-600"
   },
   {
     id: "clinical",
@@ -127,6 +135,7 @@ export function MobileBottomNav() {
                         item.color === 'text-orange-600' ? '#F59E0B' :
                         item.color === 'text-indigo-600' ? '#6366F1' :
                         item.color === 'text-teal-600' ? '#14B8A6' :
+                        item.color === 'text-cyan-600' ? '#06B6D4' :
                         '#6366F1'
                       ) : '#6B7280'
                     }}
@@ -174,6 +183,8 @@ export function MobileBottomNav() {
                       item.color === 'text-red-600' ? '#DC2626' :
                       item.color === 'text-orange-600' ? '#F59E0B' :
                       item.color === 'text-indigo-600' ? '#6366F1' :
+                      item.color === 'text-teal-600' ? '#14B8A6' :
+                      item.color === 'text-cyan-600' ? '#06B6D4' :
                       '#6366F1'
                     ) : '#374151',
                     fontWeight: active ? 600 : 500,
