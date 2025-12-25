@@ -755,3 +755,9 @@ export function searchProteins(query: string): SignificantProtein[] {
 export function getProteinByUniprotId(uniprotId: string): SignificantProtein | undefined {
   return getAllProteins().find(protein => protein.uniprotId === uniprotId);
 }
+
+export function getTopProteins(count: number = 8): SignificantProtein[] {
+  return getAllProteins()
+    .sort((a, b) => b.significanceScore - a.significanceScore)
+    .slice(0, count);
+}

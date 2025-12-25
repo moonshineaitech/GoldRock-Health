@@ -11,36 +11,9 @@ interface UploadAF3Request {
   sequence?: string;
 }
 
-export interface SequenceAnalysis {
-  isValid: boolean;
-  length: number;
-  composition: { [key: string]: number };
-  predictedProperties: {
-    hydrophobicity: number;
-    isoelectricPoint: number;
-    molecularWeight: number;
-    instabilityIndex: number;
-  };
-  motifs: Array<{
-    name: string;
-    position: [number, number];
-    confidence: number;
-    description: string;
-  }>;
-  secondaryStructure: {
-    alphaHelix: number;
-    betaSheet: number;
-    coil: number;
-    turn: number;
-  };
-  disorderedRegions: Array<[number, number]>;
-  functionalAnnotations: string[];
-}
+export type SequenceAnalysis = NonNullable<Prediction['analysis']>;
 
-export interface PredictionWithAnalysis extends Prediction {
-  analysis?: SequenceAnalysis;
-  explanation?: string;
-}
+export type PredictionWithAnalysis = Prediction;
 
 interface NoStructureError {
   error: string;

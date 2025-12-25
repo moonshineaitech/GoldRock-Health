@@ -12,18 +12,18 @@ import ResidueInsightsPanel from "@/components/luna/ResidueInsightsPanel";
 import InsightColumn from "@/components/luna/InsightColumn";
 import WorkbenchPanel from "@/components/luna/WorkbenchPanel";
 import ResearchToolsPanel from "@/components/luna/ResearchToolsPanel";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Header, Footer } from "@/components/layout";
 import ParticleBackground, { FloatingOrbs } from "@/components/effects/ParticleBackground";
 import { motion, AnimatePresence } from "framer-motion";
 import { Terminal, Share2, Download, Brain, Upload, ExternalLink, Sparkles, FlaskConical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useFoldSequence, useUploadAF3, useFoldByUniprotId, isNoStructureError, type PredictionWithAnalysis, type SequenceAnalysis } from "@/hooks/use-predictions";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { getTopProteins, getAllProteins, PROTEIN_COLLECTIONS, type SignificantProtein } from "@shared/protein-collections";
 import { ChevronDown, Search } from "lucide-react";
 
 export default function Home() {
+  const { toast } = useToast();
   const [isFolding, setIsFolding] = useState(false);
   const [currentPrediction, setCurrentPrediction] = useState<PredictionWithAnalysis | null>(null);
   const [currentAnalysis, setCurrentAnalysis] = useState<SequenceAnalysis | null>(null);
@@ -87,7 +87,7 @@ export default function Home() {
       
       if (isNoStructureError(result)) {
         setIsFolding(false);
-        toast.error("Could not load this protein structure");
+        toast({ title: "Error", description: "Could not load this protein structure", variant: "destructive" });
         return;
       }
       
@@ -97,9 +97,9 @@ export default function Home() {
       setIsFolding(false);
       
       const proteinInfo = result.proteinName ? ` - ${result.proteinName}` : '';
-      toast.success(`Structure loaded${proteinInfo}`);
+      toast({ title: "Success", description: `Structure loaded${proteinInfo}` });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to load protein");
+      toast({ title: "Error", description: error instanceof Error ? error.message : "Failed to load protein", variant: "destructive" });
       setIsFolding(false);
     }
   };
@@ -131,7 +131,7 @@ export default function Home() {
         setShowUploadPrompt(true);
         setPendingSequence(sequence);
         setCurrentAnalysis(result.analysis || null);
-        toast.info("Novel sequence detected. Upload prediction for visualization.");
+        toast({ title: "Info", description: "Novel sequence detected. Upload prediction for visualization." });
         return;
       }
       
@@ -141,16 +141,16 @@ export default function Home() {
       setIsFolding(false);
       
       const proteinInfo = result.proteinName ? ` - ${result.proteinName}` : '';
-      toast.success(`Structure prediction complete${proteinInfo}`);
+      toast({ title: "Success", description: `Structure prediction complete${proteinInfo}` });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Folding failed");
+      toast({ title: "Error", description: error instanceof Error ? error.message : "Folding failed", variant: "destructive" });
       setIsFolding(false);
     }
   };
 
   const handleUploadAF3 = async () => {
     if (!pdbFile) {
-      toast.error("Please select a PDB file from AlphaFold 3");
+      toast({ title: "Error", description: "Please select a PDB file from AlphaFold 3", variant: "destructive" });
       return;
     }
     
@@ -177,9 +177,9 @@ export default function Home() {
       setIsFolding(false);
       setPdbFile(null);
       setJsonFile(null);
-      toast.success("AlphaFold 3 structure uploaded and processed!");
+      toast({ title: "Success", description: "AlphaFold 3 structure uploaded and processed!" });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Upload failed");
+      toast({ title: "Error", description: error instanceof Error ? error.message : "Upload failed", variant: "destructive" });
       setIsFolding(false);
     }
   };
@@ -730,7 +730,7 @@ export default function Home() {
                      className="h-8 text-xs border-white/10 hover:bg-white/5 hover:text-primary"
                      onClick={() => {
                        navigator.clipboard.writeText(window.location.href);
-                       toast.success("Link copied to clipboard!");
+                       toast({ title: "Success", description: "Link copied to clipboard!" });
                      }}
                    >
                      <Share2 className="w-3 h-3 mr-2" />

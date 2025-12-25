@@ -1940,3 +1940,176 @@ export const insertUserInsurancePlanSchema = createInsertSchema(userInsurancePla
   id: true,
   createdAt: true,
 });
+
+// ==========================================
+// LunaFold - Protein Structure Prediction
+// ==========================================
+
+// Protein Structure Predictions Table
+export const predictions = pgTable("predictions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  sequence: text("sequence").notNull(),
+  uniprotId: varchar("uniprot_id", { length: 20 }),
+  proteinName: text("protein_name"),
+  organism: text("organism"),
+  pdbData: text("pdb_data"), // PDB format structure data
+  plddtScores: jsonb("plddt_scores").$type<number[]>().default([]),
+  paeMatrix: jsonb("pae_matrix").$type<number[][]>().default([]),
+  modelVersion: varchar("model_version", { length: 50 }),
+  status: varchar("status", { length: 20 }).default("pending"), // pending, processing, completed, failed
+  analysis: jsonb("analysis").$type<{
+    isValid: boolean;
+    length: number;
+    composition: Record<string, number>;
+    predictedProperties: {
+      hydrophobicity: number;
+      isoelectricPoint: number;
+      molecularWeight: number;
+      instabilityIndex: number;
+    };
+    motifs: Array<{
+      name: string;
+      position: [number, number];
+      confidence: number;
+      description: string;
+    }>;
+    secondaryStructure: {
+      alphaHelix: number;
+      betaSheet: number;
+      coil: number;
+      turn: number;
+    };
+    disorderedRegions: Array<[number, number]>;
+    functionalAnnotations: string[];
+  }>(),
+  explanation: text("explanation"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Binding Sites Table
+export const bindingSites = pgTable("binding_sites", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  predictionId: varchar("prediction_id").references(() => predictions.id),
+  residueIndices: jsonb("residue_indices").$type<number[]>().default([]),
+  bindingType: varchar("binding_type", { length: 50 }), // ligand, metal, nucleic_acid, protein
+  confidence: decimal("confidence", { precision: 5, scale: 2 }),
+  description: text("description"),
+  drugCandidate: boolean("drug_candidate").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Mutations Analysis Table
+export const mutations = pgTable("mutations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  predictionId: varchar("prediction_id").references(() => predictions.id),
+  position: integer("position").notNull(),
+  originalResidue: varchar("original_residue", { length: 3 }).notNull(),
+  mutatedResidue: varchar("mutated_residue", { length: 3 }).notNull(),
+  effect: varchar("effect", { length: 20 }), // deleterious, neutral, beneficial
+  confidence: decimal("confidence", { precision: 5, scale: 2 }),
+  structuralImpact: text("structural_impact"),
+  diseaseAssociation: text("disease_association"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Docking Jobs Table
+export const dockingJobs = pgTable("docking_jobs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  predictionId: varchar("prediction_id").references(() => predictions.id),
+  ligandSmiles: text("ligand_smiles"),
+  ligandName: varchar("ligand_name", { length: 255 }),
+  bindingSiteId: varchar("binding_site_id").references(() => bindingSites.id),
+  status: varchar("status", { length: 20 }).default("pending"), // pending, running, completed, failed
+  bindingAffinity: decimal("binding_affinity", { precision: 8, scale: 3 }),
+  dockedPose: text("docked_pose"), // PDB format of docked complex
+  interactionDetails: jsonb("interaction_details").$type<{
+    hydrogenBonds: Array<{ residue: string; distance: number }>;
+    hydrophobicContacts: string[];
+    saltBridges: string[];
+    piStacking: string[];
+  }>(),
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+// Drug Screening Compounds Table
+export const compounds = pgTable("compounds", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  chemblId: varchar("chembl_id", { length: 20 }),
+  smiles: text("smiles").notNull(),
+  name: varchar("name", { length: 255 }),
+  molecularWeight: decimal("molecular_weight", { precision: 10, scale: 3 }),
+  logP: decimal("log_p", { precision: 6, scale: 3 }),
+  hbdCount: integer("hbd_count"), // hydrogen bond donors
+  hbaCount: integer("hba_count"), // hydrogen bond acceptors
+  tpsa: decimal("tpsa", { precision: 8, scale: 2 }), // topological polar surface area
+  rotatableBonds: integer("rotatable_bonds"),
+  drugLikeness: decimal("drug_likeness", { precision: 5, scale: 2 }),
+  therapeuticArea: varchar("therapeutic_area", { length: 100 }),
+  mechanism: text("mechanism"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Lab Notes Table
+export const labNotes = pgTable("lab_notes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  predictionId: varchar("prediction_id").references(() => predictions.id),
+  title: varchar("title", { length: 255 }).notNull(),
+  content: text("content"),
+  noteType: varchar("note_type", { length: 50 }), // observation, hypothesis, result, method
+  tags: jsonb("tags").$type<string[]>().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// LunaFold Type exports
+export type Prediction = typeof predictions.$inferSelect;
+export type InsertPrediction = typeof predictions.$inferInsert;
+export type BindingSite = typeof bindingSites.$inferSelect;
+export type InsertBindingSite = typeof bindingSites.$inferInsert;
+export type Mutation = typeof mutations.$inferSelect;
+export type InsertMutation = typeof mutations.$inferInsert;
+export type DockingJob = typeof dockingJobs.$inferSelect;
+export type InsertDockingJob = typeof dockingJobs.$inferInsert;
+export type Compound = typeof compounds.$inferSelect;
+export type InsertCompound = typeof compounds.$inferInsert;
+export type LabNote = typeof labNotes.$inferSelect;
+export type InsertLabNote = typeof labNotes.$inferInsert;
+
+// LunaFold Insert Schemas
+export const insertPredictionSchema = createInsertSchema(predictions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertBindingSiteSchema = createInsertSchema(bindingSites).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertMutationSchema = createInsertSchema(mutations).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertDockingJobSchema = createInsertSchema(dockingJobs).omit({
+  id: true,
+  createdAt: true,
+  completedAt: true,
+});
+
+export const insertCompoundSchema = createInsertSchema(compounds).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertLabNoteSchema = createInsertSchema(labNotes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
