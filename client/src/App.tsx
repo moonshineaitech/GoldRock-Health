@@ -55,6 +55,8 @@ import DrugInteractions from "@/pages/drug-interactions";
 import SymptomChecker from "@/pages/symptom-checker";
 import HealthMetrics from "@/pages/health-metrics";
 import Enrollment from "@/pages/enrollment";
+import LunaFold from "@/pages/lunafold";
+import LunaFoldLab from "@/pages/lunafold-lab";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
@@ -242,6 +244,8 @@ function Router() {
       </Route>
       <Route path="/health-metrics" component={HealthMetrics} />
       <Route path="/enrollment" component={Enrollment} />
+      <Route path="/lunafold" component={LunaFold} />
+      <Route path="/lunafold-lab" component={LunaFoldLab} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

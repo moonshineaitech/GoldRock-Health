@@ -1954,6 +1954,7 @@ export const predictions = pgTable("predictions", {
   proteinName: text("protein_name"),
   organism: text("organism"),
   pdbData: text("pdb_data"), // PDB format structure data
+  cifData: text("cif_data"), // mmCIF format structure data
   plddtScores: jsonb("plddt_scores").$type<number[]>().default([]),
   paeMatrix: jsonb("pae_matrix").$type<number[][]>().default([]),
   modelVersion: varchar("model_version", { length: 50 }),
@@ -2038,6 +2039,7 @@ export const dockingJobs = pgTable("docking_jobs", {
 // Drug Screening Compounds Table
 export const compounds = pgTable("compounds", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
   chemblId: varchar("chembl_id", { length: 20 }),
   smiles: text("smiles").notNull(),
   name: varchar("name", { length: 255 }),

@@ -9,7 +9,11 @@ import { aiProvider } from "./services/aiProvider";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
-import { insertUserProgressSchema } from "@shared/schema";
+import { insertUserProgressSchema, insertPredictionSchema, insertBindingSiteSchema, insertMutationSchema, insertDockingJobSchema, insertCompoundSchema, insertLabNoteSchema } from "@shared/schema";
+import * as alphafoldService from "./ai/alphafold-service";
+import * as proteinAnalyzer from "./ai/protein-analyzer";
+import * as bindingSiteAnalyzer from "./ai/binding-site-analyzer";
+import { PROTEIN_COLLECTIONS, getAllProteins, getProteinByUniprotId, searchProteins, getTopProteins } from "@shared/protein-collections";
 import { setupAuth, isAuthenticated, requiresSubscription, requiresAiAgreement, isAdmin } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
 import Stripe from "stripe";
@@ -4573,6 +4577,377 @@ Provide a comprehensive comparison in JSON format:
     } catch (error) {
       console.error('Error deleting user insurance plan:', error);
       res.status(500).json({ message: 'Failed to delete insurance plan' });
+    }
+  });
+
+  // ========================================
+  // LUNAFOLD PROTEIN STRUCTURE PREDICTION API
+  // ========================================
+
+  // GET /api/lunafold/proteins - Get curated protein collections
+  app.get('/api/lunafold/proteins', async (req, res) => {
+    try {
+      const { category, search, limit = '50' } = req.query;
+      
+      if (search && typeof search === 'string') {
+        const results = searchProteins(search);
+        res.json({ proteins: results.slice(0, parseInt(limit as string)) });
+      } else if (category && typeof category === 'string') {
+        const collection = PROTEIN_COLLECTIONS.find(c => c.id === category);
+        res.json({ 
+          proteins: collection?.proteins.slice(0, parseInt(limit as string)) || [],
+          category: collection?.id,
+          description: collection?.description
+        });
+      } else {
+        res.json({ 
+          collections: PROTEIN_COLLECTIONS.map(c => ({
+            id: c.id,
+            title: c.title,
+            description: c.description,
+            count: c.proteins.length
+          })),
+          featured: getTopProteins(8)
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching proteins:', error);
+      res.status(500).json({ message: 'Failed to fetch proteins' });
+    }
+  });
+
+  // GET /api/lunafold/proteins/:uniprotId - Get protein by UniProt ID
+  app.get('/api/lunafold/proteins/:uniprotId', async (req, res) => {
+    try {
+      const { uniprotId } = req.params;
+      const protein = getProteinByUniprotId(uniprotId);
+      
+      if (!protein) {
+        return res.status(404).json({ message: 'Protein not found' });
+      }
+      
+      res.json(protein);
+    } catch (error) {
+      console.error('Error fetching protein:', error);
+      res.status(500).json({ message: 'Failed to fetch protein' });
+    }
+  });
+
+  // POST /api/lunafold/fold - Fold a protein sequence (fetch from AlphaFold DB)
+  app.post('/api/lunafold/fold', express.json(), async (req, res) => {
+    try {
+      const { sequence, uniprotId } = req.body;
+      
+      if (!sequence && !uniprotId) {
+        return res.status(400).json({ message: 'Sequence or UniProt ID required' });
+      }
+
+      let structure;
+      if (uniprotId) {
+        structure = await alphafoldService.fetchAlphaFoldDBStructure(uniprotId);
+      } else {
+        structure = await alphafoldService.getStructureForSequence(sequence);
+      }
+      
+      if (!structure) {
+        return res.status(404).json({ 
+          error: 'NO_STRUCTURE_FOUND',
+          message: 'No pre-computed structure found in AlphaFold Database for this sequence' 
+        });
+      }
+      
+      res.json(structure);
+    } catch (error) {
+      console.error('Error folding sequence:', error);
+      res.status(500).json({ message: 'Failed to fold sequence' });
+    }
+  });
+
+  // POST /api/lunafold/analyze - Analyze protein sequence
+  app.post('/api/lunafold/analyze', express.json(), async (req, res) => {
+    try {
+      const { sequence } = req.body;
+      
+      if (!sequence) {
+        return res.status(400).json({ message: 'Sequence required' });
+      }
+
+      const analysis = await proteinAnalyzer.analyzeSequence(sequence);
+      res.json(analysis);
+    } catch (error) {
+      console.error('Error analyzing sequence:', error);
+      res.status(500).json({ message: 'Failed to analyze sequence' });
+    }
+  });
+
+  // POST /api/lunafold/explain - Get AI explanation of protein
+  app.post('/api/lunafold/explain', express.json(), async (req, res) => {
+    try {
+      const { sequence, proteinName, avgPlddt, highConfCount, disorderedCount } = req.body;
+      
+      if (!sequence) {
+        return res.status(400).json({ message: 'Sequence required' });
+      }
+
+      const hypotheses = await proteinAnalyzer.generateAIHypotheses(
+        proteinName || 'Unknown Protein',
+        avgPlddt || 75.0,
+        highConfCount || Math.floor(sequence.length * 0.3),
+        disorderedCount || Math.floor(sequence.length * 0.1),
+        sequence.length,
+        sequence
+      );
+      
+      res.json({ hypotheses });
+    } catch (error) {
+      console.error('Error generating explanation:', error);
+      res.status(500).json({ message: 'Failed to generate explanation' });
+    }
+  });
+
+  // POST /api/lunafold/binding-sites - Detect binding sites
+  app.post('/api/lunafold/binding-sites', express.json(), async (req, res) => {
+    try {
+      const { pdbData, cifData, sequence, plddtScores } = req.body;
+      
+      if (!pdbData && !cifData) {
+        return res.status(400).json({ message: 'PDB or CIF data required' });
+      }
+
+      const bindingSites = bindingSiteAnalyzer.analyzeBindingSites(
+        cifData || null,
+        pdbData || null,
+        plddtScores || null,
+        sequence || ''
+      );
+      res.json({ bindingSites });
+    } catch (error) {
+      console.error('Error detecting binding sites:', error);
+      res.status(500).json({ message: 'Failed to detect binding sites' });
+    }
+  });
+
+  // GET /api/lunafold/predictions - Get user's predictions (authenticated)
+  app.get('/api/lunafold/predictions', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const predictions = await storage.getPredictionsByUser(userId);
+      res.json(predictions);
+    } catch (error) {
+      console.error('Error fetching predictions:', error);
+      res.status(500).json({ message: 'Failed to fetch predictions' });
+    }
+  });
+
+  // POST /api/lunafold/predictions - Save a prediction (authenticated)
+  app.post('/api/lunafold/predictions', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const predictionData = insertPredictionSchema.parse({
+        ...req.body,
+        userId
+      });
+      
+      const prediction = await storage.createPrediction(predictionData);
+      res.status(201).json(prediction);
+    } catch (error) {
+      console.error('Error saving prediction:', error);
+      res.status(500).json({ message: 'Failed to save prediction' });
+    }
+  });
+
+  // GET /api/lunafold/predictions/:id - Get prediction by ID (authenticated)
+  app.get('/api/lunafold/predictions/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const userId = req.user.claims.sub;
+      
+      const prediction = await storage.getPrediction(id);
+      if (!prediction) {
+        return res.status(404).json({ message: 'Prediction not found' });
+      }
+      
+      if (prediction.userId !== userId) {
+        return res.status(403).json({ message: 'Access denied' });
+      }
+      
+      res.json(prediction);
+    } catch (error) {
+      console.error('Error fetching prediction:', error);
+      res.status(500).json({ message: 'Failed to fetch prediction' });
+    }
+  });
+
+  // DELETE /api/lunafold/predictions/:id - Delete prediction (authenticated)
+  app.delete('/api/lunafold/predictions/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const userId = req.user.claims.sub;
+      
+      const prediction = await storage.getPrediction(id);
+      if (!prediction) {
+        return res.status(404).json({ message: 'Prediction not found' });
+      }
+      
+      if (prediction.userId !== userId) {
+        return res.status(403).json({ message: 'Access denied' });
+      }
+      
+      await storage.deletePrediction(id);
+      res.json({ message: 'Prediction deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting prediction:', error);
+      res.status(500).json({ message: 'Failed to delete prediction' });
+    }
+  });
+
+  // ========================================
+  // LUNAFOLD VIRTUAL LAB API
+  // ========================================
+
+  // POST /api/lunafold/lab/binding-sites - Save binding site analysis
+  app.post('/api/lunafold/lab/binding-sites', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const data = insertBindingSiteSchema.parse({
+        ...req.body,
+        userId
+      });
+      
+      const bindingSite = await storage.createBindingSite(data);
+      res.status(201).json(bindingSite);
+    } catch (error) {
+      console.error('Error saving binding site:', error);
+      res.status(500).json({ message: 'Failed to save binding site' });
+    }
+  });
+
+  // GET /api/lunafold/lab/binding-sites/:predictionId - Get binding sites for prediction
+  app.get('/api/lunafold/lab/binding-sites/:predictionId', isAuthenticated, async (req: any, res) => {
+    try {
+      const { predictionId } = req.params;
+      const bindingSites = await storage.getBindingSitesByPrediction(predictionId);
+      res.json(bindingSites);
+    } catch (error) {
+      console.error('Error fetching binding sites:', error);
+      res.status(500).json({ message: 'Failed to fetch binding sites' });
+    }
+  });
+
+  // POST /api/lunafold/lab/mutations - Save mutation analysis
+  app.post('/api/lunafold/lab/mutations', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const data = insertMutationSchema.parse({
+        ...req.body,
+        userId
+      });
+      
+      const mutation = await storage.createMutation(data);
+      res.status(201).json(mutation);
+    } catch (error) {
+      console.error('Error saving mutation:', error);
+      res.status(500).json({ message: 'Failed to save mutation' });
+    }
+  });
+
+  // GET /api/lunafold/lab/mutations/:predictionId - Get mutations for prediction
+  app.get('/api/lunafold/lab/mutations/:predictionId', isAuthenticated, async (req: any, res) => {
+    try {
+      const { predictionId } = req.params;
+      const mutations = await storage.getMutationsByPrediction(predictionId);
+      res.json(mutations);
+    } catch (error) {
+      console.error('Error fetching mutations:', error);
+      res.status(500).json({ message: 'Failed to fetch mutations' });
+    }
+  });
+
+  // POST /api/lunafold/lab/docking - Create docking job
+  app.post('/api/lunafold/lab/docking', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const data = insertDockingJobSchema.parse({
+        ...req.body,
+        userId,
+        status: 'pending'
+      });
+      
+      const dockingJob = await storage.createDockingJob(data);
+      res.status(201).json(dockingJob);
+    } catch (error) {
+      console.error('Error creating docking job:', error);
+      res.status(500).json({ message: 'Failed to create docking job' });
+    }
+  });
+
+  // GET /api/lunafold/lab/docking - Get user's docking jobs
+  app.get('/api/lunafold/lab/docking', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const dockingJobs = await storage.getDockingJobsByUser(userId);
+      res.json(dockingJobs);
+    } catch (error) {
+      console.error('Error fetching docking jobs:', error);
+      res.status(500).json({ message: 'Failed to fetch docking jobs' });
+    }
+  });
+
+  // POST /api/lunafold/lab/compounds - Save compound
+  app.post('/api/lunafold/lab/compounds', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const data = insertCompoundSchema.parse({
+        ...req.body,
+        userId
+      });
+      
+      const compound = await storage.createCompound(data);
+      res.status(201).json(compound);
+    } catch (error) {
+      console.error('Error saving compound:', error);
+      res.status(500).json({ message: 'Failed to save compound' });
+    }
+  });
+
+  // GET /api/lunafold/lab/compounds - Get user's compounds
+  app.get('/api/lunafold/lab/compounds', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const compounds = await storage.getCompoundsByUser(userId);
+      res.json(compounds);
+    } catch (error) {
+      console.error('Error fetching compounds:', error);
+      res.status(500).json({ message: 'Failed to fetch compounds' });
+    }
+  });
+
+  // POST /api/lunafold/lab/notes - Save lab note
+  app.post('/api/lunafold/lab/notes', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const data = insertLabNoteSchema.parse({
+        ...req.body,
+        userId
+      });
+      
+      const note = await storage.createLabNote(data);
+      res.status(201).json(note);
+    } catch (error) {
+      console.error('Error saving lab note:', error);
+      res.status(500).json({ message: 'Failed to save lab note' });
+    }
+  });
+
+  // GET /api/lunafold/lab/notes/:predictionId - Get notes for prediction
+  app.get('/api/lunafold/lab/notes/:predictionId', isAuthenticated, async (req: any, res) => {
+    try {
+      const { predictionId } = req.params;
+      const notes = await storage.getLabNotesByPrediction(predictionId);
+      res.json(notes);
+    } catch (error) {
+      console.error('Error fetching lab notes:', error);
+      res.status(500).json({ message: 'Failed to fetch lab notes' });
     }
   });
 

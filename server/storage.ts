@@ -89,7 +89,25 @@ import {
   type BenefitCategory,
   type PlanBenefit,
   type UserInsurancePlan,
-  type InsertUserInsurancePlan
+  type InsertUserInsurancePlan,
+  predictions,
+  bindingSites,
+  mutations,
+  dockingJobs,
+  compounds,
+  labNotes,
+  type Prediction,
+  type InsertPrediction,
+  type BindingSite,
+  type InsertBindingSite,
+  type Mutation,
+  type InsertMutation,
+  type DockingJob,
+  type InsertDockingJob,
+  type Compound,
+  type InsertCompound,
+  type LabNote,
+  type InsertLabNote
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count, lte, inArray, asc } from "drizzle-orm";
@@ -228,6 +246,33 @@ export interface IStorage {
   getUserInsurancePlans(userId: string): Promise<UserInsurancePlan[]>;
   createUserInsurancePlan(data: InsertUserInsurancePlan): Promise<UserInsurancePlan>;
   deleteUserInsurancePlan(id: string, userId: string): Promise<boolean>;
+
+  // LunaFold Protein Predictions
+  createPrediction(data: InsertPrediction): Promise<Prediction>;
+  getPrediction(id: string): Promise<Prediction | undefined>;
+  getPredictionsByUser(userId: string): Promise<Prediction[]>;
+  deletePrediction(id: string): Promise<boolean>;
+
+  // LunaFold Binding Sites
+  createBindingSite(data: InsertBindingSite): Promise<BindingSite>;
+  getBindingSitesByPrediction(predictionId: string): Promise<BindingSite[]>;
+
+  // LunaFold Mutations
+  createMutation(data: InsertMutation): Promise<Mutation>;
+  getMutationsByPrediction(predictionId: string): Promise<Mutation[]>;
+
+  // LunaFold Docking Jobs
+  createDockingJob(data: InsertDockingJob): Promise<DockingJob>;
+  getDockingJobsByUser(userId: string): Promise<DockingJob[]>;
+  updateDockingJob(id: string, updates: Partial<DockingJob>): Promise<DockingJob | undefined>;
+
+  // LunaFold Compounds
+  createCompound(data: InsertCompound): Promise<Compound>;
+  getCompoundsByUser(userId: string): Promise<Compound[]>;
+
+  // LunaFold Lab Notes
+  createLabNote(data: InsertLabNote): Promise<LabNote>;
+  getLabNotesByPrediction(predictionId: string): Promise<LabNote[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1362,6 +1407,97 @@ export class DatabaseStorage implements IStorage {
       )
     );
     return true;
+  }
+
+  // LunaFold Protein Predictions
+  async createPrediction(data: InsertPrediction): Promise<Prediction> {
+    const [created] = await db.insert(predictions).values(data).returning();
+    return created;
+  }
+
+  async getPrediction(id: string): Promise<Prediction | undefined> {
+    const [prediction] = await db.select().from(predictions).where(eq(predictions.id, id));
+    return prediction;
+  }
+
+  async getPredictionsByUser(userId: string): Promise<Prediction[]> {
+    return await db.select().from(predictions)
+      .where(eq(predictions.userId, userId))
+      .orderBy(desc(predictions.createdAt));
+  }
+
+  async deletePrediction(id: string): Promise<boolean> {
+    await db.delete(predictions).where(eq(predictions.id, id));
+    return true;
+  }
+
+  // LunaFold Binding Sites
+  async createBindingSite(data: InsertBindingSite): Promise<BindingSite> {
+    const [created] = await db.insert(bindingSites).values(data).returning();
+    return created;
+  }
+
+  async getBindingSitesByPrediction(predictionId: string): Promise<BindingSite[]> {
+    return await db.select().from(bindingSites)
+      .where(eq(bindingSites.predictionId, predictionId))
+      .orderBy(desc(bindingSites.createdAt));
+  }
+
+  // LunaFold Mutations
+  async createMutation(data: InsertMutation): Promise<Mutation> {
+    const [created] = await db.insert(mutations).values(data).returning();
+    return created;
+  }
+
+  async getMutationsByPrediction(predictionId: string): Promise<Mutation[]> {
+    return await db.select().from(mutations)
+      .where(eq(mutations.predictionId, predictionId))
+      .orderBy(desc(mutations.createdAt));
+  }
+
+  // LunaFold Docking Jobs
+  async createDockingJob(data: InsertDockingJob): Promise<DockingJob> {
+    const [created] = await db.insert(dockingJobs).values(data).returning();
+    return created;
+  }
+
+  async getDockingJobsByUser(userId: string): Promise<DockingJob[]> {
+    return await db.select().from(dockingJobs)
+      .where(eq(dockingJobs.userId, userId))
+      .orderBy(desc(dockingJobs.createdAt));
+  }
+
+  async updateDockingJob(id: string, updates: Partial<DockingJob>): Promise<DockingJob | undefined> {
+    const { id: _, createdAt: __, ...updateFields } = updates;
+    const [updated] = await db.update(dockingJobs)
+      .set(updateFields)
+      .where(eq(dockingJobs.id, id))
+      .returning();
+    return updated;
+  }
+
+  // LunaFold Compounds
+  async createCompound(data: InsertCompound): Promise<Compound> {
+    const [created] = await db.insert(compounds).values(data).returning();
+    return created;
+  }
+
+  async getCompoundsByUser(userId: string): Promise<Compound[]> {
+    return await db.select().from(compounds)
+      .where(eq(compounds.userId, userId))
+      .orderBy(desc(compounds.createdAt));
+  }
+
+  // LunaFold Lab Notes
+  async createLabNote(data: InsertLabNote): Promise<LabNote> {
+    const [created] = await db.insert(labNotes).values(data).returning();
+    return created;
+  }
+
+  async getLabNotesByPrediction(predictionId: string): Promise<LabNote[]> {
+    return await db.select().from(labNotes)
+      .where(eq(labNotes.predictionId, predictionId))
+      .orderBy(desc(labNotes.createdAt));
   }
 }
 
