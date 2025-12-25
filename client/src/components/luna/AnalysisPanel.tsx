@@ -42,13 +42,13 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
           
           <div className="grid grid-cols-2 gap-3 text-sm mb-4">
             <div className="bg-black/20 p-3 rounded-lg">
-              <div className="text-[10px] text-white/40 font-mono uppercase">Avg. pLDDT</div>
+              <div className="text-[10px] text-gray-300 font-mono uppercase">Avg. pLDDT</div>
               <div className="text-white font-bold text-xl" style={{ color: avgPlddt >= 90 ? '#0053d6' : avgPlddt >= 70 ? '#65cbf3' : avgPlddt >= 50 ? '#ffdb13' : '#ff7d45' }}>
                 {avgPlddt.toFixed(1)}%
               </div>
             </div>
             <div className="bg-black/20 p-3 rounded-lg">
-              <div className="text-[10px] text-white/40 font-mono uppercase">Quality</div>
+              <div className="text-[10px] text-gray-300 font-mono uppercase">Quality</div>
               <div className={`font-bold ${avgPlddt >= 85 ? 'text-green-400' : avgPlddt >= 70 ? 'text-blue-400' : avgPlddt >= 50 ? 'text-yellow-400' : 'text-orange-400'}`}>
                 {avgPlddt >= 85 ? 'Excellent' : avgPlddt >= 70 ? 'Good' : avgPlddt >= 50 ? 'Fair' : 'Low'}
               </div>
@@ -56,9 +56,9 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
           </div>
 
           <div className="space-y-2">
-            <div className="text-[10px] text-white/40 font-mono uppercase mb-2">Confidence Distribution</div>
+            <div className="text-[10px] text-gray-300 font-mono uppercase mb-2">Confidence Distribution</div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/50 w-24">Very High (≥90)</span>
+              <span className="text-xs text-gray-300 w-24">Very High (≥90)</span>
               <div className="flex-1 h-2 bg-black/30 rounded-full overflow-hidden">
                 <motion.div 
                   className="h-full"
@@ -68,10 +68,10 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
                   transition={{ duration: 0.5 }}
                 />
               </div>
-              <span className="text-xs text-white/70 w-12 text-right">{((highConfidence / totalResidues) * 100).toFixed(0)}%</span>
+              <span className="text-xs text-white w-12 text-right">{((highConfidence / totalResidues) * 100).toFixed(0)}%</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/50 w-24">Confident (70-90)</span>
+              <span className="text-xs text-gray-300 w-24">Confident (70-90)</span>
               <div className="flex-1 h-2 bg-black/30 rounded-full overflow-hidden">
                 <motion.div 
                   className="h-full"
@@ -81,10 +81,10 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
                   transition={{ duration: 0.5, delay: 0.1 }}
                 />
               </div>
-              <span className="text-xs text-white/70 w-12 text-right">{((goodConfidence / totalResidues) * 100).toFixed(0)}%</span>
+              <span className="text-xs text-white w-12 text-right">{((goodConfidence / totalResidues) * 100).toFixed(0)}%</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/50 w-24">Low (50-70)</span>
+              <span className="text-xs text-gray-300 w-24">Low (50-70)</span>
               <div className="flex-1 h-2 bg-black/30 rounded-full overflow-hidden">
                 <motion.div 
                   className="h-full"
@@ -94,10 +94,10 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
                   transition={{ duration: 0.5, delay: 0.2 }}
                 />
               </div>
-              <span className="text-xs text-white/70 w-12 text-right">{((lowConfidence / totalResidues) * 100).toFixed(0)}%</span>
+              <span className="text-xs text-white w-12 text-right">{((lowConfidence / totalResidues) * 100).toFixed(0)}%</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/50 w-24">Very Low (&lt;50)</span>
+              <span className="text-xs text-gray-300 w-24">Very Low (&lt;50)</span>
               <div className="flex-1 h-2 bg-black/30 rounded-full overflow-hidden">
                 <motion.div 
                   className="h-full"
@@ -107,7 +107,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
                   transition={{ duration: 0.5, delay: 0.3 }}
                 />
               </div>
-              <span className="text-xs text-white/70 w-12 text-right">{((veryLow / totalResidues) * 100).toFixed(0)}%</span>
+              <span className="text-xs text-white w-12 text-right">{((veryLow / totalResidues) * 100).toFixed(0)}%</span>
             </div>
           </div>
         </motion.div>
@@ -125,21 +125,21 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
         
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="bg-black/20 p-3 rounded-lg">
-            <div className="text-[10px] text-white/40 font-mono uppercase">Molecular Weight</div>
+            <div className="text-[10px] text-gray-300 font-mono uppercase">Molecular Weight</div>
             <div className="text-white font-bold">{analysis.predictedProperties.molecularWeight.toFixed(0)} Da</div>
           </div>
           <div className="bg-black/20 p-3 rounded-lg">
-            <div className="text-[10px] text-white/40 font-mono uppercase">Isoelectric Point</div>
+            <div className="text-[10px] text-gray-300 font-mono uppercase">Isoelectric Point</div>
             <div className="text-white font-bold">pH {analysis.predictedProperties.isoelectricPoint.toFixed(1)}</div>
           </div>
           <div className="bg-black/20 p-3 rounded-lg">
-            <div className="text-[10px] text-white/40 font-mono uppercase">Hydrophobicity</div>
+            <div className="text-[10px] text-gray-300 font-mono uppercase">Hydrophobicity</div>
             <div className={`font-bold ${analysis.predictedProperties.hydrophobicity > 0 ? 'text-orange-400' : 'text-blue-400'}`}>
               {analysis.predictedProperties.hydrophobicity.toFixed(2)}
             </div>
           </div>
           <div className="bg-black/20 p-3 rounded-lg">
-            <div className="text-[10px] text-white/40 font-mono uppercase">Instability</div>
+            <div className="text-[10px] text-gray-300 font-mono uppercase">Instability</div>
             <div className={`font-bold ${analysis.predictedProperties.instabilityIndex > 40 ? 'text-red-400' : 'text-green-400'}`}>
               {analysis.predictedProperties.instabilityIndex.toFixed(1)}
             </div>
@@ -160,7 +160,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
         
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-white/50 w-20">α-Helix</span>
+            <span className="text-xs text-gray-300 w-20">α-Helix</span>
             <div className="flex-1 h-2 bg-black/30 rounded-full overflow-hidden">
               <motion.div 
                 className="h-full bg-gradient-to-r from-primary to-cyan-400"

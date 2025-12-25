@@ -122,12 +122,12 @@ export default function ResearchToolsPanel({ prediction, analysis }: ResearchToo
           <FlaskConical className="w-4 h-4 text-primary" />
           Research Tools
         </h3>
-        <p className="text-xs text-white/50 mt-1">Export, search, and analyze</p>
+        <p className="text-xs text-cyan-400/80 mt-1">Export, search, and analyze</p>
       </div>
 
       <div className="p-4 space-y-4">
         <div>
-          <h4 className="text-xs font-semibold text-white/70 mb-2 flex items-center gap-1.5">
+          <h4 className="text-xs font-semibold text-gray-200 mb-2 flex items-center gap-1.5">
             <Dna className="w-3.5 h-3.5" />
             Sequence Export
           </h4>
@@ -166,7 +166,7 @@ export default function ResearchToolsPanel({ prediction, analysis }: ResearchToo
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold text-white/70 mb-2 flex items-center gap-1.5">
+          <h4 className="text-xs font-semibold text-gray-200 mb-2 flex items-center gap-1.5">
             <Search className="w-3.5 h-3.5" />
             Sequence Search
           </h4>

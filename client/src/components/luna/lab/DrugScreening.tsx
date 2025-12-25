@@ -169,21 +169,21 @@ export default function DrugScreening() {
   const goodCount = candidates.filter(c => c.drugLikeness === "good").length;
 
   return (
-    <div className="space-y-4" data-testid="drug-screening">
-      <div className="glass-card p-4 rounded-xl">
+    <div className="space-y-4 p-4" data-testid="drug-screening">
+      <div className="p-4 rounded-xl border border-pink-500/20" style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center">
             <Pill className="w-5 h-5 text-pink-400" />
           </div>
           <div>
             <h3 className="font-display font-semibold text-white">ADMET & Drug-Likeness Screening</h3>
-            <p className="text-xs text-white/50">Evaluate pharmacokinetics and Lipinski's Rule of Five</p>
+            <p className="text-xs text-cyan-400/80">Evaluate pharmacokinetics and Lipinski's Rule of Five</p>
           </div>
         </div>
 
         <div className="space-y-3 mb-4">
           <div>
-            <label className="text-xs text-white/50 block mb-1">Compound Name (optional)</label>
+            <label className="text-xs text-gray-300 block mb-1">Compound Name (optional)</label>
             <input
               type="text"
               value={customName}
@@ -194,7 +194,7 @@ export default function DrugScreening() {
             />
           </div>
           <div>
-            <label className="text-xs text-white/50 block mb-1">SMILES String</label>
+            <label className="text-xs text-gray-300 block mb-1">SMILES String</label>
             <div className="flex gap-2">
               <input
                 type="text"
