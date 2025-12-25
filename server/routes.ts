@@ -4663,6 +4663,58 @@ Provide a comprehensive comparison in JSON format:
     }
   });
 
+  // POST /api/lunafold/upload-af3 - Upload AlphaFold 3 prediction files
+  app.post('/api/lunafold/upload-af3', express.json(), async (req, res) => {
+    try {
+      const { pdbContent, confidenceJson, sequence } = req.body;
+      
+      if (!pdbContent) {
+        return res.status(400).json({ message: 'PDB content required' });
+      }
+
+      let plddtScores: number[] = [];
+      let paeMatrix: number[][] = [];
+      
+      if (confidenceJson) {
+        try {
+          const confidenceData = JSON.parse(confidenceJson);
+          if (confidenceData.plddt) {
+            plddtScores = confidenceData.plddt;
+          }
+          if (confidenceData.pae) {
+            paeMatrix = confidenceData.pae;
+          }
+        } catch (e) {
+          console.warn('Failed to parse confidence JSON:', e);
+        }
+      }
+
+      const analysis = sequence ? await proteinAnalyzer.analyzeSequence(sequence) : null;
+
+      const prediction = {
+        id: `upload-${Date.now()}`,
+        sequence: sequence || '',
+        pdbData: pdbContent,
+        cifData: null,
+        plddtScores,
+        paeMatrix,
+        modelVersion: 'AlphaFold 3 Upload',
+        status: 'completed',
+        proteinName: 'Uploaded Structure',
+        organism: 'Unknown',
+        analysis,
+        explanation: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      res.json(prediction);
+    } catch (error) {
+      console.error('Error processing AF3 upload:', error);
+      res.status(500).json({ message: 'Failed to process AlphaFold 3 upload' });
+    }
+  });
+
   // POST /api/lunafold/analyze - Analyze protein sequence
   app.post('/api/lunafold/analyze', express.json(), async (req, res) => {
     try {

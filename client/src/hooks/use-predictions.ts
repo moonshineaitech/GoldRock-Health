@@ -26,7 +26,7 @@ interface NoStructureError {
 export function useFoldSequence() {
   return useMutation({
     mutationFn: async (data: FoldSequenceRequest): Promise<PredictionWithAnalysis | NoStructureError> => {
-      const response = await fetch("/api/predictions/fold", {
+      const response = await fetch("/api/lunafold/fold", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -38,7 +38,7 @@ export function useFoldSequence() {
         if (result.error === "no_precomputed_structure") {
           return result as NoStructureError;
         }
-        throw new Error(result.error || "Failed to fold sequence");
+        throw new Error(result.message || result.error || "Failed to fold sequence");
       }
       
       return result as PredictionWithAnalysis;
@@ -49,7 +49,7 @@ export function useFoldSequence() {
 export function useUploadAF3() {
   return useMutation({
     mutationFn: async (data: UploadAF3Request): Promise<PredictionWithAnalysis> => {
-      const response = await fetch("/api/predictions/upload-af3", {
+      const response = await fetch("/api/lunafold/upload-af3", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -57,7 +57,7 @@ export function useUploadAF3() {
       
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || "Failed to process AF3 upload");
+        throw new Error(error.message || error.error || "Failed to process AF3 upload");
       }
       
       return response.json();
@@ -65,11 +65,11 @@ export function useUploadAF3() {
   });
 }
 
-export function usePrediction(id: number | null) {
+export function usePrediction(id: string | null) {
   return useQuery({
     queryKey: ["prediction", id],
     queryFn: async (): Promise<Prediction> => {
-      const response = await fetch(`/api/predictions/${id}`);
+      const response = await fetch(`/api/lunafold/predictions/${id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch prediction");
       }
@@ -83,7 +83,7 @@ export function useRecentPredictions(limit = 10) {
   return useQuery({
     queryKey: ["predictions", limit],
     queryFn: async (): Promise<Prediction[]> => {
-      const response = await fetch(`/api/predictions?limit=${limit}`);
+      const response = await fetch(`/api/lunafold/predictions?limit=${limit}`);
       if (!response.ok) {
         throw new Error("Failed to fetch predictions");
       }
@@ -99,10 +99,10 @@ export function isNoStructureError(result: any): result is NoStructureError {
 export function useFoldByUniprotId() {
   return useMutation({
     mutationFn: async (uniprotId: string): Promise<PredictionWithAnalysis | NoStructureError> => {
-      const response = await fetch("/api/predictions/fold", {
+      const response = await fetch("/api/lunafold/fold", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sequence: uniprotId }),
+        body: JSON.stringify({ uniprotId }),
       });
       
       const result = await response.json();
@@ -111,7 +111,7 @@ export function useFoldByUniprotId() {
         if (result.error === "no_precomputed_structure") {
           return result as NoStructureError;
         }
-        throw new Error(result.error || "Failed to load protein");
+        throw new Error(result.message || result.error || "Failed to load protein");
       }
       
       return result as PredictionWithAnalysis;
