@@ -5,1192 +5,635 @@ import {
   Gavel, Lock, Network, Crosshair, Calculator, MessageCircle, Crown, Sparkles,
   ArrowRight, Play, FileCheck, TrendingDown, Award, BadgeCheck, ChevronRight,
   FileX, CreditCard, Wrench, Puzzle, Heart, Search, Users, Settings, BarChart3,
-  Pill, Stethoscope, Activity, Microscope, Baby, Car, Home as HomeIcon, Trophy
+  Pill, Stethoscope, Activity, Microscope, Baby, Car, Home as HomeIcon, Trophy,
+  Star, CheckCircle, ArrowDown, Rocket, Globe, Layers, Cpu, Wand2
 } from "lucide-react";
-import { motion } from "framer-motion";
-import { Link } from "wouter";
-import { useState } from "react";
-import platformPromoVideo from "@assets/generated_videos/health_ai_platform_promo_video.mp4";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { Link, useLocation } from "wouter";
+import { useState, useEffect, useRef } from "react";
 
-// Premium Animated Feature Card matching bill-ai page design
-const PremiumFeatureCard = ({ icon: Icon, title, description, color, delay = 0 }: {
-  icon: any;
-  title: string;
-  description: string;
-  color: string;
-  delay?: number;
+const FloatingParticle = ({ delay, duration, x, y, size }: { delay: number; duration: number; x: number; y: number; size: number }) => (
+  <motion.div
+    className="absolute rounded-full bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-sm"
+    style={{ width: size, height: size, left: `${x}%`, top: `${y}%` }}
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{ 
+      opacity: [0, 0.8, 0.4, 0.8, 0],
+      scale: [0, 1, 1.2, 1, 0],
+      y: [0, -100, -200],
+      x: [0, Math.random() * 50 - 25],
+    }}
+    transition={{ 
+      duration, 
+      delay, 
+      repeat: Infinity, 
+      repeatDelay: Math.random() * 3,
+      ease: "easeInOut" 
+    }}
+  />
+);
+
+const GlowOrb = ({ color, size, x, y, delay }: { color: string; size: number; x: string; y: string; delay: number }) => (
+  <motion.div
+    className={`absolute rounded-full ${color} blur-3xl opacity-30`}
+    style={{ width: size, height: size, left: x, top: y }}
+    animate={{
+      scale: [1, 1.3, 1],
+      opacity: [0.2, 0.4, 0.2],
+      x: [0, 30, 0],
+      y: [0, -20, 0],
+    }}
+    transition={{ duration: 8, delay, repeat: Infinity, ease: "easeInOut" }}
+  />
+);
+
+const AnimatedCounter = ({ end, suffix = "", prefix = "", duration = 2 }: { end: number; suffix?: string; prefix?: string; duration?: number }) => {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  useEffect(() => {
+    if (!hasAnimated) return;
+    
+    let animationId: number;
+    let startTime: number | null = null;
+    
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      setCount(Math.floor(progress * end));
+      
+      if (progress < 1) {
+        animationId = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+    
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, [hasAnimated, end, duration]);
+
+  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
+};
+
+const FeatureCard3D = ({ icon: Icon, title, description, gradient, delay, href }: {
+  icon: any; title: string; description: string; gradient: string; delay: number; href: string;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setRotateX(-y * 20);
+    setRotateY(x * 20);
+  };
+
+  const handleClick = () => {
+    window.location.href = href;
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay, duration: 0.4 }}
-      whileHover={{ scale: 1.05, y: -8 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="relative group"
+      transition={{ delay, duration: 0.6, type: "spring" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { setRotateX(0); setRotateY(0); }}
+      onClick={handleClick}
+      className="block cursor-pointer"
+      style={{ perspective: "1000px" }}
       data-testid={`card-${title.toLowerCase().replace(/\s+/g, '-')}`}
     >
-      <div className={`relative bg-gradient-to-br ${color} rounded-3xl p-6 shadow-2xl overflow-hidden`}>
-        {/* Shimmer effect */}
+      <motion.div
+        className={`relative bg-gradient-to-br ${gradient} rounded-3xl p-8 text-white shadow-2xl overflow-hidden h-full`}
+        style={{ transformStyle: "preserve-3d" }}
+        animate={{ rotateX, rotateY }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        whileHover={{ scale: 1.02, boxShadow: "0 50px 100px -20px rgba(0,0,0,0.4)" }}
+      >
         <motion.div
-          initial={{ x: "-100%" }}
-          animate={{ x: isHovered ? "200%" : "-100%" }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 to-white/0 opacity-0"
+          whileHover={{ opacity: 1, x: ["-100%", "200%"] }}
+          transition={{ duration: 0.8 }}
         />
-
-        {/* Pulsing glow */}
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-black/10 rounded-full blur-2xl" />
+        
         <motion.div
-          animate={{ opacity: isHovered ? [0.5, 0.8, 0.5] : 0 }}
-          transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0 }}
-          className="absolute inset-0 bg-white/20 blur-xl pointer-events-none"
-        />
-
-        <div className="relative z-10">
-          <motion.div
-            animate={{ 
-              scale: isHovered ? [1, 1.2, 1] : 1,
-              rotate: isHovered ? [0, 5, -5, 0] : 0
-            }}
-            transition={{ duration: 0.5 }}
-            className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 shadow-lg"
-          >
-            <Icon className="h-7 w-7 text-white drop-shadow-lg" strokeWidth={2.5} />
-          </motion.div>
-          <h3 className="text-xl font-black text-white mb-2 drop-shadow-md">{title}</h3>
-          <p className="text-white/90 font-medium text-sm leading-relaxed">{description}</p>
-        </div>
-      </div>
+          className="relative z-10 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5 shadow-lg"
+          whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Icon className="h-8 w-8 text-white" strokeWidth={2} />
+        </motion.div>
+        
+        <h3 className="relative z-10 text-2xl font-black mb-3">{title}</h3>
+        <p className="relative z-10 text-white/90 text-base leading-relaxed mb-4">{description}</p>
+        
+        <motion.div 
+          className="relative z-10 flex items-center gap-2 text-white/80 font-bold"
+          whileHover={{ x: 5 }}
+        >
+          <span>Get Started</span>
+          <ArrowRight className="h-5 w-5" />
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 };
 
+const ScrollIndicator = () => (
+  <motion.div
+    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 2 }}
+  >
+    <span className="text-sm font-medium text-gray-500">Scroll to explore</span>
+    <motion.div
+      animate={{ y: [0, 8, 0] }}
+      transition={{ duration: 1.5, repeat: Infinity }}
+    >
+      <ArrowDown className="h-5 w-5 text-gray-400" />
+    </motion.div>
+  </motion.div>
+);
+
 export default function AuthLanding() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [pricingTab, setPricingTab] = useState<'monthly' | 'annual' | 'lifetime'>('monthly');
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+
+  const particles = Array.from({ length: 20 }, (_, i) => ({
+    delay: i * 0.5,
+    duration: 5 + Math.random() * 5,
+    x: Math.random() * 100,
+    y: 60 + Math.random() * 40,
+    size: 4 + Math.random() * 8,
+  }));
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
       <LandingNavigation />
       
-      {/* HERO SECTION - Ultra-premium with gradients */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-32 pb-20">
-        {/* Animated background orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute top-20 -left-20 w-96 h-96 bg-gradient-to-br from-emerald-400/20 via-teal-400/20 to-cyan-400/20 rounded-full blur-3xl"
-            animate={{ x: [0, 50, 0], y: [0, -30, 0], scale: [1, 1.1, 1] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute bottom-20 -right-20 w-96 h-96 bg-gradient-to-br from-purple-400/20 via-indigo-400/20 to-blue-400/20 rounded-full blur-3xl"
-            animate={{ x: [0, -50, 0], y: [0, 30, 0], scale: [1, 1.15, 1] }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-        </div>
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" data-testid="section-hero">
+        <GlowOrb color="bg-emerald-500" size={600} x="-10%" y="20%" delay={0} />
+        <GlowOrb color="bg-purple-500" size={500} x="70%" y="10%" delay={2} />
+        <GlowOrb color="bg-blue-500" size={400} x="50%" y="60%" delay={4} />
+        <GlowOrb color="bg-amber-500" size={350} x="20%" y="70%" delay={1} />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          {/* App Icon */}
-          <motion.div 
+        {particles.map((p, i) => (
+          <FloatingParticle key={i} {...p} />
+        ))}
+
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
+        
+        <motion.div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+
+        <motion.div 
+          className="relative z-10 max-w-6xl mx-auto px-6 text-center"
+          style={{ y, opacity }}
+        >
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 1, type: "spring", stiffness: 100 }}
             className="relative mx-auto mb-8"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, type: "spring", stiffness: 200 }}
           >
-            <div className="w-28 h-28 bg-gradient-to-br from-amber-500 via-orange-500 to-emerald-500 rounded-[2.75rem] flex items-center justify-center shadow-2xl mx-auto" style={{ isolation: 'isolate' }}>
-              <DollarSign className="w-14 h-14 text-white" strokeWidth={2.5} />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-amber-500 to-purple-500 rounded-[2.5rem] blur-2xl opacity-60"
+              animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            />
+            <div className="relative w-28 h-28 bg-gradient-to-br from-amber-400 via-orange-500 to-emerald-500 rounded-[2.5rem] flex items-center justify-center shadow-2xl mx-auto border border-white/20">
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-2 border-2 border-dashed border-white/30 rounded-[2rem]"
+              />
+              <DollarSign className="w-14 h-14 text-white drop-shadow-lg" strokeWidth={2.5} />
             </div>
           </motion.div>
 
-          {/* Headline */}
-          <motion.h1 
-            className="text-5xl md:text-7xl font-black mb-6 leading-[1.05]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <span className="text-gray-900">Your Complete</span>
-            <br />
-            <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-emerald-600 bg-clip-text text-transparent">
-              Health AI Command Center
-            </span>
-          </motion.h1>
-
-          {/* Feature Pills */}
           <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
             className="flex flex-wrap items-center justify-center gap-3 mb-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
           >
-            <span className="inline-flex items-center gap-2 bg-emerald-100 border border-emerald-300 rounded-full px-4 py-2">
-              <DollarSign className="h-4 w-4 text-emerald-600" />
-              <span className="text-sm font-bold text-emerald-700">Bill Analysis</span>
-            </span>
-            <span className="inline-flex items-center gap-2 bg-purple-100 border border-purple-300 rounded-full px-4 py-2">
-              <Brain className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-bold text-purple-700">Medical Training</span>
-            </span>
-            <span className="inline-flex items-center gap-2 bg-pink-100 border border-pink-300 rounded-full px-4 py-2">
-              <Stethoscope className="h-4 w-4 text-pink-600" />
-              <span className="text-sm font-bold text-pink-700">Health Education</span>
-            </span>
-            <span className="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 rounded-full px-4 py-2">
-              <Trophy className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-bold text-amber-700">Gamified Learning</span>
-            </span>
+            {[
+              { icon: DollarSign, label: "Bill Savings", color: "from-emerald-500/20 to-emerald-500/5 border-emerald-500/30 text-emerald-400" },
+              { icon: Brain, label: "AI Diagnostics", color: "from-purple-500/20 to-purple-500/5 border-purple-500/30 text-purple-400" },
+              { icon: Stethoscope, label: "Health Tools", color: "from-blue-500/20 to-blue-500/5 border-blue-500/30 text-blue-400" },
+              { icon: Trophy, label: "Gamified", color: "from-amber-500/20 to-amber-500/5 border-amber-500/30 text-amber-400" },
+            ].map((pill, i) => (
+              <motion.span
+                key={pill.label}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 + i * 0.1 }}
+                className={`inline-flex items-center gap-2 bg-gradient-to-r ${pill.color} border rounded-full px-4 py-2 backdrop-blur-sm`}
+              >
+                <pill.icon className="h-4 w-4" />
+                <span className="text-sm font-bold">{pill.label}</span>
+              </motion.span>
+            ))}
           </motion.div>
 
-          {/* Subheadline */}
-          <motion.p 
-            className="text-xl md:text-2xl text-gray-700 mb-10 max-w-3xl mx-auto font-semibold leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+          <motion.h1
+            className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-[1.05] tracking-tight"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
           >
-            Reduce medical bills, build medical knowledge, train with AI patient simulations, and browse health information all in one platform
+            <span className="text-white">Your Complete</span>
+            <br />
+            <motion.span
+              className="bg-gradient-to-r from-emerald-400 via-amber-400 to-purple-400 bg-clip-text text-transparent inline-block"
+              animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+              transition={{ duration: 5, repeat: Infinity }}
+              style={{ backgroundSize: "200% auto" }}
+            >
+              Health AI Platform
+            </motion.span>
+          </motion.h1>
+
+          <motion.p
+            className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto font-medium leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+          >
+            Reduce medical bills by <span className="text-emerald-400 font-bold">$2,000-$35,000+</span>, master diagnostics with AI patients, and access professional health tools
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
           >
             <motion.a
               href="/api/login"
-              className="group relative px-10 py-5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-lg rounded-2xl shadow-2xl shadow-emerald-500/50 overflow-hidden"
-              whileHover={{ scale: 1.05, y: -2 }}
+              className="group relative px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-lg rounded-2xl shadow-2xl shadow-emerald-500/30 overflow-hidden"
+              whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.5)" }}
               whileTap={{ scale: 0.95 }}
               data-testid="button-get-started-hero"
             >
               <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0"
                 initial={{ x: "-100%" }}
                 whileHover={{ x: "200%" }}
                 transition={{ duration: 0.6 }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
               />
-              <div className="relative z-10 flex items-center gap-2">
-                <Sparkles className="h-6 w-6" />
-                Start Free Analysis
-                <ArrowRight className="h-6 w-6" />
+              <div className="relative z-10 flex items-center gap-3">
+                <Rocket className="h-6 w-6" />
+                <span>Start Free Analysis</span>
+                <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
               </div>
             </motion.a>
-            
-            <a
+
+            <motion.a
               href="#features"
-              className="px-10 py-5 bg-white border-2 border-gray-300 text-gray-900 font-black text-lg rounded-2xl shadow-lg hover:shadow-xl hover:border-gray-400 transition-all"
+              className="px-10 py-5 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-bold text-lg rounded-2xl hover:bg-white/10 transition-all"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               data-testid="button-explore-features"
             >
-              Explore All Features
-            </a>
+              <div className="flex items-center gap-2">
+                <Layers className="h-5 w-5" />
+                <span>Explore Features</span>
+              </div>
+            </motion.a>
           </motion.div>
 
-          <motion.p
-            className="text-sm text-gray-600 font-medium"
+          <motion.div
+            className="flex items-center justify-center gap-8 text-gray-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 1.2 }}
           >
-            Free to start. Professional tools. No credit card required
-          </motion.p>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-emerald-500" />
+              <span className="text-sm font-medium">No credit card</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-blue-500" />
+              <span className="text-sm font-medium">HIPAA Compliant</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Lock className="h-5 w-5 text-purple-500" />
+              <span className="text-sm font-medium">Bank-level security</span>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        <ScrollIndicator />
+      </section>
+
+      <section className="py-24 relative" data-testid="section-stats">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {[
+              { value: 35000, prefix: "$", suffix: "+", label: "Average Savings", color: "from-emerald-500 to-teal-500" },
+              { value: 500, suffix: "+", label: "AI Patients", color: "from-purple-500 to-violet-500" },
+              { value: 19, suffix: "", label: "Specialties", color: "from-blue-500 to-indigo-500" },
+              { value: 98, suffix: "%", label: "Success Rate", color: "from-amber-500 to-orange-500" },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                className="relative group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity`} />
+                <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 text-center hover:border-white/20 transition-colors">
+                  <div className={`text-4xl md:text-5xl font-black bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}>
+                    <AnimatedCounter end={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+                  </div>
+                  <div className="text-gray-400 font-medium">{stat.label}</div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* PLATFORM OVERVIEW - Four Pillars */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50" id="features" data-testid="section-platform-overview">
-        <div className="max-w-6xl mx-auto px-6">
+      <section id="features" className="py-24 relative" data-testid="section-platform-overview">
+        <div className="max-w-7xl mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
           >
-            <span className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
+            <motion.span
+              className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 text-purple-400 px-5 py-2 rounded-full font-bold text-sm mb-6"
+              whileHover={{ scale: 1.05 }}
+            >
               <Sparkles className="h-4 w-4" />
               Complete Health AI Platform
-            </span>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              More Than Just Bill Analysis
+            </motion.span>
+            <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
+              Four Pillars of
+              <span className="bg-gradient-to-r from-emerald-400 to-purple-400 bg-clip-text text-transparent"> Excellence</span>
             </h2>
-            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
-              Four powerful pillars to transform your healthcare experience
+            <p className="text-xl text-gray-400 font-medium max-w-2xl mx-auto">
+              Everything you need to reduce medical bills and master healthcare
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <FeatureCard3D
+              icon={DollarSign}
+              title="Financial Defense Suite"
+              description="AI-powered bill analysis finds errors, overcharges, and savings opportunities. Get dispute templates, negotiation scripts, and coaching to reduce bills by $2K-$35K+"
+              gradient="from-emerald-600 via-emerald-500 to-teal-500"
+              delay={0.1}
+              href="/api/login?redirect=/bill-ai"
+            />
+            <FeatureCard3D
+              icon={Brain}
+              title="Clinical Intelligence Hub"
+              description="Access health reference tools, lab analyzers, medication databases, and symptom libraries for educational purposes"
+              gradient="from-blue-600 via-blue-500 to-indigo-500"
+              delay={0.2}
+              href="/api/login?redirect=/clinical-command-center"
+            />
+            <FeatureCard3D
+              icon={Target}
+              title="Diagnostic Mastery"
+              description="Train with 500+ AI patient cases across 19 specialties. Practice history-taking, physical exams, and differential diagnosis"
+              gradient="from-purple-600 via-purple-500 to-violet-500"
+              delay={0.3}
+              href="/api/login?redirect=/patient-diagnostics"
+            />
+            <FeatureCard3D
+              icon={Trophy}
+              title="Gamified Learning"
+              description="Earn XP, unlock achievements, compete on leaderboards, and play Pixel Doctor for an engaging learning experience"
+              gradient="from-amber-600 via-amber-500 to-orange-500"
+              delay={0.4}
+              href="/api/login?redirect=/game"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 relative overflow-hidden" data-testid="section-how-it-works">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
+        
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
+              How It <span className="text-emerald-400">Works</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Three simple steps to start saving on medical bills
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { step: 1, icon: Upload, title: "Upload Your Bill", desc: "Take a photo or enter bill details. Our AI processes it in seconds" },
+              { step: 2, icon: Cpu, title: "AI Analysis", desc: "Find billing errors, overcharges, and savings opportunities automatically" },
+              { step: 3, icon: Wand2, title: "Get Results", desc: "Receive dispute templates, negotiation scripts, and step-by-step guidance" },
+            ].map((item, i) => (
+              <motion.div
+                key={item.step}
+                className="relative"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+              >
+                <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:border-emerald-500/30 transition-colors group">
+                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-emerald-500/30">
+                    {item.step}
+                  </div>
+                  <motion.div
+                    className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 mt-4 group-hover:bg-emerald-500/20 transition-colors"
+                    whileHover={{ rotate: [0, -10, 10, 0] }}
+                  >
+                    <item.icon className="h-8 w-8 text-emerald-400" />
+                  </motion.div>
+                  <h3 className="text-2xl font-black text-white mb-3">{item.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{item.desc}</p>
+                </div>
+                {i < 2 && (
+                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                    <ArrowRight className="h-8 w-8 text-emerald-500/50" />
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 relative" data-testid="section-clinical-tools">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-5 py-2 rounded-full font-bold text-sm mb-6">
+              <Stethoscope className="h-4 w-4" />
+              Clinical Intelligence Hub
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
+              Health Reference <span className="text-blue-400">Tools</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Educational resources to understand your health better
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Pillar 1: Financial Defense */}
-            <motion.a
-              href="/api/login?redirect=/bill-ai"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-financial-defense"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <DollarSign className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Financial Defense</h3>
-              <p className="text-white/90 text-sm mb-4 leading-relaxed">AI bill analysis, dispute templates, and negotiation strategies to save $2K-$35K+</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Bill AI</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Templates</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Disputes</span>
-              </div>
-              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-
-            {/* Pillar 2: Clinical Intelligence */}
-            <motion.a
-              href="/api/login?redirect=/clinical-command-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-clinical-intelligence"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <Brain className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Health Information</h3>
-              <p className="text-white/90 text-sm mb-4 leading-relaxed">Health reference library, medical encyclopedias, and educational resources</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Health AI</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Insights</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Resources</span>
-              </div>
-              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-
-            {/* Pillar 3: Diagnostic Mastery */}
-            <motion.a
-              href="/api/login?redirect=/patient-diagnostics"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-diagnostic-mastery"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <Target className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Diagnostic Mastery</h3>
-              <p className="text-white/90 text-sm mb-4 leading-relaxed">Interactive training with AI patients, step-by-step workups, and full diagnosis mode</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">AI Patients</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Training</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Scoring</span>
-              </div>
-              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-
-            {/* Pillar 4: Gamified Learning */}
-            <motion.a
-              href="/api/login?redirect=/game"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-gamified-learning"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <Trophy className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Gamified Learning</h3>
-              <p className="text-white/90 text-sm mb-4 leading-relaxed">Pixel Doctor game, achievements, XP progression, and skill building</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Pixel Doctor</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">Achievements</span>
-                <span className="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold">XP System</span>
-              </div>
-              <div className="flex items-center gap-1 mt-3 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-          </div>
-        </div>
-      </section>
-
-      {/* CLINICAL COMMAND CENTER - Health Tools Showcase */}
-      <section className="py-20 bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50" data-testid="section-clinical-command">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <span className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
-              <Stethoscope className="h-4 w-4" />
-              Health Information Center
-            </span>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              Your Health Reference Library
-            </h2>
-            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
-              Educational tools to look up lab terminology, medication information, symptoms, and health topics
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <motion.a
-              href="/api/login?redirect=/lab-analyzer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-lab-analyzer"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <Activity className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Lab Reference Guide</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">Look up what common lab values and medical terminology mean in plain language</p>
-              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-
-            <motion.a
-              href="/api/login?redirect=/drug-interactions"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-drug-interactions"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <Pill className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Medication Information</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">Look up medication information and known interactions from published references</p>
-              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-
-            <motion.a
-              href="/api/login?redirect=/symptom-checker"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-symptom-checker"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <Brain className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Symptom Library</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">Browse our library of symptom information for educational purposes</p>
-              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-
-            <motion.a
-              href="/api/login?redirect=/health-metrics"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-              className="bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl p-6 text-white shadow-2xl block cursor-pointer"
-              data-testid="card-health-metrics"
-            >
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
-                <Heart className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="text-xl font-black mb-2">Health Metrics Journal</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-3">Log and track blood pressure, heart rate, weight, and temperature over time</p>
-              <div className="flex items-center gap-1 text-white/80 text-sm font-semibold">
-                <span>Sign in to access</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </motion.a>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="text-center"
-          >
-            <motion.a
-              href="/api/login?redirect=/clinical-command-center"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-black text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all"
-              data-testid="button-clinical-hub"
-            >
-              <Stethoscope className="h-5 w-5" />
-              Explore Clinical Hub
-              <ArrowRight className="h-5 w-5" />
-            </motion.a>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 3-STEP PROCESS - Glassmorphism cards */}
-      <section className="py-20 bg-gradient-to-b from-blue-50 to-white" data-testid="section-how-it-works">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-bold text-sm mb-4"
-            >
-              <Zap className="h-4 w-4" />
-              Simple 3-Step Process
-            </motion.div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              How GoldRock Health Works
-            </h2>
-            <p className="text-xl text-gray-700 font-semibold max-w-2xl mx-auto">
-              Professional medical bill analysis in minutes, not hours
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
             {[
-              {
-                step: "1",
-                icon: Upload,
-                title: "Upload Your Bill",
-                description: "Photo or PDF of your medical bill from any provider",
-                color: "from-blue-600 to-indigo-600"
-              },
-              {
-                step: "2",
-                icon: Brain,
-                title: "AI Analyzes Everything",
-                description: "Detects billing errors, overcharges, and negotiation opportunities",
-                color: "from-purple-600 to-pink-600"
-              },
-              {
-                step: "3",
-                icon: FileCheck,
-                title: "Get Professional Help",
-                description: "Dispute letters, negotiation scripts, and expert coaching",
-                color: "from-emerald-600 to-teal-600"
-              }
-            ].map((step, index) => (
-              <motion.div
-                key={step.step}
+              { icon: Activity, title: "Lab Reference", desc: "Look up lab values", gradient: "from-blue-600 to-indigo-600", href: "/api/login?redirect=/lab-analyzer" },
+              { icon: Pill, title: "Medication Info", desc: "Drug database", gradient: "from-purple-600 to-violet-600", href: "/api/login?redirect=/drug-interactions" },
+              { icon: Brain, title: "Symptom Library", desc: "Browse symptoms", gradient: "from-emerald-600 to-teal-600", href: "/api/login?redirect=/symptom-checker" },
+              { icon: Heart, title: "Health Journal", desc: "Track metrics", gradient: "from-rose-600 to-pink-600", href: "/api/login?redirect=/health-metrics" },
+            ].map((tool, i) => (
+              <motion.a
+                key={tool.title}
+                href={tool.href}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.15, duration: 0.5 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                className="relative group"
-                data-testid={`card-step-${step.step}`}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className={`relative bg-gradient-to-br ${tool.gradient} rounded-3xl p-6 text-white shadow-2xl overflow-hidden group cursor-pointer`}
+                data-testid={`card-${tool.title.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-xl border border-gray-100 overflow-hidden">
-                  {/* Step number badge */}
-                  <div className="absolute top-6 right-6 w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-xl font-black text-white">{step.step}</span>
-                  </div>
-
-                  {/* Icon */}
-                  <div className={`w-16 h-16 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg`}>
-                    <step.icon className="h-8 w-8 text-white" strokeWidth={2.5} />
-                  </div>
-
-                  <h3 className="text-2xl font-black text-gray-900 mb-3">{step.title}</h3>
-                  <p className="text-gray-700 font-medium leading-relaxed">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CORE FEATURES - Ultra-premium cards */}
-      <section className="py-20 bg-white" id="features" data-testid="section-core-features">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              Complete Medical Bill Arsenal
-            </h2>
-            <p className="text-xl text-gray-700 font-semibold max-w-3xl mx-auto">
-              Everything you need to fight medical bills and save thousands
-            </p>
-          </div>
-
-          {/* Core Analysis Tools */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-black text-gray-900 mb-8">AI Analysis & Detection</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              <PremiumFeatureCard
-                icon={Brain}
-                title="Bill-AI Deep Analysis"
-                description="Comprehensive AI analysis with error detection, legal citations, and regulatory violations"
-                color="from-purple-600 via-indigo-600 to-blue-600"
-                delay={0}
-              />
-              <PremiumFeatureCard
-                icon={Zap}
-                title="Quick Analyzer"
-                description="Instant 5-minute bill scan for fast overcharge detection and immediate insights"
-                color="from-cyan-600 via-teal-600 to-emerald-600"
-                delay={0.1}
-              />
-              <PremiumFeatureCard
-                icon={Calculator}
-                title="Error Detection Engine"
-                description="Advanced algorithms detect duplicate charges, upcoding, unbundling fraud, and timing discrepancies"
-                color="from-orange-600 via-amber-600 to-yellow-600"
-                delay={0.2}
-              />
-            </div>
-          </div>
-
-          {/* Negotiation & Coaching */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-black text-gray-900 mb-8">Expert Negotiation & Coaching</h3>
-            <div className="grid md:grid-cols-4 gap-6">
-              <PremiumFeatureCard
-                icon={MessageCircle}
-                title="1-on-1 Reduction Coach"
-                description="Personal expert guidance for complex cases and high-value bills"
-                color="from-emerald-600 to-teal-600"
-                delay={0}
-              />
-              <PremiumFeatureCard
-                icon={Target}
-                title="Negotiation Coaching"
-                description="Proven scripts, timing strategies, and escalation tactics"
-                color="from-blue-600 to-cyan-600"
-                delay={0.05}
-              />
-              <PremiumFeatureCard
-                icon={Clock}
-                title="Timing Optimizer"
-                description="Best times to negotiate based on revenue cycle pressure points"
-                color="from-indigo-600 to-purple-600"
-                delay={0.1}
-              />
-              <PremiumFeatureCard
-                icon={Phone}
-                title="Provider Contact Database"
-                description="Direct billing department contacts for every major hospital system"
-                color="from-pink-600 to-rose-600"
-                delay={0.15}
-              />
-            </div>
-          </div>
-
-          {/* Dispute & Legal Tools */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-black text-gray-900 mb-8">Dispute Arsenal & Legal Tools</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              <PremiumFeatureCard
-                icon={FileText}
-                title="50+ Dispute Templates"
-                description="Professional legal letters with regulatory citations and case law references"
-                color="from-blue-600 to-indigo-600"
-                delay={0}
-              />
-              <PremiumFeatureCard
-                icon={Shield}
-                title="Insurance Denials Intelligence"
-                description="Denial codes, reversal strategies, and appeal letter generators"
-                color="from-purple-600 to-pink-600"
-                delay={0.1}
-              />
-              <PremiumFeatureCard
-                icon={Scale}
-                title="Rights Hub"
-                description="Know your patient rights under No Surprises Act, EMTALA, and state laws"
-                color="from-emerald-600 to-teal-600"
-                delay={0.2}
-              />
-            </div>
-          </div>
-
-          {/* Knowledge & Intelligence */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-black text-gray-900 mb-8">Industry Intelligence & Guides</h3>
-            <div className="grid md:grid-cols-4 gap-6">
-              <PremiumFeatureCard
-                icon={Building}
-                title="Industry Insights"
-                description="Hospital billing vulnerabilities and revenue cycle weak points"
-                color="from-orange-600 to-amber-600"
-                delay={0}
-              />
-              <PremiumFeatureCard
-                icon={Code}
-                title="Medical Code Mastery"
-                description="Decode CPT, ICD-10, and HCPCS billing codes instantly"
-                color="from-cyan-600 to-blue-600"
-                delay={0.05}
-              />
-              <PremiumFeatureCard
-                icon={Receipt}
-                title="Bill Reduction Guide"
-                description="Step-by-step strategies from billing experts and advocates"
-                color="from-purple-600 to-indigo-600"
-                delay={0.1}
-              />
-              <PremiumFeatureCard
-                icon={Eye}
-                title="Portal Access Guide"
-                description="Get bills before they arrive in mail from insurance portals"
-                color="from-emerald-600 to-green-600"
-                delay={0.15}
-              />
-            </div>
-          </div>
-
-          {/* Premium Advanced Tools */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-50 to-orange-50 rounded-3xl -mx-6 -my-6 p-6" />
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-8">
-                <Crown className="h-8 w-8 text-amber-600" />
-                <h3 className="text-2xl font-black text-gray-900">Premium Advanced Arsenal</h3>
-              </div>
-              <div className="grid md:grid-cols-3 gap-6">
-                <PremiumFeatureCard
-                  icon={Crosshair}
-                  title="Hospital Insider Tactics"
-                  description="Revenue cycle pressure points, authorization levels, and settlement leverage"
-                  color="from-amber-600 to-orange-600"
-                  delay={0}
-                />
-                <PremiumFeatureCard
-                  icon={Gavel}
-                  title="Legal Escalation Tools"
-                  description="Board pressure tactics, regulatory complaints, and legal leverage strategies"
-                  color="from-red-600 to-pink-600"
-                  delay={0.1}
-                />
-                <PremiumFeatureCard
-                  icon={HandCoins}
-                  title="Charity Care Optimizer"
-                  description="Maximize financial assistance and income-based discount programs"
-                  color="from-green-600 to-emerald-600"
-                  delay={0.2}
-                />
-                <PremiumFeatureCard
-                  icon={Lock}
-                  title="Policy Loophole Finder"
-                  description="Exploit coverage gaps and insurance policy weaknesses"
-                  color="from-indigo-600 to-purple-600"
-                  delay={0}
-                />
-                <PremiumFeatureCard
-                  icon={Network}
-                  title="Revenue Cycle Exploiter"
-                  description="Attack billing vulnerabilities at each of 7 revenue cycle stages"
-                  color="from-blue-600 to-cyan-600"
-                  delay={0.1}
-                />
-                <PremiumFeatureCard
-                  icon={Puzzle}
-                  title="50+ Specialized Workflows"
-                  description="Targeted strategies for emergency, surgery, specialty care, and more"
-                  color="from-pink-600 to-rose-600"
-                  delay={0.2}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* COMPREHENSIVE FEATURES LIST - Card-based layout */}
-      <section className="py-16 bg-gradient-to-b from-white to-slate-50" data-testid="section-all-features">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-bold text-sm mb-4"
-            >
-              <Sparkles className="h-4 w-4" />
-              50+ Tools & Workflows
-            </motion.span>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
-              Complete Platform Features
-            </h2>
-            <p className="text-lg text-gray-600 font-medium max-w-xl mx-auto">
-              Everything you need to fight medical bills and build health knowledge
-            </p>
-          </div>
-
-          {/* Feature cards grid - 2 columns on mobile, 3 on tablet, 5 on desktop */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {/* Core Features Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-lg"
-            >
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                <Sparkles className="h-5 w-5 text-white" />
-              </div>
-              <h3 className="text-sm font-black mb-2">Core Features</h3>
-              <ul className="space-y-1.5 text-xs text-white/90">
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />AI Bill Analysis</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Error Detection</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Analytics Dashboard</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Savings Calculator</li>
-              </ul>
-            </motion.div>
-
-            {/* Intelligence Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
-              className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl p-4 text-white shadow-lg"
-            >
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                <Brain className="h-5 w-5 text-white" />
-              </div>
-              <h3 className="text-sm font-black mb-2">Intelligence</h3>
-              <ul className="space-y-1.5 text-xs text-white/90">
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Industry Insights</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Billing Intel</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Code Decoder</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Negotiation Coach</li>
-              </ul>
-            </motion.div>
-
-            {/* Legal Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-4 text-white shadow-lg"
-            >
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                <Shield className="h-5 w-5 text-white" />
-              </div>
-              <h3 className="text-sm font-black mb-2">Legal & Advocacy</h3>
-              <ul className="space-y-1.5 text-xs text-white/90">
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />50+ Dispute Letters</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Rights Hub</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Appeal Generators</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Charity Care Apps</li>
-              </ul>
-            </motion.div>
-
-            {/* Education Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.25 }}
-              className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 text-white shadow-lg"
-            >
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                <Book className="h-5 w-5 text-white" />
-              </div>
-              <h3 className="text-sm font-black mb-2">Guides & Education</h3>
-              <ul className="space-y-1.5 text-xs text-white/90">
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Bill Reduction Guide</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Best Practices</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Templates Library</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Case Studies</li>
-              </ul>
-            </motion.div>
-
-            {/* Premium Workflows Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-4 text-white shadow-lg col-span-2 md:col-span-1"
-            >
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                <Crown className="h-5 w-5 text-white" />
-              </div>
-              <h3 className="text-sm font-black mb-2">Premium Workflows</h3>
-              <ul className="space-y-1.5 text-xs text-white/90">
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />ER Bill Analysis</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Surgery Review</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Lab & Imaging</li>
-                <li className="flex items-center gap-1.5"><BadgeCheck className="h-3 w-3 flex-shrink-0" />Specialty Care</li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* VIDEO SHOWCASE SECTION */}
-      <section className="py-16 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900" data-testid="section-video-showcase">
-        <div className="max-w-4xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <span className="inline-flex items-center gap-2 bg-white/10 text-white/90 px-4 py-2 rounded-full font-bold text-sm mb-4 backdrop-blur-sm">
-              <Play className="h-4 w-4" />
-              Platform Preview
-            </span>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-3">
-              See GoldRock Health in Action
-            </h2>
-            <p className="text-lg text-white/70 font-medium max-w-xl mx-auto">
-              Your complete health AI command center for medical billing and education
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="relative rounded-3xl overflow-hidden shadow-2xl shadow-indigo-500/20 border border-white/10"
-          >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full aspect-video object-cover"
-              data-testid="video-platform-preview"
-            >
-              <source src={platformPromoVideo} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent pointer-events-none" />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="text-center mt-8"
-          >
-            <motion.a
-              href="/api/login"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-lg rounded-2xl shadow-xl shadow-emerald-500/30 hover:shadow-2xl transition-all"
-              data-testid="button-start-free-video"
-            >
-              <Sparkles className="h-5 w-5" />
-              Start Free Today
-              <ArrowRight className="h-5 w-5" />
-            </motion.a>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* FAQ SECTION */}
-      <section className="py-20 bg-white" data-testid="section-faq">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xl text-gray-700 font-semibold">
-              Everything you need to know about GoldRock Health
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {[
-              {
-                q: "How does GoldRock Health work?",
-                a: "Upload your medical bill and our AI analyzes it for billing errors, overcharges, and negotiation opportunities. You'll receive detailed analysis, legal dispute templates, and expert negotiation strategies to reduce your bill."
-              },
-              {
-                q: "What types of bills can you analyze?",
-                a: "We analyze all medical bills including hospital bills, emergency room visits, surgery and anesthesia, lab and imaging, pharmacy charges, specialist visits, and more. Our AI works with bills from any healthcare provider in any state."
-              },
-              {
-                q: "Do I need insurance to use GoldRock Health?",
-                a: "No! GoldRock Health works for everyone - with or without insurance. We help reduce bills from hospitals, urgent care, labs, and more. Our strategies work for both insured and uninsured patients."
-              },
-              {
-                q: "What's included in Premium?",
-                a: "Premium includes unlimited bill analyses, AI error detection, 50+ legal dispute letter templates, industry insider tactics, expert negotiation coaching, hospital billing intelligence, and specialized workflows for every type of medical bill."
-              },
-              {
-                q: "How do the dispute templates work?",
-                a: "Our professional dispute letter templates include specific regulatory citations, legal references, and proven language that hospitals respect. Simply fill in your bill details and send directly to the billing department."
-              },
-              {
-                q: "Can I cancel anytime?",
-                a: "Yes! Cancel your Premium subscription anytime with no penalties or fees."
-              }
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
-                data-testid={`card-faq-${index + 1}`}
-              >
-                <button
-                  onClick={() => setActiveFaq(activeFaq === index ? null : index)}
-                  className="w-full text-left p-6 flex items-center justify-between group"
-                  data-testid={`button-faq-toggle-${index + 1}`}
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <motion.div
+                  className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-4"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <h3 className="font-black text-gray-900 pr-4 group-hover:text-emerald-600 transition-colors">{faq.q}</h3>
-                  <ChevronRight className={`h-5 w-5 text-gray-500 transition-all ${activeFaq === index ? 'rotate-90 text-emerald-600' : ''}`} />
-                </button>
-                {activeFaq === index && (
-                  <div className="px-6 pb-6">
-                    <p className="text-gray-700 leading-relaxed font-medium">{faq.a}</p>
-                  </div>
-                )}
-              </motion.div>
+                  <tool.icon className="h-7 w-7 text-white" />
+                </motion.div>
+                <h3 className="text-xl font-black mb-2">{tool.title}</h3>
+                <p className="text-white/80 text-sm">{tool.desc}</p>
+                <div className="flex items-center gap-1 mt-4 text-white/70 text-sm font-semibold group-hover:text-white transition-colors">
+                  <span>Explore</span>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </motion.a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* PRICING CTA */}
-      <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50" data-testid="section-pricing">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="relative bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 rounded-3xl p-12 shadow-2xl overflow-hidden">
-            {/* Animated background */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent"
-              animate={{ x: ['-100%', '100%'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            />
+      <section className="py-24 relative" data-testid="section-cta">
+        <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 via-transparent to-transparent" />
+        
+        <motion.div
+          className="max-w-4xl mx-auto px-6 text-center relative z-10"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <motion.div
+            className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-5 py-2 rounded-full font-bold text-sm mb-8"
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <Sparkles className="h-4 w-4" />
+            Start Saving Today
+          </motion.div>
 
-            <div className="relative z-10 text-center text-white">
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <Crown className="h-8 w-8 text-white" strokeWidth={2.5} />
-                </div>
-              </div>
-
-              <h3 className="text-4xl md:text-5xl font-black mb-4">
-                Premium Access
-              </h3>
-              
-              <p className="text-xl text-white/90 font-semibold mb-8 max-w-2xl mx-auto">
-                Full AI analysis, 50+ dispute templates, expert coaching & insider tactics
-              </p>
-
-              {/* Pricing Tab Selector */}
-              <div className="flex justify-center mb-6">
-                <div className="inline-flex bg-white/20 backdrop-blur-sm rounded-2xl p-1.5 border border-white/30">
-                  {[
-                    { id: 'monthly' as const, label: 'Monthly' },
-                    { id: 'annual' as const, label: 'Annual' },
-                    { id: 'lifetime' as const, label: 'Lifetime' }
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setPricingTab(tab.id)}
-                      className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                        pricingTab === tab.id
-                          ? 'bg-white text-indigo-700 shadow-lg'
-                          : 'text-white/80 hover:text-white'
-                      }`}
-                      data-testid={`button-pricing-tab-${tab.id}`}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Pricing Display */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-white/30">
-                <div className="flex items-baseline justify-center gap-2 mb-3">
-                  <span className="text-6xl font-black">
-                    {pricingTab === 'monthly' && '$25'}
-                    {pricingTab === 'annual' && '$249'}
-                    {pricingTab === 'lifetime' && '$747'}
-                  </span>
-                  <span className="text-2xl font-bold">
-                    {pricingTab === 'monthly' && '/month'}
-                    {pricingTab === 'annual' && '/year'}
-                    {pricingTab === 'lifetime' && 'one-time'}
-                  </span>
-                </div>
-                {pricingTab === 'annual' && (
-                  <p className="text-emerald-200 font-bold mb-2">
-                    Save $51 per year vs monthly
-                  </p>
-                )}
-                {pricingTab === 'lifetime' && (
-                  <p className="text-emerald-200 font-bold mb-2">
-                    Unlimited access forever • Best value
-                  </p>
-                )}
-                <p className="text-white/90 font-bold">
-                  Professional medical bill reduction platform
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4 mb-8 text-left">
-                {[
-                  "Unlimited bill analyses",
-                  "AI error detection scanner",
-                  "50+ legal dispute templates",
-                  "Industry insider tactics",
-                  "Expert negotiation coaching",
-                  "Hospital billing intelligence"
-                ].map((feature, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <CheckCircle className="h-4 w-4 text-white" strokeWidth={3} />
-                    </div>
-                    <span className="font-semibold">{feature}</span>
-                  </div>
-                ))}
-              </div>
-
-              <motion.a
-                href="/api/login"
-                className="inline-flex items-center gap-3 px-10 py-5 bg-white text-indigo-700 font-black text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                data-testid="button-upgrade-premium"
-              >
-                <Crown className="h-6 w-6" />
-                Upgrade to Premium
-                <Sparkles className="h-6 w-6" />
-              </motion.a>
-
-              <p className="text-white/80 mt-6 font-medium">
-                Cancel anytime • No long-term commitment
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section className="py-24 bg-white" data-testid="section-final-cta">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 mb-6">
-            Ready to Fight Back?
+          <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
+            Ready to <span className="bg-gradient-to-r from-emerald-400 to-amber-400 bg-clip-text text-transparent">Transform</span> Your Healthcare?
           </h2>
-          <p className="text-2xl text-gray-700 font-bold mb-10 max-w-2xl mx-auto">
-            Start analyzing your medical bills today with professional AI-powered tools
+          
+          <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+            Join thousands who've saved on medical bills and gained health knowledge
           </p>
 
           <motion.a
             href="/api/login"
-            className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-2xl rounded-2xl shadow-2xl shadow-emerald-500/50 hover:shadow-3xl transition-all"
-            whileHover={{ scale: 1.05, y: -4 }}
+            className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-xl rounded-2xl shadow-2xl shadow-emerald-500/30"
+            whileHover={{ scale: 1.05, boxShadow: "0 30px 60px -15px rgba(16, 185, 129, 0.5)" }}
             whileTap={{ scale: 0.95 }}
-            data-testid="button-start-analysis-final"
+            data-testid="button-get-started-cta"
           >
-            <Zap className="h-8 w-8" />
-            Start Free Bill Analysis
-            <ArrowRight className="h-8 w-8" />
+            <Rocket className="h-7 w-7" />
+            <span>Get Started Free</span>
+            <ArrowRight className="h-7 w-7" />
           </motion.a>
 
-          <p className="text-gray-600 mt-8 font-semibold text-lg">
-            Free to start • Professional tools • Expert strategies
+          <p className="text-gray-500 mt-6 text-sm">
+            Free to start. No credit card required. Cancel anytime.
           </p>
-        </div>
+        </motion.div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="py-12 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                  <DollarSign className="h-6 w-6 text-white" />
-                </div>
-                <span className="font-black text-xl">GoldRock Health</span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                <DollarSign className="h-5 w-5 text-white" />
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                AI-powered medical bill reduction platform helping patients fight overcharges and billing errors.
-              </p>
+              <span className="text-white font-bold text-lg">GoldRock Health</span>
             </div>
-
-            <div>
-              <h4 className="font-bold mb-4 text-white">Product</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                <li><a href="#features" className="hover:text-white transition" data-testid="link-footer-features">Features</a></li>
-                <li><a href="#how-it-works" className="hover:text-white transition" data-testid="link-footer-how-it-works">How It Works</a></li>
-                <li><a href="/api/login?redirect=/premium" className="hover:text-white transition" data-testid="link-footer-pricing">Pricing</a></li>
-              </ul>
+            
+            <div className="flex items-center gap-6 text-gray-400 text-sm">
+              <a href="/privacy-policy" className="hover:text-white transition-colors">Privacy</a>
+              <a href="/terms-of-service" className="hover:text-white transition-colors">Terms</a>
+              <a href="/support" className="hover:text-white transition-colors">Support</a>
             </div>
-
-            <div>
-              <h4 className="font-bold mb-4 text-white">Company</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="/support" className="hover:text-white transition" data-testid="link-footer-support">Support</Link></li>
-                <li><Link href="/privacy-policy" className="hover:text-white transition" data-testid="link-footer-privacy">Privacy Policy</Link></li>
-                <li><Link href="/terms-of-service" className="hover:text-white transition" data-testid="link-footer-terms">Terms of Service</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4 text-white">Legal</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="/important-disclaimer" className="hover:text-white transition" data-testid="link-footer-disclaimer">Disclaimer</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-            <p>© 2025 GoldRock Health (Eldest AI LLC dba GoldRock AI). All rights reserved.</p>
+            
+            <p className="text-gray-500 text-sm">
+              © 2025 GoldRock Health. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  );
-}
-
-// Helper component
-function CheckCircle({ className, strokeWidth }: { className: string; strokeWidth?: number }) {
-  return (
-    <svg className={className} fill="none" strokeWidth={strokeWidth || 2} viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
   );
 }
