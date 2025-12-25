@@ -67,18 +67,19 @@ export default function SequenceInput({ onFold, isFolding, error }: SequenceInpu
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card p-6 rounded-xl space-y-4 overflow-visible"
+      className="p-6 rounded-xl space-y-4 overflow-visible border border-cyan-500/20"
+      style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)', backdropFilter: 'blur(12px)' }}
     >
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-display font-semibold text-white flex items-center gap-2">
-          <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+          <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
           Input Sequence
         </h2>
         <div className="relative z-[200]">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-xs text-muted-foreground hover:text-primary"
+            className="text-xs text-gray-400 hover:text-cyan-400"
             onClick={() => setShowExamples(!showExamples)}
             data-testid="button-load-example"
           >
@@ -93,17 +94,18 @@ export default function SequenceInput({ onFold, isFolding, error }: SequenceInpu
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 top-full mt-2 w-64 max-h-[60vh] overflow-y-auto bg-card border border-white/10 rounded-lg shadow-xl z-[200]"
+                className="absolute right-0 top-full mt-2 w-64 max-h-[60vh] overflow-y-auto border border-cyan-500/20 rounded-lg shadow-xl z-[200]"
+                style={{ backgroundColor: 'rgba(10, 22, 40, 0.95)' }}
               >
                 {exampleSequences.map((ex) => (
                   <button
                     key={ex.name}
                     onClick={() => loadExample(ex.sequence)}
-                    className="w-full text-left px-4 py-3 hover:bg-white/5 border-b border-white/5 last:border-0 transition-colors"
+                    className="w-full text-left px-4 py-3 hover:bg-cyan-500/10 border-b border-gray-700/50 last:border-0 transition-colors"
                     data-testid={`example-${ex.name.toLowerCase().replace(' ', '-')}`}
                   >
                     <div className="font-medium text-sm text-white">{ex.name}</div>
-                    <div className="text-xs text-white/40">{ex.description}</div>
+                    <div className="text-xs text-gray-400">{ex.description}</div>
                   </button>
                 ))}
               </motion.div>
@@ -114,25 +116,26 @@ export default function SequenceInput({ onFold, isFolding, error }: SequenceInpu
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-lg opacity-20 group-hover:opacity-50 transition duration-500 blur" />
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-lg opacity-20 group-hover:opacity-50 transition duration-500 blur" />
           <Textarea
             value={sequence}
             onChange={(e) => setSequence(e.target.value)}
-            placeholder="Paste amino acid sequence (single-letter codes)..."
-            className="relative bg-black/40 border-white/10 text-font-mono min-h-[120px] resize-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 font-mono text-sm leading-relaxed tracking-widest uppercase"
+            placeholder="PASTE AMINO ACID SEQUENCE (SINGLE-LETTER CODES)..."
+            className="relative min-h-[120px] resize-none focus:ring-1 focus:ring-cyan-500/50 focus:border-cyan-500/50 font-mono text-sm leading-relaxed tracking-widest uppercase text-cyan-100 placeholder:text-gray-500"
+            style={{ backgroundColor: 'rgba(0, 10, 25, 0.6)', borderColor: 'rgba(100, 120, 150, 0.3)' }}
             disabled={isFolding}
             data-testid="textarea-sequence"
           />
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="text-xs text-white/30 font-mono">
+          <span className="text-xs text-gray-500 font-mono">
             {sequence.length > 0 ? `${sequence.replace(/[^A-Za-z]/g, '').length} residues` : 'Enter sequence'}
           </span>
           <Button 
             type="submit" 
             disabled={!sequence.trim() || isFolding}
-            className="bg-primary text-black hover:bg-primary/90 font-bold px-8 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.5)]"
+            className="bg-cyan-500 text-slate-900 hover:bg-cyan-400 font-bold px-8 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,246,255,0.5)]"
             data-testid="button-fold"
           >
             {isFolding ? (
@@ -157,7 +160,7 @@ export default function SequenceInput({ onFold, isFolding, error }: SequenceInpu
         </div>
       )}
       
-      <div className="flex gap-4 text-[10px] text-white/30 font-mono uppercase">
+      <div className="flex gap-4 text-[10px] text-gray-500 font-mono uppercase">
         <span>Max: 2,700 residues</span>
         <span>Format: Single-letter codes</span>
       </div>

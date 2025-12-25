@@ -203,30 +203,33 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 font-sans relative overflow-hidden flex flex-col">
+    <div 
+      className="min-h-screen selection:bg-cyan-500/30 font-sans relative overflow-hidden flex flex-col"
+      style={{ backgroundColor: '#0a1628', color: '#f0f4f8' }}
+    >
       <ParticleBackground intensity={15} />
       <FloatingOrbs />
       
       <div className="absolute inset-0 z-0 pointer-events-none nebula-bg">
-         <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-primary/8 via-purple-500/5 to-transparent" />
-         <div className="absolute -top-[200px] -right-[200px] w-[900px] h-[900px] bg-primary/10 rounded-full blur-[120px]" />
-         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/8 rounded-full blur-[120px]" />
+         <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-cyan-500/10 via-purple-500/5 to-transparent" />
+         <div className="absolute -top-[200px] -right-[200px] w-[900px] h-[900px] bg-cyan-500/15 rounded-full blur-[120px]" />
+         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]" />
          <div className="absolute top-1/2 left-1/3 w-[400px] h-[400px] bg-pink-500/5 rounded-full blur-[100px]" />
          
          {[...Array(10)].map((_, i) => (
            <div
              key={i}
-             className="absolute w-1 h-1 bg-primary/40 rounded-full"
+             className="absolute w-1 h-1 bg-cyan-400/60 rounded-full"
              style={{
                left: `${10 + (i * 8)}%`,
                top: `${15 + (i * 7) % 70}%`,
-               boxShadow: '0 0 6px rgba(0, 240, 255, 0.4)'
+               boxShadow: '0 0 8px rgba(0, 246, 255, 0.6)'
              }}
            />
          ))}
          
-         <div className="absolute top-20 right-1/4 w-32 h-32 border border-primary/15 rounded-full" />
-         <div className="absolute bottom-40 left-1/4 w-24 h-24 border border-purple-500/15 rounded-full" />
+         <div className="absolute top-20 right-1/4 w-32 h-32 border border-cyan-500/20 rounded-full" />
+         <div className="absolute bottom-40 left-1/4 w-24 h-24 border border-purple-500/20 rounded-full" />
       </div>
 
       <Header />
@@ -237,28 +240,28 @@ export default function Home() {
           <div className="lg:col-span-4 space-y-6">
             <div className="space-y-3 animate-slide-up">
                <h2 className="text-3xl md:text-4xl font-display font-bold leading-tight">
-                 <span className="inline-block">Genomic Structure</span>
+                 <span className="inline-block text-white">Genomic Structure</span>
                  <br />
-                 <span className="text-gradient text-glow-intense">
+                 <span className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-teal-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(0,246,255,0.5)]">
                    Prediction Engine
                  </span>
                </h2>
-               <p className="text-white/60 text-sm leading-relaxed max-w-md">
+               <p className="text-gray-300 text-sm leading-relaxed max-w-md">
                  Professional 3D protein structure visualization powered by the AlphaFold Database. Real-time GPT-5.2 analysis, pLDDT confidence coloring, and PAE heatmaps. Built by GoldRock AI.
                </p>
                <div className="flex flex-wrap items-center gap-2 text-[10px] font-mono">
-                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
-                   <Brain className="w-3 h-3 text-primary" />
-                   <span className="text-primary">GoldRock AI</span>
+                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30">
+                   <Brain className="w-3 h-3 text-cyan-400" />
+                   <span className="text-cyan-400">GoldRock AI</span>
                  </div>
-                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">
-                   <span className="text-purple-400">AlphaFold DB</span>
+                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-purple-500/15 border border-purple-500/30">
+                   <span className="text-purple-300">AlphaFold DB</span>
                  </div>
-                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-                   <span className="text-green-400">3D Viewer</span>
+                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30">
+                   <span className="text-emerald-400">3D Viewer</span>
                  </div>
-                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20">
-                   <span className="text-yellow-400">GPT-5.2 Analysis</span>
+                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-amber-500/15 border border-amber-500/30">
+                   <span className="text-amber-400">GPT-5.2 Analysis</span>
                  </div>
                </div>
             </div>
@@ -272,9 +275,9 @@ export default function Home() {
             {/* Mobile-only 3D Viewer - appears right after input, before Quick Start */}
             <div className="lg:hidden">
               <div className="flex items-center gap-2 mb-2">
-                <Terminal className="w-4 h-4 text-primary" />
-                <span className="font-mono text-xs text-white/70">3D Structure Viewer</span>
-                <span className="text-[10px] text-primary/60 font-mono">• Pinch to zoom</span>
+                <Terminal className="w-4 h-4 text-cyan-400" />
+                <span className="font-mono text-xs text-gray-200">3D Structure Viewer</span>
+                <span className="text-[10px] text-cyan-400/70 font-mono">• Pinch to zoom</span>
               </div>
               <div className="h-[550px] md:h-[580px]">
                 <MolstarViewer 
@@ -294,13 +297,14 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="bg-primary/10 border border-primary/30 rounded-xl p-4 space-y-4"
+                  className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4 space-y-4"
+                  style={{ backgroundColor: 'rgba(0, 246, 255, 0.08)' }}
                 >
                   <div className="flex items-start gap-3">
-                    <Brain className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <Brain className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="text-sm font-medium text-primary">Novel Sequence Detected</h4>
-                      <p className="text-xs text-white/60 mt-1">
+                      <h4 className="text-sm font-medium text-cyan-400">Novel Sequence Detected</h4>
+                      <p className="text-xs text-gray-300 mt-1">
                         This appears to be a novel or recently discovered sequence. Generate a prediction using AlphaFold 3, then upload for visualization and analysis.
                       </p>
                     </div>
@@ -310,14 +314,14 @@ export default function Home() {
                     href="https://alphafoldserver.com" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs text-primary hover:underline"
+                    className="flex items-center gap-2 text-xs text-cyan-400 hover:underline"
                   >
                     <ExternalLink className="w-3 h-3" />
                     Generate Prediction (Free)
                   </a>
                   
-                  <div className="space-y-3 pt-2 border-t border-white/10">
-                    <div className="text-xs font-medium text-white/80">Upload Prediction Results</div>
+                  <div className="space-y-3 pt-2 border-t border-gray-600/30">
+                    <div className="text-xs font-medium text-gray-200">Upload Prediction Results</div>
                     
                     <div className="space-y-2">
                       <input 
@@ -330,7 +334,7 @@ export default function Home() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="w-full justify-start text-xs h-9 border-white/20"
+                        className="w-full justify-start text-xs h-9 border-gray-500/40 bg-slate-800/50 text-gray-200 hover:bg-slate-700/50"
                         onClick={() => pdbInputRef.current?.click()}
                       >
                         <Upload className="w-3 h-3 mr-2" />
@@ -347,7 +351,7 @@ export default function Home() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="w-full justify-start text-xs h-9 border-white/20"
+                        className="w-full justify-start text-xs h-9 border-gray-500/40 bg-slate-800/50 text-gray-200 hover:bg-slate-700/50"
                         onClick={() => jsonInputRef.current?.click()}
                       >
                         <Upload className="w-3 h-3 mr-2" />
@@ -373,7 +377,8 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="glass-card-elite p-4 rounded-xl space-y-3"
+                className="p-4 rounded-xl space-y-3 border border-cyan-500/20"
+                style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)', backdropFilter: 'blur(12px)' }}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -381,14 +386,14 @@ export default function Home() {
                       animate={{ rotate: [0, 15, -15, 0] }}
                       transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                     >
-                      <Sparkles className="w-4 h-4 text-primary" />
+                      <Sparkles className="w-4 h-4 text-cyan-400" />
                     </motion.div>
                     <span className="text-sm font-semibold text-white">Quick Start</span>
-                    <span className="text-[10px] text-white/40 font-mono">({allProteins.length} proteins)</span>
+                    <span className="text-[10px] text-gray-400 font-mono">({allProteins.length} proteins)</span>
                   </div>
                   <Link href="/discovery">
                     <motion.span 
-                      className="text-[10px] text-primary hover:text-primary/80 cursor-pointer flex items-center gap-1"
+                      className="text-[10px] text-cyan-400 hover:text-cyan-300 cursor-pointer flex items-center gap-1"
                       whileHover={{ x: 3 }}
                       data-testid="link-browse-all"
                     >
@@ -401,18 +406,19 @@ export default function Home() {
                 <div ref={dropdownRef} className="relative z-50">
                   <button
                     onClick={() => setShowProteinDropdown(!showProteinDropdown)}
-                    className="w-full flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 hover:border-primary/40 transition-all text-left group"
+                    className="w-full flex items-center justify-between p-3 rounded-xl border border-gray-600/40 hover:border-cyan-500/40 transition-all text-left group"
+                    style={{ backgroundColor: 'rgba(20, 40, 60, 0.6)' }}
                     data-testid="btn-protein-dropdown"
                   >
                     <div className="flex items-center gap-2">
-                      <Search className="w-4 h-4 text-white/40" />
-                      <span className="text-sm text-white/60">Search or select a protein...</span>
+                      <Search className="w-4 h-4 text-gray-400" />
+                      <span className="text-sm text-gray-400">Search or select a protein...</span>
                     </div>
                     <motion.div
                       animate={{ rotate: showProteinDropdown ? 180 : 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <ChevronDown className="w-4 h-4 text-white/40" />
+                      <ChevronDown className="w-4 h-4 text-gray-400" />
                     </motion.div>
                   </button>
                   
@@ -423,18 +429,19 @@ export default function Home() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 right-0 mt-2 bg-[#0d1829] border border-white/20 rounded-xl shadow-2xl overflow-hidden z-[100]"
-                        style={{ maxHeight: "400px" }}
+                        className="absolute top-full left-0 right-0 mt-2 border border-cyan-500/30 rounded-xl shadow-2xl overflow-hidden z-[100]"
+                        style={{ maxHeight: "400px", backgroundColor: '#0a1628' }}
                       >
-                        <div className="sticky top-0 z-10 p-2 bg-[#0d1829] border-b border-white/10">
+                        <div className="sticky top-0 z-10 p-2 border-b border-gray-700/50" style={{ backgroundColor: '#0a1628' }}>
                           <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                             <input
                               type="text"
                               placeholder="Search proteins..."
                               value={proteinSearchQuery}
                               onChange={(e) => setProteinSearchQuery(e.target.value)}
-                              className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary/50"
+                              className="w-full pl-10 pr-4 py-2 border border-gray-600/40 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500/50"
+                              style={{ backgroundColor: 'rgba(20, 40, 60, 0.6)' }}
                               data-testid="input-protein-search"
                               autoFocus
                             />
@@ -453,11 +460,11 @@ export default function Home() {
                             if (matchingProteins.length === 0) return null;
                             
                             return (
-                              <div key={collection.id} className="border-b border-white/5 last:border-0">
-                                <div className="px-3 py-2 bg-white/[0.02] text-xs font-mono text-white/50 uppercase tracking-wider flex items-center gap-2">
+                              <div key={collection.id} className="border-b border-gray-700/30 last:border-0">
+                                <div className="px-3 py-2 text-xs font-mono text-gray-400 uppercase tracking-wider flex items-center gap-2" style={{ backgroundColor: 'rgba(15, 30, 50, 0.5)' }}>
                                   <span>{collection.icon}</span>
                                   {collection.title}
-                                  <span className="text-white/30">({matchingProteins.length})</span>
+                                  <span className="text-gray-500">({matchingProteins.length})</span>
                                 </div>
                                 {matchingProteins.map((protein) => (
                                   <button
@@ -467,18 +474,18 @@ export default function Home() {
                                       setShowProteinDropdown(false);
                                       setProteinSearchQuery("");
                                     }}
-                                    className="w-full text-left px-3 py-2 hover:bg-primary/10 transition-colors group flex items-center gap-3"
+                                    className="w-full text-left px-3 py-2 hover:bg-cyan-500/10 transition-colors group flex items-center gap-3"
                                     data-testid={`dropdown-${protein.uniprotId}`}
                                   >
-                                    <div className="w-2 h-2 rounded-full bg-primary/40 group-hover:bg-primary transition-colors" />
+                                    <div className="w-2 h-2 rounded-full bg-cyan-500/40 group-hover:bg-cyan-400 transition-colors" />
                                     <div className="flex-1 min-w-0">
                                       <div className="flex items-center gap-2">
-                                        <span className="font-mono text-xs text-primary">{protein.gene}</span>
-                                        <span className="text-[10px] text-white/30 font-mono">{protein.uniprotId}</span>
+                                        <span className="font-mono text-xs text-cyan-400">{protein.gene}</span>
+                                        <span className="text-[10px] text-gray-500 font-mono">{protein.uniprotId}</span>
                                       </div>
-                                      <div className="text-xs text-white/70 truncate">{protein.name}</div>
+                                      <div className="text-xs text-gray-300 truncate">{protein.name}</div>
                                     </div>
-                                    <div className="text-[10px] text-white/30 font-mono">
+                                    <div className="text-[10px] text-gray-500 font-mono">
                                       {protein.organism}
                                     </div>
                                   </button>
@@ -498,7 +505,7 @@ export default function Home() {
                   </AnimatePresence>
                 </div>
                 
-                <div className="text-[10px] text-white/40 uppercase tracking-wider">Featured Proteins</div>
+                <div className="text-[10px] text-gray-400 uppercase tracking-wider">Featured Proteins</div>
                 <div className="grid grid-cols-2 gap-2">
                   {featuredProteins.map((protein, i) => (
                     <motion.button
@@ -518,30 +525,31 @@ export default function Home() {
                       }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleLoadProtein(protein.uniprotId)}
-                      className="text-left p-3 rounded-xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-primary/50 transition-all group relative overflow-hidden hover-lift"
+                      className="text-left p-3 rounded-xl border border-cyan-500/20 hover:border-cyan-400/50 transition-all group relative overflow-hidden hover-lift"
+                      style={{ backgroundColor: 'rgba(15, 40, 60, 0.6)' }}
                       data-testid={`featured-${protein.uniprotId}`}
                     >
                       <motion.div 
-                        className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0"
+                        className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0"
                         initial={{ x: "-100%" }}
                         whileHover={{ x: "100%" }}
                         transition={{ duration: 0.6 }}
                       />
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" 
-                        style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 20px rgba(0,240,255,0.15)" }}
+                        style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 20px rgba(0,246,255,0.15)" }}
                       />
                       <div className="relative">
-                        <div className="font-mono text-[10px] text-primary mb-0.5 flex items-center gap-1.5">
+                        <div className="font-mono text-[10px] text-cyan-400 mb-0.5 flex items-center gap-1.5">
                           <motion.span 
-                            className="w-2 h-2 rounded-full bg-gradient-to-r from-primary to-cyan-400"
+                            className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400"
                             animate={{ 
-                              boxShadow: ["0 0 5px rgba(0,240,255,0.3)", "0 0 15px rgba(0,240,255,0.6)", "0 0 5px rgba(0,240,255,0.3)"]
+                              boxShadow: ["0 0 5px rgba(0,246,255,0.3)", "0 0 15px rgba(0,246,255,0.6)", "0 0 5px rgba(0,246,255,0.3)"]
                             }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                           />
                           {protein.gene}
                         </div>
-                        <div className="text-xs text-white/70 group-hover:text-white truncate transition-colors font-medium">{protein.name}</div>
+                        <div className="text-xs text-gray-300 group-hover:text-white truncate transition-colors font-medium">{protein.name}</div>
                       </div>
                     </motion.button>
                   ))}
@@ -555,8 +563,8 @@ export default function Home() {
             <MetricsPanel visible={!!currentPrediction} prediction={currentPrediction} />
             
             {currentPrediction?.proteinName && (
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-xs font-mono text-primary/80">
+              <div className="rounded-lg p-3 border border-cyan-500/30" style={{ backgroundColor: 'rgba(0, 246, 255, 0.08)' }}>
+                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">
                   <Brain className="w-3 h-3" />
                   <span>Prediction Complete</span>
                 </div>
@@ -564,12 +572,12 @@ export default function Home() {
                   {currentPrediction.proteinName}
                 </div>
                 {currentPrediction.organism && (
-                  <div className="text-xs text-white/50">
+                  <div className="text-xs text-gray-400">
                     {currentPrediction.organism}
                   </div>
                 )}
                 {currentPrediction.modelVersion && (
-                  <div className="text-[10px] text-white/40 mt-1">
+                  <div className="text-[10px] text-gray-500 mt-1">
                     {currentPrediction.modelVersion}
                   </div>
                 )}
