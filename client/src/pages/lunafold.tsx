@@ -735,7 +735,7 @@ export default function Home() {
                    <Button 
                      variant="outline" 
                      size="sm" 
-                     className="h-8 text-xs border-white/10 hover:bg-white/5 hover:text-primary"
+                     className="h-8 text-xs border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-cyan-200"
                      onClick={() => {
                        navigator.clipboard.writeText(window.location.href);
                        toast({ title: "Success", description: "Link copied to clipboard!" });
@@ -747,7 +747,7 @@ export default function Home() {
                    <Button 
                      variant="outline" 
                      size="sm" 
-                     className="h-8 text-xs border-white/10 hover:bg-white/5 hover:text-primary"
+                     className="h-8 text-xs border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-cyan-200"
                      onClick={handleDownloadPDB}
                    >
                      <Download className="w-3 h-3 mr-2" />
@@ -799,8 +799,8 @@ export default function Home() {
                      </AnimatePresence>
                    </>
                  ) : (
-                   <div className="glass-card p-6 rounded-xl text-center">
-                     <div className="text-white/30 text-sm">
+                   <div className="luna-card p-6 rounded-xl text-center">
+                     <div className="text-gray-300 text-sm">
                        Enter a protein sequence or select a featured protein to view structure insights
                      </div>
                    </div>

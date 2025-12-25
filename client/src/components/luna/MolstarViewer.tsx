@@ -713,7 +713,7 @@ export default function MolstarViewer({
   const showViewer = !folding && prediction;
 
   return (
-    <div className="w-full h-full min-h-[500px] bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl overflow-hidden relative border border-white/10 shadow-inner" data-testid="protein-viewer">
+    <div className="w-full h-full min-h-[500px] bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl overflow-hidden relative border border-cyan-500/20 shadow-inner" data-testid="protein-viewer">
       
       {folding && (
         <div className="absolute inset-0 z-30 bg-black/80 flex items-center justify-center" data-testid="protein-viewer-loading">
@@ -781,7 +781,7 @@ export default function MolstarViewer({
               <span className="md:hidden">3D</span>
               <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
             </div>
-            <div className="bg-black/70 backdrop-blur-md px-2 md:px-3 py-1 rounded-full border border-white/10 text-[10px] md:text-xs font-mono text-white/60">
+            <div className="bg-black/70 backdrop-blur-md px-2 md:px-3 py-1 rounded-full border border-cyan-500/20 text-[10px] md:text-xs font-mono text-white/60">
               {prediction.sequence?.length || 0} residues
             </div>
             {analysis?.secondaryStructure && (
@@ -810,7 +810,7 @@ export default function MolstarViewer({
                 </div>
               </div>
               {analysis?.secondaryStructure && (
-                <div className="bg-black/70 backdrop-blur-md px-2 py-1 rounded-lg border border-white/10 text-right">
+                <div className="bg-black/70 backdrop-blur-md px-2 py-1 rounded-lg border border-cyan-500/20 text-right">
                   <div className="text-[8px] text-white/40 font-mono">HELIX</div>
                   <div className="text-xs font-mono text-purple-400">
                     {Math.round(analysis.secondaryStructure.alphaHelix * 100)}%
@@ -823,7 +823,7 @@ export default function MolstarViewer({
           {/* Desktop controls - hidden on mobile */}
           {!isMobile && (
             <div className="absolute top-4 right-4 z-20 flex flex-col gap-2">
-              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20">
                 <div className="text-[10px] text-white/50 font-mono mb-2">REPRESENTATION</div>
                 <div className="flex flex-col gap-1">
                   {(['cartoon', 'cartoon+sidechains', 'ball-and-stick', 'surface'] as RepresentationType[]).map(rep => (
@@ -833,7 +833,7 @@ export default function MolstarViewer({
                       className={`text-[10px] font-mono px-2 py-1 rounded transition-colors ${
                         representation === rep 
                           ? 'bg-primary text-white' 
-                          : 'bg-white/10 text-white/60 hover:bg-white/20'
+                          : 'bg-black/30 text-gray-300 hover:bg-black/40'
                       }`}
                       data-testid={`btn-rep-${rep.replace('+', '-')}`}
                     >
@@ -845,12 +845,12 @@ export default function MolstarViewer({
                 </div>
               </div>
 
-              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20">
                 <div className="text-[10px] text-white/50 font-mono mb-2">LIGHTING</div>
                 <div className="flex gap-1">
                   <button
                     onClick={() => setLightingMode('default')}
-                    className={`p-1.5 rounded transition-colors ${lightingMode === 'default' ? 'bg-primary text-white' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+                    className={`p-1.5 rounded transition-colors ${lightingMode === 'default' ? 'bg-primary text-white' : 'bg-black/30 text-gray-300 hover:bg-black/40'}`}
                     title="Default"
                     data-testid="btn-lighting-default"
                   >
@@ -858,7 +858,7 @@ export default function MolstarViewer({
                   </button>
                   <button
                     onClick={() => setLightingMode('ambient')}
-                    className={`p-1.5 rounded transition-colors ${lightingMode === 'ambient' ? 'bg-primary text-white' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+                    className={`p-1.5 rounded transition-colors ${lightingMode === 'ambient' ? 'bg-primary text-white' : 'bg-black/30 text-gray-300 hover:bg-black/40'}`}
                     title="Ambient"
                     data-testid="btn-lighting-ambient"
                   >
@@ -866,7 +866,7 @@ export default function MolstarViewer({
                   </button>
                   <button
                     onClick={() => setLightingMode('dramatic')}
-                    className={`p-1.5 rounded transition-colors ${lightingMode === 'dramatic' ? 'bg-primary text-white' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+                    className={`p-1.5 rounded transition-colors ${lightingMode === 'dramatic' ? 'bg-primary text-white' : 'bg-black/30 text-gray-300 hover:bg-black/40'}`}
                     title="Dramatic"
                     data-testid="btn-lighting-dramatic"
                   >
@@ -875,7 +875,7 @@ export default function MolstarViewer({
                 </div>
               </div>
 
-              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20">
                 <div className="text-[10px] text-white/50 font-mono mb-2">COLOR BY</div>
                 <div className="flex flex-col gap-1">
                   {COLOR_MODE_OPTIONS.map(opt => (
@@ -885,7 +885,7 @@ export default function MolstarViewer({
                       className={`text-[10px] font-mono px-2 py-1 rounded transition-colors text-left ${
                         colorMode === opt.value 
                           ? 'bg-primary text-white' 
-                          : 'bg-white/10 text-white/60 hover:bg-white/20'
+                          : 'bg-black/30 text-gray-300 hover:bg-black/40'
                       }`}
                       title={opt.description}
                       data-testid={`btn-color-${opt.value}`}
@@ -897,7 +897,7 @@ export default function MolstarViewer({
               </div>
 
               {colorMode === 'plddt' && (
-                <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+                <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20">
                   <div className="text-[10px] text-white/50 font-mono mb-2">pLDDT LEGEND</div>
                   <div className="space-y-1">
                     {[
@@ -923,7 +923,7 @@ export default function MolstarViewer({
               )}
 
               {colorMode === 'secondary-structure' && (
-                <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+                <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20">
                   <div className="text-[10px] text-white/50 font-mono mb-2">STRUCTURE LEGEND</div>
                   <div className="space-y-1">
                     {[
@@ -942,7 +942,7 @@ export default function MolstarViewer({
               )}
 
               {colorMode === 'hydrophobicity' && (
-                <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+                <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20">
                   <div className="text-[10px] text-white/50 font-mono mb-2">HYDROPHOBICITY</div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -963,7 +963,7 @@ export default function MolstarViewer({
           {isMobile && (
             <button
               onClick={() => setShowMobileControls(!showMobileControls)}
-              className="absolute top-2 right-2 z-20 bg-black/60 backdrop-blur-md p-2 rounded-lg border border-white/10 text-white/60"
+              className="absolute top-2 right-2 z-20 bg-black/60 backdrop-blur-md p-2 rounded-lg border border-cyan-500/20 text-white/60"
               data-testid="btn-mobile-settings"
             >
               {showMobileControls ? <X className="w-4 h-4" /> : <Settings className="w-4 h-4" />}
@@ -972,7 +972,7 @@ export default function MolstarViewer({
 
           {/* Mobile controls drawer */}
           {isMobile && showMobileControls && (
-            <div className="absolute top-12 right-2 z-20 bg-black/90 backdrop-blur-md p-3 rounded-lg border border-white/10 w-52 max-h-80 overflow-y-auto">
+            <div className="absolute top-12 right-2 z-20 bg-black/90 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20 w-52 max-h-80 overflow-y-auto">
               <div className="text-[10px] text-white/50 font-mono mb-2">VIEW</div>
               <div className="grid grid-cols-2 gap-1 mb-3">
                 {(['cartoon', 'surface'] as RepresentationType[]).map(rep => (
@@ -1041,7 +1041,7 @@ export default function MolstarViewer({
               <>
                 <button
                   onClick={handleResetView}
-                  className="bg-black/60 backdrop-blur-md p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                  className="bg-black/60 backdrop-blur-md p-2 rounded-lg border border-cyan-500/20 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
                   title="Reset View"
                   data-testid="btn-reset-view"
                 >
@@ -1049,7 +1049,7 @@ export default function MolstarViewer({
                 </button>
                 <button
                   onClick={handleScreenshot}
-                  className="bg-black/60 backdrop-blur-md p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                  className="bg-black/60 backdrop-blur-md p-2 rounded-lg border border-cyan-500/20 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
                   title="Screenshot"
                   data-testid="btn-screenshot"
                 >
@@ -1058,14 +1058,14 @@ export default function MolstarViewer({
                 <div className="relative">
                   <button
                     onClick={() => setShowToolsPanel(!showToolsPanel)}
-                    className={`bg-black/60 backdrop-blur-md p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors ${showToolsPanel ? 'bg-white/10' : ''}`}
+                    className={`bg-black/60 backdrop-blur-md p-2 rounded-lg border border-cyan-500/20 text-white/60 hover:text-white hover:bg-white/10 transition-colors ${showToolsPanel ? 'bg-white/10' : ''}`}
                     title="Download"
                     data-testid="btn-download-menu"
                   >
                     <Download className="w-4 h-4" />
                   </button>
                   {showToolsPanel && (
-                    <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md rounded-lg border border-white/10 p-2 min-w-[140px]">
+                    <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md rounded-lg border border-cyan-500/20 p-2 min-w-[140px]">
                       <button
                         onClick={() => { handleDownloadPDB(); setShowToolsPanel(false); }}
                         className="w-full text-left text-xs font-mono px-3 py-2 rounded hover:bg-white/10 text-white/70 hover:text-white transition-colors"
@@ -1088,14 +1088,14 @@ export default function MolstarViewer({
                 <div className="relative">
                   <button
                     onClick={() => setShowSharePanel(!showSharePanel)}
-                    className={`bg-black/60 backdrop-blur-md p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors ${showSharePanel ? 'bg-white/10' : ''}`}
+                    className={`bg-black/60 backdrop-blur-md p-2 rounded-lg border border-cyan-500/20 text-white/60 hover:text-white hover:bg-white/10 transition-colors ${showSharePanel ? 'bg-white/10' : ''}`}
                     title="Share"
                     data-testid="btn-share"
                   >
                     <Share2 className="w-4 h-4" />
                   </button>
                   {showSharePanel && (
-                    <div className="absolute top-full mt-2 right-0 bg-black/80 backdrop-blur-md rounded-lg border border-white/10 p-3 min-w-[200px]">
+                    <div className="absolute top-full mt-2 right-0 bg-black/80 backdrop-blur-md rounded-lg border border-cyan-500/20 p-3 min-w-[200px]">
                       <div className="text-[10px] text-white/50 font-mono mb-2">SHARE VISUALIZATION</div>
                       <button
                         onClick={handleCopyLink}
@@ -1140,7 +1140,7 @@ export default function MolstarViewer({
           {/* Bottom info - simplified on mobile */}
           <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 right-2 md:right-4 flex justify-between items-end z-20 pointer-events-none">
             {!isMobile && (
-              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10">
+              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20">
                 <div className="text-[10px] text-white/50 font-mono mb-1">CONTROLS</div>
                 <div className="text-[10px] text-white/40 font-mono space-y-0.5">
                   <div>Left-drag: Rotate</div>
@@ -1159,14 +1159,14 @@ export default function MolstarViewer({
                     {avgPlddt.toFixed(0)}%
                   </span>
                 </div>
-                <div className="bg-black/70 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-white/10">
+                <div className="bg-black/70 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-cyan-500/20">
                   <div className="text-[8px] text-white/50 font-mono">LENGTH</div>
                   <span className="text-sm font-mono text-white/80">
                     {prediction.sequence?.length || 0} aa
                   </span>
                 </div>
                 {prediction.proteinName && (
-                  <div className="bg-black/70 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-white/10 flex-1 min-w-0">
+                  <div className="bg-black/70 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-cyan-500/20 flex-1 min-w-0">
                     <div className="text-[8px] text-white/50 font-mono">PROTEIN</div>
                     <span className="text-[10px] font-mono text-white/80 truncate block">
                       {prediction.proteinName}
@@ -1177,7 +1177,7 @@ export default function MolstarViewer({
             )}
 
             {prediction.proteinName && !isMobile && (
-              <div className="bg-black/60 backdrop-blur-md p-2 md:p-3 rounded-lg border border-white/10 text-center">
+              <div className="bg-black/60 backdrop-blur-md p-2 md:p-3 rounded-lg border border-cyan-500/20 text-center">
                 <div className="text-[10px] text-white/50 font-mono mb-1">PROTEIN</div>
                 <div className="text-sm font-mono text-white max-w-[200px] truncate">
                   {prediction.proteinName}
@@ -1191,7 +1191,7 @@ export default function MolstarViewer({
             )}
 
             {!isMobile && (
-              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10 text-right">
+              <div className="bg-black/60 backdrop-blur-md p-3 rounded-lg border border-cyan-500/20 text-right">
                 <div className="text-[10px] text-white/50 font-mono mb-1">AVERAGE pLDDT</div>
                 <div 
                   className="text-xl font-mono font-bold"
