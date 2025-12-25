@@ -234,7 +234,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="relative z-10 container mx-auto px-4 md:px-6 py-6 md:py-8">
+      <main className="relative z-10 container mx-auto px-4 md:px-6 pt-20 md:pt-24 pb-6 md:pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           
           <div className="lg:col-span-4 space-y-6">
