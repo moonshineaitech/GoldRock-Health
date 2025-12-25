@@ -66,9 +66,9 @@ export default function WorkbenchPanel({ prediction, onResidueHighlight }: Workb
 
   if (!prediction) {
     return (
-      <div className="glass-card p-6 rounded-xl text-center">
-        <FlaskConical className="w-8 h-8 text-white/20 mx-auto mb-3" />
-        <div className="text-white/40 text-sm">
+      <div className="p-6 rounded-xl text-center border border-cyan-500/20" style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}>
+        <FlaskConical className="w-8 h-8 text-cyan-400/50 mx-auto mb-3" />
+        <div className="text-gray-400 text-sm">
           Load a protein structure to access the research workbench
         </div>
       </div>
@@ -76,14 +76,14 @@ export default function WorkbenchPanel({ prediction, onResidueHighlight }: Workb
   }
 
   return (
-    <div className="glass-card rounded-xl overflow-hidden border border-white/10">
-      <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-500/10 to-cyan-500/10">
+    <div className="rounded-xl overflow-hidden border border-cyan-500/20" style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}>
+      <div className="p-4 border-b border-cyan-500/20 bg-gradient-to-r from-purple-500/10 to-cyan-500/10">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <FlaskConical className="w-5 h-5 text-purple-400" />
             <span className="font-display font-bold text-white">Research Workbench</span>
           </div>
-          <span className="text-[10px] text-white/50 font-mono">
+          <span className="text-[10px] text-cyan-400/80 font-mono">
             {prediction.proteinName || prediction.uniprotId}
           </span>
         </div>

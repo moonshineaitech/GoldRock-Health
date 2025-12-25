@@ -31,12 +31,13 @@ export default function MetricsPanel({ visible, prediction }: MetricsPanelProps)
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2 }}
-        className="glass-card p-5 rounded-xl"
+        className="p-5 rounded-xl border border-cyan-500/20"
+        style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-mono text-primary flex items-center gap-2">
+          <h3 className="text-sm font-mono text-cyan-400 flex items-center gap-2">
             pLDDT Confidence
-            <Info className="w-3 h-3 opacity-50" />
+            <Info className="w-3 h-3 text-cyan-400/50" />
           </h3>
           <span className={`text-xs font-bold ${confidenceColor}`}>{avgConfidence.toFixed(1)}% {confidenceLevel}</span>
         </div>
@@ -66,14 +67,15 @@ export default function MetricsPanel({ visible, prediction }: MetricsPanelProps)
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.4 }}
-        className="glass-card p-5 rounded-xl"
+        className="p-5 rounded-xl border border-purple-500/20"
+        style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}
       >
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-mono text-purple-400 flex items-center gap-2">
             Predicted Aligned Error
-            <Info className="w-3 h-3 opacity-50" />
+            <Info className="w-3 h-3 text-purple-400/50" />
           </h3>
-          <span className="text-xs font-bold text-white/50">{(prediction.rmsd || 0).toFixed(1)}Å AVG</span>
+          <span className="text-xs font-bold text-gray-300">{(prediction.rmsd || 0).toFixed(1)}Å AVG</span>
         </div>
         <div className="h-[120px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -92,12 +94,12 @@ export default function MetricsPanel({ visible, prediction }: MetricsPanelProps)
       </motion.div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="glass-card p-4 rounded-xl text-center">
-          <div className="text-[10px] text-white/40 font-mono uppercase mb-1">Tm-Score</div>
+        <div className="p-4 rounded-xl text-center border border-cyan-500/20" style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}>
+          <div className="text-[10px] text-cyan-400/70 font-mono uppercase mb-1">Tm-Score</div>
           <div className="text-xl font-display font-bold text-white">{(prediction.tmScore || 0).toFixed(2)}</div>
         </div>
-        <div className="glass-card p-4 rounded-xl text-center">
-          <div className="text-[10px] text-white/40 font-mono uppercase mb-1">RMSD</div>
+        <div className="p-4 rounded-xl text-center border border-cyan-500/20" style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}>
+          <div className="text-[10px] text-cyan-400/70 font-mono uppercase mb-1">RMSD</div>
           <div className="text-xl font-display font-bold text-white">{(prediction.rmsd || 0).toFixed(1)}Å</div>
         </div>
       </div>

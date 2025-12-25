@@ -90,10 +90,11 @@ export default function ProcessExplainer({ isFolding, onComplete }: { isFolding:
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -20, scale: 0.95 }}
-      className="glass-card-elite p-6 rounded-xl space-y-6 relative overflow-hidden"
+      className="p-6 rounded-xl space-y-6 relative overflow-hidden border border-cyan-500/20"
+      style={{ backgroundColor: 'rgba(15, 30, 50, 0.9)' }}
     >
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-primary/5 via-purple-500/5 to-pink-500/5"
+        className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5"
         animate={{ 
           backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
         }}
@@ -102,10 +103,10 @@ export default function ProcessExplainer({ isFolding, onComplete }: { isFolding:
       />
       
       <div className="relative">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
+        <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3">
           <div className="flex items-center gap-3">
             <DNAHelixMini />
-            <h3 className="text-sm font-mono text-white/80 uppercase tracking-widest">
+            <h3 className="text-sm font-mono text-cyan-400 uppercase tracking-widest">
               Folding Pipeline
             </h3>
           </div>
@@ -199,13 +200,13 @@ export default function ProcessExplainer({ isFolding, onComplete }: { isFolding:
                     {step.icon}
                   </motion.span>
                   <span className={`font-mono text-sm font-bold ${
-                    status === 'active' ? 'text-primary text-glow-subtle' : 
-                    status === 'completed' ? 'text-green-400' : 'text-white/50'
+                    status === 'active' ? 'text-cyan-400 text-glow-subtle' : 
+                    status === 'completed' ? 'text-green-400' : 'text-gray-400'
                   }`}>
                     {step.label}
                   </span>
                 </div>
-                <div className="text-xs text-white/50 ml-6">
+                <div className="text-xs text-gray-300 ml-6">
                   {status === 'active' ? (
                     <motion.span
                       animate={{ opacity: [0.5, 1, 0.5] }}

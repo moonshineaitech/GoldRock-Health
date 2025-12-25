@@ -88,26 +88,26 @@ export default function BindingSitePanel({ prediction, onResidueHighlight, onBin
   };
 
   return (
-    <div className="space-y-4" data-testid="binding-site-panel">
-      <div className="glass-card p-4 rounded-xl">
+    <div className="space-y-4 p-4" data-testid="binding-site-panel">
+      <div className="p-4 rounded-xl border border-purple-500/20" style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
             <Target className="w-5 h-5 text-purple-400" />
           </div>
           <div>
             <h3 className="font-display font-semibold text-white">Binding Site Detection</h3>
-            <p className="text-xs text-white/50">Identify druggable pockets using 3D coordinate analysis</p>
+            <p className="text-xs text-cyan-400/80">Identify druggable pockets using 3D coordinate analysis</p>
           </div>
         </div>
 
         {!hasAnalyzed ? (
           <div className="space-y-4">
-            <div className="bg-white/5 rounded-lg p-4">
+            <div className="rounded-lg p-4 border border-cyan-500/10" style={{ backgroundColor: 'rgba(0, 200, 255, 0.05)' }}>
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-4 h-4 text-primary mt-0.5" />
-                <div className="text-sm text-white/70">
+                <AlertCircle className="w-4 h-4 text-cyan-400 mt-0.5" />
+                <div className="text-sm text-gray-200">
                   <p className="mb-2">This algorithm analyzes 3D atomic coordinates to detect surface cavities and pockets suitable for small molecule binding.</p>
-                  <p className="text-white/50 text-xs">Uses geometric clustering of C-alpha atoms with distance-based contact analysis.</p>
+                  <p className="text-gray-400 text-xs">Uses geometric clustering of C-alpha atoms with distance-based contact analysis.</p>
                 </div>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function BindingSitePanel({ prediction, onResidueHighlight, onBin
         ) : (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-white/70">
+              <span className="text-sm text-gray-200">
                 {pockets.length} pocket{pockets.length !== 1 ? "s" : ""} detected
               </span>
               <Button
@@ -164,7 +164,7 @@ export default function BindingSitePanel({ prediction, onResidueHighlight, onBin
               <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-center">
                 <AlertCircle className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                 <p className="text-sm text-yellow-400">No significant binding pockets detected</p>
-                <p className="text-xs text-white/50 mt-1">The structure may lack defined cavities or be highly disordered</p>
+                <p className="text-xs text-gray-400 mt-1">The structure may lack defined cavities or be highly disordered</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -206,19 +206,19 @@ export default function BindingSitePanel({ prediction, onResidueHighlight, onBin
                         
                         <div className="grid grid-cols-4 gap-2 text-[10px]">
                           <div>
-                            <div className="text-white/40">Residues</div>
+                            <div className="text-gray-400">Residues</div>
                             <div className="text-white font-mono">{pocket.residues.length}</div>
                           </div>
                           <div>
-                            <div className="text-white/40">Volume</div>
+                            <div className="text-gray-400">Volume</div>
                             <div className="text-white font-mono">{pocket.volume.toFixed(0)}Å³</div>
                           </div>
                           <div>
-                            <div className="text-white/40">Hydrophobic</div>
+                            <div className="text-gray-400">Hydrophobic</div>
                             <div className="text-white font-mono">{(pocket.hydrophobicity * 100).toFixed(0)}%</div>
                           </div>
                           <div>
-                            <div className="text-white/40">Confidence</div>
+                            <div className="text-gray-400">Confidence</div>
                             <div className="text-white font-mono">{(pocket.confidence || 70).toFixed(0)}%</div>
                           </div>
                         </div>
@@ -231,15 +231,15 @@ export default function BindingSitePanel({ prediction, onResidueHighlight, onBin
                           >
                             <div className="grid grid-cols-3 gap-2 text-[10px] mb-3">
                               <div>
-                                <div className="text-white/40">Polarity</div>
+                                <div className="text-gray-400">Polarity</div>
                                 <div className="text-white font-mono">{((pocket.polarity || 0) * 100).toFixed(0)}%</div>
                               </div>
                               <div>
-                                <div className="text-white/40">Charged</div>
+                                <div className="text-gray-400">Charged</div>
                                 <div className="text-white font-mono">{((pocket.chargedRatio || 0) * 100).toFixed(0)}%</div>
                               </div>
                               <div>
-                                <div className="text-white/40">Aromatic</div>
+                                <div className="text-gray-400">Aromatic</div>
                                 <div className="text-white font-mono">{((pocket.aromaticRatio || 0) * 100).toFixed(0)}%</div>
                               </div>
                             </div>

@@ -97,12 +97,12 @@ function KPICard({
   };
   
   return (
-    <div className="glass-card p-3 rounded-xl border border-white/5 hover:border-white/10 transition-colors group relative">
+    <div className="p-3 rounded-xl border border-cyan-500/20 hover:border-cyan-500/40 transition-colors group relative" style={{ backgroundColor: 'rgba(15, 30, 50, 0.8)' }}>
       <div className="flex items-center gap-2 mb-1">
         <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${colorClasses[color]}`}>
           <Icon className="w-3.5 h-3.5" />
         </div>
-        <span className="text-[10px] text-white/40 font-mono uppercase tracking-wide">{label}</span>
+        <span className="text-[10px] text-cyan-400/80 font-mono uppercase tracking-wide">{label}</span>
         {tooltip && (
           <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
             <Info className="w-3 h-3 text-white/30" />
@@ -110,7 +110,7 @@ function KPICard({
         )}
       </div>
       <div className="text-xl font-display font-bold text-white">{value}</div>
-      {subValue && <div className="text-[10px] text-white/40 mt-0.5">{subValue}</div>}
+      {subValue && <div className="text-[10px] text-gray-300 mt-0.5">{subValue}</div>}
     </div>
   );
 }
@@ -138,12 +138,12 @@ function DistributionChart({ plddtScores }: { plddtScores: number[] }) {
                 className="w-2.5 h-2.5 rounded-full"
                 style={{ backgroundColor: tier.color }}
               />
-              <span className="text-xs text-white/60">{tier.name}</span>
-              <span className="text-[10px] text-white/30 font-mono">({tier.range})</span>
+              <span className="text-xs text-gray-200">{tier.name}</span>
+              <span className="text-[10px] text-gray-400 font-mono">({tier.range})</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/80 font-mono">{tier.count}</span>
-              <span className="text-[10px] text-white/40">({tier.percentage.toFixed(1)}%)</span>
+              <span className="text-xs text-white font-mono">{tier.count}</span>
+              <span className="text-[10px] text-gray-300">({tier.percentage.toFixed(1)}%)</span>
             </div>
           </div>
           <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -165,7 +165,7 @@ function DomainBreakdown({ plddtScores }: { plddtScores: number[] }) {
   if (plddtScores.length === 0) {
     return (
       <div className="text-center py-4">
-        <div className="text-xs text-white/40">No confidence data available</div>
+        <div className="text-xs text-gray-400">No confidence data available</div>
       </div>
     );
   }
@@ -196,7 +196,7 @@ function DomainBreakdown({ plddtScores }: { plddtScores: number[] }) {
   if (segments.length === 0) {
     return (
       <div className="text-center py-4">
-        <div className="text-xs text-white/40">Insufficient data for domain map</div>
+        <div className="text-xs text-gray-400">Insufficient data for domain map</div>
       </div>
     );
   }
@@ -221,13 +221,13 @@ function DomainBreakdown({ plddtScores }: { plddtScores: number[] }) {
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
               <div className="bg-gray-900 border border-white/10 rounded-lg p-2 text-[10px] whitespace-nowrap">
                 <div className="font-mono text-white">Region {seg.region}</div>
-                <div className="text-white/60">Avg: {seg.avgScore.toFixed(1)} pLDDT</div>
+                <div className="text-gray-300">Avg: {seg.avgScore.toFixed(1)} pLDDT</div>
               </div>
             </div>
           </motion.div>
         ))}
       </div>
-      <div className="flex justify-between text-[10px] text-white/30 font-mono">
+      <div className="flex justify-between text-[10px] text-gray-400 font-mono">
         <span>N-term</span>
         <span>C-term</span>
       </div>
@@ -302,7 +302,7 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
                 {prediction.proteinName}
               </h3>
               {prediction.organism && (
-                <p className="text-[10px] text-white/50 mt-0.5 italic">{prediction.organism}</p>
+                <p className="text-[10px] text-cyan-400/80 mt-0.5 italic">{prediction.organism}</p>
               )}
             </div>
             {prediction.uniprotId && (
@@ -331,19 +331,19 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
             <div className="w-6 h-6 rounded-lg bg-purple-500/20 flex items-center justify-center">
               <Target className="w-3.5 h-3.5 text-purple-400" />
             </div>
-            <span className="text-[10px] text-white/40 font-mono uppercase">Selected Residue</span>
+            <span className="text-[10px] text-cyan-400/80 font-mono uppercase">Selected Residue</span>
           </div>
           <div className="grid grid-cols-3 gap-2">
             <div>
-              <div className="text-[10px] text-white/40">Position</div>
+              <div className="text-[10px] text-gray-300">Position</div>
               <div className="text-lg font-display font-bold text-white">{selectedResidue.index + 1}</div>
             </div>
             <div>
-              <div className="text-[10px] text-white/40">Amino Acid</div>
+              <div className="text-[10px] text-gray-300">Amino Acid</div>
               <div className="text-lg font-display font-bold text-purple-400">{selectedResidue.aa}</div>
             </div>
             <div>
-              <div className="text-[10px] text-white/40">pLDDT</div>
+              <div className="text-[10px] text-gray-300">pLDDT</div>
               <div className={`text-lg font-display font-bold ${
                 selectedResidue.plddt >= 90 ? 'text-blue-400' :
                 selectedResidue.plddt >= 70 ? 'text-cyan-400' :
@@ -353,7 +353,7 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
               </div>
             </div>
           </div>
-          <div className="mt-2 text-[10px] text-white/50">
+          <div className="mt-2 text-[10px] text-gray-300">
             {getConfidenceTier(selectedResidue.plddt).description}
           </div>
         </motion.div>
@@ -367,8 +367,8 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
           className="glass-card p-4 rounded-xl"
         >
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xs font-mono text-white/60 uppercase tracking-wider">Overall Confidence</h3>
-            <div className="text-[10px] text-white/40 font-mono">pLDDT Score</div>
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider">Overall Confidence</h3>
+            <div className="text-[10px] text-gray-300 font-mono">pLDDT Score</div>
           </div>
           <ConfidenceGauge score={avgConfidence} />
         </motion.div>
@@ -379,9 +379,9 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
           transition={{ delay: 0.1 }}
           className="glass-card p-4 rounded-xl text-center"
         >
-          <div className="text-xs text-white/40 mb-2">Structure Loaded</div>
-          <div className="text-lg font-display font-bold text-primary">Ready</div>
-          <div className="text-[10px] text-white/30 mt-1">No pLDDT scores available</div>
+          <div className="text-xs text-gray-300 mb-2">Structure Loaded</div>
+          <div className="text-lg font-display font-bold text-cyan-400">Ready</div>
+          <div className="text-[10px] text-gray-400 mt-1">No pLDDT scores available</div>
         </motion.div>
       )}
 
