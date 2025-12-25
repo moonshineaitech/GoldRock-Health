@@ -331,7 +331,7 @@ export default function MutationScanner({ prediction, onResidueHighlight }: Muta
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-4 rounded-xl"
+          className="luna-card p-4 rounded-xl"
         >
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-sm font-medium text-white">Results ({results.length})</h4>
@@ -399,7 +399,7 @@ export default function MutationScanner({ prediction, onResidueHighlight }: Muta
         </motion.div>
       )}
 
-      <div className="glass-card p-4 rounded-xl">
+      <div className="luna-card p-4 rounded-xl">
         <h4 className="text-xs font-mono text-white/40 uppercase mb-3">About ΔΔG Predictions</h4>
         <p className="text-xs text-white/60">
           Predictions use BLOSUM62 substitution matrix scores combined with structural context (pLDDT confidence, residue burial). 

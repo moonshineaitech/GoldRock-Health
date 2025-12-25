@@ -294,7 +294,7 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-3 rounded-xl border border-primary/20"
+          className="luna-card p-3 rounded-xl border border-primary/20"
         >
           <div className="flex items-start justify-between">
             <div>
@@ -325,7 +325,7 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
           key={`residue-${selectedResidue.index}`}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="glass-card p-3 rounded-xl border border-purple-500/30 bg-purple-500/5"
+          className="luna-card p-3 rounded-xl border border-purple-500/30 bg-purple-500/5"
         >
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 rounded-lg bg-purple-500/20 flex items-center justify-center">
@@ -364,7 +364,7 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-card p-4 rounded-xl"
+          className="luna-card p-4 rounded-xl"
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider">Overall Confidence</h3>
@@ -377,7 +377,7 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-card p-4 rounded-xl text-center"
+          className="luna-card p-4 rounded-xl text-center"
         >
           <div className="text-xs text-gray-300 mb-2">Structure Loaded</div>
           <div className="text-lg font-display font-bold text-cyan-400">Ready</div>
@@ -538,7 +538,7 @@ export default function InsightColumn({ prediction, selectedResidue, onResidueSe
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="glass-card p-3 rounded-xl"
+        className="luna-card p-3 rounded-xl"
       >
         <div className="text-[10px] text-white/40 font-mono uppercase mb-3">Export Data</div>
         <div className="grid grid-cols-2 gap-2">

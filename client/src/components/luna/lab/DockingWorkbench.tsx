@@ -295,7 +295,7 @@ export default function DockingWorkbench({ prediction, bindingSite, onShowLigand
 
   return (
     <div className="space-y-4" data-testid="docking-workbench">
-      <div className="glass-card p-4 rounded-xl">
+      <div className="luna-card p-4 rounded-xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
             <Beaker className="w-5 h-5 text-blue-400" />
@@ -512,7 +512,7 @@ export default function DockingWorkbench({ prediction, bindingSite, onShowLigand
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-4 rounded-xl"
+          className="luna-card p-4 rounded-xl"
         >
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-sm font-medium text-white">
@@ -566,7 +566,7 @@ export default function DockingWorkbench({ prediction, bindingSite, onShowLigand
       )}
 
       {selectedCompounds.length > 0 && (
-        <div className="glass-card p-4 rounded-xl">
+        <div className="luna-card p-4 rounded-xl">
           <div className="text-xs text-white/50 mb-2">Selected for docking ({selectedCompounds.length})</div>
           <div className="flex flex-wrap gap-2 mb-3">
             {selectedCompounds.map(compound => (
@@ -610,7 +610,7 @@ export default function DockingWorkbench({ prediction, bindingSite, onShowLigand
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-4 rounded-xl"
+          className="luna-card p-4 rounded-xl"
         >
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-sm font-medium text-white">
@@ -824,7 +824,7 @@ export default function DockingWorkbench({ prediction, bindingSite, onShowLigand
         </motion.div>
       )}
 
-      <div className="glass-card p-4 rounded-xl">
+      <div className="luna-card p-4 rounded-xl">
         <h4 className="text-xs font-mono text-white/40 uppercase mb-3">Data Sources & Methodology</h4>
         <div className="space-y-2 text-xs text-white/60">
           <div className="flex items-center gap-2">

@@ -33,7 +33,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-5 rounded-xl"
+          className="luna-card p-5 rounded-xl"
         >
           <h3 className="text-sm font-mono text-green-400 flex items-center gap-2 mb-4">
             <Activity className="w-4 h-4" />
@@ -116,7 +116,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-5 rounded-xl"
+        className="luna-card p-5 rounded-xl"
       >
         <h3 className="text-sm font-mono text-primary flex items-center gap-2 mb-4">
           <Beaker className="w-4 h-4" />
@@ -151,7 +151,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="glass-card p-5 rounded-xl"
+        className="luna-card p-5 rounded-xl"
       >
         <h3 className="text-sm font-mono text-purple-400 flex items-center gap-2 mb-4">
           <Dna className="w-4 h-4" />
@@ -215,7 +215,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-card p-5 rounded-xl"
+          className="luna-card p-5 rounded-xl"
         >
           <h3 className="text-sm font-mono text-yellow-400 flex items-center gap-2 mb-4">
             <Zap className="w-4 h-4" />
@@ -243,7 +243,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="glass-card p-5 rounded-xl bg-blue-500/5 border-blue-500/20"
+          className="luna-card p-5 rounded-xl bg-blue-500/5 border-blue-500/20"
         >
           <h3 className="text-sm font-mono text-blue-400 flex items-center gap-2 mb-4">
             <Target className="w-4 h-4" />
@@ -274,7 +274,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass-card p-4 rounded-xl bg-yellow-500/5 border-yellow-500/20"
+          className="luna-card p-4 rounded-xl bg-yellow-500/5 border-yellow-500/20"
         >
           <h3 className="text-sm font-mono text-yellow-400 flex items-center gap-2 mb-2">
             <AlertTriangle className="w-4 h-4" />
@@ -291,7 +291,7 @@ export default function AnalysisPanel({ analysis, explanation, prediction }: Ana
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="glass-card p-5 rounded-xl"
+          className="luna-card p-5 rounded-xl"
         >
           <h3 className="text-sm font-mono text-white/80 flex items-center gap-2 mb-3">
             <Microscope className="w-4 h-4" />

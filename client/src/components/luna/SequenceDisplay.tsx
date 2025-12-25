@@ -75,7 +75,7 @@ export default function SequenceDisplay({
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-xl overflow-hidden"
+      className="luna-card rounded-xl overflow-hidden"
     >
       <div className="p-4 border-b border-white/10">
         <div className="flex items-center justify-between mb-3">

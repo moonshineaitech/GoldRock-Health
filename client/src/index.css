@@ -296,6 +296,22 @@
     @apply bg-slate-900/80 border-slate-700/20;
   }
 
+  /* LunaFold dark theme card - deep void blue with cyan accents */
+  .luna-card {
+    background: rgba(11, 26, 51, 0.9);
+    border: 1px solid rgba(0, 246, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(0, 246, 255, 0.05);
+  }
+
+  .luna-card-gradient {
+    background: linear-gradient(145deg, rgba(11, 26, 51, 0.95) 0%, rgba(15, 30, 55, 0.9) 100%);
+    border: 1px solid rgba(0, 246, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
   .medical-gradient {
     background: linear-gradient(135deg, 
       hsl(238, 74%, 58%) 0%, 

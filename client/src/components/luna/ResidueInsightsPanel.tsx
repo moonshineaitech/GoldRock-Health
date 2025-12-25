@@ -127,7 +127,7 @@ export default function ResidueInsightsPanel({
   };
 
   return (
-    <div className="glass-card p-4 space-y-4" data-testid="residue-insights-panel">
+    <div className="luna-card p-4 space-y-4" data-testid="residue-insights-panel">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">

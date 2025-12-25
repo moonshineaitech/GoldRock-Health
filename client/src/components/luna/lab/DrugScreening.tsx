@@ -249,7 +249,7 @@ export default function DrugScreening() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-4 rounded-xl"
+          className="luna-card p-4 rounded-xl"
         >
           <div className="flex items-center justify-between mb-3">
             <div>
@@ -454,7 +454,7 @@ export default function DrugScreening() {
         </motion.div>
       )}
 
-      <div className="glass-card p-4 rounded-xl">
+      <div className="luna-card p-4 rounded-xl">
         <h4 className="text-xs font-mono text-white/40 uppercase mb-3">Lipinski's Rule of Five</h4>
         <div className="grid grid-cols-2 gap-2 text-xs">
           <div className="flex items-center gap-2">

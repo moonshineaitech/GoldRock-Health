@@ -193,7 +193,7 @@ export default function ResearchNotebook({ predictionId }: ResearchNotebookProps
 
   return (
     <div className="space-y-4" data-testid="research-notebook">
-      <div className="glass-card p-4 rounded-xl">
+      <div className="luna-card p-4 rounded-xl">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
@@ -345,14 +345,14 @@ export default function ResearchNotebook({ predictionId }: ResearchNotebookProps
       </div>
 
       {isLoading ? (
-        <div className="glass-card p-8 rounded-xl text-center">
+        <div className="luna-card p-8 rounded-xl text-center">
           <Loader2 className="w-8 h-8 animate-spin text-amber-400 mx-auto mb-2" />
           <p className="text-white/50 text-sm">Loading notes...</p>
         </div>
       ) : (
         <div className="space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar">
           {filteredNotes.length === 0 ? (
-            <div className="glass-card p-8 rounded-xl text-center">
+            <div className="luna-card p-8 rounded-xl text-center">
               <FileText className="w-12 h-12 text-white/20 mx-auto mb-3" />
               <p className="text-white/50 text-sm">No notes yet. Create your first research note!</p>
             </div>
@@ -367,7 +367,7 @@ export default function ResearchNotebook({ predictionId }: ResearchNotebookProps
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="glass-card rounded-lg overflow-hidden"
+                  className="luna-card rounded-lg overflow-hidden"
                 >
                   <button
                     onClick={() => toggleExpanded(note.id)}
@@ -446,7 +446,7 @@ export default function ResearchNotebook({ predictionId }: ResearchNotebookProps
         </div>
       )}
 
-      <div className="glass-card p-4 rounded-xl">
+      <div className="luna-card p-4 rounded-xl">
         <div className="flex items-center justify-between">
           <div>
             <div className="text-xs text-white/40 mb-1">Session Summary</div>

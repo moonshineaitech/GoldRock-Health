@@ -276,7 +276,7 @@ export default function BindingSitePanel({ prediction, onResidueHighlight, onBin
         )}
       </div>
 
-      <div className="glass-card p-4 rounded-xl">
+      <div className="luna-card p-4 rounded-xl">
         <h4 className="text-xs font-mono text-white/40 uppercase mb-3">Druggability Legend</h4>
         <div className="space-y-2 text-xs">
           <div className="flex items-center gap-2">

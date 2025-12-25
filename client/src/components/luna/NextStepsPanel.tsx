@@ -136,7 +136,7 @@ export default function NextStepsPanel({ prediction, analysis }: NextStepsPanelP
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-5 rounded-xl"
+        className="luna-card p-5 rounded-xl"
       >
         <h3 className="text-sm font-mono text-primary flex items-center gap-2 mb-4">
           <ChevronRight className="w-4 h-4" />
@@ -150,14 +150,14 @@ export default function NextStepsPanel({ prediction, analysis }: NextStepsPanelP
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-black/20 p-3 rounded-lg hover:bg-black/30 transition-colors"
+              className="bg-black/30 p-3 rounded-lg hover:bg-black/40 transition-colors border border-cyan-500/10"
             >
               <div className="flex items-start gap-3">
                 <step.icon className={`w-4 h-4 ${step.color} flex-shrink-0 mt-0.5`} />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white">{step.title}</div>
-                  <p className="text-xs text-white/50 mt-0.5">{step.description}</p>
-                  <p className="text-[10px] text-white/40 mt-1">{step.action}</p>
+                  <p className="text-xs text-gray-300 mt-0.5">{step.description}</p>
+                  <p className="text-[10px] text-cyan-400/70 mt-1">{step.action}</p>
                   {step.link && (
                     <a 
                       href={step.link}
@@ -179,7 +179,7 @@ export default function NextStepsPanel({ prediction, analysis }: NextStepsPanelP
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="glass-card p-5 rounded-xl"
+        className="luna-card p-5 rounded-xl"
       >
         <h3 className="text-sm font-mono text-purple-400 flex items-center gap-2 mb-4">
           <FileText className="w-4 h-4" />
@@ -193,15 +193,15 @@ export default function NextStepsPanel({ prediction, analysis }: NextStepsPanelP
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + i * 0.1 }}
-              className={`bg-gradient-to-r ${useCase.color} p-4 rounded-lg border border-white/5`}
+              className="bg-black/40 p-4 rounded-lg border border-cyan-500/20"
             >
               <div className="flex items-center gap-2 mb-2">
-                <useCase.icon className="w-4 h-4 text-white/80" />
+                <useCase.icon className="w-4 h-4 text-cyan-400" />
                 <span className="text-sm font-medium text-white">{useCase.title}</span>
               </div>
               <ol className="space-y-1 ml-6">
                 {useCase.steps.map((step, j) => (
-                  <li key={j} className="text-[10px] text-white/60 list-decimal">
+                  <li key={j} className="text-[10px] text-gray-300 list-decimal">
                     {step}
                   </li>
                 ))}
@@ -215,7 +215,7 @@ export default function NextStepsPanel({ prediction, analysis }: NextStepsPanelP
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="glass-card p-5 rounded-xl"
+        className="luna-card p-5 rounded-xl"
       >
         <h3 className="text-sm font-mono text-green-400 flex items-center gap-2 mb-4">
           <Download className="w-4 h-4" />

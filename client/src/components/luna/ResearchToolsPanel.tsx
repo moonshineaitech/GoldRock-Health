@@ -115,9 +115,9 @@ export default function ResearchToolsPanel({ prediction, analysis }: ResearchToo
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-xl overflow-hidden"
+      className="luna-card rounded-xl overflow-hidden"
     >
-      <div className="p-4 border-b border-white/10">
+      <div className="p-4 border-b border-cyan-500/20">
         <h3 className="text-sm font-display font-semibold text-white flex items-center gap-2">
           <FlaskConical className="w-4 h-4 text-primary" />
           Research Tools
