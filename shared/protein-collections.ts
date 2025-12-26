@@ -92,6 +92,48 @@ export const THERAPEUTIC_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Cancer Metastasis", "Rheumatoid Arthritis", "Multiple Sclerosis"],
     citations: 22000
+  },
+  {
+    uniprotId: "P11309",
+    name: "Serine/threonine-protein kinase pim-1",
+    gene: "PIM1",
+    organism: "Human",
+    description: "Proto-oncogene implicated in lymphoma and leukemia development",
+    significanceScore: 88,
+    categories: ["oncology", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Serine/Threonine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Lymphoma", "Leukemia", "Prostate Cancer"],
+    citations: 12000
+  },
+  {
+    uniprotId: "P12931",
+    name: "Proto-oncogene tyrosine-protein kinase Src",
+    gene: "SRC",
+    organism: "Human",
+    description: "First discovered oncogene, key regulator of cell growth and differentiation",
+    significanceScore: 96,
+    categories: ["oncology", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Non-receptor Tyrosine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Colon Cancer", "Breast Cancer", "Pancreatic Cancer"],
+    citations: 85000
+  },
+  {
+    uniprotId: "P08581",
+    name: "Hepatocyte growth factor receptor",
+    gene: "MET",
+    organism: "Human",
+    description: "Receptor tyrosine kinase driving cancer progression and metastasis",
+    significanceScore: 94,
+    categories: ["oncology", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Receptor Tyrosine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Lung Cancer", "Gastric Cancer", "Renal Cancer"],
+    citations: 28000
   }
 ];
 
@@ -151,6 +193,76 @@ export const KINASE_INHIBITOR_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Breast Cancer", "Endometrial Cancer", "Ovarian Cancer"],
     citations: 25000
+  },
+  {
+    uniprotId: "P24941",
+    name: "Cyclin-dependent kinase 2",
+    gene: "CDK2",
+    organism: "Human",
+    description: "Key cell cycle regulator and emerging therapeutic target",
+    significanceScore: 92,
+    categories: ["oncology", "kinase", "cell-cycle"],
+    therapeuticArea: "Oncology",
+    mechanism: "Serine/Threonine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Breast Cancer", "Ovarian Cancer"],
+    citations: 28000
+  },
+  {
+    uniprotId: "P11362",
+    name: "Fibroblast growth factor receptor 1",
+    gene: "FGFR1",
+    organism: "Human",
+    description: "Receptor kinase amplified in breast and lung cancers",
+    significanceScore: 90,
+    categories: ["oncology", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Receptor Tyrosine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Breast Cancer", "Lung Cancer", "Bladder Cancer"],
+    citations: 18000
+  },
+  {
+    uniprotId: "P17948",
+    name: "Vascular endothelial growth factor receptor 1",
+    gene: "FLT1/VEGFR1",
+    organism: "Human",
+    description: "Key angiogenesis regulator and anti-cancer target",
+    significanceScore: 91,
+    categories: ["oncology", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Receptor Tyrosine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Solid Tumors", "Macular Degeneration"],
+    citations: 22000
+  },
+  {
+    uniprotId: "P35968",
+    name: "Vascular endothelial growth factor receptor 2",
+    gene: "KDR/VEGFR2",
+    organism: "Human",
+    description: "Primary mediator of VEGF-induced angiogenesis",
+    significanceScore: 94,
+    categories: ["oncology", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Receptor Tyrosine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Age-related Macular Degeneration"],
+    citations: 35000
+  },
+  {
+    uniprotId: "P09619",
+    name: "Platelet-derived growth factor receptor beta",
+    gene: "PDGFRB",
+    organism: "Human",
+    description: "Target of imatinib in hypereosinophilic syndrome",
+    significanceScore: 89,
+    categories: ["oncology", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Receptor Tyrosine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["GIST", "Dermatofibrosarcoma"],
+    citations: 16000
   }
 ];
 
@@ -210,6 +322,76 @@ export const GPCR_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Bradycardia", "Asthma", "Overactive Bladder"],
     citations: 15000
+  },
+  {
+    uniprotId: "P21728",
+    name: "Dopamine D1 receptor",
+    gene: "DRD1",
+    organism: "Human",
+    description: "Target for Parkinson's disease and schizophrenia therapeutics",
+    significanceScore: 90,
+    categories: ["neurology", "gpcr", "drug-target"],
+    therapeuticArea: "Neurology",
+    mechanism: "G Protein-Coupled Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Parkinson's Disease", "Schizophrenia", "ADHD"],
+    citations: 18000
+  },
+  {
+    uniprotId: "P14416",
+    name: "Dopamine D2 receptor",
+    gene: "DRD2",
+    organism: "Human",
+    description: "Primary target of antipsychotic medications",
+    significanceScore: 95,
+    categories: ["psychiatry", "gpcr", "drug-target"],
+    therapeuticArea: "Psychiatry",
+    mechanism: "G Protein-Coupled Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Schizophrenia", "Parkinson's Disease", "Prolactinoma"],
+    citations: 42000
+  },
+  {
+    uniprotId: "P25101",
+    name: "Endothelin-1 receptor",
+    gene: "EDNRA",
+    organism: "Human",
+    description: "Target of bosentan for pulmonary arterial hypertension",
+    significanceScore: 88,
+    categories: ["cardiovascular", "gpcr", "drug-target"],
+    therapeuticArea: "Cardiovascular",
+    mechanism: "G Protein-Coupled Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Pulmonary Hypertension", "Heart Failure"],
+    citations: 12000
+  },
+  {
+    uniprotId: "P30556",
+    name: "Type-1 angiotensin II receptor",
+    gene: "AGTR1",
+    organism: "Human",
+    description: "Target of ARBs like losartan for hypertension",
+    significanceScore: 94,
+    categories: ["cardiovascular", "gpcr", "drug-target"],
+    therapeuticArea: "Cardiovascular",
+    mechanism: "G Protein-Coupled Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Hypertension", "Heart Failure", "Diabetic Nephropathy"],
+    citations: 28000
+  },
+  {
+    uniprotId: "P25929",
+    name: "Neuropeptide Y receptor type 1",
+    gene: "NPY1R",
+    organism: "Human",
+    description: "Involved in appetite regulation and anxiety",
+    significanceScore: 85,
+    categories: ["neurology", "gpcr", "drug-target"],
+    therapeuticArea: "Metabolic",
+    mechanism: "G Protein-Coupled Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Obesity", "Anxiety", "Hypertension"],
+    citations: 8000
   }
 ];
 
@@ -269,6 +451,62 @@ export const NEURODEGENERATIVE_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Parkinson's Disease", "Alzheimer's Disease"],
     citations: 8000
+  },
+  {
+    uniprotId: "P04156",
+    name: "Major prion protein",
+    gene: "PRNP",
+    organism: "Human",
+    description: "Causes Creutzfeldt-Jakob disease when misfolded",
+    significanceScore: 94,
+    categories: ["neurology", "prion", "disease-target"],
+    therapeuticArea: "Neurology",
+    mechanism: "Prion Protein",
+    drugTarget: true,
+    diseaseAssociation: ["Creutzfeldt-Jakob Disease", "Fatal Familial Insomnia", "Kuru"],
+    citations: 28000
+  },
+  {
+    uniprotId: "Q99700",
+    name: "Ataxin-2",
+    gene: "ATXN2",
+    organism: "Human",
+    description: "Polyglutamine expansion causes spinocerebellar ataxia type 2",
+    significanceScore: 86,
+    categories: ["neurology", "repeat-expansion", "disease-target"],
+    therapeuticArea: "Neurology",
+    mechanism: "RNA-binding Protein",
+    drugTarget: true,
+    diseaseAssociation: ["Spinocerebellar Ataxia Type 2", "ALS"],
+    citations: 5000
+  },
+  {
+    uniprotId: "P49768",
+    name: "Presenilin-1",
+    gene: "PSEN1",
+    organism: "Human",
+    description: "Gamma-secretase component mutated in early-onset Alzheimer's",
+    significanceScore: 95,
+    categories: ["neurology", "protease", "disease-target"],
+    therapeuticArea: "Neurology",
+    mechanism: "Aspartyl Protease",
+    drugTarget: true,
+    diseaseAssociation: ["Early-onset Alzheimer's Disease"],
+    citations: 32000
+  },
+  {
+    uniprotId: "Q16143",
+    name: "Beta-secretase 1",
+    gene: "BACE1",
+    organism: "Human",
+    description: "Key enzyme in amyloid-beta production, Alzheimer's drug target",
+    significanceScore: 93,
+    categories: ["neurology", "protease", "drug-target"],
+    therapeuticArea: "Neurology",
+    mechanism: "Aspartyl Protease",
+    drugTarget: true,
+    diseaseAssociation: ["Alzheimer's Disease"],
+    citations: 18000
   }
 ];
 
@@ -314,6 +552,48 @@ export const IMMUNE_CHECKPOINT_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Melanoma", "Lung Cancer", "Hodgkin Lymphoma"],
     citations: 45000
+  },
+  {
+    uniprotId: "Q9BZM6",
+    name: "T-cell immunoglobulin and mucin domain-containing protein 3",
+    gene: "TIM-3/HAVCR2",
+    organism: "Human",
+    description: "Next-generation immune checkpoint target in clinical trials",
+    significanceScore: 88,
+    categories: ["oncology", "immunotherapy", "drug-target"],
+    therapeuticArea: "Immuno-Oncology",
+    mechanism: "Immune Checkpoint",
+    drugTarget: true,
+    diseaseAssociation: ["Acute Myeloid Leukemia", "Solid Tumors"],
+    citations: 8000
+  },
+  {
+    uniprotId: "Q9NQ74",
+    name: "Lymphocyte-activation gene 3",
+    gene: "LAG-3",
+    organism: "Human",
+    description: "Emerging immune checkpoint target combined with PD-1 inhibitors",
+    significanceScore: 89,
+    categories: ["oncology", "immunotherapy", "drug-target"],
+    therapeuticArea: "Immuno-Oncology",
+    mechanism: "Immune Checkpoint",
+    drugTarget: true,
+    diseaseAssociation: ["Melanoma", "Solid Tumors"],
+    citations: 6000
+  },
+  {
+    uniprotId: "Q9H2W1",
+    name: "B and T lymphocyte attenuator",
+    gene: "BTLA",
+    organism: "Human",
+    description: "Inhibitory receptor on lymphocytes",
+    significanceScore: 82,
+    categories: ["immunology", "checkpoint", "drug-target"],
+    therapeuticArea: "Immuno-Oncology",
+    mechanism: "Immune Checkpoint",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Autoimmune Disease"],
+    citations: 3000
   }
 ];
 
@@ -347,18 +627,88 @@ export const INFECTIOUS_DISEASE_TARGETS: SignificantProtein[] = [
     citations: 52000
   },
   {
-    uniprotId: "P03372",
-    name: "Estrogen Receptor Alpha",
-    gene: "ESR1",
-    organism: "Human",
-    description: "Target of tamoxifen and fulvestrant in breast cancer treatment",
-    significanceScore: 95,
-    categories: ["oncology", "nuclear-receptor", "drug-target"],
-    therapeuticArea: "Oncology",
-    mechanism: "Nuclear Hormone Receptor",
+    uniprotId: "P04585",
+    name: "HIV-1 Protease",
+    gene: "pol",
+    organism: "HIV-1",
+    description: "Target of protease inhibitors like ritonavir and darunavir",
+    significanceScore: 96,
+    categories: ["infectious", "viral", "drug-target"],
+    therapeuticArea: "Infectious Disease",
+    mechanism: "Aspartyl Protease",
     drugTarget: true,
-    diseaseAssociation: ["Breast Cancer", "Endometrial Cancer"],
-    citations: 38000
+    diseaseAssociation: ["HIV/AIDS"],
+    citations: 65000
+  },
+  {
+    uniprotId: "P03366",
+    name: "HIV-1 Reverse Transcriptase",
+    gene: "pol",
+    organism: "HIV-1",
+    description: "Target of NRTIs and NNRTIs for HIV treatment",
+    significanceScore: 97,
+    categories: ["infectious", "viral", "drug-target"],
+    therapeuticArea: "Infectious Disease",
+    mechanism: "Reverse Transcriptase",
+    drugTarget: true,
+    diseaseAssociation: ["HIV/AIDS"],
+    citations: 75000
+  },
+  {
+    uniprotId: "P04591",
+    name: "Envelope glycoprotein gp160",
+    gene: "env",
+    organism: "HIV-1",
+    description: "HIV surface protein and vaccine target",
+    significanceScore: 95,
+    categories: ["infectious", "viral", "vaccine-target"],
+    therapeuticArea: "Infectious Disease",
+    mechanism: "Viral Surface Protein",
+    drugTarget: true,
+    diseaseAssociation: ["HIV/AIDS"],
+    citations: 55000
+  },
+  {
+    uniprotId: "P27958",
+    name: "NS3 protease",
+    gene: "NS3",
+    organism: "Hepatitis C virus",
+    description: "Target of direct-acting antivirals like simeprevir",
+    significanceScore: 94,
+    categories: ["infectious", "viral", "drug-target"],
+    therapeuticArea: "Infectious Disease",
+    mechanism: "Serine Protease",
+    drugTarget: true,
+    diseaseAssociation: ["Hepatitis C"],
+    citations: 32000
+  },
+  {
+    uniprotId: "P26663",
+    name: "NS5B RNA-dependent RNA polymerase",
+    gene: "NS5B",
+    organism: "Hepatitis C virus",
+    description: "Target of sofosbuvir - cure for Hepatitis C",
+    significanceScore: 96,
+    categories: ["infectious", "viral", "drug-target"],
+    therapeuticArea: "Infectious Disease",
+    mechanism: "RNA Polymerase",
+    drugTarget: true,
+    diseaseAssociation: ["Hepatitis C"],
+    citations: 28000
+  },
+  {
+    uniprotId: "Q9QUN7",
+    name: "Neuraminidase",
+    gene: "NA",
+    organism: "Influenza A",
+    description: "Target of oseltamivir (Tamiflu) and zanamivir",
+    significanceScore: 93,
+    categories: ["infectious", "viral", "drug-target"],
+    therapeuticArea: "Infectious Disease",
+    mechanism: "Glycosidase",
+    drugTarget: true,
+    diseaseAssociation: ["Influenza"],
+    citations: 42000
   }
 ];
 
@@ -404,6 +754,90 @@ export const METABOLIC_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Hypertriglyceridemia", "Coronary Artery Disease"],
     citations: 18000
+  },
+  {
+    uniprotId: "P13569",
+    name: "Cystic fibrosis transmembrane conductance regulator",
+    gene: "CFTR",
+    organism: "Human",
+    description: "Ion channel mutated in cystic fibrosis, target of ivacaftor",
+    significanceScore: 96,
+    categories: ["metabolic", "ion-channel", "drug-target"],
+    therapeuticArea: "Respiratory",
+    mechanism: "Ion Channel",
+    drugTarget: true,
+    diseaseAssociation: ["Cystic Fibrosis"],
+    citations: 45000
+  },
+  {
+    uniprotId: "Q16850",
+    name: "Cytochrome P450 51A1",
+    gene: "CYP51A1",
+    organism: "Human",
+    description: "Target of azole antifungals, key in cholesterol synthesis",
+    significanceScore: 88,
+    categories: ["metabolic", "enzyme", "drug-target"],
+    therapeuticArea: "Infectious Disease",
+    mechanism: "Cytochrome P450",
+    drugTarget: true,
+    diseaseAssociation: ["Fungal Infections"],
+    citations: 12000
+  },
+  {
+    uniprotId: "P37231",
+    name: "Peroxisome proliferator-activated receptor gamma",
+    gene: "PPARG",
+    organism: "Human",
+    description: "Target of thiazolidinediones for type 2 diabetes",
+    significanceScore: 94,
+    categories: ["metabolic", "nuclear-receptor", "drug-target"],
+    therapeuticArea: "Metabolic",
+    mechanism: "Nuclear Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Type 2 Diabetes", "Obesity", "NAFLD"],
+    citations: 55000
+  },
+  {
+    uniprotId: "P04035",
+    name: "HMG-CoA reductase",
+    gene: "HMGCR",
+    organism: "Human",
+    description: "Target of statins - most prescribed cholesterol-lowering drugs",
+    significanceScore: 97,
+    categories: ["metabolic", "enzyme", "drug-target"],
+    therapeuticArea: "Cardiovascular",
+    mechanism: "Oxidoreductase",
+    drugTarget: true,
+    diseaseAssociation: ["Hypercholesterolemia", "Cardiovascular Disease"],
+    citations: 65000
+  },
+  {
+    uniprotId: "Q96RI1",
+    name: "Sodium-glucose co-transporter 2",
+    gene: "SLC5A2/SGLT2",
+    organism: "Human",
+    description: "Target of gliflozins for diabetes and heart failure",
+    significanceScore: 95,
+    categories: ["metabolic", "transporter", "drug-target"],
+    therapeuticArea: "Metabolic",
+    mechanism: "Transporter",
+    drugTarget: true,
+    diseaseAssociation: ["Type 2 Diabetes", "Heart Failure", "Chronic Kidney Disease"],
+    citations: 25000
+  },
+  {
+    uniprotId: "P28482",
+    name: "Mitogen-activated protein kinase 1",
+    gene: "MAPK1/ERK2",
+    organism: "Human",
+    description: "Central kinase in RAS-MAPK signaling pathway",
+    significanceScore: 93,
+    categories: ["signaling", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Serine/Threonine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Inflammatory Disease"],
+    citations: 75000
   }
 ];
 
@@ -519,6 +953,34 @@ export const STRUCTURAL_BIOLOGY_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Thrombosis", "Bleeding Disorders"],
     citations: 42000
+  },
+  {
+    uniprotId: "P02144",
+    name: "Myoglobin",
+    gene: "MB",
+    organism: "Human",
+    description: "Oxygen-binding protein in muscle tissue",
+    significanceScore: 90,
+    categories: ["structural", "oxygen-binding"],
+    therapeuticArea: "General",
+    mechanism: "Oxygen Storage",
+    drugTarget: false,
+    diseaseAssociation: ["Myocardial Infarction", "Rhabdomyolysis"],
+    citations: 35000
+  },
+  {
+    uniprotId: "P03372",
+    name: "Estrogen Receptor Alpha",
+    gene: "ESR1",
+    organism: "Human",
+    description: "Target of tamoxifen and fulvestrant in breast cancer treatment",
+    significanceScore: 95,
+    categories: ["oncology", "nuclear-receptor", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Nuclear Hormone Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Breast Cancer", "Endometrial Cancer"],
+    citations: 38000
   }
 ];
 
@@ -578,6 +1040,62 @@ export const ENZYME_TARGETS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Cancer", "Alcohol Metabolism"],
     citations: 18000
+  },
+  {
+    uniprotId: "P09211",
+    name: "Glutathione S-transferase Pi",
+    gene: "GSTP1",
+    organism: "Human",
+    description: "Drug metabolism enzyme and cancer biomarker",
+    significanceScore: 88,
+    categories: ["enzyme", "detoxification", "cancer"],
+    therapeuticArea: "Oncology",
+    mechanism: "Transferase",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Drug Resistance"],
+    citations: 28000
+  },
+  {
+    uniprotId: "P10145",
+    name: "Interleukin-8",
+    gene: "CXCL8/IL8",
+    organism: "Human",
+    description: "Pro-inflammatory chemokine in immune response",
+    significanceScore: 92,
+    categories: ["cytokine", "inflammation", "immune"],
+    therapeuticArea: "Immunology",
+    mechanism: "Chemokine",
+    drugTarget: true,
+    diseaseAssociation: ["Inflammatory Diseases", "Cancer", "COPD"],
+    citations: 65000
+  },
+  {
+    uniprotId: "P00492",
+    name: "Hypoxanthine-guanine phosphoribosyltransferase",
+    gene: "HPRT1",
+    organism: "Human",
+    description: "Purine salvage enzyme - deficiency causes Lesch-Nyhan syndrome",
+    significanceScore: 87,
+    categories: ["enzyme", "metabolism", "genetic-disorder"],
+    therapeuticArea: "Metabolic",
+    mechanism: "Transferase",
+    drugTarget: true,
+    diseaseAssociation: ["Lesch-Nyhan Syndrome", "Gout"],
+    citations: 12000
+  },
+  {
+    uniprotId: "P22303",
+    name: "Acetylcholinesterase",
+    gene: "ACHE",
+    organism: "Human",
+    description: "Target of Alzheimer's drugs like donepezil and rivastigmine",
+    significanceScore: 94,
+    categories: ["enzyme", "neurology", "drug-target"],
+    therapeuticArea: "Neurology",
+    mechanism: "Hydrolase",
+    drugTarget: true,
+    diseaseAssociation: ["Alzheimer's Disease", "Myasthenia Gravis"],
+    citations: 45000
   }
 ];
 
@@ -651,6 +1169,236 @@ export const POPULAR_MODEL_PROTEINS: SignificantProtein[] = [
     drugTarget: true,
     diseaseAssociation: ["Amyotrophic Lateral Sclerosis", "Down Syndrome"],
     citations: 65000
+  },
+  {
+    uniprotId: "P0CG48",
+    name: "Ubiquitin",
+    gene: "UBB",
+    organism: "Human",
+    description: "Universal protein tag for degradation and signaling",
+    significanceScore: 98,
+    categories: ["signaling", "degradation", "model"],
+    therapeuticArea: "General",
+    mechanism: "Post-translational Modifier",
+    drugTarget: false,
+    diseaseAssociation: ["Cancer", "Neurodegeneration"],
+    citations: 95000
+  },
+  {
+    uniprotId: "P61626",
+    name: "Lysozyme C",
+    gene: "LYZ",
+    organism: "Human",
+    description: "Antimicrobial enzyme in tears, saliva, and mucus",
+    significanceScore: 88,
+    categories: ["enzyme", "antimicrobial", "innate-immunity"],
+    therapeuticArea: "Immunology",
+    mechanism: "Glycosidase",
+    drugTarget: false,
+    diseaseAssociation: ["Systemic Amyloidosis"],
+    citations: 32000
+  },
+  {
+    uniprotId: "P62937",
+    name: "Peptidyl-prolyl cis-trans isomerase A",
+    gene: "PPIA",
+    organism: "Human",
+    description: "Cyclophilin A - target of immunosuppressant cyclosporin",
+    significanceScore: 91,
+    categories: ["enzyme", "drug-target", "model"],
+    therapeuticArea: "Immunology",
+    mechanism: "Isomerase",
+    drugTarget: true,
+    diseaseAssociation: ["Organ Rejection", "HIV Infection"],
+    citations: 42000
+  }
+];
+
+export const ION_CHANNELS: SignificantProtein[] = [
+  {
+    uniprotId: "P35498",
+    name: "Sodium channel protein type 1 subunit alpha",
+    gene: "SCN1A",
+    organism: "Human",
+    description: "Mutations cause Dravet syndrome and epilepsy",
+    significanceScore: 94,
+    categories: ["neurology", "ion-channel", "drug-target"],
+    therapeuticArea: "Neurology",
+    mechanism: "Voltage-gated Ion Channel",
+    drugTarget: true,
+    diseaseAssociation: ["Dravet Syndrome", "Epilepsy", "Migraine"],
+    citations: 28000
+  },
+  {
+    uniprotId: "Q12809",
+    name: "Potassium voltage-gated channel subfamily H member 2",
+    gene: "KCNH2/hERG",
+    organism: "Human",
+    description: "Cardiac ion channel - key in drug safety screening",
+    significanceScore: 95,
+    categories: ["cardiovascular", "ion-channel", "safety"],
+    therapeuticArea: "Cardiovascular",
+    mechanism: "Voltage-gated Ion Channel",
+    drugTarget: true,
+    diseaseAssociation: ["Long QT Syndrome", "Cardiac Arrhythmia"],
+    citations: 35000
+  },
+  {
+    uniprotId: "P17252",
+    name: "Protein kinase C alpha type",
+    gene: "PRKCA",
+    organism: "Human",
+    description: "Key signaling kinase in cellular responses",
+    significanceScore: 89,
+    categories: ["signaling", "kinase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Serine/Threonine Kinase",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Cardiovascular Disease"],
+    citations: 45000
+  },
+  {
+    uniprotId: "P48050",
+    name: "Potassium inwardly-rectifying channel subfamily J member 11",
+    gene: "KCNJ11",
+    organism: "Human",
+    description: "ATP-sensitive potassium channel - target for diabetes drugs",
+    significanceScore: 92,
+    categories: ["metabolic", "ion-channel", "drug-target"],
+    therapeuticArea: "Metabolic",
+    mechanism: "Inwardly-rectifying K+ Channel",
+    drugTarget: true,
+    diseaseAssociation: ["Neonatal Diabetes", "Hyperinsulinism"],
+    citations: 18000
+  },
+  {
+    uniprotId: "P21817",
+    name: "Ryanodine receptor 1",
+    gene: "RYR1",
+    organism: "Human",
+    description: "Calcium release channel in skeletal muscle",
+    significanceScore: 90,
+    categories: ["muscle", "ion-channel", "disease"],
+    therapeuticArea: "Neuromuscular",
+    mechanism: "Calcium Release Channel",
+    drugTarget: true,
+    diseaseAssociation: ["Malignant Hyperthermia", "Central Core Disease"],
+    citations: 22000
+  },
+  {
+    uniprotId: "Q13586",
+    name: "Stromal interaction molecule 1",
+    gene: "STIM1",
+    organism: "Human",
+    description: "ER calcium sensor regulating store-operated calcium entry",
+    significanceScore: 86,
+    categories: ["signaling", "calcium", "immune"],
+    therapeuticArea: "Immunology",
+    mechanism: "Calcium Sensor",
+    drugTarget: true,
+    diseaseAssociation: ["Immunodeficiency", "Myopathy"],
+    citations: 12000
+  }
+];
+
+export const TRANSCRIPTION_FACTORS: SignificantProtein[] = [
+  {
+    uniprotId: "P01100",
+    name: "Proto-oncogene c-Fos",
+    gene: "FOS",
+    organism: "Human",
+    description: "Immediate early gene product and AP-1 component",
+    significanceScore: 93,
+    categories: ["oncology", "transcription-factor", "signaling"],
+    therapeuticArea: "Oncology",
+    mechanism: "Transcription Factor",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Bone Disease"],
+    citations: 65000
+  },
+  {
+    uniprotId: "P05412",
+    name: "Transcription factor AP-1",
+    gene: "JUN",
+    organism: "Human",
+    description: "Proto-oncogene forming AP-1 complex with Fos",
+    significanceScore: 92,
+    categories: ["oncology", "transcription-factor", "signaling"],
+    therapeuticArea: "Oncology",
+    mechanism: "Transcription Factor",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Inflammation"],
+    citations: 55000
+  },
+  {
+    uniprotId: "P19838",
+    name: "Nuclear factor NF-kappa-B p105 subunit",
+    gene: "NFKB1",
+    organism: "Human",
+    description: "Master regulator of inflammation and immune response",
+    significanceScore: 97,
+    categories: ["immunology", "transcription-factor", "drug-target"],
+    therapeuticArea: "Immunology",
+    mechanism: "Transcription Factor",
+    drugTarget: true,
+    diseaseAssociation: ["Inflammatory Diseases", "Cancer", "Autoimmunity"],
+    citations: 85000
+  },
+  {
+    uniprotId: "Q00987",
+    name: "E3 ubiquitin-protein ligase Mdm2",
+    gene: "MDM2",
+    organism: "Human",
+    description: "p53 inhibitor and cancer therapeutic target",
+    significanceScore: 94,
+    categories: ["oncology", "e3-ligase", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "E3 Ubiquitin Ligase",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Li-Fraumeni Syndrome"],
+    citations: 48000
+  },
+  {
+    uniprotId: "P40763",
+    name: "Signal transducer and activator of transcription 3",
+    gene: "STAT3",
+    organism: "Human",
+    description: "Oncogenic transcription factor in solid tumors",
+    significanceScore: 95,
+    categories: ["oncology", "transcription-factor", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Transcription Factor",
+    drugTarget: true,
+    diseaseAssociation: ["Cancer", "Immunodeficiency"],
+    citations: 62000
+  },
+  {
+    uniprotId: "Q04206",
+    name: "Transcription factor p65",
+    gene: "RELA",
+    organism: "Human",
+    description: "NF-kB subunit essential for inflammatory response",
+    significanceScore: 94,
+    categories: ["immunology", "transcription-factor", "drug-target"],
+    therapeuticArea: "Immunology",
+    mechanism: "Transcription Factor",
+    drugTarget: true,
+    diseaseAssociation: ["Inflammatory Diseases", "Cancer"],
+    citations: 58000
+  },
+  {
+    uniprotId: "P10276",
+    name: "Retinoic acid receptor alpha",
+    gene: "RARA",
+    organism: "Human",
+    description: "Nuclear receptor involved in differentiation therapy for leukemia",
+    significanceScore: 91,
+    categories: ["oncology", "nuclear-receptor", "drug-target"],
+    therapeuticArea: "Oncology",
+    mechanism: "Nuclear Receptor",
+    drugTarget: true,
+    diseaseAssociation: ["Acute Promyelocytic Leukemia"],
+    citations: 28000
   }
 ];
 
@@ -734,6 +1482,22 @@ export const PROTEIN_COLLECTIONS: ProteinCollection[] = [
     icon: "📚",
     color: "#64748b",
     proteins: POPULAR_MODEL_PROTEINS
+  },
+  {
+    id: "ion-channels",
+    title: "Ion Channels",
+    description: "Membrane proteins critical for electrical signaling",
+    icon: "⚡",
+    color: "#0ea5e9",
+    proteins: ION_CHANNELS
+  },
+  {
+    id: "transcription-factors",
+    title: "Transcription Factors",
+    description: "Gene expression regulators and oncogenic drivers",
+    icon: "🧬",
+    color: "#f43f5e",
+    proteins: TRANSCRIPTION_FACTORS
   }
 ];
 
