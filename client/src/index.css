@@ -164,6 +164,22 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body,
+  html.dark body {
+    background: linear-gradient(135deg, 
+      #0a1628 0%,
+      #0f172a 15%,
+      #0c1a2e 30%,
+      #111827 45%,
+      #0d1b2a 60%,
+      #0f1f32 75%,
+      #0a1525 90%,
+      #0f172a 100%
+    );
+    color: #e2e8f0;
   }
 
   /* Luxury Glass Morphism Classes */

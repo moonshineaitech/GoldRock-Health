@@ -1,9 +1,10 @@
-import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download, Shield, Heart, Search, Phone } from "lucide-react";
+import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download, Shield, Heart, Search, Phone, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useTheme } from "@/lib/theme-provider";
 
 interface MobileHeaderProps {
   title: string;
@@ -227,11 +228,15 @@ export function MobileHeader({
     }
   };
 
+  const { theme } = useTheme();
+  
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-40 backdrop-blur-2xl border-b border-white/20 shadow-xl shadow-black/5"
+      className="fixed top-0 left-0 right-0 z-40 backdrop-blur-2xl border-b border-white/20 dark:border-slate-700/30 shadow-xl shadow-black/5 dark:shadow-black/20"
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+        background: theme === 'dark' 
+          ? 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.90) 100%)'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
         paddingTop: 'env(safe-area-inset-top)'
       }}
       initial={{ y: -80, opacity: 0 }}
@@ -239,7 +244,7 @@ export function MobileHeader({
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {/* Premium glass overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/10 dark:from-white/5 via-transparent to-white/10 dark:to-white/5 pointer-events-none" />
       
       <div className="flex items-center justify-between h-16 px-5 relative">
         {/* Left Section */}
@@ -247,12 +252,12 @@ export function MobileHeader({
           {showBackButton ? (
             <motion.button
               onClick={handleBackClick}
-              className="flex items-center justify-center w-9 h-9 mr-4 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
+              className="flex items-center justify-center w-9 h-9 mr-4 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300"
               whileTap={{ scale: 0.92 }}
               whileHover={{ scale: 1.08, rotateZ: -2 }}
               data-testid="button-back"
             >
-              <ArrowLeft className="h-4 w-4 text-gray-700" />
+              <ArrowLeft className="h-4 w-4 text-gray-700 dark:text-gray-300" />
             </motion.button>
           ) : (
             <div className="mr-4">
@@ -268,7 +273,7 @@ export function MobileHeader({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
         >
-          <h1 className="text-lg font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent truncate leading-none">
+          <h1 className="text-lg font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-gray-100 dark:via-gray-200 dark:to-gray-100 bg-clip-text text-transparent truncate leading-none">
             {title}
           </h1>
           <div className="h-0.5 w-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto mt-1 opacity-60" />
@@ -478,5 +483,45 @@ export function UserAvatarDropdown() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+// Theme toggle button component
+export function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  
+  return (
+    <motion.button
+      onClick={toggleTheme}
+      className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300"
+      whileTap={{ scale: 0.92 }}
+      whileHover={{ scale: 1.08, rotateZ: 5 }}
+      data-testid="theme-toggle"
+      aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+    >
+      <AnimatePresence mode="wait">
+        {theme === "light" ? (
+          <motion.div
+            key="moon"
+            initial={{ scale: 0, rotate: -180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            exit={{ scale: 0, rotate: 180, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <Moon className="h-4 w-4 text-indigo-600" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="sun"
+            initial={{ scale: 0, rotate: 180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            exit={{ scale: 0, rotate: -180, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <Sun className="h-4 w-4 text-amber-500" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
   );
 }
