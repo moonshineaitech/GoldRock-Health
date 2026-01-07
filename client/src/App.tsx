@@ -73,6 +73,9 @@ import MedicalDebtReliefOptions from "@/pages/articles/medical-debt-relief-optio
 import PlatformStats from "@/pages/platform-stats";
 import CaseStudies from "@/pages/case-studies";
 import Investors from "@/pages/investors";
+import ForVCs from "@/pages/for-vcs";
+import ForHealthcare from "@/pages/for-healthcare";
+import ForInsurance from "@/pages/for-insurance";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -174,6 +177,9 @@ function Router() {
         <Route path="/platform-stats" component={PlatformStats} />
         <Route path="/case-studies" component={CaseStudies} />
         <Route path="/investors" component={Investors} />
+        <Route path="/for-vcs" component={ForVCs} />
+        <Route path="/for-healthcare" component={ForHealthcare} />
+        <Route path="/for-insurance" component={ForInsurance} />
         <Route component={AuthLanding} />
       </Switch>
     );
@@ -308,6 +314,9 @@ function Router() {
       <Route path="/platform-stats" component={PlatformStats} />
       <Route path="/case-studies" component={CaseStudies} />
       <Route path="/investors" component={Investors} />
+      <Route path="/for-vcs" component={ForVCs} />
+      <Route path="/for-healthcare" component={ForHealthcare} />
+      <Route path="/for-insurance" component={ForInsurance} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

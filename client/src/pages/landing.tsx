@@ -1671,6 +1671,35 @@ export default function Landing() {
         </motion.p>
 
         <div className="mt-12 pt-8 border-t border-gray-200 pb-24">
+          <div className="mb-6">
+            <p className="text-center text-xs text-gray-500 font-semibold mb-3">Partnerships</p>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-4">
+              <Link href="/for-vcs">
+                <a className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium" data-testid="footer-link-vcs-mobile">
+                  For VCs
+                </a>
+              </Link>
+              <span className="text-gray-300">•</span>
+              <Link href="/investors">
+                <a className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium" data-testid="footer-link-investors-mobile">
+                  For Investors
+                </a>
+              </Link>
+              <span className="text-gray-300">•</span>
+              <Link href="/for-healthcare">
+                <a className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium" data-testid="footer-link-healthcare-mobile">
+                  Healthcare
+                </a>
+              </Link>
+              <span className="text-gray-300">•</span>
+              <Link href="/for-insurance">
+                <a className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium" data-testid="footer-link-insurance-mobile">
+                  Insurance
+                </a>
+              </Link>
+            </div>
+          </div>
+          
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm mb-4">
             <Link href="/privacy-policy">
               <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-privacy-mobile">

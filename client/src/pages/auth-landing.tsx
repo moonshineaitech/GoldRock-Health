@@ -1311,37 +1311,90 @@ export default function AuthLanding() {
 
       <footer className="bg-gray-900 py-12 border-t border-gray-800">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-500">
-                <DollarSign className="h-5 w-5 text-white" />
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-500">
+                  <DollarSign className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-lg font-bold text-white">GoldRock Health</span>
               </div>
-              <span className="text-lg font-bold text-white">GoldRock Health</span>
+              <p className="text-sm text-gray-400">AI-powered healthcare advocacy platform helping patients save on medical bills.</p>
             </div>
             
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-              <Link href="/privacy-policy">
-                <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-privacy-landing">
-                  Privacy Policy
+            <div>
+              <h4 className="text-white font-semibold mb-4">Platform</h4>
+              <div className="flex flex-col gap-2 text-sm">
+                <Link href="/platform-stats">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-stats">
+                    Platform Stats
+                  </a>
+                </Link>
+                <Link href="/case-studies">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-case-studies">
+                    Case Studies
+                  </a>
+                </Link>
+                <Link href="/articles">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-articles">
+                    Resources
+                  </a>
+                </Link>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Partnerships</h4>
+              <div className="flex flex-col gap-2 text-sm">
+                <Link href="/for-vcs">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-vcs">
+                    For VCs
+                  </a>
+                </Link>
+                <Link href="/investors">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-investors">
+                    For Investors
+                  </a>
+                </Link>
+                <Link href="/for-healthcare">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-healthcare">
+                    For Healthcare Companies
+                  </a>
+                </Link>
+                <Link href="/for-insurance">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-insurance">
+                    For Insurance Companies
+                  </a>
+                </Link>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Legal</h4>
+              <div className="flex flex-col gap-2 text-sm">
+                <Link href="/privacy-policy">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-privacy-landing">
+                    Privacy Policy
+                  </a>
+                </Link>
+                <Link href="/terms-of-service">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-terms-landing">
+                    Terms of Service
+                  </a>
+                </Link>
+                <Link href="/support">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-support-landing">
+                    Support
+                  </a>
+                </Link>
+                <a 
+                  href="mailto:contact@goldrock.ai" 
+                  className="text-gray-400 hover:text-emerald-400 transition-colors"
+                  data-testid="footer-link-email-landing"
+                >
+                  Contact
                 </a>
-              </Link>
-              <Link href="/terms-of-service">
-                <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-terms-landing">
-                  Terms of Service
-                </a>
-              </Link>
-              <Link href="/support">
-                <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-support-landing">
-                  Support
-                </a>
-              </Link>
-              <a 
-                href="mailto:contact@goldrock.ai" 
-                className="text-gray-400 hover:text-emerald-400 transition-colors"
-                data-testid="footer-link-email-landing"
-              >
-                Contact
-              </a>
+              </div>
             </div>
           </div>
           
