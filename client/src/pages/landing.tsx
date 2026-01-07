@@ -173,7 +173,7 @@ const PreLoginBottomNav = () => {
             <motion.a
               key={item.id}
               href={item.href}
-              className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-3xl transition-all duration-300 bg-white dark:bg-slate-900/80"
+              className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-3xl transition-all duration-300 bg-white/80"
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.02 }}
               initial={{ y: 20, opacity: 0 }}
@@ -367,7 +367,7 @@ export default function Landing() {
           transition={{ delay: 0.5, duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h1 className="text-4xl md:text-5xl font-black mb-4 leading-[1.08] tracking-tight">
-            <span className="text-gray-900 dark:text-white drop-shadow-sm">Your Complete</span>
+            <span className="text-gray-900 drop-shadow-sm">Your Complete</span>
             <br />
             <motion.span 
               className="inline-block relative"
@@ -424,7 +424,7 @@ export default function Landing() {
         </motion.div>
         
         <motion.p 
-          className="text-lg text-gray-700 dark:text-gray-200 mb-6 max-w-lg mx-auto leading-relaxed font-semibold"
+          className="text-lg text-gray-700 mb-6 max-w-lg mx-auto leading-relaxed font-semibold"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.7 }}
@@ -444,14 +444,14 @@ export default function Landing() {
           ].map((badge, i) => (
             <motion.div 
               key={badge.label}
-              className="flex items-center gap-1.5 bg-white dark:bg-slate-900/70 backdrop-blur-xl px-4 py-2.5 rounded-full border border-white/60 shadow-xl"
+              className="flex items-center gap-1.5 bg-white/70 backdrop-blur-xl px-4 py-2.5 rounded-full border border-white/60 shadow-xl"
               whileHover={{ scale: 1.05, y: -2 }}
               style={{
                 boxShadow: "0 4px 30px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5) inset"
               }}
             >
               <badge.icon className={`h-4 w-4 ${badge.color}`} />
-              <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{badge.label}</span>
+              <span className="text-sm font-bold text-gray-800">{badge.label}</span>
             </motion.div>
           ))}
         </motion.div>
@@ -491,7 +491,7 @@ export default function Landing() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="text-xs text-gray-500 dark:text-gray-400 mt-4 font-medium"
+          className="text-xs text-gray-500 mt-4 font-medium"
         >
           No credit card required. Free to start
         </motion.p>
@@ -561,28 +561,28 @@ export default function Landing() {
               </span>
             </h2>
             <p className="text-gray-400 font-medium max-w-lg mx-auto">
-              Powerful AI tools for medical bill analysis, diagnostics, and more
+              Sign in to unlock powerful AI tools for medical bill analysis, diagnostics, and more
             </p>
           </motion.div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
-              { icon: Home, label: "Dashboard", href: "/", description: "Your command center", gradient: "from-blue-500 to-indigo-600" },
-              { icon: Brain, label: "Bill AI", href: "/bill-ai", description: "Find overcharges", gradient: "from-emerald-500 to-teal-600" },
-              { icon: Shield, label: "Rights Hub", href: "/rights-hub", description: "Know your rights", gradient: "from-blue-500 to-cyan-600", featured: true },
-              { icon: Heart, label: "Emergency Help", href: "/emergency-help", description: "Crisis assistance", gradient: "from-red-500 to-pink-600" },
-              { icon: Search, label: "Quick Analyzer", href: "/quick-analyzer", description: "Fast bill scan", gradient: "from-purple-500 to-violet-600" },
-              { icon: Phone, label: "Provider Contacts", href: "/provider-contacts", description: "Hospital database", gradient: "from-orange-500 to-amber-600" },
-              { icon: Crown, label: "Premium", href: "/premium", description: "Upgrade account", gradient: "from-amber-500 to-yellow-500" },
-              { icon: Gamepad2, label: "Pixel Doctor", href: "/pixel-game", description: "Fun diagnostics", gradient: "from-pink-500 to-rose-600", special: true },
-              { icon: TrendingDown, label: "Reduction Guide", href: "/bill-reduction-guide", description: "Expert strategies", gradient: "from-teal-500 to-green-600" },
-              { icon: Download, label: "Get Bills", href: "/portal-access-guide", description: "Portal access", gradient: "from-slate-500 to-gray-600" },
-              { icon: Database, label: "Resources Hub", href: "/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
-              { icon: Stethoscope, label: "Diagnostics", href: "/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
-              { icon: Dna, label: "LunaFold", href: "/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
-              { icon: Target, label: "Industry Secrets", href: "/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
-              { icon: FileText, label: "Templates", href: "/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
-              { icon: Trophy, label: "Achievements", href: "/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
+              { icon: Home, label: "Dashboard", href: "/api/login", description: "Your command center", gradient: "from-blue-500 to-indigo-600" },
+              { icon: Brain, label: "Bill AI", href: "/api/login?redirect=/bill-ai", description: "Find overcharges", gradient: "from-emerald-500 to-teal-600" },
+              { icon: Shield, label: "Rights Hub", href: "/api/login?redirect=/rights-hub", description: "Know your rights", gradient: "from-blue-500 to-cyan-600", featured: true },
+              { icon: Heart, label: "Emergency Help", href: "/api/login?redirect=/emergency-help", description: "Crisis assistance", gradient: "from-red-500 to-pink-600" },
+              { icon: Search, label: "Quick Analyzer", href: "/api/login?redirect=/quick-analyzer", description: "Fast bill scan", gradient: "from-purple-500 to-violet-600" },
+              { icon: Phone, label: "Provider Contacts", href: "/api/login?redirect=/provider-contacts", description: "Hospital database", gradient: "from-orange-500 to-amber-600" },
+              { icon: Crown, label: "Premium", href: "/api/login?redirect=/premium", description: "Upgrade account", gradient: "from-amber-500 to-yellow-500" },
+              { icon: Gamepad2, label: "Pixel Doctor", href: "/api/login?redirect=/pixel-game", description: "Fun diagnostics", gradient: "from-pink-500 to-rose-600", special: true },
+              { icon: TrendingDown, label: "Reduction Guide", href: "/api/login?redirect=/bill-reduction-guide", description: "Expert strategies", gradient: "from-teal-500 to-green-600" },
+              { icon: Download, label: "Get Bills", href: "/api/login?redirect=/portal-access-guide", description: "Portal access", gradient: "from-slate-500 to-gray-600" },
+              { icon: Database, label: "Resources Hub", href: "/api/login?redirect=/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
+              { icon: Stethoscope, label: "Diagnostics", href: "/api/login?redirect=/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
+              { icon: Dna, label: "LunaFold", href: "/api/login?redirect=/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
+              { icon: Target, label: "Industry Secrets", href: "/api/login?redirect=/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
+              { icon: FileText, label: "Templates", href: "/api/login?redirect=/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
+              { icon: Trophy, label: "Achievements", href: "/api/login?redirect=/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
             ].map((item, index) => (
               <motion.a
                 key={item.label}
@@ -599,7 +599,7 @@ export default function Landing() {
                 <div className="absolute -inset-0.5 bg-gradient-to-r opacity-0 group-hover:opacity-100 rounded-2xl blur-lg transition-opacity duration-300" 
                   style={{ background: `linear-gradient(135deg, ${item.gradient.includes('emerald') ? '#10b981' : item.gradient.includes('purple') ? '#8b5cf6' : item.gradient.includes('blue') ? '#3b82f6' : '#f59e0b'}, transparent)` }}
                 />
-                <div className="relative bg-white dark:bg-slate-900/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-white/30 transition-all duration-300 h-full">
+                <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-white/30 transition-all duration-300 h-full">
                   <div className={`w-10 h-10 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
                     <item.icon className="h-5 w-5 text-white" />
                   </div>
@@ -674,10 +674,10 @@ export default function Landing() {
               <Sparkles className="h-4 w-4" />
               Complete Health AI Platform
             </motion.span>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
               More Than Just Bill Analysis
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 font-medium">
+            <p className="text-lg text-gray-600 font-medium">
               Four powerful pillars to transform your healthcare experience
             </p>
           </motion.div>
@@ -747,7 +747,7 @@ export default function Landing() {
                   />
                   <div className="relative z-10">
                     <motion.div 
-                      className="w-14 h-14 bg-white dark:bg-slate-900/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 shadow-lg"
+                      className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 shadow-lg"
                       whileHover={{ rotate: 10, scale: 1.1 }}
                     >
                       <pillar.icon className="h-7 w-7 text-white drop-shadow-md" />
@@ -756,7 +756,7 @@ export default function Landing() {
                     <p className="text-white/90 text-sm mb-4 leading-relaxed">{pillar.desc}</p>
                     <div className="flex flex-wrap gap-2">
                       {pillar.tags.map(tag => (
-                        <span key={tag} className="bg-white dark:bg-slate-900/20 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-semibold shadow-sm">
+                        <span key={tag} className="bg-white/20 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-semibold shadow-sm">
                           {tag}
                         </span>
                       ))}
@@ -776,7 +776,7 @@ export default function Landing() {
           >
             <Link href="/patient-diagnostics">
               <motion.div whileHover={{ scale: 1.03, y: -3 }} whileTap={{ scale: 0.97 }}>
-                <MobileButton className="bg-white dark:bg-slate-900 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 font-bold shadow-xl hover:shadow-2xl transition-all">
+                <MobileButton className="bg-white border-2 border-purple-300 text-purple-700 hover:bg-purple-50 font-bold shadow-xl hover:shadow-2xl transition-all">
                   <Brain className="h-5 w-5 mr-2" />
                   Try AI Diagnostics
                   <ArrowRight className="h-4 w-4 ml-2" />
@@ -806,7 +806,7 @@ export default function Landing() {
         
         <div className="max-w-2xl mx-auto text-center relative z-10">
           <motion.h2 
-            className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-5"
+            className="text-3xl md:text-4xl font-black text-gray-900 mb-5"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -815,7 +815,7 @@ export default function Landing() {
           </motion.h2>
           
           <motion.p
-            className="text-lg text-gray-700 dark:text-gray-200 mb-10 font-medium"
+            className="text-lg text-gray-700 mb-10 font-medium"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -849,8 +849,8 @@ export default function Landing() {
                       <Check className="h-5 w-5 text-white" strokeWidth={3} />
                     </motion.div>
                     <div className="text-left">
-                      <h3 className="font-bold text-gray-900 dark:text-white text-base mb-1">{benefit.label}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{benefit.desc}</p>
+                      <h3 className="font-bold text-gray-900 text-base mb-1">{benefit.label}</h3>
+                      <p className="text-sm text-gray-600">{benefit.desc}</p>
                     </div>
                   </div>
                 </GlassmorphicCard>
@@ -911,7 +911,7 @@ export default function Landing() {
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
           />
-          <p className="text-gray-600 dark:text-gray-300 font-medium">
+          <p className="text-gray-600 font-medium">
             Everything you need to fight medical bills
           </p>
         </div>
@@ -959,7 +959,7 @@ export default function Landing() {
                         </span>
                       )}
                     </div>
-                    <span className="font-bold text-gray-800 dark:text-gray-100 text-sm">{item.label}</span>
+                    <span className="font-bold text-gray-800 text-sm">{item.label}</span>
                   </div>
                 </GlassmorphicCard>
               </motion.div>
@@ -996,7 +996,7 @@ export default function Landing() {
             ].map((item, index) => (
               <Link key={item.label} href={item.path}>
                 <motion.div
-                  className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white dark:bg-slate-900/60 transition-all mb-2 group"
+                  className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white/60 transition-all mb-2 group"
                   whileHover={{ x: 4 }}
                   data-testid={`link-popular-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                 >
@@ -1004,8 +1004,8 @@ export default function Landing() {
                     <item.icon className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white">{item.label}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">{item.desc}</p>
+                    <h4 className="font-bold text-gray-900">{item.label}</h4>
+                    <p className="text-sm text-gray-600">{item.desc}</p>
                   </div>
                   <ChevronRight className="h-5 w-5 text-amber-600 group-hover:translate-x-1 transition-transform" />
                 </motion.div>
@@ -1040,10 +1040,10 @@ export default function Landing() {
               <Users className="h-4 w-4" />
               Verified Success Stories
             </motion.span>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-3">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
               What Our Users Say
             </h2>
-            <p className="text-lg text-gray-700 dark:text-gray-200 font-semibold">
+            <p className="text-lg text-gray-700 font-semibold">
               Join thousands who've saved money on medical bills
             </p>
           </motion.div>
@@ -1094,14 +1094,14 @@ export default function Landing() {
                       ))}
                     </div>
 
-                    <p className="text-gray-700 dark:text-gray-200 mb-5 leading-relaxed font-medium text-lg">
+                    <p className="text-gray-700 mb-5 leading-relaxed font-medium text-lg">
                       "{testimonial.quote}"
                     </p>
 
                     <div className="flex items-center justify-between border-t border-gray-100 pt-4">
                       <div>
-                        <p className="font-black text-gray-900 dark:text-white">{testimonial.name}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">{testimonial.location}</p>
+                        <p className="font-black text-gray-900">{testimonial.name}</p>
+                        <p className="text-sm text-gray-600 font-medium">{testimonial.location}</p>
                       </div>
                       <motion.div 
                         className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-lg"
@@ -1124,7 +1124,7 @@ export default function Landing() {
             className="mt-10 text-center"
           >
             <motion.div 
-              className="inline-flex items-center gap-4 bg-white dark:bg-slate-900/80 backdrop-blur-xl px-8 py-5 rounded-2xl border border-emerald-200/50 shadow-2xl"
+              className="inline-flex items-center gap-4 bg-white/80 backdrop-blur-xl px-8 py-5 rounded-2xl border border-emerald-200/50 shadow-2xl"
               whileHover={{ scale: 1.03 }}
               style={{
                 boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
@@ -1132,11 +1132,11 @@ export default function Landing() {
             >
               <div className="flex items-center gap-1.5">
                 <Star className="h-8 w-8 text-amber-400 fill-amber-400" />
-                <span className="text-3xl font-black text-gray-900 dark:text-white">4.9</span>
+                <span className="text-3xl font-black text-gray-900">4.9</span>
               </div>
               <div className="text-left">
-                <p className="text-base font-black text-gray-900 dark:text-white">Rated Excellent</p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">Based on 1,000+ reviews</p>
+                <p className="text-base font-black text-gray-900">Rated Excellent</p>
+                <p className="text-sm text-gray-600 font-medium">Based on 1,000+ reviews</p>
               </div>
             </motion.div>
           </motion.div>
@@ -1156,7 +1156,7 @@ export default function Landing() {
       >
         <div className="max-w-2xl mx-auto text-center">
           <motion.h2 
-            className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-5"
+            className="text-3xl md:text-4xl font-black text-gray-900 mb-5"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1165,7 +1165,7 @@ export default function Landing() {
           </motion.h2>
           
           <motion.p
-            className="text-lg text-gray-700 dark:text-gray-200 mb-10 font-medium max-w-xl mx-auto leading-relaxed"
+            className="text-lg text-gray-700 mb-10 font-medium max-w-xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1198,8 +1198,8 @@ export default function Landing() {
                     >
                       <credential.icon className="h-8 w-8 text-white" strokeWidth={2.5} />
                     </motion.div>
-                    <h3 className="font-black text-gray-900 dark:text-white mb-2 text-lg">{credential.label}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">{credential.desc}</p>
+                    <h3 className="font-black text-gray-900 mb-2 text-lg">{credential.label}</h3>
+                    <p className="text-sm text-gray-600 font-medium">{credential.desc}</p>
                   </div>
                 </GlassmorphicCard>
               </motion.div>
@@ -1225,7 +1225,7 @@ export default function Landing() {
                 data-testid={`badge-${badge.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 <badge.icon className={`h-5 w-5 ${badge.color}`} />
-                <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{badge.label}</span>
+                <span className="text-sm font-bold text-gray-800">{badge.label}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -1237,13 +1237,13 @@ export default function Landing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="px-4 py-16 bg-white dark:bg-slate-900"
+        className="px-4 py-16 bg-white"
         data-testid="section-faq"
       >
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
             <motion.h2 
-              className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-4"
+              className="text-3xl md:text-4xl font-black text-gray-900 mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -1251,7 +1251,7 @@ export default function Landing() {
               Frequently Asked Questions
             </motion.h2>
             <motion.p
-              className="text-gray-700 dark:text-gray-200 font-medium text-lg"
+              className="text-gray-700 font-medium text-lg"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -1299,7 +1299,7 @@ export default function Landing() {
               >
                 <GlassmorphicCard className="rounded-2xl">
                   <div className="p-6">
-                    <h3 className="font-black text-gray-900 dark:text-white mb-3 flex items-start gap-3 text-lg">
+                    <h3 className="font-black text-gray-900 mb-3 flex items-start gap-3 text-lg">
                       <motion.div
                         whileHover={{ rotate: 10 }}
                         className="flex-shrink-0"
@@ -1308,7 +1308,7 @@ export default function Landing() {
                       </motion.div>
                       <span>{faq.question}</span>
                     </h3>
-                    <p className="text-gray-700 dark:text-gray-200 leading-relaxed pl-9 font-medium">{faq.answer}</p>
+                    <p className="text-gray-700 leading-relaxed pl-9 font-medium">{faq.answer}</p>
                   </div>
                 </GlassmorphicCard>
               </motion.div>
@@ -1369,12 +1369,12 @@ export default function Landing() {
               Premium Access
             </h3>
             
-            <p className="text-gray-700 dark:text-gray-200 font-semibold mb-6 leading-relaxed max-w-md mx-auto">
+            <p className="text-gray-700 font-semibold mb-6 leading-relaxed max-w-md mx-auto">
               Full AI analysis, dispute templates, expert coaching & insider tactics
             </p>
 
             <div className="flex justify-center mb-6">
-              <div className="inline-flex bg-white dark:bg-slate-900/70 backdrop-blur-sm rounded-xl p-1.5 border border-amber-200 shadow-lg">
+              <div className="inline-flex bg-white/70 backdrop-blur-sm rounded-xl p-1.5 border border-amber-200 shadow-lg">
                 {[
                   { id: 'monthly' as const, label: 'Monthly' },
                   { id: 'annual' as const, label: 'Annual' },
@@ -1386,7 +1386,7 @@ export default function Landing() {
                     className={`px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${
                       pricingTab === tab.id
                         ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg'
-                        : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:text-white'
+                        : 'text-gray-700 hover:text-gray-900'
                     }`}
                     whileHover={{ scale: pricingTab !== tab.id ? 1.05 : 1 }}
                     whileTap={{ scale: 0.95 }}
@@ -1399,7 +1399,7 @@ export default function Landing() {
             </div>
 
             <motion.div 
-              className="bg-white dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-amber-200 shadow-xl max-w-xs mx-auto"
+              className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-amber-200 shadow-xl max-w-xs mx-auto"
               layout
             >
               <motion.div 
@@ -1409,12 +1409,12 @@ export default function Landing() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <span className="text-5xl font-black text-gray-900 dark:text-white">
+                <span className="text-5xl font-black text-gray-900">
                   {pricingTab === 'monthly' && '$25'}
                   {pricingTab === 'annual' && '$249'}
                   {pricingTab === 'lifetime' && '$747'}
                 </span>
-                <span className="text-gray-600 dark:text-gray-300 font-semibold">
+                <span className="text-gray-600 font-semibold">
                   {pricingTab === 'monthly' && '/month'}
                   {pricingTab === 'annual' && '/year'}
                   {pricingTab === 'lifetime' && 'one-time'}
@@ -1440,7 +1440,7 @@ export default function Landing() {
                   Unlimited access forever • Best value
                 </motion.div>
               )}
-              <div className="text-xs text-gray-600 dark:text-gray-300 font-medium">
+              <div className="text-xs text-gray-600 font-medium">
                 Professional medical bill reduction
               </div>
             </motion.div>
@@ -1465,7 +1465,7 @@ export default function Landing() {
                   <div className="w-6 h-6 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                     <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />
                   </div>
-                  <span className="text-sm text-gray-700 dark:text-gray-200 font-semibold">{feature}</span>
+                  <span className="text-sm text-gray-700 font-semibold">{feature}</span>
                 </motion.div>
               ))}
             </div>
@@ -1481,7 +1481,7 @@ export default function Landing() {
               </PremiumButton>
             </Link>
 
-            <p className="text-xs text-gray-600 dark:text-gray-300 mt-4 font-medium">
+            <p className="text-xs text-gray-600 mt-4 font-medium">
               Cancel anytime • Full refund within 30 days
             </p>
           </div>
@@ -1519,7 +1519,7 @@ export default function Landing() {
           >
             Ready to Fight Your Bills?
           </motion.h2>
-          <p className="text-gray-600 dark:text-gray-300 font-semibold max-w-sm mx-auto">
+          <p className="text-gray-600 font-semibold max-w-sm mx-auto">
             Professional AI analysis & expert strategies
           </p>
         </div>
@@ -1552,7 +1552,7 @@ export default function Landing() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-center text-sm text-gray-500 dark:text-gray-400 mt-8 font-medium"
+          className="text-center text-sm text-gray-500 mt-8 font-medium"
         >
           🔒 Private & Secure • ⚡ AI-Powered • ⚖️ Legal Templates
         </motion.p>
@@ -1560,26 +1560,26 @@ export default function Landing() {
         <div className="mt-12 pt-8 border-t border-gray-200 pb-24">
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm mb-4">
             <Link href="/privacy-policy">
-              <a className="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-privacy-mobile">
+              <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-privacy-mobile">
                 Privacy Policy
               </a>
             </Link>
             <span className="text-gray-300">•</span>
             <Link href="/terms-of-service">
-              <a className="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-terms-mobile">
+              <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-terms-mobile">
                 Terms of Service
               </a>
             </Link>
             <span className="text-gray-300">•</span>
             <Link href="/support">
-              <a className="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-support-mobile">
+              <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-support-mobile">
                 Support
               </a>
             </Link>
             <span className="text-gray-300">•</span>
             <a 
               href="mailto:contact@goldrock.ai" 
-              className="text-gray-500 dark:text-gray-400 hover:text-emerald-600 transition-colors font-medium"
+              className="text-gray-500 hover:text-emerald-600 transition-colors font-medium"
               data-testid="footer-link-email-mobile"
             >
               Contact

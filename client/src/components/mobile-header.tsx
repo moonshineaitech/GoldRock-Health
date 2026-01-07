@@ -1,10 +1,9 @@
-import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download, Shield, Heart, Search, Phone, Sun, Moon } from "lucide-react";
+import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download, Shield, Heart, Search, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
-import { useTheme } from "@/lib/theme-provider";
 
 interface MobileHeaderProps {
   title: string;
@@ -93,13 +92,13 @@ export function NavigationDropdown() {
   return (
     <div className="relative">
       <motion.button
-        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300"
+        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
         whileTap={{ scale: 0.92 }}
         whileHover={{ scale: 1.08, rotateZ: 2 }}
         onClick={() => setIsOpen(!isOpen)}
         data-testid="navigation-menu"
       >
-        <Menu className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+        <Menu className="h-4 w-4 text-gray-700" />
       </motion.button>
 
       {/* Dropdown Menu */}
@@ -108,19 +107,18 @@ export function NavigationDropdown() {
           <>
             {/* Backdrop */}
             <div 
-              className="fixed inset-0 z-40 dark:bg-black/20" 
+              className="fixed inset-0 z-40" 
               onClick={() => setIsOpen(false)}
             />
             
             {/* Menu */}
             <motion.div
-              className="absolute left-0 top-full mt-3 w-72 sm:w-80 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 dark:border-slate-700/50 shadow-2xl shadow-black/20 z-50 overflow-hidden"
+              className="absolute left-0 top-full mt-3 w-72 sm:w-80 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
               style={{
-                background: 'var(--dropdown-bg)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
                 left: 'max(-1rem, calc(-100vw + 100% + 2rem))',
                 right: 'auto',
-                maxHeight: 'calc(100vh - 100px)',
-                ['--dropdown-bg' as any]: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)'
+                maxHeight: 'calc(100vh - 100px)'
               }}
               initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
@@ -128,20 +126,20 @@ export function NavigationDropdown() {
               transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               {/* Header */}
-              <div className="p-4 border-b border-white/20 dark:border-slate-700/30 flex-shrink-0 bg-white/50 dark:bg-slate-800/50">
+              <div className="p-4 border-b border-white/20 flex-shrink-0">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
                     <Menu className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-900 dark:text-gray-100 leading-tight">Navigation</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Choose your destination</p>
+                    <p className="text-sm font-bold text-gray-900 leading-tight">Navigation</p>
+                    <p className="text-xs text-gray-600">Choose your destination</p>
                   </div>
                 </div>
               </div>
 
               {/* Menu Items - Scrollable */}
-              <div className="py-2 overflow-y-auto bg-white/80 dark:bg-slate-800/80" style={{ maxHeight: 'calc(100vh - 180px)' }}>
+              <div className="py-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 180px)' }}>
                 {navigationItems.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
@@ -149,12 +147,12 @@ export function NavigationDropdown() {
                       key={item.label}
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-2xl mx-2 my-1 ${
                         item.special
-                          ? 'text-purple-600 dark:text-purple-400 hover:bg-purple-50/80 dark:hover:bg-purple-900/30 hover:shadow-sm'
+                          ? 'text-purple-600 hover:bg-purple-50/80 hover:shadow-sm'
                           : item.premium
-                            ? 'text-orange-600 dark:text-orange-400 hover:bg-orange-50/80 dark:hover:bg-orange-900/30 hover:shadow-sm'
+                            ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
                             : item.featured
-                              ? 'text-blue-600 dark:text-blue-400 hover:bg-blue-50/80 dark:hover:bg-blue-900/30 hover:shadow-sm'
-                              : 'text-gray-700 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-slate-700/60 hover:shadow-sm'
+                              ? 'text-blue-600 hover:bg-blue-50/80 hover:shadow-sm'
+                              : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
                       }`}
                       onClick={() => {
                         navigate(item.href);
@@ -167,12 +165,12 @@ export function NavigationDropdown() {
                     >
                       <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
                         item.special 
-                          ? 'bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/50 dark:to-pink-900/50'
+                          ? 'bg-gradient-to-br from-purple-100 to-pink-100'
                           : item.premium
-                            ? 'bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/50 dark:to-amber-900/50'
+                            ? 'bg-gradient-to-br from-orange-100 to-amber-100'
                             : item.featured
-                              ? 'bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50'
-                              : 'bg-gray-100 dark:bg-slate-700'
+                              ? 'bg-gradient-to-br from-blue-100 to-cyan-100'
+                              : 'bg-gray-100'
                       }`}>
                         <IconComponent className={`h-4 w-4 ${
                           item.special 
@@ -229,15 +227,11 @@ export function MobileHeader({
     }
   };
 
-  const { theme } = useTheme();
-  
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-40 backdrop-blur-2xl border-b border-white/20 dark:border-slate-700/30 shadow-xl shadow-black/5 dark:shadow-black/20"
+      className="fixed top-0 left-0 right-0 z-40 backdrop-blur-2xl border-b border-white/20 shadow-xl shadow-black/5"
       style={{
-        background: theme === 'dark' 
-          ? 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.90) 100%)'
-          : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
         paddingTop: 'env(safe-area-inset-top)'
       }}
       initial={{ y: -80, opacity: 0 }}
@@ -245,7 +239,7 @@ export function MobileHeader({
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {/* Premium glass overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/10 dark:from-white/5 via-transparent to-white/10 dark:to-white/5 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 pointer-events-none" />
       
       <div className="flex items-center justify-between h-16 px-5 relative">
         {/* Left Section */}
@@ -253,12 +247,12 @@ export function MobileHeader({
           {showBackButton ? (
             <motion.button
               onClick={handleBackClick}
-              className="flex items-center justify-center w-9 h-9 mr-4 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300"
+              className="flex items-center justify-center w-9 h-9 mr-4 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
               whileTap={{ scale: 0.92 }}
               whileHover={{ scale: 1.08, rotateZ: -2 }}
               data-testid="button-back"
             >
-              <ArrowLeft className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+              <ArrowLeft className="h-4 w-4 text-gray-700" />
             </motion.button>
           ) : (
             <div className="mr-4">
@@ -274,7 +268,7 @@ export function MobileHeader({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
         >
-          <h1 className="text-lg font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-gray-100 dark:via-gray-200 dark:to-gray-100 bg-clip-text text-transparent truncate leading-none">
+          <h1 className="text-lg font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent truncate leading-none">
             {title}
           </h1>
           <div className="h-0.5 w-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto mt-1 opacity-60" />
@@ -363,7 +357,7 @@ export function UserAvatarDropdown() {
   return (
     <div className="relative">
       <motion.button
-        className="flex items-center space-x-1.5 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300 p-1.5"
+        className="flex items-center space-x-1.5 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300 p-1.5"
         whileTap={{ scale: 0.92 }}
         whileHover={{ scale: 1.08, rotateZ: 2 }}
         onClick={() => setIsOpen(!isOpen)}
@@ -387,7 +381,7 @@ export function UserAvatarDropdown() {
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <ChevronDown className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+          <ChevronDown className="h-3.5 w-3.5 text-gray-600" />
         </motion.div>
       </motion.button>
 
@@ -397,14 +391,15 @@ export function UserAvatarDropdown() {
           <>
             {/* Backdrop */}
             <div 
-              className="fixed inset-0 z-40 dark:bg-black/20" 
+              className="fixed inset-0 z-40" 
               onClick={() => setIsOpen(false)}
             />
             
             {/* Menu */}
             <motion.div
-              className="absolute right-0 top-full mt-3 w-56 sm:w-64 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 dark:border-slate-700/50 shadow-2xl shadow-black/20 z-50 overflow-hidden bg-white/95 dark:bg-slate-800/95"
+              className="absolute right-0 top-full mt-3 w-56 sm:w-64 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
               style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
                 right: 'max(-1rem, calc(-100vw + 100% + 2rem))',
                 left: 'auto'
               }}
@@ -414,7 +409,7 @@ export function UserAvatarDropdown() {
               transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               {/* User Info */}
-              <div className="p-4 border-b border-white/20 dark:border-slate-700/30 bg-white/50 dark:bg-slate-800/50">
+              <div className="p-4 border-b border-white/20">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
                     {user?.profileImageUrl ? (
@@ -428,15 +423,15 @@ export function UserAvatarDropdown() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate leading-tight">
+                    <p className="text-sm font-bold text-gray-900 truncate leading-tight">
                       {user?.firstName && user?.lastName 
                         ? `${user.firstName} ${user.lastName}`
                         : user?.email?.split('@')[0] || 'User'
                       }
                     </p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 truncate mt-0.5">{user?.email}</p>
+                    <p className="text-xs text-gray-600 truncate mt-0.5">{user?.email}</p>
                     {isSubscribed && (
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-900/50 dark:to-amber-900/50 text-orange-800 dark:text-orange-300 mt-2 shadow-sm">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold bg-gradient-to-r from-orange-100 to-amber-100 text-orange-800 mt-2 shadow-sm">
                         <Crown className="w-3 h-3 mr-1" />
                         Premium
                       </span>
@@ -446,7 +441,7 @@ export function UserAvatarDropdown() {
               </div>
 
               {/* Menu Items */}
-              <div className="py-2 bg-white/80 dark:bg-slate-800/80">
+              <div className="py-2">
                 {menuItems.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
@@ -454,10 +449,10 @@ export function UserAvatarDropdown() {
                       key={item.label}
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-2xl mx-2 my-1 ${
                         item.danger 
-                          ? 'text-red-600 dark:text-red-400 hover:bg-red-50/80 dark:hover:bg-red-900/30 hover:shadow-sm' 
+                          ? 'text-red-600 hover:bg-red-50/80 hover:shadow-sm' 
                           : item.highlight
-                            ? 'text-orange-600 dark:text-orange-400 hover:bg-orange-50/80 dark:hover:bg-orange-900/30 hover:shadow-sm'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-slate-700/60 hover:shadow-sm'
+                            ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
+                            : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
                       }`}
                       onClick={item.action}
                       whileHover={{ x: 4, scale: 1.02 }}
@@ -483,45 +478,5 @@ export function UserAvatarDropdown() {
         )}
       </AnimatePresence>
     </div>
-  );
-}
-
-// Theme toggle button component
-export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-  
-  return (
-    <motion.button
-      onClick={toggleTheme}
-      className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300"
-      whileTap={{ scale: 0.92 }}
-      whileHover={{ scale: 1.08, rotateZ: 5 }}
-      data-testid="theme-toggle"
-      aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-    >
-      <AnimatePresence mode="wait">
-        {theme === "light" ? (
-          <motion.div
-            key="moon"
-            initial={{ scale: 0, rotate: -180, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            exit={{ scale: 0, rotate: 180, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <Moon className="h-4 w-4 text-indigo-600" />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="sun"
-            initial={{ scale: 0, rotate: 180, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            exit={{ scale: 0, rotate: -180, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <Sun className="h-4 w-4 text-amber-500" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.button>
   );
 }
