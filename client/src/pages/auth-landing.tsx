@@ -273,87 +273,55 @@ export default function AuthLanding() {
             </motion.div>
           </motion.div>
 
+          {/* Emotional Headline - Combined Best of Both */}
           <motion.h1 
-            className="text-4xl md:text-5xl font-black mb-4 leading-[1.1]"
+            className="text-[1.75rem] sm:text-4xl md:text-5xl font-black mb-3 leading-[1.1]"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <span className="text-gray-900">Your Healthcare</span>
+            <span className="text-gray-800">The Healthcare System</span>
+            <br />
+            <span className="text-gray-800">Wasn't Built for You.</span>
             <br />
             <motion.span 
-              className="inline-block"
+              className="inline-block mt-1"
               style={{
-                background: "linear-gradient(135deg, #0d9488 0%, #10b981 40%, #059669 100%)",
+                background: "linear-gradient(135deg, #0d9488 0%, #10b981 30%, #f59e0b 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Advocate & Protector
+              We Are.
             </motion.span>
           </motion.h1>
 
           <motion.p 
-            className="text-base md:text-lg text-gray-600 mb-8 max-w-xl mx-auto leading-relaxed"
+            className="text-sm sm:text-base text-gray-600 mb-5 max-w-md mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Fight unfair medical bills, master clinical diagnostics, and protect your healthcare rights — all powered by advanced AI.
+            Hospitals have teams protecting their revenue.
+            <br />
+            <span className="text-emerald-600 font-semibold">Now you have one protecting yours.</span>
           </motion.p>
 
-          {/* Core Capabilities Grid - Larger with descriptions */}
-          <motion.div
-            className="grid grid-cols-2 gap-4 max-w-xl mx-auto mb-8"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            {[
-              { icon: DollarSign, label: "Bill Reduction", desc: "Find overcharges & save thousands", color: "emerald" },
-              { icon: Brain, label: "AI Diagnostics", desc: "Clinical decision support", color: "blue" },
-              { icon: Scale, label: "Rights Protection", desc: "Know & enforce your rights", color: "purple" },
-              { icon: Stethoscope, label: "Medical Training", desc: "Learn from 1000+ real cases", color: "amber" },
-            ].map((item, i) => (
-              <motion.div 
-                key={item.label}
-                className="bg-white/95 backdrop-blur-xl rounded-2xl p-4 border border-gray-100/80 shadow-lg"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.55 + i * 0.05 }}
-                whileHover={{ y: -2, shadow: "0 12px 24px -8px rgba(0,0,0,0.15)" }}
-              >
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 ${
-                  item.color === 'emerald' ? 'bg-emerald-100' : 
-                  item.color === 'blue' ? 'bg-blue-100' : 
-                  item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
-                }`}>
-                  <item.icon className={`h-5 w-5 ${
-                    item.color === 'emerald' ? 'text-emerald-600' : 
-                    item.color === 'blue' ? 'text-blue-600' : 
-                    item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
-                  }`} />
-                </div>
-                <h3 className="font-bold text-gray-900 text-sm mb-1">{item.label}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Demo Chat Interface - Try before sign up */}
+          {/* Demo Chat Interface - First, Above Everything */}
           <DemoChat />
 
+          {/* CTA Buttons - Right After Chat */}
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65 }}
+            transition={{ delay: 0.5 }}
           >
             <motion.a
               href="/api/login"
-              className="group relative px-8 py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 text-white font-bold text-base rounded-xl overflow-hidden"
+              className="group relative w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 text-white font-bold text-sm rounded-xl overflow-hidden"
               style={{
-                boxShadow: "0 15px 30px -8px rgba(16, 185, 129, 0.4)"
+                boxShadow: "0 12px 24px -8px rgba(16, 185, 129, 0.4)"
               }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -365,27 +333,64 @@ export default function AuthLanding() {
                 transition={{ duration: 0.5 }}
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
               />
-              <div className="relative z-10 flex items-center gap-2">
+              <div className="relative z-10 flex items-center justify-center gap-2">
                 <FileText className="h-4 w-4" />
-                Analyze My Medical Bill
+                Upload Your Bill & Take Control
                 <ArrowRight className="h-4 w-4" />
               </div>
             </motion.a>
             
             <motion.a
               href="/api/login?redirect=/patient-diagnostics"
-              className="px-8 py-4 bg-white/90 backdrop-blur-xl border border-gray-200 text-gray-800 font-bold text-base rounded-xl shadow-md hover:shadow-lg hover:border-gray-300 transition-all flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3.5 bg-white/90 backdrop-blur-xl border border-gray-200 text-gray-800 font-bold text-sm rounded-xl shadow-md hover:shadow-lg hover:border-gray-300 transition-all flex items-center justify-center gap-2"
               whileHover={{ scale: 1.01, y: -1 }}
               data-testid="button-explore-features"
             >
               <Brain className="h-4 w-4 text-blue-600" />
-              Explore AI Diagnostics
+              Explore AI Health Tools
             </motion.a>
+          </motion.div>
+
+          {/* Core Capabilities Grid - After CTAs */}
+          <motion.div
+            className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-5"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            {[
+              { icon: DollarSign, label: "Bill Reduction", desc: "Find overcharges", color: "emerald" },
+              { icon: Brain, label: "AI Diagnostics", desc: "Clinical support", color: "blue" },
+              { icon: Scale, label: "Rights Protection", desc: "Know your rights", color: "purple" },
+              { icon: Stethoscope, label: "Medical Training", desc: "1000+ cases", color: "amber" },
+            ].map((item, i) => (
+              <motion.div 
+                key={item.label}
+                className="bg-white/95 backdrop-blur-xl rounded-xl p-3 border border-gray-100/80 shadow-md"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.65 + i * 0.05 }}
+              >
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-2 ${
+                  item.color === 'emerald' ? 'bg-emerald-100' : 
+                  item.color === 'blue' ? 'bg-blue-100' : 
+                  item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
+                }`}>
+                  <item.icon className={`h-4 w-4 ${
+                    item.color === 'emerald' ? 'text-emerald-600' : 
+                    item.color === 'blue' ? 'text-blue-600' : 
+                    item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
+                  }`} />
+                </div>
+                <h3 className="font-bold text-gray-900 text-xs mb-0.5">{item.label}</h3>
+                <p className="text-[10px] text-gray-500">{item.desc}</p>
+              </motion.div>
+            ))}
           </motion.div>
 
           {/* Trust Indicators */}
           <motion.div
-            className="flex items-center justify-center gap-5 mb-4"
+            className="flex items-center justify-center gap-4 mb-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.75 }}
@@ -394,15 +399,15 @@ export default function AuthLanding() {
               { icon: Lock, label: "HIPAA Aligned" },
               { icon: Shield, label: "256-bit Encrypted" },
             ].map((badge) => (
-              <div key={badge.label} className="flex items-center gap-1.5 text-gray-500">
-                <badge.icon className="h-4 w-4" />
-                <span className="text-xs font-medium">{badge.label}</span>
+              <div key={badge.label} className="flex items-center gap-1 text-gray-500">
+                <badge.icon className="h-3.5 w-3.5" />
+                <span className="text-[10px] font-medium">{badge.label}</span>
               </div>
             ))}
           </motion.div>
 
           <motion.p
-            className="text-xs text-gray-400 font-medium"
+            className="text-[10px] text-gray-400 font-medium"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
