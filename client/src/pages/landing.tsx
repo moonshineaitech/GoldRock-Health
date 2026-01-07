@@ -284,7 +284,7 @@ export default function Landing() {
   }, []);
   
   return (
-    <MobileLayout title="GoldRock AI" showBottomNav={true}>
+    <MobileLayout title="GoldRock Health" showBottomNav={true}>
       <motion.div 
         className="text-center py-16 px-4 relative overflow-hidden"
         initial={{ opacity: 0 }}
