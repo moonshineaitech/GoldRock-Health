@@ -1156,7 +1156,7 @@ export default function AuthLanding() {
                 </a>
               </Link>
               <a 
-                href="mailto:support@goldrockhealth.com" 
+                href="mailto:contact@goldrock.ai" 
                 className="text-gray-400 hover:text-emerald-400 transition-colors"
                 data-testid="footer-link-email-landing"
               >

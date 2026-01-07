@@ -98,7 +98,7 @@ export default function TermsOfService() {
           <p className="mb-4">
             To use certain of the Services, you need to create an account or link another account, such as your Apple, Facebook, Google, or Replit account 
             ("<strong>Account</strong>"). You agree to provide us with accurate, complete and updated information for your Account. You can access, edit and 
-            update your Account through the Website, App, or via email to <strong>support@goldrockhealth.com</strong>. You are solely responsible for any 
+            update your Account through the Website, App, or via email to <strong>contact@goldrock.ai</strong>. You are solely responsible for any 
             activity on your Account and for maintaining the confidentiality and security of your Account credentials. You should never share or disclose 
             your Account credentials to any third party. You agree to notify us immediately of any unauthorized access to your Account. We reserve the right 
             to disable your Account at any time if we believe you have violated these Terms.
@@ -131,7 +131,7 @@ export default function TermsOfService() {
             on your subscription page (monthly or annually) and at the then-current rates, and your payment method will automatically be charged at the 
             start of each new subscription period for the fees and taxes applicable to that period. To avoid future subscription charges, you must cancel 
             your subscription no later than the day before the subscription renewal date. You can cancel your subscription through your Account settings, 
-            the App Store (for iOS in-app purchases), or by emailing <strong>support@goldrockhealth.com</strong>.
+            the App Store (for iOS in-app purchases), or by emailing <strong>contact@goldrock.ai</strong>.
           </p>
 
           <h3 className="text-lg font-medium text-gray-900 mb-3">2.5 Refund Policy</h3>
@@ -425,7 +425,7 @@ export default function TermsOfService() {
           
           <h3 className="text-lg font-medium text-gray-900 mb-3">13.1 Informal Resolution</h3>
           <p className="mb-4">
-            Before initiating any formal dispute resolution, you agree to contact us at <strong>legal@goldrockhealth.com</strong> and attempt to 
+            Before initiating any formal dispute resolution, you agree to contact us at <strong>legal@goldrock.ai</strong> and attempt to 
             resolve any dispute informally for at least 30 days.
           </p>
 
@@ -446,7 +446,7 @@ export default function TermsOfService() {
 
           <h3 className="text-lg font-medium text-gray-900 mb-3">13.4 Opt-Out</h3>
           <p className="mb-4">
-            You may opt out of the arbitration agreement by sending written notice to <strong>legal@goldrockhealth.com</strong> within 30 days of 
+            You may opt out of the arbitration agreement by sending written notice to <strong>legal@goldrock.ai</strong> within 30 days of 
             first accepting these Terms. Your notice must include your name, mailing address, and a clear statement that you wish to opt out of the 
             arbitration agreement.
           </p>
@@ -518,9 +518,9 @@ export default function TermsOfService() {
           <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
             <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
             <p className="mb-2">State of Incorporation: Colorado, United States</p>
-            <p className="mb-2">General Support: <strong>support@goldrockhealth.com</strong></p>
-            <p className="mb-2">Legal Inquiries: <strong>legal@goldrockhealth.com</strong></p>
-            <p className="mb-2">Privacy Matters: <strong>privacy@goldrockhealth.com</strong></p>
+            <p className="mb-2">General Support: <strong>contact@goldrock.ai</strong></p>
+            <p className="mb-2">Legal Inquiries: <strong>legal@goldrock.ai</strong></p>
+            <p className="mb-2">Privacy Matters: <strong>privacy@goldrock.ai</strong></p>
           </div>
 
           <div className="mt-8 p-5 bg-red-50 rounded-xl border border-red-200">

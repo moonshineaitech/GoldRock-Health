@@ -62,7 +62,7 @@ export default function Footer() {
           </Link>
           <span className="text-gray-600">•</span>
           <a 
-            href="mailto:support@goldrockhealth.com" 
+            href="mailto:contact@goldrock.ai" 
             className="flex items-center gap-1.5 text-gray-400 hover:text-cyan-400 transition-colors"
             data-testid="footer-link-email"
           >
