@@ -225,107 +225,116 @@ export default function AuthLanding() {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          {/* Premium Health Logo */}
+          {/* Balanced Healthcare Logo - Shield with Heart Center */}
           <motion.div 
-            className="relative mx-auto mb-5"
+            className="relative mx-auto mb-6"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", stiffness: 150, damping: 15 }}
           >
             <motion.div
-              className="absolute -inset-4 rounded-full opacity-30"
+              className="absolute -inset-6 rounded-full opacity-30"
               style={{
-                background: "linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.4))",
-                filter: "blur(20px)",
+                background: "radial-gradient(circle, rgba(16, 185, 129, 0.4), transparent 70%)",
               }}
               animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.2, 0.4, 0.2],
+                scale: [1, 1.15, 1],
+                opacity: [0.2, 0.35, 0.2],
               }}
               transition={{ duration: 4, repeat: Infinity }}
             />
             <motion.div 
-              className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl mx-auto overflow-hidden"
-              style={{ 
-                background: "linear-gradient(135deg, #0d9488 0%, #10b981 35%, #059669 65%, #047857 100%)",
-                boxShadow: "0 20px 40px -10px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255,255,255,0.2) inset"
-              }}
-              whileHover={{ scale: 1.05, rotate: 3 }}
+              className="relative w-20 h-20 flex items-center justify-center mx-auto"
+              whileHover={{ scale: 1.05 }}
             >
-              <motion.div
-                className="absolute inset-0 opacity-40"
-                style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 60%)",
-                }}
+              {/* Shield base */}
+              <Shield 
+                className="absolute text-emerald-600 h-20 w-20" 
+                strokeWidth={1.5} 
+                fill="url(#shieldGradient)"
               />
-              <div className="relative">
-                <Shield className="text-white/30 h-12 w-12 absolute -top-0.5 -left-0.5" strokeWidth={1} />
-                <Heart className="text-white h-8 w-8 drop-shadow-lg relative z-10" strokeWidth={2.5} fill="rgba(255,255,255,0.2)" />
-              </div>
+              {/* Heart centered in shield */}
+              <Heart 
+                className="relative text-white h-8 w-8 drop-shadow-lg z-10 mt-1" 
+                strokeWidth={2} 
+                fill="rgba(255,255,255,0.9)"
+              />
+              {/* SVG gradient definition */}
+              <svg width="0" height="0">
+                <defs>
+                  <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#0d9488" />
+                    <stop offset="50%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#059669" />
+                  </linearGradient>
+                </defs>
+              </svg>
             </motion.div>
           </motion.div>
 
           <motion.h1 
-            className="text-4xl md:text-6xl font-black mb-5 leading-[1.05]"
+            className="text-4xl md:text-5xl font-black mb-4 leading-[1.1]"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <span className="text-gray-900 drop-shadow-sm">Intelligent</span>
+            <span className="text-gray-900">Your Healthcare</span>
             <br />
             <motion.span 
-              className="inline-block relative"
+              className="inline-block"
               style={{
                 background: "linear-gradient(135deg, #0d9488 0%, #10b981 40%, #059669 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Healthcare Advocacy
+              Advocate & Protector
             </motion.span>
           </motion.h1>
 
           <motion.p 
-            className="text-lg md:text-xl text-gray-600 mb-6 max-w-2xl mx-auto leading-relaxed"
+            className="text-base md:text-lg text-gray-600 mb-8 max-w-xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            AI-powered medical bill analysis and clinical decision support in one secure platform.
+            Fight unfair medical bills, master clinical diagnostics, and protect your healthcare rights — all powered by advanced AI.
           </motion.p>
 
-          {/* Core Capabilities Grid - Compact */}
+          {/* Core Capabilities Grid - Larger with descriptions */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto mb-8"
+            className="grid grid-cols-2 gap-4 max-w-xl mx-auto mb-8"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
             {[
-              { icon: Receipt, label: "Bill Analysis", color: "emerald" },
-              { icon: Brain, label: "AI Diagnostics", color: "blue" },
-              { icon: Shield, label: "Rights Protection", color: "purple" },
-              { icon: Award, label: "Expert Training", color: "amber" },
+              { icon: DollarSign, label: "Bill Reduction", desc: "Find overcharges & save thousands", color: "emerald" },
+              { icon: Brain, label: "AI Diagnostics", desc: "Clinical decision support", color: "blue" },
+              { icon: Scale, label: "Rights Protection", desc: "Know & enforce your rights", color: "purple" },
+              { icon: Stethoscope, label: "Medical Training", desc: "Learn from 1000+ real cases", color: "amber" },
             ].map((item, i) => (
               <motion.div 
                 key={item.label}
-                className="bg-white/90 backdrop-blur-xl rounded-xl p-3 border border-gray-100 shadow-md flex items-center gap-2"
+                className="bg-white/95 backdrop-blur-xl rounded-2xl p-4 border border-gray-100/80 shadow-lg"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.55 + i * 0.05 }}
+                whileHover={{ y: -2, shadow: "0 12px 24px -8px rgba(0,0,0,0.15)" }}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 ${
                   item.color === 'emerald' ? 'bg-emerald-100' : 
                   item.color === 'blue' ? 'bg-blue-100' : 
                   item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
                 }`}>
-                  <item.icon className={`h-4.5 w-4.5 ${
+                  <item.icon className={`h-5 w-5 ${
                     item.color === 'emerald' ? 'text-emerald-600' : 
                     item.color === 'blue' ? 'text-blue-600' : 
                     item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
                   }`} />
                 </div>
-                <span className="font-semibold text-gray-900 text-sm">{item.label}</span>
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{item.label}</h3>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -372,18 +381,17 @@ export default function AuthLanding() {
 
           {/* Trust Indicators */}
           <motion.div
-            className="flex items-center justify-center gap-6 mb-4"
+            className="flex items-center justify-center gap-5 mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.75 }}
           >
             {[
               { icon: Lock, label: "HIPAA Aligned" },
-              { icon: Shield, label: "Encrypted" },
-              { icon: BadgeCheck, label: "Secure" },
+              { icon: Shield, label: "256-bit Encrypted" },
             ].map((badge) => (
-              <div key={badge.label} className="flex items-center gap-1 text-gray-500">
-                <badge.icon className="h-3.5 w-3.5" />
+              <div key={badge.label} className="flex items-center gap-1.5 text-gray-500">
+                <badge.icon className="h-4 w-4" />
                 <span className="text-xs font-medium">{badge.label}</span>
               </div>
             ))}
