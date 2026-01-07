@@ -1329,6 +1329,43 @@ export default function Landing() {
         >
           🔒 Private & Secure • ⚡ AI-Powered • ⚖️ Legal Templates
         </motion.p>
+
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm mb-4">
+            <Link href="/privacy-policy">
+              <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-privacy-mobile">
+                Privacy Policy
+              </a>
+            </Link>
+            <span className="text-gray-300">•</span>
+            <Link href="/terms-of-service">
+              <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-terms-mobile">
+                Terms of Service
+              </a>
+            </Link>
+            <span className="text-gray-300">•</span>
+            <Link href="/support">
+              <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-support-mobile">
+                Support
+              </a>
+            </Link>
+            <span className="text-gray-300">•</span>
+            <a 
+              href="mailto:support@goldrockhealth.com" 
+              className="text-gray-500 hover:text-emerald-600 transition-colors font-medium"
+              data-testid="footer-link-email-mobile"
+            >
+              Contact
+            </a>
+          </div>
+          
+          <p className="text-center text-xs text-gray-400 mb-2">
+            Educational use only. Not for clinical diagnosis or treatment decisions.
+          </p>
+          <p className="text-center text-xs text-gray-400">
+            © {new Date().getFullYear()} Eldest AI LLC dba GoldRock AI. All rights reserved. • Colorado, USA
+          </p>
+        </div>
       </motion.div>
     </MobileLayout>
   );

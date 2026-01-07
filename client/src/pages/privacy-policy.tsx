@@ -1,219 +1,414 @@
 import { PublicLayout } from "@/components/public-layout";
 import { Card } from "@/components/ui/card";
+import { Link } from "wouter";
 
 export default function PrivacyPolicy() {
   return (
     <PublicLayout title="Privacy Policy">
       <Card className="p-6 lg:p-8">
-          <div className="prose prose-gray max-w-none">
-            <div className="text-sm text-gray-600 mb-6">
-              <strong>Effective Date:</strong> January 1, 2025<br />
-              <strong>Last Updated:</strong> January 1, 2025
-            </div>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">1. Who We Are</h2>
-            <p className="mb-4">
-              GoldRock AI is operated by Eldest AI LLC, a Colorado limited liability company ("we," "our," or "us"). 
-              We provide an AI-powered platform that helps consumers analyze their medical bills and develop strategies 
-              for reducing healthcare costs.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">2. Information We Collect</h2>
-            
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Information You Provide</h3>
-            <ul className="list-disc pl-6 mb-4">
-              <li><strong>Account Information:</strong> Email address, name, and authentication details</li>
-              <li><strong>Medical Bills:</strong> Bill images, text, and related healthcare documents you choose to upload</li>
-              <li><strong>Chat Messages:</strong> Conversations with our AI system about your bills and healthcare costs</li>
-              <li><strong>Payment Information:</strong> Billing details processed securely through Stripe (we do not store card information)</li>
-            </ul>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Information We Collect Automatically</h3>
-            <ul className="list-disc pl-6 mb-4">
-              <li><strong>Usage Data:</strong> How you interact with our platform, features used, and session information</li>
-              <li><strong>Device Information:</strong> Browser type, device type, IP address, and operating system</li>
-              <li><strong>Analytics:</strong> Aggregated usage statistics to improve our service</li>
-            </ul>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">3. How We Use Your Information</h2>
-            <ul className="list-disc pl-6 mb-4">
-              <li><strong>AI Analysis:</strong> Process your medical bills to identify potential overcharges and reduction strategies</li>
-              <li><strong>Personalized Advice:</strong> Provide customized bill analysis and negotiation recommendations</li>
-              <li><strong>Service Delivery:</strong> Operate and maintain your account and our platform</li>
-              <li><strong>Communication:</strong> Send service updates, support responses, and important notifications</li>
-              <li><strong>Improvement:</strong> Analyze usage patterns to enhance our AI models and user experience</li>
-              <li><strong>Legal Compliance:</strong> Meet legal obligations and protect our rights</li>
-            </ul>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">4. Information Sharing</h2>
-            
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Third-Party Service Providers</h3>
-            <p className="mb-4">We share information with trusted service providers who help us operate our platform:</p>
-            <ul className="list-disc pl-6 mb-4">
-              <li><strong>OpenAI:</strong> AI analysis of your medical bills and chat conversations</li>
-              <li><strong>Stripe:</strong> Payment processing (financial information only)</li>
-              <li><strong>Hosting Providers:</strong> Secure cloud infrastructure for our platform</li>
-            </ul>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Legal Requirements</h3>
-            <p className="mb-4">
-              We may disclose information when required by law, to protect our rights, prevent fraud, 
-              or ensure user safety.
-            </p>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Business Transfers</h3>
-            <p className="mb-4">
-              If we're involved in a merger, acquisition, or sale, your information may be transferred 
-              as part of that transaction.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">5. Data Security</h2>
-            <p className="mb-4">
-              We implement industry-standard security measures to protect your information:
-            </p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Encryption in transit using HTTPS/TLS</li>
-              <li>Secure authentication and access controls</li>
-              <li>Regular security audits and updates</li>
-              <li>Limited access to personal information on a need-to-know basis</li>
-            </ul>
-            <p className="mb-4">
-              However, no method of transmission over the internet is 100% secure. We cannot guarantee 
-              absolute security of your information.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">6. Data Retention</h2>
-            <p className="mb-4">
-              We retain your information for as long as necessary to provide our services:
-            </p>
-            <ul className="list-disc pl-6 mb-4">
-              <li><strong>Account Data:</strong> Until you delete your account</li>
-              <li><strong>Medical Bills & Analysis:</strong> 30 days by default, or until you request deletion</li>
-              <li><strong>Chat Messages:</strong> 30 days by default, or until you request deletion</li>
-              <li><strong>Usage Analytics:</strong> Aggregated data retained for service improvement</li>
-            </ul>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">7. Your Rights</h2>
-            <p className="mb-4">Depending on your location, you may have the following rights:</p>
-            <ul className="list-disc pl-6 mb-4">
-              <li><strong>Access:</strong> Request a copy of your personal information</li>
-              <li><strong>Correction:</strong> Update or correct inaccurate information</li>
-              <li><strong>Deletion:</strong> Request deletion of your personal information</li>
-              <li><strong>Data Portability:</strong> Receive your data in a structured format</li>
-              <li><strong>Opt-Out:</strong> Decline certain data processing activities</li>
-            </ul>
-            <p className="mb-4">
-              To exercise these rights, contact us at <strong>privacy@goldrockhealth.com</strong>
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">8. State Privacy Rights</h2>
-            
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Colorado Privacy Act</h3>
-            <p className="mb-4">
-              Colorado residents have specific rights under the Colorado Privacy Act, including the 
-              right to opt out of the sale of personal data and targeted advertising.
-            </p>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">California Privacy Rights</h3>
-            <p className="mb-4">
-              California residents have additional rights under CCPA/CPRA, including the right to 
-              know what personal information is collected and how it's used.
-            </p>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Other State Rights</h3>
-            <p className="mb-4">
-              We comply with applicable state privacy laws in Washington, Nevada, and other jurisdictions 
-              where we operate.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">9. Children's Privacy</h2>
-            <p className="mb-4">
-              Our service is not intended for users under 18. We do not knowingly collect personal 
-              information from children under 18. If you believe we have collected such information, 
-              please contact us immediately.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">10. Mobile App Specific Information</h2>
-            
-            <h3 className="text-lg font-medium text-gray-900 mb-3">iOS App Store Compliance</h3>
-            <p className="mb-4">
-              Our iOS mobile application is subject to Apple's App Store Review Guidelines and privacy requirements:
-            </p>
-            <ul className="list-disc pl-6 mb-4">
-              <li><strong>Account Deletion:</strong> You can delete your account and all associated data directly within the app through Settings → Account Deletion. Deletion completes within 5 minutes and is irreversible.</li>
-              <li><strong>Data Types Collected:</strong> Medical bills (photos/documents), email address, name, payment information, usage analytics, device identifiers</li>
-              <li><strong>Data Linked to You:</strong> Email, name, medical bills, chat messages, subscription status</li>
-              <li><strong>Data Not Linked to You:</strong> Aggregated usage analytics, crash diagnostics</li>
-              <li><strong>Tracking:</strong> We do not use data for cross-app or cross-website tracking for advertising purposes</li>
-            </ul>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Camera and Photo Library Access</h3>
-            <p className="mb-4">
-              Our iOS app requests permission to access your device camera and photo library solely to:
-            </p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Capture photos of medical bills for analysis</li>
-              <li>Select existing bill images from your photo library</li>
-              <li>Scan documents using your device camera</li>
-            </ul>
-            <p className="mb-4">
-              We do not access your photos or camera for any other purpose. You can revoke these permissions 
-              at any time through iOS Settings. Images are processed on our secure servers and deleted 
-              according to our retention policy.
-            </p>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Push Notifications</h3>
-            <p className="mb-4">
-              We may send push notifications to alert you when:
-            </p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>Your bill analysis is complete</li>
-              <li>You receive a response from our AI system</li>
-              <li>Important account or billing updates occur</li>
-            </ul>
-            <p className="mb-4">
-              You can disable push notifications at any time through iOS Settings → Notifications → GoldRock AI.
-            </p>
-
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Biometric Authentication (Face ID/Touch ID)</h3>
-            <p className="mb-4">
-              If you enable biometric authentication in the app, we use Apple's Secure Enclave to verify 
-              your identity. We do not store or access your biometric data. Authentication happens entirely 
-              on your device through iOS system APIs.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">11. International Users</h2>
-            <p className="mb-4">
-              Our services are primarily intended for users in the United States. If you access our 
-              service from outside the US, you consent to the transfer and processing of your 
-              information in the United States.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">12. Changes to This Policy</h2>
-            <p className="mb-4">
-              We may update this privacy policy periodically. We will notify you of material changes 
-              by email or through our platform. Your continued use of our service after changes 
-              indicates acceptance of the updated policy.
-            </p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">13. Contact Us</h2>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
-              <p className="mb-2">Email: <strong>privacy@goldrockhealth.com</strong></p>
-              <p className="mb-2">Support: <strong>support@goldrockhealth.com</strong></p>
-              <p>Address: Colorado, United States</p>
-            </div>
-
-            <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h3 className="font-semibold text-blue-900 mb-2">Important Notice</h3>
-              <p className="text-sm text-blue-800">
-                This service uses generative AI to analyze your medical bills. For medical advice, 
-                please consult your healthcare provider. We are not a healthcare provider and do 
-                not provide medical advice.
-              </p>
-            </div>
+        <div className="prose prose-gray max-w-none">
+          <div className="text-sm text-gray-600 mb-6">
+            <strong>Effective Date:</strong> January 7, 2026<br />
+            <strong>Last Updated:</strong> January 7, 2026
           </div>
-        </Card>
+
+          <div className="bg-blue-50 p-5 rounded-xl border border-blue-200 mb-8">
+            <h3 className="font-bold text-blue-900 mb-3 text-lg">Privacy at a Glance</h3>
+            <ul className="text-sm text-blue-800 space-y-2">
+              <li><strong>We align with HIPAA standards</strong> for handling health-related information</li>
+              <li><strong>We don't sell your personal data</strong> to third parties</li>
+              <li><strong>We don't train our AI on your personal medical bills</strong> — our training uses public and expert-curated data</li>
+              <li><strong>You can delete your account and data</strong> at any time through Settings</li>
+              <li><strong>Data encryption</strong> in transit and at rest protects your information</li>
+              <li><strong>Contact us at privacy@goldrockhealth.com</strong> for privacy inquiries</li>
+            </ul>
+          </div>
+
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Privacy Policy</h2>
+
+          <p className="mb-4">
+            This Privacy Policy describes how Eldest AI LLC, a Colorado limited liability company, doing business as GoldRock AI 
+            ("<strong>Company</strong>", "<strong>we</strong>", "<strong>our</strong>", or "<strong>us</strong>") collects, uses, shares, and protects 
+            information about users of our website at www.goldrockhealth.com (the "<strong>Website</strong>") and our mobile applications (the "<strong>App</strong>"), 
+            collectively referred to as the "<strong>Services</strong>".
+          </p>
+
+          <p className="mb-4">
+            By using our Services, you agree to the collection, use, and sharing of your information as described in this Privacy Policy. If you do not 
+            agree with our policies and practices, do not use our Services.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">1. Information We Collect</h2>
+          
+          <h3 className="text-lg font-medium text-gray-900 mb-3">1.1 Information You Provide Directly</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Account Information:</strong> When you create an account, we collect your email address, name, and authentication credentials. 
+            You may also authenticate using third-party services (Apple, Google, Replit), in which case we receive basic profile information from those services.</li>
+            <li><strong>Medical Bills and Health Documents:</strong> When you upload medical bills for analysis, we collect the images or documents you provide, 
+            which may contain health-related information, billing codes, provider information, and personal identifiers.</li>
+            <li><strong>Chat and Interaction Data:</strong> We collect messages and interactions you have with our AI systems, including questions you ask 
+            and information you provide during bill analysis, diagnostic training, or other features.</li>
+            <li><strong>Payment Information:</strong> When you subscribe to Premium services, payment information is processed securely by our payment 
+            processors (Stripe, Apple). We do not directly store your full credit card numbers.</li>
+            <li><strong>Support Communications:</strong> When you contact us for support, we collect the information you provide in your communications.</li>
+            <li><strong>User Preferences:</strong> Settings, preferences, and feature usage patterns you establish within the Services.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">1.2 Information Collected Automatically</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Device Information:</strong> Device type, operating system, unique device identifiers, browser type, and mobile network information.</li>
+            <li><strong>Usage Data:</strong> Pages visited, features used, time spent on pages, clickstream data, and navigation patterns.</li>
+            <li><strong>Log Data:</strong> IP address, access times, referring URLs, and system activity logs.</li>
+            <li><strong>Location Information:</strong> General geographic location based on IP address (we do not collect precise GPS location).</li>
+            <li><strong>Analytics Data:</strong> Aggregated information about how our Services are used to improve functionality and user experience.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">1.3 Information from Third Parties</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Authentication Providers:</strong> If you sign in using Apple, Google, or Replit, we receive basic profile information they provide.</li>
+            <li><strong>Payment Processors:</strong> Confirmation of payment status and subscription information from Stripe and Apple.</li>
+            <li><strong>Analytics Partners:</strong> Aggregated usage data from analytics services.</li>
+          </ul>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">2. How We Use Your Information</h2>
+          
+          <h3 className="text-lg font-medium text-gray-900 mb-3">2.1 Primary Uses</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Providing Services:</strong> To operate the Services, including analyzing your medical bills, providing AI-generated insights, 
+            facilitating diagnostic training, and delivering educational content.</li>
+            <li><strong>Account Management:</strong> To create and manage your account, process subscriptions, and authenticate your access.</li>
+            <li><strong>Personalization:</strong> To customize your experience, remember your preferences, and provide relevant recommendations.</li>
+            <li><strong>Communication:</strong> To send service-related messages, respond to support requests, and provide updates about the Services.</li>
+            <li><strong>Security:</strong> To detect, prevent, and address fraud, security issues, and technical problems.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">2.2 Analytics and Improvement</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Service Improvement:</strong> To analyze usage patterns and improve our Services, including AI model accuracy and user experience.</li>
+            <li><strong>Research:</strong> To conduct research and development for new features and services.</li>
+            <li><strong>Aggregated Insights:</strong> To generate aggregated, de-identified statistics about platform usage.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">2.3 Legal and Compliance</h3>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Legal Obligations:</strong> To comply with applicable laws, regulations, legal processes, or governmental requests.</li>
+            <li><strong>Rights Protection:</strong> To enforce our Terms of Service and protect our rights, privacy, safety, or property.</li>
+            <li><strong>Fraud Prevention:</strong> To detect and prevent fraud, abuse, or other harmful activities.</li>
+          </ul>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">3. How We Share Your Information</h2>
+          
+          <h3 className="text-lg font-medium text-gray-900 mb-3">3.1 Service Providers</h3>
+          <p className="mb-4">
+            We share information with trusted service providers who assist us in operating our Services:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>AI Service Providers:</strong> OpenAI and Anthropic receive your queries and uploaded content to generate AI responses. 
+            These providers process data according to their privacy policies and data processing agreements.</li>
+            <li><strong>Cloud Hosting:</strong> Our infrastructure is hosted on secure cloud platforms that store and process your data.</li>
+            <li><strong>Payment Processors:</strong> Stripe and Apple process payment information for subscription services.</li>
+            <li><strong>Analytics Providers:</strong> We use analytics services to understand how our Services are used.</li>
+            <li><strong>Email Services:</strong> Third-party providers help deliver transactional emails and notifications.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">3.2 Legal Requirements</h3>
+          <p className="mb-4">
+            We may disclose your information if required to do so by law or in response to valid legal requests, including:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Court orders, subpoenas, or other legal processes</li>
+            <li>Requests from law enforcement or government agencies</li>
+            <li>Situations involving potential threats to safety</li>
+            <li>Protection of our legal rights or defense against claims</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">3.3 Business Transfers</h3>
+          <p className="mb-4">
+            If we are involved in a merger, acquisition, financing, reorganization, bankruptcy, or sale of assets, your information may be transferred 
+            as part of that transaction. We will notify you of any change in ownership or use of your information.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">3.4 With Your Consent</h3>
+          <p className="mb-4">
+            We may share your information for other purposes with your explicit consent.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">3.5 What We Don't Do</h3>
+          <div className="bg-green-50 p-4 rounded-xl border border-green-200 mb-4">
+            <ul className="text-sm text-green-800 space-y-2">
+              <li>✓ We do NOT sell your personal information to third parties</li>
+              <li>✓ We do NOT share your medical bills with advertisers</li>
+              <li>✓ We do NOT use your personal medical bills to train our AI models</li>
+              <li>✓ We do NOT share your data for cross-app advertising tracking</li>
+            </ul>
+          </div>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">4. Data Security</h2>
+          <p className="mb-4">
+            We implement industry-standard security measures to protect your information:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Encryption:</strong> Data is encrypted in transit using TLS/HTTPS and at rest using AES-256 encryption.</li>
+            <li><strong>Access Controls:</strong> Strict access controls limit who can access your data within our organization.</li>
+            <li><strong>Authentication:</strong> Secure authentication mechanisms, including support for biometric authentication on mobile devices.</li>
+            <li><strong>Monitoring:</strong> Continuous monitoring for security threats and unauthorized access attempts.</li>
+            <li><strong>Secure Infrastructure:</strong> Our services are hosted on secure, SOC 2 compliant infrastructure.</li>
+            <li><strong>Employee Training:</strong> Regular security training for our team members.</li>
+          </ul>
+          <p className="mb-4">
+            While we strive to protect your information, no method of transmission over the internet or electronic storage is 100% secure. 
+            We cannot guarantee absolute security.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">5. Data Retention</h2>
+          <p className="mb-4">
+            We retain your information for as long as necessary to provide our Services and fulfill the purposes described in this Privacy Policy:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Account Data:</strong> Retained until you delete your account.</li>
+            <li><strong>Medical Bills and Documents:</strong> Retained for 30 days by default, then automatically deleted. You can delete them sooner through Settings.</li>
+            <li><strong>Chat History:</strong> Retained for 30 days by default, or until you request deletion.</li>
+            <li><strong>Usage Analytics:</strong> Aggregated and de-identified data may be retained indefinitely for service improvement.</li>
+            <li><strong>Payment Records:</strong> Retained as required by financial and tax regulations (typically 7 years).</li>
+            <li><strong>Legal Compliance:</strong> Data may be retained longer if required by law or to resolve disputes.</li>
+          </ul>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">6. Your Rights and Choices</h2>
+          
+          <h3 className="text-lg font-medium text-gray-900 mb-3">6.1 Access and Portability</h3>
+          <p className="mb-4">
+            You have the right to access and receive a copy of your personal information. You can export your data through your account settings 
+            or by contacting us at <strong>privacy@goldrockhealth.com</strong>.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">6.2 Correction</h3>
+          <p className="mb-4">
+            You can update or correct your account information through your account settings. For other corrections, contact us.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">6.3 Deletion</h3>
+          <p className="mb-4">
+            You can delete your account and all associated data through Settings → Account Deletion in the App or Website. Account deletion 
+            is completed within 5 minutes and is irreversible. All personal data, medical bills, chat history, and achievements will be permanently deleted.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">6.4 Communication Preferences</h3>
+          <p className="mb-4">
+            You can manage email preferences in your account settings. You can disable push notifications through your device settings.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">6.5 Opt-Out Rights</h3>
+          <p className="mb-4">
+            You may opt out of certain data practices by contacting us. Note that opting out of some data processing may limit your ability 
+            to use certain features.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">7. State-Specific Privacy Rights</h2>
+          
+          <h3 className="text-lg font-medium text-gray-900 mb-3">7.1 Colorado Privacy Act (CPA)</h3>
+          <p className="mb-4">
+            As a Colorado company, we comply with the Colorado Privacy Act. Colorado residents have the right to:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Access their personal data</li>
+            <li>Correct inaccuracies in their personal data</li>
+            <li>Delete their personal data</li>
+            <li>Obtain a portable copy of their data</li>
+            <li>Opt out of the sale of personal data (we do not sell personal data)</li>
+            <li>Opt out of targeted advertising based on personal data</li>
+            <li>Opt out of profiling in furtherance of automated decisions</li>
+          </ul>
+          <p className="mb-4">
+            To exercise these rights, contact us at <strong>privacy@goldrockhealth.com</strong>. You may designate an authorized agent to make 
+            requests on your behalf. We may require verification of your identity before processing requests.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">7.2 California Consumer Privacy Act (CCPA/CPRA)</h3>
+          <p className="mb-4">
+            California residents have additional rights under the CCPA and CPRA:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Right to Know:</strong> What personal information we collect, use, disclose, and sell</li>
+            <li><strong>Right to Delete:</strong> Request deletion of personal information we have collected</li>
+            <li><strong>Right to Opt-Out:</strong> Opt out of the sale or sharing of personal information (we do not sell personal information)</li>
+            <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising your privacy rights</li>
+            <li><strong>Right to Correct:</strong> Correct inaccurate personal information</li>
+            <li><strong>Right to Limit Use:</strong> Limit use and disclosure of sensitive personal information</li>
+          </ul>
+          <p className="mb-4">
+            <strong>Categories of Personal Information Collected:</strong> Identifiers, commercial information, internet activity, health information 
+            (medical bills you upload), and inferences drawn from the above.
+          </p>
+          <p className="mb-4">
+            <strong>Do Not Track:</strong> Our Services do not currently respond to "Do Not Track" signals.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">7.3 Virginia Consumer Data Protection Act (VCDPA)</h3>
+          <p className="mb-4">
+            Virginia residents have similar rights including access, correction, deletion, data portability, and opt-out rights for targeted 
+            advertising and sale of personal data.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">7.4 Other State Laws</h3>
+          <p className="mb-4">
+            We comply with applicable state privacy laws including those in Connecticut, Utah, Nevada, and other jurisdictions. If you are a 
+            resident of a state with specific privacy rights, contact us to learn more about exercising those rights.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">8. Health Information</h2>
+          
+          <h3 className="text-lg font-medium text-gray-900 mb-3">8.1 HIPAA Alignment</h3>
+          <p className="mb-4">
+            While GoldRock AI is not a covered entity under HIPAA (we are not a healthcare provider, health plan, or healthcare clearinghouse), 
+            we voluntarily align with HIPAA standards for the handling of health-related information. This includes:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Implementing administrative, physical, and technical safeguards</li>
+            <li>Limiting access to health information on a need-to-know basis</li>
+            <li>Training employees on privacy and security practices</li>
+            <li>Using encryption for health information in transit and at rest</li>
+            <li>Maintaining audit logs of access to health information</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">8.2 Medical Bill Data</h3>
+          <p className="mb-4">
+            Medical bills you upload may contain protected health information (PHI) including:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Patient names and identifiers</li>
+            <li>Dates of service</li>
+            <li>Medical procedure codes and diagnoses</li>
+            <li>Healthcare provider information</li>
+            <li>Insurance information</li>
+          </ul>
+          <p className="mb-4">
+            We process this information solely to provide our bill analysis services and handle it with the utmost care.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">9. Children's Privacy</h2>
+          <p className="mb-4">
+            Our Services are not intended for users under 18 years of age. We do not knowingly collect personal information from children under 18. 
+            If you are a parent or guardian and believe your child has provided us with personal information, please contact us at 
+            <strong> privacy@goldrockhealth.com</strong> and we will delete such information.
+          </p>
+          <p className="mb-4">
+            In compliance with the Children's Online Privacy Protection Act (COPPA), we will never knowingly collect personal information from 
+            children under 13.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">10. Mobile Application Privacy</h2>
+          
+          <h3 className="text-lg font-medium text-gray-900 mb-3">10.1 iOS App Privacy</h3>
+          <p className="mb-4">
+            Our iOS application is subject to Apple's App Store privacy requirements. App privacy information:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Data Types Collected:</strong> Contact info (email), health (medical bills you upload), identifiers (user ID), usage data, diagnostics</li>
+            <li><strong>Data Linked to You:</strong> Email, name, medical bills, chat messages, subscription status, usage data</li>
+            <li><strong>Data Not Linked to You:</strong> Aggregated analytics, crash diagnostics, performance data</li>
+            <li><strong>Tracking:</strong> We do not use data for cross-app or cross-website tracking for advertising purposes</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">10.2 Device Permissions</h3>
+          <p className="mb-4">
+            Our iOS app may request the following permissions:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Camera:</strong> To capture photos of medical bills. Photos are processed on our servers and handled according to this Privacy Policy.</li>
+            <li><strong>Photo Library:</strong> To select existing bill images. We only access photos you specifically select.</li>
+            <li><strong>Push Notifications:</strong> To notify you of bill analysis completion and important updates. You can disable this in iOS Settings.</li>
+            <li><strong>Face ID/Touch ID:</strong> For secure authentication. Biometric data is processed entirely on your device by iOS; we never access or store your biometric data.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">10.3 Account Deletion from App</h3>
+          <p className="mb-4">
+            Per Apple's App Store requirements, you can delete your account and all associated data directly within the app:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Navigate to Settings → Account Deletion within the app</li>
+            <li>Confirm your decision to delete your account</li>
+            <li>Deletion completes within 5 minutes</li>
+            <li>All personal data, medical bills, chat history, achievements, and preferences are permanently deleted</li>
+            <li>This action is irreversible</li>
+          </ul>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">11. International Users</h2>
+          <p className="mb-4">
+            Our Services are primarily intended for users in the United States. If you access our Services from outside the United States, 
+            please be aware that:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Your information will be transferred to and processed in the United States</li>
+            <li>U.S. data protection laws may differ from those in your country</li>
+            <li>By using our Services, you consent to the transfer and processing of your information in the United States</li>
+            <li>You are responsible for compliance with local laws regarding your use of our Services</li>
+          </ul>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">12. Cookies and Tracking Technologies</h2>
+          <p className="mb-4">
+            We use cookies and similar technologies to:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Maintain your session and authentication status</li>
+            <li>Remember your preferences and settings</li>
+            <li>Analyze usage patterns and improve our Services</li>
+            <li>Provide security features</li>
+          </ul>
+          <p className="mb-4">
+            You can control cookies through your browser settings. Disabling cookies may affect the functionality of our Services.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">13. Third-Party Links</h2>
+          <p className="mb-4">
+            Our Services may contain links to third-party websites or services. We are not responsible for the privacy practices of these 
+            third parties. We encourage you to review their privacy policies before providing them with any information.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">14. Changes to This Privacy Policy</h2>
+          <p className="mb-4">
+            We may update this Privacy Policy from time to time. We will notify you of material changes by:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li>Posting the updated Privacy Policy on our Website</li>
+            <li>Updating the "Last Updated" date at the top of this Policy</li>
+            <li>Sending email notification for significant changes</li>
+            <li>Displaying in-app notifications</li>
+          </ul>
+          <p className="mb-4">
+            Your continued use of the Services after changes to this Privacy Policy constitutes your acceptance of the updated Policy.
+          </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">15. Contact Us</h2>
+          <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
+            <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
+            <p className="mb-2">State of Incorporation: Colorado, United States</p>
+            <p className="mb-2">Privacy Inquiries: <strong>privacy@goldrockhealth.com</strong></p>
+            <p className="mb-2">General Support: <strong>support@goldrockhealth.com</strong></p>
+            <p className="mb-2">Data Protection Requests: <strong>privacy@goldrockhealth.com</strong></p>
+          </div>
+
+          <p className="mb-4">
+            We will respond to privacy-related inquiries within 45 days. For requests requiring identity verification, the response time 
+            may be extended as needed to verify your identity.
+          </p>
+
+          <div className="mt-8 p-5 bg-blue-50 rounded-xl border border-blue-200">
+            <h3 className="font-bold text-blue-900 mb-3">Important Notice</h3>
+            <p className="text-sm text-blue-800 mb-3">
+              This service uses generative AI to analyze your medical bills and provide educational content. The AI-generated output is for 
+              informational purposes only and does not constitute medical, legal, or financial advice.
+            </p>
+            <p className="text-sm text-blue-800">
+              We are not a healthcare provider, law firm, or financial advisor. Always consult qualified professionals for advice specific 
+              to your situation.
+            </p>
+          </div>
+
+          <div className="mt-6 text-center text-sm text-gray-500">
+            <p>© 2026 Eldest AI LLC dba GoldRock AI. All rights reserved.</p>
+          </div>
+        </div>
+      </Card>
     </PublicLayout>
   );
 }

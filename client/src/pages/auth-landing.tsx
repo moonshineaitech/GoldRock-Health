@@ -1128,6 +1128,49 @@ export default function AuthLanding() {
           </motion.p>
         </div>
       </section>
+
+      <footer className="bg-gray-900 py-12 border-t border-gray-800">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-500">
+                <DollarSign className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-lg font-bold text-white">GoldRock Health</span>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+              <Link href="/privacy-policy">
+                <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-privacy-landing">
+                  Privacy Policy
+                </a>
+              </Link>
+              <Link href="/terms-of-service">
+                <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-terms-landing">
+                  Terms of Service
+                </a>
+              </Link>
+              <Link href="/support">
+                <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-support-landing">
+                  Support
+                </a>
+              </Link>
+              <a 
+                href="mailto:support@goldrockhealth.com" 
+                className="text-gray-400 hover:text-emerald-400 transition-colors"
+                data-testid="footer-link-email-landing"
+              >
+                Contact
+              </a>
+            </div>
+          </div>
+          
+          <div className="pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+            <p className="mb-1">Educational use only. Not for clinical diagnosis or treatment decisions. Not medical, legal, or financial advice.</p>
+            <p>&copy; {new Date().getFullYear()} Eldest AI LLC dba GoldRock AI. All rights reserved. • Colorado, USA</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
