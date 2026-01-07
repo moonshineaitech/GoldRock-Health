@@ -322,7 +322,7 @@ export function DemoChat() {
                       <Link href="/terms-of-service" className="text-emerald-600 underline hover:text-emerald-700">
                         Terms of Service
                       </Link>
-                      . GoldRock AI provides bill analysis and educational guidance only - not medical or legal advice.
+                      . GoldRock Health provides bill analysis and educational guidance only - not medical, legal, or financial advice.
                     </span>
                   </label>
                 </motion.div>
@@ -398,7 +398,7 @@ export function DemoChat() {
 
       {/* Disclaimer below chat */}
       <p className="text-[10px] text-gray-400 text-center mt-2 px-4 leading-relaxed">
-        GoldRock AI provides bill analysis and educational guidance only - not medical, legal, or financial advice.
+        GoldRock Health provides bill analysis and educational guidance only - not medical, legal, or financial advice.
       </p>
     </motion.div>
   );

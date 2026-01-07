@@ -182,7 +182,7 @@ export default function AuthLanding() {
     <div className="min-h-screen bg-white" ref={containerRef}>
       <LandingNavigation />
       
-      <section className="relative overflow-hidden pt-28 pb-12">
+      <section className="relative overflow-hidden pt-20 pb-12">
         <div 
           className="absolute inset-0"
           style={{
