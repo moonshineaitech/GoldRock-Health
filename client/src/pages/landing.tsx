@@ -286,7 +286,7 @@ export default function Landing() {
   return (
     <MobileLayout title="GoldRock Health" showBottomNav={true}>
       <motion.div 
-        className="text-center py-16 px-4 relative overflow-hidden"
+        className="text-center py-8 px-4 relative overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -337,32 +337,31 @@ export default function Landing() {
         
         {/* Premium Health Logo */}
         <motion.div 
-          className="relative mx-auto mb-10"
+          className="relative mx-auto mb-5"
           style={{ width: 'fit-content' }}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, type: "spring", stiffness: 120, damping: 14 }}
+          transition={{ duration: 0.6, type: "spring", stiffness: 120, damping: 14 }}
         >
           <motion.div
-            className="absolute -inset-6 rounded-full opacity-40"
+            className="absolute -inset-4 rounded-full opacity-30"
             style={{
-              background: "linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.4), rgba(59, 130, 246, 0.3))",
-              filter: "blur(30px)",
+              background: "linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.4))",
+              filter: "blur(20px)",
             }}
             animate={{
-              scale: [1, 1.15, 1],
-              opacity: [0.3, 0.5, 0.3],
+              scale: [1, 1.1, 1],
+              opacity: [0.2, 0.4, 0.2],
             }}
             transition={{ duration: 4, repeat: Infinity }}
           />
           
           <motion.div 
-            className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden"
+            className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl overflow-hidden"
             style={{ 
               background: "linear-gradient(135deg, #0d9488 0%, #10b981 35%, #059669 65%, #047857 100%)",
-              boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.5), 0 0 0 1px rgba(255,255,255,0.2) inset"
+              boxShadow: "0 15px 30px -8px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255,255,255,0.2) inset"
             }}
-            whileHover={{ scale: 1.05, rotate: 3 }}
           >
             <motion.div
               className="absolute inset-0 opacity-40"
@@ -370,31 +369,19 @@ export default function Landing() {
                 background: "linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 60%)",
               }}
             />
-            {/* Medical Cross + Shield Icon */}
             <div className="relative">
-              <Shield className="text-white/30 h-16 w-16 absolute -top-1 -left-1" strokeWidth={1} />
-              <Heart className="text-white h-10 w-10 drop-shadow-lg relative z-10" strokeWidth={2.5} fill="rgba(255,255,255,0.2)" />
+              <Shield className="text-white/30 h-10 w-10 absolute -top-0.5 -left-0.5" strokeWidth={1} />
+              <Heart className="text-white h-7 w-7 drop-shadow-lg relative z-10" strokeWidth={2.5} fill="rgba(255,255,255,0.2)" />
             </div>
           </motion.div>
         </motion.div>
         
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
         >
-          {/* Trust Badge */}
-          <motion.div 
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/60 rounded-full px-4 py-2 mb-6 shadow-sm"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <BadgeCheck className="h-4 w-4 text-emerald-600" />
-            <span className="text-sm font-semibold text-emerald-700">Trusted by 50,000+ Families</span>
-          </motion.div>
-
-          <h1 className="text-4xl md:text-5xl font-black mb-5 leading-[1.1] tracking-tight">
+          <h1 className="text-3xl font-black mb-3 leading-[1.1] tracking-tight">
             <span className="text-gray-900">Intelligent</span>
             <br />
             <span 
@@ -411,48 +398,46 @@ export default function Landing() {
           </h1>
           
           <motion.p 
-            className="text-lg text-gray-600 mb-8 max-w-md mx-auto leading-relaxed"
+            className="text-base text-gray-600 mb-5 max-w-xs mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.3 }}
           >
-            AI-powered medical bill analysis, clinical decision support, and personalized health insights — all in one secure platform.
+            AI-powered medical bill analysis and clinical decision support in one secure platform.
           </motion.p>
 
-          {/* Core Value Props */}
+          {/* Core Value Props - Smaller */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-8"
+            transition={{ delay: 0.4 }}
+            className="grid grid-cols-2 gap-2 max-w-xs mx-auto mb-5"
           >
             {[
-              { icon: Receipt, label: "Bill Analysis", desc: "Find overcharges", color: "emerald" },
-              { icon: Brain, label: "AI Diagnostics", desc: "Clinical insights", color: "blue" },
-              { icon: Shield, label: "Rights Protection", desc: "Know your rights", color: "purple" },
-              { icon: Award, label: "Expert Training", desc: "Medical education", color: "amber" },
+              { icon: Receipt, label: "Bill Analysis", color: "emerald" },
+              { icon: Brain, label: "AI Diagnostics", color: "blue" },
+              { icon: Shield, label: "Rights Protection", color: "purple" },
+              { icon: Award, label: "Expert Training", color: "amber" },
             ].map((item, i) => (
               <motion.div 
                 key={item.label}
-                className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-gray-100 shadow-lg hover:shadow-xl transition-all"
-                initial={{ opacity: 0, y: 15 }}
+                className="bg-white/80 backdrop-blur-xl rounded-xl p-3 border border-gray-100 shadow-md flex items-center gap-2"
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + i * 0.08 }}
-                whileHover={{ y: -3, scale: 1.02 }}
+                transition={{ delay: 0.45 + i * 0.05 }}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 ${
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                   item.color === 'emerald' ? 'bg-emerald-100' : 
                   item.color === 'blue' ? 'bg-blue-100' : 
                   item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
                 }`}>
-                  <item.icon className={`h-5 w-5 ${
+                  <item.icon className={`h-4 w-4 ${
                     item.color === 'emerald' ? 'text-emerald-600' : 
                     item.color === 'blue' ? 'text-blue-600' : 
                     item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
                   }`} />
                 </div>
-                <h3 className="font-bold text-gray-900 text-sm">{item.label}</h3>
-                <p className="text-xs text-gray-500">{item.desc}</p>
+                <span className="font-semibold text-gray-900 text-xs">{item.label}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -462,46 +447,46 @@ export default function Landing() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="flex items-center justify-center gap-6 mb-8"
+          transition={{ delay: 0.5 }}
+          className="flex items-center justify-center gap-4 mb-4"
         >
           {[
             { icon: Lock, label: "HIPAA Aligned" },
-            { icon: ShieldCheck, label: "256-bit Encryption" },
+            { icon: ShieldCheck, label: "Encrypted" },
           ].map((badge) => (
-            <div key={badge.label} className="flex items-center gap-1.5 text-gray-500">
-              <badge.icon className="h-4 w-4" />
+            <div key={badge.label} className="flex items-center gap-1 text-gray-500">
+              <badge.icon className="h-3.5 w-3.5" />
               <span className="text-xs font-medium">{badge.label}</span>
             </div>
           ))}
         </motion.div>
 
         <motion.div 
-          className="space-y-3 max-w-sm mx-auto"
-          initial={{ opacity: 0, y: 30 }}
+          className="space-y-2.5 max-w-xs mx-auto"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.5 }}
+          transition={{ delay: 0.55, duration: 0.4 }}
         >
           <Link href="/bill-ai">
             <PremiumButton 
-              className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:via-teal-700 hover:to-emerald-700 text-lg py-5 shadow-2xl"
+              className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:via-teal-700 hover:to-emerald-700 text-base py-3.5 shadow-xl"
               variant="primary"
             >
-              <FileText className="h-5 w-5 mr-2" />
+              <FileText className="h-4 w-4 mr-2" />
               <span>Analyze My Medical Bill</span>
-              <ArrowRight className="h-5 w-5 ml-2" />
+              <ArrowRight className="h-4 w-4 ml-2" />
             </PremiumButton>
           </Link>
 
           <Link href="/patient-diagnostics">
-            <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+            <motion.div whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.99 }}>
               <MobileButton 
                 variant="secondary" 
-                className="w-full border border-gray-200 hover:border-gray-300 text-gray-700 shadow-lg bg-white/80 backdrop-blur-xl"
+                className="w-full border border-gray-200 hover:border-gray-300 text-gray-700 shadow-md bg-white/80 backdrop-blur-xl py-3"
               >
-                <Brain className="h-5 w-5 mr-2 text-blue-600" />
+                <Brain className="h-4 w-4 mr-2 text-blue-600" />
                 Explore AI Diagnostics
-                <ChevronRight className="h-4 w-4 ml-2" />
+                <ChevronRight className="h-4 w-4 ml-1" />
               </MobileButton>
             </motion.div>
           </Link>
@@ -510,10 +495,10 @@ export default function Landing() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="text-xs text-gray-400 mt-6 font-medium"
+          transition={{ delay: 0.7 }}
+          className="text-xs text-gray-400 mt-4 font-medium"
         >
-          Free to start • No credit card required • Cancel anytime
+          Free to start • No credit card required
         </motion.p>
       </motion.div>
 
@@ -523,44 +508,26 @@ export default function Landing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="px-4 py-16 relative overflow-hidden"
+        className="px-4 py-8 relative overflow-hidden"
         style={{
           background: "linear-gradient(180deg, rgba(240,253,244,0.6) 0%, rgba(236,253,245,0.8) 50%, rgba(240,249,255,0.6) 100%)",
         }}
         data-testid="section-quick-links"
       >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%)",
-              filter: "blur(80px)",
-            }}
-          />
-          <motion.div 
-            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%)",
-              filter: "blur(60px)",
-            }}
-          />
-        </div>
-
         <div className="max-w-4xl mx-auto relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10"
+            className="text-center mb-5"
           >
             <motion.span 
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 px-5 py-2.5 rounded-full font-bold text-sm mb-5 border border-emerald-200/50 shadow-sm"
-              whileHover={{ scale: 1.05 }}
+              className="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 px-4 py-2 rounded-full font-bold text-xs mb-3 border border-emerald-200/50 shadow-sm"
             >
-              <Zap className="h-4 w-4" />
+              <Zap className="h-3.5 w-3.5" />
               Quick Access
             </motion.span>
-            <h2 className="text-3xl md:text-4xl font-black mb-4">
+            <h2 className="text-2xl font-black mb-2">
               <span className="text-gray-900">Explore All </span>
               <span 
                 style={{
@@ -572,8 +539,8 @@ export default function Landing() {
                 Features
               </span>
             </h2>
-            <p className="text-gray-600 font-medium max-w-lg mx-auto">
-              Powerful AI tools for medical bill analysis, diagnostics, and more
+            <p className="text-gray-600 text-sm max-w-sm mx-auto">
+              AI tools for medical bills, diagnostics, and more
             </p>
           </motion.div>
 
@@ -641,7 +608,7 @@ export default function Landing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="px-4 py-16 relative overflow-hidden"
+        className="px-4 py-8 relative overflow-hidden"
         style={{
           background: "linear-gradient(180deg, rgba(249,250,251,0.9) 0%, rgba(255,255,255,1) 50%, rgba(249,250,251,0.9) 100%)",
         }}
@@ -789,7 +756,7 @@ export default function Landing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="px-4 py-16 relative overflow-hidden"
+        className="px-4 py-8 relative overflow-hidden"
         style={{
           background: "linear-gradient(135deg, rgba(236, 253, 245, 0.9) 0%, rgba(204, 251, 241, 0.8) 50%, rgba(207, 250, 254, 0.9) 100%)",
         }}
@@ -1017,7 +984,7 @@ export default function Landing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="px-4 py-16 relative overflow-hidden"
+        className="px-4 py-8 relative overflow-hidden"
         style={{
           background: "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(240, 253, 244, 0.8) 50%, rgba(236, 253, 245, 0.9) 100%)",
         }}
@@ -1145,7 +1112,7 @@ export default function Landing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="px-4 py-16 relative overflow-hidden"
+        className="px-4 py-8 relative overflow-hidden"
         style={{
           background: "linear-gradient(135deg, rgba(236, 253, 245, 0.9) 0%, rgba(255,255,255,1) 50%, rgba(204, 251, 241, 0.8) 100%)",
         }}
@@ -1234,7 +1201,7 @@ export default function Landing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="px-4 py-16 bg-white"
+        className="px-4 py-8 bg-white"
         data-testid="section-faq"
       >
         <div className="max-w-2xl mx-auto">
