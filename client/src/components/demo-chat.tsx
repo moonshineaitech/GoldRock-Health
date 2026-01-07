@@ -16,9 +16,8 @@ interface SuggestedWorkflow {
 const placeholderPrompts = [
   "How can I lower my medical bill?",
   "Was I overcharged for my ER visit?",
-  "What rights do I have to dispute charges?",
-  "Explain my insurance deductible...",
-  "Help me negotiate with the hospital...",
+  "What rights do I have to dispute?",
+  "Help me understand my bill...",
 ];
 
 export function DemoChat() {
@@ -31,7 +30,6 @@ export function DemoChat() {
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -73,7 +71,7 @@ export function DemoChat() {
           ...prev,
           {
             role: "assistant",
-            content: "You've used all 5 free messages! Sign up free to continue.",
+            content: "You've used all 5 free messages! Sign up free to continue and unlock full bill analysis.",
           },
         ]);
       } else if (response.ok) {
@@ -103,7 +101,41 @@ export function DemoChat() {
 
   const handleQuickPrompt = (prompt: string) => {
     setInput(prompt);
-    setTimeout(() => handleSubmit(), 50);
+    setTimeout(() => {
+      setInput("");
+      setMessages((prev) => [...prev, { role: "user", content: prompt }]);
+      setIsLoading(true);
+      setSuggestedWorkflow(null);
+
+      fetch("/api/demo-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: prompt,
+          conversationHistory: messages,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error && data.remaining === 0) {
+            setRequiresSignup(true);
+            setRemaining(0);
+            setMessages((prev) => [
+              ...prev,
+              { role: "assistant", content: "You've used all 5 free messages! Sign up free to continue." },
+            ]);
+          } else {
+            setMessages((prev) => [...prev, { role: "assistant", content: data.response }]);
+            setRemaining(data.remaining ?? remaining);
+            if (data.suggestedWorkflow) setSuggestedWorkflow(data.suggestedWorkflow);
+            if (data.requiresSignup) setRequiresSignup(true);
+          }
+        })
+        .catch(() => {
+          setMessages((prev) => [...prev, { role: "assistant", content: "Connection error." }]);
+        })
+        .finally(() => setIsLoading(false));
+    }, 50);
   };
 
   const quickPrompts = [
@@ -114,7 +146,7 @@ export function DemoChat() {
 
   const morePrompts = [
     { text: "Explain my insurance benefits", icon: "🏥" },
-    { text: "Help with a denied claim", icon: "📋" },
+    { text: "Help with denied claim", icon: "📋" },
     { text: "Understand medical codes", icon: "🔢" },
   ];
 
@@ -128,19 +160,19 @@ export function DemoChat() {
     >
       <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-lg overflow-hidden">
         {/* Compact Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-emerald-50/50 to-white">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 bg-gradient-to-r from-emerald-50/50 to-white">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow">
-              <MessageCircle className="h-4 w-4 text-white" />
+            <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow">
+              <MessageCircle className="h-3.5 w-3.5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-gray-900 text-sm">Ask GoldRock AI</span>
-                <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-semibold">
+                <span className="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-semibold">
                   Free
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 text-[10px] text-gray-500">
+              <div className="flex items-center gap-1 text-[9px] text-gray-500">
                 <Lock className="h-2.5 w-2.5" />
                 <span>Private</span>
                 <span className="text-emerald-600 font-medium">• {remaining} left</span>
@@ -159,11 +191,11 @@ export function DemoChat() {
                   <motion.button
                     key={i}
                     onClick={() => handleQuickPrompt(prompt.text)}
-                    className="flex flex-col items-center gap-1 text-center text-xs p-2.5 bg-gray-50 border border-gray-150 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
+                    className="flex flex-col items-center gap-1 text-center text-[11px] p-2 bg-gray-50 border border-gray-150 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
                     whileTap={{ scale: 0.95 }}
                     data-testid={`quick-prompt-${i}`}
                   >
-                    <span className="text-base">{prompt.icon}</span>
+                    <span className="text-sm">{prompt.icon}</span>
                     <span className="font-medium leading-tight">{prompt.text}</span>
                   </motion.button>
                 ))}
@@ -172,7 +204,7 @@ export function DemoChat() {
               {/* More Options Dropdown */}
               <button
                 onClick={() => setShowMoreOptions(!showMoreOptions)}
-                className="w-full flex items-center justify-center gap-1 text-xs text-gray-500 hover:text-emerald-600 py-1.5 transition-colors"
+                className="w-full flex items-center justify-center gap-1 text-[10px] text-gray-500 hover:text-emerald-600 py-1 transition-colors"
               >
                 <span>More options</span>
                 {showMoreOptions ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
@@ -186,15 +218,15 @@ export function DemoChat() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-3 gap-2 pt-2">
+                    <div className="grid grid-cols-3 gap-2 pt-1">
                       {morePrompts.map((prompt, i) => (
                         <motion.button
                           key={i}
                           onClick={() => handleQuickPrompt(prompt.text)}
-                          className="flex flex-col items-center gap-1 text-center text-xs p-2.5 bg-gray-50 border border-gray-150 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
+                          className="flex flex-col items-center gap-1 text-center text-[11px] p-2 bg-gray-50 border border-gray-150 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
                           whileTap={{ scale: 0.95 }}
                         >
-                          <span className="text-base">{prompt.icon}</span>
+                          <span className="text-sm">{prompt.icon}</span>
                           <span className="font-medium leading-tight">{prompt.text}</span>
                         </motion.button>
                       ))}
@@ -204,7 +236,7 @@ export function DemoChat() {
               </AnimatePresence>
             </div>
           ) : (
-            <div className="max-h-[150px] overflow-y-auto space-y-2">
+            <div className="max-h-[200px] overflow-y-auto space-y-2 scrollbar-thin">
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -213,7 +245,7 @@ export function DemoChat() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] px-3 py-2 rounded-xl text-xs ${
+                    className={`max-w-[90%] px-3 py-2 rounded-xl text-xs leading-relaxed ${
                       msg.role === "user"
                         ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white"
                         : "bg-gray-100 text-gray-800"
@@ -264,25 +296,26 @@ export function DemoChat() {
           </motion.div>
         )}
 
-        {/* Input - Always Visible with Rotating Placeholder */}
+        {/* Input - Fixed Centering */}
         <form onSubmit={handleSubmit} className="px-3 pb-3">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <div className="relative flex-1">
               <input
-                ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isLoading || requiresSignup}
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:opacity-50 placeholder:text-gray-400"
+                placeholder=""
+                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm leading-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:opacity-50"
+                style={{ lineHeight: '1.25rem' }}
                 data-testid="demo-chat-input"
               />
               {!input && (
                 <motion.span
                   key={placeholderIndex}
-                  initial={{ opacity: 0, y: 5 }}
+                  initial={{ opacity: 0, y: 3 }}
                   animate={{ opacity: 0.5, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
+                  exit={{ opacity: 0, y: -3 }}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 pointer-events-none"
                 >
                   {placeholderPrompts[placeholderIndex]}
@@ -292,7 +325,7 @@ export function DemoChat() {
             <button
               type="submit"
               disabled={!input.trim() || isLoading || requiresSignup}
-              className="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all disabled:opacity-50 shadow"
+              className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all disabled:opacity-50 shadow"
               data-testid="demo-chat-send"
             >
               <Send className="h-4 w-4" />
