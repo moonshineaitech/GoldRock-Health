@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, MessageCircle, Sparkles, ArrowRight, Loader2, Lock, ChevronDown, ChevronUp } from "lucide-react";
-import { Link } from "wouter";
 
 interface Message {
   role: "user" | "assistant";
@@ -14,10 +13,10 @@ interface SuggestedWorkflow {
 }
 
 const placeholderPrompts = [
-  "How can I lower my medical bill?",
+  "I have a $5,000 hospital bill...",
   "Was I overcharged for my ER visit?",
-  "What rights do I have to dispute?",
-  "Help me understand my bill...",
+  "How do I dispute this charge?",
+  "Can I negotiate my bill down?",
 ];
 
 export function DemoChat() {
@@ -31,7 +30,6 @@ export function DemoChat() {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll only WITHIN the messages container, not the page
   useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
@@ -41,7 +39,7 @@ export function DemoChat() {
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderIndex((prev) => (prev + 1) % placeholderPrompts.length);
-    }, 3000);
+    }, 3500);
     return () => clearInterval(interval);
   }, []);
 
@@ -140,16 +138,25 @@ export function DemoChat() {
   };
 
   const quickPrompts = [
-    { text: "Find errors in my bill", icon: "🔍" },
-    { text: "Know my patient rights", icon: "⚖️" },
-    { text: "Negotiate a lower bill", icon: "💰" },
+    { text: "Scan my bill for errors", icon: "🔍" },
+    { text: "Reduce my bill amount", icon: "💰" },
+    { text: "Dispute unfair charges", icon: "⚖️" },
   ];
 
   const morePrompts = [
-    { text: "Explain my insurance benefits", icon: "🏥" },
-    { text: "Help with denied claim", icon: "📋" },
-    { text: "Understand medical codes", icon: "🔢" },
+    { text: "Appeal a denied claim", icon: "📋" },
+    { text: "Understand my EOB", icon: "📄" },
+    { text: "Find financial assistance", icon: "🏥" },
   ];
+
+  // Format message content with paragraph breaks
+  const formatMessage = (content: string) => {
+    return content.split('\n\n').map((paragraph, i) => (
+      <span key={i} className={i > 0 ? "block mt-2" : ""}>
+        {paragraph}
+      </span>
+    ));
+  };
 
   return (
     <motion.div
@@ -192,11 +199,11 @@ export function DemoChat() {
                   <motion.button
                     key={i}
                     onClick={() => handleQuickPrompt(prompt.text)}
-                    className="flex flex-col items-center gap-1 text-center text-[11px] p-2 bg-gray-50 border border-gray-150 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
+                    className="flex flex-col items-center gap-1 text-center text-[11px] p-2.5 bg-gray-50 border border-gray-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
                     whileTap={{ scale: 0.95 }}
                     data-testid={`quick-prompt-${i}`}
                   >
-                    <span className="text-sm">{prompt.icon}</span>
+                    <span className="text-base">{prompt.icon}</span>
                     <span className="font-medium leading-tight">{prompt.text}</span>
                   </motion.button>
                 ))}
@@ -224,10 +231,10 @@ export function DemoChat() {
                         <motion.button
                           key={i}
                           onClick={() => handleQuickPrompt(prompt.text)}
-                          className="flex flex-col items-center gap-1 text-center text-[11px] p-2 bg-gray-50 border border-gray-150 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
+                          className="flex flex-col items-center gap-1 text-center text-[11px] p-2.5 bg-gray-50 border border-gray-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
                           whileTap={{ scale: 0.95 }}
                         >
-                          <span className="text-sm">{prompt.icon}</span>
+                          <span className="text-base">{prompt.icon}</span>
                           <span className="font-medium leading-tight">{prompt.text}</span>
                         </motion.button>
                       ))}
@@ -239,8 +246,8 @@ export function DemoChat() {
           ) : (
             <div 
               ref={messagesContainerRef}
-              className="overflow-y-auto space-y-2.5"
-              style={{ maxHeight: messages.length > 2 ? '280px' : 'none' }}
+              className="overflow-y-auto space-y-3"
+              style={{ maxHeight: messages.length > 2 ? '300px' : 'none' }}
             >
               {messages.map((msg, i) => (
                 <motion.div
@@ -250,22 +257,22 @@ export function DemoChat() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[88%] px-3 py-2.5 rounded-2xl text-[13px] leading-relaxed ${
+                    className={`max-w-[90%] px-3.5 py-3 rounded-2xl text-[13px] leading-[1.5] ${
                       msg.role === "user"
                         ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white"
                         : "bg-gray-100 text-gray-800"
                     }`}
                   >
-                    {msg.content}
+                    {formatMessage(msg.content)}
                   </div>
                 </motion.div>
               ))}
 
               {isLoading && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                  <div className="bg-gray-100 px-3 py-2.5 rounded-2xl flex items-center gap-2">
+                  <div className="bg-gray-100 px-3.5 py-3 rounded-2xl flex items-center gap-2">
                     <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-600" />
-                    <span className="text-[13px] text-gray-600">Thinking...</span>
+                    <span className="text-[13px] text-gray-600">Analyzing...</span>
                   </div>
                 </motion.div>
               )}
@@ -273,16 +280,16 @@ export function DemoChat() {
           )}
         </div>
 
-        {/* Suggested Workflow */}
+        {/* Suggested Workflow - Routes to login with redirect */}
         {suggestedWorkflow && !requiresSignup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-3 pb-2">
-            <Link href={suggestedWorkflow.path}>
-              <button className="w-full flex items-center justify-center gap-1.5 py-2 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold">
+            <a href={`/api/login?redirect=${encodeURIComponent(suggestedWorkflow.path)}`}>
+              <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold shadow-md hover:shadow-lg transition-shadow">
                 <Sparkles className="h-3 w-3" />
                 Try: {suggestedWorkflow.label}
                 <ArrowRight className="h-3 w-3" />
               </button>
-            </Link>
+            </a>
           </motion.div>
         )}
 
@@ -290,7 +297,7 @@ export function DemoChat() {
         {requiresSignup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-3 pb-3">
             <a href="/api/login">
-              <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-xs font-bold">
+              <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-xs font-bold shadow-md">
                 <Sparkles className="h-3 w-3" />
                 Sign Up Free to Continue
                 <ArrowRight className="h-3 w-3" />
@@ -299,7 +306,7 @@ export function DemoChat() {
           </motion.div>
         )}
 
-        {/* Input - Fixed Text Centering */}
+        {/* Input - Better text visibility and centering */}
         <form onSubmit={handleSubmit} className="px-3 pb-3">
           <div className="flex gap-2 items-center">
             <div className="relative flex-1">
@@ -309,16 +316,18 @@ export function DemoChat() {
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isLoading || requiresSignup}
                 placeholder=""
-                className="w-full h-10 px-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:opacity-50 flex items-center"
+                className="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:opacity-50"
+                style={{ lineHeight: '1' }}
                 data-testid="demo-chat-input"
               />
               {!input && (
                 <motion.span
                   key={placeholderIndex}
-                  initial={{ opacity: 0, y: 2 }}
-                  animate={{ opacity: 0.45, y: 0 }}
-                  exit={{ opacity: 0, y: -2 }}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 pointer-events-none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 pointer-events-none font-normal"
                 >
                   {placeholderPrompts[placeholderIndex]}
                 </motion.span>
@@ -327,7 +336,7 @@ export function DemoChat() {
             <button
               type="submit"
               disabled={!input.trim() || isLoading || requiresSignup}
-              className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all disabled:opacity-50 shadow"
+              className="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all disabled:opacity-50 shadow"
               data-testid="demo-chat-send"
             >
               <Send className="h-4 w-4" />
