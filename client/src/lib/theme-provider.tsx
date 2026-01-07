@@ -15,7 +15,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("goldrock-theme") as Theme;
       if (stored === "light" || stored === "dark") return stored;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      // Default to light mode always
+      return "light";
     }
     return "light";
   });

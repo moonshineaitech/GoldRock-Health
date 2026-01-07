@@ -561,28 +561,28 @@ export default function Landing() {
               </span>
             </h2>
             <p className="text-gray-400 font-medium max-w-lg mx-auto">
-              Sign in to unlock powerful AI tools for medical bill analysis, diagnostics, and more
+              Powerful AI tools for medical bill analysis, diagnostics, and more
             </p>
           </motion.div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
-              { icon: Home, label: "Dashboard", href: "/api/login", description: "Your command center", gradient: "from-blue-500 to-indigo-600" },
-              { icon: Brain, label: "Bill AI", href: "/api/login?redirect=/bill-ai", description: "Find overcharges", gradient: "from-emerald-500 to-teal-600" },
-              { icon: Shield, label: "Rights Hub", href: "/api/login?redirect=/rights-hub", description: "Know your rights", gradient: "from-blue-500 to-cyan-600", featured: true },
-              { icon: Heart, label: "Emergency Help", href: "/api/login?redirect=/emergency-help", description: "Crisis assistance", gradient: "from-red-500 to-pink-600" },
-              { icon: Search, label: "Quick Analyzer", href: "/api/login?redirect=/quick-analyzer", description: "Fast bill scan", gradient: "from-purple-500 to-violet-600" },
-              { icon: Phone, label: "Provider Contacts", href: "/api/login?redirect=/provider-contacts", description: "Hospital database", gradient: "from-orange-500 to-amber-600" },
-              { icon: Crown, label: "Premium", href: "/api/login?redirect=/premium", description: "Upgrade account", gradient: "from-amber-500 to-yellow-500" },
-              { icon: Gamepad2, label: "Pixel Doctor", href: "/api/login?redirect=/pixel-game", description: "Fun diagnostics", gradient: "from-pink-500 to-rose-600", special: true },
-              { icon: TrendingDown, label: "Reduction Guide", href: "/api/login?redirect=/bill-reduction-guide", description: "Expert strategies", gradient: "from-teal-500 to-green-600" },
-              { icon: Download, label: "Get Bills", href: "/api/login?redirect=/portal-access-guide", description: "Portal access", gradient: "from-slate-500 to-gray-600" },
-              { icon: Database, label: "Resources Hub", href: "/api/login?redirect=/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
-              { icon: Stethoscope, label: "Diagnostics", href: "/api/login?redirect=/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
-              { icon: Dna, label: "LunaFold", href: "/api/login?redirect=/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
-              { icon: Target, label: "Industry Secrets", href: "/api/login?redirect=/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
-              { icon: FileText, label: "Templates", href: "/api/login?redirect=/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
-              { icon: Trophy, label: "Achievements", href: "/api/login?redirect=/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
+              { icon: Home, label: "Dashboard", href: "/", description: "Your command center", gradient: "from-blue-500 to-indigo-600" },
+              { icon: Brain, label: "Bill AI", href: "/bill-ai", description: "Find overcharges", gradient: "from-emerald-500 to-teal-600" },
+              { icon: Shield, label: "Rights Hub", href: "/rights-hub", description: "Know your rights", gradient: "from-blue-500 to-cyan-600", featured: true },
+              { icon: Heart, label: "Emergency Help", href: "/emergency-help", description: "Crisis assistance", gradient: "from-red-500 to-pink-600" },
+              { icon: Search, label: "Quick Analyzer", href: "/quick-analyzer", description: "Fast bill scan", gradient: "from-purple-500 to-violet-600" },
+              { icon: Phone, label: "Provider Contacts", href: "/provider-contacts", description: "Hospital database", gradient: "from-orange-500 to-amber-600" },
+              { icon: Crown, label: "Premium", href: "/premium", description: "Upgrade account", gradient: "from-amber-500 to-yellow-500" },
+              { icon: Gamepad2, label: "Pixel Doctor", href: "/pixel-game", description: "Fun diagnostics", gradient: "from-pink-500 to-rose-600", special: true },
+              { icon: TrendingDown, label: "Reduction Guide", href: "/bill-reduction-guide", description: "Expert strategies", gradient: "from-teal-500 to-green-600" },
+              { icon: Download, label: "Get Bills", href: "/portal-access-guide", description: "Portal access", gradient: "from-slate-500 to-gray-600" },
+              { icon: Database, label: "Resources Hub", href: "/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
+              { icon: Stethoscope, label: "Diagnostics", href: "/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
+              { icon: Dna, label: "LunaFold", href: "/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
+              { icon: Target, label: "Industry Secrets", href: "/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
+              { icon: FileText, label: "Templates", href: "/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
+              { icon: Trophy, label: "Achievements", href: "/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
             ].map((item, index) => (
               <motion.a
                 key={item.label}

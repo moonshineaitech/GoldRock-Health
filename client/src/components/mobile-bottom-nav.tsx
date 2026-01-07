@@ -82,7 +82,7 @@ export function MobileBottomNav() {
 
   return (
     <motion.div 
-      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-gray-200/50 dark:border-slate-700/50"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100/95 backdrop-blur-xl border-t border-gray-200/50"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
@@ -176,7 +176,7 @@ export function MobileBottomNav() {
                   )}
                 </motion.div>
                 <motion.span 
-                  className="text-sm font-medium leading-none truncate"
+                  className="text-sm font-medium leading-none truncate text-gray-700"
                   animate={{
                     color: active ? (
                       item.color === 'text-blue-600' ? '#3B82F6' :
@@ -186,7 +186,7 @@ export function MobileBottomNav() {
                       item.color === 'text-orange-600' ? '#F59E0B' :
                       item.color === 'text-indigo-600' ? '#6366F1' :
                       '#6366F1'
-                    ) : '#374151',
+                    ) : '#4B5563',
                     fontWeight: active ? 600 : 500,
                     scale: active ? 1.05 : 1
                   }}
