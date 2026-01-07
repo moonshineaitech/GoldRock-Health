@@ -29,10 +29,13 @@ export function DemoChat() {
   const [requiresSignup, setRequiresSignup] = useState(false);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
+  // Scroll only WITHIN the messages container, not the page
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -100,42 +103,40 @@ export function DemoChat() {
   };
 
   const handleQuickPrompt = (prompt: string) => {
-    setInput(prompt);
-    setTimeout(() => {
-      setInput("");
-      setMessages((prev) => [...prev, { role: "user", content: prompt }]);
-      setIsLoading(true);
-      setSuggestedWorkflow(null);
+    if (isLoading || requiresSignup) return;
+    
+    setMessages((prev) => [...prev, { role: "user", content: prompt }]);
+    setIsLoading(true);
+    setSuggestedWorkflow(null);
 
-      fetch("/api/demo-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: prompt,
-          conversationHistory: messages,
-        }),
+    fetch("/api/demo-chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: prompt,
+        conversationHistory: messages,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error && data.remaining === 0) {
+          setRequiresSignup(true);
+          setRemaining(0);
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: "You've used all 5 free messages! Sign up free to continue." },
+          ]);
+        } else {
+          setMessages((prev) => [...prev, { role: "assistant", content: data.response }]);
+          setRemaining(data.remaining ?? remaining);
+          if (data.suggestedWorkflow) setSuggestedWorkflow(data.suggestedWorkflow);
+          if (data.requiresSignup) setRequiresSignup(true);
+        }
       })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error && data.remaining === 0) {
-            setRequiresSignup(true);
-            setRemaining(0);
-            setMessages((prev) => [
-              ...prev,
-              { role: "assistant", content: "You've used all 5 free messages! Sign up free to continue." },
-            ]);
-          } else {
-            setMessages((prev) => [...prev, { role: "assistant", content: data.response }]);
-            setRemaining(data.remaining ?? remaining);
-            if (data.suggestedWorkflow) setSuggestedWorkflow(data.suggestedWorkflow);
-            if (data.requiresSignup) setRequiresSignup(true);
-          }
-        })
-        .catch(() => {
-          setMessages((prev) => [...prev, { role: "assistant", content: "Connection error." }]);
-        })
-        .finally(() => setIsLoading(false));
-    }, 50);
+      .catch(() => {
+        setMessages((prev) => [...prev, { role: "assistant", content: "Connection error." }]);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const quickPrompts = [
@@ -236,7 +237,11 @@ export function DemoChat() {
               </AnimatePresence>
             </div>
           ) : (
-            <div className="max-h-[200px] overflow-y-auto space-y-2 scrollbar-thin">
+            <div 
+              ref={messagesContainerRef}
+              className="overflow-y-auto space-y-2.5"
+              style={{ maxHeight: messages.length > 2 ? '280px' : 'none' }}
+            >
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -245,7 +250,7 @@ export function DemoChat() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[90%] px-3 py-2 rounded-xl text-xs leading-relaxed ${
+                    className={`max-w-[88%] px-3 py-2.5 rounded-2xl text-[13px] leading-relaxed ${
                       msg.role === "user"
                         ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white"
                         : "bg-gray-100 text-gray-800"
@@ -258,14 +263,12 @@ export function DemoChat() {
 
               {isLoading && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                  <div className="bg-gray-100 px-3 py-2 rounded-xl flex items-center gap-1.5">
-                    <Loader2 className="h-3 w-3 animate-spin text-emerald-600" />
-                    <span className="text-xs text-gray-600">Thinking...</span>
+                  <div className="bg-gray-100 px-3 py-2.5 rounded-2xl flex items-center gap-2">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-600" />
+                    <span className="text-[13px] text-gray-600">Thinking...</span>
                   </div>
                 </motion.div>
               )}
-
-              <div ref={messagesEndRef} />
             </div>
           )}
         </div>
@@ -274,7 +277,7 @@ export function DemoChat() {
         {suggestedWorkflow && !requiresSignup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-3 pb-2">
             <Link href={suggestedWorkflow.path}>
-              <button className="w-full flex items-center justify-center gap-1.5 py-2 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg text-xs font-semibold">
+              <button className="w-full flex items-center justify-center gap-1.5 py-2 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold">
                 <Sparkles className="h-3 w-3" />
                 Try: {suggestedWorkflow.label}
                 <ArrowRight className="h-3 w-3" />
@@ -287,7 +290,7 @@ export function DemoChat() {
         {requiresSignup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-3 pb-3">
             <a href="/api/login">
-              <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-xs font-bold">
+              <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-xs font-bold">
                 <Sparkles className="h-3 w-3" />
                 Sign Up Free to Continue
                 <ArrowRight className="h-3 w-3" />
@@ -296,7 +299,7 @@ export function DemoChat() {
           </motion.div>
         )}
 
-        {/* Input - Fixed Centering */}
+        {/* Input - Fixed Text Centering */}
         <form onSubmit={handleSubmit} className="px-3 pb-3">
           <div className="flex gap-2 items-center">
             <div className="relative flex-1">
@@ -306,16 +309,15 @@ export function DemoChat() {
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isLoading || requiresSignup}
                 placeholder=""
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm leading-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:opacity-50"
-                style={{ lineHeight: '1.25rem' }}
+                className="w-full h-10 px-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:opacity-50 flex items-center"
                 data-testid="demo-chat-input"
               />
               {!input && (
                 <motion.span
                   key={placeholderIndex}
-                  initial={{ opacity: 0, y: 3 }}
-                  animate={{ opacity: 0.5, y: 0 }}
-                  exit={{ opacity: 0, y: -3 }}
+                  initial={{ opacity: 0, y: 2 }}
+                  animate={{ opacity: 0.45, y: 0 }}
+                  exit={{ opacity: 0, y: -2 }}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 pointer-events-none"
                 >
                   {placeholderPrompts[placeholderIndex]}
