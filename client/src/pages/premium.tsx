@@ -222,8 +222,8 @@ function LoginPrompt() {
   );
 }
 
-// Stripe Payment Form
-function SubscriptionForm({ planType, setupIntentId }: { planType: string; setupIntentId: string }) {
+// Stripe Payment Form - Uses PaymentIntent for subscription payment
+function SubscriptionForm({ planType }: { planType: string }) {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
@@ -236,35 +236,51 @@ function SubscriptionForm({ planType, setupIntentId }: { planType: string; setup
     setIsProcessing(true);
 
     try {
-      const { error: setupError } = await stripe.confirmSetup({
+      // Confirm the payment using the PaymentIntent
+      const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
-        confirmParams: { return_url: window.location.origin + "/premium" },
+        confirmParams: { 
+          return_url: window.location.origin + "/premium?success=true" 
+        },
         redirect: 'if_required',
       });
 
-      if (setupError) {
-        toast({ title: "Payment Failed", description: setupError.message, variant: "destructive" });
+      if (error) {
+        toast({ title: "Payment Failed", description: error.message, variant: "destructive" });
         return;
       }
 
-      const confirmResponse = await apiRequest("POST", "/api/confirm-subscription", { setupIntentId });
-      const confirmResult = await confirmResponse.json();
-
-      if (!confirmResponse.ok) throw new Error(confirmResult.message || 'Failed to confirm subscription');
-
-      if (confirmResult.status === 'requires_action' && confirmResult.clientSecret) {
-        const { error: paymentError } = await stripe.confirmPayment({
-          clientSecret: confirmResult.clientSecret,
-          confirmParams: { return_url: window.location.origin + "/premium" },
-        });
-        if (paymentError) {
-          toast({ title: "Payment Failed", description: paymentError.message, variant: "destructive" });
-          return;
+      // Payment confirmed - verify subscription status with backend
+      if (paymentIntent) {
+        if (paymentIntent.status === 'succeeded' || paymentIntent.status === 'processing') {
+          // Call verify-subscription to update user's subscription status
+          const verifyResponse = await apiRequest("POST", "/api/verify-subscription", {});
+          const verifyResult = await verifyResponse.json();
+          
+          if (verifyResult.status === 'active') {
+            toast({ title: "Welcome to Premium!", description: "Your subscription is now active." });
+            setTimeout(() => window.location.reload(), 1500);
+          } else if (verifyResult.status === 'requires_action' && verifyResult.clientSecret) {
+            // Handle 3DS or additional authentication required
+            const { error: actionError } = await stripe.confirmPayment({
+              clientSecret: verifyResult.clientSecret,
+              confirmParams: { return_url: window.location.origin + "/premium?success=true" },
+            });
+            if (actionError) {
+              toast({ title: "Authentication Failed", description: actionError.message, variant: "destructive" });
+            }
+          } else if (verifyResult.status === 'processing') {
+            toast({ title: "Processing", description: "Your payment is being processed. You'll have access shortly." });
+            setTimeout(() => window.location.reload(), 3000);
+          } else {
+            toast({ title: "Payment Received", description: "Activating your subscription..." });
+            setTimeout(() => window.location.reload(), 2000);
+          }
+        } else if (paymentIntent.status === 'requires_action') {
+          // This shouldn't happen with redirect: 'if_required', but handle it anyway
+          toast({ title: "Additional Verification Required", description: "Please complete the verification." });
         }
       }
-
-      toast({ title: "Welcome to Premium!", description: "Your subscription is now active." });
-      setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
       toast({ title: "Error", description: error instanceof Error ? error.message : "An error occurred.", variant: "destructive" });
     } finally {
@@ -377,7 +393,6 @@ function AuthenticatedPremium() {
   const { subscription, isLoading } = useSubscription();
   const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<string>("annual");
-  const [setupIntentId, setSetupIntentId] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isCreatingIntent, setIsCreatingIntent] = useState(false);
 
@@ -391,9 +406,16 @@ function AuthenticatedPremium() {
     setIsCreatingIntent(true);
     
     try {
-      const response = await apiRequest("POST", "/api/create-setup-intent", { planType: planId });
+      const response = await apiRequest("POST", "/api/create-subscription", { planType: planId });
       const result = await response.json();
-      setSetupIntentId(result.setupIntentId);
+      
+      // For lifetime plan, redirect to Stripe Checkout
+      if (result.sessionUrl) {
+        window.location.href = result.sessionUrl;
+        return;
+      }
+      
+      // For subscription plans, set up payment form
       setClientSecret(result.clientSecret);
     } catch (error) {
       toast({ title: "Error", description: "Failed to initialize payment. Please try again.", variant: "destructive" });
@@ -534,7 +556,7 @@ function AuthenticatedPremium() {
             animate={{ opacity: 1, y: 0 }}
           >
             <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'stripe' } }}>
-              <SubscriptionForm planType={selectedPlan} setupIntentId={setupIntentId!} />
+              <SubscriptionForm planType={selectedPlan} />
             </Elements>
           </motion.div>
         )}

@@ -777,7 +777,7 @@ RULES:
       // Handle lifetime plan differently - it's a one-time payment, not a subscription
       if (planType === 'lifetime') {
         const session = await stripe.checkout.sessions.create({
-          payment_method_types: ['card'],
+          payment_method_types: ['card', 'link'], // Enable Link for one-click checkout
           line_items: [
             {
               price: LIFETIME_PRICE_ID,
@@ -870,30 +870,51 @@ RULES:
       
       console.log(`Creating subscription for user ${userId} with plan ${planType}, priceId: ${selectedPriceId}`);
       
-      // RELIABLE APPROACH: Use SetupIntent for guaranteed payment flow
-      // Step 1: Create SetupIntent for payment method collection
-      const setupIntent = await stripe.setupIntents.create({
+      // Create subscription with payment_behavior: 'default_incomplete'
+      // This creates the subscription and returns a PaymentIntent for the first invoice
+      const subscription = await stripe.subscriptions.create({
         customer: customerId,
-        payment_method_types: ['card'],
-        usage: 'off_session', // For future payments
+        items: [{
+          price: selectedPriceId,
+        }],
+        payment_behavior: 'default_incomplete',
+        payment_settings: {
+          save_default_payment_method: 'on_subscription',
+          payment_method_types: ['card', 'link'], // Enable Link for one-click checkout
+        },
+        expand: ['latest_invoice.payment_intent'],
         metadata: {
           userId: userId,
           planType: planType,
-          priceId: selectedPriceId,
         },
       });
 
-      console.log('SetupIntent created:', {
-        setupIntentId: setupIntent.id,
-        clientSecret: setupIntent.client_secret,
-        status: setupIntent.status,
+      const invoice = subscription.latest_invoice as any;
+      const paymentIntent = invoice?.payment_intent;
+
+      if (!paymentIntent || !paymentIntent.client_secret) {
+        throw new Error('Failed to create payment intent for subscription');
+      }
+
+      console.log('Subscription created with PaymentIntent:', {
+        subscriptionId: subscription.id,
+        paymentIntentId: paymentIntent.id,
+        clientSecret: paymentIntent.client_secret,
+        status: subscription.status,
       });
 
-      // Return SetupIntent client secret for payment method collection
-      // The frontend will confirm this, then call our confirm-subscription endpoint
+      // Store subscription ID on user (incomplete until payment confirmed)
+      await storage.upsertUser({
+        ...user,
+        stripeSubscriptionId: subscription.id,
+        subscriptionStatus: 'incomplete',
+        subscriptionPlan: planType,
+      });
+
+      // Return PaymentIntent client secret for payment confirmation
       res.json({
-        setupIntentId: setupIntent.id,
-        clientSecret: setupIntent.client_secret,
+        subscriptionId: subscription.id,
+        clientSecret: paymentIntent.client_secret,
         status: 'requires_payment_method',
         planType: planType,
         priceId: selectedPriceId,
@@ -908,103 +929,98 @@ RULES:
     }
   });
 
-  // NEW: Confirm subscription after payment method is set up
-  app.post('/api/confirm-subscription', isAuthenticated, async (req: any, res) => {
+  // Verify subscription status after payment confirmation
+  app.post('/api/verify-subscription', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { setupIntentId } = req.body;
       
-      if (!setupIntentId) {
-        return res.status(400).json({ message: 'SetupIntent ID is required' });
+      let user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
       }
 
-      // Retrieve the SetupIntent to get metadata and payment method
-      const setupIntent = await stripe.setupIntents.retrieve(setupIntentId);
+      if (!user.stripeSubscriptionId) {
+        return res.status(400).json({ message: 'No subscription found' });
+      }
+
+      // Retrieve the subscription from Stripe to get current status
+      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
+        expand: ['latest_invoice.payment_intent']
+      });
+
+      console.log('Verifying subscription status:', {
+        subscriptionId: subscription.id,
+        status: subscription.status,
+      });
+
+      // Update user with current subscription status
+      const planType = subscription.metadata?.planType || user.subscriptionPlan || 'monthly';
       
-      if (setupIntent.status !== 'succeeded') {
-        return res.status(400).json({ 
-          message: 'Payment method setup not completed yet',
-          status: setupIntent.status 
+      if (subscription.status === 'active') {
+        await storage.upsertUser({
+          ...user,
+          subscriptionStatus: 'active',
+          subscriptionPlan: planType,
+          subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
+        });
+        
+        return res.json({
+          status: 'active',
+          message: 'Subscription activated successfully',
+          subscriptionId: subscription.id
         });
       }
 
-      if (!setupIntent.payment_method) {
-        return res.status(400).json({ message: 'No payment method found' });
-      }
-
-      // Get metadata from SetupIntent
-      const planType = setupIntent.metadata?.planType;
-      const priceId = setupIntent.metadata?.priceId;
-      
-      if (!planType || !priceId) {
-        return res.status(400).json({ message: 'Invalid setup intent metadata' });
-      }
-
-      let user = await storage.getUser(userId);
-      if (!user || !user.stripeCustomerId) {
-        return res.status(404).json({ message: 'User or customer not found' });
-      }
-
-      console.log(`Confirming subscription for user ${userId} with payment method ${setupIntent.payment_method}`);
-
-      // Create subscription with the confirmed payment method
-      const subscription = await stripe.subscriptions.create({
-        customer: user.stripeCustomerId,
-        items: [{
-          price: priceId,
-        }],
-        default_payment_method: setupIntent.payment_method as string,
-        expand: ['latest_invoice.payment_intent'],
-      });
-
-      console.log('Subscription created with payment method:', {
-        subscriptionId: subscription.id,
-        status: subscription.status,
-        defaultPaymentMethod: subscription.default_payment_method,
-      });
-
-      // Update user with subscription details
-      await storage.upsertUser({
-        ...user,
-        stripeSubscriptionId: subscription.id,
-        subscriptionStatus: subscription.status,
-        subscriptionPlan: planType,
-      });
-
-      // If subscription requires additional payment confirmation (3D Secure, etc.)
+      // Handle incomplete subscription - check payment status
       const invoice = subscription.latest_invoice as any;
       const paymentIntent = invoice?.payment_intent;
 
-      if (paymentIntent && paymentIntent.status === 'requires_action') {
-        console.log('Subscription requires additional payment confirmation');
-        return res.json({
-          subscriptionId: subscription.id,
-          clientSecret: paymentIntent.client_secret,
-          status: 'requires_action'
-        });
+      if (paymentIntent) {
+        if (paymentIntent.status === 'succeeded') {
+          // Payment succeeded, activate subscription
+          await storage.upsertUser({
+            ...user,
+            subscriptionStatus: 'active',
+            subscriptionPlan: planType,
+            subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
+          });
+          
+          return res.json({
+            status: 'active',
+            message: 'Subscription activated successfully',
+            subscriptionId: subscription.id
+          });
+        }
+        
+        if (paymentIntent.status === 'requires_action') {
+          console.log('Payment requires additional action (3DS)');
+          return res.json({
+            status: 'requires_action',
+            clientSecret: paymentIntent.client_secret,
+            subscriptionId: subscription.id
+          });
+        }
+        
+        if (paymentIntent.status === 'processing') {
+          return res.json({
+            status: 'processing',
+            message: 'Payment is being processed',
+            subscriptionId: subscription.id
+          });
+        }
       }
 
-      // Success case
-      if (subscription.status === 'active') {
-        console.log('Subscription successfully activated');
-        return res.json({
-          subscriptionId: subscription.id,
-          status: 'active',
-          message: 'Subscription activated successfully'
-        });
-      }
-
-      // Handle other statuses
+      // Return current status
       return res.json({
-        subscriptionId: subscription.id,
         status: subscription.status,
-        clientSecret: paymentIntent?.client_secret || null,
+        subscriptionId: subscription.id,
+        message: `Subscription is ${subscription.status}`
       });
 
     } catch (error: any) {
-      console.error('Error confirming subscription:', error);
+      console.error('Error verifying subscription:', error);
       res.status(500).json({ 
-        message: 'Failed to confirm subscription. Please try again.',
+        message: 'Failed to verify subscription. Please try again.',
         error: error.message 
       });
     }
