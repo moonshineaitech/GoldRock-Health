@@ -4,7 +4,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { motion } from "framer-motion";
-import { Settings as SettingsIcon, User, Bell, Shield, FileText, HelpCircle, AlertTriangle, Smartphone, Wifi, WifiOff, LogOut, Edit2, Save, ChevronRight, Crown, Download, Trash2 } from "lucide-react";
+import { Settings as SettingsIcon, User, Bell, Shield, FileText, HelpCircle, AlertTriangle, Smartphone, Wifi, WifiOff, LogOut, Edit2, Save, ChevronRight, Crown, Download, Trash2, Sun, Moon, Monitor } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
@@ -31,6 +32,7 @@ interface UserPreferences {
 export default function Settings() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
@@ -340,9 +342,76 @@ export default function Settings() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22 }}
+        >
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+            Appearance
+          </h2>
+          <MobileCard>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                    {resolvedTheme === 'dark' ? (
+                      <Moon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                    ) : (
+                      <Sun className="h-4 w-4 text-amber-600" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-white">Theme</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Choose your preferred appearance</p>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => setTheme('light')}
+                  className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
+                    theme === 'light'
+                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                  }`}
+                  data-testid="button-theme-light"
+                >
+                  <Sun className={`h-5 w-5 ${theme === 'light' ? 'text-emerald-600' : 'text-gray-500 dark:text-gray-400'}`} />
+                  <span className={`text-sm font-medium ${theme === 'light' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>Light</span>
+                </button>
+                <button
+                  onClick={() => setTheme('dark')}
+                  className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
+                    theme === 'dark'
+                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                  }`}
+                  data-testid="button-theme-dark"
+                >
+                  <Moon className={`h-5 w-5 ${theme === 'dark' ? 'text-emerald-600' : 'text-gray-500 dark:text-gray-400'}`} />
+                  <span className={`text-sm font-medium ${theme === 'dark' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>Dark</span>
+                </button>
+                <button
+                  onClick={() => setTheme('system')}
+                  className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
+                    theme === 'system'
+                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                  }`}
+                  data-testid="button-theme-system"
+                >
+                  <Monitor className={`h-5 w-5 ${theme === 'system' ? 'text-emerald-600' : 'text-gray-500 dark:text-gray-400'}`} />
+                  <span className={`text-sm font-medium ${theme === 'system' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>System</span>
+                </button>
+              </div>
+            </div>
+          </MobileCard>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
             App Status
           </h2>
           <MobileCard>
