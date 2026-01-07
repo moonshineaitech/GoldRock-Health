@@ -33,6 +33,17 @@ let MONTHLY_PRICE_ID: string;
 let ANNUAL_PRICE_ID: string;
 let LIFETIME_PRICE_ID: string;
 
+// Helper to get base URL for Stripe redirects
+function getBaseUrl(): string {
+  // Use REPLIT_DOMAINS (comma-separated list) - take the first domain
+  if (process.env.REPLIT_DOMAINS) {
+    const primaryDomain = process.env.REPLIT_DOMAINS.split(',')[0];
+    return `https://${primaryDomain}`;
+  }
+  // Fallback for local development
+  return 'http://localhost:5000';
+}
+
 // Setup Stripe prices on startup
 async function setupStripe() {
   try {
@@ -741,8 +752,8 @@ RULES:
           },
         ],
         mode: 'payment',
-        success_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/auth-landing?donation=success`,
-        cancel_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/auth-landing?donation=cancelled`,
+        success_url: `${getBaseUrl()}/auth-landing?donation=success`,
+        cancel_url: `${getBaseUrl()}/auth-landing?donation=cancelled`,
       });
 
       res.json({ sessionId: session.id, url: session.url });
@@ -774,8 +785,8 @@ RULES:
             },
           ],
           mode: 'payment',
-          success_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/premium?success=true&plan=lifetime`,
-          cancel_url: `${process.env.REPL_SLUG ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 'http://localhost:5000'}/premium?cancelled=true`,
+          success_url: `${getBaseUrl()}/premium?success=true&plan=lifetime`,
+          cancel_url: `${getBaseUrl()}/premium?cancelled=true`,
           client_reference_id: userId,
           metadata: {
             userId,
@@ -794,16 +805,18 @@ RULES:
         return res.status(404).json({ message: 'User not found' });
       }
 
-      if (!user.email) {
-        return res.status(400).json({ message: 'No user email on file' });
-      }
-
       // Create Stripe customer if doesn't exist
       let customerId = user.stripeCustomerId;
       if (!customerId) {
+        // Use user email if available, otherwise use a placeholder based on userId
+        const customerEmail = user.email || `user_${userId}@goldrock.health`;
         const customer = await stripe.customers.create({
-          email: user.email,
-          name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+          email: customerEmail,
+          name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || `User ${userId.substring(0, 8)}`,
+          metadata: {
+            userId: userId,
+            platform: 'goldrock_health'
+          }
         });
         customerId = customer.id;
         
