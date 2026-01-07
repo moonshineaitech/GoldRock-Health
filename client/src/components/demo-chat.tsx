@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, MessageCircle, Sparkles, ArrowRight, Loader2, Lock, ChevronDown, ChevronUp } from "lucide-react";
+import { Send, MessageCircle, Sparkles, ArrowRight, Loader2, Lock, ChevronDown, ChevronUp, Check } from "lucide-react";
+import { Link } from "wouter";
 
 interface Message {
   role: "user" | "assistant";
@@ -28,7 +29,20 @@ export function DemoChat() {
   const [requiresSignup, setRequiresSignup] = useState(false);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [hasAgreedToTerms, setHasAgreedToTerms] = useState(() => {
+    return localStorage.getItem('hasAgreedToDemoTerms') === 'true';
+  });
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleAgreeToTerms = (checked: boolean) => {
+    setHasAgreedToTerms(checked);
+    if (checked) {
+      localStorage.setItem('hasAgreedToDemoTerms', 'true');
+    }
+  };
+
+  const hasFirstResponse = messages.some(m => m.role === 'assistant');
+  const showTermsCheckbox = hasFirstResponse && !hasAgreedToTerms;
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -285,6 +299,34 @@ export function DemoChat() {
                   </div>
                 </motion.div>
               )}
+
+              {showTermsCheckbox && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-200"
+                >
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <div 
+                      onClick={() => handleAgreeToTerms(!hasAgreedToTerms)}
+                      className={`flex-shrink-0 w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center transition-colors ${
+                        hasAgreedToTerms 
+                          ? 'bg-emerald-600 border-emerald-600' 
+                          : 'border-gray-300 hover:border-emerald-500'
+                      }`}
+                    >
+                      {hasAgreedToTerms && <Check className="h-3 w-3 text-white" />}
+                    </div>
+                    <span className="text-[11px] text-gray-600 leading-relaxed">
+                      I agree to the{' '}
+                      <Link href="/terms-of-service" className="text-emerald-600 underline hover:text-emerald-700">
+                        Terms of Service
+                      </Link>
+                      . GoldRock AI provides bill analysis and educational guidance only - not medical or legal advice.
+                    </span>
+                  </label>
+                </motion.div>
+              )}
             </div>
           )}
         </div>
@@ -353,6 +395,11 @@ export function DemoChat() {
           </div>
         </form>
       </div>
+
+      {/* Disclaimer below chat */}
+      <p className="text-[10px] text-gray-400 text-center mt-2 px-4 leading-relaxed">
+        GoldRock AI provides bill analysis and educational guidance only - not medical, legal, or financial advice.
+      </p>
     </motion.div>
   );
 }

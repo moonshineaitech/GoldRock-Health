@@ -57,7 +57,6 @@ import HealthMetrics from "@/pages/health-metrics";
 import Enrollment from "@/pages/enrollment";
 import LunaFold from "@/pages/lunafold";
 import LunaFoldLab from "@/pages/lunafold-lab";
-import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -273,7 +272,6 @@ function App() {
       <TooltipProvider>
         <ScrollToTop />
         <Toaster />
-        <MedicalDisclaimer />
         <OfflineIndicator />
         <Router />
       </TooltipProvider>
