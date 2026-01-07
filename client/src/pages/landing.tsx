@@ -335,158 +335,222 @@ export default function Landing() {
           />
         </div>
         
-        {/* Premium Health Logo */}
+        {/* Premium Health Logo - Larger with Gold Accent */}
         <motion.div 
-          className="relative mx-auto mb-5"
+          className="relative mx-auto mb-6"
           style={{ width: 'fit-content' }}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, type: "spring", stiffness: 120, damping: 14 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 100, damping: 12 }}
         >
           <motion.div
-            className="absolute -inset-4 rounded-full opacity-30"
+            className="absolute -inset-8 rounded-full"
             style={{
-              background: "linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.4))",
-              filter: "blur(20px)",
+              background: "radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, rgba(16, 185, 129, 0.2) 40%, transparent 70%)",
+              filter: "blur(30px)",
             }}
             animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.2, 0.4, 0.2],
+              scale: [1, 1.15, 1],
+              opacity: [0.4, 0.7, 0.4],
             }}
-            transition={{ duration: 4, repeat: Infinity }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
           
           <motion.div 
-            className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl overflow-hidden"
+            className="relative w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden"
             style={{ 
-              background: "linear-gradient(135deg, #0d9488 0%, #10b981 35%, #059669 65%, #047857 100%)",
-              boxShadow: "0 15px 30px -8px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255,255,255,0.2) inset"
+              background: "linear-gradient(135deg, #0d9488 0%, #10b981 30%, #059669 70%, #047857 100%)",
+              boxShadow: "0 20px 50px -12px rgba(16, 185, 129, 0.5), 0 0 0 1px rgba(255,255,255,0.3) inset, 0 0 60px rgba(245, 158, 11, 0.2)"
             }}
+            whileHover={{ scale: 1.05, rotate: 2 }}
           >
             <motion.div
-              className="absolute inset-0 opacity-40"
+              className="absolute inset-0"
               style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 60%)",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, rgba(245, 158, 11, 0.1) 100%)",
               }}
             />
+            <motion.div
+              className="absolute -inset-1 opacity-50"
+              style={{
+                background: "conic-gradient(from 0deg, transparent, rgba(245, 158, 11, 0.4), transparent, rgba(16, 185, 129, 0.4), transparent)",
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            />
             <div className="relative">
-              <Shield className="text-white/30 h-10 w-10 absolute -top-0.5 -left-0.5" strokeWidth={1} />
-              <Heart className="text-white h-7 w-7 drop-shadow-lg relative z-10" strokeWidth={2.5} fill="rgba(255,255,255,0.2)" />
+              <Shield className="text-white/25 h-12 w-12 absolute -top-0.5 -left-0.5" strokeWidth={1} />
+              <Heart className="text-white h-8 w-8 drop-shadow-lg relative z-10" strokeWidth={2.5} fill="rgba(255,255,255,0.25)" />
             </div>
           </motion.div>
         </motion.div>
         
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
         >
-          <h1 className="text-3xl font-black mb-3 leading-[1.1] tracking-tight">
-            <span className="text-gray-900">Intelligent</span>
+          {/* Emotional Headline */}
+          <h1 className="text-[2rem] sm:text-4xl font-black mb-4 leading-[1.1] tracking-tight">
+            <span className="text-gray-800">The Healthcare System</span>
             <br />
-            <span 
-              className="inline-block"
+            <span className="text-gray-800">Wasn't Built for You.</span>
+            <br />
+            <motion.span 
+              className="inline-block mt-1"
               style={{
-                background: "linear-gradient(135deg, #0d9488 0%, #10b981 40%, #059669 100%)",
+                background: "linear-gradient(135deg, #0d9488 0%, #10b981 30%, #f59e0b 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
+              animate={{ 
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{ duration: 5, repeat: Infinity }}
             >
-              Healthcare Advocacy
-            </span>
+              We Are.
+            </motion.span>
           </h1>
           
           <motion.p 
-            className="text-base text-gray-600 mb-5 max-w-xs mx-auto leading-relaxed"
+            className="text-lg text-gray-600 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.4 }}
           >
-            AI-powered medical bill analysis and clinical decision support in one secure platform.
+            Hospitals have teams protecting their revenue.
+            <br />
+            <span className="text-emerald-600 font-semibold">Now you have one protecting yours.</span>
           </motion.p>
 
-          {/* Core Value Props - Smaller */}
+          {/* Large Feature Pillars with Real Benefits */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="grid grid-cols-2 gap-2 max-w-xs mx-auto mb-5"
+            transition={{ delay: 0.5 }}
+            className="grid grid-cols-1 gap-3 max-w-md mx-auto mb-6"
           >
             {[
-              { icon: Receipt, label: "Bill Analysis", color: "emerald" },
-              { icon: Brain, label: "AI Diagnostics", color: "blue" },
-              { icon: Shield, label: "Rights Protection", color: "purple" },
-              { icon: Award, label: "Expert Training", color: "amber" },
+              { 
+                icon: Search, 
+                title: "Find Hidden Overcharges", 
+                desc: "AI scans every line of your bill for errors, duplicates, and inflated prices",
+                gradient: "from-emerald-500 to-teal-600",
+                glow: "rgba(16, 185, 129, 0.3)"
+              },
+              { 
+                icon: Shield, 
+                title: "Know Your Patient Rights", 
+                desc: "Legal protections and dispute strategies hospitals hope you never learn",
+                gradient: "from-blue-500 to-indigo-600",
+                glow: "rgba(59, 130, 246, 0.3)"
+              },
+              { 
+                icon: MessageCircle, 
+                title: "Get Expert Guidance", 
+                desc: "Step-by-step negotiation coaching with ready-to-use scripts and letters",
+                gradient: "from-purple-500 to-violet-600",
+                glow: "rgba(139, 92, 246, 0.3)"
+              },
+              { 
+                icon: Brain, 
+                title: "Understand Your Health", 
+                desc: "AI explains labs, symptoms, drug interactions, and insurance benefits",
+                gradient: "from-amber-500 to-orange-600",
+                glow: "rgba(245, 158, 11, 0.3)"
+              },
             ].map((item, i) => (
               <motion.div 
-                key={item.label}
-                className="bg-white/80 backdrop-blur-xl rounded-xl p-3 border border-gray-100 shadow-md flex items-center gap-2"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45 + i * 0.05 }}
+                key={item.title}
+                className="relative group"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.55 + i * 0.1 }}
+                whileHover={{ scale: 1.02, x: 4 }}
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  item.color === 'emerald' ? 'bg-emerald-100' : 
-                  item.color === 'blue' ? 'bg-blue-100' : 
-                  item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
-                }`}>
-                  <item.icon className={`h-4 w-4 ${
-                    item.color === 'emerald' ? 'text-emerald-600' : 
-                    item.color === 'blue' ? 'text-blue-600' : 
-                    item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
-                  }`} />
+                <motion.div
+                  className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: `linear-gradient(135deg, ${item.glow}, transparent)`,
+                    filter: "blur(12px)",
+                  }}
+                />
+                <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl p-4 border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 flex items-start gap-4">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center shadow-lg flex-shrink-0`}>
+                    <item.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-bold text-gray-900 text-base mb-0.5">{item.title}</h3>
+                    <p className="text-gray-600 text-sm leading-snug">{item.desc}</p>
+                  </div>
                 </div>
-                <span className="font-semibold text-gray-900 text-xs">{item.label}</span>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
 
-        {/* Trust Indicators */}
+        {/* Trust Indicators - Enhanced */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="flex items-center justify-center gap-4 mb-4"
+          transition={{ delay: 0.9 }}
+          className="flex items-center justify-center gap-6 mb-5"
         >
           {[
-            { icon: Lock, label: "HIPAA Aligned" },
-            { icon: ShieldCheck, label: "Encrypted" },
+            { icon: Lock, label: "HIPAA Aligned", color: "text-emerald-600" },
+            { icon: ShieldCheck, label: "256-bit Encrypted", color: "text-blue-600" },
           ].map((badge) => (
-            <div key={badge.label} className="flex items-center gap-1 text-gray-500">
-              <badge.icon className="h-3.5 w-3.5" />
-              <span className="text-xs font-medium">{badge.label}</span>
+            <div key={badge.label} className="flex items-center gap-1.5 bg-white/60 backdrop-blur-sm px-3 py-1.5 rounded-full border border-gray-100 shadow-sm">
+              <badge.icon className={`h-4 w-4 ${badge.color}`} />
+              <span className="text-xs font-semibold text-gray-700">{badge.label}</span>
             </div>
           ))}
         </motion.div>
 
+        {/* CTAs - Emotionally Driven */}
         <motion.div 
-          className="space-y-2.5 max-w-xs mx-auto"
+          className="space-y-3 max-w-sm mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.4 }}
+          transition={{ delay: 1, duration: 0.5 }}
         >
           <Link href="/bill-ai">
-            <PremiumButton 
-              className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:via-teal-700 hover:to-emerald-700 text-base py-3.5 shadow-xl"
-              variant="primary"
+            <motion.div 
+              className="relative group"
+              whileHover={{ scale: 1.02, y: -3 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <FileText className="h-4 w-4 mr-2" />
-              <span>Analyze My Medical Bill</span>
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </PremiumButton>
+              <motion.div
+                className="absolute -inset-1 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 rounded-2xl blur-lg opacity-50 group-hover:opacity-80 transition-opacity"
+                animate={{
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              />
+              <MobileButton className="relative w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:via-teal-700 hover:to-emerald-700 text-lg py-4 shadow-xl font-bold">
+                <Upload className="h-5 w-5 mr-2" />
+                <span>Upload Your Bill & Take Control</span>
+              </MobileButton>
+            </motion.div>
           </Link>
 
           <Link href="/patient-diagnostics">
-            <motion.div whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.99 }}>
+            <motion.div 
+              whileHover={{ scale: 1.01, y: -2 }} 
+              whileTap={{ scale: 0.99 }}
+              className="relative group"
+            >
+              <motion.div
+                className="absolute -inset-0.5 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 rounded-2xl blur opacity-0 group-hover:opacity-40 transition-opacity"
+              />
               <MobileButton 
                 variant="secondary" 
-                className="w-full border border-gray-200 hover:border-gray-300 text-gray-700 shadow-md bg-white/80 backdrop-blur-xl py-3"
+                className="relative w-full border-2 border-gray-200 hover:border-blue-300 text-gray-800 shadow-lg bg-white/90 backdrop-blur-xl py-3.5 font-semibold"
               >
-                <Brain className="h-4 w-4 mr-2 text-blue-600" />
-                Explore AI Diagnostics
-                <ChevronRight className="h-4 w-4 ml-1" />
+                <Brain className="h-5 w-5 mr-2 text-blue-600" />
+                Explore AI Health Tools
+                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </MobileButton>
             </motion.div>
           </Link>
@@ -495,11 +559,92 @@ export default function Landing() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="text-xs text-gray-400 mt-4 font-medium"
+          transition={{ delay: 1.2 }}
+          className="text-sm text-gray-500 mt-5 font-medium"
         >
           Free to start • No credit card required
         </motion.p>
+      </motion.div>
+
+      {/* How It Works Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="px-4 py-10 relative overflow-hidden"
+        style={{
+          background: "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(249,250,251,1) 50%, rgba(240,253,244,0.5) 100%)",
+        }}
+        data-testid="section-how-it-works"
+      >
+        <div className="max-w-lg mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <motion.span 
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 px-4 py-2 rounded-full font-bold text-sm mb-4 border border-amber-200/50 shadow-sm"
+            >
+              <Zap className="h-4 w-4" />
+              Simple & Powerful
+            </motion.span>
+            <h2 className="text-3xl font-black text-gray-900 mb-2">
+              How It Works
+            </h2>
+            <p className="text-gray-600 font-medium">
+              Three steps to take back control
+            </p>
+          </motion.div>
+
+          <div className="space-y-4">
+            {[
+              { 
+                step: "1", 
+                title: "Upload Your Bill", 
+                desc: "Snap a photo or upload a PDF. Our AI reads every charge.",
+                icon: Upload,
+                color: "from-emerald-500 to-teal-600"
+              },
+              { 
+                step: "2", 
+                title: "AI Analyzes Everything", 
+                desc: "We find errors, overcharges, and opportunities to save.",
+                icon: Brain,
+                color: "from-blue-500 to-indigo-600"
+              },
+              { 
+                step: "3", 
+                title: "Take Action with Confidence", 
+                desc: "Get scripts, letters, and strategies to reduce what you owe.",
+                icon: Target,
+                color: "from-purple-500 to-violet-600"
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="flex items-center gap-4 bg-white rounded-2xl p-5 shadow-lg border border-gray-100"
+              >
+                <div className={`w-14 h-14 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0`}>
+                  <item.icon className="h-7 w-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">Step {item.step}</span>
+                    <h3 className="font-bold text-gray-900">{item.title}</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </motion.div>
 
       {/* Quick Links Section */}
