@@ -400,17 +400,29 @@ export function LandingNavigation() {
             </a>
           </div>
 
-          {/* Sign In Button */}
-          <motion.a
-            href="/api/login"
-            className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-bold shadow-lg shadow-indigo-500/30 hover:shadow-xl transition-all"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            data-testid="button-header-signin"
-          >
-            <LogIn className="h-4 w-4" />
-            <span>Sign In</span>
-          </motion.a>
+          {/* Sign Up & Sign In Buttons */}
+          <div className="flex items-center gap-2">
+            <motion.a
+              href="/api/login"
+              className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold shadow-lg shadow-orange-500/30 hover:shadow-xl transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="button-header-signup"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Sign Up</span>
+            </motion.a>
+            <motion.a
+              href="/api/login"
+              className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-bold shadow-lg shadow-indigo-500/30 hover:shadow-xl transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="button-header-signin"
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              <span>Sign In</span>
+            </motion.a>
+          </div>
         </div>
       </motion.header>
     </>
