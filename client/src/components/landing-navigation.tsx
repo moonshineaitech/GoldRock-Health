@@ -401,25 +401,25 @@ export function LandingNavigation() {
           </div>
 
           {/* Sign Up & Sign In Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <motion.a
               href="/api/login"
-              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold shadow-md shadow-orange-500/25 hover:shadow-lg transition-all"
+              className="flex items-center space-x-1 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-orange-500/25 hover:shadow-lg transition-all whitespace-nowrap"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               data-testid="button-header-signup"
             >
-              <Sparkles className="h-3.5 w-3.5" />
+              <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               <span>Sign Up</span>
             </motion.a>
             <motion.a
               href="/api/login"
-              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-bold shadow-md shadow-emerald-500/25 hover:shadow-lg transition-all"
+              className="flex items-center space-x-1 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-500/25 hover:shadow-lg transition-all whitespace-nowrap"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               data-testid="button-header-signin"
             >
-              <LogIn className="h-3.5 w-3.5" />
+              <LogIn className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               <span>Sign In</span>
             </motion.a>
           </div>
