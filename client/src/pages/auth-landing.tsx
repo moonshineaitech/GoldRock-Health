@@ -225,6 +225,7 @@ export default function AuthLanding() {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+          {/* Premium Health Logo */}
           <motion.div 
             className="relative mx-auto mb-10"
             initial={{ scale: 0, opacity: 0 }}
@@ -232,33 +233,48 @@ export default function AuthLanding() {
             transition={{ duration: 0.8, type: "spring", stiffness: 150, damping: 15 }}
           >
             <motion.div
-              className="absolute -inset-6 rounded-[3rem] opacity-50"
+              className="absolute -inset-8 rounded-full opacity-40"
               style={{
-                background: "linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(245, 158, 11, 0.25), rgba(139, 92, 246, 0.25))",
-                filter: "blur(25px)",
+                background: "linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.4), rgba(59, 130, 246, 0.3))",
+                filter: "blur(35px)",
               }}
               animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.4, 0.6, 0.4],
+                scale: [1, 1.15, 1],
+                opacity: [0.3, 0.5, 0.3],
               }}
               transition={{ duration: 4, repeat: Infinity }}
             />
             <motion.div 
-              className="relative w-32 h-32 rounded-[2.5rem] flex items-center justify-center shadow-2xl mx-auto"
+              className="relative w-28 h-28 rounded-3xl flex items-center justify-center shadow-2xl mx-auto overflow-hidden"
               style={{ 
-                background: "linear-gradient(135deg, #f59e0b 0%, #f97316 30%, #10b981 70%, #059669 100%)",
-                boxShadow: "0 30px 60px -15px rgba(16, 185, 129, 0.35), 0 0 0 1px rgba(255,255,255,0.15) inset"
+                background: "linear-gradient(135deg, #0d9488 0%, #10b981 35%, #059669 65%, #047857 100%)",
+                boxShadow: "0 30px 60px -15px rgba(16, 185, 129, 0.5), 0 0 0 1px rgba(255,255,255,0.2) inset"
               }}
-              whileHover={{ scale: 1.08, rotate: 5 }}
+              whileHover={{ scale: 1.05, rotate: 3 }}
             >
               <motion.div
-                className="absolute inset-0 rounded-[2.5rem] opacity-60"
+                className="absolute inset-0 opacity-40"
                 style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 50%)",
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 60%)",
                 }}
               />
-              <DollarSign className="w-16 h-16 text-white drop-shadow-lg" strokeWidth={2.5} />
+              {/* Medical Heart + Shield Icon */}
+              <div className="relative">
+                <Shield className="text-white/30 h-18 w-18 absolute -top-1 -left-1" strokeWidth={1} />
+                <Heart className="text-white h-12 w-12 drop-shadow-lg relative z-10" strokeWidth={2.5} fill="rgba(255,255,255,0.2)" />
+              </div>
             </motion.div>
+          </motion.div>
+
+          {/* Trust Badge */}
+          <motion.div 
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/60 rounded-full px-5 py-2.5 mb-8 shadow-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
+            <BadgeCheck className="h-5 w-5 text-emerald-600" />
+            <span className="text-sm font-semibold text-emerald-700">Trusted by 50,000+ Families Nationwide</span>
           </motion.div>
 
           <motion.h1 
@@ -267,111 +283,128 @@ export default function AuthLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <span className="text-gray-900 drop-shadow-sm">Your Complete</span>
+            <span className="text-gray-900 drop-shadow-sm">Intelligent</span>
             <br />
             <motion.span 
               className="inline-block relative"
               style={{
-                background: "linear-gradient(135deg, #f59e0b 0%, #f97316 20%, #10b981 50%, #059669 70%, #0d9488 100%)",
-                backgroundSize: "200% auto",
+                background: "linear-gradient(135deg, #0d9488 0%, #10b981 40%, #059669 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}
-              animate={{ backgroundPosition: ['0% center', '200% center'] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
             >
-              Health AI Command Center
-              <motion.span
-                className="absolute -bottom-2 left-0 right-0 h-1.5 rounded-full"
-                style={{
-                  background: "linear-gradient(90deg, #10b981, #06b6d4, #8b5cf6, #10b981)",
-                  backgroundSize: "200% 100%",
-                }}
-                animate={{ backgroundPosition: ['0% 0%', '200% 0%'] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              />
+              Healthcare Advocacy
             </motion.span>
           </motion.h1>
 
-          <motion.div
-            className="flex flex-wrap items-center justify-center gap-3 mb-8"
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
+            AI-powered medical bill analysis, clinical decision support, and personalized health insights — all in one secure, HIPAA-aligned platform.
+          </motion.p>
+
+          {/* Core Capabilities Grid */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
             {[
-              { icon: DollarSign, label: "Bill Analysis", colors: "from-emerald-100 to-teal-100", border: "border-emerald-300", text: "text-emerald-700", iconColor: "text-emerald-600" },
-              { icon: Brain, label: "AI Diagnostics", colors: "from-purple-100 to-indigo-100", border: "border-purple-300", text: "text-purple-700", iconColor: "text-purple-600" },
-              { icon: Stethoscope, label: "Medical Training", colors: "from-pink-100 to-rose-100", border: "border-pink-300", text: "text-pink-700", iconColor: "text-pink-600" },
-              { icon: Trophy, label: "Gamified Learning", colors: "from-amber-100 to-orange-100", border: "border-amber-300", text: "text-amber-700", iconColor: "text-amber-600" },
+              { icon: Receipt, label: "Bill Analysis", desc: "Identify overcharges & errors", color: "emerald" },
+              { icon: Brain, label: "AI Diagnostics", desc: "Clinical decision support", color: "blue" },
+              { icon: Shield, label: "Rights Protection", desc: "Know your patient rights", color: "purple" },
+              { icon: Award, label: "Expert Training", desc: "Medical education tools", color: "amber" },
             ].map((item, i) => (
-              <motion.span 
+              <motion.div 
                 key={item.label}
-                className={`inline-flex items-center gap-2 bg-gradient-to-r ${item.colors} border ${item.border} rounded-full px-4 py-2.5 shadow-lg backdrop-blur-sm`}
-                initial={{ opacity: 0, y: 20 }}
+                className="bg-white/90 backdrop-blur-xl rounded-2xl p-5 border border-gray-100 shadow-lg hover:shadow-xl transition-all text-left"
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + i * 0.1 }}
-                whileHover={{ scale: 1.05, y: -3 }}
+                transition={{ delay: 0.7 + i * 0.08 }}
+                whileHover={{ y: -4, scale: 1.02 }}
               >
-                <item.icon className={`h-4 w-4 ${item.iconColor}`} />
-                <span className={`text-sm font-bold ${item.text}`}>{item.label}</span>
-              </motion.span>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
+                  item.color === 'emerald' ? 'bg-emerald-100' : 
+                  item.color === 'blue' ? 'bg-blue-100' : 
+                  item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
+                }`}>
+                  <item.icon className={`h-6 w-6 ${
+                    item.color === 'emerald' ? 'text-emerald-600' : 
+                    item.color === 'blue' ? 'text-blue-600' : 
+                    item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
+                  }`} />
+                </div>
+                <h3 className="font-bold text-gray-900 mb-1">{item.label}</h3>
+                <p className="text-sm text-gray-500">{item.desc}</p>
+              </motion.div>
             ))}
           </motion.div>
 
-          <motion.p 
-            className="text-xl md:text-2xl text-gray-700 mb-12 max-w-3xl mx-auto font-semibold leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            Reduce medical bills, master diagnostic skills, train with AI patients, and access expert health insights all in one powerful platform
-          </motion.p>
-
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-10"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
             <motion.a
               href="/api/login"
-              className="group relative px-12 py-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white font-black text-lg rounded-2xl overflow-hidden"
+              className="group relative px-10 py-5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 text-white font-bold text-lg rounded-2xl overflow-hidden"
               style={{
-                boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255,255,255,0.1) inset"
+                boxShadow: "0 20px 40px -10px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255,255,255,0.1) inset"
               }}
-              whileHover={{ scale: 1.05, y: -4 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03, y: -3 }}
+              whileTap={{ scale: 0.97 }}
               data-testid="button-get-started-hero"
             >
               <motion.div
-                className="absolute -inset-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 opacity-0 group-hover:opacity-30 blur-xl transition-opacity"
-              />
-              <motion.div
                 initial={{ x: "-100%" }}
                 whileHover={{ x: "200%" }}
-                transition={{ duration: 0.7 }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/35 to-transparent"
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
               />
-              <div className="relative z-10 flex items-center gap-3">
-                <Sparkles className="h-6 w-6" />
-                Start Free Analysis
-                <ArrowRight className="h-6 w-6" />
+              <div className="relative z-10 flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Analyze My Medical Bill
+                <ArrowRight className="h-5 w-5" />
               </div>
             </motion.a>
             
             <motion.a
-              href="#features"
-              className="px-12 py-6 bg-white/80 backdrop-blur-xl border-2 border-gray-200 text-gray-900 font-black text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:border-gray-300 transition-all"
-              whileHover={{ scale: 1.03, y: -2 }}
+              href="/api/login?redirect=/patient-diagnostics"
+              className="px-10 py-5 bg-white/90 backdrop-blur-xl border border-gray-200 text-gray-800 font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl hover:border-gray-300 transition-all flex items-center gap-2"
+              whileHover={{ scale: 1.02, y: -2 }}
               data-testid="button-explore-features"
             >
-              Explore All Features
+              <Brain className="h-5 w-5 text-blue-600" />
+              Explore AI Diagnostics
             </motion.a>
           </motion.div>
 
+          {/* Trust Indicators */}
+          <motion.div
+            className="flex items-center justify-center gap-8 mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+          >
+            {[
+              { icon: Lock, label: "HIPAA Aligned" },
+              { icon: Shield, label: "256-bit Encryption" },
+              { icon: BadgeCheck, label: "SOC 2 Compliant" },
+            ].map((badge) => (
+              <div key={badge.label} className="flex items-center gap-1.5 text-gray-500">
+                <badge.icon className="h-4 w-4" />
+                <span className="text-xs font-medium">{badge.label}</span>
+              </div>
+            ))}
+          </motion.div>
+
           <motion.p
-            className="text-sm text-gray-600 font-medium"
+            className="text-sm text-gray-500 font-medium"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
