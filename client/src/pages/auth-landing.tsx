@@ -507,6 +507,140 @@ export default function AuthLanding() {
         </div>
       </section>
 
+      {/* Quick Access Section - Explore All Features */}
+      <section 
+        className="py-20 relative overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, rgba(15, 23, 42, 0.97) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.97) 100%)",
+        }}
+        data-testid="section-quick-access"
+      >
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)",
+              filter: "blur(80px)",
+            }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity }}
+          />
+          <motion.div 
+            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%)",
+              filter: "blur(60px)",
+            }}
+            animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
+            transition={{ duration: 6, repeat: Infinity, delay: 1 }}
+          />
+        </div>
+
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <motion.span 
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-emerald-300 px-5 py-2.5 rounded-full font-bold text-sm mb-5 border border-emerald-500/30 backdrop-blur-sm"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Zap className="h-4 w-4" />
+              Quick Access
+            </motion.span>
+            <h2 className="text-3xl md:text-4xl font-black mb-4">
+              <span className="text-white">Explore All </span>
+              <span 
+                style={{
+                  background: "linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #8b5cf6 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Features
+              </span>
+            </h2>
+            <p className="text-gray-400 font-medium max-w-lg mx-auto">
+              Sign in to unlock powerful AI tools for medical bill analysis, diagnostics, and more
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[
+              { icon: HomeIcon, label: "Dashboard", href: "/api/login", description: "Your command center", gradient: "from-blue-500 to-indigo-600" },
+              { icon: Brain, label: "Bill AI", href: "/api/login?redirect=/bill-ai", description: "Find overcharges", gradient: "from-emerald-500 to-teal-600" },
+              { icon: Shield, label: "Rights Hub", href: "/api/login?redirect=/rights-hub", description: "Know your rights", gradient: "from-blue-500 to-cyan-600", featured: true },
+              { icon: Heart, label: "Emergency Help", href: "/api/login?redirect=/emergency-help", description: "Crisis assistance", gradient: "from-red-500 to-pink-600" },
+              { icon: Search, label: "Quick Analyzer", href: "/api/login?redirect=/quick-analyzer", description: "Fast bill scan", gradient: "from-purple-500 to-violet-600" },
+              { icon: Phone, label: "Provider Contacts", href: "/api/login?redirect=/provider-contacts", description: "Hospital database", gradient: "from-orange-500 to-amber-600" },
+              { icon: Crown, label: "Premium", href: "/api/login?redirect=/premium", description: "Upgrade account", gradient: "from-amber-500 to-yellow-500" },
+              { icon: Puzzle, label: "Pixel Doctor", href: "/api/login?redirect=/pixel-game", description: "Fun diagnostics", gradient: "from-pink-500 to-rose-600", special: true },
+              { icon: TrendingDown, label: "Reduction Guide", href: "/api/login?redirect=/bill-reduction-guide", description: "Expert strategies", gradient: "from-teal-500 to-green-600" },
+              { icon: CreditCard, label: "Get Bills", href: "/api/login?redirect=/portal-access-guide", description: "Portal access", gradient: "from-slate-500 to-gray-600" },
+              { icon: Database, label: "Resources Hub", href: "/api/login?redirect=/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
+              { icon: Stethoscope, label: "Diagnostics", href: "/api/login?redirect=/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
+              { icon: Dna, label: "LunaFold", href: "/api/login?redirect=/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
+              { icon: Target, label: "Industry Secrets", href: "/api/login?redirect=/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
+              { icon: FileText, label: "Templates", href: "/api/login?redirect=/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
+              { icon: Trophy, label: "Achievements", href: "/api/login?redirect=/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
+            ].map((item, index) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.03 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative"
+                data-testid={`quicklink-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+              >
+                <div className="absolute -inset-0.5 bg-gradient-to-r opacity-0 group-hover:opacity-100 rounded-2xl blur-lg transition-opacity duration-300" 
+                  style={{ background: `linear-gradient(135deg, ${item.gradient.includes('emerald') ? '#10b981' : item.gradient.includes('purple') ? '#8b5cf6' : item.gradient.includes('blue') ? '#3b82f6' : '#f59e0b'}, transparent)` }}
+                />
+                <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-white/30 transition-all duration-300 h-full">
+                  <div className={`w-10 h-10 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
+                    <item.icon className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="font-bold text-white text-sm mb-1 group-hover:text-emerald-300 transition-colors">{item.label}</h3>
+                  <p className="text-xs text-gray-400">{item.description}</p>
+                  {(item.featured || item.special) && (
+                    <motion.div
+                      className={`absolute top-2 right-2 w-2 h-2 rounded-full ${item.special ? 'bg-pink-500' : 'bg-emerald-500'}`}
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  )}
+                </div>
+              </motion.a>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-10"
+          >
+            <motion.a
+              href="/api/login"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold rounded-2xl shadow-2xl hover:shadow-emerald-500/30 transition-all"
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="button-signin-quicklinks"
+            >
+              <ArrowRight className="h-5 w-5" />
+              Sign In to Access All Features
+              <ArrowRight className="h-5 w-5" />
+            </motion.a>
+          </motion.div>
+        </div>
+      </section>
+
       <section className="py-24 relative overflow-hidden" data-testid="section-how-it-works">
         <div 
           className="absolute inset-0"
