@@ -146,13 +146,13 @@ export default function ForHealthcare() {
 
           <Tabs defaultValue="use" className="mb-12">
             <TabsList className="grid grid-cols-3 w-full max-w-lg mx-auto mb-8 bg-white/5">
-              <TabsTrigger value="use" className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
+              <TabsTrigger value="use" className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400" data-testid="tab-healthcare-license">
                 License & Use
               </TabsTrigger>
-              <TabsTrigger value="acquire" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400">
+              <TabsTrigger value="acquire" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400" data-testid="tab-healthcare-acquire">
                 Acquire
               </TabsTrigger>
-              <TabsTrigger value="invest" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400">
+              <TabsTrigger value="invest" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400" data-testid="tab-healthcare-invest">
                 Invest
               </TabsTrigger>
             </TabsList>

@@ -174,16 +174,16 @@ export default function ForInsurance() {
 
           <Tabs defaultValue="use" className="mb-12">
             <TabsList className="grid grid-cols-4 w-full max-w-2xl mx-auto mb-8 bg-white/5">
-              <TabsTrigger value="use" className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
+              <TabsTrigger value="use" className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400" data-testid="tab-insurance-license">
                 License
               </TabsTrigger>
-              <TabsTrigger value="invest" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400">
+              <TabsTrigger value="invest" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400" data-testid="tab-insurance-invest">
                 Invest
               </TabsTrigger>
-              <TabsTrigger value="acquire" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400">
+              <TabsTrigger value="acquire" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400" data-testid="tab-insurance-acquire">
                 Acquire
               </TabsTrigger>
-              <TabsTrigger value="shelve" className="data-[state=active]:bg-amber-500/20 data-[state=active]:text-amber-400">
+              <TabsTrigger value="shelve" className="data-[state=active]:bg-amber-500/20 data-[state=active]:text-amber-400" data-testid="tab-insurance-control">
                 Control
               </TabsTrigger>
             </TabsList>
