@@ -264,7 +264,7 @@ export default function Landing() {
   }, []);
   
   return (
-    <MobileLayout title="GoldRock AI" showBottomNav={false}>
+    <MobileLayout title="GoldRock AI" showBottomNav={true}>
       <motion.div 
         className="text-center py-16 px-4 relative overflow-hidden"
         initial={{ opacity: 0 }}
@@ -471,6 +471,19 @@ export default function Landing() {
               <span>Start Free Analysis</span>
               <ArrowRight className="h-5 w-5 ml-2" />
             </PremiumButton>
+          </Link>
+
+          <Link href="/premium">
+            <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <MobileButton 
+                variant="secondary" 
+                className="w-full border-2 border-amber-300 hover:border-amber-400 text-amber-700 hover:text-amber-800 shadow-xl bg-gradient-to-r from-amber-50 to-orange-50"
+              >
+                <Crown className="h-5 w-5 mr-2" />
+                Join Premium
+                <Sparkles className="h-4 w-4 ml-2" />
+              </MobileButton>
+            </motion.div>
           </Link>
         </motion.div>
 
@@ -1582,8 +1595,6 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* Pre-Login Bottom Navigation Bar */}
-      <PreLoginBottomNav />
     </MobileLayout>
   );
 }

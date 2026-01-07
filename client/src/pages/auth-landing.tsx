@@ -6,7 +6,7 @@ import {
   ArrowRight, Play, FileCheck, TrendingDown, Award, BadgeCheck, ChevronRight,
   FileX, CreditCard, Wrench, Puzzle, Heart, Search, Users, Settings, BarChart3,
   Pill, Stethoscope, Activity, Microscope, Baby, Car, Home as HomeIcon, Trophy,
-  Check
+  Check, Dna
 } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
@@ -1171,6 +1171,61 @@ export default function AuthLanding() {
           </div>
         </div>
       </footer>
+
+      {/* Pre-Login Bottom Navigation Bar */}
+      <motion.div 
+        className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100/95 backdrop-blur-xl border-t border-gray-200/50"
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        <div className="flex items-center justify-around px-2 py-2">
+          {[
+            { id: "home", label: "Home", icon: HomeIcon, href: "/api/login", color: "#3B82F6" },
+            { id: "billai", label: "Bill AI", icon: FileText, href: "/api/login?redirect=/bill-ai", color: "#8B5CF6" },
+            { id: "diagnostics", label: "Diagnose", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", color: "#14B8A6" },
+            { id: "clinical", label: "Clinical", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", color: "#6366F1" },
+            { id: "lunafold", label: "LunaFold", icon: Dna, href: "/api/login?redirect=/lunafold", color: "#06B6D4" },
+            { id: "premium", label: "Premium", icon: Crown, href: "/api/login?redirect=/premium", color: "#F59E0B", special: true },
+          ].map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.a
+                key={item.id}
+                href={item.href}
+                className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-3xl transition-all duration-300 bg-white/80"
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.02 }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: index * 0.1, duration: 0.4 }}
+                data-testid={`prelogin-nav-${item.id}`}
+              >
+                <motion.div className="relative">
+                  <Icon 
+                    className="h-6 w-6 mb-1"
+                    style={{ color: item.color }}
+                  />
+                  {item.special && (
+                    <motion.div
+                      className="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold shadow-lg"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+                    >
+                      <Sparkles className="h-3 w-3" />
+                    </motion.div>
+                  )}
+                </motion.div>
+                <span className="text-sm font-medium leading-none truncate" style={{ color: '#374151' }}>
+                  {item.label}
+                </span>
+              </motion.a>
+            );
+          })}
+        </div>
+      </motion.div>
     </div>
   );
 }
