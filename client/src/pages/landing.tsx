@@ -43,7 +43,14 @@ import {
   Check,
   X,
   BadgeCheck,
-  Stethoscope
+  Stethoscope,
+  Home,
+  Dna,
+  Phone,
+  Gamepad2,
+  Download,
+  Database,
+  ExternalLink
 } from "lucide-react";
 import { motion, useAnimation, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
@@ -410,6 +417,148 @@ export default function Landing() {
         >
           No credit card required. Free to start
         </motion.p>
+      </motion.div>
+
+      {/* Quick Links Section - Requires Login */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="px-4 py-16 relative overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, rgba(15, 23, 42, 0.97) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.97) 100%)",
+        }}
+        data-testid="section-quick-links"
+      >
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)",
+              filter: "blur(80px)",
+            }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity }}
+          />
+          <motion.div 
+            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%)",
+              filter: "blur(60px)",
+            }}
+            animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
+            transition={{ duration: 6, repeat: Infinity, delay: 1 }}
+          />
+          {[...Array(8)].map((_, i) => (
+            <FloatingParticle key={`ql-${i}`} delay={i * 2} duration={20} size={2 + Math.random() * 2} />
+          ))}
+        </div>
+
+        <div className="max-w-4xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <motion.span 
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-emerald-300 px-5 py-2.5 rounded-full font-bold text-sm mb-5 border border-emerald-500/30 backdrop-blur-sm"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Zap className="h-4 w-4" />
+              Quick Access
+            </motion.span>
+            <h2 className="text-3xl md:text-4xl font-black mb-4">
+              <span className="text-white">Explore All </span>
+              <span 
+                style={{
+                  background: "linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #8b5cf6 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Features
+              </span>
+            </h2>
+            <p className="text-gray-400 font-medium max-w-lg mx-auto">
+              Sign in to unlock powerful AI tools for medical bill analysis, diagnostics, and more
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[
+              { icon: Home, label: "Dashboard", href: "/api/login", description: "Your command center", gradient: "from-blue-500 to-indigo-600" },
+              { icon: Brain, label: "Bill AI", href: "/api/login?redirect=/bill-ai", description: "Find overcharges", gradient: "from-emerald-500 to-teal-600" },
+              { icon: Shield, label: "Rights Hub", href: "/api/login?redirect=/rights-hub", description: "Know your rights", gradient: "from-blue-500 to-cyan-600", featured: true },
+              { icon: Heart, label: "Emergency Help", href: "/api/login?redirect=/emergency-help", description: "Crisis assistance", gradient: "from-red-500 to-pink-600" },
+              { icon: Search, label: "Quick Analyzer", href: "/api/login?redirect=/quick-analyzer", description: "Fast bill scan", gradient: "from-purple-500 to-violet-600" },
+              { icon: Phone, label: "Provider Contacts", href: "/api/login?redirect=/provider-contacts", description: "Hospital database", gradient: "from-orange-500 to-amber-600" },
+              { icon: Crown, label: "Premium", href: "/api/login?redirect=/premium", description: "Upgrade account", gradient: "from-amber-500 to-yellow-500" },
+              { icon: Gamepad2, label: "Pixel Doctor", href: "/api/login?redirect=/pixel-game", description: "Fun diagnostics", gradient: "from-pink-500 to-rose-600", special: true },
+              { icon: TrendingDown, label: "Reduction Guide", href: "/api/login?redirect=/bill-reduction-guide", description: "Expert strategies", gradient: "from-teal-500 to-green-600" },
+              { icon: Download, label: "Get Bills", href: "/api/login?redirect=/portal-access-guide", description: "Portal access", gradient: "from-slate-500 to-gray-600" },
+              { icon: Database, label: "Resources Hub", href: "/api/login?redirect=/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
+              { icon: Stethoscope, label: "Diagnostics", href: "/api/login?redirect=/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
+              { icon: Dna, label: "LunaFold", href: "/api/login?redirect=/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
+              { icon: Target, label: "Industry Secrets", href: "/api/login?redirect=/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
+              { icon: FileText, label: "Templates", href: "/api/login?redirect=/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
+              { icon: Trophy, label: "Achievements", href: "/api/login?redirect=/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
+            ].map((item, index) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.03 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative"
+                data-testid={`quicklink-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+              >
+                <div className="absolute -inset-0.5 bg-gradient-to-r opacity-0 group-hover:opacity-100 rounded-2xl blur-lg transition-opacity duration-300" 
+                  style={{ background: `linear-gradient(135deg, ${item.gradient.includes('emerald') ? '#10b981' : item.gradient.includes('purple') ? '#8b5cf6' : item.gradient.includes('blue') ? '#3b82f6' : '#f59e0b'}, transparent)` }}
+                />
+                <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-white/30 transition-all duration-300 h-full">
+                  <div className={`w-10 h-10 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
+                    <item.icon className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="font-bold text-white text-sm mb-1 group-hover:text-emerald-300 transition-colors">{item.label}</h3>
+                  <p className="text-xs text-gray-400">{item.description}</p>
+                  {(item.featured || item.special) && (
+                    <motion.div
+                      className={`absolute top-2 right-2 w-2 h-2 rounded-full ${item.special ? 'bg-pink-500' : 'bg-emerald-500'}`}
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  )}
+                </div>
+              </motion.a>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-10"
+          >
+            <motion.a
+              href="/api/login"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold rounded-2xl shadow-2xl hover:shadow-emerald-500/30 transition-all"
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="button-signin-quicklinks"
+            >
+              <ExternalLink className="h-5 w-5" />
+              Sign In to Access All Features
+              <ArrowRight className="h-5 w-5" />
+            </motion.a>
+          </motion.div>
+        </div>
       </motion.div>
 
       <motion.div
@@ -1330,7 +1479,7 @@ export default function Landing() {
           🔒 Private & Secure • ⚡ AI-Powered • ⚖️ Legal Templates
         </motion.p>
 
-        <div className="mt-12 pt-8 border-t border-gray-200">
+        <div className="mt-12 pt-8 border-t border-gray-200 pb-24">
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm mb-4">
             <Link href="/privacy-policy">
               <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-privacy-mobile">
@@ -1365,6 +1514,103 @@ export default function Landing() {
           <p className="text-center text-xs text-gray-400">
             © {new Date().getFullYear()} Eldest AI LLC dba GoldRock AI. All rights reserved. • Colorado, USA
           </p>
+        </div>
+      </motion.div>
+
+      {/* Premium Bottom Navigation Bar - Requires Login */}
+      <motion.div 
+        className="fixed bottom-0 left-0 right-0 z-50"
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, delay: 1, ease: "easeOut" }}
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        {/* Glassmorphic background with gradient border */}
+        <div className="relative">
+          <div 
+            className="absolute inset-0 rounded-t-3xl"
+            style={{
+              background: "linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(6, 182, 212, 0.2) 50%, rgba(139, 92, 246, 0.2) 100%)",
+              filter: "blur(20px)",
+              transform: "translateY(-10px)",
+            }}
+          />
+          <div 
+            className="relative bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-2xl border-t border-white/10 rounded-t-3xl shadow-2xl"
+            style={{
+              boxShadow: "0 -10px 40px rgba(0,0,0,0.3), 0 -2px 10px rgba(16, 185, 129, 0.1)",
+            }}
+          >
+            <div className="flex items-center justify-around px-2 py-3">
+              {[
+                { id: "home", label: "Home", icon: Home, href: "/api/login", gradient: "from-blue-500 to-indigo-600" },
+                { id: "billai", label: "Bill AI", icon: FileText, href: "/api/login?redirect=/bill-ai", gradient: "from-emerald-500 to-teal-600" },
+                { id: "diagnose", label: "Diagnose", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", gradient: "from-purple-500 to-violet-600" },
+                { id: "clinical", label: "Clinical", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", gradient: "from-cyan-500 to-blue-600" },
+                { id: "lunafold", label: "LunaFold", icon: Dna, href: "/api/login?redirect=/lunafold", gradient: "from-violet-500 to-purple-600" },
+                { id: "premium", label: "Premium", icon: Crown, href: "/api/login?redirect=/premium", gradient: "from-amber-500 to-orange-600", special: true },
+              ].map((item, index) => (
+                <motion.a
+                  key={item.id}
+                  href={item.href}
+                  className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-2xl group relative"
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.08, y: -4 }}
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.2 + index * 0.1, duration: 0.4 }}
+                  data-testid={`bottom-nav-${item.id}`}
+                >
+                  {/* Glow effect on hover */}
+                  <motion.div
+                    className={`absolute -inset-1 rounded-2xl bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-30 blur-lg transition-opacity`}
+                  />
+                  
+                  {/* Icon container */}
+                  <motion.div
+                    className={`relative w-10 h-10 rounded-xl flex items-center justify-center mb-1 bg-gradient-to-br ${item.gradient} shadow-lg`}
+                    whileHover={{ rotate: 5, scale: 1.1 }}
+                  >
+                    <item.icon className="h-5 w-5 text-white drop-shadow-md" />
+                    
+                    {/* Special badge for premium */}
+                    {item.special && (
+                      <motion.div
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <Sparkles className="h-2.5 w-2.5 text-white" />
+                      </motion.div>
+                    )}
+                  </motion.div>
+                  
+                  {/* Label */}
+                  <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors truncate">
+                    {item.label}
+                  </span>
+                </motion.a>
+              ))}
+            </div>
+            
+            {/* Sign in prompt */}
+            <motion.div 
+              className="text-center pb-2 pt-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2 }}
+            >
+              <a 
+                href="/api/login" 
+                className="text-xs text-gray-400 hover:text-emerald-400 transition-colors font-medium inline-flex items-center gap-1"
+                data-testid="bottom-nav-signin-prompt"
+              >
+                <Lock className="h-3 w-3" />
+                Sign in to access all features
+                <ArrowRight className="h-3 w-3" />
+              </a>
+            </motion.div>
+          </div>
         </div>
       </motion.div>
     </MobileLayout>
