@@ -404,7 +404,7 @@ export function LandingNavigation() {
           <div className="flex items-center gap-2">
             <motion.a
               href="/api/login"
-              className="hidden sm:flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold shadow-md shadow-orange-500/25 hover:shadow-lg transition-all"
+              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold shadow-md shadow-orange-500/25 hover:shadow-lg transition-all"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               data-testid="button-header-signup"
