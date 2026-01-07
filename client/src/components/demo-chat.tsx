@@ -186,7 +186,7 @@ export function DemoChat() {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="w-full max-w-md mx-auto mb-6"
+      className="w-full max-w-md mx-auto mb-3"
       data-testid="demo-chat-container"
     >
       <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-lg overflow-hidden">
