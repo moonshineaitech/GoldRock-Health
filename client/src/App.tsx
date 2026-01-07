@@ -57,6 +57,12 @@ import HealthMetrics from "@/pages/health-metrics";
 import Enrollment from "@/pages/enrollment";
 import LunaFold from "@/pages/lunafold";
 import LunaFoldLab from "@/pages/lunafold-lab";
+import MedicalConditions from "@/pages/medical-conditions";
+import ConditionDetail from "@/pages/condition-detail";
+import DrugPrices from "@/pages/drug-prices";
+import BillGrader from "@/pages/bill-grader";
+import HospitalReviews from "@/pages/hospital-reviews";
+import Enterprise from "@/pages/enterprise";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -78,6 +84,7 @@ const AI_PROTECTED_ROUTES = [
   '/ai-generator',
   '/bill-ai', 
   '/bill-analyzer',
+  '/bill-grader',
   '/image-analysis',
   '/training',
   '/game',
@@ -134,7 +141,7 @@ function Router() {
     );
   }
 
-  // Show auth landing for unauthenticated users, but allow access to legal pages
+  // Show auth landing for unauthenticated users, but allow access to legal pages and SEO content
   if (!isAuthenticated) {
     return (
       <Switch>
@@ -142,6 +149,11 @@ function Router() {
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/terms-of-service" component={TermsOfService} />
         <Route path="/support" component={Support} />
+        <Route path="/conditions" component={MedicalConditions} />
+        <Route path="/conditions/:slug" component={ConditionDetail} />
+        <Route path="/drug-prices" component={DrugPrices} />
+        <Route path="/hospital-reviews" component={HospitalReviews} />
+        <Route path="/enterprise" component={Enterprise} />
         <Route component={AuthLanding} />
       </Switch>
     );
@@ -256,6 +268,16 @@ function Router() {
       <Route path="/enrollment" component={Enrollment} />
       <Route path="/lunafold" component={LunaFold} />
       <Route path="/lunafold-lab" component={LunaFoldLab} />
+      <Route path="/conditions" component={MedicalConditions} />
+      <Route path="/conditions/:slug" component={ConditionDetail} />
+      <Route path="/drug-prices" component={DrugPrices} />
+      <Route path="/bill-grader">
+        <AIRouteGuard path="/bill-grader">
+          <BillGrader />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/hospital-reviews" component={HospitalReviews} />
+      <Route path="/enterprise" component={Enterprise} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

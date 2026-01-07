@@ -107,7 +107,13 @@ import {
   type Compound,
   type InsertCompound,
   type LabNote,
-  type InsertLabNote
+  type InsertLabNote,
+  hospitalReviews,
+  partnerApiKeys,
+  type HospitalReview,
+  type InsertHospitalReview,
+  type PartnerApiKey,
+  type InsertPartnerApiKey
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count, lte, inArray, asc } from "drizzle-orm";
@@ -273,6 +279,19 @@ export interface IStorage {
   // LunaFold Lab Notes
   createLabNote(data: InsertLabNote): Promise<LabNote>;
   getLabNotesByPrediction(predictionId: string): Promise<LabNote[]>;
+
+  // Hospital Reviews
+  createHospitalReview(data: InsertHospitalReview): Promise<HospitalReview>;
+  getHospitalReviews(hospitalId?: string, limit?: number, offset?: number, status?: string): Promise<HospitalReview[]>;
+  getHospitalReviewById(id: string): Promise<HospitalReview | undefined>;
+  deleteHospitalReview(id: string): Promise<boolean>;
+
+  // Partner API Keys
+  createPartnerApiKey(data: InsertPartnerApiKey): Promise<PartnerApiKey>;
+  getPartnerApiKey(apiKey: string): Promise<PartnerApiKey | undefined>;
+  getPartnerApiKeysByCompany(companyId: string): Promise<PartnerApiKey[]>;
+  updatePartnerApiKeyUsage(id: string): Promise<PartnerApiKey | undefined>;
+  deactivatePartnerApiKey(id: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1498,6 +1517,87 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(labNotes)
       .where(eq(labNotes.predictionId, predictionId))
       .orderBy(desc(labNotes.createdAt));
+  }
+
+  // Hospital Reviews
+  async createHospitalReview(data: InsertHospitalReview): Promise<HospitalReview> {
+    const [created] = await db.insert(hospitalReviews).values(data).returning();
+    return created;
+  }
+
+  async getHospitalReviews(hospitalId?: string, limit: number = 50, offset: number = 0, status?: string): Promise<HospitalReview[]> {
+    const conditions = [];
+    
+    if (hospitalId) {
+      conditions.push(eq(hospitalReviews.hospitalId, hospitalId));
+    }
+    
+    if (status) {
+      conditions.push(eq(hospitalReviews.moderationStatus, status));
+    }
+    
+    if (conditions.length > 0) {
+      return await db.select().from(hospitalReviews)
+        .where(and(...conditions))
+        .orderBy(desc(hospitalReviews.createdAt))
+        .offset(offset)
+        .limit(limit);
+    }
+    
+    return await db.select().from(hospitalReviews)
+      .orderBy(desc(hospitalReviews.createdAt))
+      .offset(offset)
+      .limit(limit);
+  }
+
+  async getHospitalReviewById(id: string): Promise<HospitalReview | undefined> {
+    const [review] = await db.select().from(hospitalReviews)
+      .where(eq(hospitalReviews.id, id));
+    return review;
+  }
+
+  async deleteHospitalReview(id: string): Promise<boolean> {
+    await db.delete(hospitalReviews).where(eq(hospitalReviews.id, id));
+    return true;
+  }
+
+  // Partner API Keys
+  async createPartnerApiKey(data: InsertPartnerApiKey): Promise<PartnerApiKey> {
+    const [created] = await db.insert(partnerApiKeys).values(data).returning();
+    return created;
+  }
+
+  async getPartnerApiKey(apiKey: string): Promise<PartnerApiKey | undefined> {
+    const [key] = await db.select().from(partnerApiKeys)
+      .where(and(
+        eq(partnerApiKeys.apiKey, apiKey),
+        eq(partnerApiKeys.isActive, true)
+      ));
+    return key;
+  }
+
+  async getPartnerApiKeysByCompany(companyId: string): Promise<PartnerApiKey[]> {
+    return await db.select().from(partnerApiKeys)
+      .where(eq(partnerApiKeys.companyId, companyId))
+      .orderBy(desc(partnerApiKeys.createdAt));
+  }
+
+  async updatePartnerApiKeyUsage(id: string): Promise<PartnerApiKey | undefined> {
+    const [updated] = await db.update(partnerApiKeys)
+      .set({ 
+        requestCount: sql`${partnerApiKeys.requestCount} + 1`,
+        lastUsedAt: new Date()
+      })
+      .where(eq(partnerApiKeys.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deactivatePartnerApiKey(id: string): Promise<boolean> {
+    await db.update(partnerApiKeys)
+      .set({ isActive: false })
+      .where(eq(partnerApiKeys.id, id));
+    return true;
   }
 }
 
