@@ -82,12 +82,23 @@ function updateUserSession(
 async function upsertUser(
   claims: any,
 ) {
+  // Log claims to debug what fields Replit Auth actually returns
+  console.log("OIDC Claims received:", JSON.stringify(claims, null, 2));
+  
+  // Replit OIDC uses different claim names - try multiple variations
+  const email = claims["email"] || claims["preferred_username"] || null;
+  const firstName = claims["first_name"] || claims["given_name"] || claims["name"]?.split(" ")[0] || null;
+  const lastName = claims["last_name"] || claims["family_name"] || claims["name"]?.split(" ").slice(1).join(" ") || null;
+  const profileImageUrl = claims["profile_image_url"] || claims["picture"] || null;
+  
+  console.log("Parsed user data:", { id: claims["sub"], email, firstName, lastName, profileImageUrl });
+  
   return await storage.upsertUser({
     id: claims["sub"],
-    email: claims["email"],
-    firstName: claims["first_name"],
-    lastName: claims["last_name"],
-    profileImageUrl: claims["profile_image_url"],
+    email,
+    firstName,
+    lastName,
+    profileImageUrl,
   });
 }
 
