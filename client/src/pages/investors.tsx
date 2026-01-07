@@ -2,8 +2,6 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { 
   TrendingUp, 
-  DollarSign, 
-  Users,
   Building2,
   Target,
   Zap,
@@ -14,24 +12,20 @@ import {
   ArrowRight,
   Briefcase,
   Award,
-  Mail
+  Mail,
+  ArrowLeft
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/seo-head";
-
-const keyMetrics = [
-  { label: "Users", value: "12,847", growth: "+215%", period: "6 months" },
-  { label: "Bills Analyzed", value: "34,562", growth: "+189%", period: "6 months" },
-  { label: "Total Savings", value: "$18.7M", growth: "+340%", period: "6 months" },
-  { label: "Retention Rate", value: "94.2%", growth: "+12%", period: "YoY" }
-];
+import { MobileHeader } from "@/components/mobile-header";
+import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 
 const marketOpportunity = {
-  tam: 4500, // billion
-  sam: 140, // billion
-  som: 2.1, // billion
+  tam: 4500,
+  sam: 140,
+  som: 2.1,
   description: "Medical billing errors cost Americans $200B+ annually. Only 0.1% of denied claims are appealed. GoldRock Health democratizes access to billing expertise."
 };
 
@@ -76,8 +70,8 @@ const milestones = [
   { date: "Q2 2025", milestone: "Platform launch, 1,000 beta users" },
   { date: "Q3 2025", milestone: "AI bill analysis, 5,000 users" },
   { date: "Q4 2025", milestone: "Enterprise API launch, first B2B contracts" },
-  { date: "Q1 2026", milestone: "12,000+ users, $18M+ in user savings" },
-  { date: "Q2 2026", milestone: "Series A fundraise, national expansion" }
+  { date: "Q1 2026", milestone: "National expansion" },
+  { date: "Q2 2026", milestone: "Series A fundraise" }
 ];
 
 export default function Investors() {
@@ -90,93 +84,83 @@ export default function Investors() {
         canonicalPath="/investors"
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-[#0a1628] via-[#0d1d35] to-[#0a1628]">
-        <div className="container mx-auto px-4 py-12">
+      <MobileHeader title="Investors" />
+
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-24">
+        <div className="container mx-auto px-4 py-6">
+          <div className="mb-6">
+            <Link href="/">
+              <Button variant="ghost" className="text-gray-600 dark:text-gray-300" data-testid="button-back">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
+            className="text-center mb-10"
           >
-            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 mb-4">
+            <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300 mb-4">
               Investment Opportunity
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Partner With <span className="text-cyan-400">GoldRock Health</span>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Partner With GoldRock Health
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               We're building the infrastructure for healthcare cost transparency and reduction. 
               AI that saves patients money and transforms how America pays for healthcare.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-4 gap-6 mb-12">
-            {keyMetrics.map((metric, index) => (
-              <motion.div
-                key={metric.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="bg-white/5 border-white/10 h-full">
-                  <CardContent className="p-6 text-center">
-                    <div className="text-3xl font-bold text-white">{metric.value}</div>
-                    <div className="text-sm text-gray-400">{metric.label}</div>
-                    <Badge className="mt-2 bg-green-500/20 text-green-400 border-green-500/30">
-                      {metric.growth} ({metric.period})
-                    </Badge>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-
-          <Card className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-cyan-500/30 mb-12">
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-10">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Globe className="h-5 w-5 text-cyan-400" />
+              <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+                <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 Market Opportunity
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-300 mb-6">{marketOpportunity.description}</p>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="text-center bg-white/5 rounded-lg p-6">
-                  <div className="text-4xl font-bold text-cyan-400">${marketOpportunity.tam}B</div>
-                  <div className="text-sm text-gray-400 mt-1">Total Addressable Market</div>
-                  <div className="text-xs text-gray-500">US Healthcare Spending</div>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">{marketOpportunity.description}</p>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="text-center bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
+                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">${marketOpportunity.tam}B</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total Addressable Market</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">US Healthcare Spending</div>
                 </div>
-                <div className="text-center bg-white/5 rounded-lg p-6">
-                  <div className="text-4xl font-bold text-green-400">${marketOpportunity.sam}B</div>
-                  <div className="text-sm text-gray-400 mt-1">Serviceable Market</div>
-                  <div className="text-xs text-gray-500">Patient Out-of-Pocket Costs</div>
+                <div className="text-center bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
+                  <div className="text-3xl font-bold text-green-600 dark:text-green-400">${marketOpportunity.sam}B</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Serviceable Market</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Patient Out-of-Pocket Costs</div>
                 </div>
-                <div className="text-center bg-white/5 rounded-lg p-6">
-                  <div className="text-4xl font-bold text-purple-400">${marketOpportunity.som}B</div>
-                  <div className="text-sm text-gray-400 mt-1">Obtainable Market (5yr)</div>
-                  <div className="text-xs text-gray-500">Our Target Segment</div>
+                <div className="text-center bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">${marketOpportunity.som}B</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Obtainable Market (5yr)</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500">Our Target Segment</div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <h2 className="text-2xl font-bold text-white mb-6">Competitive Advantages</h2>
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Competitive Advantages</h2>
+          <div className="grid md:grid-cols-2 gap-4 mb-10">
             {competitiveAdvantages.map((advantage, index) => (
               <motion.div
                 key={advantage.title}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="bg-white/5 border-white/10 h-full">
-                  <CardContent className="p-6">
+                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 h-full">
+                  <CardContent className="p-5">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <advantage.icon className="h-6 w-6 text-cyan-400" />
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <advantage.icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-white mb-2">{advantage.title}</h3>
-                        <p className="text-gray-400 text-sm">{advantage.description}</p>
+                        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">{advantage.title}</h3>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">{advantage.description}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -185,22 +169,22 @@ export default function Investors() {
             ))}
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-6">Revenue Model</h2>
-          <Card className="bg-white/5 border-white/10 mb-12">
-            <CardContent className="p-6">
-              <div className="space-y-6">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Revenue Model</h2>
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-10">
+            <CardContent className="p-5">
+              <div className="space-y-5">
                 {revenueStreams.map((stream) => (
                   <div key={stream.stream}>
                     <div className="flex justify-between mb-2">
                       <div>
-                        <span className="text-white font-medium">{stream.stream}</span>
+                        <span className="text-gray-900 dark:text-white font-medium">{stream.stream}</span>
                         <span className="text-gray-500 text-sm ml-2">({stream.description})</span>
                       </div>
-                      <span className="text-cyan-400 font-bold">{stream.percentage}%</span>
+                      <span className="text-blue-600 dark:text-blue-400 font-bold">{stream.percentage}%</span>
                     </div>
-                    <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-cyan-500 to-purple-500"
+                        className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
                         initial={{ width: 0 }}
                         animate={{ width: `${stream.percentage}%` }}
                         transition={{ delay: 0.5, duration: 0.8 }}
@@ -212,19 +196,19 @@ export default function Investors() {
             </CardContent>
           </Card>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="bg-white/5 border-white/10">
+          <div className="grid md:grid-cols-2 gap-6 mb-10">
+            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Award className="h-5 w-5 text-amber-400" />
+                <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+                  <Award className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                   Team
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
                   {teamHighlights.map((highlight, i) => (
-                    <li key={i} className="flex items-start gap-2 text-gray-300">
-                      <CheckCircle className="h-4 w-4 text-green-400 flex-shrink-0 mt-0.5" />
+                    <li key={i} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                      <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                       {highlight}
                     </li>
                   ))}
@@ -232,23 +216,23 @@ export default function Investors() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/5 border-white/10">
+            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-cyan-400" />
+                <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   Milestones
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {milestones.map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className="w-20 flex-shrink-0">
-                        <Badge className={`${i === milestones.length - 1 ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' : 'bg-white/10 text-gray-400 border-white/20'}`}>
+                        <Badge className={`${i === milestones.length - 1 ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}`}>
                           {item.date}
                         </Badge>
                       </div>
-                      <div className="text-gray-300 text-sm">{item.milestone}</div>
+                      <div className="text-gray-700 dark:text-gray-300 text-sm">{item.milestone}</div>
                     </div>
                   ))}
                 </div>
@@ -256,19 +240,19 @@ export default function Investors() {
             </Card>
           </div>
 
-          <Card className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-amber-500/30">
-            <CardContent className="py-12 text-center">
-              <Briefcase className="h-12 w-12 text-amber-400 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-white mb-4">
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <CardContent className="py-10 text-center">
+              <Briefcase className="h-10 w-10 text-amber-600 dark:text-amber-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                 Interested in Learning More?
               </h3>
-              <p className="text-gray-300 mb-8 max-w-xl mx-auto">
+              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
                 We're currently raising our Series A round. Request our full investor deck 
                 and financial projections, or schedule a call with our founding team.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button 
-                  className="bg-amber-500 hover:bg-amber-600 text-black font-semibold"
+                  className="bg-amber-600 hover:bg-amber-700 text-white"
                   onClick={() => window.location.href = 'mailto:investors@goldrockhealth.com?subject=Investor Inquiry'}
                   data-testid="button-contact-investors"
                 >
@@ -276,8 +260,8 @@ export default function Investors() {
                   Contact Investor Relations
                 </Button>
                 <Link href="/platform-stats">
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10" data-testid="button-view-metrics">
-                    View Live Metrics
+                  <Button variant="outline" className="border-gray-300 dark:border-gray-600" data-testid="button-view-metrics">
+                    View Platform
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </Link>
@@ -286,6 +270,8 @@ export default function Investors() {
           </Card>
         </div>
       </div>
+
+      <MobileBottomNav />
     </>
   );
 }
