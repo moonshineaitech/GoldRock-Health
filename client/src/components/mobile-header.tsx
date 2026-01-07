@@ -93,13 +93,13 @@ export function NavigationDropdown() {
   return (
     <div className="relative">
       <motion.button
-        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
+        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300"
         whileTap={{ scale: 0.92 }}
         whileHover={{ scale: 1.08, rotateZ: 2 }}
         onClick={() => setIsOpen(!isOpen)}
         data-testid="navigation-menu"
       >
-        <Menu className="h-4 w-4 text-gray-700" />
+        <Menu className="h-4 w-4 text-gray-700 dark:text-gray-300" />
       </motion.button>
 
       {/* Dropdown Menu */}
@@ -108,18 +108,19 @@ export function NavigationDropdown() {
           <>
             {/* Backdrop */}
             <div 
-              className="fixed inset-0 z-40" 
+              className="fixed inset-0 z-40 dark:bg-black/20" 
               onClick={() => setIsOpen(false)}
             />
             
             {/* Menu */}
             <motion.div
-              className="absolute left-0 top-full mt-3 w-72 sm:w-80 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
+              className="absolute left-0 top-full mt-3 w-72 sm:w-80 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 dark:border-slate-700/50 shadow-2xl shadow-black/20 z-50 overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+                background: 'var(--dropdown-bg)',
                 left: 'max(-1rem, calc(-100vw + 100% + 2rem))',
                 right: 'auto',
-                maxHeight: 'calc(100vh - 100px)'
+                maxHeight: 'calc(100vh - 100px)',
+                ['--dropdown-bg' as any]: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)'
               }}
               initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
@@ -127,20 +128,20 @@ export function NavigationDropdown() {
               transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               {/* Header */}
-              <div className="p-4 border-b border-white/20 flex-shrink-0">
+              <div className="p-4 border-b border-white/20 dark:border-slate-700/30 flex-shrink-0 bg-white/50 dark:bg-slate-800/50">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-br from-amber-500 via-yellow-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
                     <Menu className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-900 leading-tight">Navigation</p>
-                    <p className="text-xs text-gray-600">Choose your destination</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-gray-100 leading-tight">Navigation</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Choose your destination</p>
                   </div>
                 </div>
               </div>
 
               {/* Menu Items - Scrollable */}
-              <div className="py-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 180px)' }}>
+              <div className="py-2 overflow-y-auto bg-white/80 dark:bg-slate-800/80" style={{ maxHeight: 'calc(100vh - 180px)' }}>
                 {navigationItems.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
@@ -148,12 +149,12 @@ export function NavigationDropdown() {
                       key={item.label}
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-2xl mx-2 my-1 ${
                         item.special
-                          ? 'text-purple-600 hover:bg-purple-50/80 hover:shadow-sm'
+                          ? 'text-purple-600 dark:text-purple-400 hover:bg-purple-50/80 dark:hover:bg-purple-900/30 hover:shadow-sm'
                           : item.premium
-                            ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
+                            ? 'text-orange-600 dark:text-orange-400 hover:bg-orange-50/80 dark:hover:bg-orange-900/30 hover:shadow-sm'
                             : item.featured
-                              ? 'text-blue-600 hover:bg-blue-50/80 hover:shadow-sm'
-                              : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
+                              ? 'text-blue-600 dark:text-blue-400 hover:bg-blue-50/80 dark:hover:bg-blue-900/30 hover:shadow-sm'
+                              : 'text-gray-700 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-slate-700/60 hover:shadow-sm'
                       }`}
                       onClick={() => {
                         navigate(item.href);
@@ -166,12 +167,12 @@ export function NavigationDropdown() {
                     >
                       <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
                         item.special 
-                          ? 'bg-gradient-to-br from-purple-100 to-pink-100'
+                          ? 'bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/50 dark:to-pink-900/50'
                           : item.premium
-                            ? 'bg-gradient-to-br from-orange-100 to-amber-100'
+                            ? 'bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/50 dark:to-amber-900/50'
                             : item.featured
-                              ? 'bg-gradient-to-br from-blue-100 to-cyan-100'
-                              : 'bg-gray-100'
+                              ? 'bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50'
+                              : 'bg-gray-100 dark:bg-slate-700'
                       }`}>
                         <IconComponent className={`h-4 w-4 ${
                           item.special 
@@ -362,7 +363,7 @@ export function UserAvatarDropdown() {
   return (
     <div className="relative">
       <motion.button
-        className="flex items-center space-x-1.5 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300 p-1.5"
+        className="flex items-center space-x-1.5 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-slate-700/40 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-600/90 transition-all duration-300 p-1.5"
         whileTap={{ scale: 0.92 }}
         whileHover={{ scale: 1.08, rotateZ: 2 }}
         onClick={() => setIsOpen(!isOpen)}
@@ -386,7 +387,7 @@ export function UserAvatarDropdown() {
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <ChevronDown className="h-3.5 w-3.5 text-gray-600" />
+          <ChevronDown className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
         </motion.div>
       </motion.button>
 
@@ -396,15 +397,14 @@ export function UserAvatarDropdown() {
           <>
             {/* Backdrop */}
             <div 
-              className="fixed inset-0 z-40" 
+              className="fixed inset-0 z-40 dark:bg-black/20" 
               onClick={() => setIsOpen(false)}
             />
             
             {/* Menu */}
             <motion.div
-              className="absolute right-0 top-full mt-3 w-56 sm:w-64 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 shadow-2xl shadow-black/20 z-50 overflow-hidden"
+              className="absolute right-0 top-full mt-3 w-56 sm:w-64 max-w-[calc(100vw-2rem)] backdrop-blur-2xl rounded-3xl border border-white/30 dark:border-slate-700/50 shadow-2xl shadow-black/20 z-50 overflow-hidden bg-white/95 dark:bg-slate-800/95"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
                 right: 'max(-1rem, calc(-100vw + 100% + 2rem))',
                 left: 'auto'
               }}
@@ -414,7 +414,7 @@ export function UserAvatarDropdown() {
               transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               {/* User Info */}
-              <div className="p-4 border-b border-white/20">
+              <div className="p-4 border-b border-white/20 dark:border-slate-700/30 bg-white/50 dark:bg-slate-800/50">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
                     {user?.profileImageUrl ? (
@@ -428,15 +428,15 @@ export function UserAvatarDropdown() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-900 truncate leading-tight">
+                    <p className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate leading-tight">
                       {user?.firstName && user?.lastName 
                         ? `${user.firstName} ${user.lastName}`
                         : user?.email?.split('@')[0] || 'User'
                       }
                     </p>
-                    <p className="text-xs text-gray-600 truncate mt-0.5">{user?.email}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 truncate mt-0.5">{user?.email}</p>
                     {isSubscribed && (
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold bg-gradient-to-r from-orange-100 to-amber-100 text-orange-800 mt-2 shadow-sm">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-bold bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-900/50 dark:to-amber-900/50 text-orange-800 dark:text-orange-300 mt-2 shadow-sm">
                         <Crown className="w-3 h-3 mr-1" />
                         Premium
                       </span>
@@ -446,7 +446,7 @@ export function UserAvatarDropdown() {
               </div>
 
               {/* Menu Items */}
-              <div className="py-2">
+              <div className="py-2 bg-white/80 dark:bg-slate-800/80">
                 {menuItems.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
@@ -454,10 +454,10 @@ export function UserAvatarDropdown() {
                       key={item.label}
                       className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-2xl mx-2 my-1 ${
                         item.danger 
-                          ? 'text-red-600 hover:bg-red-50/80 hover:shadow-sm' 
+                          ? 'text-red-600 dark:text-red-400 hover:bg-red-50/80 dark:hover:bg-red-900/30 hover:shadow-sm' 
                           : item.highlight
-                            ? 'text-orange-600 hover:bg-orange-50/80 hover:shadow-sm'
-                            : 'text-gray-700 hover:bg-white/60 hover:shadow-sm'
+                            ? 'text-orange-600 dark:text-orange-400 hover:bg-orange-50/80 dark:hover:bg-orange-900/30 hover:shadow-sm'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-slate-700/60 hover:shadow-sm'
                       }`}
                       onClick={item.action}
                       whileHover={{ x: 4, scale: 1.02 }}

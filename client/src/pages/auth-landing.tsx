@@ -143,7 +143,7 @@ const PremiumFeatureCard = ({ icon: Icon, title, description, color, delay = 0 }
         <motion.div
           animate={{ opacity: isHovered ? [0.4, 0.7, 0.4] : 0 }}
           transition={{ duration: 2, repeat: isHovered ? Infinity : 0 }}
-          className="absolute inset-0 bg-white/15 blur-2xl pointer-events-none"
+          className="absolute inset-0 bg-white dark:bg-slate-900/15 blur-2xl pointer-events-none"
         />
 
         <motion.div
@@ -160,7 +160,7 @@ const PremiumFeatureCard = ({ icon: Icon, title, description, color, delay = 0 }
               rotate: isHovered ? [0, 5, -5, 0] : 0
             }}
             transition={{ duration: 0.5 }}
-            className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5 shadow-xl"
+            className="w-16 h-16 bg-white dark:bg-slate-900/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5 shadow-xl"
           >
             <Icon className="h-8 w-8 text-white drop-shadow-lg" strokeWidth={2.5} />
           </motion.div>
@@ -178,7 +178,7 @@ export default function AuthLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="min-h-screen bg-white" ref={containerRef}>
+    <div className="min-h-screen bg-white dark:bg-slate-900" ref={containerRef}>
       <LandingNavigation />
       
       <section className="relative overflow-hidden pt-36 pb-24">
@@ -267,7 +267,7 @@ export default function AuthLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <span className="text-gray-900 drop-shadow-sm">Your Complete</span>
+            <span className="text-gray-900 dark:text-white drop-shadow-sm">Your Complete</span>
             <br />
             <motion.span 
               className="inline-block relative"
@@ -320,7 +320,7 @@ export default function AuthLanding() {
           </motion.div>
 
           <motion.p 
-            className="text-xl md:text-2xl text-gray-700 mb-12 max-w-3xl mx-auto font-semibold leading-relaxed"
+            className="text-xl md:text-2xl text-gray-700 dark:text-gray-200 mb-12 max-w-3xl mx-auto font-semibold leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
@@ -362,7 +362,7 @@ export default function AuthLanding() {
             
             <motion.a
               href="#features"
-              className="px-12 py-6 bg-white/80 backdrop-blur-xl border-2 border-gray-200 text-gray-900 font-black text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:border-gray-300 transition-all"
+              className="px-12 py-6 bg-white dark:bg-slate-900/80 backdrop-blur-xl border-2 border-gray-200 text-gray-900 dark:text-white font-black text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:border-gray-300 transition-all"
               whileHover={{ scale: 1.03, y: -2 }}
               data-testid="button-explore-features"
             >
@@ -371,7 +371,7 @@ export default function AuthLanding() {
           </motion.div>
 
           <motion.p
-            className="text-sm text-gray-600 font-medium"
+            className="text-sm text-gray-600 dark:text-gray-300 font-medium"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
@@ -412,10 +412,10 @@ export default function AuthLanding() {
               <Sparkles className="h-4 w-4" />
               Complete Health AI Platform
             </motion.span>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
               More Than Just Bill Analysis
             </h2>
-            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 font-medium max-w-2xl mx-auto">
               Four powerful pillars to transform your healthcare experience
             </p>
           </motion.div>
@@ -485,7 +485,7 @@ export default function AuthLanding() {
                   />
                   <div className="relative z-10">
                     <motion.div 
-                      className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5 shadow-xl"
+                      className="w-16 h-16 bg-white dark:bg-slate-900/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5 shadow-xl"
                       whileHover={{ rotate: 10, scale: 1.1 }}
                     >
                       <pillar.icon className="h-8 w-8 text-white drop-shadow-md" />
@@ -494,7 +494,7 @@ export default function AuthLanding() {
                     <p className="text-white/90 text-sm mb-5 leading-relaxed font-medium">{pillar.desc}</p>
                     <div className="flex flex-wrap gap-2">
                       {pillar.tags.map(tag => (
-                        <span key={tag} className="bg-white/20 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-semibold shadow-sm">
+                        <span key={tag} className="bg-white dark:bg-slate-900/20 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-semibold shadow-sm">
                           {tag}
                         </span>
                       ))}
@@ -535,10 +535,10 @@ export default function AuthLanding() {
                 Simple 3-Step Process
               </motion.span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
               How GoldRock Health Works
             </h2>
-            <p className="text-xl text-gray-700 font-semibold max-w-2xl mx-auto">
+            <p className="text-xl text-gray-700 dark:text-gray-200 font-semibold max-w-2xl mx-auto">
               Professional medical bill analysis in minutes, not hours
             </p>
           </div>
@@ -601,8 +601,8 @@ export default function AuthLanding() {
                       <step.icon className="h-9 w-9 text-white" strokeWidth={2.5} />
                     </motion.div>
 
-                    <h3 className="text-2xl font-black text-gray-900 mb-4">{step.title}</h3>
-                    <p className="text-gray-700 font-medium leading-relaxed">{step.description}</p>
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4">{step.title}</h3>
+                    <p className="text-gray-700 dark:text-gray-200 font-medium leading-relaxed">{step.description}</p>
                   </div>
                 </GlassmorphicCard>
               </motion.div>
@@ -611,7 +611,7 @@ export default function AuthLanding() {
         </div>
       </section>
 
-      <section className="py-24 bg-white relative overflow-hidden" id="features" data-testid="section-core-features">
+      <section className="py-24 bg-white dark:bg-slate-900 relative overflow-hidden" id="features" data-testid="section-core-features">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <GlowingOrb 
             className="top-0 right-0" 
@@ -624,17 +624,17 @@ export default function AuthLanding() {
         
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
               Complete Medical Bill Arsenal
             </h2>
-            <p className="text-xl text-gray-700 font-semibold max-w-3xl mx-auto">
+            <p className="text-xl text-gray-700 dark:text-gray-200 font-semibold max-w-3xl mx-auto">
               Everything you need to fight medical bills and save thousands
             </p>
           </div>
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-gray-900 dark:text-white mb-10"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -668,7 +668,7 @@ export default function AuthLanding() {
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-gray-900 dark:text-white mb-10"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -709,7 +709,7 @@ export default function AuthLanding() {
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-gray-900 dark:text-white mb-10"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -743,7 +743,7 @@ export default function AuthLanding() {
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-gray-900 dark:text-white mb-10"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -837,12 +837,12 @@ export default function AuthLanding() {
               Premium Access
             </h2>
             
-            <p className="text-xl text-gray-700 font-semibold mb-10 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-10 leading-relaxed max-w-2xl mx-auto">
               Full AI analysis, dispute templates, expert coaching & insider tactics
             </p>
 
             <div className="flex justify-center mb-8">
-              <div className="inline-flex bg-white/80 backdrop-blur-xl rounded-2xl p-2 border border-amber-200/50 shadow-xl">
+              <div className="inline-flex bg-white dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl p-2 border border-amber-200/50 shadow-xl">
                 {[
                   { id: 'monthly' as const, label: 'Monthly' },
                   { id: 'annual' as const, label: 'Annual' },
@@ -854,7 +854,7 @@ export default function AuthLanding() {
                     className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${
                       pricingTab === tab.id
                         ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-xl'
-                        : 'text-gray-700 hover:text-gray-900'
+                        : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:text-white'
                     }`}
                     whileHover={{ scale: pricingTab !== tab.id ? 1.05 : 1 }}
                     whileTap={{ scale: 0.95 }}
@@ -875,12 +875,12 @@ export default function AuthLanding() {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <span className="text-6xl font-black text-gray-900">
+                  <span className="text-6xl font-black text-gray-900 dark:text-white">
                     {pricingTab === 'monthly' && '$25'}
                     {pricingTab === 'annual' && '$249'}
                     {pricingTab === 'lifetime' && '$747'}
                   </span>
-                  <span className="text-xl text-gray-600 font-semibold">
+                  <span className="text-xl text-gray-600 dark:text-gray-300 font-semibold">
                     {pricingTab === 'monthly' && '/month'}
                     {pricingTab === 'annual' && '/year'}
                     {pricingTab === 'lifetime' && 'one-time'}
@@ -906,7 +906,7 @@ export default function AuthLanding() {
                     Unlimited access forever • Best value
                   </motion.div>
                 )}
-                <p className="text-sm text-gray-600 font-medium">
+                <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">
                   Professional medical bill reduction
                 </p>
               </div>
@@ -932,7 +932,7 @@ export default function AuthLanding() {
                   <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
                     <Check className="h-4 w-4 text-white" strokeWidth={3} />
                   </div>
-                  <span className="text-base text-gray-700 font-semibold">{feature}</span>
+                  <span className="text-base text-gray-700 dark:text-gray-200 font-semibold">{feature}</span>
                 </motion.div>
               ))}
             </div>
@@ -962,7 +962,7 @@ export default function AuthLanding() {
               </motion.a>
             </Link>
 
-            <p className="text-sm text-gray-600 mt-6 font-medium">
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-6 font-medium">
               Cancel anytime • Full refund within 30 days
             </p>
           </motion.div>
@@ -973,7 +973,7 @@ export default function AuthLanding() {
         <div className="max-w-3xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <motion.h2 
-              className="text-4xl md:text-5xl font-black text-gray-900 mb-5"
+              className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -981,7 +981,7 @@ export default function AuthLanding() {
               Frequently Asked Questions
             </motion.h2>
             <motion.p
-              className="text-xl text-gray-700 font-medium"
+              className="text-xl text-gray-700 dark:text-gray-200 font-medium"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -1029,7 +1029,7 @@ export default function AuthLanding() {
               >
                 <GlassmorphicCard className="rounded-2xl">
                   <div className="p-7">
-                    <h3 className="font-black text-gray-900 mb-4 flex items-start gap-4 text-lg">
+                    <h3 className="font-black text-gray-900 dark:text-white mb-4 flex items-start gap-4 text-lg">
                       <motion.div
                         whileHover={{ rotate: 10, scale: 1.1 }}
                         className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-lg"
@@ -1038,7 +1038,7 @@ export default function AuthLanding() {
                       </motion.div>
                       <span>{faq.q}</span>
                     </h3>
-                    <p className="text-gray-700 leading-relaxed pl-12 font-medium">{faq.a}</p>
+                    <p className="text-gray-700 dark:text-gray-200 leading-relaxed pl-12 font-medium">{faq.a}</p>
                   </div>
                 </GlassmorphicCard>
               </motion.div>
@@ -1074,7 +1074,7 @@ export default function AuthLanding() {
           >
             Ready to Fight Your Bills?
           </motion.h2>
-          <p className="text-xl text-gray-700 font-semibold max-w-xl mx-auto mb-10">
+          <p className="text-xl text-gray-700 dark:text-gray-200 font-semibold max-w-xl mx-auto mb-10">
             Professional AI analysis & expert strategies to help you save thousands
           </p>
 
@@ -1106,7 +1106,7 @@ export default function AuthLanding() {
 
             <Link href="/premium">
               <motion.a
-                className="inline-flex items-center gap-2 px-10 py-6 bg-white/80 backdrop-blur-xl border-2 border-emerald-300 text-emerald-700 font-black text-lg rounded-2xl shadow-xl"
+                className="inline-flex items-center gap-2 px-10 py-6 bg-white dark:bg-slate-900/80 backdrop-blur-xl border-2 border-emerald-300 text-emerald-700 font-black text-lg rounded-2xl shadow-xl"
                 whileHover={{ scale: 1.03, y: -2 }}
                 data-testid="button-view-premium-final"
               >
@@ -1122,7 +1122,7 @@ export default function AuthLanding() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="text-center text-base text-gray-600 mt-10 font-medium"
+            className="text-center text-base text-gray-600 dark:text-gray-300 mt-10 font-medium"
           >
             🔒 Private & Secure • ⚡ AI-Powered • ⚖️ Legal Templates
           </motion.p>
@@ -1165,7 +1165,7 @@ export default function AuthLanding() {
             </div>
           </div>
           
-          <div className="pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+          <div className="pt-6 border-t border-gray-800 text-center text-xs text-gray-500 dark:text-gray-400">
             <p className="mb-1">Educational use only. Not for clinical diagnosis or treatment decisions. Not medical, legal, or financial advice.</p>
             <p>&copy; {new Date().getFullYear()} Eldest AI LLC dba GoldRock AI. All rights reserved. • Colorado, USA</p>
           </div>
@@ -1194,7 +1194,7 @@ export default function AuthLanding() {
               <motion.a
                 key={item.id}
                 href={item.href}
-                className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-3xl transition-all duration-300 bg-white/80"
+                className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-3xl transition-all duration-300 bg-white dark:bg-slate-900/80"
                 whileTap={{ scale: 0.9 }}
                 whileHover={{ scale: 1.02 }}
                 initial={{ y: 20, opacity: 0 }}
