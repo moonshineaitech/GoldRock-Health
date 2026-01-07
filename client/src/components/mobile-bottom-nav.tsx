@@ -82,7 +82,7 @@ export function MobileBottomNav() {
 
   return (
     <motion.div 
-      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100/95 backdrop-blur-xl border-t border-gray-200/50"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-gray-200/50 dark:border-slate-700/50"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
@@ -102,8 +102,10 @@ export function MobileBottomNav() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ 
                   y: 0, 
-                  opacity: 1,
-                  backgroundColor: active ? "rgba(99, 102, 241, 0.15)" : "rgba(255, 255, 255, 0.8)"
+                  opacity: 1
+                }}
+                style={{
+                  backgroundColor: active ? "rgba(99, 102, 241, 0.15)" : "transparent"
                 }}
                 transition={{ 
                   delay: index * 0.1,

@@ -1,4 +1,4 @@
-import { MobileHeader, UserAvatarDropdown } from "./mobile-header";
+import { MobileHeader, UserAvatarDropdown, ThemeToggle } from "./mobile-header";
 import { MobileBottomNav, SafeAreaProvider } from "./mobile-bottom-nav";
 import { MedicalChatbot } from "./medical-chatbot";
 import { motion } from "framer-motion";
@@ -21,24 +21,29 @@ export function MobileLayout({
   className = ""
 }: MobileLayoutProps) {
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ 
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 transition-colors duration-300" style={{ 
       WebkitOverflowScrolling: 'touch',
       touchAction: 'manipulation'
     }}>
       {/* Nostalgic Fruitger Aero Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200/8 to-emerald-200/8 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-gradient-to-r from-blue-200/8 to-teal-200/8 rounded-full blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-200/6 to-cyan-200/6 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
-        <div className="absolute top-3/4 left-1/4 w-72 h-72 bg-gradient-to-r from-sky-200/5 to-blue-200/5 rounded-full blur-3xl animate-float" style={{animationDelay: '4.5s'}}></div>
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-teal-200/6 to-cyan-200/6 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200/8 to-emerald-200/8 dark:from-cyan-500/5 dark:to-emerald-500/5 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-gradient-to-r from-blue-200/8 to-teal-200/8 dark:from-blue-500/5 dark:to-teal-500/5 rounded-full blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-200/6 to-cyan-200/6 dark:from-emerald-500/4 dark:to-cyan-500/4 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute top-3/4 left-1/4 w-72 h-72 bg-gradient-to-r from-sky-200/5 to-blue-200/5 dark:from-sky-500/3 dark:to-blue-500/3 rounded-full blur-3xl animate-float" style={{animationDelay: '4.5s'}}></div>
+        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-teal-200/6 to-cyan-200/6 dark:from-teal-500/4 dark:to-cyan-500/4 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
       </div>
 
       <MobileHeader 
         title={title}
         showBackButton={showBackButton}
         onBackClick={onBackClick}
-        rightAction={<UserAvatarDropdown />}
+        rightAction={
+          <div className="flex items-center space-x-2">
+            <ThemeToggle />
+            <UserAvatarDropdown />
+          </div>
+        }
       />
       
       <motion.main 
@@ -67,7 +72,7 @@ export function MobileLayout({
       {showBottomNav && !['/bill-ai', '/bill-analyzer'].includes(window.location.pathname) && <MedicalChatbot />}
       
       {/* Soft Floating Gradient Accent */}
-      <div className="fixed bottom-4 left-4 right-4 h-16 bg-gradient-to-r from-cyan-300/8 to-emerald-300/8 rounded-2xl blur-xl pointer-events-none"></div>
+      <div className="fixed bottom-4 left-4 right-4 h-16 bg-gradient-to-r from-cyan-300/8 to-emerald-300/8 dark:from-cyan-500/5 dark:to-emerald-500/5 rounded-2xl blur-xl pointer-events-none"></div>
     </div>
   );
 }
@@ -81,7 +86,7 @@ export function MobileCard({
 }: React.ComponentProps<"div">) {
   return (
     <motion.div 
-      className={`luxury-card backdrop-blur-xl p-6 border border-white/30 shadow-2xl animate-float ${className}`}
+      className={`luxury-card backdrop-blur-xl p-6 border border-white/30 dark:border-slate-700/40 dark:bg-slate-800/60 shadow-2xl animate-float ${className}`}
       whileTap={{ scale: 0.98 }}
       whileHover={{ scale: 1.01, y: -1 }}
       initial={{ opacity: 0, y: 20, scale: 0.98 }}
@@ -119,8 +124,8 @@ export function MobileButton({
 }) {
   const variants = {
     primary: "bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 text-white shadow-xl shadow-cyan-500/25",
-    secondary: "luxury-card text-gray-800 border border-white/30 shadow-2xl",
-    ghost: "frosted-glass text-gray-700 hover:bg-white/30"
+    secondary: "luxury-card text-gray-800 dark:text-gray-200 border border-white/30 dark:border-slate-700/40 dark:bg-slate-800/60 shadow-2xl",
+    ghost: "frosted-glass text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-slate-700/30"
   };
 
   const sizes = {
