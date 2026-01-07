@@ -425,7 +425,7 @@ export default function TermsOfService() {
           
           <h3 className="text-lg font-medium text-gray-900 mb-3">13.1 Informal Resolution</h3>
           <p className="mb-4">
-            Before initiating any formal dispute resolution, you agree to contact us at <strong>legal@goldrock.ai</strong> and attempt to 
+            Before initiating any formal dispute resolution, you agree to contact us at <strong>contact@goldrock.ai</strong> and attempt to 
             resolve any dispute informally for at least 30 days.
           </p>
 
@@ -446,7 +446,7 @@ export default function TermsOfService() {
 
           <h3 className="text-lg font-medium text-gray-900 mb-3">13.4 Opt-Out</h3>
           <p className="mb-4">
-            You may opt out of the arbitration agreement by sending written notice to <strong>legal@goldrock.ai</strong> within 30 days of 
+            You may opt out of the arbitration agreement by sending written notice to <strong>contact@goldrock.ai</strong> within 30 days of 
             first accepting these Terms. Your notice must include your name, mailing address, and a clear statement that you wish to opt out of the 
             arbitration agreement.
           </p>
@@ -519,8 +519,8 @@ export default function TermsOfService() {
             <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
             <p className="mb-2">State of Incorporation: Colorado, United States</p>
             <p className="mb-2">General Support: <strong>contact@goldrock.ai</strong></p>
-            <p className="mb-2">Legal Inquiries: <strong>legal@goldrock.ai</strong></p>
-            <p className="mb-2">Privacy Matters: <strong>privacy@goldrock.ai</strong></p>
+            <p className="mb-2">Legal Inquiries: <strong>contact@goldrock.ai</strong></p>
+            <p className="mb-2">Privacy Matters: <strong>contact@goldrock.ai</strong></p>
           </div>
 
           <div className="mt-8 p-5 bg-red-50 rounded-xl border border-red-200">

@@ -20,7 +20,7 @@ export default function PrivacyPolicy() {
               <li><strong>We don't train our AI on your personal medical bills</strong> — our training uses public and expert-curated data</li>
               <li><strong>You can delete your account and data</strong> at any time through Settings</li>
               <li><strong>Data encryption</strong> in transit and at rest protects your information</li>
-              <li><strong>Contact us at privacy@goldrock.ai</strong> for privacy inquiries</li>
+              <li><strong>Contact us at contact@goldrock.ai</strong> for privacy inquiries</li>
             </ul>
           </div>
 
@@ -178,7 +178,7 @@ export default function PrivacyPolicy() {
           <h3 className="text-lg font-medium text-gray-900 mb-3">6.1 Access and Portability</h3>
           <p className="mb-4">
             You have the right to access and receive a copy of your personal information. You can export your data through your account settings 
-            or by contacting us at <strong>privacy@goldrock.ai</strong>.
+            or by contacting us at <strong>contact@goldrock.ai</strong>.
           </p>
 
           <h3 className="text-lg font-medium text-gray-900 mb-3">6.2 Correction</h3>
@@ -219,7 +219,7 @@ export default function PrivacyPolicy() {
             <li>Opt out of profiling in furtherance of automated decisions</li>
           </ul>
           <p className="mb-4">
-            To exercise these rights, contact us at <strong>privacy@goldrock.ai</strong>. You may designate an authorized agent to make 
+            To exercise these rights, contact us at <strong>contact@goldrock.ai</strong>. You may designate an authorized agent to make 
             requests on your behalf. We may require verification of your identity before processing requests.
           </p>
 
@@ -289,7 +289,7 @@ export default function PrivacyPolicy() {
           <p className="mb-4">
             Our Services are not intended for users under 18 years of age. We do not knowingly collect personal information from children under 18. 
             If you are a parent or guardian and believe your child has provided us with personal information, please contact us at 
-            <strong> privacy@goldrock.ai</strong> and we will delete such information.
+            <strong> contact@goldrock.ai</strong> and we will delete such information.
           </p>
           <p className="mb-4">
             In compliance with the Children's Online Privacy Protection Act (COPPA), we will never knowingly collect personal information from 
@@ -382,9 +382,9 @@ export default function PrivacyPolicy() {
           <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
             <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
             <p className="mb-2">State of Incorporation: Colorado, United States</p>
-            <p className="mb-2">Privacy Inquiries: <strong>privacy@goldrock.ai</strong></p>
+            <p className="mb-2">Privacy Inquiries: <strong>contact@goldrock.ai</strong></p>
             <p className="mb-2">General Support: <strong>contact@goldrock.ai</strong></p>
-            <p className="mb-2">Data Protection Requests: <strong>privacy@goldrock.ai</strong></p>
+            <p className="mb-2">Data Protection Requests: <strong>contact@goldrock.ai</strong></p>
           </div>
 
           <p className="mb-4">

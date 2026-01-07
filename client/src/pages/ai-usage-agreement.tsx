@@ -204,7 +204,7 @@ export default function AiUsageAgreement() {
                   </ul>
 
                   <p className="mb-4">
-                    Just email us at privacy@goldrock.ai if you need anything.
+                    Just email us at contact@goldrock.ai if you need anything.
                   </p>
                 </section>
 
@@ -251,7 +251,7 @@ export default function AiUsageAgreement() {
                 {/* Contact Information - Minimized */}
                 <section className="text-xs">
                   <p className="text-gray-500 mb-2">
-                    Questions about this agreement? Contact: <span className="text-gray-600">privacy@goldrock.ai</span>
+                    Questions about this agreement? Contact: <span className="text-gray-600">contact@goldrock.ai</span>
                   </p>
                 </section>
               </div>
