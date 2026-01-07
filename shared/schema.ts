@@ -2115,3 +2115,322 @@ export const insertLabNoteSchema = createInsertSchema(labNotes).omit({
   createdAt: true,
   updatedAt: true,
 });
+
+// ==========================================
+// VALUE-ADD FEATURES: SEO, Pricing, Reviews
+// ==========================================
+
+// Medical Conditions Library for SEO Content Pages
+export const medicalConditions = pgTable("medical_conditions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  slug: varchar("slug", { length: 255 }).unique().notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(), // Emergency, Surgical, Chronic, etc.
+  icdCodes: jsonb("icd_codes").$type<string[]>().default([]),
+  cptCodes: jsonb("cpt_codes").$type<string[]>().default([]),
+  description: text("description").notNull(),
+  symptoms: jsonb("symptoms").$type<string[]>().default([]),
+  averageCost: jsonb("average_cost").$type<{
+    low: number;
+    median: number;
+    high: number;
+    uninsured: number;
+  }>(),
+  commonBillingErrors: jsonb("common_billing_errors").$type<string[]>().default([]),
+  negotiationTips: jsonb("negotiation_tips").$type<string[]>().default([]),
+  savingsPotential: varchar("savings_potential", { length: 50 }), // "$500-$5,000"
+  relatedConditions: jsonb("related_conditions").$type<string[]>().default([]),
+  seoKeywords: jsonb("seo_keywords").$type<string[]>().default([]),
+  seoDescription: text("seo_description"),
+  published: boolean("published").default(true),
+  viewCount: integer("view_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type MedicalCondition = typeof medicalConditions.$inferSelect;
+export type InsertMedicalCondition = typeof medicalConditions.$inferInsert;
+
+// Procedure Price Reports - "What Others Paid" Database
+export const procedurePriceReports = pgTable("procedure_price_reports", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  procedureName: varchar("procedure_name", { length: 255 }).notNull(),
+  cptCode: varchar("cpt_code", { length: 20 }),
+  hospitalName: varchar("hospital_name", { length: 255 }),
+  hospitalCity: varchar("hospital_city", { length: 100 }),
+  hospitalState: varchar("hospital_state", { length: 50 }),
+  zipCode: varchar("zip_code", { length: 10 }),
+  insuranceType: varchar("insurance_type", { length: 50 }), // Uninsured, PPO, HMO, Medicare, Medicaid
+  insurerName: varchar("insurer_name", { length: 255 }),
+  chargedAmount: decimal("charged_amount", { precision: 12, scale: 2 }).notNull(),
+  insurancePaid: decimal("insurance_paid", { precision: 12, scale: 2 }),
+  outOfPocket: decimal("out_of_pocket", { precision: 12, scale: 2 }).notNull(),
+  negotiatedAmount: decimal("negotiated_amount", { precision: 12, scale: 2 }),
+  finalAmount: decimal("final_amount", { precision: 12, scale: 2 }),
+  savingsAchieved: decimal("savings_achieved", { precision: 12, scale: 2 }),
+  serviceDate: timestamp("service_date"),
+  negotiationMethod: varchar("negotiation_method", { length: 100 }), // Called billing, Charity care, Payment plan, etc.
+  notes: text("notes"),
+  verified: boolean("verified").default(false),
+  moderationStatus: varchar("moderation_status", { length: 20 }).default("pending"), // pending, approved, rejected
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type ProcedurePriceReport = typeof procedurePriceReports.$inferSelect;
+export type InsertProcedurePriceReport = typeof procedurePriceReports.$inferInsert;
+
+// Hospital Profiles for Reviews
+export const hospitalProfiles = pgTable("hospital_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).unique(),
+  address: text("address"),
+  city: varchar("city", { length: 100 }).notNull(),
+  state: varchar("state", { length: 50 }).notNull(),
+  zipCode: varchar("zip_code", { length: 10 }),
+  hospitalType: varchar("hospital_type", { length: 50 }), // For-profit, Non-profit, Public
+  bedCount: integer("bed_count"),
+  hasCharityProgram: boolean("has_charity_program").default(false),
+  charityProgramDetails: text("charity_program_details"),
+  hasPriceTransparency: boolean("has_price_transparency").default(false),
+  priceTransparencyUrl: text("price_transparency_url"),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("0.00"),
+  totalReviews: integer("total_reviews").default(0),
+  billingTransparencyScore: decimal("billing_transparency_score", { precision: 3, scale: 2 }),
+  responsivenessScore: decimal("responsiveness_score", { precision: 3, scale: 2 }),
+  financialAssistanceScore: decimal("financial_assistance_score", { precision: 3, scale: 2 }),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type HospitalProfile = typeof hospitalProfiles.$inferSelect;
+export type InsertHospitalProfile = typeof hospitalProfiles.$inferInsert;
+
+// Hospital Billing Reviews
+export const hospitalReviews = pgTable("hospital_reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  hospitalId: varchar("hospital_id").references(() => hospitalProfiles.id),
+  hospitalName: varchar("hospital_name", { length: 255 }).notNull(), // Denormalized for unregistered hospitals
+  overallRating: integer("overall_rating").notNull(), // 1-5
+  billingTransparency: integer("billing_transparency"), // 1-5: Were charges clear?
+  responsiveness: integer("responsiveness"), // 1-5: Did they respond to inquiries?
+  financialAssistance: integer("financial_assistance"), // 1-5: Were they helpful with payment options?
+  accuracyOfBilling: integer("accuracy_of_billing"), // 1-5: Were there errors?
+  reviewTitle: varchar("review_title", { length: 255 }),
+  reviewText: text("review_text").notNull(),
+  procedureType: varchar("procedure_type", { length: 100 }),
+  chargedAmount: decimal("charged_amount", { precision: 12, scale: 2 }),
+  finalAmount: decimal("final_amount", { precision: 12, scale: 2 }),
+  wouldRecommend: boolean("would_recommend").default(false),
+  helpful: integer("helpful").default(0), // Count of "helpful" votes
+  moderationStatus: varchar("moderation_status", { length: 20 }).default("pending"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type HospitalReview = typeof hospitalReviews.$inferSelect;
+export type InsertHospitalReview = typeof hospitalReviews.$inferInsert;
+
+// Drug Prices for Comparison Tool
+export const drugPrices = pgTable("drug_prices", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  drugName: varchar("drug_name", { length: 255 }).notNull(),
+  genericName: varchar("generic_name", { length: 255 }),
+  brandName: varchar("brand_name", { length: 255 }),
+  ndc: varchar("ndc", { length: 20 }), // National Drug Code
+  dosage: varchar("dosage", { length: 100 }),
+  form: varchar("form", { length: 50 }), // Tablet, Capsule, Injection, etc.
+  quantity: integer("quantity"),
+  pharmacyName: varchar("pharmacy_name", { length: 255 }).notNull(),
+  pharmacyType: varchar("pharmacy_type", { length: 50 }), // Retail, Mail-order, Online
+  zipCode: varchar("zip_code", { length: 10 }),
+  retailPrice: decimal("retail_price", { precision: 10, scale: 2 }).notNull(),
+  discountPrice: decimal("discount_price", { precision: 10, scale: 2 }),
+  goodRxPrice: decimal("goodrx_price", { precision: 10, scale: 2 }),
+  insurancePrice: decimal("insurance_price", { precision: 10, scale: 2 }),
+  genericAvailable: boolean("generic_available").default(false),
+  genericSavings: decimal("generic_savings", { precision: 10, scale: 2 }),
+  manufacturerCoupon: boolean("manufacturer_coupon").default(false),
+  patientAssistanceProgram: boolean("patient_assistance_program").default(false),
+  lastUpdated: timestamp("last_updated").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type DrugPrice = typeof drugPrices.$inferSelect;
+export type InsertDrugPrice = typeof drugPrices.$inferInsert;
+
+// Bill Grader Scores
+export const billGraderScores = pgTable("bill_grader_scores", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  billId: varchar("bill_id").references(() => medicalBills.id),
+  overallScore: integer("overall_score").notNull(), // 0-100
+  billingAccuracy: integer("billing_accuracy"), // 0-100: Are codes correct?
+  priceFairness: integer("price_fairness"), // 0-100: Is pricing reasonable?
+  documentationQuality: integer("documentation_quality"), // 0-100: Is bill itemized properly?
+  negotiationLeverage: integer("negotiation_leverage"), // 0-100: How much room for negotiation?
+  complianceScore: integer("compliance_score"), // 0-100: Regulatory compliance
+  issuesFound: jsonb("issues_found").$type<{
+    critical: string[];
+    major: string[];
+    minor: string[];
+  }>().default({ critical: [], major: [], minor: [] }),
+  potentialSavings: jsonb("potential_savings").$type<{
+    lowEstimate: number;
+    highEstimate: number;
+    methods: string[];
+  }>(),
+  recommendations: jsonb("recommendations").$type<string[]>().default([]),
+  comparisonData: jsonb("comparison_data").$type<{
+    averageForProcedure: number;
+    percentile: number;
+    region: string;
+  }>(),
+  shareableLink: varchar("shareable_link", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type BillGraderScore = typeof billGraderScores.$inferSelect;
+export type InsertBillGraderScore = typeof billGraderScores.$inferInsert;
+
+// Savings Reports - Shareable PDF Reports
+export const savingsReports = pgTable("savings_reports", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  billId: varchar("bill_id").references(() => medicalBills.id),
+  graderScoreId: varchar("grader_score_id").references(() => billGraderScores.id),
+  reportType: varchar("report_type", { length: 50 }).default("standard"), // standard, detailed, executive
+  originalAmount: decimal("original_amount", { precision: 12, scale: 2 }).notNull(),
+  projectedSavings: decimal("projected_savings", { precision: 12, scale: 2 }),
+  savingsPercentage: decimal("savings_percentage", { precision: 5, scale: 2 }),
+  reportData: jsonb("report_data").$type<{
+    summary: string;
+    issueBreakdown: Array<{ issue: string; impact: string; recommendation: string }>;
+    savingsBreakdown: Array<{ method: string; potentialSavings: number }>;
+    nextSteps: string[];
+    timeline: string;
+    contactScripts: string[];
+  }>(),
+  pdfUrl: text("pdf_url"),
+  shareableToken: varchar("shareable_token", { length: 64 }).unique(),
+  viewCount: integer("view_count").default(0),
+  downloadCount: integer("download_count").default(0),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type SavingsReport = typeof savingsReports.$inferSelect;
+export type InsertSavingsReport = typeof savingsReports.$inferInsert;
+
+// Partner API Keys for B2B Access
+export const partnerApiKeys = pgTable("partner_api_keys", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  partnerId: varchar("partner_id").notNull(),
+  partnerName: varchar("partner_name", { length: 255 }).notNull(),
+  apiKey: varchar("api_key", { length: 64 }).unique().notNull(),
+  apiSecret: varchar("api_secret", { length: 128 }).notNull(),
+  tier: varchar("tier", { length: 20 }).default("basic"), // basic, professional, enterprise
+  rateLimitPerMinute: integer("rate_limit_per_minute").default(60),
+  rateLimitPerDay: integer("rate_limit_per_day").default(1000),
+  allowedEndpoints: jsonb("allowed_endpoints").$type<string[]>().default([]),
+  webhookUrl: text("webhook_url"),
+  isActive: boolean("is_active").default(true),
+  usageCount: integer("usage_count").default(0),
+  lastUsedAt: timestamp("last_used_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  expiresAt: timestamp("expires_at"),
+});
+
+export type PartnerApiKey = typeof partnerApiKeys.$inferSelect;
+export type InsertPartnerApiKey = typeof partnerApiKeys.$inferInsert;
+
+// SEO Articles for Content Marketing
+export const seoArticles = pgTable("seo_articles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  slug: varchar("slug", { length: 255 }).unique().notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  subtitle: varchar("subtitle", { length: 500 }),
+  category: varchar("category", { length: 100 }).notNull(), // guides, news, case-studies, features
+  content: text("content").notNull(),
+  excerpt: text("excerpt"),
+  featuredImage: text("featured_image"),
+  author: varchar("author", { length: 100 }).default("GoldRock Health Team"),
+  seoTitle: varchar("seo_title", { length: 100 }),
+  seoDescription: text("seo_description"),
+  seoKeywords: jsonb("seo_keywords").$type<string[]>().default([]),
+  relatedArticles: jsonb("related_articles").$type<string[]>().default([]),
+  relatedFeatures: jsonb("related_features").$type<string[]>().default([]),
+  readingTime: integer("reading_time"), // minutes
+  published: boolean("published").default(false),
+  publishedAt: timestamp("published_at"),
+  viewCount: integer("view_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type SeoArticle = typeof seoArticles.$inferSelect;
+export type InsertSeoArticle = typeof seoArticles.$inferInsert;
+
+// Insert Schemas for new entities
+export const insertMedicalConditionSchema = createInsertSchema(medicalConditions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  viewCount: true,
+});
+
+export const insertProcedurePriceReportSchema = createInsertSchema(procedurePriceReports).omit({
+  id: true,
+  createdAt: true,
+  verified: true,
+  moderationStatus: true,
+});
+
+export const insertHospitalProfileSchema = createInsertSchema(hospitalProfiles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  averageRating: true,
+  totalReviews: true,
+});
+
+export const insertHospitalReviewSchema = createInsertSchema(hospitalReviews).omit({
+  id: true,
+  createdAt: true,
+  helpful: true,
+  moderationStatus: true,
+});
+
+export const insertDrugPriceSchema = createInsertSchema(drugPrices).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
+});
+
+export const insertBillGraderScoreSchema = createInsertSchema(billGraderScores).omit({
+  id: true,
+  createdAt: true,
+  shareableLink: true,
+});
+
+export const insertSavingsReportSchema = createInsertSchema(savingsReports).omit({
+  id: true,
+  createdAt: true,
+  viewCount: true,
+  downloadCount: true,
+});
+
+export const insertPartnerApiKeySchema = createInsertSchema(partnerApiKeys).omit({
+  id: true,
+  createdAt: true,
+  usageCount: true,
+  lastUsedAt: true,
+});
+
+export const insertSeoArticleSchema = createInsertSchema(seoArticles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  viewCount: true,
+});
