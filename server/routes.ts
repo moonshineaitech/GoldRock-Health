@@ -3991,8 +3991,8 @@ Provide your analysis in this JSON format:
     }
   });
 
-  // Drug Interaction Checker API
-  app.post('/api/check-drug-interactions', isAuthenticated, express.json(), async (req: any, res) => {
+  // AI-Powered Drug Interaction Checker API
+  app.post('/api/check-drug-interactions', isAuthenticated, requiresAiAgreement, express.json(), async (req: any, res) => {
     try {
       const { medications } = req.body;
 
@@ -4000,102 +4000,301 @@ Provide your analysis in this JSON format:
         return res.status(400).json({ message: 'At least 2 medications are required' });
       }
 
-      // Common drug interactions database (not AI-based for safety)
-      const KNOWN_INTERACTIONS: Record<string, { drugs: string[], severity: string, description: string, mechanism?: string, management?: string }[]> = {
-        'warfarin': [
-          { drugs: ['aspirin'], severity: 'major', description: 'Increased risk of bleeding when combined', mechanism: 'Both medications affect blood clotting through different mechanisms', management: 'Monitor closely for signs of bleeding. Your doctor may adjust doses.' },
-          { drugs: ['ibuprofen', 'naproxen', 'nsaid'], severity: 'major', description: 'NSAIDs increase bleeding risk with warfarin', mechanism: 'NSAIDs inhibit platelet function and can cause GI bleeding', management: 'Avoid NSAIDs if possible. Use acetaminophen for pain instead.' },
-          { drugs: ['vitamin k'], severity: 'moderate', description: 'Vitamin K reduces warfarin effectiveness', mechanism: 'Vitamin K is needed for clotting factor production', management: 'Maintain consistent vitamin K intake. Inform your doctor of dietary changes.' }
-        ],
-        'lisinopril': [
-          { drugs: ['potassium', 'spironolactone'], severity: 'moderate', description: 'Risk of high potassium levels (hyperkalemia)', mechanism: 'ACE inhibitors reduce potassium excretion', management: 'Monitor potassium levels regularly. Watch for muscle weakness.' },
-          { drugs: ['ibuprofen', 'naproxen', 'nsaid'], severity: 'moderate', description: 'NSAIDs may reduce blood pressure lowering effect', mechanism: 'NSAIDs cause sodium and fluid retention', management: 'Use NSAIDs sparingly. Monitor blood pressure.' }
-        ],
-        'metformin': [
-          { drugs: ['alcohol'], severity: 'moderate', description: 'Increased risk of lactic acidosis with heavy alcohol use', mechanism: 'Both can affect lactate metabolism', management: 'Limit alcohol consumption. Avoid binge drinking.' },
-          { drugs: ['contrast dye'], severity: 'major', description: 'Risk of kidney damage with IV contrast', mechanism: 'Both can stress kidney function', management: 'Stop metformin before and after contrast procedures as directed.' }
-        ],
-        'simvastatin': [
-          { drugs: ['grapefruit'], severity: 'moderate', description: 'Grapefruit increases statin levels in blood', mechanism: 'Grapefruit inhibits CYP3A4 enzyme that metabolizes statins', management: 'Avoid grapefruit and grapefruit juice.' },
-          { drugs: ['amiodarone'], severity: 'major', description: 'Increased risk of muscle damage (rhabdomyolysis)', mechanism: 'Amiodarone inhibits statin metabolism', management: 'Lower statin dose may be needed. Report muscle pain immediately.' }
-        ],
-        'fluoxetine': [
-          { drugs: ['tramadol'], severity: 'major', description: 'Risk of serotonin syndrome', mechanism: 'Both increase serotonin levels', management: 'Watch for agitation, rapid heartbeat, fever. Seek immediate care if symptoms occur.' },
-          { drugs: ['maoi', 'phenelzine', 'tranylcypromine'], severity: 'major', description: 'Severe serotonin syndrome risk', mechanism: 'MAOIs prevent serotonin breakdown', management: 'Never combine. Wait 5 weeks after stopping fluoxetine before starting MAOI.' }
-        ],
-        'metoprolol': [
-          { drugs: ['verapamil', 'diltiazem'], severity: 'major', description: 'Risk of very slow heart rate and low blood pressure', mechanism: 'Both slow heart rate through different mechanisms', management: 'Monitor heart rate closely. Watch for dizziness.' }
-        ],
-        'omeprazole': [
-          { drugs: ['clopidogrel', 'plavix'], severity: 'moderate', description: 'May reduce clopidogrel effectiveness', mechanism: 'Omeprazole inhibits CYP2C19 needed to activate clopidogrel', management: 'Consider alternative PPI like pantoprazole if needed.' }
-        ]
-      };
-
-      const interactions: any[] = [];
-      const normalizedMeds = medications.map(m => m.toLowerCase().trim());
-
-      // Check each pair of medications
-      for (let i = 0; i < normalizedMeds.length; i++) {
-        for (let j = i + 1; j < normalizedMeds.length; j++) {
-          const med1 = normalizedMeds[i];
-          const med2 = normalizedMeds[j];
-
-          // Check if med1 has interactions with med2
-          if (KNOWN_INTERACTIONS[med1]) {
-            for (const interaction of KNOWN_INTERACTIONS[med1]) {
-              if (interaction.drugs.some(d => med2.includes(d) || d.includes(med2))) {
-                interactions.push({
-                  drug1: medications[i],
-                  drug2: medications[j],
-                  severity: interaction.severity,
-                  description: interaction.description,
-                  mechanism: interaction.mechanism,
-                  management: interaction.management
-                });
-              }
-            }
-          }
-
-          // Check reverse (med2 with med1)
-          if (KNOWN_INTERACTIONS[med2]) {
-            for (const interaction of KNOWN_INTERACTIONS[med2]) {
-              if (interaction.drugs.some(d => med1.includes(d) || d.includes(med1))) {
-                // Avoid duplicates
-                const exists = interactions.some(i => 
-                  (i.drug1.toLowerCase() === medications[j].toLowerCase() && i.drug2.toLowerCase() === medications[i].toLowerCase())
-                );
-                if (!exists) {
-                  interactions.push({
-                    drug1: medications[j],
-                    drug2: medications[i],
-                    severity: interaction.severity,
-                    description: interaction.description,
-                    mechanism: interaction.mechanism,
-                    management: interaction.management
-                  });
-                }
-              }
-            }
-          }
-        }
+      // Sanitize medication names
+      const cleanMeds = medications.map((m: string) => m.trim()).filter((m: string) => m.length > 0);
+      if (cleanMeds.length < 2) {
+        return res.status(400).json({ message: 'At least 2 valid medications are required' });
       }
 
-      const safetyNotes = [
-        'Always inform your healthcare providers about all medications, supplements, and vitamins you take',
-        'This check may not include all possible interactions',
-        'Some interactions depend on dosage and individual factors',
-        'Report any unusual symptoms to your doctor promptly'
-      ];
+      const drugInteractionPrompt = `You are a highly trained clinical pharmacist with expertise in pharmacokinetics, pharmacodynamics, and drug-drug interactions. You have comprehensive knowledge of medication safety data from peer-reviewed pharmaceutical literature, FDA drug labeling, and clinical pharmacology references.
+
+TASK: Analyze the following list of medications for potential drug-drug interactions. Be thorough and identify ALL clinically significant interactions.
+
+MEDICATIONS TO ANALYZE:
+${cleanMeds.map((med: string, i: number) => `${i + 1}. ${med}`).join('\n')}
+
+ANALYSIS REQUIREMENTS:
+
+1. INTERACTION IDENTIFICATION:
+   - Check EVERY possible pair combination for interactions
+   - Consider both brand and generic name equivalents
+   - Include interactions involving drug classes (e.g., if one is an SSRI and another is an MAOI)
+   - Check for CYP450 enzyme interactions (inhibitors, inducers, substrates)
+   - Consider pharmacodynamic interactions (additive, synergistic, antagonistic effects)
+   - Include food-drug interactions if any foods are listed
+   - Check supplement-drug interactions if supplements are listed
+
+2. SEVERITY CLASSIFICATION (use these exact categories):
+   - "major": Life-threatening or requiring intervention to prevent serious harm. Contraindicated combinations.
+   - "moderate": May require therapy modification, close monitoring, or alternative medication consideration.
+   - "minor": Limited clinical effects, generally manageable. Usually okay to use with awareness.
+
+3. FOR EACH INTERACTION PROVIDE:
+   - The exact mechanism of interaction (pharmacokinetic vs pharmacodynamic)
+   - Clinical consequences (what could happen to the patient)
+   - Specific management recommendations
+   - Monitoring parameters if applicable
+   - Alternative medications when relevant
+
+4. SPECIAL CONSIDERATIONS:
+   - Identify any drugs that affect the same organ system (e.g., multiple blood pressure medications)
+   - Note any drugs with narrow therapeutic indices that require extra caution
+   - Consider timing of administration recommendations
+   - Identify any polypharmacy concerns
+
+5. GENERAL SAFETY NOTES:
+   - Provide personalized safety tips based on this specific medication combination
+   - Include any important monitoring advice
+   - Note signs/symptoms the patient should watch for
+
+CRITICAL: 
+- Do NOT hallucinate interactions. Only report interactions that are documented in pharmaceutical literature.
+- If you're uncertain about an interaction, classify it as requiring professional verification.
+- Be comprehensive but accurate - missing a major interaction is dangerous, but so is creating false alarms.
+- Consider that patients may not know brand vs generic names, so check both.
+
+Respond with valid JSON in this exact format:
+{
+  "interactions": [
+    {
+      "drug1": "Medication name as entered",
+      "drug2": "Medication name as entered", 
+      "severity": "major|moderate|minor",
+      "description": "Clear, patient-friendly explanation of what happens when these drugs interact",
+      "mechanism": "Technical explanation of WHY this interaction occurs (enzyme pathways, receptor effects, etc.)",
+      "clinicalEffects": "What symptoms or problems the patient might experience",
+      "management": "Specific actionable recommendations for managing this interaction",
+      "monitoring": "What tests or symptoms to monitor",
+      "alternatives": "Safer alternative medications if applicable (or null if not needed)"
+    }
+  ],
+  "safetyNotes": [
+    "Personalized safety tip 1 based on this specific medication combination",
+    "Personalized safety tip 2",
+    "etc."
+  ],
+  "polypharmacyConcerns": "Brief assessment of overall medication burden and any cumulative risk concerns, or null if no concerns",
+  "medicationSummary": [
+    {
+      "name": "Medication name",
+      "drugClass": "Drug class (e.g., ACE Inhibitor, SSRI)",
+      "primaryUse": "What it's typically prescribed for"
+    }
+  ]
+}`;
+
+      const systemPrompt = `You are an expert clinical pharmacist AI assistant specialized in medication safety. You draw upon comprehensive pharmaceutical knowledge equivalent to professional drug interaction databases and clinical pharmacology references. 
+
+Your responses must be:
+- Accurate and evidence-based
+- Clear for patients while including technical details for reference
+- Thorough in identifying all potential interactions
+- Appropriately conservative (when in doubt, recommend professional consultation)
+- Never dismissive of potential safety concerns
+
+Always emphasize that this is educational information and patients should consult their pharmacist or healthcare provider for personalized advice.`;
+
+      const result = await aiProvider.generateJSON<{
+        interactions: Array<{
+          drug1: string;
+          drug2: string;
+          severity: 'major' | 'moderate' | 'minor';
+          description: string;
+          mechanism: string;
+          clinicalEffects: string;
+          management: string;
+          monitoring?: string;
+          alternatives?: string;
+        }>;
+        safetyNotes: string[];
+        polypharmacyConcerns?: string;
+        medicationSummary: Array<{
+          name: string;
+          drugClass: string;
+          primaryUse: string;
+        }>;
+      }>(drugInteractionPrompt, systemPrompt, {
+        maxTokens: 4000,
+        temperature: 0.2
+      });
 
       res.json({
-        medications,
-        interactions,
-        safetyNotes,
-        disclaimer: 'This drug interaction checker is for educational purposes only. It may not include all possible interactions. Always consult your pharmacist or healthcare provider for complete medication safety guidance.'
+        medications: cleanMeds,
+        interactions: result.interactions || [],
+        safetyNotes: result.safetyNotes || [],
+        polypharmacyConcerns: result.polypharmacyConcerns || null,
+        medicationSummary: result.medicationSummary || [],
+        disclaimer: 'This AI-powered drug interaction analysis is for educational purposes only. It uses advanced AI to analyze medication combinations but may not include all possible interactions. Individual responses to medications vary. Always consult your pharmacist or healthcare provider for complete medication safety guidance before making any changes to your medications.'
       });
     } catch (error) {
       console.error('Drug interaction check error:', error);
       res.status(500).json({ message: 'Failed to check drug interactions' });
+    }
+  });
+
+  // Single Drug Lookup API - Get detailed information about a single medication
+  app.post('/api/drug-lookup', isAuthenticated, requiresAiAgreement, express.json(), async (req: any, res) => {
+    try {
+      const { medication } = req.body;
+
+      if (!medication || typeof medication !== 'string' || medication.trim().length === 0) {
+        return res.status(400).json({ message: 'Medication name is required' });
+      }
+
+      const cleanMed = medication.trim();
+
+      const drugLookupPrompt = `You are a highly trained clinical pharmacist providing comprehensive medication education. Draw upon your extensive knowledge of pharmaceutical science, FDA drug labeling, and clinical pharmacology.
+
+MEDICATION TO ANALYZE: ${cleanMed}
+
+Provide a comprehensive educational overview of this medication. If the medication name is misspelled or ambiguous, identify the most likely intended medication and note any alternatives.
+
+Include the following information:
+
+1. IDENTIFICATION:
+   - Generic name and all common brand names
+   - Drug class and pharmacological category
+   - DEA schedule if controlled substance
+   - Available forms and strengths
+
+2. MECHANISM OF ACTION:
+   - How the drug works at the molecular/cellular level
+   - Target receptors, enzymes, or pathways
+   - Onset of action and duration
+
+3. CLINICAL USES:
+   - FDA-approved indications
+   - Common off-label uses (if well-established)
+   - Typical dosing ranges
+
+4. SIDE EFFECTS:
+   - Very common (>10%)
+   - Common (1-10%)  
+   - Serious/rare but important
+   - Black box warnings if any
+
+5. IMPORTANT PRECAUTIONS:
+   - Contraindications (when NOT to use)
+   - Conditions requiring dose adjustment (kidney, liver disease)
+   - Pregnancy and breastfeeding considerations
+   - Age-related considerations (pediatric, geriatric)
+
+6. DRUG INTERACTIONS:
+   - Major drug classes to avoid or use with caution
+   - Food interactions
+   - Alcohol interaction
+   - Supplement interactions
+
+7. PATIENT COUNSELING POINTS:
+   - How to take (with/without food, timing)
+   - What to watch for
+   - Storage requirements
+   - What to do if a dose is missed
+
+8. MONITORING:
+   - Lab tests typically required
+   - Symptoms to report
+
+Respond with valid JSON:
+{
+  "identified": true,
+  "genericName": "Generic drug name",
+  "brandNames": ["Brand 1", "Brand 2"],
+  "drugClass": "Pharmacological class",
+  "deaSchedule": "Schedule if controlled, or null",
+  "forms": ["Tablet", "Capsule", etc.],
+  "mechanismOfAction": "Clear explanation of how the drug works",
+  "primaryUses": [
+    { "indication": "Condition name", "isApproved": true/false, "notes": "Optional notes" }
+  ],
+  "dosing": {
+    "typical": "Typical adult dosing range",
+    "maximum": "Maximum daily dose",
+    "adjustments": "Brief note on dose adjustments needed for special populations"
+  },
+  "sideEffects": {
+    "veryCommon": ["Side effect 1", "Side effect 2"],
+    "common": ["Side effect 3"],
+    "serious": ["Serious side effect with brief explanation"],
+    "blackBoxWarning": "Black box warning text if applicable, or null"
+  },
+  "precautions": {
+    "contraindications": ["Absolute contraindication 1"],
+    "warnings": ["Important warning 1"],
+    "pregnancy": "FDA pregnancy category or description",
+    "breastfeeding": "Recommendation for nursing mothers",
+    "pediatric": "Notes on use in children",
+    "geriatric": "Notes on use in elderly"
+  },
+  "interactions": {
+    "majorDrugClasses": ["Drug class to avoid"],
+    "specificDrugs": ["Specific high-risk drug 1"],
+    "food": "Food interaction info or null",
+    "alcohol": "Alcohol interaction info",
+    "supplements": ["Supplement to avoid"]
+  },
+  "patientCounseling": [
+    "Key counseling point 1",
+    "Key counseling point 2"
+  ],
+  "monitoring": {
+    "labTests": ["Lab test 1", "Lab test 2"],
+    "symptoms": ["Symptom to report 1"]
+  },
+  "storage": "Storage requirements",
+  "missedDose": "What to do if dose is missed"
+}`;
+
+      const systemPrompt = `You are an expert clinical pharmacist educator. Provide accurate, comprehensive medication information that is both technically complete and understandable to patients. Your knowledge reflects current pharmaceutical standards and FDA labeling. If unsure about any detail, note the uncertainty rather than guessing. Always emphasize consulting healthcare providers for personalized advice.`;
+
+      const result = await aiProvider.generateJSON<{
+        identified: boolean;
+        genericName: string;
+        brandNames: string[];
+        drugClass: string;
+        deaSchedule?: string;
+        forms: string[];
+        mechanismOfAction: string;
+        primaryUses: Array<{ indication: string; isApproved: boolean; notes?: string }>;
+        dosing: { typical: string; maximum: string; adjustments: string };
+        sideEffects: {
+          veryCommon: string[];
+          common: string[];
+          serious: string[];
+          blackBoxWarning?: string;
+        };
+        precautions: {
+          contraindications: string[];
+          warnings: string[];
+          pregnancy: string;
+          breastfeeding: string;
+          pediatric: string;
+          geriatric: string;
+        };
+        interactions: {
+          majorDrugClasses: string[];
+          specificDrugs: string[];
+          food?: string;
+          alcohol: string;
+          supplements: string[];
+        };
+        patientCounseling: string[];
+        monitoring: { labTests: string[]; symptoms: string[] };
+        storage: string;
+        missedDose: string;
+      }>(drugLookupPrompt, systemPrompt, {
+        maxTokens: 3000,
+        temperature: 0.2
+      });
+
+      res.json({
+        ...result,
+        searchedTerm: cleanMed,
+        disclaimer: 'This medication information is for educational purposes only and is generated by AI. It may not include all information about this medication. Always read the FDA-approved prescribing information and consult your pharmacist or healthcare provider for complete and personalized medication guidance.'
+      });
+    } catch (error) {
+      console.error('Drug lookup error:', error);
+      res.status(500).json({ message: 'Failed to look up medication information' });
     }
   });
 
