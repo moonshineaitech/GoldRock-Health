@@ -146,7 +146,16 @@ export function DemoChat() {
   const morePrompts = [
     { text: "Appeal a denied claim", icon: "📋" },
     { text: "Understand my EOB", icon: "📄" },
-    { text: "Find financial assistance", icon: "🏥" },
+    { text: "Find financial assistance", icon: "💸" },
+    { text: "Negotiate with hospital", icon: "🤝" },
+    { text: "Check my patient rights", icon: "🛡️" },
+    { text: "Explain insurance terms", icon: "📖" },
+    { text: "Decode medical codes", icon: "🔢" },
+    { text: "Medicare/Medicaid help", icon: "🏛️" },
+    { text: "Emergency bill help", icon: "🚨" },
+    { text: "When to pay vs fight", icon: "⏰" },
+    { text: "Contact my provider", icon: "📞" },
+    { text: "Understand my symptoms", icon: "🩺" },
   ];
 
   // Format message content with paragraph breaks
@@ -226,15 +235,15 @@ export function DemoChat() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-3 gap-2 pt-1">
+                    <div className="grid grid-cols-3 gap-2 pt-2 max-h-[200px] overflow-y-auto">
                       {morePrompts.map((prompt, i) => (
                         <motion.button
                           key={i}
                           onClick={() => handleQuickPrompt(prompt.text)}
-                          className="flex flex-col items-center gap-1 text-center text-[11px] p-2.5 bg-gray-50 border border-gray-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
+                          className="flex flex-col items-center gap-0.5 text-center text-[10px] p-2 bg-gray-50 border border-gray-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
                           whileTap={{ scale: 0.95 }}
                         >
-                          <span className="text-base">{prompt.icon}</span>
+                          <span className="text-sm">{prompt.icon}</span>
                           <span className="font-medium leading-tight">{prompt.text}</span>
                         </motion.button>
                       ))}
