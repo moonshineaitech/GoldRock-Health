@@ -511,7 +511,7 @@ export default function AuthLanding() {
       <section 
         className="py-20 relative overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, rgba(15, 23, 42, 0.97) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.97) 100%)",
+          background: "linear-gradient(180deg, rgba(240,253,244,0.6) 0%, rgba(236,253,245,0.8) 50%, rgba(240,249,255,0.6) 100%)",
         }}
         data-testid="section-quick-access"
       >
@@ -519,20 +519,16 @@ export default function AuthLanding() {
           <motion.div 
             className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%)",
               filter: "blur(80px)",
             }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity }}
           />
           <motion.div 
             className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%)",
               filter: "blur(60px)",
             }}
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
-            transition={{ duration: 6, repeat: Infinity, delay: 1 }}
           />
         </div>
 
@@ -544,14 +540,14 @@ export default function AuthLanding() {
             className="text-center mb-12"
           >
             <motion.span 
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-emerald-300 px-5 py-2.5 rounded-full font-bold text-sm mb-5 border border-emerald-500/30 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 px-5 py-2.5 rounded-full font-bold text-sm mb-5 border border-emerald-200/50 shadow-sm"
               whileHover={{ scale: 1.05 }}
             >
               <Zap className="h-4 w-4" />
               Quick Access
             </motion.span>
             <h2 className="text-3xl md:text-4xl font-black mb-4">
-              <span className="text-white">Explore All </span>
+              <span className="text-gray-900">Explore All </span>
               <span 
                 style={{
                   background: "linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #8b5cf6 100%)",
@@ -562,7 +558,7 @@ export default function AuthLanding() {
                 Features
               </span>
             </h2>
-            <p className="text-gray-400 font-medium max-w-lg mx-auto">
+            <p className="text-gray-600 font-medium max-w-lg mx-auto">
               Sign in to unlock powerful AI tools for medical bill analysis, diagnostics, and more
             </p>
           </motion.div>
@@ -598,15 +594,19 @@ export default function AuthLanding() {
                 className="group relative"
                 data-testid={`quicklink-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r opacity-0 group-hover:opacity-100 rounded-2xl blur-lg transition-opacity duration-300" 
-                  style={{ background: `linear-gradient(135deg, ${item.gradient.includes('emerald') ? '#10b981' : item.gradient.includes('purple') ? '#8b5cf6' : item.gradient.includes('blue') ? '#3b82f6' : '#f59e0b'}, transparent)` }}
+                <motion.div
+                  className="absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-300"
+                  style={{
+                    background: `linear-gradient(135deg, ${item.gradient.includes('emerald') ? 'rgba(16,185,129,0.2)' : item.gradient.includes('purple') ? 'rgba(139,92,246,0.2)' : item.gradient.includes('blue') ? 'rgba(59,130,246,0.2)' : 'rgba(245,158,11,0.2)'}, transparent)`,
+                    filter: "blur(8px)",
+                  }}
                 />
-                <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-white/30 transition-all duration-300 h-full">
+                <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 h-full">
                   <div className={`w-10 h-10 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
                     <item.icon className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="font-bold text-white text-sm mb-1 group-hover:text-emerald-300 transition-colors">{item.label}</h3>
-                  <p className="text-xs text-gray-400">{item.description}</p>
+                  <h3 className="font-bold text-gray-900 text-sm mb-1 group-hover:text-emerald-600 transition-colors">{item.label}</h3>
+                  <p className="text-xs text-gray-500">{item.description}</p>
                   {(item.featured || item.special) && (
                     <motion.div
                       className={`absolute top-2 right-2 w-2 h-2 rounded-full ${item.special ? 'bg-pink-500' : 'bg-emerald-500'}`}
@@ -628,7 +628,7 @@ export default function AuthLanding() {
           >
             <motion.a
               href="/api/login"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold rounded-2xl shadow-2xl hover:shadow-emerald-500/30 transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold rounded-2xl shadow-xl hover:shadow-emerald-500/30 transition-all"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
               data-testid="button-signin-quicklinks"
