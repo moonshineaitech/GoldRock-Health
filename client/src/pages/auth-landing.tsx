@@ -226,9 +226,19 @@ export default function AuthLanding() {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+          {/* Top Header - Your Healthcare Bill Protector */}
+          <motion.p
+            className="text-xs sm:text-sm font-semibold text-emerald-600 tracking-wide uppercase mb-3"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            Your Healthcare Bill Protector & Advocate
+          </motion.p>
+
           {/* Balanced Healthcare Logo - Shield with Heart Center */}
           <motion.div 
-            className="relative mx-auto mb-6"
+            className="relative mx-auto mb-4"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", stiffness: 150, damping: 15 }}
