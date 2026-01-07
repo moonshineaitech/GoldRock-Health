@@ -147,6 +147,71 @@ const GlassmorphicCard = ({ children, className = "", glowColor = "emerald" }: {
   );
 };
 
+const PreLoginBottomNav = () => {
+  const navItems = [
+    { id: "home", label: "Home", icon: Home, href: "/api/login", color: "#3B82F6" },
+    { id: "billai", label: "Bill AI", icon: FileText, href: "/api/login?redirect=/bill-ai", color: "#8B5CF6" },
+    { id: "diagnostics", label: "Diagnose", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", color: "#14B8A6" },
+    { id: "clinical", label: "Clinical", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", color: "#6366F1" },
+    { id: "lunafold", label: "LunaFold", icon: Dna, href: "/api/login?redirect=/lunafold", color: "#06B6D4" },
+    { id: "premium", label: "Premium", icon: Crown, href: "/api/login?redirect=/premium", color: "#F59E0B", special: true },
+  ];
+
+  return (
+    <motion.div 
+      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-100/95 backdrop-blur-xl border-t border-gray-200/50"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
+      <div className="flex items-center justify-around px-2 py-2">
+        {navItems.map((item, index) => {
+          const Icon = item.icon;
+          
+          return (
+            <motion.a
+              key={item.id}
+              href={item.href}
+              className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-3xl transition-all duration-300 bg-white/80"
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.02 }}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1, duration: 0.4 }}
+              data-testid={`prelogin-nav-${item.id}`}
+            >
+              <motion.div className="relative">
+                <Icon 
+                  className="h-6 w-6 mb-1"
+                  style={{ color: item.color }}
+                />
+                
+                {item.special && (
+                  <motion.div
+                    className="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold shadow-lg"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+                  >
+                    <Sparkles className="h-3 w-3" />
+                  </motion.div>
+                )}
+              </motion.div>
+              <span 
+                className="text-sm font-medium leading-none truncate"
+                style={{ color: '#374151' }}
+              >
+                {item.label}
+              </span>
+            </motion.a>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+};
+
 const PremiumButton = ({ children, className = "", variant = "primary" }: { children: React.ReactNode; className?: string; variant?: "primary" | "secondary" }) => {
   const [isHovered, setIsHovered] = useState(false);
   
@@ -199,7 +264,7 @@ export default function Landing() {
   }, []);
   
   return (
-    <MobileLayout title="GoldRock AI" showBottomNav={true}>
+    <MobileLayout title="GoldRock AI" showBottomNav={false}>
       <motion.div 
         className="text-center py-16 px-4 relative overflow-hidden"
         initial={{ opacity: 0 }}
@@ -1517,102 +1582,8 @@ export default function Landing() {
         </div>
       </motion.div>
 
-      {/* Premium Bottom Navigation Bar - Requires Login */}
-      <motion.div 
-        className="fixed bottom-0 left-0 right-0 z-50"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1, ease: "easeOut" }}
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-      >
-        {/* Glassmorphic background with gradient border */}
-        <div className="relative">
-          <div 
-            className="absolute inset-0 rounded-t-3xl"
-            style={{
-              background: "linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(6, 182, 212, 0.2) 50%, rgba(139, 92, 246, 0.2) 100%)",
-              filter: "blur(20px)",
-              transform: "translateY(-10px)",
-            }}
-          />
-          <div 
-            className="relative bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-2xl border-t border-white/10 rounded-t-3xl shadow-2xl"
-            style={{
-              boxShadow: "0 -10px 40px rgba(0,0,0,0.3), 0 -2px 10px rgba(16, 185, 129, 0.1)",
-            }}
-          >
-            <div className="flex items-center justify-around px-2 py-3">
-              {[
-                { id: "home", label: "Home", icon: Home, href: "/api/login", gradient: "from-blue-500 to-indigo-600" },
-                { id: "billai", label: "Bill AI", icon: FileText, href: "/api/login?redirect=/bill-ai", gradient: "from-emerald-500 to-teal-600" },
-                { id: "diagnose", label: "Diagnose", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", gradient: "from-purple-500 to-violet-600" },
-                { id: "clinical", label: "Clinical", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", gradient: "from-cyan-500 to-blue-600" },
-                { id: "lunafold", label: "LunaFold", icon: Dna, href: "/api/login?redirect=/lunafold", gradient: "from-violet-500 to-purple-600" },
-                { id: "premium", label: "Premium", icon: Crown, href: "/api/login?redirect=/premium", gradient: "from-amber-500 to-orange-600", special: true },
-              ].map((item, index) => (
-                <motion.a
-                  key={item.id}
-                  href={item.href}
-                  className="flex flex-col items-center justify-center min-w-0 flex-1 p-2 rounded-2xl group relative"
-                  whileTap={{ scale: 0.9 }}
-                  whileHover={{ scale: 1.08, y: -4 }}
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1.2 + index * 0.1, duration: 0.4 }}
-                  data-testid={`bottom-nav-${item.id}`}
-                >
-                  {/* Glow effect on hover */}
-                  <motion.div
-                    className={`absolute -inset-1 rounded-2xl bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-30 blur-lg transition-opacity`}
-                  />
-                  
-                  {/* Icon container */}
-                  <motion.div
-                    className={`relative w-10 h-10 rounded-xl flex items-center justify-center mb-1 bg-gradient-to-br ${item.gradient} shadow-lg`}
-                    whileHover={{ rotate: 5, scale: 1.1 }}
-                  >
-                    <item.icon className="h-5 w-5 text-white drop-shadow-md" />
-                    
-                    {/* Special badge for premium */}
-                    {item.special && (
-                      <motion.div
-                        className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        <Sparkles className="h-2.5 w-2.5 text-white" />
-                      </motion.div>
-                    )}
-                  </motion.div>
-                  
-                  {/* Label */}
-                  <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors truncate">
-                    {item.label}
-                  </span>
-                </motion.a>
-              ))}
-            </div>
-            
-            {/* Sign in prompt */}
-            <motion.div 
-              className="text-center pb-2 pt-1"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2 }}
-            >
-              <a 
-                href="/api/login" 
-                className="text-xs text-gray-400 hover:text-emerald-400 transition-colors font-medium inline-flex items-center gap-1"
-                data-testid="bottom-nav-signin-prompt"
-              >
-                <Lock className="h-3 w-3" />
-                Sign in to access all features
-                <ArrowRight className="h-3 w-3" />
-              </a>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
+      {/* Pre-Login Bottom Navigation Bar */}
+      <PreLoginBottomNav />
     </MobileLayout>
   );
 }
