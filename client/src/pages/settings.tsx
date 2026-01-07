@@ -168,8 +168,8 @@ export default function Settings() {
           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl">
             <SettingsIcon className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Settings</h1>
-          <p className="text-gray-600">Manage your account and preferences</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Settings</h1>
+          <p className="text-gray-600 dark:text-gray-400">Manage your account and preferences</p>
         </motion.div>
 
         {adminCheck?.isAdmin && (
@@ -201,7 +201,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
             Profile
           </h2>
           <MobileCard>
@@ -216,12 +216,12 @@ export default function Settings() {
                     )}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">
+                    <p className="font-semibold text-gray-900 dark:text-white">
                       {user?.firstName || user?.lastName 
                         ? `${user?.firstName || ''} ${user?.lastName || ''}`.trim()
                         : 'Set your name'}
                     </p>
-                    <p className="text-sm text-gray-500">{user?.email || 'No email'}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email || 'No email'}</p>
                   </div>
                 </div>
                 <Button
@@ -234,9 +234,9 @@ export default function Settings() {
                 </Button>
               </div>
 
-              <div className="pt-2 border-t border-gray-100">
+              <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600">Subscription</span>
+                  <span className="text-gray-600 dark:text-gray-300">Subscription</span>
                   <span className={`px-2 py-1 rounded-full text-sm font-medium ${
                     user?.subscriptionStatus === 'active'
                       ? 'bg-green-100 text-green-700'
@@ -263,7 +263,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
             Notifications
           </h2>
           <MobileCard>
@@ -274,8 +274,8 @@ export default function Settings() {
                     <Bell className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Push Notifications</p>
-                    <p className="text-sm text-gray-500">Get alerts for analysis updates</p>
+                    <p className="font-medium text-gray-900 dark:text-white">Push Notifications</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Get alerts for analysis updates</p>
                   </div>
                 </div>
                 <Switch
@@ -291,8 +291,8 @@ export default function Settings() {
                     <Bell className="h-4 w-4 text-green-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Bill Reminders</p>
-                    <p className="text-sm text-gray-500">Reminders for upcoming bills</p>
+                    <p className="font-medium text-gray-900 dark:text-white">Bill Reminders</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Reminders for upcoming bills</p>
                   </div>
                 </div>
                 <Switch
@@ -308,8 +308,8 @@ export default function Settings() {
                     <FileText className="h-4 w-4 text-purple-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Weekly Digest</p>
-                    <p className="text-sm text-gray-500">Summary of your savings</p>
+                    <p className="font-medium text-gray-900 dark:text-white">Weekly Digest</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Summary of your savings</p>
                   </div>
                 </div>
                 <Switch
@@ -325,8 +325,8 @@ export default function Settings() {
                     <Bell className="h-4 w-4 text-orange-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Marketing Emails</p>
-                    <p className="text-sm text-gray-500">Tips and offers</p>
+                    <p className="font-medium text-gray-900 dark:text-white">Marketing Emails</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Tips and offers</p>
                   </div>
                 </div>
                 <Switch
@@ -427,8 +427,8 @@ export default function Settings() {
                   )}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Connection Status</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="font-medium text-gray-900 dark:text-white">Connection Status</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     {isOnline ? 'Online - Data syncing' : 'Offline - Changes pending'}
                   </p>
                 </div>
@@ -447,18 +447,18 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
             Privacy & Legal
           </h2>
           <MobileCard>
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-gray-100 dark:divide-gray-700">
               <Link href="/privacy-policy">
-                <div className="flex items-center justify-between py-3 hover:bg-gray-50 transition-colors cursor-pointer" data-testid="link-privacy-policy">
+                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" data-testid="link-privacy-policy">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
                       <Shield className="h-4 w-4 text-gray-600" />
                     </div>
-                    <span className="font-medium text-gray-900">Privacy Policy</span>
+                    <span className="font-medium text-gray-900 dark:text-white">Privacy Policy</span>
                   </div>
                   <ChevronRight className="h-4 w-4 text-gray-400" />
                 </div>
@@ -469,7 +469,7 @@ export default function Settings() {
                     <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
                       <FileText className="h-4 w-4 text-gray-600" />
                     </div>
-                    <span className="font-medium text-gray-900">Terms of Service</span>
+                    <span className="font-medium text-gray-900 dark:text-white">Terms of Service</span>
                   </div>
                   <ChevronRight className="h-4 w-4 text-gray-400" />
                 </div>
@@ -480,7 +480,7 @@ export default function Settings() {
                     <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
                       <HelpCircle className="h-4 w-4 text-gray-600" />
                     </div>
-                    <span className="font-medium text-gray-900">Help & Support</span>
+                    <span className="font-medium text-gray-900 dark:text-white">Help & Support</span>
                   </div>
                   <ChevronRight className="h-4 w-4 text-gray-400" />
                 </div>

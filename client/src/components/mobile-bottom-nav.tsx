@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { 
   Home,
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useTheme } from "@/components/theme-provider";
 
 interface NavItem {
   id: string;
@@ -86,9 +87,20 @@ const bgColors: Record<string, string> = {
   amber: 'rgba(255,251,235,0.9), rgba(254,243,199,0.8)',
 };
 
+const bgColorsDark: Record<string, string> = {
+  blue: 'rgba(30,58,138,0.3), rgba(30,64,175,0.2)',
+  purple: 'rgba(88,28,135,0.3), rgba(107,33,168,0.2)',
+  teal: 'rgba(15,118,110,0.3), rgba(20,184,166,0.2)',
+  indigo: 'rgba(55,48,163,0.3), rgba(67,56,202,0.2)',
+  cyan: 'rgba(8,145,178,0.3), rgba(6,182,212,0.2)',
+  amber: 'rgba(180,83,9,0.3), rgba(245,158,11,0.2)',
+};
+
 export function MobileBottomNav() {
   const [location] = useLocation();
   const { isSubscribed } = useSubscription();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
 
   const isActive = (path: string) => {
     if (path === "/" && location === "/") return true;
@@ -96,13 +108,19 @@ export function MobileBottomNav() {
     return false;
   };
 
+  const currentBgColors = isDark ? bgColorsDark : bgColors;
+
   return (
     <motion.div 
-      className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-2xl border-t border-white/20"
+      className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-2xl border-t border-white/20 dark:border-white/10"
       style={{ 
         paddingBottom: 'env(safe-area-inset-bottom)',
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.98) 100%)',
-        boxShadow: '0 -4px 30px rgba(0,0,0,0.08)'
+        background: isDark 
+          ? 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.98) 100%)'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.98) 100%)',
+        boxShadow: isDark 
+          ? '0 -4px 30px rgba(0,0,0,0.3)'
+          : '0 -4px 30px rgba(0,0,0,0.08)'
       }}
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -118,10 +136,10 @@ export function MobileBottomNav() {
               <motion.div
                 className="relative flex flex-col items-center justify-center min-w-0 flex-1 py-2 px-1 rounded-2xl transition-all duration-300 overflow-hidden group"
                 style={{
-                  background: `linear-gradient(135deg, ${bgColors[item.bgGradient]})`,
+                  background: `linear-gradient(135deg, ${currentBgColors[item.bgGradient]})`,
                   boxShadow: active 
-                    ? `0 4px 12px ${item.color}30, inset 0 1px 0 rgba(255,255,255,0.8)` 
-                    : '0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'
+                    ? `0 4px 12px ${item.color}30, inset 0 1px 0 ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.8)'}` 
+                    : `0 2px 8px ${isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.04)'}, inset 0 1px 0 ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.8)'}`
                 }}
                 whileTap={{ scale: 0.92 }}
                 whileHover={{ scale: 1.05, y: -2 }}

@@ -4,6 +4,7 @@ import { useLocation } from "wouter";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useTheme } from "@/components/theme-provider";
 
 interface MobileHeaderProps {
   title: string;
@@ -92,13 +93,13 @@ export function NavigationDropdown() {
   return (
     <div className="relative">
       <motion.button
-        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg shadow-black/10 hover:bg-white/80 active:bg-white/90 transition-all duration-300"
+        className="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-white/40 dark:border-white/10 shadow-lg shadow-black/10 hover:bg-white/80 dark:hover:bg-slate-700/80 active:bg-white/90 dark:active:bg-slate-700/90 transition-all duration-300"
         whileTap={{ scale: 0.92 }}
         whileHover={{ scale: 1.08, rotateZ: 2 }}
         onClick={() => setIsOpen(!isOpen)}
         data-testid="navigation-menu"
       >
-        <Menu className="h-4 w-4 text-gray-700" />
+        <Menu className="h-4 w-4 text-gray-700 dark:text-gray-200" />
       </motion.button>
 
       {/* Dropdown Menu */}
