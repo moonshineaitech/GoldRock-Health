@@ -1,25 +1,25 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { useState } from "react";
 import { 
-  TrendingUp, 
   Building2,
   Target,
-  Zap,
-  Shield,
   CheckCircle,
-  ArrowRight,
   Briefcase,
   Rocket,
-  Mail,
-  Calendar,
-  ArrowLeft
+  ArrowLeft,
+  Send
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { SEOHead } from "@/components/seo-head";
 import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import { useToast } from "@/hooks/use-toast";
 
 const fundingDetails = {
   round: "Series A",
@@ -62,6 +62,92 @@ const comparables = [
   { company: "Collective Health", valuation: "$1.1B", category: "Benefits Platform" },
   { company: "Ribbon Health", valuation: "$225M", category: "Healthcare Data" }
 ];
+
+function ContactForm({ type }: { type: string }) {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ name: '', email: '', company: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    toast({
+      title: "Message Sent",
+      description: "We'll get back to you within 1-2 business days.",
+    });
+    
+    setFormData({ name: '', email: '', company: '', message: '' });
+    setIsSubmitting(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">Name</Label>
+          <Input
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+            className="bg-white dark:bg-gray-700"
+            data-testid="input-contact-name"
+          />
+        </div>
+        <div>
+          <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            required
+            className="bg-white dark:bg-gray-700"
+            data-testid="input-contact-email"
+          />
+        </div>
+      </div>
+      <div>
+        <Label htmlFor="company" className="text-gray-700 dark:text-gray-300">Firm/Company</Label>
+        <Input
+          id="company"
+          value={formData.company}
+          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+          className="bg-white dark:bg-gray-700"
+          data-testid="input-contact-company"
+        />
+      </div>
+      <div>
+        <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">Message</Label>
+        <Textarea
+          id="message"
+          value={formData.message}
+          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          placeholder={`I'm interested in ${type}...`}
+          required
+          className="bg-white dark:bg-gray-700 min-h-[100px]"
+          data-testid="input-contact-message"
+        />
+      </div>
+      <Button 
+        type="submit" 
+        className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+        disabled={isSubmitting}
+        data-testid="button-submit-contact"
+      >
+        <Send className="h-4 w-4 mr-2" />
+        {isSubmitting ? "Sending..." : "Send Message"}
+      </Button>
+      <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+        Or email us directly at CONTACT@GOLDROCK.ai
+      </p>
+    </form>
+  );
+}
 
 export default function ForVCs() {
   return (
@@ -185,32 +271,18 @@ export default function ForVCs() {
           </div>
 
           <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-            <CardContent className="py-10 text-center">
-              <Briefcase className="h-10 w-10 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Schedule a Partner Meeting
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
-                Request our full data room including financial model, cap table, 
-                customer cohort analysis, and product roadmap.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button 
-                  className="bg-purple-600 hover:bg-purple-700 text-white"
-                  onClick={() => window.location.href = 'mailto:founders@goldrockhealth.com?subject=VC Partner Meeting Request'}
-                  data-testid="button-schedule-meeting"
-                >
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Schedule Meeting
-                </Button>
-                <Button 
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                  onClick={() => window.location.href = 'mailto:investors@goldrockhealth.com?subject=Data Room Access Request'}
-                  data-testid="button-request-data-room"
-                >
-                  <Mail className="h-4 w-4 mr-2" />
-                  Request Data Room
-                </Button>
+            <CardContent className="py-10">
+              <div className="text-center mb-6">
+                <Briefcase className="h-10 w-10 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  Request Data Room Access
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                  Get access to our financial model, cap table, customer cohort analysis, and product roadmap.
+                </p>
+              </div>
+              <div className="max-w-md mx-auto">
+                <ContactForm type="data room access and partner meeting" />
               </div>
             </CardContent>
           </Card>

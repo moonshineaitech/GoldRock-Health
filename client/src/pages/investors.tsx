@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { useState } from "react";
 import { 
-  TrendingUp, 
   Building2,
   Target,
   Zap,
@@ -12,15 +12,19 @@ import {
   ArrowRight,
   Briefcase,
   Award,
-  Mail,
-  ArrowLeft
+  ArrowLeft,
+  Send
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { SEOHead } from "@/components/seo-head";
 import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import { useToast } from "@/hooks/use-toast";
 
 const marketOpportunity = {
   tam: 4500,
@@ -67,12 +71,58 @@ const teamHighlights = [
 ];
 
 const milestones = [
-  { date: "Q2 2025", milestone: "Platform launch, 1,000 beta users" },
-  { date: "Q3 2025", milestone: "AI bill analysis, 5,000 users" },
-  { date: "Q4 2025", milestone: "Enterprise API launch, first B2B contracts" },
+  { date: "Q2 2025", milestone: "Platform launch" },
+  { date: "Q3 2025", milestone: "AI bill analysis release" },
+  { date: "Q4 2025", milestone: "Enterprise API launch" },
   { date: "Q1 2026", milestone: "National expansion" },
   { date: "Q2 2026", milestone: "Series A fundraise" }
 ];
+
+function ContactForm() {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ name: '', email: '', company: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    toast({
+      title: "Message Sent",
+      description: "We'll get back to you within 1-2 business days.",
+    });
+    setFormData({ name: '', email: '', company: '', message: '' });
+    setIsSubmitting(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">Name</Label>
+          <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="bg-white dark:bg-gray-700" data-testid="input-contact-name" />
+        </div>
+        <div>
+          <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Email</Label>
+          <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="bg-white dark:bg-gray-700" data-testid="input-contact-email" />
+        </div>
+      </div>
+      <div>
+        <Label htmlFor="company" className="text-gray-700 dark:text-gray-300">Firm/Company</Label>
+        <Input id="company" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="bg-white dark:bg-gray-700" data-testid="input-contact-company" />
+      </div>
+      <div>
+        <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">Message</Label>
+        <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="I'm interested in learning more about investment opportunities..." required className="bg-white dark:bg-gray-700 min-h-[100px]" data-testid="input-contact-message" />
+      </div>
+      <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white" disabled={isSubmitting} data-testid="button-submit-contact">
+        <Send className="h-4 w-4 mr-2" />
+        {isSubmitting ? "Sending..." : "Send Message"}
+      </Button>
+      <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Or email us directly at CONTACT@GOLDROCK.ai</p>
+    </form>
+  );
+}
 
 export default function Investors() {
   return (
@@ -146,12 +196,7 @@ export default function Investors() {
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Competitive Advantages</h2>
           <div className="grid md:grid-cols-2 gap-4 mb-10">
             {competitiveAdvantages.map((advantage, index) => (
-              <motion.div
-                key={advantage.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
+              <motion.div key={advantage.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                 <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 h-full">
                   <CardContent className="p-5">
                     <div className="flex items-start gap-4">
@@ -183,12 +228,7 @@ export default function Investors() {
                       <span className="text-blue-600 dark:text-blue-400 font-bold">{stream.percentage}%</span>
                     </div>
                     <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${stream.percentage}%` }}
-                        transition={{ delay: 0.5, duration: 0.8 }}
-                      />
+                      <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500" initial={{ width: 0 }} animate={{ width: `${stream.percentage}%` }} transition={{ delay: 0.5, duration: 0.8 }} />
                     </div>
                   </div>
                 ))}
@@ -241,30 +281,18 @@ export default function Investors() {
           </div>
 
           <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-            <CardContent className="py-10 text-center">
-              <Briefcase className="h-10 w-10 text-amber-600 dark:text-amber-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Interested in Learning More?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
-                We're currently raising our Series A round. Request our full investor deck 
-                and financial projections, or schedule a call with our founding team.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button 
-                  className="bg-amber-600 hover:bg-amber-700 text-white"
-                  onClick={() => window.location.href = 'mailto:investors@goldrockhealth.com?subject=Investor Inquiry'}
-                  data-testid="button-contact-investors"
-                >
-                  <Mail className="h-4 w-4 mr-2" />
-                  Contact Investor Relations
-                </Button>
-                <Link href="/platform-stats">
-                  <Button variant="outline" className="border-gray-300 dark:border-gray-600" data-testid="button-view-metrics">
-                    View Platform
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </Link>
+            <CardContent className="py-10">
+              <div className="text-center mb-6">
+                <Briefcase className="h-10 w-10 text-amber-600 dark:text-amber-400 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  Interested in Learning More?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                  We're currently raising our Series A round. Request our full investor deck and financial projections.
+                </p>
+              </div>
+              <div className="max-w-md mx-auto">
+                <ContactForm />
               </div>
             </CardContent>
           </Card>

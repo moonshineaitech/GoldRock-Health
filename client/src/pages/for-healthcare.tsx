@@ -1,53 +1,55 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { useState } from "react";
 import { 
   Building2,
-  Users,
-  TrendingUp,
   CheckCircle,
   Zap,
-  Heart,
   ArrowRight,
   Handshake,
-  Mail,
-  ArrowLeft
+  ArrowLeft,
+  Send
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { SEOHead } from "@/components/seo-head";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import { useToast } from "@/hooks/use-toast";
 
 const partnershipBenefits = {
   use: [
     {
       title: "Patient Financial Navigation",
-      description: "White-label our AI to help patients understand bills, reducing call center volume by 40%+",
-      metric: "40% fewer billing calls"
+      description: "White-label our AI to help patients understand bills, reducing call center volume",
+      metric: "Reduce billing calls"
     },
     {
       title: "Revenue Cycle Optimization",
-      description: "Identify billing errors before they become disputes, improving patient satisfaction and reducing bad debt",
-      metric: "15% fewer disputes"
+      description: "Identify billing errors before they become disputes, improving patient satisfaction",
+      metric: "Fewer disputes"
     },
     {
       title: "Price Transparency Compliance",
       description: "Meet CMS price transparency requirements with our comprehensive pricing database",
-      metric: "100% compliance"
+      metric: "Compliance ready"
     },
     {
       title: "Patient Retention",
       description: "Improve patient loyalty by demonstrating commitment to fair, transparent billing",
-      metric: "23% higher retention"
+      metric: "Higher retention"
     }
   ],
   acquire: [
     {
       title: "Proprietary AI Technology",
       description: "Purpose-built models for medical billing analysis, trained on millions of claims and outcomes",
-      value: "2+ years development head start"
+      value: "Development head start"
     },
     {
       title: "Growing User Base",
@@ -97,6 +99,52 @@ const integrationOptions = [
   "Dedicated implementation support"
 ];
 
+function ContactForm({ type }: { type: string }) {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ name: '', email: '', company: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    toast({
+      title: "Message Sent",
+      description: "We'll get back to you within 1-2 business days.",
+    });
+    setFormData({ name: '', email: '', company: '', message: '' });
+    setIsSubmitting(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">Name</Label>
+          <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="bg-white dark:bg-gray-700" data-testid="input-contact-name" />
+        </div>
+        <div>
+          <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Email</Label>
+          <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="bg-white dark:bg-gray-700" data-testid="input-contact-email" />
+        </div>
+      </div>
+      <div>
+        <Label htmlFor="company" className="text-gray-700 dark:text-gray-300">Organization</Label>
+        <Input id="company" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="bg-white dark:bg-gray-700" data-testid="input-contact-company" />
+      </div>
+      <div>
+        <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">Message</Label>
+        <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder={`I'm interested in ${type}...`} required className="bg-white dark:bg-gray-700 min-h-[100px]" data-testid="input-contact-message" />
+      </div>
+      <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white" disabled={isSubmitting} data-testid="button-submit-contact">
+        <Send className="h-4 w-4 mr-2" />
+        {isSubmitting ? "Sending..." : "Send Message"}
+      </Button>
+      <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Or email us directly at CONTACT@GOLDROCK.ai</p>
+    </form>
+  );
+}
+
 export default function ForHealthcare() {
   return (
     <>
@@ -139,33 +187,20 @@ export default function ForHealthcare() {
 
           <Tabs defaultValue="use" className="mb-10">
             <TabsList className="grid grid-cols-3 w-full max-w-lg mx-auto mb-6 bg-gray-100 dark:bg-gray-800">
-              <TabsTrigger value="use" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700" data-testid="tab-healthcare-license">
-                License & Use
-              </TabsTrigger>
-              <TabsTrigger value="acquire" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700" data-testid="tab-healthcare-acquire">
-                Acquire
-              </TabsTrigger>
-              <TabsTrigger value="invest" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700" data-testid="tab-healthcare-invest">
-                Invest
-              </TabsTrigger>
+              <TabsTrigger value="use" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700" data-testid="tab-healthcare-license">License & Use</TabsTrigger>
+              <TabsTrigger value="acquire" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700" data-testid="tab-healthcare-acquire">Acquire</TabsTrigger>
+              <TabsTrigger value="invest" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700" data-testid="tab-healthcare-invest">Invest</TabsTrigger>
             </TabsList>
 
             <TabsContent value="use">
               <div className="grid md:grid-cols-2 gap-4 mb-6">
                 {partnershipBenefits.use.map((benefit, index) => (
-                  <motion.div
-                    key={benefit.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
+                  <motion.div key={benefit.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                     <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 h-full">
                       <CardContent className="p-5">
                         <div className="flex justify-between items-start mb-3">
                           <h3 className="text-base font-semibold text-gray-900 dark:text-white">{benefit.title}</h3>
-                          <Badge className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 text-xs">
-                            {benefit.metric}
-                          </Badge>
+                          <Badge className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 text-xs">{benefit.metric}</Badge>
                         </div>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">{benefit.description}</p>
                       </CardContent>
@@ -197,19 +232,12 @@ export default function ForHealthcare() {
             <TabsContent value="acquire">
               <div className="grid md:grid-cols-2 gap-4 mb-6">
                 {partnershipBenefits.acquire.map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
+                  <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                     <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 h-full">
                       <CardContent className="p-5">
                         <div className="flex justify-between items-start mb-3">
                           <h3 className="text-base font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-                          <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300 text-xs">
-                            {item.value}
-                          </Badge>
+                          <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300 text-xs">{item.value}</Badge>
                         </div>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">{item.description}</p>
                       </CardContent>
@@ -217,44 +245,17 @@ export default function ForHealthcare() {
                   </motion.div>
                 ))}
               </div>
-
-              <Card className="bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700">
-                <CardContent className="py-8 text-center">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
-                    Strategic Acquisition Opportunity
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
-                    GoldRock Health represents a unique opportunity to acquire proven AI technology, 
-                    an engaged user base, and a talented team.
-                  </p>
-                  <Button 
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
-                    onClick={() => window.location.href = 'mailto:bd@goldrockhealth.com?subject=Strategic Acquisition Inquiry'}
-                    data-testid="button-acquisition-inquiry"
-                  >
-                    <Handshake className="h-4 w-4 mr-2" />
-                    Discuss Acquisition
-                  </Button>
-                </CardContent>
-              </Card>
             </TabsContent>
 
             <TabsContent value="invest">
               <div className="grid md:grid-cols-2 gap-4">
                 {partnershipBenefits.invest.map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
+                  <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                     <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 h-full">
                       <CardContent className="p-5">
                         <div className="flex justify-between items-start mb-3">
                           <h3 className="text-base font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-                          <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 text-xs">
-                            {item.benefit}
-                          </Badge>
+                          <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 text-xs">{item.benefit}</Badge>
                         </div>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">{item.description}</p>
                       </CardContent>
@@ -266,30 +267,18 @@ export default function ForHealthcare() {
           </Tabs>
 
           <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-            <CardContent className="py-10 text-center">
-              <Building2 className="h-10 w-10 text-green-600 dark:text-green-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Let's Explore Partnership
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
-                Our business development team is ready to discuss how GoldRock Health 
-                can support your organization's goals.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button 
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                  onClick={() => window.location.href = 'mailto:partnerships@goldrockhealth.com?subject=Healthcare Partnership Inquiry'}
-                  data-testid="button-healthcare-contact"
-                >
-                  <Mail className="h-4 w-4 mr-2" />
-                  Contact Partnerships
-                </Button>
-                <Link href="/platform-stats">
-                  <Button variant="outline" className="border-gray-300 dark:border-gray-600" data-testid="button-view-platform">
-                    View Platform
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </Link>
+            <CardContent className="py-10">
+              <div className="text-center mb-6">
+                <Building2 className="h-10 w-10 text-green-600 dark:text-green-400 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  Let's Explore Partnership
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                  Our team is ready to discuss how GoldRock Health can support your organization's goals.
+                </p>
+              </div>
+              <div className="max-w-md mx-auto">
+                <ContactForm type="healthcare partnership" />
               </div>
             </CardContent>
           </Card>
