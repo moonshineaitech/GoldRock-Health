@@ -16,9 +16,17 @@ import * as bindingSiteAnalyzer from "./ai/binding-site-analyzer";
 import { PROTEIN_COLLECTIONS, getAllProteins, getProteinByUniprotId, searchProteins, getTopProteins } from "@shared/protein-collections";
 import { setupAuth, isAuthenticated, requiresSubscription, requiresAiAgreement, isAdmin } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
-import { getStripeClient, getStripePublishableKey } from "./stripeClient";
+import Stripe from "stripe";
 import { z } from "zod";
 import multer from "multer";
+// We'll import pdfParse dynamically when needed to avoid loading issues
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2025-08-27.basil",
+});
 
 // Store Stripe price IDs
 let MONTHLY_PRICE_ID: string;
@@ -36,11 +44,10 @@ function getBaseUrl(): string {
   return 'http://localhost:5000';
 }
 
-// Setup Stripe prices on startup - uses Replit Stripe connector
+// Setup Stripe prices on startup
 async function setupStripe() {
   try {
     console.log('Setting up Stripe prices...');
-    const stripe = await getStripeClient();
     
     // Create or retrieve monthly price ($25)
     const existingPrices = await stripe.prices.list({ limit: 100 });
@@ -407,7 +414,6 @@ RULES:
       // Cancel active Stripe subscription if exists
       if (user.stripeSubscriptionId) {
         try {
-          const stripe = await getStripeClient();
           await stripe.subscriptions.cancel(user.stripeSubscriptionId);
           console.log(`Cancelled Stripe subscription: ${user.stripeSubscriptionId}`);
         } catch (stripeError) {
@@ -705,21 +711,9 @@ RULES:
 
   // ==================== END ADMIN ROUTES ====================
 
-  // Stripe publishable key endpoint for frontend
-  app.get("/api/stripe/publishable-key", async (req, res) => {
-    try {
-      const publishableKey = await getStripePublishableKey();
-      res.json({ publishableKey });
-    } catch (error: any) {
-      console.error('Error getting Stripe publishable key:', error);
-      res.status(500).json({ message: "Failed to get Stripe configuration" });
-    }
-  });
-
   // Stripe payment routes
   app.post("/api/create-payment-intent", async (req, res) => {
     try {
-      const stripe = await getStripeClient();
       const { amount } = req.body;
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100), // Convert to cents
@@ -736,7 +730,6 @@ RULES:
   // Donation checkout session
   app.post("/api/create-donation-session", async (req, res) => {
     try {
-      const stripe = await getStripeClient();
       const { amount } = req.body;
       
       if (!amount || amount < 100) {
@@ -773,7 +766,6 @@ RULES:
   // REBUILT SUBSCRIPTION SYSTEM - SetupIntent approach for reliable payment flow
   app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
     try {
-      const stripe = await getStripeClient();
       const userId = req.user.claims.sub;
       const { planType } = req.body;
       
@@ -940,7 +932,6 @@ RULES:
   // Verify subscription status after payment confirmation
   app.post('/api/verify-subscription', isAuthenticated, async (req: any, res) => {
     try {
-      const stripe = await getStripeClient();
       const userId = req.user.claims.sub;
       
       let user = await storage.getUser(userId);
@@ -1062,21 +1053,16 @@ RULES:
   // Stripe webhook endpoint - needs raw body for signature verification
   app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'];
-    const stripe = await getStripeClient();
     
-    // Note: With Replit Stripe connector, webhooks are managed automatically
-    // We'll still verify if a secret is available for extra security
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (!process.env.STRIPE_WEBHOOK_SECRET) {
+      console.error('Missing STRIPE_WEBHOOK_SECRET environment variable');
+      return res.status(400).send('Webhook secret not configured');
+    }
 
     let event;
 
     try {
-      if (webhookSecret) {
-        event = stripe.webhooks.constructEvent(req.body, sig as string, webhookSecret);
-      } else {
-        // Parse the body directly if no webhook secret (connector manages this)
-        event = JSON.parse(req.body.toString());
-      }
+      event = stripe.webhooks.constructEvent(req.body, sig as string, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (err: any) {
       console.error('Webhook signature verification failed:', err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
