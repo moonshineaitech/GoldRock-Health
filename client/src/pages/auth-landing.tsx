@@ -1,4 +1,5 @@
 import { LandingNavigation } from "@/components/landing-navigation";
+import { DemoChat } from "@/components/demo-chat";
 import { 
   DollarSign, Zap, Brain, FileText, Upload, Target, Shield, Code, Scale, Clock, 
   AlertTriangle, Eye, Phone, Database, Book, Receipt, Building, HandCoins, 
@@ -225,6 +226,9 @@ export default function AuthLanding() {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+          {/* Pre-login Demo Chat */}
+          <DemoChat />
+          
           {/* Balanced Healthcare Logo - Shield with Heart Center */}
           <motion.div 
             className="relative mx-auto mb-6"
