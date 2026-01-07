@@ -70,6 +70,9 @@ import NegotiateMedicalBillsArticle from "@/pages/articles/negotiate-medical-bil
 import AIMedicalBillAnalysis from "@/pages/articles/ai-medical-bill-analysis";
 import InsuranceDenialsAppeals from "@/pages/articles/insurance-denials-appeals";
 import MedicalDebtReliefOptions from "@/pages/articles/medical-debt-relief-options";
+import PlatformStats from "@/pages/platform-stats";
+import CaseStudies from "@/pages/case-studies";
+import Investors from "@/pages/investors";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -168,6 +171,9 @@ function Router() {
         <Route path="/articles/ai-medical-bill-analysis" component={AIMedicalBillAnalysis} />
         <Route path="/articles/insurance-denials-appeals" component={InsuranceDenialsAppeals} />
         <Route path="/articles/medical-debt-relief-options" component={MedicalDebtReliefOptions} />
+        <Route path="/platform-stats" component={PlatformStats} />
+        <Route path="/case-studies" component={CaseStudies} />
+        <Route path="/investors" component={Investors} />
         <Route component={AuthLanding} />
       </Switch>
     );
@@ -299,6 +305,9 @@ function Router() {
       <Route path="/articles/ai-medical-bill-analysis" component={AIMedicalBillAnalysis} />
       <Route path="/articles/insurance-denials-appeals" component={InsuranceDenialsAppeals} />
       <Route path="/articles/medical-debt-relief-options" component={MedicalDebtReliefOptions} />
+      <Route path="/platform-stats" component={PlatformStats} />
+      <Route path="/case-studies" component={CaseStudies} />
+      <Route path="/investors" component={Investors} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

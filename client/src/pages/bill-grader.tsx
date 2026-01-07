@@ -14,7 +14,10 @@ import {
   Download,
   Share2,
   Lightbulb,
-  Loader2
+  Loader2,
+  BarChart2,
+  Calculator,
+  Building2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -340,8 +343,8 @@ export default function BillGrader() {
       <SEOHead
         title="Medical Bill Grader - Score Your Hospital Bill | GoldRock Health"
         description="Grade your medical bill from 0-100. Our AI analyzes billing accuracy, price fairness, and identifies potential savings. Free bill scoring tool."
-        keywords="medical bill grader, hospital bill score, bill analysis, medical billing errors, healthcare costs"
-        canonicalUrl="https://goldrockhealth.com/bill-grader"
+        keywords={["medical bill grader", "hospital bill score", "bill analysis", "medical billing errors", "healthcare costs"]}
+        canonicalPath="/bill-grader"
       />
 
       <div className="min-h-screen bg-gradient-to-b from-[#0a1628] via-[#0d1d35] to-[#0a1628]">
@@ -624,6 +627,134 @@ export default function BillGrader() {
                         </li>
                       ))}
                     </ul>
+                  </CardContent>
+                </Card>
+
+                {result.comparisonData && (
+                  <Card className="bg-blue-500/10 border-blue-500/30">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-white flex items-center gap-2">
+                        <BarChart2 className="h-5 w-5 text-blue-400" />
+                        Regional Benchmark Analysis
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-white/5 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-blue-400">
+                            {formatCurrency(result.comparisonData.averageForProcedure)}
+                          </div>
+                          <div className="text-xs text-gray-400 mt-1">Regional Average</div>
+                        </div>
+                        <div className="bg-white/5 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-white">
+                            {result.comparisonData.percentile}th
+                          </div>
+                          <div className="text-xs text-gray-400 mt-1">Percentile</div>
+                        </div>
+                        <div className="bg-white/5 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-purple-400">
+                            {formData.state || 'N/A'}
+                          </div>
+                          <div className="text-xs text-gray-400 mt-1">Region</div>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between text-xs text-gray-400 mb-2">
+                          <span>Your Bill vs Regional Average</span>
+                          <span>{((parseFloat(formData.billAmount) / result.comparisonData.averageForProcedure) * 100 - 100).toFixed(0)}% {parseFloat(formData.billAmount) > result.comparisonData.averageForProcedure ? 'Above' : 'Below'}</span>
+                        </div>
+                        <div className="relative h-4 bg-white/10 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full ${parseFloat(formData.billAmount) > result.comparisonData.averageForProcedure ? 'bg-red-500' : 'bg-green-500'}`}
+                            style={{ width: `${Math.min(100, (parseFloat(formData.billAmount) / (result.comparisonData.averageForProcedure * 2)) * 100)}%` }}
+                          />
+                          <div 
+                            className="absolute top-0 bottom-0 w-0.5 bg-white"
+                            style={{ left: '50%' }}
+                          />
+                        </div>
+                        <div className="flex justify-between text-xs text-gray-500 mt-1">
+                          <span>$0</span>
+                          <span>Avg: {formatCurrency(result.comparisonData.averageForProcedure)}</span>
+                          <span>{formatCurrency(result.comparisonData.averageForProcedure * 2)}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                <Card className="bg-purple-500/10 border-purple-500/30">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <Calculator className="h-5 w-5 text-purple-400" />
+                      Savings Methodology
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-sm text-gray-300">
+                      Our savings estimate is calculated using multiple factors based on your specific bill characteristics:
+                    </p>
+                    <div className="space-y-3">
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm text-gray-300">Billing Error Corrections</span>
+                          <span className="text-green-400 font-medium">15-30%</span>
+                        </div>
+                        <Progress value={result.billingAccuracy < 70 ? 80 : 40} className="h-2" />
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm text-gray-300">Price Negotiation</span>
+                          <span className="text-green-400 font-medium">20-40%</span>
+                        </div>
+                        <Progress value={result.priceFairness < 60 ? 90 : 50} className="h-2" />
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm text-gray-300">Financial Assistance</span>
+                          <span className="text-green-400 font-medium">50-100%</span>
+                        </div>
+                        <Progress value={formData.hospitalType === 'non-profit' ? 85 : 35} className="h-2" />
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm text-gray-300">Prompt Pay Discounts</span>
+                          <span className="text-green-400 font-medium">10-20%</span>
+                        </div>
+                        <Progress value={60} className="h-2" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border-cyan-500/30">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <Building2 className="h-5 w-5 text-cyan-400" />
+                      Industry Insights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-4 bg-white/5 rounded-lg">
+                        <div className="text-3xl font-bold text-cyan-400">80%</div>
+                        <div className="text-xs text-gray-400 mt-1">of hospital bills contain errors</div>
+                      </div>
+                      <div className="text-center p-4 bg-white/5 rounded-lg">
+                        <div className="text-3xl font-bold text-green-400">$400</div>
+                        <div className="text-xs text-gray-400 mt-1">avg saved per disputed bill</div>
+                      </div>
+                      <div className="text-center p-4 bg-white/5 rounded-lg">
+                        <div className="text-3xl font-bold text-purple-400">90%</div>
+                        <div className="text-xs text-gray-400 mt-1">success rate for charity care</div>
+                      </div>
+                      <div className="text-center p-4 bg-white/5 rounded-lg">
+                        <div className="text-3xl font-bold text-amber-400">30 days</div>
+                        <div className="text-xs text-gray-400 mt-1">avg time to resolve disputes</div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
