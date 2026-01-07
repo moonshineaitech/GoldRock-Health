@@ -1,6 +1,7 @@
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import { DonationButton } from "@/components/donation-button";
 import { BlitzDemo } from "@/components/blitz-demo";
+import { DemoChat } from "@/components/demo-chat";
 import { Link } from "wouter";
 import { 
   DollarSign, 
@@ -334,6 +335,9 @@ export default function Landing() {
             }}
           />
         </div>
+        
+        {/* Pre-login Demo Chat - Try before you sign up */}
+        <DemoChat />
         
         {/* Premium Health Logo - Larger with Gold Accent */}
         <motion.div 

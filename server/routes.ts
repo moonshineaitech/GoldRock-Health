@@ -209,6 +209,114 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Pre-login demo chat - IP-based rate limiting (5 chats per IP)
+  const demoChatLimits = new Map<string, { count: number; resetAt: number }>();
+  
+  app.post('/api/demo-chat', async (req, res) => {
+    try {
+      const clientIp = req.headers['x-forwarded-for'] as string || req.socket.remoteAddress || 'unknown';
+      const ip = clientIp.split(',')[0].trim();
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000;
+      
+      // Check rate limit
+      let limitData = demoChatLimits.get(ip);
+      if (!limitData || now > limitData.resetAt) {
+        limitData = { count: 0, resetAt: now + oneDay };
+        demoChatLimits.set(ip, limitData);
+      }
+      
+      if (limitData.count >= 5) {
+        return res.status(429).json({ 
+          message: 'You\'ve reached your free demo limit. Sign up to continue using GoldRock Health!',
+          remaining: 0,
+          requiresSignup: true
+        });
+      }
+      
+      const { message, conversationHistory = [] } = req.body;
+      
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ message: 'Message is required' });
+      }
+      
+      // Increment usage
+      limitData.count++;
+      demoChatLimits.set(ip, limitData);
+      
+      const remaining = 5 - limitData.count;
+      
+      // GoldRock Health context and workflow routing system prompt
+      const systemPrompt = `You are a helpful AI assistant for GoldRock Health - a medical bill reduction and healthcare advocacy platform. You help users understand how we can help them with:
+
+1. **Medical Bill Analysis** - Finding errors, overcharges, duplicate charges, and inflated prices in medical bills
+2. **Patient Rights** - Explaining legal protections, dispute strategies, and negotiation tactics
+3. **Insurance Benefits** - Understanding coverage, deductibles, copays, and benefit explanations
+4. **Health Questions** - General health information, symptoms, labs, and medication info (not medical advice)
+5. **Medicare/Medicaid Enrollment** - Eligibility questions and enrollment assistance
+
+IMPORTANT GUIDELINES:
+- Be warm, empathetic, and helpful. Users are often stressed about medical bills.
+- Keep responses concise but informative (2-4 sentences max for simple questions)
+- If they ask about a specific medical bill, encourage them to upload it for a free AI analysis
+- Always end with a gentle suggestion to sign up for full access if relevant
+- You are NOT a doctor - don't provide medical diagnoses or treatment advice
+- For complex health questions, recommend they speak with a healthcare provider
+
+WORKFLOW ROUTING - Based on user intent, suggest the best feature:
+- Bill questions → "Upload your bill for our AI Bill Analyzer"
+- Rights/disputes → "Check out our Patient Rights Hub"
+- Insurance questions → "Try our Benefits Explainer tool"
+- Health symptoms → "Our AI Health Tools can help explain symptoms"
+- Enrollment → "Our Medicare/Medicaid Enrollment Wizard can guide you"
+
+Be conversational, supportive, and encouraging. You're their advocate against a confusing healthcare system.`;
+
+      // Build conversation for AI
+      const formattedHistory = conversationHistory.slice(-6).map((msg: { role: string; content: string }) => 
+        `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
+      ).join('\n');
+      
+      const prompt = formattedHistory 
+        ? `Previous conversation:\n${formattedHistory}\n\nUser: ${message}\n\nAssistant:`
+        : `User: ${message}\n\nAssistant:`;
+      
+      const response = await aiProvider.generateText(prompt, systemPrompt, {
+        provider: 'auto',
+        maxTokens: 300,
+        temperature: 0.7
+      });
+      
+      // Determine suggested workflow based on content
+      let suggestedWorkflow = null;
+      const lowerMessage = message.toLowerCase();
+      const lowerResponse = response.toLowerCase();
+      
+      if (lowerMessage.includes('bill') || lowerMessage.includes('charge') || lowerMessage.includes('overcharge') || lowerMessage.includes('hospital')) {
+        suggestedWorkflow = { path: '/bill-ai', label: 'Analyze My Bill' };
+      } else if (lowerMessage.includes('right') || lowerMessage.includes('dispute') || lowerMessage.includes('fight') || lowerMessage.includes('negotiate')) {
+        suggestedWorkflow = { path: '/rights-hub', label: 'Patient Rights Hub' };
+      } else if (lowerMessage.includes('insurance') || lowerMessage.includes('coverage') || lowerMessage.includes('benefit') || lowerMessage.includes('deductible')) {
+        suggestedWorkflow = { path: '/benefits-explainer', label: 'Benefits Explainer' };
+      } else if (lowerMessage.includes('medicare') || lowerMessage.includes('medicaid') || lowerMessage.includes('enroll')) {
+        suggestedWorkflow = { path: '/medicare-enrollment', label: 'Enrollment Wizard' };
+      } else if (lowerMessage.includes('symptom') || lowerMessage.includes('health') || lowerMessage.includes('diagnos') || lowerMessage.includes('lab')) {
+        suggestedWorkflow = { path: '/patient-diagnostics', label: 'AI Health Tools' };
+      }
+      
+      res.json({
+        response: response.trim(),
+        remaining,
+        suggestedWorkflow,
+        requiresSignup: remaining === 0
+      });
+      
+    } catch (error) {
+      console.error('Demo chat error:', error);
+      res.status(500).json({ message: 'Something went wrong. Please try again.' });
+    }
+  });
+
   // Account Deletion endpoint (Apple App Store requirement)
   app.delete('/api/account', isAuthenticated, async (req: any, res) => {
     try {
