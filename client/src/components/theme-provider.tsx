@@ -84,7 +84,11 @@ export function useTheme() {
   const context = useContext(ThemeContext);
 
   if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
+    return {
+      theme: "light" as const,
+      setTheme: () => {},
+      resolvedTheme: "light" as const,
+    };
   }
 
   return context;
