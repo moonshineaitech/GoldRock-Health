@@ -299,7 +299,7 @@ RULES:
       
       const response = await aiProvider.generateText(prompt, systemPrompt, {
         provider: 'auto',
-        maxTokens: 300,
+        maxTokens: 600,
         temperature: 0.7
       });
       
