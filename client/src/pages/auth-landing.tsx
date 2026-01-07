@@ -226,9 +226,6 @@ export default function AuthLanding() {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          {/* Pre-login Demo Chat */}
-          <DemoChat />
-          
           {/* Balanced Healthcare Logo - Shield with Heart Center */}
           <motion.div 
             className="relative mx-auto mb-6"
@@ -342,6 +339,9 @@ export default function AuthLanding() {
               </motion.div>
             ))}
           </motion.div>
+
+          {/* Demo Chat Interface - Try before sign up */}
+          <DemoChat />
 
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6"
