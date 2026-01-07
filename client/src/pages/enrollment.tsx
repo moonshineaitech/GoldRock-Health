@@ -9,6 +9,7 @@ import { MobileLayout } from "@/components/mobile-layout";
 import { useAuth } from "@/hooks/useAuth";
 import { useVoice } from "@/hooks/use-voice";
 import { useToast } from "@/hooks/use-toast";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -387,6 +388,23 @@ export default function Enrollment() {
 
   return (
     <MobileLayout title="Enrollment" showBackButton={true}>
+      <SEOHead 
+        title="Medicare & Medicaid Enrollment Assistance"
+        description="Free Medicare and Medicaid enrollment assistance. AI-powered eligibility checker for Medicare Part A, B, C, D and Medicaid. Check your eligibility and get personalized enrollment guidance."
+        keywords={SEO_KEYWORDS.insurance}
+        canonicalPath="/enrollment"
+      />
+      <SEOContent content={[
+        "Medicare enrollment assistance and eligibility checker",
+        "Medicaid eligibility check free online tool",
+        "Medicare Part A Part B Part C Part D enrollment help",
+        "Medicare Advantage plan comparison and enrollment",
+        "Medicaid income requirements and application help",
+        "Medicare enrollment periods open enrollment special enrollment",
+        "Low income healthcare programs eligibility checker",
+        "Government healthcare program enrollment wizard with AI assistance",
+        "Medicare supplement plans Medigap enrollment information"
+      ]} />
       <div className="space-y-6 pb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

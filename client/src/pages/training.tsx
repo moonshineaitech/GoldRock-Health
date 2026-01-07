@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { MobileLayout, MobileCard, MobileButton } from "@/components/mobile-layout";
 import { Link } from "wouter";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import { 
   DollarSign,
   AlertTriangle,
@@ -97,6 +98,23 @@ export default function Training() {
 
   return (
     <MobileLayout title="Cases" showBottomNav={true}>
+      <SEOHead 
+        title="Medical Bill Case Studies - Real Savings Examples"
+        description="Learn from real medical bill reduction success stories. See how patients saved $5,000-$50,000+ on hospital bills, emergency room charges, and surgical procedures."
+        keywords={[...SEO_KEYWORDS.billAnalysis.slice(0, 10), 'medical bill success stories', 'hospital bill reduction examples', 'bill negotiation case studies']}
+        canonicalPath="/training"
+      />
+      <SEOContent content={[
+        "Real medical bill reduction case studies with documented savings",
+        "Hospital bill negotiation success stories saving $10,000 to $50,000",
+        "Emergency room bill reduction examples and strategies that worked",
+        "Surgical procedure billing errors found and corrected",
+        "Ambulance bill dispute success cases with sample letters",
+        "Charity care program applications that resulted in 100% forgiveness",
+        "Insurance claim appeal success stories with denial overturns",
+        "Medical debt relief real examples from actual patients",
+        "Step-by-step bill reduction strategies with proven results"
+      ]} />
       {/* Hero Section */}
       <motion.div 
         className="text-center py-8 px-4 relative overflow-hidden"

@@ -4,6 +4,7 @@ import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import {
   Beaker, Pill, Activity, Brain, Stethoscope, 
   AlertTriangle, ArrowRight, Heart, ChevronRight, Shield,
@@ -45,6 +46,20 @@ const ToolCard = ({ icon: Icon, title, description, href, gradient, badge }: Too
 export default function ClinicalCommandCenter() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pb-24">
+      <SEOHead 
+        title="Health Information Center - Clinical Tools"
+        description="Free health information tools: Lab results interpreter, drug interaction checker, symptom checker, and health metrics tracker. AI-powered clinical reference tools."
+        keywords={[...SEO_KEYWORDS.drugInteractions.slice(0, 5), ...SEO_KEYWORDS.labResults.slice(0, 5), ...SEO_KEYWORDS.symptoms.slice(0, 5)]}
+        canonicalPath="/clinical-command-center"
+      />
+      <SEOContent content={[
+        "Health information center with clinical reference tools",
+        "Free drug interaction checker, lab results interpreter, symptom analyzer",
+        "Medical information tools for patients and healthcare education",
+        "Blood test results explained, medication safety checker, health metrics",
+        "Clinical decision support tools, patient education resources",
+        "AI-powered health tools for understanding your medical information"
+      ]} />
       {/* Simple Header */}
       <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto text-center">

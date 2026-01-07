@@ -11,6 +11,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Upload, 
@@ -1698,6 +1699,24 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
   return (
     <MobileLayout title="Bill AI" showBottomNav={true}>
+      <SEOHead 
+        title="AI Medical Bill Analyzer - Reduce Your Medical Bills"
+        description="Free AI-powered medical bill analyzer. Upload your bill for instant analysis, error detection, and savings recommendations. Save $1,000 to $100,000+ on hospital bills, surgical costs, and emergency room charges."
+        keywords={SEO_KEYWORDS.billAnalysis}
+        canonicalPath="/bill-ai"
+      />
+      <SEOContent content={[
+        "AI medical bill analyzer for hospital bills emergency room bills surgical bills",
+        "Medical bill error detection and billing code verification",
+        "How to negotiate hospital bills and medical debt reduction strategies",
+        "Charity care financial assistance application help",
+        "Insurance claim denial appeal letter generator",
+        "Medical billing dispute letter templates and negotiation scripts",
+        "Hospital price transparency fair pricing medical bill audit",
+        "Itemized bill request unbundling CPT code verification",
+        "No Surprises Act patient rights balance billing protection",
+        "Medical debt relief options payment plans financial hardship programs"
+      ]} />
       <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50">
         
         {/* Enhanced Header with Navigation */}

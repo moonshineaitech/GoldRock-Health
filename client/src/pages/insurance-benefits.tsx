@@ -18,6 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import {
   Search,
   Filter,
@@ -325,6 +326,23 @@ export default function InsuranceBenefits() {
 
   return (
     <MobileLayout title="Insurance Benefits" showBottomNav={true}>
+      <SEOHead 
+        title="Insurance Benefits Explainer - Understand Your Coverage"
+        description="Free insurance benefits explainer tool. Understand your health insurance coverage in plain English. Compare plans, learn copays vs coinsurance, deductibles, and out-of-pocket maximums."
+        keywords={SEO_KEYWORDS.insurance}
+        canonicalPath="/insurance-benefits"
+      />
+      <SEOContent content={[
+        "Health insurance benefits explained in simple terms",
+        "Copay vs coinsurance what is the difference explained",
+        "Deductible meaning and how it works in health insurance",
+        "Out of pocket maximum explained annual limits",
+        "Prior authorization what is it and how to get it",
+        "Insurance plan comparison tool side by side",
+        "PPO vs HMO vs EPO health plan differences",
+        "Health insurance coverage types and categories",
+        "Understanding your EOB explanation of benefits document"
+      ]} />
       <div className="space-y-6 pb-20">
         {/* Page Header */}
         <motion.div

@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import {
   Beaker, FlaskConical, Droplet, Activity, Heart, ArrowLeft, AlertTriangle,
   CheckCircle, XCircle, TrendingUp, TrendingDown, Minus, Sparkles,
@@ -136,6 +137,23 @@ export default function LabAnalyzer() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pb-24">
+      <SEOHead 
+        title="Lab Results Interpreter - AI Blood Test Analysis"
+        description="Free AI lab results interpreter. Understand your blood test results, CBC interpretation, metabolic panel explained, cholesterol levels meaning, and thyroid test analysis."
+        keywords={SEO_KEYWORDS.labResults}
+        canonicalPath="/lab-analyzer"
+      />
+      <SEOContent content={[
+        "Lab results explained in simple terms with AI interpretation",
+        "CBC blood test interpretation - white blood cells, red blood cells, hemoglobin, platelets",
+        "Comprehensive metabolic panel CMP explained - glucose, creatinine, sodium, potassium",
+        "Cholesterol results meaning - HDL good cholesterol, LDL bad cholesterol, triglycerides",
+        "Thyroid test results interpretation - TSH, T3, T4 levels explained",
+        "Blood sugar levels meaning, A1C interpretation, diabetes screening results",
+        "Kidney function test GFR explained, liver function test AST ALT meaning",
+        "Vitamin D levels, iron levels, B12 deficiency blood test results",
+        "What do abnormal lab values mean, when to worry about blood test results"
+      ]} />
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">

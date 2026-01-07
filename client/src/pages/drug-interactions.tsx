@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import {
   Pill, ArrowLeft, AlertTriangle, XCircle, AlertCircle, Info, Plus,
   Trash2, Loader2, Shield, Search, CheckCircle, BookOpen, Beaker,
@@ -186,6 +187,23 @@ export default function DrugInteractions() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-indigo-50 pb-24">
+      <SEOHead 
+        title="Drug Interaction Checker - AI-Powered Medication Safety"
+        description="Free AI drug interaction checker. Check prescription drug interactions, medication side effects, pill identification, and get detailed drug information. Powered by advanced pharmaceutical AI."
+        keywords={SEO_KEYWORDS.drugInteractions}
+        canonicalPath="/drug-interactions"
+      />
+      <SEOContent content={[
+        "Drug interaction checker for prescription medications and over-the-counter drugs",
+        "Check warfarin interactions, blood thinner drug interactions, SSRI interactions",
+        "Medication safety tool for polypharmacy patients taking multiple medications",
+        "CYP450 enzyme interactions, serotonin syndrome risk checker, bleeding risk assessment",
+        "Free pill identifier and drug lookup tool with side effects information",
+        "AI-powered medication analysis using pharmaceutical database knowledge",
+        "Check interactions between vitamins, supplements, and prescription drugs",
+        "Lisinopril interactions, metformin drug interactions, statin interactions",
+        "Medication guide for elderly patients and those with kidney or liver disease"
+      ]} />
       <div className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">
           <Link href="/clinical-command-center">

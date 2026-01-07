@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { SEOHead, SEOContent, SEO_KEYWORDS } from "@/components/seo-head";
 import {
   Stethoscope, ArrowLeft, AlertTriangle, Brain,
   Plus, Trash2, Loader2, Sparkles,
@@ -122,6 +123,23 @@ export default function SymptomChecker() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 pb-24">
+      <SEOHead 
+        title="Symptom Checker - AI Health Assessment"
+        description="Free AI symptom checker. Analyze your symptoms, understand possible conditions, and know when to see a doctor. Get personalized health guidance based on your symptoms."
+        keywords={SEO_KEYWORDS.symptoms}
+        canonicalPath="/symptom-checker"
+      />
+      <SEOContent content={[
+        "Symptom checker AI to analyze your health concerns",
+        "What do my symptoms mean - headache, fever, fatigue, nausea causes",
+        "When to see a doctor urgently for symptoms, emergency symptom warning signs",
+        "Symptoms analyzer for chest pain, shortness of breath, abdominal pain",
+        "Health concern checker for dizziness, back pain, sore throat, cough",
+        "Medical triage tool to determine symptom urgency",
+        "Am I sick checker - cold vs flu vs COVID symptoms comparison",
+        "What could be causing my symptoms - differential diagnosis helper",
+        "Self-care advice for common symptoms like headache, muscle pain, congestion"
+      ]} />
       {/* Header */}
       <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">
