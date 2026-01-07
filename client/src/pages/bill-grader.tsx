@@ -13,7 +13,8 @@ import {
   ArrowRight,
   Download,
   Share2,
-  Lightbulb
+  Lightbulb,
+  Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,15 @@ import { Progress } from "@/components/ui/progress";
 import { SEOHead } from "@/components/seo-head";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { 
+  downloadSavingsReport, 
+  getSavingsReportFile, 
+  isNativePlatform, 
+  nativeSaveAndSharePDF, 
+  nativeDownloadPDF,
+  type SavingsReportData 
+} from "@/lib/pdf-service";
+import { shareService } from "@/lib/share-service";
 import {
   Select,
   SelectContent,
@@ -104,6 +114,162 @@ export default function BillGrader() {
     itemizedCharges: ""
   });
   const [result, setResult] = useState<GradeResult | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+
+  const prepareReportData = (): SavingsReportData | null => {
+    if (!result) return null;
+    
+    return {
+      billAmount: parseFloat(formData.billAmount) || 0,
+      procedureType: formData.procedureType,
+      hospitalType: formData.hospitalType,
+      insuranceType: formData.insuranceType,
+      state: formData.state,
+      overallScore: result.overallScore,
+      scores: {
+        billingAccuracy: result.billingAccuracy,
+        priceFairness: result.priceFairness,
+        documentationQuality: result.documentationQuality,
+        negotiationLeverage: result.negotiationLeverage,
+        complianceScore: result.complianceScore
+      },
+      savings: {
+        lowEstimate: result.potentialSavings.lowEstimate,
+        highEstimate: result.potentialSavings.highEstimate,
+        methods: result.potentialSavings.methods
+      },
+      issues: result.issuesFound,
+      recommendations: result.recommendations,
+      generatedAt: new Date()
+    };
+  };
+
+  const handleDownloadReport = async () => {
+    const reportData = prepareReportData();
+    if (!reportData) {
+      toast({
+        title: "No Report",
+        description: "Please grade a bill first before downloading.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsDownloading(true);
+    try {
+      if (isNativePlatform()) {
+        const result = await nativeDownloadPDF(reportData);
+        if (result.success) {
+          toast({
+            title: "Report Saved",
+            description: "Your savings report PDF has been saved to Documents."
+          });
+        } else {
+          throw new Error('Native download failed');
+        }
+      } else {
+        await downloadSavingsReport(reportData);
+        toast({
+          title: "Report Downloaded",
+          description: "Your savings report PDF has been downloaded."
+        });
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      toast({
+        title: "Download Failed",
+        description: "Failed to generate PDF. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleShareReport = async () => {
+    const reportData = prepareReportData();
+    if (!reportData) {
+      toast({
+        title: "No Report",
+        description: "Please grade a bill first before sharing.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSharing(true);
+    try {
+      if (isNativePlatform()) {
+        // Native: Save PDF to cache and share via native share sheet
+        const result = await nativeSaveAndSharePDF(reportData);
+        if (result.success) {
+          toast({
+            title: "Report Shared",
+            description: "Your savings report PDF has been shared."
+          });
+        } else {
+          throw new Error('Native share failed');
+        }
+      } else {
+        // Web: Try Web Share API with file attachment
+        const canShareFiles = shareService.canShareFiles();
+        
+        if (canShareFiles) {
+          const file = await getSavingsReportFile(reportData);
+          const shared = await shareService.share({
+            title: `Bill Savings Report - ${formData.procedureType || 'Medical Bill'}`,
+            text: `I found ${formatCurrency(result!.potentialSavings.lowEstimate)} - ${formatCurrency(result!.potentialSavings.highEstimate)} in potential savings on my medical bill!`,
+            files: [file]
+          });
+          
+          if (shared) {
+            toast({
+              title: "Report Shared",
+              description: "Your savings report PDF has been shared."
+            });
+          }
+        } else {
+          // Fallback: Download PDF
+          await downloadSavingsReport(reportData);
+          toast({
+            title: "Report Downloaded",
+            description: "Your savings report PDF has been downloaded."
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Share error:', error);
+      try {
+        // Fallback to download
+        if (isNativePlatform()) {
+          const downloadResult = await nativeDownloadPDF(reportData);
+          if (downloadResult.success) {
+            toast({
+              title: "Report Saved",
+              description: "PDF saved to Documents. Sharing unavailable."
+            });
+          } else {
+            throw new Error('Native download failed');
+          }
+        } else {
+          await downloadSavingsReport(reportData);
+          toast({
+            title: "Report Downloaded",
+            description: "PDF downloaded. Sharing unavailable on this device."
+          });
+        }
+      } catch {
+        toast({
+          title: "Share Failed",
+          description: "Failed to generate report. Please try again.",
+          variant: "destructive"
+        });
+      }
+    } finally {
+      setIsSharing(false);
+    }
+  };
 
   const gradeMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -349,11 +515,35 @@ export default function BillGrader() {
                         </Badge>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="border-white/20 text-white">
-                          <Download className="h-4 w-4 mr-1" /> Save
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="border-white/20 text-white"
+                          onClick={handleDownloadReport}
+                          disabled={isDownloading}
+                          data-testid="button-download-report"
+                        >
+                          {isDownloading ? (
+                            <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                          ) : (
+                            <Download className="h-4 w-4 mr-1" />
+                          )}
+                          Save PDF
                         </Button>
-                        <Button variant="outline" size="sm" className="border-white/20 text-white">
-                          <Share2 className="h-4 w-4 mr-1" /> Share
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="border-white/20 text-white"
+                          onClick={handleShareReport}
+                          disabled={isSharing}
+                          data-testid="button-share-report"
+                        >
+                          {isSharing ? (
+                            <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                          ) : (
+                            <Share2 className="h-4 w-4 mr-1" />
+                          )}
+                          Share
                         </Button>
                       </div>
                     </div>

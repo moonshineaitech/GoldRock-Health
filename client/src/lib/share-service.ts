@@ -50,6 +50,8 @@ export class ShareService {
   async share(content: ShareContent): Promise<boolean> {
     try {
       if (this.isNative) {
+        // For native platforms, share text content and prompt to download file separately
+        // File sharing on native requires filesystem integration which is complex
         await Share.share({
           title: content.title,
           text: content.text,
@@ -66,6 +68,7 @@ export class ShareService {
         return true;
       }
 
+      // Web Share API supports files
       await navigator.share({
         title: content.title,
         text: content.text,
@@ -82,6 +85,17 @@ export class ShareService {
       console.error('Error sharing:', error);
       return false;
     }
+  }
+
+  /**
+   * Check if file sharing is supported (web only, native has limitations)
+   */
+  canShareFiles(): boolean {
+    if (this.isNative) {
+      return false; // Native file sharing requires complex filesystem integration
+    }
+    // @ts-ignore - canShare is not always available
+    return 'canShare' in navigator && navigator.canShare && navigator.canShare({ files: [new File([], 'test.pdf')] });
   }
 
   /**
