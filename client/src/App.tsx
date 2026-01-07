@@ -63,6 +63,13 @@ import DrugPrices from "@/pages/drug-prices";
 import BillGrader from "@/pages/bill-grader";
 import HospitalReviews from "@/pages/hospital-reviews";
 import Enterprise from "@/pages/enterprise";
+import ArticlesIndex from "@/pages/articles/index";
+import MedicalBillErrorsGuide from "@/pages/articles/medical-bill-errors-guide";
+import HospitalPriceTransparency from "@/pages/articles/hospital-price-transparency";
+import NegotiateMedicalBillsArticle from "@/pages/articles/negotiate-medical-bills";
+import AIMedicalBillAnalysis from "@/pages/articles/ai-medical-bill-analysis";
+import InsuranceDenialsAppeals from "@/pages/articles/insurance-denials-appeals";
+import MedicalDebtReliefOptions from "@/pages/articles/medical-debt-relief-options";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -154,6 +161,13 @@ function Router() {
         <Route path="/drug-prices" component={DrugPrices} />
         <Route path="/hospital-reviews" component={HospitalReviews} />
         <Route path="/enterprise" component={Enterprise} />
+        <Route path="/articles" component={ArticlesIndex} />
+        <Route path="/articles/medical-bill-errors-guide" component={MedicalBillErrorsGuide} />
+        <Route path="/articles/hospital-price-transparency" component={HospitalPriceTransparency} />
+        <Route path="/articles/negotiate-medical-bills" component={NegotiateMedicalBillsArticle} />
+        <Route path="/articles/ai-medical-bill-analysis" component={AIMedicalBillAnalysis} />
+        <Route path="/articles/insurance-denials-appeals" component={InsuranceDenialsAppeals} />
+        <Route path="/articles/medical-debt-relief-options" component={MedicalDebtReliefOptions} />
         <Route component={AuthLanding} />
       </Switch>
     );
@@ -278,6 +292,13 @@ function Router() {
       </Route>
       <Route path="/hospital-reviews" component={HospitalReviews} />
       <Route path="/enterprise" component={Enterprise} />
+      <Route path="/articles" component={ArticlesIndex} />
+      <Route path="/articles/medical-bill-errors-guide" component={MedicalBillErrorsGuide} />
+      <Route path="/articles/hospital-price-transparency" component={HospitalPriceTransparency} />
+      <Route path="/articles/negotiate-medical-bills" component={NegotiateMedicalBillsArticle} />
+      <Route path="/articles/ai-medical-bill-analysis" component={AIMedicalBillAnalysis} />
+      <Route path="/articles/insurance-denials-appeals" component={InsuranceDenialsAppeals} />
+      <Route path="/articles/medical-debt-relief-options" component={MedicalDebtReliefOptions} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
