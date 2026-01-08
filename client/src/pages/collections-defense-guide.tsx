@@ -70,6 +70,36 @@ const insiderSecrets = [
     title: "Hospital billing departments have settlement authority",
     secret: "Hospital billing managers typically have authority to settle debts for 40-60% without supervisor approval. Financial counselors can often go lower.",
     actionable: "Ask to speak with a billing supervisor or financial counselor, not a regular collections representative. They have more power to negotiate."
+  },
+  {
+    title: "Medical debt under $500 no longer affects credit scores",
+    secret: "As of 2023, the three major credit bureaus (Equifax, Experian, TransUnion) removed medical collections under $500 from credit reports entirely.",
+    actionable: "If your medical debt is under $500 in collections, it should NOT appear on your credit report. Dispute it if it does."
+  },
+  {
+    title: "Hospitals must screen for charity care BEFORE collections",
+    secret: "Under ACA regulations and most state laws, non-profit hospitals must screen patients for financial assistance eligibility before sending accounts to collections.",
+    actionable: "Ask if you were screened for charity care before your account was sent to collections. If not, this is a violation that can be used as leverage."
+  },
+  {
+    title: "The first offer is never the best offer",
+    secret: "Collection agencies are trained to start high and negotiate down. Their first offer - even if it seems like a 'discount' - is usually still far above what they'll accept.",
+    actionable: "Always counter-offer at least 2-3 times. If they offer 50% off, counter at 20%. Expect to settle somewhere in between."
+  },
+  {
+    title: "Month-end and quarter-end are best times to negotiate",
+    secret: "Collection agencies have quotas. At month-end and quarter-end, they're more desperate to close accounts and will accept lower offers.",
+    actionable: "Time your final negotiation for the last week of the month. Agents are more motivated to close deals to meet their numbers."
+  },
+  {
+    title: "Medical debt less than 1 year old shouldn't be on credit reports",
+    secret: "Credit bureaus now wait 1 year before adding medical debt to credit reports. If it's been less than a year, it shouldn't be there yet.",
+    actionable: "Check the date of service. If the debt is less than 1 year old and appears on your credit report, dispute it immediately."
+  },
+  {
+    title: "Charity care applications can recall debt from collections",
+    secret: "When you apply for hospital charity care, many hospitals will recall the debt from collections while your application is reviewed. Some will write off the debt entirely.",
+    actionable: "Apply for charity care even if your debt is already in collections. The hospital may recall it and dismiss the balance."
   }
 ];
 
@@ -390,6 +420,786 @@ const collectionsScenarios = [
       }
     ],
     expectedOutcome: "30-50% reduction for ground ambulance; potential full coverage for air ambulance under No Surprises Act"
+  },
+  {
+    id: "cancer-treatment-collections",
+    title: "Cancer Treatment Bills in Collections",
+    icon: Heart,
+    situation: "You or a family member underwent cancer treatment including chemotherapy, radiation, surgery, or immunotherapy. Despite insurance, you received massive bills for 'non-covered' treatments, out-of-network oncologists, or experimental therapies. Now bills totaling $50,000-$500,000+ are in collections.",
+    insiderKnowledge: [
+      "Cancer drugs are marked up 400-600% by hospitals - the same drug at an outpatient infusion center costs a fraction",
+      "Many cancer drugs have manufacturer patient assistance programs that cover copays or even full cost",
+      "Insurance denials for 'experimental' cancer treatments are often overturned on appeal with oncologist documentation",
+      "Hospitals often have special oncology financial assistance programs separate from general charity care",
+      "Clinical trials often provide treatment at no cost - and you may have been eligible but not informed"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Request Complete Treatment Records and Itemized Bills",
+        details: "Get every bill broken down by CPT code and NDC (drug) codes. Cancer treatment often involves dozens of separate charges that need individual review.",
+        script: "I need a complete itemized statement for all cancer treatment including: all drug administrations with NDC codes, all facility fees, all physician charges, and all lab/imaging charges."
+      },
+      {
+        step: 2,
+        title: "Check Drug Manufacturer Assistance Programs",
+        details: "Most major cancer drug manufacturers have patient assistance programs. Some will pay retroactively for drugs you've already received.",
+        programs: "Contact the drug manufacturer directly. Programs like Pfizer RxPathways, Merck Patient Assistance, and Bristol-Myers Squibb Patient Assistance can cover thousands in drug costs."
+      },
+      {
+        step: 3,
+        title: "Appeal Any 'Experimental' or 'Not Medically Necessary' Denials",
+        details: "Insurance companies frequently deny newer cancer treatments. Your oncologist can provide documentation showing the treatment is standard of care.",
+        script: "I am appealing the denial of [treatment]. This treatment is FDA-approved and is standard of care according to NCCN guidelines for [cancer type]. I am requesting a peer-to-peer review with an oncologist."
+      },
+      {
+        step: 4,
+        title: "Apply for Oncology-Specific Financial Assistance",
+        details: "Many hospitals have separate financial assistance for cancer patients. Additionally, organizations like CancerCare, Patient Advocate Foundation, and HealthWell Foundation provide grants.",
+        resources: "Contact hospital oncology social worker, CancerCare (cancercare.org), Patient Advocate Foundation (patientadvocate.org), HealthWell Foundation."
+      },
+      {
+        step: 5,
+        title: "Challenge Drug Markup and Facility Fees",
+        details: "Hospital cancer centers charge 3-5x more than outpatient infusion centers for the same drugs. Demand price justification.",
+        leverage: "Compare your charges to Medicare reimbursement rates for the same drugs/services. Medicare rates are public and can be used as fair market value evidence."
+      },
+      {
+        step: 6,
+        title: "Negotiate with Collections Using Hardship and Complexity",
+        details: "Cancer debt is complex and collections agencies know these cases often involve ongoing appeals. Use this as leverage.",
+        script: "This account involves complex insurance appeals for cancer treatment that are still ongoing. I have applied for manufacturer assistance programs and hospital charity care. I'm prepared to settle for [20-30%] while these processes continue."
+      }
+    ],
+    expectedOutcome: "40-70% reduction through assistance programs, appeals, and negotiation. Some drug costs may be eliminated entirely."
+  },
+  {
+    id: "car-accident-collections",
+    title: "Car Accident Medical Bills in Collections",
+    icon: AlertTriangle,
+    situation: "You were in a car accident and received emergency medical treatment. Now you're getting bills from multiple providers - the ER, ambulance, specialists, and imaging centers. You're confused about whether auto insurance, health insurance, or the other driver's insurance should pay. Bills are going to collections.",
+    insiderKnowledge: [
+      "Auto insurance medical payments (MedPay) or Personal Injury Protection (PIP) should pay FIRST before health insurance",
+      "If another driver was at fault, their liability insurance should ultimately cover your bills - but this can take months/years",
+      "Hospitals often file liens against accident settlements - but these liens can be negotiated down significantly",
+      "Health insurance may pay but has 'subrogation rights' to be repaid from any settlement",
+      "You should NEVER give recorded statements or sign medical authorizations for the other driver's insurance without attorney advice"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Identify All Available Insurance Coverage",
+        details: "Determine what coverage applies: your auto MedPay/PIP, your health insurance, the at-fault driver's liability, and any underinsured motorist coverage.",
+        priority: "Payment priority is typically: 1) Your MedPay/PIP, 2) Your health insurance, 3) At-fault driver's liability, 4) Your underinsured motorist."
+      },
+      {
+        step: 2,
+        title: "File Claims with Your Auto Insurance First",
+        details: "MedPay and PIP are 'no-fault' - they pay regardless of who caused the accident. File these claims immediately.",
+        script: "I was in an accident on [date] and need to file a claim under my Medical Payments/PIP coverage. Please send claim forms and explain my coverage limits."
+      },
+      {
+        step: 3,
+        title: "Inform Medical Providers of Accident Context",
+        details: "Tell all providers this is an accident case. Many will agree to defer billing while insurance and liability claims are processed.",
+        script: "This injury is from a car accident. I'm filing auto insurance claims and there is a liability claim pending. I request that you defer collection activity until insurance claims are resolved."
+      },
+      {
+        step: 4,
+        title: "Consider Consulting a Personal Injury Attorney",
+        details: "If another driver was at fault, an attorney can often negotiate medical liens down 30-50% and ensure all bills are covered by settlement.",
+        feeStructure: "Most personal injury attorneys work on contingency (25-40% of settlement) and don't charge upfront."
+      },
+      {
+        step: 5,
+        title: "Negotiate Hospital Liens if Applicable",
+        details: "Hospitals can place liens against accident settlements. These liens are negotiable - often for 50% or less of the original amount.",
+        script: "I understand the hospital has placed a lien on my accident settlement. I'm requesting negotiation of this lien amount, as the settlement amount is limited and must cover attorney fees and other providers."
+      },
+      {
+        step: 6,
+        title: "If Bills Go to Collections, Assert Pending Claims",
+        details: "Collections agencies should not aggressively collect while insurance/legal claims are pending. Document all pending claims.",
+        script: "This debt relates to a car accident with pending insurance claims and/or litigation. Collection activity is premature while these claims are being resolved. Please provide your contact information for my insurance company/attorney."
+      }
+    ],
+    expectedOutcome: "Bills covered by auto insurance MedPay/PIP first, remaining bills covered by at-fault party's insurance or negotiated settlement. Hospital liens reduced 30-50%."
+  },
+  {
+    id: "diagnostic-imaging-collections",
+    title: "MRI/CT Scan/Lab Work Bills in Collections",
+    icon: Target,
+    situation: "You had an MRI, CT scan, or extensive lab work ordered by your doctor. Despite having insurance, you received a bill for $2,000-$10,000+ that your insurance barely covered or denied entirely. Now it's in collections.",
+    insiderKnowledge: [
+      "Hospital-based imaging costs 3-10x more than independent imaging centers for the EXACT same scan",
+      "Many imaging bills include a 'facility fee' and 'professional fee' billed separately - you may be double-paying",
+      "Insurance often denies imaging as 'not medically necessary' when prior authorization wasn't obtained - but this is often the provider's fault, not yours",
+      "Lab work pricing varies wildly - the same blood panel can cost $50 or $5,000 depending on where it's done",
+      "Direct-pay imaging centers offer cash prices 70-80% less than hospital rates"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Prior Authorization Was Obtained",
+        details: "Many imaging studies require prior authorization. If the provider failed to obtain it, the bill may be THEIR responsibility, not yours.",
+        script: "Was prior authorization obtained for this imaging study? If not, I should not be responsible for charges resulting from the provider's failure to follow required authorization procedures."
+      },
+      {
+        step: 2,
+        title: "Compare Your Charges to Fair Market Rates",
+        details: "Use Healthcare Bluebook or FAIR Health Consumer to see what these tests should cost. Hospital rates are often 5-10x fair market.",
+        example: "An MRI that costs $500-$800 at an independent center may be billed at $3,000-$5,000 at a hospital."
+      },
+      {
+        step: 3,
+        title: "Check for Duplicate Billing",
+        details: "Imaging often generates both a 'technical' fee (for the equipment) and a 'professional' fee (for the radiologist reading). Make sure you're not being billed twice.",
+        redFlags: ["Two separate bills for the same date of service", "Both 'facility' and 'professional' components on one bill", "Charges for 'interpretation' when your doctor already reviewed results"]
+      },
+      {
+        step: 4,
+        title: "Appeal Insurance Denial if Applicable",
+        details: "If your insurance denied coverage, appeal with documentation from your ordering physician explaining medical necessity.",
+        script: "I'm appealing the denial of coverage for [imaging study]. This test was medically necessary to diagnose [condition]. I'm attaching a letter of medical necessity from my physician."
+      },
+      {
+        step: 5,
+        title: "Request Self-Pay Rate Adjustment",
+        details: "If you're paying out of pocket, demand the self-pay rate. This is often 40-60% of the billed amount.",
+        script: "I'm requesting adjustment to your self-pay/uninsured rate. Additionally, please provide the rate you would accept from Medicare for this same service."
+      },
+      {
+        step: 6,
+        title: "Negotiate with Collections Using Price Comparison",
+        details: "Armed with fair market pricing data, negotiate aggressively. Imaging is one of the most over-priced services in healthcare.",
+        script: "The fair market rate for this [MRI/CT/lab work] is [amount from Healthcare Bluebook]. The original charge of [billed amount] reflects a [X]% markup. I'm prepared to pay [fair market rate] to settle this account."
+      }
+    ],
+    expectedOutcome: "50-70% reduction by demonstrating overpricing compared to fair market rates"
+  },
+  {
+    id: "physical-therapy-collections",
+    title: "Physical Therapy/Rehabilitation Bills in Collections",
+    icon: Users,
+    situation: "You underwent physical therapy or rehabilitation after an injury or surgery. Your insurance limited the number of visits or denied coverage, leaving you with bills for $3,000-$20,000+. Now these bills are in collections.",
+    insiderKnowledge: [
+      "Insurance visit limits are often arbitrary and can be appealed with documentation of medical necessity",
+      "PT practices often bill for modalities (heat, ice, electrical stim) that should be included in the session fee",
+      "Many PT practices charge hospital-level rates despite being outpatient - these can be challenged",
+      "If PT was ordered after surgery, it may be considered part of 'global surgical care' and shouldn't be billed separately",
+      "Insurance companies frequently limit PT visits more than medically appropriate - appeals often succeed"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Review Your Insurance Benefits for PT Limits",
+        details: "Understand what your plan actually covers. Many plans have annual visit limits, but these can often be exceeded with proper documentation.",
+        script: "I need to understand my physical therapy benefits including: annual visit limit, whether visits can be extended with medical necessity documentation, and what the appeal process is for additional visits."
+      },
+      {
+        step: 2,
+        title: "Check for Unbundling of Modalities",
+        details: "PT practices sometimes bill separately for heat, ice, ultrasound, or electrical stimulation that should be included in the evaluation/treatment codes.",
+        redFlags: ["Separate charges for 'therapeutic exercise' AND 'neuromuscular re-education' in same session", "Charges for 'modalities' like hot/cold packs", "Multiple 15-minute units billed when session was shorter"]
+      },
+      {
+        step: 3,
+        title: "Appeal Visit Limit Denials",
+        details: "If insurance stopped covering after a certain number of visits, your PT and physician can document why additional visits are medically necessary.",
+        script: "I'm appealing the denial of PT visits beyond [number]. My physician and physical therapist have documented that continued therapy is medically necessary for [condition/recovery]. I'm requesting an extension of my visit limit."
+      },
+      {
+        step: 4,
+        title: "Check if PT Falls Under Global Surgical Period",
+        details: "If you had surgery, some post-operative PT may be included in the surgeon's 'global' fee and shouldn't be billed separately.",
+        question: "Was this physical therapy ordered as part of post-surgical care? If so, please clarify whether these services fall within the global surgical period."
+      },
+      {
+        step: 5,
+        title: "Negotiate Self-Pay Rates for Uncovered Sessions",
+        details: "For visits that exceed your insurance limit, negotiate a cash rate. Many PT practices will offer 30-50% discounts for cash payment.",
+        script: "For sessions beyond my insurance limit, I'm requesting your self-pay cash rate. I'd like to set up a payment arrangement at a reduced rate since I'm paying out of pocket."
+      },
+      {
+        step: 6,
+        title: "Negotiate Collections Based on Documentation Gaps",
+        details: "PT billing often has documentation issues. Collections agencies may not have complete records to validate the debt.",
+        script: "I'm requesting validation of this debt including: complete visit records, documentation of each service billed, proof of medical necessity for each visit, and evidence that my insurance was properly billed and benefits exhausted."
+      }
+    ],
+    expectedOutcome: "30-50% reduction through appeal of visit limits, self-pay rate negotiation, and billing audit"
+  },
+  {
+    id: "prescription-drug-collections",
+    title: "Prescription Drug/Pharmacy Bills in Collections",
+    icon: Briefcase,
+    situation: "You received expensive specialty medications (biologics, cancer drugs, HIV medications, etc.) and your insurance either didn't cover them or required massive copays. Now pharmacy bills for $5,000-$50,000+ are in collections.",
+    insiderKnowledge: [
+      "Nearly every expensive drug has a manufacturer copay assistance or patient assistance program - most patients don't know to apply",
+      "Specialty pharmacies have huge markups compared to manufacturer pricing - always compare options",
+      "Many 'specialty tier' drugs can be obtained through manufacturer patient assistance for free or reduced cost",
+      "Copay accumulator programs used by insurers are being banned in many states - check your state's laws",
+      "Prior authorization denials for medications are frequently overturned on appeal with physician documentation"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Check Manufacturer Patient Assistance Programs",
+        details: "Almost every expensive drug manufacturer offers assistance. Some provide drugs free; others cover copays. These programs can often be applied retroactively.",
+        resources: "Visit manufacturer websites or use needymeds.org to find programs. Programs include: Pfizer RxPathways, Johnson & Johnson Patient Assistance, AbbVie myAbbVie Assist."
+      },
+      {
+        step: 2,
+        title: "Review Insurance Formulary and Appeal if Needed",
+        details: "If your insurance denied or limited coverage, verify the drug's formulary tier and appeal if a less expensive alternative isn't medically appropriate.",
+        script: "I'm appealing the denial/restriction of [medication]. My physician has documented that this specific medication is required because [reason - failed other treatments, specific condition, etc.]. I'm requesting a formulary exception."
+      },
+      {
+        step: 3,
+        title: "Explore Alternative Pharmacies and Pricing",
+        details: "Specialty pharmacy pricing varies dramatically. Compare prices at different pharmacies and consider manufacturer direct programs.",
+        tip: "GoodRx, RxAssist, and Mark Cuban's Cost Plus Drugs can show dramatically lower prices for many medications."
+      },
+      {
+        step: 4,
+        title: "Check for Copay Accumulator Programs",
+        details: "Some insurers don't count manufacturer copay assistance toward your deductible. Many states have banned this practice.",
+        states_banned: "States banning copay accumulators include: Arizona, Illinois, Kentucky, Louisiana, Oklahoma, Tennessee, Virginia, and West Virginia."
+      },
+      {
+        step: 5,
+        title: "Apply for Foundation Assistance",
+        details: "Organizations like PAN Foundation, HealthWell Foundation, and Patient Advocate Foundation provide grants for medication costs.",
+        application: "Apply at panfoundation.org, healthwellfoundation.org, or patientadvocate.org. Grants can cover thousands in copays."
+      },
+      {
+        step: 6,
+        title: "Negotiate with Collections",
+        details: "Pharmacy collections are often handled by the specialty pharmacy's internal collections or third parties. They have significant room to negotiate.",
+        script: "I'm prepared to settle this pharmacy debt for [30-40%]. I was not informed of available manufacturer assistance programs at the time these medications were dispensed. I have since applied for patient assistance and am requesting a reduced settlement."
+      }
+    ],
+    expectedOutcome: "Retroactive manufacturer assistance may cover entire cost; otherwise 40-60% reduction through negotiation"
+  },
+  {
+    id: "urgent-care-collections",
+    title: "Urgent Care Bill in Collections (Was It Really Urgent Care?)",
+    icon: Building2,
+    situation: "You went to what you thought was a regular urgent care but received a bill for thousands of dollars - far more than typical urgent care pricing. Often this happens because the 'urgent care' was actually hospital-affiliated and billed at ER rates.",
+    insiderKnowledge: [
+      "Many hospital 'urgent cares' are technically emergency departments and bill at ER rates - this is often deceptive",
+      "Freestanding ERs (often in strip malls) look like urgent cares but charge 5-10x more",
+      "If a facility is designated as an ER, they add a 'facility fee' that can be hundreds or thousands of dollars",
+      "True independent urgent cares typically charge $100-$300; hospital-affiliated can charge $1,000-$3,000+ for the same services",
+      "Some states require freestanding ERs to clearly disclose their status and pricing - check your state"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Determine the Facility Type",
+        details: "Find out if the facility is a true urgent care, hospital-affiliated urgent care, or freestanding ER. This affects your rights and appeal options.",
+        script: "I need to understand the licensing status of this facility. Is this facility licensed as an urgent care center or as a freestanding emergency room/department?"
+      },
+      {
+        step: 2,
+        title: "Check for Required Disclosures",
+        details: "Some states require ERs and freestanding ERs to clearly disclose their status and that higher charges may apply. If they failed to disclose, you may have grounds to dispute.",
+        states_with_disclosure: "Texas, Colorado, Ohio, and other states have specific disclosure requirements for freestanding ERs."
+      },
+      {
+        step: 3,
+        title: "Compare Charges to True Urgent Care Pricing",
+        details: "Research what typical urgent cares charge for similar services. Use this as leverage to argue the charges are unreasonable.",
+        benchmark: "Typical urgent care visit: $100-$300. Typical freestanding ER for same complaint: $1,000-$3,000+."
+      },
+      {
+        step: 4,
+        title: "Challenge Facility Fees",
+        details: "Hospital-affiliated facilities often add massive 'facility fees' for using their space. Challenge whether these fees were disclosed and appropriate.",
+        script: "I was not informed that this facility charges hospital-level facility fees. I request removal or reduction of facility fees as I would have sought care elsewhere had I known."
+      },
+      {
+        step: 5,
+        title: "File Complaints if Deceptively Marketed",
+        details: "If the facility marketed itself as an urgent care but charged ER prices, file complaints with your state attorney general and health department.",
+        complaint: "Document signage, marketing materials, and any verbal representations made about the facility's nature and pricing."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Reasonable Charges",
+        details: "Argue that regardless of facility type, you should only pay what a reasonable urgent care would charge for the same services.",
+        script: "I went to this facility believing it was a standard urgent care. The services I received [describe visit] would cost $[150-300] at a typical urgent care. I'm prepared to pay that amount, not the inflated charges being claimed."
+      }
+    ],
+    expectedOutcome: "50-75% reduction by challenging facility fee deception and negotiating to true urgent care rates"
+  },
+  {
+    id: "out-of-network-collections",
+    title: "Out-of-Network Bill at In-Network Facility",
+    icon: AlertCircle,
+    situation: "You carefully chose an in-network hospital or surgery center, but received surprise bills from out-of-network providers (anesthesiologists, radiologists, pathologists, assistant surgeons) who treated you there. Now these bills are in collections.",
+    insiderKnowledge: [
+      "The No Surprises Act (effective 2022) makes most of these surprise bills ILLEGAL - you cannot be balance billed",
+      "You can ONLY be charged your in-network cost-sharing amount for out-of-network providers at in-network facilities",
+      "Many providers and collection agencies are STILL sending balance bills hoping patients don't know the law",
+      "If you received care before 2022, state laws may still protect you - check your state's surprise billing law",
+      "The provider dispute is between the provider and your insurance - YOU should not be in the middle"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Invoke Your No Surprises Act Rights",
+        details: "Send a written notice to the provider/collections agency citing the No Surprises Act. This bill is likely illegal.",
+        script: "Under the No Surprises Act (Public Law 116-260), I cannot be balance billed for out-of-network services provided at an in-network facility without my prior consent. I am requesting immediate adjustment of this bill to my in-network cost-sharing amount only."
+      },
+      {
+        step: 2,
+        title: "Verify You Didn't Sign a Waiver",
+        details: "Providers can only balance bill if you signed a consent waiver at least 72 hours before non-emergency care. Emergency care cannot be waived.",
+        important: "Even if you signed something at check-in, it likely doesn't qualify as valid consent under the Act's requirements."
+      },
+      {
+        step: 3,
+        title: "Contact Your Insurance Company",
+        details: "Inform your insurer of the improper balance bill. They should process the claim as in-network and notify the provider of proper payment.",
+        script: "I'm receiving a balance bill from [provider] for services at in-network [facility]. This appears to violate the No Surprises Act. Please reprocess this claim as in-network and notify the provider."
+      },
+      {
+        step: 4,
+        title: "File a Complaint with HHS",
+        details: "The Department of Health and Human Services enforces the No Surprises Act. File a complaint if the provider doesn't comply.",
+        where: "File at cms.gov/nosurprises or call 1-800-985-3059"
+      },
+      {
+        step: 5,
+        title: "Document Everything for Collections Response",
+        details: "If the bill is already in collections, send the collection agency copies of your No Surprises Act dispute and any insurance communications.",
+        script: "This debt is disputed under the No Surprises Act. The provider is prohibited from balance billing me for out-of-network services at an in-network facility. I am attaching my dispute correspondence and request you cease collection activity."
+      },
+      {
+        step: 6,
+        title: "Consult an Attorney if Needed",
+        details: "If providers or collections agencies persist despite the law, an attorney can send a demand letter and potentially pursue damages.",
+        damages: "Violations of the No Surprises Act may entitle you to actual damages, attorney fees, and other relief."
+      }
+    ],
+    expectedOutcome: "Bill reduced to in-network cost-sharing only. Balance billing eliminated if No Surprises Act applies."
+  },
+  {
+    id: "deceased-family-member-collections",
+    title: "Medical Bills for Deceased Family Member",
+    icon: Heart,
+    situation: "A family member passed away, and now debt collectors are contacting you about their medical bills. They may be telling you that you're responsible for the debt. Collections calls are happening during a time of grief.",
+    insiderKnowledge: [
+      "In most cases, family members are NOT personally responsible for a deceased person's medical debt",
+      "Collectors CANNOT legally collect from relatives unless they co-signed, are a surviving spouse in certain states, or are the estate executor",
+      "Community property states (9 states) may hold surviving spouses responsible for debts incurred during marriage",
+      "Collectors use aggressive tactics on grieving families hoping they don't know their rights",
+      "Debts must be paid from the ESTATE, not from relatives' personal funds"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Understand Who is Actually Responsible",
+        details: "Generally, only the estate is responsible. You're personally responsible only if: you co-signed, you're a spouse in a community property state, or you're the executor and pay from estate funds improperly.",
+        communityPropertyStates: "Arizona, California, Idaho, Louisiana, Nevada, New Mexico, Texas, Washington, Wisconsin"
+      },
+      {
+        step: 2,
+        title: "Do Not Admit Responsibility or Make Payments",
+        details: "Making any payment, even a small one, may create liability where none existed. Do not agree to be responsible or make 'goodwill' payments.",
+        warning: "Collectors may pressure you by saying 'just make a small payment to show good faith.' This is a trap."
+      },
+      {
+        step: 3,
+        title: "Provide Only Necessary Information",
+        details: "You only need to confirm the death and, if applicable, provide estate executor contact information. You don't need to discuss finances or payment.",
+        script: "[Name] passed away on [date]. I am not personally responsible for this debt. If you are making a claim against the estate, please submit it to [probate court/executor address]."
+      },
+      {
+        step: 4,
+        title: "Know Your Right to Limit Contact",
+        details: "Under the FDCPA, you can demand collectors stop contacting you. If they continue, they're violating federal law.",
+        script: "I am demanding that you cease all communication with me regarding this debt. Under the FDCPA, I have the right to request no further contact. This is my formal request."
+      },
+      {
+        step: 5,
+        title: "If You're the Executor, Handle Properly",
+        details: "If you're handling the estate, debts are paid from estate assets in order of priority. Medical debt typically has lower priority than secured debts and funeral expenses.",
+        priority: "Typical priority: 1) Secured debts, 2) Funeral/estate admin costs, 3) Federal debts, 4) Medical/unsecured debts"
+      },
+      {
+        step: 6,
+        title: "File Complaints for Harassment",
+        details: "If collectors continue improper contact or make false claims about your responsibility, file CFPB and state attorney general complaints.",
+        document: "Keep records of all calls, including: date, time, caller name/company, claims made, and any threatening or harassing language."
+      }
+    ],
+    expectedOutcome: "Confirmation of non-responsibility for family members. Estate debts handled properly through probate process."
+  },
+  {
+    id: "nursing-home-collections",
+    title: "Nursing Home/Long-Term Care Bills in Collections",
+    icon: Building2,
+    situation: "You or a family member received nursing home or long-term care services. Medicare/Medicaid didn't cover as expected, private pay rates were astronomical, or there are disputes about level of care. Now bills for $10,000-$100,000+ are in collections.",
+    insiderKnowledge: [
+      "Nursing homes often illegally require family members to personally guarantee payment - this may be void under federal law",
+      "Medicare covers only 100 days of skilled nursing after a hospital stay - many patients and families aren't told this",
+      "Medicaid 'spend-down' rules are complex and nursing homes often fail to help families navigate them properly",
+      "Private pay rates are often 30-50% higher than what Medicaid pays for the same care",
+      "Many nursing home contracts include illegal clauses that can be challenged"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Review the Admission Agreement Carefully",
+        details: "Check if you were required to personally guarantee payment. Under federal law (42 CFR 483.15), nursing homes CANNOT require third-party guarantees as a condition of admission for Medicaid/Medicare residents.",
+        illegal: "If the facility required a family member to guarantee payment as a condition of admission, that clause may be void."
+      },
+      {
+        step: 2,
+        title: "Verify Medicare Coverage Was Properly Applied",
+        details: "Medicare covers 20 days fully and days 21-100 with copay for skilled nursing. Confirm your family member received proper skilled care and Medicare was billed correctly.",
+        script: "Please provide documentation of: qualifying hospital stay, skilled nursing certifications, Medicare claims submitted, and explanation of any coverage denials."
+      },
+      {
+        step: 3,
+        title: "Check Medicaid Eligibility and Application",
+        details: "If the resident became Medicaid-eligible during their stay, the nursing home should have helped with the application. Medicaid can cover care retroactively.",
+        retroactive: "Medicaid coverage can be retroactive up to 3 months before the application date."
+      },
+      {
+        step: 4,
+        title: "Challenge Private Pay Rate Differential",
+        details: "If you're being charged private pay rates but the resident was Medicaid-eligible, dispute the rate differential.",
+        script: "During [time period], the resident was Medicaid-eligible. I am requesting adjustment of charges to the Medicaid rate for that period, plus a refund of any overpayment."
+      },
+      {
+        step: 5,
+        title: "Report Illegal Personal Guarantee Requirements",
+        details: "If you were illegally required to guarantee payment, file complaints with the state long-term care ombudsman and state attorney general.",
+        contact: "Find your state ombudsman at ltcombudsman.org"
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Medicaid Rate",
+        details: "If negotiating with collections, use the Medicaid rate as your benchmark for fair pricing.",
+        script: "The Medicaid reimbursement rate for this level of care is approximately $[amount] per day. The private pay rate of $[higher amount] represents an unreasonable markup. I'm prepared to settle based on a rate closer to the Medicaid rate."
+      }
+    ],
+    expectedOutcome: "30-50% reduction by challenging illegal guarantees and excessive private pay rates. Possible Medicaid retroactive coverage."
+  },
+  {
+    id: "durable-medical-equipment-collections",
+    title: "Medical Equipment (CPAP, Wheelchair, Prosthetics) Bills in Collections",
+    icon: Briefcase,
+    situation: "You received durable medical equipment like a CPAP machine, wheelchair, prosthetic limb, or hospital bed. Insurance covered less than expected, or you were charged retail prices that were shockingly high. Now bills for $2,000-$20,000+ are in collections.",
+    insiderKnowledge: [
+      "DME is one of the most overpriced categories in healthcare - markups of 300-500% are standard",
+      "Many DME suppliers bill for 'rental' when purchase would be cheaper, or vice versa",
+      "The same CPAP machine that costs $600 retail is often billed at $2,000-$4,000 to insurance",
+      "Medicare/Medicaid rates for DME are public and can be used to negotiate fair pricing",
+      "DME suppliers often fail to obtain proper prior authorization, making them responsible for denials"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Compare Billed Price to Retail",
+        details: "Research the retail price of your equipment on Amazon, manufacturer websites, or DME comparison sites. The billed price is often 3-5x higher.",
+        example: "A CPAP machine that retails for $600-$800 may be billed at $2,500-$4,000. A standard wheelchair that costs $150-$300 may be billed at $1,000+."
+      },
+      {
+        step: 2,
+        title: "Verify Prior Authorization Was Obtained",
+        details: "Most DME requires prior authorization. If the supplier failed to obtain it, they bear responsibility for any denial - not you.",
+        script: "Was prior authorization obtained before this equipment was provided? If not, I should not be responsible for charges resulting from the supplier's failure to follow authorization requirements."
+      },
+      {
+        step: 3,
+        title: "Check Rent vs. Purchase Terms",
+        details: "DME is often rented monthly, but after a 'cap rental' period (usually 13 months for Medicare), you should own the equipment. Verify you're not still being charged rent after ownership.",
+        question: "Has this equipment met the cap rental period? Please provide documentation of total rental payments and confirm whether I now own the equipment."
+      },
+      {
+        step: 4,
+        title: "Request Medicare/Medicaid Rate Comparison",
+        details: "Ask what the supplier would accept from Medicare/Medicaid for the same equipment. This is often 50-70% less than what they're charging you.",
+        script: "I'm requesting the Medicare allowable rate for this equipment. I believe the billed charges exceed reasonable market rates and am requesting adjustment to a fair price."
+      },
+      {
+        step: 5,
+        title: "Appeal Insurance Denials with Medical Necessity",
+        details: "If insurance denied coverage, appeal with documentation from your physician explaining why the specific equipment is medically necessary.",
+        script: "I'm appealing the denial of [equipment]. My physician has documented that this equipment is medically necessary for [condition]. I'm attaching the certificate of medical necessity and requesting coverage."
+      },
+      {
+        step: 6,
+        title: "Negotiate with Collections Using Fair Market Evidence",
+        details: "Present retail pricing and Medicare rates as evidence of fair market value. Offer to pay a reasonable amount based on these benchmarks.",
+        script: "The retail price for this [equipment] is approximately $[retail price]. The Medicare allowable amount is approximately $[Medicare rate]. The billed amount of $[bill amount] is [X]% higher. I'm prepared to settle for $[fair price]."
+      }
+    ],
+    expectedOutcome: "50-70% reduction by demonstrating overpricing compared to retail and Medicare rates"
+  },
+  {
+    id: "pediatric-nicu-collections",
+    title: "NICU/Pediatric Hospital Stay Bills in Collections",
+    icon: Baby,
+    situation: "Your newborn spent time in the NICU or your child had an extended hospital stay. Despite having insurance, you received bills for $50,000-$500,000+ for 'non-covered' services, out-of-network providers, or amounts exceeding your out-of-pocket maximum. Now these bills are in collections.",
+    insiderKnowledge: [
+      "NICU bills are among the most error-prone in healthcare - duplicate charges and inflated daily rates are common",
+      "Many NICU charges are 'bundled' into the daily rate but get billed separately anyway",
+      "Out-of-pocket maximums apply to NICU care - once you hit yours, insurance should cover 100%",
+      "Many states have separate CHIP programs or Medicaid expansions specifically for sick newborns",
+      "Children's hospitals often have more robust charity care programs than general hospitals"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Out-of-Pocket Maximum Was Applied Correctly",
+        details: "If you've hit your out-of-pocket maximum, the remaining charges should be covered 100% by insurance. Verify this was calculated correctly.",
+        script: "Please provide documentation showing total out-of-pocket payments and confirmation that my out-of-pocket maximum has been met. Any charges after that date should be covered 100%."
+      },
+      {
+        step: 2,
+        title: "Audit Daily NICU Charges for Bundling Errors",
+        details: "NICU daily rates should include routine nursing care, monitoring, and supplies. Check for separate charges that should be bundled.",
+        redFlags: ["Separate charges for 'nursing care' in addition to daily rate", "Individual charges for routine monitoring", "Supply charges for items included in daily care", "Multiple physician charges for same-day routine checks"]
+      },
+      {
+        step: 3,
+        title: "Check Your Child's Independent Insurance Options",
+        details: "Your newborn may qualify for their own Medicaid or CHIP coverage, which can be retroactive to birth.",
+        retroactive: "Apply for Medicaid/CHIP within 60-90 days of birth. Coverage can be retroactive to the date of birth, covering NICU costs."
+      },
+      {
+        step: 4,
+        title: "Apply for Hospital Charity Care/Financial Assistance",
+        details: "Children's hospitals and NICU programs often have special financial assistance. Apply even if you think you don't qualify - eligibility thresholds can be generous.",
+        income_levels: "Many children's hospitals offer charity care up to 400% of federal poverty level or have income-based sliding scales."
+      },
+      {
+        step: 5,
+        title: "Request Case Manager or Social Worker Help",
+        details: "Hospital social workers and case managers can help navigate billing issues and find assistance programs you may not know about.",
+        contact: "Ask for the hospital's financial counselor or patient advocate. They can review your bills and identify errors or assistance opportunities."
+      },
+      {
+        step: 6,
+        title: "Negotiate NICU Collections Aggressively",
+        details: "NICU bills are well-known for errors and overcharging. Collections agencies know these debts are frequently disputed.",
+        script: "This NICU debt includes significant billing errors and charges that should be covered under my out-of-pocket maximum. I have documented [number] specific errors. I'm prepared to settle for [20-30%] of the remaining balance after corrections."
+      }
+    ],
+    expectedOutcome: "40-70% reduction through billing audits, out-of-pocket maximum corrections, and hospital charity care"
+  },
+  {
+    id: "covid-medical-collections",
+    title: "COVID-19 Treatment Bills in Collections",
+    icon: Shield,
+    situation: "You were hospitalized with COVID-19 or received COVID-related treatment. Despite federal programs intended to cover these costs, you received massive bills. Insurance denied coverage, HRSA wouldn't reimburse, or you fell through the cracks. Now bills are in collections.",
+    insiderKnowledge: [
+      "The HRSA Uninsured Program covered COVID treatment for uninsured patients through 2024 - check if you qualified",
+      "Many insurance plans waived cost-sharing for COVID treatment during the pandemic - verify your plan's terms",
+      "Hospitals received billions in federal CARES Act funding specifically to cover uncompensated COVID care",
+      "Many COVID hospitalizations were incorrectly coded, leading to coverage denials that can be appealed",
+      "Provider Relief Fund payments to hospitals were intended to offset uncompensated care costs"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Diagnosis Coding is Correct",
+        details: "COVID hospitalizations should be coded with specific COVID diagnosis codes. Incorrect coding can lead to coverage denials.",
+        codes: "Primary diagnosis should include U07.1 (COVID-19). If this code is missing, request a coding review and rebilling."
+      },
+      {
+        step: 2,
+        title: "Check Insurance Cost-Sharing Waivers",
+        details: "Many insurers waived deductibles, copays, and coinsurance for COVID treatment during certain periods. Verify your plan's specific terms.",
+        script: "Please confirm your plan's COVID-19 cost-sharing waiver policy and the dates it was effective. If my treatment fell within that period, please reprocess my claims with waived cost-sharing."
+      },
+      {
+        step: 3,
+        title: "Apply for HRSA Uninsured Coverage (If Applicable)",
+        details: "If you were uninsured when treated, HRSA may still reimburse the provider for your care, even after the fact.",
+        eligibility: "HRSA covered testing, treatment, and vaccination for uninsured individuals. Check eligibility at hrsa.gov."
+      },
+      {
+        step: 4,
+        title: "Document Hospital's CARES Act Funding",
+        details: "Hospitals received Provider Relief Fund payments specifically to cover uncompensated COVID care. Use this as leverage.",
+        script: "This hospital received [amount] in Provider Relief Fund payments under the CARES Act. These funds were intended to cover uncompensated COVID care. I'm requesting charity care consideration given this federal funding."
+      },
+      {
+        step: 5,
+        title: "Apply for COVID-Specific Financial Assistance",
+        details: "Many hospitals created special COVID financial assistance programs. Apply even if the programs have officially ended - exceptions are often made.",
+        request: "I'm requesting financial assistance for COVID-19 treatment costs. I understand the hospital received federal relief funding and am requesting consideration for charity care."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Federal Funding Context",
+        details: "When negotiating with collections, emphasize that hospitals were heavily subsidized for COVID care and should not be seeking full reimbursement from patients.",
+        script: "This debt is for COVID-19 treatment. The hospital received significant federal CARES Act funding to cover uncompensated COVID care. Pursuing full payment from patients while accepting federal relief raises ethical and legal questions. I'm prepared to settle for [15-25%]."
+      }
+    ],
+    expectedOutcome: "50-80% reduction or full write-off given federal funding context and special COVID financial assistance programs"
+  },
+  {
+    id: "workers-comp-collections",
+    title: "Work Injury Bills in Collections (Workers' Comp Dispute)",
+    icon: Briefcase,
+    situation: "You were injured at work and sought medical treatment. Your employer's workers' compensation insurer denied the claim or disputed treatment. Now medical providers are sending bills to you personally, and some have gone to collections.",
+    insiderKnowledge: [
+      "If an injury happened at work, workers' comp - NOT you personally - is responsible for the bills",
+      "Providers can NOT bill you personally for work injuries while a workers' comp claim is pending",
+      "Employers and their insurers often deny legitimate claims hoping workers won't fight back",
+      "You have the right to choose your own doctor in many states after initial treatment",
+      "Denied workers' comp claims have a high success rate on appeal - many initial denials are overturned"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Document That This Was a Work Injury",
+        details: "Gather evidence that the injury occurred at work: incident reports, witness statements, photos, timeline of injury and symptoms.",
+        critical: "If you reported the injury to your employer and they filed a workers' comp claim, you should have a claim number. Get this documentation."
+      },
+      {
+        step: 2,
+        title: "Inform Medical Providers of Workers' Comp Status",
+        details: "Tell all providers this is a workers' comp case. They should bill the workers' comp insurer, not you.",
+        script: "This injury occurred at work on [date]. The workers' compensation claim number is [number] with [insurance company]. Please bill workers' compensation directly. I am not personally responsible for work injury medical costs."
+      },
+      {
+        step: 3,
+        title: "Appeal the Workers' Comp Denial",
+        details: "If your claim was denied, you have the right to appeal. Many states have workers' compensation boards that handle disputes.",
+        steps: "File an appeal with your state workers' compensation board. You may be entitled to a hearing before an administrative law judge."
+      },
+      {
+        step: 4,
+        title: "Consider a Workers' Comp Attorney",
+        details: "Workers' comp attorneys typically work on contingency and specialize in fighting denials. They can also handle medical provider issues.",
+        fees: "Workers' comp attorney fees are typically 15-25% of recovered benefits and are often regulated by the state."
+      },
+      {
+        step: 5,
+        title: "Respond to Collections with Workers' Comp Documentation",
+        details: "If bills go to collections, provide documentation that this is a workers' comp case. You are not personally liable.",
+        script: "This medical debt is for a work injury covered by workers' compensation. The claim is currently [pending/under appeal]. I am not personally responsible for these charges. Please direct billing to [workers' comp insurer] at [contact info]."
+      },
+      {
+        step: 6,
+        title: "File Complaint if Providers Improperly Pursue You",
+        details: "Providers billing you personally for workers' comp cases may be violating state law. File complaints with your state workers' comp board and insurance commissioner.",
+        document: "Keep records of all improper billing and collection attempts for potential legal action."
+      }
+    ],
+    expectedOutcome: "Complete dismissal of personal responsibility if workers' comp coverage applies. Workers' comp insurer pays all medical bills."
+  },
+  {
+    id: "job-loss-collections",
+    title: "Medical Bills After Job Loss (Lost Insurance)",
+    icon: TrendingDown,
+    situation: "You lost your job and with it, your health insurance. During the coverage gap, you incurred medical bills you couldn't pay. Now those bills - plus ongoing costs for chronic conditions - are in collections.",
+    insiderKnowledge: [
+      "COBRA coverage can be elected retroactively within 60 days of job loss - even after you've incurred bills",
+      "Job loss is a 'qualifying life event' for immediate marketplace enrollment with potential subsidies",
+      "Many states expanded Medicaid under the ACA - job loss may make you eligible",
+      "Hospitals cannot deny emergency care due to inability to pay - but they can send to collections after",
+      "Job loss may qualify you for maximum charity care consideration under hospital policies"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Evaluate COBRA Retroactive Election",
+        details: "If you're within 60 days of losing coverage, you can still elect COBRA and coverage is retroactive. This may cover bills you've already incurred.",
+        calculation: "Compare COBRA premiums to outstanding medical bills. If bills exceed premiums, COBRA retroactive election may save money."
+      },
+      {
+        step: 2,
+        title: "Apply for Marketplace Coverage Immediately",
+        details: "Job loss qualifies you for a Special Enrollment Period. Apply at healthcare.gov within 60 days of losing coverage.",
+        subsidies: "Based on your current (lower) income, you may qualify for significant premium tax credits and cost-sharing reductions."
+      },
+      {
+        step: 3,
+        title: "Check Medicaid Eligibility",
+        details: "With job loss, your income may now qualify you for Medicaid. In expansion states, adults with income up to 138% FPL qualify.",
+        retroactive: "Medicaid can cover bills from up to 3 months before your application date."
+      },
+      {
+        step: 4,
+        title: "Apply for Hospital Charity Care",
+        details: "Job loss and income reduction typically qualify you for hospital charity care. Apply with documentation of your changed financial situation.",
+        documentation: "Provide: termination letter, unemployment benefits documentation, bank statements showing reduced income, household expenses."
+      },
+      {
+        step: 5,
+        title: "Set Up Hardship Payment Plans",
+        details: "If you can't qualify for charity care, request interest-free hardship payment plans based on your ability to pay.",
+        script: "I recently lost my job and am experiencing financial hardship. I'm requesting an interest-free payment plan based on my current income. I can afford $[amount] per month while seeking employment."
+      },
+      {
+        step: 6,
+        title: "Negotiate Collections with Hardship Evidence",
+        details: "Collections agencies know that recently unemployed individuals have little ability to pay. Use your documentation to negotiate significant reductions.",
+        script: "I lost my job on [date] and am currently unemployed. I've applied for Medicaid and hospital charity care. While those applications are pending, I'm prepared to settle this debt for [20-30%] given my financial hardship."
+      }
+    ],
+    expectedOutcome: "Retroactive coverage through COBRA or Medicaid. Charity care for remaining bills. 50-70% reduction if negotiating with collections."
+  },
+  {
+    id: "dental-collections",
+    title: "Major Dental Work Bills in Collections",
+    icon: Stethoscope,
+    situation: "You had major dental work - implants, crowns, root canals, or oral surgery. Your dental insurance covered little or nothing, or you had no dental coverage. Now bills for $5,000-$30,000+ are in collections.",
+    insiderKnowledge: [
+      "Dental insurance has notoriously low annual maximums ($1,000-$2,000) that haven't increased in decades",
+      "Dental implants are often considered 'cosmetic' despite being the best medical solution",
+      "Dental school clinics offer the same procedures at 50-70% less than private practices",
+      "Many dental procedures done in hospitals trigger medical insurance coverage, not just dental",
+      "CareCredit and other dental financing carry high interest rates - negotiate before using them"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Review What Was Covered vs. What Was Denied",
+        details: "Get the explanation of benefits from your dental insurance. Understand exactly why certain procedures weren't covered.",
+        common_exclusions: "Dental insurance often excludes: implants, cosmetic work, procedures started before coverage began, frequency limitations (e.g., one cleaning per 6 months)"
+      },
+      {
+        step: 2,
+        title: "Appeal Medical Necessity Denials",
+        details: "If dental work was medically necessary (not cosmetic), appeal with documentation from your dentist explaining the medical need.",
+        script: "I'm appealing the denial of [procedure]. This was not cosmetic - it was medically necessary to [prevent infection/restore function/address pathology]. I'm attaching clinical documentation."
+      },
+      {
+        step: 3,
+        title: "Check if Medical Insurance Applies",
+        details: "Dental procedures done in hospitals or related to accidents/medical conditions may be covered by medical insurance, not dental.",
+        examples: "Oral surgery for impacted teeth, treatment of jaw fractures, extraction due to infection, dental work before heart surgery - often covered by medical."
+      },
+      {
+        step: 4,
+        title: "Negotiate Direct Payment Discounts",
+        details: "Dental practices often offer 10-20% discounts for upfront payment or payment in full. Ask before care and before paying collections.",
+        script: "I'm unable to pay the full amount but would like to settle this account. What discount can you offer for payment in full today?"
+      },
+      {
+        step: 5,
+        title: "Explore Dental Financing Carefully",
+        details: "CareCredit and similar programs offer promotional 0% interest periods. If you can pay within the promotional period, this can help - but interest rates are high if you can't.",
+        warning: "CareCredit charges 26.99% APR after promotional period. Only use if you can definitely pay off within 0% period."
+      },
+      {
+        step: 6,
+        title: "Negotiate with Collections",
+        details: "Dental debt in collections can often be settled for 30-50% of the original amount.",
+        script: "I'm prepared to settle this dental debt for [30-40%] of the original amount. Dental insurance covered only $[amount] of my $[total] in dental work. I've already paid $[paid amount] out of pocket."
+      }
+    ],
+    expectedOutcome: "30-50% reduction through negotiation. Possible additional coverage if medical insurance applies."
   }
 ];
 
@@ -474,6 +1284,104 @@ const insuranceKickoffDefense = [
       "Document any coverage gaps created by transition"
     ],
     remedies: ["Guaranteed issue rights to comparable coverage", "Special enrollment period for new coverage", "Continuation of care requirements for ongoing treatment"]
+  },
+  {
+    title: "Coverage Terminated During Active Treatment",
+    description: "Your insurance was terminated while you were in the middle of cancer treatment, pregnancy, or other ongoing medical care",
+    steps: [
+      "Document your treatment timeline and the coverage termination date",
+      "Check if your state has 'continuity of care' protections",
+      "Many states require insurers to continue covering ongoing treatment for 60-90 days after termination",
+      "Request in-network rates for completion of active treatment",
+      "File complaint with state insurance commissioner if continuity rights violated",
+      "Apply for marketplace coverage or Medicaid immediately",
+      "Request that providers wait to bill until new coverage is obtained"
+    ],
+    remedies: ["Continuation of treatment at in-network rates", "State-mandated continuity of care protections", "Retroactive Medicaid coverage for eligible patients"]
+  },
+  {
+    title: "Wrongful Denial Based on Pre-Existing Condition",
+    description: "Your claim was denied based on a pre-existing condition despite the ACA making this illegal",
+    steps: [
+      "The ACA prohibits denials based on pre-existing conditions for all ACA-compliant plans",
+      "Request the specific reason for denial in writing",
+      "File an internal appeal citing ACA protections",
+      "If internal appeal fails, request an external review",
+      "File complaint with HHS Office of Civil Rights",
+      "Document all denials and appeal them systematically",
+      "Consider consulting a healthcare attorney if violations continue"
+    ],
+    remedies: ["ACA violation remedies", "Coverage reinstatement", "Retroactive coverage for denied claims", "Potential civil penalties against insurer"]
+  },
+  {
+    title: "Marketplace Coverage Terminated for Non-Payment",
+    description: "Your ACA marketplace plan was terminated because you missed premium payments",
+    steps: [
+      "Marketplace plans have a 90-day grace period for subsidy recipients (30 days for others)",
+      "During the first 30 days of grace period, claims should still be paid",
+      "Contact the marketplace immediately if you missed payments due to hardship",
+      "Document any circumstances that prevented payment (job loss, illness, etc.)",
+      "Apply for reinstatement or new coverage during the next enrollment period",
+      "If you qualified for subsidies you didn't receive, you may be entitled to retroactive credits",
+      "Check if missed payments can be made up to reinstate coverage"
+    ],
+    remedies: ["Reinstatement during grace period", "Retroactive subsidy adjustments", "Special enrollment period for qualifying events"]
+  },
+  {
+    title: "Short-Term Plan Gaps and Limitations",
+    description: "You purchased a short-term health plan that didn't cover what you expected, or the plan expired leaving you uninsured",
+    steps: [
+      "Short-term plans often exclude pre-existing conditions and many services",
+      "Review your policy carefully to understand what was actually covered",
+      "If the plan misrepresented coverage, file complaint with state insurance commissioner",
+      "Apply for ACA marketplace coverage during open enrollment or special enrollment period",
+      "Document any misleading marketing or sales tactics",
+      "Explore whether services denied by short-term plan could be appealed",
+      "Check if your state has additional regulations on short-term plans"
+    ],
+    remedies: ["Complaint against misleading marketing", "ACA marketplace enrollment", "State-specific short-term plan protections"]
+  },
+  {
+    title: "Medicaid Unwinding / Redetermination Issues",
+    description: "You were terminated from Medicaid during the post-pandemic 'unwinding' due to paperwork issues, not actual ineligibility",
+    steps: [
+      "Many Medicaid terminations during unwinding were due to procedural issues, not ineligibility",
+      "Check if you received all required notices and had opportunity to respond",
+      "You have the right to appeal the termination - deadlines vary by state",
+      "Request a fair hearing to challenge the termination",
+      "While appeal is pending, you may be entitled to continuing coverage",
+      "Apply for marketplace coverage with potential subsidies if Medicaid appeal fails",
+      "Contact your state Medicaid office or a healthcare navigator for help"
+    ],
+    remedies: ["Reinstatement of Medicaid coverage", "Continuing coverage during appeal", "Marketplace coverage with subsidies if ineligible for Medicaid"]
+  },
+  {
+    title: "Student Health Plan Termination",
+    description: "You were dropped from your university's student health plan unexpectedly (graduation, reduced enrollment, etc.)",
+    steps: [
+      "Verify the specific reason for termination (graduation, enrollment status, age)",
+      "Check if you're eligible to continue coverage through COBRA-like provisions",
+      "Students up to age 26 can join a parent's plan regardless of student status",
+      "Apply for marketplace coverage within 60 days of losing student coverage",
+      "Some universities offer 'bridge' coverage for recent graduates",
+      "Check if you qualify for Medicaid based on current income",
+      "Document the termination date for special enrollment purposes"
+    ],
+    remedies: ["Parent's plan coverage up to age 26", "Special enrollment in marketplace", "Medicaid enrollment", "University bridge coverage programs"]
+  },
+  {
+    title: "Military/VA Healthcare Eligibility Changes",
+    description: "Your TRICARE or VA healthcare coverage was terminated or changed due to status changes",
+    steps: [
+      "Verify the specific reason for eligibility change",
+      "Transitioning service members are entitled to continued coverage during transition",
+      "Check eligibility for TRICARE Transitional Health Coverage",
+      "Veterans may be eligible for VA healthcare even if previously denied",
+      "Document your service dates and discharge status carefully",
+      "Contact your base/installation or VA healthcare enrollment office",
+      "Loss of military coverage is a qualifying event for marketplace enrollment"
+    ],
+    remedies: ["TRICARE Transitional Health Coverage", "VA healthcare enrollment", "Marketplace special enrollment", "COBRA-like coverage for certain military families"]
   }
 ];
 
