@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  MessageCircle, 
   Send, 
   Bot, 
   User,
   Loader2,
-  ChevronDown,
   Shield,
   AlertTriangle,
   DollarSign,
@@ -15,12 +13,16 @@ import {
   Scale,
   Heart,
   Lightbulb,
-  X
+  CreditCard,
+  Sparkles,
+  RotateCcw,
+  Copy,
+  Check,
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -34,84 +36,47 @@ interface Message {
 const quickPrompts = [
   {
     icon: AlertTriangle,
-    title: "Collections Just Called Me",
-    prompt: "A debt collector just called me about a medical bill I didn't know I had. What should I do right now? What should I say and NOT say? Give me specific steps.",
-    category: "Urgent"
+    title: "Collector Just Called",
+    prompt: "A debt collector just called me about a medical bill. What should I say and NOT say? Give me step-by-step guidance.",
+    color: "from-red-500 to-rose-600"
   },
   {
     icon: FileText,
-    title: "Write a Debt Validation Letter",
-    prompt: "Help me write a debt validation letter. The debt is for $[AMOUNT] from [HOSPITAL/PROVIDER] for a [PROCEDURE/VISIT] on [DATE]. I want to challenge this debt and request full documentation.",
-    category: "Templates"
+    title: "Debt Validation Letter",
+    prompt: "Write me a debt validation letter template I can customize. I want to request proof they can legally collect this debt.",
+    color: "from-blue-500 to-indigo-600"
   },
   {
     icon: DollarSign,
-    title: "Negotiate a Settlement",
-    prompt: "I have a medical debt of $[AMOUNT] in collections. I can realistically pay $[AMOUNT]. How do I negotiate a settlement? What percentage should I offer? How do I get them to delete it from my credit report?",
-    category: "Negotiation"
+    title: "Negotiate Settlement",
+    prompt: "How do I negotiate a settlement on medical debt? What percentage should I offer and how do I get it in writing?",
+    color: "from-emerald-500 to-teal-600"
   },
   {
     icon: Scale,
-    title: "They're Threatening to Sue",
-    prompt: "A debt collector is threatening to sue me for a medical bill of $[AMOUNT]. Is this threat real? What are my options? What defenses do I have?",
-    category: "Legal"
+    title: "Lawsuit Threat",
+    prompt: "A collector is threatening to sue me. Is this real? What are my options and defenses?",
+    color: "from-purple-500 to-violet-600"
   },
   {
     icon: Shield,
-    title: "Check Statute of Limitations",
-    prompt: "How do I know if my medical debt is past the statute of limitations? The debt is from [YEAR] and I live in [STATE]. What happens if the debt is too old?",
-    category: "Legal"
+    title: "Statute of Limitations",
+    prompt: "How do I check if my debt is too old to collect? What's the statute of limitations for medical debt?",
+    color: "from-amber-500 to-orange-600"
   },
   {
-    icon: Phone,
-    title: "They Called My Family",
-    prompt: "A debt collector called my [PARENT/SPOUSE/CHILD] about MY medical debt. Is this legal? What can I do about it? How do I make them stop?",
-    category: "Violations"
-  },
-  {
-    icon: Heart,
-    title: "Hospital Charity Care Appeal",
-    prompt: "I have a hospital bill in collections but I think I should qualify for charity care. Can I still apply? How do I get the debt recalled from collections?",
-    category: "Assistance"
-  },
-  {
-    icon: Lightbulb,
-    title: "Pay-for-Delete Strategy",
-    prompt: "Explain the pay-for-delete strategy step by step. How do I get a collection agency to agree to remove the debt from my credit report in exchange for payment? What should I put in writing?",
-    category: "Credit"
-  },
-  {
-    icon: DollarSign,
-    title: "Medical Debt on Credit Report",
-    prompt: "I just checked my credit report and there's a medical collection I didn't know about. How do I dispute it? What are the new rules about medical debt on credit reports?",
-    category: "Credit"
-  },
-  {
-    icon: FileText,
-    title: "Write Insurance Appeal",
-    prompt: "My insurance denied coverage for [PROCEDURE] and now I have a huge bill going to collections. Help me write an appeal letter citing medical necessity and relevant laws.",
-    category: "Insurance"
-  },
-  {
-    icon: AlertTriangle,
-    title: "ER Surprise Bill Defense",
-    prompt: "I went to the ER and got a surprise bill from an out-of-network doctor I never chose. The bill is now in collections. What protections do I have under the No Surprises Act?",
-    category: "Bills"
-  },
-  {
-    icon: Scale,
-    title: "FDCPA Violation Check",
-    prompt: "I think the debt collector violated my rights. They [DESCRIBE WHAT HAPPENED]. Is this a violation of the Fair Debt Collection Practices Act? What can I do about it?",
-    category: "Violations"
+    icon: CreditCard,
+    title: "Pay-for-Delete",
+    prompt: "Explain pay-for-delete agreements. How do I get the collector to remove this from my credit report?",
+    color: "from-pink-500 to-rose-600"
   }
 ];
 
 export function CollectionsDefenseChatbot() {
-  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showPrompts, setShowPrompts] = useState(true);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -122,6 +87,16 @@ export function CollectionsDefenseChatbot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
 
   const sendMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
@@ -135,36 +110,35 @@ export function CollectionsDefenseChatbot() {
 
     setMessages(prev => [...prev, userMessage]);
     setInput("");
-    setShowPrompts(false);
     setIsLoading(true);
 
     try {
-      const systemPrompt = `You are an expert medical debt and collections defense advisor for GoldRock Health. You have deep knowledge of:
-- Fair Debt Collection Practices Act (FDCPA) and consumer rights
-- Medical billing errors, overcharges, and how to identify them
-- Debt validation procedures and requirements
-- Statute of limitations on medical debt by state
-- Hospital charity care programs and eligibility
-- Insurance appeals and the No Surprises Act
-- Credit reporting rules for medical debt
-- Negotiation strategies for settling medical debt
-- Pay-for-delete agreements and credit repair
+      const systemPrompt = `You are an expert medical debt and collections defense advisor for GoldRock Health. You have deep knowledge of consumer protection laws, medical billing, and debt collection practices.
 
-Your responses should be:
-1. Specific and actionable - give exact steps to take
-2. Include actual scripts and letter templates when relevant
-3. Cite specific laws and regulations when applicable
-4. Empowering - help users understand their rights
-5. Practical - focus on what actually works
+FORMATTING RULES (CRITICAL - Follow these exactly):
+1. Use clear section headers with ## for main sections
+2. Use numbered lists (1. 2. 3.) for steps and action items
+3. Use bullet points (•) for lists of information
+4. Use **bold** for key terms, important warnings, and critical information
+5. Keep paragraphs short (2-3 sentences max)
+6. Add line breaks between sections for readability
+7. When providing scripts or templates, put them in a clearly labeled section
 
-Always remind users that this is educational information and not legal advice. For complex legal matters, recommend consulting with a consumer rights attorney.
+CONTENT GUIDELINES:
+• Be specific and actionable - give exact steps to take
+• Include word-for-word scripts when the user needs to talk to collectors
+• Cite specific laws (FDCPA, FCRA, No Surprises Act) when relevant
+• Mention specific timeframes (30 days for validation, etc.)
+• Always remind users this is educational information, not legal advice
 
-Format your responses clearly with:
-- Numbered steps when giving instructions
-- Bold text for important points using **bold**
-- Specific dollar amounts, percentages, and timelines when relevant
+RESPONSE STRUCTURE for most questions:
+1. Quick answer (1-2 sentences)
+2. Detailed steps or explanation
+3. Sample script or template if applicable
+4. Important warnings or tips
+5. Next steps
 
-Contact email for GoldRock Health: CONTACT@GOLDROCK.ai`;
+Contact: CONTACT@GOLDROCK.ai`;
 
       const response = await apiRequest("POST", "/api/ai/chat", {
         messages: [
@@ -190,7 +164,7 @@ Contact email for GoldRock Health: CONTACT@GOLDROCK.ai`;
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "I'm sorry, I encountered an error. Please try again. If you need immediate help with collections defense, contact us at CONTACT@GOLDROCK.ai",
+        content: "I'm sorry, I encountered an error. Please try again. If you need immediate help, contact us at CONTACT@GOLDROCK.ai",
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -205,62 +179,89 @@ Contact email for GoldRock Health: CONTACT@GOLDROCK.ai`;
   };
 
   const handleQuickPrompt = (prompt: string) => {
-    setInput(prompt);
-    textareaRef.current?.focus();
+    sendMessage(prompt);
+  };
+
+  const resetChat = () => {
+    setMessages([]);
+    setInput("");
   };
 
   const formatMessage = (content: string) => {
-    return content
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n/g, '<br />');
+    let formatted = content
+      // Headers
+      .replace(/^## (.+)$/gm, '<h3 class="text-base font-bold text-gray-900 dark:text-white mt-4 mb-2 first:mt-0">$1</h3>')
+      .replace(/^### (.+)$/gm, '<h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mt-3 mb-1">$1</h4>')
+      // Bold
+      .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-900 dark:text-white">$1</strong>')
+      // Italic
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      // Numbered lists
+      .replace(/^(\d+)\.\s+(.+)$/gm, '<div class="flex gap-2 mb-1.5"><span class="flex-shrink-0 w-5 h-5 rounded-full bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold flex items-center justify-center">$1</span><span>$2</span></div>')
+      // Bullet points
+      .replace(/^[•\-]\s+(.+)$/gm, '<div class="flex gap-2 mb-1 pl-1"><span class="text-red-500 mt-1">•</span><span>$1</span></div>')
+      // Line breaks
+      .replace(/\n\n/g, '</p><p class="mt-3">')
+      .replace(/\n/g, '<br/>');
+    
+    return `<div class="prose-content">${formatted}</div>`;
   };
 
   return (
     <div className="w-full" data-testid="collections-defense-chatbot">
-      <Card className="bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 dark:from-red-900/30 dark:via-orange-900/30 dark:to-amber-900/30 border-red-200 dark:border-red-700 shadow-xl">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Bot className="h-6 w-6 text-white" />
+      <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-lg">Collections Defense AI</h3>
+                <p className="text-white/80 text-sm">Expert guidance for your situation</p>
+              </div>
             </div>
-            <div>
-              <span>Collections Defense AI Assistant</span>
-              <p className="text-sm font-normal text-gray-600 dark:text-gray-400 mt-1">
-                Get personalized guidance for your specific situation
-              </p>
-            </div>
-          </CardTitle>
-        </CardHeader>
+            {messages.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={resetChat}
+                className="text-white/80 hover:text-white hover:bg-white/20"
+                data-testid="reset-chat"
+              >
+                <RotateCcw className="h-4 w-4 mr-1" />
+                New Chat
+              </Button>
+            )}
+          </div>
+        </div>
         
-        <CardContent>
-          {showPrompts && messages.length === 0 && (
-            <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+        <CardContent className="p-4">
+          {/* Quick Prompts - Only show when no messages */}
+          {messages.length === 0 && (
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 flex items-center gap-2">
                 <Lightbulb className="h-4 w-4 text-amber-500" />
-                Choose a situation or ask your own question:
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                Tap a topic or type your question below:
+              </p>
+              <div className="grid grid-cols-2 gap-2">
                 {quickPrompts.map((prompt, index) => (
                   <motion.button
                     key={index}
                     onClick={() => handleQuickPrompt(prompt.prompt)}
-                    className="text-left bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 hover:shadow-md transition-all group"
-                    whileHover={{ scale: 1.02, y: -2 }}
+                    className="text-left bg-gray-50 dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700 hover:border-red-200 dark:hover:border-red-700 hover:shadow-lg transition-all group"
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     data-testid={`quick-prompt-${index}`}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/50 dark:to-orange-900/50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:from-red-200 group-hover:to-orange-200 transition-colors">
-                        <prompt.icon className="h-4 w-4 text-red-600 dark:text-red-400" />
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-8 h-8 bg-gradient-to-br ${prompt.color} rounded-lg flex items-center justify-center flex-shrink-0 shadow-md`}>
+                        <prompt.icon className="h-4 w-4 text-white" />
                       </div>
-                      <div>
-                        <Badge variant="secondary" className="text-xs mb-1 bg-gray-100 dark:bg-gray-700">
-                          {prompt.category}
-                        </Badge>
-                        <h4 className="font-semibold text-gray-900 dark:text-white text-sm group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                          {prompt.title}
-                        </h4>
-                      </div>
+                      <span className="font-medium text-gray-800 dark:text-gray-200 text-sm leading-tight group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                        {prompt.title}
+                      </span>
                     </div>
                   </motion.button>
                 ))}
@@ -268,56 +269,99 @@ Contact email for GoldRock Health: CONTACT@GOLDROCK.ai`;
             </div>
           )}
 
+          {/* Messages */}
           {messages.length > 0 && (
-            <ScrollArea className="h-[400px] mb-4 pr-4">
+            <ScrollArea className="h-[350px] mb-4 -mx-1 px-1">
               <div className="space-y-4">
                 {messages.map((message) => (
                   <motion.div
                     key={message.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`flex gap-3 ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                    className={`flex gap-2.5 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     {message.role === "assistant" && (
-                      <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Bot className="h-4 w-4 text-white" />
+                      <div className="w-7 h-7 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md mt-0.5">
+                        <Bot className="h-3.5 w-3.5 text-white" />
                       </div>
                     )}
-                    <div
-                      className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                        message.role === "user"
-                          ? "bg-gradient-to-br from-blue-500 to-indigo-600 text-white"
-                          : "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700"
-                      }`}
-                    >
-                      <div 
-                        className="text-sm whitespace-pre-wrap"
-                        dangerouslySetInnerHTML={{ __html: formatMessage(message.content) }}
-                      />
-                      <div className={`text-xs mt-2 ${message.role === "user" ? "text-blue-200" : "text-gray-400"}`}>
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <div className={`max-w-[85%] ${message.role === "user" ? "order-first" : ""}`}>
+                      <div
+                        className={`rounded-2xl px-4 py-3 ${
+                          message.role === "user"
+                            ? "bg-gradient-to-br from-gray-800 to-gray-900 text-white ml-auto"
+                            : "bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700"
+                        }`}
+                      >
+                        {message.role === "user" ? (
+                          <p className="text-sm">{message.content}</p>
+                        ) : (
+                          <div 
+                            className="text-sm leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: formatMessage(message.content) }}
+                          />
+                        )}
                       </div>
+                      {message.role === "assistant" && (
+                        <div className="flex items-center gap-2 mt-1.5 ml-1">
+                          <button
+                            onClick={() => copyToClipboard(message.content, message.id)}
+                            className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex items-center gap-1 transition-colors"
+                            data-testid={`copy-message-${message.id}`}
+                          >
+                            {copiedId === message.id ? (
+                              <>
+                                <Check className="h-3 w-3 text-green-500" />
+                                <span className="text-green-500">Copied!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="h-3 w-3" />
+                                <span>Copy</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                     {message.role === "user" && (
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <User className="h-4 w-4 text-white" />
+                      <div className="w-7 h-7 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <User className="h-3.5 w-3.5 text-white" />
                       </div>
                     )}
                   </motion.div>
                 ))}
+                
+                {/* Loading State */}
                 {isLoading && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex gap-3"
+                    className="flex gap-2.5"
                   >
-                    <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Bot className="h-4 w-4 text-white" />
+                    <div className="w-7 h-7 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
+                      <Bot className="h-3.5 w-3.5 text-white" />
                     </div>
-                    <div className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 border border-gray-200 dark:border-gray-700">
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin text-red-500" />
-                        <span className="text-sm text-gray-500">Analyzing your situation...</span>
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl px-4 py-3 border border-gray-100 dark:border-gray-700">
+                      <div className="flex items-center gap-3">
+                        <div className="flex gap-1">
+                          <motion.div
+                            className="w-2 h-2 bg-red-500 rounded-full"
+                            animate={{ scale: [1, 1.3, 1] }}
+                            transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+                          />
+                          <motion.div
+                            className="w-2 h-2 bg-orange-500 rounded-full"
+                            animate={{ scale: [1, 1.3, 1] }}
+                            transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+                          />
+                          <motion.div
+                            className="w-2 h-2 bg-amber-500 rounded-full"
+                            animate={{ scale: [1, 1.3, 1] }}
+                            transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+                          />
+                        </div>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">Analyzing your situation...</span>
                       </div>
                     </div>
                   </motion.div>
@@ -327,13 +371,14 @@ Contact email for GoldRock Health: CONTACT@GOLDROCK.ai`;
             </ScrollArea>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-3">
+          {/* Input Form */}
+          <form onSubmit={handleSubmit} className="relative">
             <Textarea
               ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Describe your collections situation... Include details like the amount, how old the debt is, what the collector has said, etc."
-              className="min-h-[100px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 resize-none"
+              placeholder="Describe your situation... (amount, age of debt, what they said, etc.)"
+              className="min-h-[80px] pr-24 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-xl resize-none text-sm focus:ring-2 focus:ring-red-500/20 focus:border-red-400"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
@@ -342,35 +387,26 @@ Contact email for GoldRock Health: CONTACT@GOLDROCK.ai`;
               }}
               data-testid="collections-chat-input"
             />
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Press Enter to send • Shift+Enter for new line
-              </p>
-              <Button
-                type="submit"
-                disabled={!input.trim() || isLoading}
-                className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white"
-                data-testid="collections-chat-submit"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <>
-                    <Send className="h-4 w-4 mr-2" />
-                    Get Advice
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              disabled={!input.trim() || isLoading}
+              className="absolute bottom-3 right-3 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white rounded-lg h-9 px-4 shadow-lg"
+              data-testid="collections-chat-submit"
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  <Send className="h-4 w-4" />
+                </>
+              )}
+            </Button>
           </form>
 
-          <div className="mt-4 p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg border border-amber-200 dark:border-amber-700">
-            <p className="text-xs text-amber-800 dark:text-amber-200">
-              <strong>Disclaimer:</strong> This AI provides educational information about medical debt and collections defense. 
-              It is not legal advice. For complex legal matters or if you're being sued, consult with a consumer rights attorney. 
-              Contact us at CONTACT@GOLDROCK.ai for more help.
-            </p>
-          </div>
+          {/* Disclaimer */}
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">
+            Educational information only, not legal advice. Contact CONTACT@GOLDROCK.ai for help.
+          </p>
         </CardContent>
       </Card>
     </div>
