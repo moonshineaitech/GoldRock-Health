@@ -708,6 +708,7 @@ export default function Landing() {
               { icon: Database, label: "Resources Hub", href: "/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
               { icon: Stethoscope, label: "Diagnostics", href: "/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
               { icon: Dna, label: "LunaFold", href: "/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
+              { icon: Shield, label: "Collections Defense", href: "/collections-defense-guide", description: "Fight debt collectors", gradient: "from-red-500 to-rose-600", featured: true },
               { icon: Target, label: "Industry Secrets", href: "/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
               { icon: FileText, label: "Templates", href: "/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
               { icon: Trophy, label: "Achievements", href: "/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
@@ -987,6 +988,93 @@ export default function Landing() {
               </PremiumButton>
             </motion.div>
           </Link>
+        </div>
+      </motion.div>
+
+      {/* Collections Defense Guide Featured Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-4 py-10 relative overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, rgba(254, 226, 226, 0.8) 0%, rgba(254, 215, 170, 0.7) 50%, rgba(254, 249, 195, 0.8) 100%)",
+        }}
+        data-testid="section-collections-defense"
+      >
+        <div className="max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-6"
+          >
+            <motion.span 
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-red-100 to-orange-100 text-red-700 px-5 py-2.5 rounded-full font-bold text-sm mb-4 shadow-lg border border-red-200/50"
+              whileHover={{ scale: 1.05 }}
+            >
+              <AlertTriangle className="h-4 w-4" />
+              Bill in Collections?
+            </motion.span>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
+              Fight Back Against Debt Collectors
+            </h2>
+            <p className="text-lg text-gray-700 font-medium max-w-xl mx-auto">
+              Our comprehensive Collections Defense Guide gives you insider knowledge and proven strategies to reduce or eliminate medical debt.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {[
+              { icon: Shield, label: "Know Your Rights", desc: "FDCPA protections debt collectors don't want you to know" },
+              { icon: FileText, label: "Ready-to-Use Templates", desc: "Debt validation and pay-for-delete letters" },
+              { icon: DollarSign, label: "Negotiation Scripts", desc: "Exact words to use when speaking with collectors" },
+              { icon: Target, label: "34+ Specific Scenarios", desc: "From childbirth to cancer treatment, we've got you covered" }
+            ].map((item, index) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 + index * 0.1 }}
+                whileHover={{ scale: 1.03, y: -4 }}
+                className="bg-white/80 backdrop-blur-xl rounded-2xl p-5 border border-red-100 shadow-lg"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                    <item.icon className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-base mb-1">{item.label}</h3>
+                    <p className="text-sm text-gray-600">{item.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="text-center"
+          >
+            <Link href="/collections-defense-guide">
+              <motion.div 
+                whileHover={{ scale: 1.03, y: -3 }} 
+                whileTap={{ scale: 0.97 }}
+                className="inline-block"
+              >
+                <MobileButton className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-bold shadow-xl px-8">
+                  <Shield className="h-5 w-5 mr-2" />
+                  Access Collections Defense Guide
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </MobileButton>
+              </motion.div>
+            </Link>
+          </motion.div>
         </div>
       </motion.div>
 

@@ -39,6 +39,7 @@ import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { CollectionsDefenseChatbot } from "@/components/collections-defense-chatbot";
 
 const insiderSecrets = [
   {
@@ -2662,6 +2663,19 @@ export default function CollectionsDefenseGuide() {
                 </div>
               </CardContent>
             </Card>
+          </section>
+
+          {/* AI Collections Defense Assistant */}
+          <section className="mb-12">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-red-600" />
+              AI Collections Defense Assistant
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Get personalized guidance for your specific collections situation. Our AI assistant can help you write letters, 
+              understand your rights, and develop a strategy to defend against debt collectors.
+            </p>
+            <CollectionsDefenseChatbot />
           </section>
 
           {/* Related Resources */}
