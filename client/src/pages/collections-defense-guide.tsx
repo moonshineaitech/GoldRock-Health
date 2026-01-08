@@ -1200,6 +1200,786 @@ const collectionsScenarios = [
       }
     ],
     expectedOutcome: "30-50% reduction through negotiation. Possible additional coverage if medical insurance applies."
+  },
+  {
+    id: "telemedicine-billing-collections",
+    title: "Telemedicine/Virtual Visit Billing Errors",
+    icon: Phone,
+    situation: "You had a video or phone visit with a doctor and received an unexpectedly high bill - sometimes higher than an in-person visit. Your insurance didn't cover it as expected, or you were billed for services you didn't receive. Now the bill is in collections.",
+    insiderKnowledge: [
+      "Many telemedicine visits are billed at the same rate as in-person visits despite lower overhead",
+      "Some providers add 'facility fees' to telemedicine visits even though there's no facility",
+      "Insurance coverage for telemedicine varies widely - some plans cover it fully, others barely at all",
+      "Many telemedicine companies use out-of-network billing practices that result in surprise bills",
+      "The actual time spent on a telemedicine visit often doesn't match what's billed - a 5-minute call billed as 30 minutes"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Visit Duration and Services",
+        details: "Check the billing codes against the actual length and content of your visit. Many telemedicine visits are over-coded.",
+        script: "I'm requesting documentation of the visit duration and services provided. The billing code used suggests a [X]-minute visit, but my actual visit was approximately [Y] minutes."
+      },
+      {
+        step: 2,
+        title: "Challenge Any Facility Fees",
+        details: "Telemedicine visits should NOT include facility fees - there's no facility involved. If charged, dispute it.",
+        script: "I'm disputing the facility fee on this telemedicine visit. This was a virtual visit conducted from my home - no facility was used. Please remove this charge."
+      },
+      {
+        step: 3,
+        title: "Check Network Status of Telemedicine Provider",
+        details: "Many people don't realize their telemedicine provider is out-of-network. Verify network status and apply No Surprises Act if applicable.",
+        question: "Was this telemedicine provider in-network for my plan? If out-of-network services were provided without my knowledge, No Surprises Act protections may apply."
+      },
+      {
+        step: 4,
+        title: "Appeal Insurance Denial",
+        details: "If insurance denied coverage, appeal with documentation that telemedicine is clinically appropriate for your condition.",
+        script: "I'm appealing the denial of coverage for this telemedicine visit. Virtual care was clinically appropriate for [condition] and should be covered the same as an in-person visit under mental health parity / standard benefit rules."
+      },
+      {
+        step: 5,
+        title: "Compare to Fair Market Rates",
+        details: "Many telemedicine visits should cost $50-$150. If you're charged $300+, this may be excessive.",
+        benchmark: "Direct-pay telemedicine services typically charge $50-$150 per visit. Being charged $300+ for a basic video visit is excessive."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Actual Service Value",
+        details: "Telemedicine has lower overhead than in-person visits. Use this as leverage when negotiating.",
+        script: "This telemedicine visit had none of the overhead costs of an in-person visit. The charge of $[amount] is excessive for a virtual consultation. I'm prepared to pay a fair rate of $[100-150] to settle this account."
+      }
+    ],
+    expectedOutcome: "40-60% reduction by challenging over-coding, facility fees, and excessive pricing"
+  },
+  {
+    id: "preventive-care-billing-collections",
+    title: "Preventive Care Billed as Diagnostic (Annual Physical, Screenings)",
+    icon: CheckCircle,
+    situation: "You went in for a routine annual physical or preventive screening that should be covered 100% under the ACA. Instead, you received a bill for hundreds or thousands of dollars because it was billed as 'diagnostic' rather than 'preventive.' Now it's in collections.",
+    insiderKnowledge: [
+      "The ACA requires insurance to cover preventive care at 100% with no cost-sharing - but providers often code visits wrong",
+      "If you mention ANY symptom during a preventive visit, providers often recode the entire visit as diagnostic",
+      "The same colonoscopy can be billed as preventive (free) or diagnostic ($3,000+) based on coding",
+      "Providers have financial incentive to code as diagnostic because reimbursement is often higher",
+      "You have the right to request that preventive services be billed with preventive codes"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Review the Billing Codes Used",
+        details: "Get the itemized bill with CPT codes. Compare them to the list of ACA-mandated preventive services.",
+        preventiveCodes: "Preventive visits typically use codes like 99381-99397. Diagnostic visits use 99201-99215. The same visit can be coded either way."
+      },
+      {
+        step: 2,
+        title: "Request Recoding to Preventive",
+        details: "Contact the provider's billing department and request that the visit be recoded as preventive if that was the primary purpose.",
+        script: "I scheduled this visit as my annual preventive physical. The ACA requires preventive care to be covered at 100%. Please recode this visit with the appropriate preventive care codes and resubmit to my insurance."
+      },
+      {
+        step: 3,
+        title: "Appeal to Insurance for Preventive Coverage",
+        details: "If the provider won't recode, appeal to your insurance explaining this was a preventive visit.",
+        script: "I'm appealing the cost-sharing on this visit. I scheduled and received a routine preventive [physical/screening]. Under ACA requirements, this should be covered at 100% with no cost-sharing."
+      },
+      {
+        step: 4,
+        title: "Challenge 'Incidental Findings' Charges",
+        details: "If the provider found something during a preventive visit, the initial preventive screening should still be covered - only follow-up care is diagnostic.",
+        example: "A colonoscopy that finds and removes a polyp should still be covered as preventive - the polyp removal is part of the screening."
+      },
+      {
+        step: 5,
+        title: "File Complaint if ACA Rights Violated",
+        details: "If your insurance is improperly denying preventive care coverage, file a complaint with your state insurance commissioner and HHS.",
+        resources: "File at cms.gov or contact your state insurance department."
+      },
+      {
+        step: 6,
+        title: "Negotiate with Collections Citing Billing Error",
+        details: "If the debt is in collections, document the billing error and use it as leverage.",
+        script: "This debt results from a billing error. The visit was scheduled as preventive care, which is covered at 100% under the ACA. I am disputing this debt and have filed a complaint regarding improper billing."
+      }
+    ],
+    expectedOutcome: "Potential full dismissal if recoded as preventive. Otherwise, significant reduction based on billing error dispute."
+  },
+  {
+    id: "genetic-testing-collections",
+    title: "Genetic Testing Bills in Collections",
+    icon: Target,
+    situation: "You had genetic testing done - maybe for cancer risk, prenatal screening, or ancestry-related health markers. The test was presented as covered, but you received a bill for $1,000-$10,000+. Now it's in collections.",
+    insiderKnowledge: [
+      "Genetic testing companies often use predatory billing practices - quoting 'insurance will cover' then sending huge bills",
+      "Many genetic tests are sold directly by labs who pressure doctors to order them, then bill patients excessively",
+      "The same genetic test can cost $100 at one lab and $10,000 at another",
+      "Patient assistance programs exist for most major genetic tests but are rarely disclosed",
+      "Many genetic tests ordered are not actually clinically necessary and can be challenged"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify the Test Was Medically Necessary",
+        details: "Review why the test was ordered. If it wasn't clinically indicated (e.g., ordered for marketing purposes), challenge it.",
+        question: "Was this genetic test clinically necessary based on my personal or family history? What clinical guidelines support ordering this test for me?"
+      },
+      {
+        step: 2,
+        title: "Check for Pre-Test Cost Disclosure",
+        details: "Labs are supposed to provide cost estimates before testing. If you weren't informed of the cost, this is a violation.",
+        script: "I was not provided a cost estimate before this genetic test was performed. Please provide documentation of any cost disclosure I signed. Without informed consent about costs, I dispute this charge."
+      },
+      {
+        step: 3,
+        title: "Compare to Market Rates",
+        details: "Many genetic tests are available for $100-$500 that labs bill at $5,000+. Research fair market pricing.",
+        example: "BRCA testing that labs bill at $5,000+ is available for $250-$500 through various services. Use this as evidence of overcharging."
+      },
+      {
+        step: 4,
+        title: "Contact the Lab's Patient Assistance Program",
+        details: "Most major genetic testing labs have patient assistance programs that reduce or eliminate costs for those who qualify.",
+        programs: "Myriad, Invitae, Ambry, and other major labs all have financial assistance. Apply even after receiving a bill."
+      },
+      {
+        step: 5,
+        title: "Appeal Insurance Denial",
+        details: "If insurance denied the test, appeal with documentation from your doctor explaining medical necessity and genetic risk factors.",
+        script: "I'm appealing the denial of [genetic test]. Based on my [family history/personal risk factors], this test was medically necessary according to [NCCN/ACOG/clinical guidelines]."
+      },
+      {
+        step: 6,
+        title: "Negotiate Aggressively - Genetic Test Pricing is Arbitrary",
+        details: "Genetic testing pricing is notoriously inflated. Labs routinely accept 10-20% of billed charges.",
+        script: "The billed amount of $[amount] far exceeds the fair market value of this test. Comparable testing is available for $[250-500]. I'm prepared to pay $[fair market rate] to settle this account."
+      }
+    ],
+    expectedOutcome: "60-80% reduction through patient assistance programs and fair market value negotiation"
+  },
+  {
+    id: "fertility-ivf-collections",
+    title: "Fertility Treatment/IVF Bills in Collections",
+    icon: Heart,
+    situation: "You underwent fertility treatment including IUI, IVF, egg freezing, or related procedures. Your insurance covered little or nothing, or only partial cycles. Now you have bills for $15,000-$50,000+ in collections.",
+    insiderKnowledge: [
+      "Only 19 states mandate some form of fertility coverage - and mandates vary widely in what's covered",
+      "Many fertility clinics inflate pricing because they know desperate patients will pay",
+      "Medication costs for IVF can be reduced 50-80% through international pharmacies and manufacturer programs",
+      "Some fertility clinics offer shared-risk or refund programs that weren't disclosed to you",
+      "If fertility treatment was needed due to a medical condition (PCOS, endometriosis), it may be covered as treatment for that condition"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Check Your State's Fertility Mandate",
+        details: "19 states require some fertility coverage. Verify what your state mandates and whether your plan complies.",
+        mandateStates: "States with IVF mandates include: Arkansas, California, Connecticut, Delaware, Hawaii, Illinois, Louisiana, Maryland, Massachusetts, Montana, New Hampshire, New Jersey, New York, Ohio, Rhode Island, Texas, Utah, West Virginia."
+      },
+      {
+        step: 2,
+        title: "Frame Treatment as Medical Condition Management",
+        details: "If infertility is caused by a diagnosed condition (PCOS, endometriosis, blocked tubes), treatment may be covered as medical treatment.",
+        script: "I'm requesting coverage for this fertility treatment as treatment for my diagnosed medical condition of [PCOS/endometriosis/etc.]. The procedure was necessary to address this medical issue."
+      },
+      {
+        step: 3,
+        title: "Explore Medication Cost Reduction",
+        details: "Fertility medications are extremely expensive but can be obtained at 50-80% less through legitimate international pharmacies or manufacturer programs.",
+        resources: "IVFMeds, Freedom Fertility, and compassionate use programs from Merck, Ferring, and other manufacturers can dramatically reduce costs."
+      },
+      {
+        step: 4,
+        title: "Ask About Shared-Risk or Refund Programs",
+        details: "Many clinics offer programs where you pay a flat fee for multiple cycles with a refund if unsuccessful. If this wasn't offered, ask about it.",
+        question: "Do you offer shared-risk or refund programs for IVF patients? If so, why wasn't this option presented to me initially?"
+      },
+      {
+        step: 5,
+        title: "Apply for Fertility Grants",
+        details: "Numerous organizations provide grants for fertility treatment. Some can be applied retroactively.",
+        organizations: "Baby Quest Foundation, The Cade Foundation, Gift of Parenthood, and state-specific programs offer fertility grants."
+      },
+      {
+        step: 6,
+        title: "Negotiate Extended Payment Plans",
+        details: "Fertility clinics understand patients often can't pay upfront. Negotiate interest-free payment plans or settlement discounts.",
+        script: "I'm facing financial hardship after fertility treatment. I'm requesting either an interest-free payment plan over [24-36] months, or a settlement discount of [30-40%] for payment in full."
+      }
+    ],
+    expectedOutcome: "30-50% reduction through negotiation and grants. Potential insurance coverage if medical condition angle applies."
+  },
+  {
+    id: "bariatric-surgery-collections",
+    title: "Weight Loss/Bariatric Surgery Bills in Collections",
+    icon: Scale,
+    situation: "You underwent bariatric surgery (gastric bypass, sleeve, lap-band) expecting insurance to cover it. Coverage was denied as 'not medically necessary' or 'cosmetic,' or your plan excluded it entirely. Now bills for $20,000-$50,000+ are in collections.",
+    insiderKnowledge: [
+      "Bariatric surgery is medically necessary for many patients and should not be considered 'cosmetic'",
+      "Insurance denials for bariatric surgery are frequently overturned on appeal with proper documentation",
+      "Many employers self-insure and can add bariatric coverage if requested",
+      "Surgical tourism (Mexico, Costa Rica) offers the same procedures for 70-80% less - but if you already had surgery, this doesn't help",
+      "Complications from bariatric surgery should be covered even if the original surgery wasn't"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Document Medical Necessity",
+        details: "Gather documentation of: BMI history, comorbidities (diabetes, sleep apnea, hypertension), failed diet/exercise attempts, and psychological clearance.",
+        evidence: "Insurance typically requires BMI >40, or BMI >35 with comorbidities, plus documented failed weight loss attempts."
+      },
+      {
+        step: 2,
+        title: "Appeal Denial as Medically Necessary",
+        details: "Most bariatric surgery denials can be appealed. Include documentation from your surgeon and primary care physician.",
+        script: "I'm appealing the denial of bariatric surgery coverage. This surgery was medically necessary based on my BMI of [X], comorbid conditions including [diabetes/sleep apnea/hypertension], and documented failed attempts at medical weight management."
+      },
+      {
+        step: 3,
+        title: "Request External Review",
+        details: "After internal appeal denial, request an external review by an independent physician. External reviews often overturn bariatric denials.",
+        success_rate: "External reviews for bariatric surgery denials have approximately 50-60% success rates when properly documented."
+      },
+      {
+        step: 4,
+        title: "Check for Employer Plan Exceptions",
+        details: "If your employer self-insures, they can make exceptions to coverage exclusions. Ask HR about a case-by-case exception.",
+        script: "I understand our plan excludes bariatric surgery, but I'm requesting a case-by-case exception due to my medical circumstances. This surgery will reduce long-term healthcare costs for [diabetes/other conditions]."
+      },
+      {
+        step: 5,
+        title: "Apply for Hospital Financial Assistance",
+        details: "Bariatric programs often have their own financial assistance. Apply directly through the surgical program.",
+        contact: "Contact the bariatric surgery program coordinator or patient financial services for program-specific assistance."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Insurance-Rate Comparison",
+        details: "Hospitals accept far less from insurance than they charge uninsured patients. Demand the insurance rate.",
+        script: "I'm requesting the rate you would accept from a major insurance company for this procedure. Under the No Surprises Act, I'm entitled to an uninsured discount. I should not pay more than what insurance would pay."
+      }
+    ],
+    expectedOutcome: "Appeal success in 50-60% of cases. Otherwise, 40-60% reduction through negotiation to insurance rates."
+  },
+  {
+    id: "cosmetic-vs-reconstructive-collections",
+    title: "Cosmetic vs. Reconstructive Surgery Dispute",
+    icon: Building2,
+    situation: "You had surgery that insurance denied as 'cosmetic' but you believe was medically necessary or reconstructive. Examples include: breast reconstruction, rhinoplasty for breathing, skin removal after weight loss, or eyelid surgery for vision. Now the bill is in collections.",
+    insiderKnowledge: [
+      "The Women's Health and Cancer Rights Act REQUIRES insurers to cover breast reconstruction after mastectomy",
+      "Rhinoplasty for documented breathing problems (deviated septum) is medical, not cosmetic",
+      "Skin removal after major weight loss can be covered if causing medical problems (rashes, infections)",
+      "Blepharoplasty (eyelid surgery) is covered when eyelids obstruct vision - documented by visual field testing",
+      "Insurance companies routinely deny legitimate reconstructive surgery claims hoping patients won't appeal"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Document the Medical Necessity",
+        details: "Gather evidence that the surgery was for medical reasons, not purely cosmetic enhancement.",
+        examples: "Breathing tests for rhinoplasty, visual field tests for blepharoplasty, photos of skin conditions for panniculectomy, mastectomy records for breast reconstruction."
+      },
+      {
+        step: 2,
+        title: "Cite Applicable Federal Laws",
+        details: "Certain reconstructive surgeries have federal protections. The Women's Health and Cancer Rights Act requires breast reconstruction coverage.",
+        script: "Under the Women's Health and Cancer Rights Act, my insurance is required to cover breast reconstruction following mastectomy. This denial violates federal law."
+      },
+      {
+        step: 3,
+        title: "Get Supporting Documentation from Physicians",
+        details: "Have your surgeon and primary care physician document the medical necessity and functional impairment.",
+        documentation: "Include: diagnosis codes, functional impairment measurements, photos before/after, letters of medical necessity."
+      },
+      {
+        step: 4,
+        title: "Appeal with Medical Evidence",
+        details: "Appeal the cosmetic determination with comprehensive medical documentation.",
+        script: "I'm appealing the determination that this surgery was cosmetic. The attached documentation shows this was medically necessary reconstructive surgery for [condition/functional impairment]."
+      },
+      {
+        step: 5,
+        title: "Request Peer-to-Peer Review",
+        details: "Request that your surgeon speak directly with the insurance company's medical director.",
+        process: "Your surgeon can often call the insurance medical director to explain why the procedure was reconstructive, not cosmetic."
+      },
+      {
+        step: 6,
+        title: "File Complaint for Federal Violations",
+        details: "If federal law requires coverage (breast reconstruction), file complaints with HHS and state insurance commissioner.",
+        complaint: "Document the denial and your appeal, then file with the HHS Office of Civil Rights and your state insurance department."
+      }
+    ],
+    expectedOutcome: "Coverage for federally-protected procedures. 50%+ success rate on appeals for other reconstructive surgeries."
+  },
+  {
+    id: "home-health-care-collections",
+    title: "Home Health Care Bills in Collections",
+    icon: Heart,
+    situation: "You or a family member received home health care (nursing visits, physical therapy at home, medical equipment). Medicare/insurance covered less than expected, or coverage was denied. Now bills for $5,000-$50,000+ are in collections.",
+    insiderKnowledge: [
+      "Medicare covers home health 100% with no copay if you meet 'homebound' and 'skilled care' requirements",
+      "Insurance companies frequently deny home health claims improperly - appeal rates are high",
+      "Home health agencies often fail to document properly, causing denials that aren't your fault",
+      "Many 'custodial care' services denied by insurance may actually qualify as skilled care with proper documentation",
+      "If you're being charged for home health that Medicare should cover, the agency may be improperly billing"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Medicare/Insurance Coverage Requirements",
+        details: "For Medicare: you must be homebound, need skilled nursing or therapy, and have a doctor's order. Verify these were documented.",
+        requirements: "Homebound means leaving home requires considerable effort. Skilled care means care that requires licensed professionals, not just assistance with daily activities."
+      },
+      {
+        step: 2,
+        title: "Review Documentation for Errors",
+        details: "Home health agencies often lose claims due to documentation failures. Request copies of all clinical documentation.",
+        common_errors: "Missing physician orders, inadequate homebound documentation, failure to document skilled care need, late filing with insurance."
+      },
+      {
+        step: 3,
+        title: "Appeal Insurance Denials",
+        details: "Home health denials are frequently overturned on appeal when proper documentation is provided.",
+        script: "I'm appealing the denial of home health coverage. The attached documentation shows I met all requirements: [homebound status/skilled care need/physician order]. Please reconsider this claim."
+      },
+      {
+        step: 4,
+        title: "Check for Improper Patient Billing",
+        details: "Medicare-participating home health agencies cannot bill patients for covered services. If they're billing you for Medicare-covered care, this is improper.",
+        rule: "If you have Medicare and the agency participates in Medicare, they cannot bill you for covered home health services except for any applicable deductible for DME."
+      },
+      {
+        step: 5,
+        title: "Request ABN (Advance Beneficiary Notice) Review",
+        details: "If the agency knew Medicare wouldn't cover a service, they were required to give you an ABN before providing it. Without an ABN, they may not be able to bill you.",
+        script: "Did I receive and sign an Advance Beneficiary Notice before these services were provided? If not, you may not be able to hold me responsible for Medicare non-covered services."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Documentation Failures",
+        details: "If denials were caused by agency documentation failures, use this as leverage.",
+        script: "These claims were denied due to documentation issues on the agency's part, not my eligibility. I should not be responsible for the agency's failure to properly document and bill. I'm requesting a significant reduction or dismissal of this balance."
+      }
+    ],
+    expectedOutcome: "50-70% reduction or full dismissal if documentation failures or improper billing occurred"
+  },
+  {
+    id: "dialysis-collections",
+    title: "Dialysis Treatment Bills in Collections",
+    icon: Heart,
+    situation: "You require dialysis for kidney disease. Despite having Medicare (ESRD entitles you to Medicare), insurance, or Medicaid, you're receiving bills for dialysis sessions, medications, or related care. Now bills are in collections.",
+    insiderKnowledge: [
+      "End-Stage Renal Disease (ESRD) entitles you to Medicare regardless of age - after a waiting period",
+      "Large dialysis companies (DaVita, Fresenius) have been sued for predatory billing practices",
+      "Medicare's 30-month coordination period creates confusion about which insurance pays first",
+      "Dialysis facilities often bill for services that should be included in the bundled payment",
+      "Patient assistance programs from dialysis companies and drug manufacturers can cover copays"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Your Medicare ESRD Entitlement",
+        details: "If you have ESRD and are on dialysis, you're entitled to Medicare. Verify your Medicare enrollment date and coordination period.",
+        coordination: "During the first 30 months, your employer group health plan pays first, then Medicare. After 30 months, Medicare pays first."
+      },
+      {
+        step: 2,
+        title: "Check Bundled Payment Compliance",
+        details: "Medicare pays dialysis facilities a bundled rate that should include most services. You shouldn't be separately billed for bundled items.",
+        bundled: "The ESRD bundle includes: dialysis treatment, drugs and biologicals, laboratory tests, training, and supplies used during treatment."
+      },
+      {
+        step: 3,
+        title: "Apply for Dialysis Facility Financial Assistance",
+        details: "DaVita, Fresenius, and other major dialysis providers have financial assistance programs for copays and non-covered services.",
+        script: "I'm requesting financial assistance for my dialysis-related costs. Please provide information about your patient assistance program and help me apply."
+      },
+      {
+        step: 4,
+        title: "Apply for Drug Manufacturer Assistance",
+        details: "Many drugs used in dialysis (Epogen, Aranesp) have manufacturer assistance programs for copays.",
+        programs: "Amgen (Epogen, Aranesp), AstraZeneca, and other manufacturers offer copay cards and patient assistance."
+      },
+      {
+        step: 5,
+        title: "Verify Correct Insurance Coordination",
+        details: "Billing errors often occur when insurance coordination is wrong. Make sure the correct insurer was billed as primary.",
+        script: "Please verify that claims were coordinated correctly between my [employer insurance/Medicare/Medicaid]. I believe billing errors may have occurred due to incorrect primary/secondary determination."
+      },
+      {
+        step: 6,
+        title: "Report Potential Fraud",
+        details: "If you believe the dialysis facility is engaging in improper billing, report it. Dialysis fraud is a significant issue that regulators take seriously.",
+        reporting: "Report to CMS, your state attorney general, or the OIG hotline at 1-800-HHS-TIPS."
+      }
+    ],
+    expectedOutcome: "Correction of billing errors and coordination issues. Financial assistance programs to cover remaining copays."
+  },
+  {
+    id: "vision-lasik-collections",
+    title: "Vision Care/LASIK/Cataract Surgery Bills in Collections",
+    icon: Target,
+    situation: "You had eye surgery (LASIK, cataract surgery, glaucoma treatment) or significant vision care. Your insurance denied coverage or covered less than expected. Now bills for $3,000-$15,000+ are in collections.",
+    insiderKnowledge: [
+      "LASIK is almost never covered by insurance as it's considered elective - but complications should be covered",
+      "Cataract surgery IS typically covered by Medicare and most insurance when medically necessary",
+      "Premium lens implants during cataract surgery may not be covered, but basic lenses should be",
+      "Many vision care expenses can be paid with HSA/FSA funds, reducing your tax burden",
+      "LASIK pricing is extremely competitive - many providers offer significant discounts"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Distinguish Elective vs. Medical Procedures",
+        details: "LASIK for convenience is elective. Cataract surgery, glaucoma treatment, and surgery for eye diseases are medical.",
+        covered: "Medical insurance typically covers: cataract surgery, glaucoma procedures, macular degeneration treatment, diabetic eye disease treatment."
+      },
+      {
+        step: 2,
+        title: "Challenge Cataract Surgery Denials",
+        details: "If cataract surgery was denied as 'not medically necessary,' appeal with documentation of visual impairment.",
+        script: "I'm appealing the denial of cataract surgery coverage. My visual acuity was [X], significantly impacting my daily functioning. This surgery was medically necessary, not elective."
+      },
+      {
+        step: 3,
+        title: "Verify Correct Lens Coding",
+        details: "Standard lenses are covered; premium lenses (multifocal, toric) often aren't. Verify which lenses were implanted and how they were billed.",
+        question: "What type of lens was implanted and how was it billed? If a premium lens was used, was I informed of the out-of-pocket cost difference before surgery?"
+      },
+      {
+        step: 4,
+        title: "Use HSA/FSA for Remaining Balance",
+        details: "Vision surgery expenses are HSA/FSA eligible, effectively reducing your cost by your tax rate.",
+        tip: "If you have an HSA or FSA, use it for vision expenses. You'll save 20-40% depending on your tax bracket."
+      },
+      {
+        step: 5,
+        title: "Negotiate LASIK Pricing",
+        details: "LASIK is a competitive market. If you were overcharged, negotiate using competitor pricing.",
+        market: "LASIK typically costs $2,000-$4,000 per eye. If you were charged $5,000+, this may be negotiable using competitor quotes."
+      },
+      {
+        step: 6,
+        title: "Set Up Interest-Free Payment Plan",
+        details: "Many eye surgery practices offer interest-free financing. Request a payment plan if you can't pay in full.",
+        script: "I'm requesting an interest-free payment plan for this balance. I can afford $[amount] per month. Please provide your financing options."
+      }
+    ],
+    expectedOutcome: "Coverage for medically necessary procedures. 20-40% reduction for elective procedures through negotiation."
+  },
+  {
+    id: "sleep-study-collections",
+    title: "Sleep Study/Sleep Apnea Treatment Bills in Collections",
+    icon: Clock,
+    situation: "You had a sleep study to diagnose sleep apnea and/or received CPAP equipment. Your insurance denied coverage or paid less than expected. Now bills for $2,000-$10,000+ are in collections.",
+    insiderKnowledge: [
+      "Sleep studies are notoriously expensive in hospital settings ($5,000+) but home sleep tests cost $200-$500",
+      "Insurance often denies CPAP equipment without 'compliance' proof - you must use it for a certain number of hours",
+      "Many CPAP suppliers charge 5-10x the retail price of equipment",
+      "Home sleep testing is now preferred by most insurers over in-lab studies for uncomplicated cases",
+      "CPAP 'rental' programs often cost more than purchasing equipment outright"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Medical Necessity Was Documented",
+        details: "Sleep studies require symptoms like daytime sleepiness, witnessed apneas, or other clinical indicators. Verify these were documented.",
+        script: "Was the sleep study ordered based on documented symptoms and clinical indicators? Please provide the referral documentation showing medical necessity."
+      },
+      {
+        step: 2,
+        title: "Compare In-Lab vs. Home Study Pricing",
+        details: "If you had an in-lab study, compare what a home study would have cost. Use this as evidence of overcharging.",
+        comparison: "In-lab sleep study: $3,000-$6,000. Home sleep test: $200-$500. If the home test was appropriate, question why you were charged for in-lab."
+      },
+      {
+        step: 3,
+        title: "Challenge CPAP Equipment Pricing",
+        details: "CPAP machines cost $500-$800 retail but are often billed at $2,000-$4,000. Challenge excessive pricing.",
+        script: "The retail price of this CPAP machine is approximately $[600-800]. I'm requesting adjustment to a fair price, not the inflated amount billed."
+      },
+      {
+        step: 4,
+        title: "Verify Rental vs. Purchase Terms",
+        details: "If renting CPAP equipment, after approximately 13 months of rental you should own it. Verify you're not still being charged rent.",
+        question: "Has this equipment reached the rental cap period? Please confirm whether I now own the equipment and stop any further rental charges."
+      },
+      {
+        step: 5,
+        title: "Appeal CPAP Coverage Denials",
+        details: "If CPAP was denied for non-compliance, provide documentation of your usage and any barriers to compliance.",
+        script: "I'm appealing the denial of CPAP coverage. I have been compliant with treatment [or: I experienced barriers to compliance due to X]. Please provide an opportunity to demonstrate compliance."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Fair Market Value",
+        details: "Sleep medicine billing is notoriously inflated. Negotiate using fair market pricing.",
+        script: "The fair market value for this sleep study is approximately $[500-1,500]. The billed amount of $[amount] is excessive. I'm prepared to pay fair market value to settle this account."
+      }
+    ],
+    expectedOutcome: "50-70% reduction by challenging excessive pricing and demonstrating fair market rates"
+  },
+  {
+    id: "chronic-condition-collections",
+    title: "Chronic Condition Management Bills in Collections",
+    icon: Heart,
+    situation: "You have a chronic condition (diabetes, hypertension, asthma, rheumatoid arthritis, etc.) requiring ongoing medications, monitoring, and specialist visits. Insurance has denied or limited coverage, leaving you with accumulated bills. Now they're in collections.",
+    insiderKnowledge: [
+      "Chronic condition medications often have manufacturer copay cards and patient assistance programs",
+      "Insurance 'step therapy' or 'prior authorization' requirements are often overturned on appeal",
+      "Many chronic condition patients qualify for Medicare disability before age 65",
+      "State pharmaceutical assistance programs exist in many states for chronic conditions",
+      "Routine chronic disease monitoring should be covered as preventive care under ACA"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Apply for All Available Medication Assistance",
+        details: "Most expensive chronic condition medications have manufacturer assistance. Apply for every program available.",
+        programs: "Check manufacturer websites, NeedyMeds.org, RxAssist.org, and PatientAdvocate.org for available programs."
+      },
+      {
+        step: 2,
+        title: "Appeal Prior Authorization and Step Therapy Denials",
+        details: "If insurance requires you to try cheaper medications first, document why they don't work for you.",
+        script: "I'm appealing the requirement to try [alternative medication]. I have previously failed [or have contraindications to] this medication because [reason]. My physician recommends [prescribed medication] as medically necessary."
+      },
+      {
+        step: 3,
+        title: "Request Preventive Care Coding",
+        details: "Routine chronic disease monitoring (A1C tests, kidney function tests) may be covered as preventive care.",
+        examples: "Diabetes: A1C, foot exams, eye exams. Hypertension: blood pressure monitoring. These should often be covered at 100%."
+      },
+      {
+        step: 4,
+        title: "Explore State Pharmaceutical Assistance",
+        details: "Many states have programs to help with medication costs for chronic conditions. Eligibility varies by state.",
+        resources: "Search '[your state] pharmaceutical assistance program' or contact your state health department."
+      },
+      {
+        step: 5,
+        title: "Check Medicare Disability Eligibility",
+        details: "If your chronic condition prevents you from working, you may qualify for Medicare disability benefits before age 65.",
+        conditions: "Conditions like ESRD, certain cancers, and disabling arthritis may qualify for Medicare regardless of age."
+      },
+      {
+        step: 6,
+        title: "Negotiate Accumulated Bills as a Package",
+        details: "If you have multiple chronic condition bills in collections, negotiate them together for a larger discount.",
+        script: "I have multiple bills from ongoing chronic condition management totaling $[total]. I'm prepared to settle all accounts for [25-35%] of the total as a comprehensive resolution."
+      }
+    ],
+    expectedOutcome: "40-60% reduction through assistance programs and bulk negotiation. Medication costs potentially eliminated."
+  },
+  {
+    id: "hospice-end-of-life-collections",
+    title: "Hospice/End-of-Life Care Bills in Collections",
+    icon: Heart,
+    situation: "Your family member received hospice or end-of-life care, and now the family is receiving bills despite hospice supposedly covering everything. Or the patient died and bills are coming to family members. These bills are going to collections.",
+    insiderKnowledge: [
+      "Medicare hospice benefit covers virtually all end-of-life care costs - there should be minimal out-of-pocket",
+      "Family members are generally NOT responsible for a deceased person's medical debt (with limited exceptions)",
+      "Hospice agencies sometimes bill improperly for services that should be included in the daily rate",
+      "If the patient was on hospice, curative treatment isn't covered - but all comfort care should be",
+      "Collections agencies frequently and illegally try to collect from family members who don't owe the debt"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify What Medicare Hospice Covers",
+        details: "Medicare hospice covers: nursing care, drugs for pain/symptom control, medical equipment, hospice aide services, and short-term respite care.",
+        notCovered: "Medicare hospice does NOT cover: treatment to cure the terminal illness, care from providers not set up through hospice, room and board at home."
+      },
+      {
+        step: 2,
+        title: "Confirm Family Is Not Personally Liable",
+        details: "Unless you co-signed, are a surviving spouse in a community property state, or are the estate executor, you're likely not responsible.",
+        script: "I am not personally responsible for this debt. I did not co-sign or guarantee payment. Please remove my name from this account immediately."
+      },
+      {
+        step: 3,
+        title: "Review Hospice Billing for Errors",
+        details: "Hospice agencies sometimes bill separately for services included in their daily rate. Review for duplicate or improper charges.",
+        included: "The hospice daily rate should include: all nursing visits, medications related to terminal diagnosis, medical equipment, and supplies."
+      },
+      {
+        step: 4,
+        title: "Check for Improper 'Curative' Charges",
+        details: "Once someone elects hospice, curative treatment isn't covered - but they shouldn't have received or been billed for curative care either.",
+        question: "Were any services provided that were curative rather than palliative? If the patient was on hospice, curative services should not have been offered or billed."
+      },
+      {
+        step: 5,
+        title: "Request Estate Claim Process Information",
+        details: "If the debt is legitimate, it should be paid from the estate, not from family members personally.",
+        script: "This debt, if valid, is an obligation of the estate of [deceased name]. Please submit your claim through the proper probate process. Family members are not personally liable."
+      },
+      {
+        step: 6,
+        title: "Report Aggressive Collection on Deceased's Debt",
+        details: "If collectors are harassing family members for a deceased person's debt, this may violate the FDCPA.",
+        report: "File complaints with the CFPB and state attorney general if collectors are improperly pursuing family members."
+      }
+    ],
+    expectedOutcome: "Dismissal of personal liability for family members. Resolution of estate debts through proper probate process."
+  },
+  {
+    id: "psychiatric-hospital-collections",
+    title: "Psychiatric Hospitalization Bills in Collections",
+    icon: Users,
+    situation: "You or a family member was hospitalized for psychiatric care (suicidal ideation, psychotic episode, severe depression, etc.). Despite having insurance, coverage was denied or limited, leaving bills of $10,000-$100,000+ now in collections.",
+    insiderKnowledge: [
+      "The Mental Health Parity Act requires equal coverage for mental health and physical health - many denials violate this",
+      "Psychiatric hospitals often charge $1,500-$3,000+ per day with minimal actual treatment",
+      "Insurance companies routinely deny psychiatric admissions as 'not medically necessary' when they clearly were",
+      "Length of stay denials are common - insurance says '3 days' was enough when doctors ordered 10",
+      "Psychiatric facility financial assistance is often generous due to the vulnerable patient population"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Document the Emergency Nature of Admission",
+        details: "Gather documentation showing why admission was necessary: suicidality assessment, risk factors, police/ambulance involvement.",
+        script: "This psychiatric admission was medically necessary due to [imminent risk of harm to self/others/acute psychotic symptoms]. Please review the admission assessment documenting this emergency."
+      },
+      {
+        step: 2,
+        title: "Challenge Length-of-Stay Denials",
+        details: "If insurance approved initial days but denied continued stay, appeal with daily clinical documentation.",
+        script: "I'm appealing the denial of days [X-Y] of this psychiatric hospitalization. Clinical documentation shows I continued to meet [inpatient/acute care] criteria due to [ongoing symptoms/safety concerns]."
+      },
+      {
+        step: 3,
+        title: "Invoke Mental Health Parity Law",
+        details: "If similar physical health admissions would be covered, psychiatric admissions must be covered equally.",
+        script: "Under the Mental Health Parity and Addiction Equity Act, coverage criteria for psychiatric hospitalization cannot be more restrictive than for medical hospitalization. Please explain how this denial complies with parity requirements."
+      },
+      {
+        step: 4,
+        title: "Audit Daily Charges",
+        details: "Psychiatric hospital daily rates often include minimal actual treatment. Review what services were actually provided.",
+        redFlags: ["Same 'therapy' charge every day regardless of actual therapy", "Minimal actual psychiatrist time", "Group therapy counted as individual therapy", "Charges for services not documented in medical record"]
+      },
+      {
+        step: 5,
+        title: "Apply for Facility Financial Assistance",
+        details: "Psychiatric facilities often have generous financial assistance programs. Apply even if you think you don't qualify.",
+        script: "I'm requesting financial assistance for this psychiatric hospitalization. I experienced a mental health crisis and am facing significant financial burden from this necessary care."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Actual Services Received",
+        details: "If daily rates were high but actual treatment was minimal, use this as leverage.",
+        script: "The daily rate of $[amount] should reflect comprehensive psychiatric treatment. Reviewing my medical records, I received [limited actual services]. I'm requesting adjustment to reflect the actual care provided."
+      }
+    ],
+    expectedOutcome: "40-70% reduction through parity appeals, financial assistance, and service-level negotiation"
+  },
+  {
+    id: "allergy-testing-collections",
+    title: "Allergy Testing/Immunotherapy Bills in Collections",
+    icon: Stethoscope,
+    situation: "You had allergy testing (skin tests or blood panels) and/or started immunotherapy (allergy shots). Your insurance denied coverage or you received unexpectedly high bills. Now $2,000-$15,000+ is in collections.",
+    insiderKnowledge: [
+      "Allergy blood panels can cost $30 each at some labs or $300 each at others - for the same test",
+      "Some allergists test for 50+ allergens when 10-15 would be clinically appropriate",
+      "Allergy skin testing should cost $150-$500 total, not $2,000+",
+      "Immunotherapy (allergy shots) is often cheaper through primary care than allergist offices",
+      "Many expensive allergy tests are 'medically unnecessary' and can be challenged"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Verify Testing Was Clinically Appropriate",
+        details: "Review how many allergens were tested. If 50+ allergens were tested when your symptoms suggested only certain categories, challenge the excess.",
+        question: "Based on my symptoms, how many allergens was it clinically appropriate to test? I'd like to understand why [X] different allergens were tested."
+      },
+      {
+        step: 2,
+        title: "Compare Blood Panel Pricing",
+        details: "Allergy blood tests (specific IgE) vary wildly in price. Get pricing from other labs for comparison.",
+        benchmark: "Individual allergen IgE tests should cost $10-$40 each. If you're charged $200+ per allergen, this is excessive."
+      },
+      {
+        step: 3,
+        title: "Challenge Medical Necessity for Extensive Panels",
+        details: "Comprehensive allergy panels are often ordered for convenience, not medical necessity. Challenge if inappropriate.",
+        script: "I'm disputing the medical necessity of testing [X] allergens when my symptoms were consistent with [specific category]. Please provide documentation supporting the clinical need for this extensive testing."
+      },
+      {
+        step: 4,
+        title: "Appeal Insurance Denials for Immunotherapy",
+        details: "If allergy shots were denied, appeal with documentation of severity and failed medication management.",
+        script: "I'm appealing the denial of immunotherapy coverage. I have documented allergic rhinitis/asthma affecting my quality of life, and have failed treatment with [antihistamines/nasal steroids/etc.]."
+      },
+      {
+        step: 5,
+        title: "Explore Alternative Immunotherapy Settings",
+        details: "Going forward, allergy shots can often be administered at primary care offices for significantly less cost.",
+        savings: "Allergist office visits for shots: $30-$50 each. Primary care office: $15-$25 each or included in other visits."
+      },
+      {
+        step: 6,
+        title: "Negotiate Based on Fair Market Lab Rates",
+        details: "Use lab pricing comparisons to negotiate down excessive blood test charges.",
+        script: "These allergy blood tests are available for $[lower price] at [reference lab]. I'm requesting adjustment to fair market pricing rather than the inflated charges billed."
+      }
+    ],
+    expectedOutcome: "40-60% reduction by challenging excessive testing and using fair market pricing comparisons"
+  },
+  {
+    id: "chiropractic-collections",
+    title: "Chiropractic/Alternative Medicine Bills in Collections",
+    icon: Users,
+    situation: "You received chiropractic care, acupuncture, or other alternative treatments. Insurance covered less than expected or didn't cover at all. Now bills for $2,000-$10,000+ are in collections.",
+    insiderKnowledge: [
+      "Chiropractic care has strict insurance limits - usually 12-30 visits per year maximum",
+      "Many chiropractors use 'wellness' or 'maintenance' billing codes that insurance won't cover",
+      "Insurance often covers chiropractic only for specific diagnoses, not general 'wellness'",
+      "Acupuncture coverage varies widely - some plans cover it, many don't",
+      "Upfront treatment packages sold by chiropractors are often not covered by insurance at all"
+    ],
+    stepByStep: [
+      {
+        step: 1,
+        title: "Review Your Insurance Chiropractic Benefits",
+        details: "Understand what your plan actually covers: number of visits, specific diagnoses, network requirements.",
+        common_limits: "Many plans limit chiropractic to 12-30 visits per year, require specific diagnoses like back pain, and may require referral from primary care."
+      },
+      {
+        step: 2,
+        title: "Verify Correct Diagnosis Coding",
+        details: "Chiropractic is often covered for 'acute musculoskeletal conditions' but not for 'wellness' or 'maintenance.' Check how visits were coded.",
+        script: "Please provide the diagnosis codes used for these visits. Were any visits billed as 'wellness' or 'maintenance' rather than treatment for a specific condition?"
+      },
+      {
+        step: 3,
+        title: "Challenge 'Treatment Package' Billing",
+        details: "If you purchased a prepaid package of treatments, understand that insurance may not cover these or may cover them differently.",
+        question: "I paid upfront for a treatment package. Can these visits be rebilled individually to insurance with appropriate diagnosis codes?"
+      },
+      {
+        step: 4,
+        title: "Appeal Denials for Specific Conditions",
+        details: "If you have a specific injury or condition, appeal denials with documentation of medical necessity.",
+        script: "I'm appealing the denial of chiropractic coverage. I have [specific diagnosis] causing [specific functional impairment]. Conservative chiropractic treatment is medically appropriate before more invasive interventions."
+      },
+      {
+        step: 5,
+        title: "Check HSA/FSA Eligibility",
+        details: "Chiropractic and many alternative treatments are HSA/FSA eligible, reducing your effective cost.",
+        tip: "If you have an HSA or FSA, use it for these expenses. You'll save your marginal tax rate (20-40% for most people)."
+      },
+      {
+        step: 6,
+        title: "Negotiate Package Refunds or Reductions",
+        details: "If you purchased a package that wasn't covered as represented, negotiate a partial refund or reduction.",
+        script: "I was led to believe insurance would cover more of this treatment package than it did. I'm requesting either a partial refund or a reduced balance reflecting what I can reasonably pay."
+      }
+    ],
+    expectedOutcome: "30-50% reduction through negotiation and appropriate coding adjustments"
   }
 ];
 
