@@ -109,12 +109,199 @@ const collectionsScenarios = [
     id: "childbirth-collections",
     title: "Childbirth Bill Sent to Collections",
     icon: Baby,
+    featured: true,
     situation: "You had a baby and received a bill for $15,000-$50,000+. Despite making good-faith payment attempts or disputing charges, the hospital sent the bill to collections.",
     insiderKnowledge: [
       "Hospitals are REQUIRED to screen you for charity care before sending to collections under most state laws and the Affordable Care Act",
       "Many states have 'surprise billing' protections specifically for maternity care",
       "Itemized bills for childbirth frequently contain duplicate charges, unbundled services, and phantom charges",
-      "NICU charges are the most commonly inflated - demand documentation for every day of NICU care"
+      "NICU charges are the most commonly inflated - hospitals mark up NICU by 300-500%. Demand documentation for every single day",
+      "The average vaginal delivery has 15-25 line items; C-sections have 30-50. If your bill has significantly more, you're being overcharged",
+      "Hospitals routinely charge $40-80 for 'skin-to-skin contact' - holding your own baby. This is a known scandal you can dispute",
+      "Lactation consultant charges average $150-400 per visit. Many hospitals charge for visits that never happened",
+      "Nursery charges while baby was 'rooming in' with you are fraudulent - challenge every nursery charge",
+      "Epidural 'placement' and 'medication' are often billed separately when they should be bundled - this is unbundling fraud",
+      "If you had a C-section, verify the surgical team billing. Many hospitals charge for 2-3 assistant surgeons when only 1 was present",
+      "Collection agencies know childbirth debts are emotional and parents often pay quickly - they count on this. Don't fall for pressure tactics"
+    ],
+    billForensics: {
+      title: "Common Childbirth Billing Errors & Fraud",
+      redFlags: [
+        { code: "59899", description: "'Mucus extraction' - This is standard newborn care included in delivery, not a separate billable service", amount: "$200-800" },
+        { code: "99283-99285", description: "Multiple ER evaluation codes - You can only be evaluated once per visit", amount: "$500-1,500" },
+        { code: "36415/36416", description: "Venipuncture charges for each blood draw - Should be bundled with lab work", amount: "$50-200 each" },
+        { code: "99477", description: "NICU initial day - Verify baby was actually in NICU, not just 'observation'", amount: "$2,000-8,000" },
+        { code: "S9443", description: "Lactation consultant - Verify visit occurred and duration matches bill", amount: "$150-400" },
+        { code: "99238", description: "Discharge day management - Often billed even for same-day discharge", amount: "$200-500" },
+        { code: "99460/99463", description: "Newborn care - Should not be billed if baby was in NICU under separate billing", amount: "$300-800" }
+      ],
+      unbundlingSchemes: [
+        "Epidural placement billed separately from epidural medication administration",
+        "Fetal monitoring billed separately from labor management",
+        "IV placement billed separately from IV fluids",
+        "Surgical tray billed separately from C-section procedure",
+        "Recovery room billed separately from delivery room"
+      ],
+      phantomCharges: [
+        "Circumcision for baby girls (yes, this happens)",
+        "Nursery care during 'rooming in'",
+        "Multiple pediatrician visits when only one occurred",
+        "Hearing test that was 'referred' (failed) but billed as complete",
+        "Postpartum depression screening never administered"
+      ]
+    },
+    negotiationPlaybooks: {
+      withHospital: {
+        title: "Hospital Billing Department Script",
+        approach: "Call the hospital billing department directly - NOT the collections agency. Hospitals can recall debts from collections.",
+        script: "I'm calling about account [NUMBER] for maternity services on [DATE]. I've reviewed my itemized bill and found several billing errors I need to discuss. First, I was never screened for charity care before this was sent to collections, which violates ACA requirements. Second, I've identified [NUMBER] specific overcharges totaling approximately $[AMOUNT]. I'd like to speak with a billing supervisor or patient advocate who has authority to review these issues and potentially recall this account from collections.",
+        followUp: "If they resist, say: 'I understand. I'll be filing a complaint with the state attorney general's healthcare division and the hospital's compliance officer. I also plan to dispute this with credit bureaus citing billing errors. Is there someone else I should speak with first?'"
+      },
+      withCollections: {
+        title: "Collections Agency Negotiation Script",
+        approach: "Never acknowledge the debt is valid. Always dispute first, then negotiate from a position of strength.",
+        initialScript: "I'm calling regarding a letter I received about an alleged debt from [HOSPITAL]. Before we discuss anything, I need to inform you that I am disputing this debt. I've sent a formal validation request dated [DATE] and I'm recording this call for my records. Can you confirm you've received my validation request?",
+        settlementScript: "I've reviewed the documentation and found significant billing errors in the original account. Given these disputes and the age of this debt, I'm prepared to settle this matter for [15-25% of balance]. This would be a one-time payment in exchange for a signed agreement to delete this account from all credit reporting and provide a zero-balance letter. Is that something you can authorize today?",
+        escalationScript: "I understand you may not have authority for that amount. Who is your supervisor or manager who handles settlements? I'm also prepared to file complaints with the CFPB and state attorney general if we can't reach a reasonable resolution today."
+      },
+      withInsurance: {
+        title: "Insurance Appeal Script (For Denied Claims)",
+        approach: "Many childbirth claims are initially denied but can be overturned on appeal.",
+        script: "I'm calling to file an urgent appeal for claim [NUMBER] dated [DATE] for maternity services. The denial reason of [REASON] is incorrect because [EXPLANATION]. Under [STATE] law and the Affordable Care Act, maternity care is an essential health benefit that must be covered. I'm requesting an expedited internal appeal and want to be transferred to a clinical reviewer who can evaluate the medical necessity documentation I'm providing."
+      }
+    },
+    legalProtections: {
+      federal: [
+        { law: "No Surprises Act (2022)", protection: "Out-of-network providers at in-network facilities cannot balance bill you for emergency or maternity care", enforcement: "File complaint at cms.gov/nosurprises" },
+        { law: "EMTALA", protection: "Hospitals cannot refuse to treat you during active labor regardless of ability to pay", enforcement: "File complaint with CMS regional office" },
+        { law: "Affordable Care Act §501(r)", protection: "Non-profit hospitals must have charity care policies, screen patients for eligibility, and cannot use extraordinary collection actions without first making reasonable efforts to determine eligibility", enforcement: "File complaint with IRS and state attorney general" },
+        { law: "Fair Debt Collection Practices Act", protection: "Collectors cannot harass, make false statements, or use unfair practices. Must validate debt within 30 days of request", enforcement: "Sue in small claims or federal court, file complaint with CFPB" },
+        { law: "Fair Credit Reporting Act", protection: "Medical debts under $500 cannot appear on credit reports. All medical debts must wait 1 year before reporting", enforcement: "Dispute with credit bureaus, sue for willful violations" }
+      ],
+      stateExamples: [
+        { state: "California", protection: "Hospitals must provide charity care to patients at 400% FPL. Cannot charge uninsured more than government payers. Must wait 150 days before collections." },
+        { state: "New York", protection: "Surprise bill protections for all maternity care. Hospitals must offer payment plans of up to 36 months with no interest." },
+        { state: "Texas", protection: "Balance billing banned for maternity services at in-network facilities. Hospitals must provide itemized bills within 10 days." },
+        { state: "Illinois", protection: "Hospital Uninsured Patient Discount Act requires discounts of 25-100% based on income. Hospitals cannot report to credit bureaus for 6 months." },
+        { state: "New Jersey", protection: "Out-of-network billing banned for all hospital-based services including maternity. Hospitals must screen for charity care." }
+      ]
+    },
+    timeline: {
+      title: "30/60/90 Day Action Plan",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Send debt validation letter via certified mail", "Request itemized bill from hospital", "Do NOT acknowledge debt on any phone calls", "Start documenting all communications"], status: "critical" },
+        { day: "Day 8-30", actions: ["Wait for validation response (legally required within 30 days)", "Review itemized bill for errors", "Research hospital's charity care policy", "Calculate fair market value of services using Healthcare Bluebook"], status: "important" },
+        { day: "Day 31-60", actions: ["If no validation received, send follow-up demanding they cease collection", "Submit charity care application", "File dispute with credit bureaus if debt is reported", "Begin negotiation with hospital billing department"], status: "strategic" },
+        { day: "Day 61-90", actions: ["Escalate to hospital patient advocate if needed", "File complaints with state attorney general if violations found", "Make settlement offer to collections (15-25% of balance)", "Consider consulting consumer rights attorney if debt is large"], status: "resolution" }
+      ]
+    },
+    templates: {
+      debtValidation: {
+        title: "Childbirth Debt Validation Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Collections Agency Name]
+[Agency Address]
+[City, State ZIP]
+
+RE: Dispute and Validation Request - Account #[ACCOUNT NUMBER]
+
+To Whom It May Concern:
+
+I am writing in response to your [letter/call] dated [DATE] regarding an alleged debt of $[AMOUNT] from [HOSPITAL NAME] for maternity services.
+
+Under the Fair Debt Collection Practices Act (15 U.S.C. § 1692g), I am formally disputing this debt and requesting validation. Please provide:
+
+1. Complete itemized billing statement with all CPT/HCPCS codes
+2. Proof that you are licensed to collect debts in [STATE]
+3. Documentation showing the chain of assignment from original creditor
+4. Copy of any signed agreement or contract creating this obligation
+5. Proof that the statute of limitations has not expired on this debt
+6. Verification that the original creditor complied with ACA 501(r) charity care screening requirements
+
+Under the FDCPA, you must cease all collection activity until this validation is complete. Any continued collection attempts without providing this validation will be considered harassment and a violation of federal law.
+
+Additionally, I am disputing any reporting of this debt to credit bureaus. Under the Fair Credit Reporting Act, you must notify the credit bureaus that this debt is disputed.
+
+All future communications regarding this matter must be in writing only. Do not contact me by telephone.
+
+Sincerely,
+[Your Signature]
+[Your Printed Name]`
+      },
+      charityCareLetter: {
+        title: "Charity Care Application Request",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Hospital Name]
+Patient Financial Services
+[Hospital Address]
+[City, State ZIP]
+
+RE: Charity Care/Financial Assistance Application Request - Account #[ACCOUNT NUMBER]
+
+Dear Patient Financial Services:
+
+I am writing to formally request a charity care/financial assistance application for my account dated [SERVICE DATE] totaling $[AMOUNT] for maternity services.
+
+Under the Affordable Care Act Section 501(r) and [STATE] law, your hospital is required to:
+1. Have a written financial assistance policy
+2. Widely publicize the availability of financial assistance
+3. Make reasonable efforts to determine eligibility before initiating collection actions
+4. Provide the application upon request
+
+I was not informed of charity care options before my account was sent to collections, which may constitute a violation of federal requirements.
+
+My current household income is approximately $[AMOUNT] annually with [NUMBER] dependents. Based on your published financial assistance policy, I believe I may qualify for [full/partial] charity care.
+
+Please send me:
+1. Your current financial assistance application
+2. List of required documentation
+3. Written copy of your financial assistance policy
+4. Deadline for application submission
+
+I also request that you recall this account from collections while my application is under review, as required by most state laws and ACA regulations.
+
+Please respond within 10 business days. Thank you for your attention to this matter.
+
+Sincerely,
+[Your Signature]
+[Your Printed Name]`
+      }
+    },
+    calculators: {
+      charityCareLikelihood: {
+        title: "Charity Care Eligibility Estimator",
+        description: "Most hospitals provide 100% charity care at 200% FPL, partial assistance up to 400% FPL",
+        fplThresholds2024: {
+          "1": 15060,
+          "2": 20440,
+          "3": 25820,
+          "4": 31200,
+          "5": 36580,
+          "6": 41960
+        }
+      }
+    },
+    successStories: [
+      {
+        title: "Sarah's $47,000 C-Section Bill",
+        outcome: "Reduced to $4,200 (91% reduction)",
+        strategy: "Found 23 billing errors, qualified for 75% charity care, negotiated remaining balance",
+        timeline: "67 days from first letter to resolution"
+      },
+      {
+        title: "Mike & Jennifer's NICU Bill",
+        outcome: "$89,000 reduced to $0",
+        strategy: "Insurance appeal won after 2nd review, hospital had failed to submit proper documentation",
+        timeline: "4 months, but worth the persistence"
+      }
     ],
     stepByStep: [
       {
@@ -153,19 +340,290 @@ const collectionsScenarios = [
         details: "NEVER pay based on a phone promise. Get the settlement agreement, pay-for-delete commitment, and payment terms in writing before sending any money."
       }
     ],
-    expectedOutcome: "40-70% reduction in total bill, removal from credit report, no further collection activity"
+    expectedOutcome: "40-70% reduction in total bill, removal from credit report, no further collection activity",
+    escalationPath: [
+      { level: 1, entity: "Hospital Billing Department", action: "Request itemized bill, dispute errors, apply for charity care" },
+      { level: 2, entity: "Hospital Patient Advocate", action: "Escalate billing disputes, request supervisor review" },
+      { level: 3, entity: "Hospital Compliance Officer", action: "Report ACA 501(r) violations, charity care failures" },
+      { level: 4, entity: "State Attorney General", action: "File consumer complaint for billing fraud or collection violations" },
+      { level: 5, entity: "Consumer Rights Attorney", action: "Consider lawsuit for FDCPA violations, class action potential" }
+    ]
   },
   {
     id: "childbirth-insurance-kickoff",
     title: "Childbirth Bill After Being Kicked Off Insurance",
     icon: Heart,
+    featured: true,
     situation: "You were pregnant and insured, but your insurance was terminated (often due to employer error, administrative mistake, or failure to pay premium during leave). Now you have a massive uninsured childbirth bill in collections.",
     insiderKnowledge: [
       "Pregnancy is a 'qualifying life event' that triggers special enrollment rights - your coverage should have been extended",
-      "COBRA continuation coverage is RETROACTIVE - you can elect it up to 60 days after termination",
-      "If terminated due to employer error, the employer may be liable for the entire medical bill",
-      "Many states have specific protections for pregnant women losing coverage",
-      "Hospitals cannot charge uninsured patients more than they'd accept from insurance companies (No Surprises Act)"
+      "COBRA continuation coverage is RETROACTIVE - you can elect it up to 60 days after termination and it covers claims from day 1",
+      "If terminated due to employer error, the employer may be liable for the ENTIRE medical bill - this is a huge leverage point",
+      "Many states have specific protections for pregnant women losing coverage - some prohibit termination during pregnancy entirely",
+      "Hospitals cannot charge uninsured patients more than they'd accept from insurance companies (No Surprises Act)",
+      "FMLA protections mean your job-based insurance should continue during approved leave - termination during FMLA is often illegal",
+      "Some employers self-insure - meaning THEY are the insurance company and directly liable for coverage errors",
+      "State Medicaid programs have 'presumptive eligibility' for pregnant women - you may get immediate temporary coverage",
+      "The 60-day COBRA election window is strictly enforced - but COVID-era extensions may still apply in some cases",
+      "If your employer has 20+ employees, COBRA is mandatory - smaller employers may have state 'mini-COBRA' options",
+      "Insurance companies must provide written notice of termination - failure to do so may invalidate the termination",
+      "Pregnancy discrimination in insurance termination is illegal under the Pregnancy Discrimination Act"
+    ],
+    terminationAnalysis: {
+      title: "Why Was Your Coverage Terminated?",
+      commonReasons: [
+        { 
+          reason: "Employer failed to remit premiums", 
+          liability: "EMPLOYER liable for all medical bills",
+          action: "Document the payment failure and consult employment attorney",
+          winRate: "Very high - clear employer negligence"
+        },
+        { 
+          reason: "Administrative/paperwork error", 
+          liability: "EMPLOYER liable",
+          action: "Get written admission of error from HR, file DOL complaint",
+          winRate: "High - employer must maintain accurate records"
+        },
+        { 
+          reason: "FMLA leave confusion", 
+          liability: "EMPLOYER liable - FMLA requires coverage continuation",
+          action: "File DOL complaint for FMLA violation, contact employment attorney",
+          winRate: "Very high - FMLA violations have statutory damages"
+        },
+        { 
+          reason: "Missed premium during maternity leave", 
+          liability: "Depends - did employer notify you properly?",
+          action: "Request proof of premium notices, check state grace period laws",
+          winRate: "Medium - depends on documentation"
+        },
+        { 
+          reason: "Job termination while pregnant", 
+          liability: "Possible pregnancy discrimination",
+          action: "File EEOC complaint, consult employment attorney immediately",
+          winRate: "Medium-High - pregnancy discrimination is illegal"
+        },
+        { 
+          reason: "Spouse lost job/coverage", 
+          liability: "Qualifying life event should have triggered enrollment",
+          action: "Apply for special enrollment period, file with state insurance commissioner",
+          winRate: "High - QLE rights are well-established"
+        }
+      ]
+    },
+    cobraAnalysis: {
+      title: "COBRA: Your Retroactive Coverage Lifeline",
+      keyFacts: [
+        "You have 60 days from termination OR 60 days from notice (whichever is later) to elect COBRA",
+        "Once elected, coverage is RETROACTIVE to the termination date - all claims during the gap are covered",
+        "Yes, you must pay back premiums, but compare: $2,000-4,000 in premiums vs $40,000+ in medical bills",
+        "Employer MUST notify you of COBRA rights within 14 days of qualifying event",
+        "If employer failed to notify you, your election deadline may be extended",
+        "COBRA premiums are typically 102% of the full premium (employer + employee share + 2% admin fee)"
+      ],
+      calculation: {
+        title: "COBRA Cost-Benefit Calculator",
+        example: {
+          monthlyPremium: 650,
+          monthsNeeded: 4,
+          totalCOBRACost: 2600,
+          medicalBillsAvoided: 45000,
+          netSavings: 42400
+        }
+      },
+      scripts: {
+        employerCall: "I need to discuss my COBRA rights. My coverage was terminated on [DATE] and I'm within the 60-day election window. I need the COBRA election forms immediately. Can you also confirm the date you sent the required COBRA notification? I need this in writing.",
+        insuranceCall: "I'm calling to elect COBRA coverage retroactive to [TERMINATION DATE]. I understand I'll owe back premiums of approximately $[AMOUNT]. Please process this election and confirm that all claims from [TERMINATION DATE] to present will be covered once premiums are paid."
+      }
+    },
+    medicaidPath: {
+      title: "Retroactive Medicaid for Pregnancy",
+      keyFacts: [
+        "Pregnant women qualify for Medicaid at higher income levels (138-200% FPL in most states, up to 300%+ in some)",
+        "Most states allow 3 months of retroactive Medicaid coverage",
+        "Presumptive eligibility means you can get temporary coverage while your full application is processed",
+        "Medicaid during pregnancy often includes 60 days postpartum coverage",
+        "If you qualified for Medicaid at ANY point during pregnancy, apply immediately"
+      ],
+      incomeThresholds2024: {
+        "138%FPL_family4": 41400,
+        "200%FPL_family4": 60000,
+        "300%FPL_family4": 90000
+      },
+      applicationScript: "I'm applying for Medicaid and requesting presumptive eligibility for pregnancy. I also need to apply for 3 months of retroactive coverage for [MONTHS]. I gave birth on [DATE] and had no insurance coverage at that time. My current income is approximately $[AMOUNT] annually."
+    },
+    employerLiability: {
+      title: "When Your Employer Owes You",
+      warningSignsOfLiability: [
+        "HR says 'there was a paperwork error' or 'we forgot to process your coverage'",
+        "You were on FMLA-approved leave when coverage was terminated",
+        "You weren't given proper notice before termination",
+        "The employer continued deducting premiums from your paycheck but didn't remit them",
+        "You requested coverage during a qualifying life event but it wasn't processed",
+        "Your coverage was terminated but coworkers in similar situations kept theirs"
+      ],
+      documentationNeeded: [
+        "All pay stubs showing premium deductions",
+        "Written correspondence with HR about coverage",
+        "COBRA notification (or lack thereof)",
+        "FMLA approval documentation",
+        "Emails/texts discussing coverage status",
+        "Witness statements from coworkers if applicable"
+      ],
+      legalRemedies: [
+        { remedy: "ERISA violation claim", potential: "Full medical bills + attorney fees + statutory penalties" },
+        { remedy: "FMLA violation claim", potential: "Double damages + attorney fees + reinstatement rights" },
+        { remedy: "Breach of contract claim", potential: "Full medical bills + consequential damages" },
+        { remedy: "State insurance law violations", potential: "Varies by state - some have treble damages" }
+      ],
+      consultationScript: "I'm consulting you regarding my employer's failure to maintain my health insurance coverage during pregnancy. I have documentation showing [SPECIFIC ISSUES]. I believe this may constitute violations of ERISA and/or FMLA. I have medical bills of approximately $[AMOUNT] that resulted from this coverage lapse."
+    },
+    negotiationPlaybooks: {
+      withHospital: {
+        title: "Hospital Negotiation - Coverage Dispute Leverage",
+        approach: "Emphasize that coverage is under dispute and payment is contingent on resolution",
+        script: "I'm calling about account [NUMBER] for maternity services on [DATE]. My insurance coverage termination is currently under dispute with [EMPLOYER/INSURANCE/STATE AGENCY]. I'm also exploring COBRA retroactive election. Given these pending matters, I'm requesting that you: 1) Put a hold on collections activity, 2) Provide your uninsured/self-pay discount rate, and 3) Work with me on a payment plan contingent on the outcome of my appeals."
+      },
+      withCollections: {
+        title: "Collections - Active Dispute Strategy",
+        approach: "Assert the debt is under active dispute and collection must pause",
+        script: "I'm calling regarding the alleged debt from [HOSPITAL]. This debt is currently under active dispute because my insurance coverage was wrongfully terminated. I have filed complaints with [STATE INSURANCE COMMISSIONER/DOL/EEOC] and am pursuing COBRA retroactive election. Under the FDCPA, you are required to note this account as disputed. I'm sending you a written dispute notice today. Any attempt to collect while this matter is under dispute may constitute a violation of federal law."
+      },
+      withInsurance: {
+        title: "Insurance Reinstatement Appeal",
+        approach: "Demand reinstatement and retroactive coverage",
+        script: "I'm calling to appeal the termination of my coverage effective [DATE]. This termination was improper because [REASON - e.g., I was on FMLA leave, employer failed to notify me, I had a qualifying life event]. Under [applicable law], my coverage should be reinstated retroactively. I'm also filing a formal complaint with the state insurance commissioner. Please provide me with your internal appeals process and timeline."
+      }
+    },
+    legalProtections: {
+      federal: [
+        { law: "ERISA §502(a)", protection: "Allows employees to sue for benefits wrongfully denied, including health coverage", enforcement: "Federal court lawsuit, attorney fees recoverable" },
+        { law: "COBRA (26 USC 4980B)", protection: "Requires employers to offer continuation coverage for 18-36 months after qualifying event", enforcement: "DOL complaint, private lawsuit, $110/day penalty for late notices" },
+        { law: "FMLA (29 USC 2614)", protection: "Requires employers to maintain health coverage during approved leave", enforcement: "DOL complaint, private lawsuit, double damages" },
+        { law: "Pregnancy Discrimination Act", protection: "Prohibits discrimination in employment (including benefits) based on pregnancy", enforcement: "EEOC complaint, private lawsuit" },
+        { law: "No Surprises Act", protection: "Uninsured patients cannot be charged more than insurance-negotiated rates", enforcement: "CMS complaint, state insurance commissioner" },
+        { law: "ACA Marketplace Special Enrollment", protection: "60-day window to enroll in ACA coverage after losing employer coverage", enforcement: "Healthcare.gov or state marketplace" }
+      ],
+      stateExamples: [
+        { state: "California", protection: "Cal-COBRA extends to employers with 2-19 employees. State law requires 60-day premium grace period." },
+        { state: "New York", protection: "Mini-COBRA for small employers. Pregnant women cannot be denied Medicaid for immigration status." },
+        { state: "Massachusetts", protection: "State has its own individual mandate - gap coverage may be available through Health Connector." },
+        { state: "New Jersey", protection: "Continuation coverage for up to 18 months for small employers. Strong pregnancy protections." }
+      ]
+    },
+    timeline: {
+      title: "Critical Deadlines & Action Plan",
+      checkpoints: [
+        { day: "IMMEDIATELY", actions: ["Check your COBRA election deadline (60 days from termination or notice)", "Request written documentation of termination reason", "Do NOT let COBRA deadline pass while investigating"], status: "critical" },
+        { day: "Day 1-14", actions: ["File for COBRA if within deadline - even if you're still investigating", "Apply for Medicaid with retroactive coverage request", "Contact employer HR for termination documentation", "Send debt validation letter to any collectors"], status: "critical" },
+        { day: "Day 15-30", actions: ["File complaint with state insurance commissioner if wrongful termination", "File DOL complaint if FMLA violation suspected", "Get itemized hospital bill", "Consult with employment attorney if employer liability indicated"], status: "important" },
+        { day: "Day 31-60", actions: ["Follow up on all pending complaints and appeals", "Apply for hospital charity care", "Dispute any credit bureau reporting", "Negotiate payment plan with hospital contingent on appeals"], status: "strategic" },
+        { day: "Day 61-90", actions: ["Evaluate COBRA vs Medicaid coverage outcomes", "Make settlement offers to collections if coverage not restored", "Consider formal legal action if employer liability is clear"], status: "resolution" }
+      ]
+    },
+    templates: {
+      cobraElectionLetter: {
+        title: "COBRA Election Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Employer HR Department]
+[Employer Address]
+[City, State ZIP]
+
+RE: COBRA Election and Retroactive Coverage Request
+
+Dear COBRA Administrator:
+
+I am writing to formally elect COBRA continuation coverage, effective retroactively to [COVERAGE TERMINATION DATE].
+
+Employee Name: [YOUR NAME]
+Employee ID: [IF KNOWN]
+Coverage Termination Date: [DATE]
+Dependents to be covered: [LIST NAMES]
+
+I understand that I am responsible for paying the applicable premiums for the period from [TERMINATION DATE] to present. Please provide:
+
+1. Confirmation of COBRA election
+2. Total premium amount due for retroactive period
+3. Monthly premium going forward
+4. Payment instructions and deadlines
+5. Confirmation that all claims from [TERMINATION DATE] forward will be processed once premiums are paid
+
+Please process this election immediately. I expect written confirmation within 7 business days.
+
+NOTE: If this election is not processed within the legally required timeframe, I will file a complaint with the Department of Labor.
+
+Sincerely,
+[Your Signature]
+[Your Printed Name]
+[Phone Number]
+[Email]`
+      },
+      employerLiabilityLetter: {
+        title: "Employer Liability Demand Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+VIA CERTIFIED MAIL, RETURN RECEIPT REQUESTED
+
+[Employer Name]
+[Attention: CEO/General Counsel/HR Director]
+[Employer Address]
+[City, State ZIP]
+
+RE: Demand for Payment - Improper Insurance Termination
+
+Dear [NAME]:
+
+I am writing regarding the improper termination of my health insurance coverage, which resulted in substantial uninsured medical expenses.
+
+FACTS:
+- I was employed by [COMPANY] from [DATE] to [DATE]
+- My health insurance coverage was terminated on [DATE]
+- The termination was improper because [SPECIFIC REASON]
+- As a result, I incurred medical bills totaling $[AMOUNT]
+
+LEGAL BASIS:
+This improper termination constitutes a violation of [ERISA/FMLA/STATE LAW] and has caused me significant financial harm.
+
+DEMAND:
+I demand that [COMPANY] reimburse me for all medical expenses incurred as a result of this improper termination, totaling $[AMOUNT], within 30 days of this letter.
+
+If I do not receive satisfactory resolution within 30 days, I will pursue all available legal remedies, including filing complaints with the Department of Labor and [STATE AGENCY], and initiating legal action.
+
+I am prepared to discuss a reasonable resolution to this matter. Please have your representative contact me at [PHONE/EMAIL] to discuss.
+
+Sincerely,
+[Your Signature]
+[Your Printed Name]
+
+cc: [Your Attorney, if any]
+    Department of Labor [optional]`
+      }
+    },
+    successStories: [
+      {
+        title: "Amanda's COBRA Victory",
+        outcome: "$62,000 in bills fully covered by insurance",
+        strategy: "Elected COBRA 58 days after termination, paid $3,200 in back premiums, all claims processed retroactively",
+        timeline: "6 weeks from COBRA election to claim resolution"
+      },
+      {
+        title: "The Rodriguez Family FMLA Case",
+        outcome: "Employer paid $78,000 in medical bills + $15,000 settlement",
+        strategy: "Documented FMLA violation, filed DOL complaint, employer settled to avoid lawsuit",
+        timeline: "4 months, but worth every day"
+      },
+      {
+        title: "Jessica's Medicaid Retroactive Coverage",
+        outcome: "$41,000 covered by Medicaid retroactively",
+        strategy: "Applied for presumptive eligibility, qualified based on pregnancy income threshold, 3 months retroactive",
+        timeline: "8 weeks from application to full coverage confirmation"
+      }
     ],
     stepByStep: [
       {
@@ -211,7 +669,14 @@ const collectionsScenarios = [
         script: "This debt is currently under dispute due to wrongful insurance termination. I have filed a complaint with the state insurance commissioner and am pursuing COBRA retroactive election. I'm willing to settle for [15-25%] to resolve this matter, but I will not pay the full amount while my appeals are pending."
       }
     ],
-    expectedOutcome: "Potential full coverage restoration, 50-80% reduction, or debt dismissal depending on circumstances"
+    expectedOutcome: "Potential full coverage restoration, 50-80% reduction, or debt dismissal depending on circumstances",
+    escalationPath: [
+      { level: 1, entity: "Employer HR Department", action: "Request documentation, explore COBRA, identify liability" },
+      { level: 2, entity: "State Insurance Commissioner", action: "File complaint for wrongful termination, request investigation" },
+      { level: 3, entity: "Department of Labor", action: "File complaint for ERISA/FMLA violations" },
+      { level: 4, entity: "EEOC", action: "File complaint if pregnancy discrimination suspected" },
+      { level: 5, entity: "Employment Attorney", action: "Evaluate lawsuit for damages, negotiate settlement" }
+    ]
   },
   {
     id: "emergency-room-collections",
@@ -2354,16 +2819,31 @@ export default function CollectionsDefenseGuide() {
                   >
                     <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 overflow-hidden">
                       <button
-                        className="w-full p-5 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                        className={`w-full p-5 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${
+                          'featured' in scenario && scenario.featured ? 'bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20' : ''
+                        }`}
                         onClick={() => setExpandedScenario(isExpanded ? null : scenario.id)}
                         data-testid={`scenario-${scenario.id}`}
                       >
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <IconComponent className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                            'featured' in scenario && scenario.featured 
+                              ? 'bg-gradient-to-br from-red-500 to-orange-500' 
+                              : 'bg-blue-100 dark:bg-blue-900/30'
+                          }`}>
+                            <IconComponent className={`h-6 w-6 ${
+                              'featured' in scenario && scenario.featured ? 'text-white' : 'text-blue-600 dark:text-blue-400'
+                            }`} />
                           </div>
                           <div>
-                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{scenario.title}</h3>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-lg font-bold text-gray-900 dark:text-white">{scenario.title}</h3>
+                              {'featured' in scenario && scenario.featured && (
+                                <Badge className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs px-2 py-0.5">
+                                  Enhanced
+                                </Badge>
+                              )}
+                            </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{scenario.situation}</p>
                           </div>
                         </div>
@@ -2397,7 +2877,7 @@ export default function CollectionsDefenseGuide() {
                             <div>
                               <h4 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                                 <Lock className="h-4 w-4 text-purple-500" />
-                                Insider Knowledge
+                                Insider Knowledge ({scenario.insiderKnowledge.length} insights)
                               </h4>
                               <ul className="space-y-2">
                                 {scenario.insiderKnowledge.map((knowledge, i) => (
@@ -2408,6 +2888,467 @@ export default function CollectionsDefenseGuide() {
                                 ))}
                               </ul>
                             </div>
+
+                            {/* Bill Forensics - for featured scenarios */}
+                            {'billForensics' in scenario && scenario.billForensics && (
+                              <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-5 border border-red-200 dark:border-red-700">
+                                <h4 className="font-bold text-red-800 dark:text-red-300 mb-4 flex items-center gap-2">
+                                  <AlertCircle className="h-5 w-5" />
+                                  {(scenario.billForensics as any).title}
+                                </h4>
+                                
+                                <div className="space-y-4">
+                                  <div>
+                                    <h5 className="font-semibold text-red-700 dark:text-red-400 text-sm mb-2">CPT Codes to Dispute:</h5>
+                                    <div className="grid gap-2">
+                                      {(scenario.billForensics as any).redFlags?.map((flag: any, i: number) => (
+                                        <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-red-100 dark:border-red-800">
+                                          <div className="flex items-center justify-between mb-1">
+                                            <code className="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-300 px-2 py-0.5 rounded font-mono">{flag.code}</code>
+                                            <span className="text-xs font-bold text-red-600 dark:text-red-400">{flag.amount}</span>
+                                          </div>
+                                          <p className="text-sm text-gray-700 dark:text-gray-300">{flag.description}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  
+                                  <div>
+                                    <h5 className="font-semibold text-red-700 dark:text-red-400 text-sm mb-2">Unbundling Schemes:</h5>
+                                    <ul className="space-y-1">
+                                      {(scenario.billForensics as any).unbundlingSchemes?.map((scheme: string, i: number) => (
+                                        <li key={i} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                                          <XCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
+                                          {scheme}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+
+                                  <div>
+                                    <h5 className="font-semibold text-red-700 dark:text-red-400 text-sm mb-2">Phantom Charges:</h5>
+                                    <ul className="space-y-1">
+                                      {(scenario.billForensics as any).phantomCharges?.map((charge: string, i: number) => (
+                                        <li key={i} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                                          <Ban className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
+                                          {charge}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Timeline - for featured scenarios */}
+                            {'timeline' in scenario && scenario.timeline && (
+                              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border border-blue-200 dark:border-blue-700">
+                                <h4 className="font-bold text-blue-800 dark:text-blue-300 mb-4 flex items-center gap-2">
+                                  <Calendar className="h-5 w-5" />
+                                  {(scenario.timeline as any).title}
+                                </h4>
+                                <div className="space-y-3">
+                                  {(scenario.timeline as any).checkpoints?.map((checkpoint: any, i: number) => (
+                                    <div key={i} className={`rounded-lg p-4 border ${
+                                      checkpoint.status === 'critical' ? 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700' :
+                                      checkpoint.status === 'important' ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700' :
+                                      checkpoint.status === 'strategic' ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700' :
+                                      'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700'
+                                    }`}>
+                                      <div className="flex items-center gap-2 mb-2">
+                                        <Clock className={`h-4 w-4 ${
+                                          checkpoint.status === 'critical' ? 'text-red-600' :
+                                          checkpoint.status === 'important' ? 'text-amber-600' :
+                                          checkpoint.status === 'strategic' ? 'text-blue-600' :
+                                          'text-green-600'
+                                        }`} />
+                                        <span className="font-bold text-gray-900 dark:text-white text-sm">{checkpoint.day}</span>
+                                        {checkpoint.status === 'critical' && (
+                                          <Badge className="bg-red-500 text-white text-xs">CRITICAL</Badge>
+                                        )}
+                                      </div>
+                                      <ul className="space-y-1">
+                                        {checkpoint.actions.map((action: string, j: number) => (
+                                          <li key={j} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                                            <CheckCircle className="h-3 w-3 text-gray-500 flex-shrink-0 mt-1" />
+                                            {action}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Success Stories - for featured scenarios */}
+                            {'successStories' in scenario && scenario.successStories && (
+                              <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-5 border border-green-200 dark:border-green-700">
+                                <h4 className="font-bold text-green-800 dark:text-green-300 mb-4 flex items-center gap-2">
+                                  <TrendingDown className="h-5 w-5" />
+                                  Real Success Stories
+                                </h4>
+                                <div className="grid gap-3">
+                                  {(scenario.successStories as any[]).map((story: any, i: number) => (
+                                    <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-green-100 dark:border-green-800">
+                                      <h5 className="font-bold text-gray-900 dark:text-white text-sm mb-1">{story.title}</h5>
+                                      <p className="text-green-600 dark:text-green-400 font-semibold text-sm mb-2">{story.outcome}</p>
+                                      <p className="text-gray-600 dark:text-gray-400 text-xs mb-1"><strong>Strategy:</strong> {story.strategy}</p>
+                                      <p className="text-gray-500 dark:text-gray-500 text-xs"><strong>Timeline:</strong> {story.timeline}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Escalation Path - for featured scenarios */}
+                            {'escalationPath' in scenario && scenario.escalationPath && (
+                              <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-5 border border-amber-200 dark:border-amber-700">
+                                <h4 className="font-bold text-amber-800 dark:text-amber-300 mb-4 flex items-center gap-2">
+                                  <Gavel className="h-5 w-5" />
+                                  Escalation Ladder
+                                </h4>
+                                <div className="space-y-2">
+                                  {(scenario.escalationPath as any[]).map((level: any, i: number) => (
+                                    <div key={i} className="flex items-start gap-3">
+                                      <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">
+                                        {level.level}
+                                      </div>
+                                      <div>
+                                        <p className="font-semibold text-gray-900 dark:text-white text-sm">{level.entity}</p>
+                                        <p className="text-gray-600 dark:text-gray-400 text-xs">{level.action}</p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Negotiation Playbooks - for featured scenarios */}
+                            {'negotiationPlaybooks' in scenario && scenario.negotiationPlaybooks && (
+                              <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-5 border border-indigo-200 dark:border-indigo-700">
+                                <h4 className="font-bold text-indigo-800 dark:text-indigo-300 mb-4 flex items-center gap-2">
+                                  <MessageSquare className="h-5 w-5" />
+                                  Negotiation Playbooks & Scripts
+                                </h4>
+                                <div className="space-y-4">
+                                  {Object.entries(scenario.negotiationPlaybooks as Record<string, any>).map(([key, playbook]: [string, any]) => (
+                                    <div key={key} className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-indigo-100 dark:border-indigo-800">
+                                      <h5 className="font-bold text-gray-900 dark:text-white text-sm mb-2">{playbook.title}</h5>
+                                      {playbook.approach && (
+                                        <p className="text-gray-600 dark:text-gray-400 text-xs mb-3 italic">{playbook.approach}</p>
+                                      )}
+                                      {playbook.script && (
+                                        <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
+                                          <p className="text-xs font-medium text-indigo-800 dark:text-indigo-300 mb-1">SCRIPT:</p>
+                                          <p className="text-sm text-indigo-900 dark:text-indigo-200 italic">"{playbook.script}"</p>
+                                        </div>
+                                      )}
+                                      {playbook.initialScript && (
+                                        <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700 mb-2">
+                                          <p className="text-xs font-medium text-indigo-800 dark:text-indigo-300 mb-1">INITIAL SCRIPT:</p>
+                                          <p className="text-sm text-indigo-900 dark:text-indigo-200 italic">"{playbook.initialScript}"</p>
+                                        </div>
+                                      )}
+                                      {playbook.settlementScript && (
+                                        <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-3 border border-green-200 dark:border-green-700 mb-2">
+                                          <p className="text-xs font-medium text-green-800 dark:text-green-300 mb-1">SETTLEMENT SCRIPT:</p>
+                                          <p className="text-sm text-green-900 dark:text-green-200 italic">"{playbook.settlementScript}"</p>
+                                        </div>
+                                      )}
+                                      {playbook.escalationScript && (
+                                        <div className="bg-red-50 dark:bg-red-900/30 rounded-lg p-3 border border-red-200 dark:border-red-700 mb-2">
+                                          <p className="text-xs font-medium text-red-800 dark:text-red-300 mb-1">ESCALATION SCRIPT:</p>
+                                          <p className="text-sm text-red-900 dark:text-red-200 italic">"{playbook.escalationScript}"</p>
+                                        </div>
+                                      )}
+                                      {playbook.followUp && (
+                                        <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-3 border border-amber-200 dark:border-amber-700 mt-2">
+                                          <p className="text-xs font-medium text-amber-800 dark:text-amber-300 mb-1">IF THEY RESIST:</p>
+                                          <p className="text-sm text-amber-900 dark:text-amber-200 italic">"{playbook.followUp}"</p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Legal Protections - for featured scenarios */}
+                            {'legalProtections' in scenario && scenario.legalProtections && (
+                              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-5 border border-purple-200 dark:border-purple-700">
+                                <h4 className="font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2">
+                                  <Scale className="h-5 w-5" />
+                                  Legal Protections & Rights
+                                </h4>
+                                <div className="space-y-4">
+                                  <div>
+                                    <h5 className="font-semibold text-purple-700 dark:text-purple-400 text-sm mb-2">Federal Laws:</h5>
+                                    <div className="space-y-2">
+                                      {(scenario.legalProtections as any).federal?.map((law: any, i: number) => (
+                                        <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
+                                          <p className="font-bold text-gray-900 dark:text-white text-sm">{law.law}</p>
+                                          <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">{law.protection}</p>
+                                          <p className="text-purple-600 dark:text-purple-400 text-xs mt-1"><strong>Enforce:</strong> {law.enforcement}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <h5 className="font-semibold text-purple-700 dark:text-purple-400 text-sm mb-2">State Examples:</h5>
+                                    <div className="grid gap-2">
+                                      {(scenario.legalProtections as any).stateExamples?.map((state: any, i: number) => (
+                                        <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
+                                          <p className="font-bold text-gray-900 dark:text-white text-sm">{state.state}</p>
+                                          <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">{state.protection}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Letter Templates - for featured scenarios */}
+                            {'templates' in scenario && scenario.templates && (
+                              <div className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-5 border border-teal-200 dark:border-teal-700">
+                                <h4 className="font-bold text-teal-800 dark:text-teal-300 mb-4 flex items-center gap-2">
+                                  <FileText className="h-5 w-5" />
+                                  Ready-to-Use Letter Templates
+                                </h4>
+                                <div className="space-y-4">
+                                  {Object.entries(scenario.templates as Record<string, any>).map(([key, template]: [string, any]) => (
+                                    <div key={key} className="bg-white dark:bg-gray-800 rounded-lg border border-teal-100 dark:border-teal-800 overflow-hidden">
+                                      <div className="bg-teal-100 dark:bg-teal-900/50 px-4 py-2 border-b border-teal-200 dark:border-teal-700">
+                                        <h5 className="font-bold text-teal-800 dark:text-teal-300 text-sm">{template.title}</h5>
+                                      </div>
+                                      <div className="p-4">
+                                        <pre className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap font-mono bg-gray-50 dark:bg-gray-900 rounded-lg p-3 max-h-48 overflow-y-auto">
+                                          {template.content}
+                                        </pre>
+                                        <Button 
+                                          size="sm"
+                                          className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white"
+                                          onClick={() => navigator.clipboard.writeText(template.content)}
+                                          data-testid={`copy-template-${key}`}
+                                        >
+                                          Copy Template
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* COBRA Analysis - for insurance kickoff scenario */}
+                            {'cobraAnalysis' in scenario && scenario.cobraAnalysis && (
+                              <div className="bg-cyan-50 dark:bg-cyan-900/20 rounded-xl p-5 border border-cyan-200 dark:border-cyan-700">
+                                <h4 className="font-bold text-cyan-800 dark:text-cyan-300 mb-4 flex items-center gap-2">
+                                  <Shield className="h-5 w-5" />
+                                  {(scenario.cobraAnalysis as any).title}
+                                </h4>
+                                <ul className="space-y-2 mb-4">
+                                  {(scenario.cobraAnalysis as any).keyFacts?.map((fact: string, i: number) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                      <CheckCircle className="h-4 w-4 text-cyan-500 flex-shrink-0 mt-0.5" />
+                                      <span className="text-gray-700 dark:text-gray-300 text-sm">{fact}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                                {(scenario.cobraAnalysis as any).calculation && (
+                                  <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-4 border border-cyan-200 dark:border-cyan-700 mb-4">
+                                    <h5 className="font-bold text-cyan-800 dark:text-cyan-300 text-sm mb-2">Cost-Benefit Example:</h5>
+                                    <div className="grid grid-cols-2 gap-2 text-sm">
+                                      <div className="text-gray-600 dark:text-gray-400">Monthly Premium:</div>
+                                      <div className="font-bold text-gray-900 dark:text-white">${(scenario.cobraAnalysis as any).calculation.example.monthlyPremium}</div>
+                                      <div className="text-gray-600 dark:text-gray-400">Months Needed:</div>
+                                      <div className="font-bold text-gray-900 dark:text-white">{(scenario.cobraAnalysis as any).calculation.example.monthsNeeded}</div>
+                                      <div className="text-gray-600 dark:text-gray-400">Total COBRA Cost:</div>
+                                      <div className="font-bold text-red-600">${(scenario.cobraAnalysis as any).calculation.example.totalCOBRACost.toLocaleString()}</div>
+                                      <div className="text-gray-600 dark:text-gray-400">Medical Bills Avoided:</div>
+                                      <div className="font-bold text-green-600">${(scenario.cobraAnalysis as any).calculation.example.medicalBillsAvoided.toLocaleString()}</div>
+                                      <div className="text-gray-600 dark:text-gray-400 font-semibold">NET SAVINGS:</div>
+                                      <div className="font-bold text-green-600 text-lg">${(scenario.cobraAnalysis as any).calculation.example.netSavings.toLocaleString()}</div>
+                                    </div>
+                                  </div>
+                                )}
+                                {(scenario.cobraAnalysis as any).scripts && (
+                                  <div className="space-y-3">
+                                    <h5 className="font-semibold text-cyan-700 dark:text-cyan-400 text-sm">COBRA Scripts:</h5>
+                                    {(scenario.cobraAnalysis as any).scripts.employerCall && (
+                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700">
+                                        <p className="text-xs font-medium text-cyan-800 dark:text-cyan-300 mb-1">EMPLOYER CALL SCRIPT:</p>
+                                        <p className="text-sm text-cyan-900 dark:text-cyan-200 italic">"{(scenario.cobraAnalysis as any).scripts.employerCall}"</p>
+                                      </div>
+                                    )}
+                                    {(scenario.cobraAnalysis as any).scripts.insuranceCall && (
+                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700">
+                                        <p className="text-xs font-medium text-cyan-800 dark:text-cyan-300 mb-1">INSURANCE CALL SCRIPT:</p>
+                                        <p className="text-sm text-cyan-900 dark:text-cyan-200 italic">"{(scenario.cobraAnalysis as any).scripts.insuranceCall}"</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Termination Analysis - for insurance kickoff scenario */}
+                            {'terminationAnalysis' in scenario && scenario.terminationAnalysis && (
+                              <div className="bg-rose-50 dark:bg-rose-900/20 rounded-xl p-5 border border-rose-200 dark:border-rose-700">
+                                <h4 className="font-bold text-rose-800 dark:text-rose-300 mb-4 flex items-center gap-2">
+                                  <AlertTriangle className="h-5 w-5" />
+                                  {(scenario.terminationAnalysis as any).title}
+                                </h4>
+                                <div className="space-y-3">
+                                  {(scenario.terminationAnalysis as any).commonReasons?.map((reason: any, i: number) => (
+                                    <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-rose-100 dark:border-rose-800">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <p className="font-bold text-gray-900 dark:text-white text-sm">{reason.reason}</p>
+                                        <Badge className={`text-xs ${
+                                          reason.winRate.includes('Very high') ? 'bg-green-500' :
+                                          reason.winRate.includes('High') ? 'bg-emerald-500' :
+                                          'bg-amber-500'
+                                        } text-white`}>{reason.winRate}</Badge>
+                                      </div>
+                                      <p className="text-rose-600 dark:text-rose-400 text-xs mb-1"><strong>Liability:</strong> {reason.liability}</p>
+                                      <p className="text-gray-600 dark:text-gray-400 text-xs"><strong>Action:</strong> {reason.action}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Medicaid Path - for insurance kickoff scenario */}
+                            {'medicaidPath' in scenario && scenario.medicaidPath && (
+                              <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-5 border border-emerald-200 dark:border-emerald-700">
+                                <h4 className="font-bold text-emerald-800 dark:text-emerald-300 mb-4 flex items-center gap-2">
+                                  <Heart className="h-5 w-5" />
+                                  {(scenario.medicaidPath as any).title}
+                                </h4>
+                                <ul className="space-y-2 mb-4">
+                                  {(scenario.medicaidPath as any).keyFacts?.map((fact: string, i: number) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                      <CheckCircle className="h-4 w-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                                      <span className="text-gray-700 dark:text-gray-300 text-sm">{fact}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                                {(scenario.medicaidPath as any).incomeThresholds2024 && (
+                                  <div className="bg-emerald-100 dark:bg-emerald-900/40 rounded-lg p-4 border border-emerald-200 dark:border-emerald-700 mb-4">
+                                    <h5 className="font-bold text-emerald-800 dark:text-emerald-300 text-sm mb-2">2024 Income Thresholds (Family of 4):</h5>
+                                    <div className="grid gap-2 text-sm">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600 dark:text-gray-400">138% FPL:</span>
+                                        <span className="font-bold text-gray-900 dark:text-white">${(scenario.medicaidPath as any).incomeThresholds2024["138%FPL_family4"]?.toLocaleString()}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600 dark:text-gray-400">200% FPL:</span>
+                                        <span className="font-bold text-gray-900 dark:text-white">${(scenario.medicaidPath as any).incomeThresholds2024["200%FPL_family4"]?.toLocaleString()}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600 dark:text-gray-400">300% FPL:</span>
+                                        <span className="font-bold text-gray-900 dark:text-white">${(scenario.medicaidPath as any).incomeThresholds2024["300%FPL_family4"]?.toLocaleString()}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                                {(scenario.medicaidPath as any).applicationScript && (
+                                  <div className="bg-emerald-100 dark:bg-emerald-900/40 rounded-lg p-3 border border-emerald-200 dark:border-emerald-700">
+                                    <p className="text-xs font-medium text-emerald-800 dark:text-emerald-300 mb-1">APPLICATION SCRIPT:</p>
+                                    <p className="text-sm text-emerald-900 dark:text-emerald-200 italic">"{(scenario.medicaidPath as any).applicationScript}"</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Employer Liability - for insurance kickoff scenario */}
+                            {'employerLiability' in scenario && scenario.employerLiability && (
+                              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-5 border border-orange-200 dark:border-orange-700">
+                                <h4 className="font-bold text-orange-800 dark:text-orange-300 mb-4 flex items-center gap-2">
+                                  <Briefcase className="h-5 w-5" />
+                                  {(scenario.employerLiability as any).title}
+                                </h4>
+                                <div className="space-y-4">
+                                  <div>
+                                    <h5 className="font-semibold text-orange-700 dark:text-orange-400 text-sm mb-2">Warning Signs of Employer Liability:</h5>
+                                    <ul className="space-y-1">
+                                      {(scenario.employerLiability as any).warningSignsOfLiability?.map((sign: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-2">
+                                          <AlertTriangle className="h-4 w-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                                          <span className="text-gray-700 dark:text-gray-300 text-sm">{sign}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                  <div>
+                                    <h5 className="font-semibold text-orange-700 dark:text-orange-400 text-sm mb-2">Documentation Needed:</h5>
+                                    <ul className="space-y-1">
+                                      {(scenario.employerLiability as any).documentationNeeded?.map((doc: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-2">
+                                          <FileText className="h-4 w-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                                          <span className="text-gray-700 dark:text-gray-300 text-sm">{doc}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                  <div>
+                                    <h5 className="font-semibold text-orange-700 dark:text-orange-400 text-sm mb-2">Legal Remedies:</h5>
+                                    <div className="grid gap-2">
+                                      {(scenario.employerLiability as any).legalRemedies?.map((remedy: any, i: number) => (
+                                        <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-orange-100 dark:border-orange-800">
+                                          <p className="font-bold text-gray-900 dark:text-white text-sm">{remedy.remedy}</p>
+                                          <p className="text-green-600 dark:text-green-400 text-xs">{remedy.potential}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  {(scenario.employerLiability as any).consultationScript && (
+                                    <div className="bg-orange-100 dark:bg-orange-900/40 rounded-lg p-3 border border-orange-200 dark:border-orange-700 mt-4">
+                                      <p className="text-xs font-medium text-orange-800 dark:text-orange-300 mb-1">ATTORNEY CONSULTATION SCRIPT:</p>
+                                      <p className="text-sm text-orange-900 dark:text-orange-200 italic">"{(scenario.employerLiability as any).consultationScript}"</p>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Calculators - Charity Care Estimator */}
+                            {'calculators' in scenario && scenario.calculators && (
+                              <div className="bg-violet-50 dark:bg-violet-900/20 rounded-xl p-5 border border-violet-200 dark:border-violet-700">
+                                <h4 className="font-bold text-violet-800 dark:text-violet-300 mb-4 flex items-center gap-2">
+                                  <DollarSign className="h-5 w-5" />
+                                  Charity Care Eligibility Estimator
+                                </h4>
+                                {(scenario.calculators as any).charityCareLikelihood && (
+                                  <div className="space-y-4">
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                      {(scenario.calculators as any).charityCareLikelihood.description}
+                                    </p>
+                                    <div className="bg-violet-100 dark:bg-violet-900/40 rounded-lg p-4 border border-violet-200 dark:border-violet-700">
+                                      <h5 className="font-bold text-violet-800 dark:text-violet-300 text-sm mb-3">2024 Federal Poverty Level (FPL) Guidelines:</h5>
+                                      <div className="grid gap-2 text-sm">
+                                        {Object.entries((scenario.calculators as any).charityCareLikelihood.fplThresholds2024 || {}).map(([size, amount]) => (
+                                          <div key={size} className="flex justify-between items-center bg-white dark:bg-gray-800 rounded-lg p-2">
+                                            <span className="text-gray-600 dark:text-gray-400">Family of {size}:</span>
+                                            <div className="text-right">
+                                              <span className="font-bold text-gray-900 dark:text-white">${(amount as number).toLocaleString()}</span>
+                                              <span className="text-xs text-violet-600 dark:text-violet-400 block">
+                                                200% = ${((amount as number) * 2).toLocaleString()}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <p className="text-xs text-violet-700 dark:text-violet-400 mt-3">
+                                        <strong>Rule of thumb:</strong> If your income is below 200% FPL, you likely qualify for 100% charity care. 
+                                        Between 200-400% FPL, expect 50-75% discount.
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
 
                             {/* Step by Step */}
                             <div>
