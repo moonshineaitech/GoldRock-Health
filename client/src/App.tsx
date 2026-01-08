@@ -77,6 +77,7 @@ import Investors from "@/pages/investors";
 import ForVCs from "@/pages/for-vcs";
 import ForHealthcare from "@/pages/for-healthcare";
 import ForInsurance from "@/pages/for-insurance";
+import CollectionsDefenseGuide from "@/pages/collections-defense-guide";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -318,6 +319,7 @@ function Router() {
       <Route path="/for-vcs" component={ForVCs} />
       <Route path="/for-healthcare" component={ForHealthcare} />
       <Route path="/for-insurance" component={ForInsurance} />
+      <Route path="/collections-defense-guide" component={CollectionsDefenseGuide} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

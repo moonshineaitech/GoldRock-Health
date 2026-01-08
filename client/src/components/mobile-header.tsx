@@ -83,6 +83,13 @@ export function NavigationDropdown() {
       premium: true
     },
     {
+      icon: Shield,
+      label: "Collections Defense",
+      href: "/collections-defense-guide",
+      description: "Fight Back Against Collections",
+      featured: true
+    },
+    {
       icon: Download,
       label: "Get Bills from Portal",
       href: "/portal-access-guide",
