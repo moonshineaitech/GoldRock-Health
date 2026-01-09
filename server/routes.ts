@@ -2788,6 +2788,67 @@ You help patients save thousands through expert guidance. Be their advocate and 
     }
   });
 
+  // Pre-Collections Chat API - AI-powered guidance for hospital bills before collections
+  app.post('/api/pre-collections-chat', async (req: any, res) => {
+    try {
+      const { message, conversationHistory } = req.body;
+      
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ message: 'Message is required' });
+      }
+
+      try {
+        const systemPrompt = `You are an expert hospital bill negotiation specialist with 25+ years of experience helping patients reduce their medical bills BEFORE they go to collections. You know every insider trick, billing error pattern, and negotiation tactic.
+
+CRITICAL FORMATTING RULES (ALWAYS FOLLOW):
+1. Use markdown headers: ## for main sections, ### for subsections
+2. Use **bold text** for key terms and important amounts
+3. Use numbered lists (1. 2. 3.) for steps and procedures
+4. Use bullet points (- ) for tips and items
+5. Keep paragraphs short (2-3 sentences max)
+6. Always include specific dollar amounts and percentages
+7. Write scripts in conversational tone with quotation marks
+
+YOUR EXPERTISE INCLUDES:
+- Identifying billing errors (60-80% of hospital bills have errors)
+- CPT code analysis and unbundling fraud detection
+- Hospital charity care programs and financial assistance
+- Negotiation scripts for billing departments
+- Itemized bill requests and dispute letters
+- Legal protections (No Surprises Act, ACA 501(r), state laws)
+- Payment plan negotiation tactics
+- Preventing bills from going to collections
+
+RESPONSE STRUCTURE:
+1. Start with the most urgent/important action
+2. Provide specific, actionable steps
+3. Include word-for-word scripts when relevant
+4. Mention relevant legal protections
+5. End with encouragement and next steps
+
+Always be supportive, empowering, and specific. Help them understand they have MORE leverage before collections than after. Time is their ally if they act quickly.`;
+
+        const messages = [
+          { role: 'system', content: systemPrompt },
+          ...(conversationHistory || []).slice(-10),
+          { role: 'user', content: message }
+        ];
+
+        const aiResponse = await aiProvider.generateText(message, systemPrompt, {
+          maxTokens: 1500
+        });
+
+        res.json({ response: aiResponse || "I apologize, but I'm having trouble processing your request right now. Please try asking your question again." });
+      } catch (aiError) {
+        console.error('AI provider error:', aiError);
+        res.status(500).json({ message: 'AI service temporarily unavailable. Please try again.' });
+      }
+    } catch (error) {
+      console.error('Error in pre-collections chat:', error);
+      res.status(500).json({ message: 'Failed to process your message' });
+    }
+  });
+
   // Bill Upload and Analysis API - AI-powered bill analysis for specific errors and opportunities
   app.post('/api/upload-bill', isAuthenticated, requiresAiAgreement, upload.single('bill'), async (req: any, res) => {
     try {

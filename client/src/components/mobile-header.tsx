@@ -90,6 +90,13 @@ export function NavigationDropdown() {
       featured: true
     },
     {
+      icon: TrendingDown,
+      label: "Pre-Collections Guide",
+      href: "/pre-collections-guide",
+      description: "Reduce Bills Before Collections",
+      featured: true
+    },
+    {
       icon: Download,
       label: "Get Bills from Portal",
       href: "/portal-access-guide",
