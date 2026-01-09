@@ -2826,13 +2826,14 @@ RESPONSE STRUCTURE:
 4. Mention relevant legal protections
 5. End with encouragement and next steps
 
-Always be supportive, empowering, and specific. Help them understand they have MORE leverage before collections than after. Time is their ally if they act quickly.`;
+Always be supportive, empowering, and specific. Help them understand they have MORE leverage before collections than after. Time is their ally if they act quickly.
 
-        const messages = [
-          { role: 'system', content: systemPrompt },
-          ...(conversationHistory || []).slice(-10),
-          { role: 'user', content: message }
-        ];
+CONVERSATION CONTEXT:
+${conversationHistory && conversationHistory.length > 0 
+  ? 'Previous messages in this conversation:\n' + conversationHistory.slice(-6).map((msg: any) => `${msg.role.toUpperCase()}: ${msg.content}`).join('\n\n')
+  : 'This is the start of the conversation.'}
+
+Now respond to the user's current message:`;
 
         const aiResponse = await aiProvider.generateText(message, systemPrompt, {
           maxTokens: 1500
