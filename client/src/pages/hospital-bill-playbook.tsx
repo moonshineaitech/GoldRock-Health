@@ -114,6 +114,66 @@ const insiderSecrets = [
     title: "Hospitals fear bad reviews and complaints",
     secret: "Hospital administrators track complaints, especially those that might go public or to regulators. A well-documented complaint to the CEO often gets fast resolution.",
     actionable: "If billing is unresponsive, write to the hospital CEO and patient experience officer. Cc the state attorney general. Problems often resolve within days."
+  },
+  {
+    title: "The 'Medicare rate' is your negotiation anchor",
+    secret: "Medicare pays hospitals about 40-60% of what they charge private patients. Hospitals accept this and still profit. Asking to pay 'Medicare rates plus 20%' is a reasonable request.",
+    actionable: "Say: 'I've researched the Medicare reimbursement for these services. I'm willing to pay 120% of Medicare rates, which is still profitable for you.'"
+  },
+  {
+    title: "Facility fees can often be removed entirely",
+    secret: "Hospitals charge 'facility fees' of $500-$3,000+ for simply walking in the door. These fees often aren't disclosed upfront and may violate price transparency laws.",
+    actionable: "Ask: 'Was I informed of this facility fee before services? Can you show me the signed acknowledgment?' If they can't, dispute the fee entirely."
+  },
+  {
+    title: "Observation vs. inpatient status is negotiable",
+    secret: "If you were on 'observation status' instead of admitted as an inpatient, your bills may be 2-3x higher and Medicare won't cover skilled nursing after. You can request a status change review.",
+    actionable: "Ask: 'Can you review whether my stay should have been classified as inpatient? I'm requesting a formal Condition Code 44 review.'"
+  },
+  {
+    title: "Insurance denials are meant to be appealed",
+    secret: "Insurance companies deny 10-20% of claims knowing most people won't appeal. But 40-50% of appeals are successful. Denials are a negotiation tactic, not a final answer.",
+    actionable: "ALWAYS appeal every denial. Request a peer-to-peer review where your doctor speaks directly to the insurance company's medical reviewer."
+  },
+  {
+    title: "Hospital chargemasters are public",
+    secret: "Since 2021, hospitals must publish their chargemaster prices online. You can compare what they charged you versus their published prices and what they accept from insurance.",
+    actionable: "Search '[Hospital Name] price transparency' or 'machine readable file.' Compare your bill to listed prices and insurer negotiated rates."
+  },
+  {
+    title: "Multiple bills mean multiple negotiation opportunities",
+    secret: "You'll receive separate bills from the hospital, surgeon, anesthesiologist, radiologist, pathologist, and more. Each can be negotiated independently.",
+    actionable: "Negotiate each bill separately. You may get 50% off the hospital bill and 30% off the surgeon's bill - cumulative savings add up fast."
+  },
+  {
+    title: "Operating room time is often inflated",
+    secret: "Operating rooms are billed at $50-200 per MINUTE. Hospitals routinely round up or include pre-op and post-op time that shouldn't count as OR time.",
+    actionable: "Request the OR log showing exact in/out times. Compare to billed time. If there's a discrepancy, dispute the overage."
+  },
+  {
+    title: "The surgical supply markup scandal",
+    secret: "Hospitals mark up surgical supplies 300-1000%. A $10 surgical stapler becomes $500. A $50 implant becomes $5,000. These markups are rarely justified.",
+    actionable: "Request an itemized list of all supplies. Google each item to find actual costs. Challenge any markup over 200% as unreasonable."
+  },
+  {
+    title: "Self-pay rates are often lower than insurance rates",
+    secret: "Paradoxically, paying cash as a 'self-pay' patient can be cheaper than using insurance if you have a high deductible. Hospitals offer self-pay discounts of 30-70%.",
+    actionable: "Before using insurance, ask: 'What is your self-pay cash price?' Compare to your out-of-pocket after deductible. Choose the lower option."
+  },
+  {
+    title: "Hospital compliance officers fear audits",
+    secret: "Mentioning 'billing compliance,' 'False Claims Act,' or 'OIG' (Office of Inspector General) signals you know about healthcare fraud laws. This often triggers internal review.",
+    actionable: "In your dispute letter, write: 'I'm concerned these billing practices may trigger compliance issues. I'm requesting a billing compliance review before escalating.'"
+  },
+  {
+    title: "Medical credit cards are traps",
+    secret: "CareCredit and similar 'medical credit cards' have 26-29% interest rates if you miss the promotional period. Hospitals push them because they get paid immediately.",
+    actionable: "NEVER accept a medical credit card. Instead, negotiate a 0% payment plan directly with the hospital. They're required to offer interest-free options."
+  },
+  {
+    title: "Your state has a medical billing hotline",
+    secret: "Most states have a consumer assistance program for health insurance and medical billing issues. These offices can intervene on your behalf and have regulatory power.",
+    actionable: "Search '[Your State] health insurance consumer assistance program.' File a complaint and request intervention. This often resolves issues within weeks."
   }
 ];
 
