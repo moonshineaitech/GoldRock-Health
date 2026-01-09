@@ -1790,6 +1790,12 @@ export default function Landing() {
           </div>
           
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm mb-4">
+            <Link href="/about">
+              <a className="text-emerald-600 hover:text-emerald-700 transition-colors font-semibold" data-testid="footer-link-about-mobile">
+                About GoldRock Health
+              </a>
+            </Link>
+            <span className="text-gray-300">•</span>
             <Link href="/privacy-policy">
               <a className="text-gray-500 hover:text-emerald-600 transition-colors font-medium" data-testid="footer-link-privacy-mobile">
                 Privacy Policy
@@ -1809,7 +1815,7 @@ export default function Landing() {
             </Link>
             <span className="text-gray-300">•</span>
             <a 
-              href="mailto:contact@goldrock.ai" 
+              href="mailto:CONTACT@GOLDROCK.ai" 
               className="text-gray-500 hover:text-emerald-600 transition-colors font-medium"
               data-testid="footer-link-email-mobile"
             >

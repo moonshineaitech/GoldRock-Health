@@ -2,7 +2,7 @@ import { LandingNavigation } from "@/components/landing-navigation";
 import { DemoChat } from "@/components/demo-chat";
 import { 
   DollarSign, Zap, Brain, FileText, Upload, Target, Shield, Code, Scale, Clock, 
-  AlertTriangle, Eye, Phone, Database, Book, Receipt, Building, HandCoins, 
+  AlertTriangle, Eye, Phone, Database, Book, BookOpen, Receipt, Building, HandCoins, 
   Gavel, Lock, Network, Crosshair, Calculator, MessageCircle, Crown, Sparkles,
   ArrowRight, Play, FileCheck, TrendingDown, Award, BadgeCheck, ChevronRight,
   FileX, CreditCard, Wrench, Puzzle, Heart, Search, Users, Settings, BarChart3,
@@ -10,7 +10,7 @@ import {
   Check, Dna
 } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useState, useRef } from "react";
 
 const FloatingParticle = ({ delay = 0, duration = 20, size = 4 }: { delay?: number; duration?: number; size?: number }) => (
@@ -177,9 +177,75 @@ export default function AuthLanding() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [pricingTab, setPricingTab] = useState<'monthly' | 'annual' | 'lifetime'>('monthly');
   const containerRef = useRef<HTMLDivElement>(null);
+  const [, navigate] = useLocation();
+  const [showWelcomePopup, setShowWelcomePopup] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !localStorage.getItem('goldrock_welcome_dismissed');
+    }
+    return true;
+  });
+
+  const handleDismissPopup = (learnMore: boolean) => {
+    localStorage.setItem('goldrock_welcome_dismissed', 'true');
+    setShowWelcomePopup(false);
+    if (learnMore) {
+      navigate('/about');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white" ref={containerRef}>
+      {showWelcomePopup && (
+        <motion.div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => handleDismissPopup(false)}
+          />
+          <motion.div 
+            className="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 text-center"
+            initial={{ scale: 0.9, y: 20, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
+            <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <DollarSign className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to GoldRock Health</h2>
+            <p className="text-gray-600 mb-6">
+              An AI-powered platform that helps you understand, challenge, and reduce your medical bills. 
+              Save money with insider knowledge and expert strategies.
+            </p>
+            <div className="space-y-3">
+              <motion.button
+                className="w-full py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleDismissPopup(true)}
+              >
+                <BookOpen className="inline h-5 w-5 mr-2" />
+                Learn More About GoldRock Health
+              </motion.button>
+              <motion.button
+                className="w-full py-3 px-6 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-emerald-300 hover:bg-emerald-50 transition-colors"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleDismissPopup(false)}
+              >
+                Enter Site
+                <ArrowRight className="inline h-5 w-5 ml-2" />
+              </motion.button>
+            </div>
+            <p className="text-xs text-gray-400 mt-4">
+              You can always find "About GoldRock Health" in the footer.
+            </p>
+          </motion.div>
+        </motion.div>
+      )}
       <LandingNavigation />
       
       <section className="relative overflow-hidden pt-[5.5rem] pb-12">
@@ -1327,6 +1393,11 @@ export default function AuthLanding() {
             <div>
               <h4 className="text-white font-semibold mb-4">Platform</h4>
               <div className="flex flex-col gap-2 text-sm">
+                <Link href="/about">
+                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-about">
+                    About GoldRock Health
+                  </a>
+                </Link>
                 <Link href="/platform-stats">
                   <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-stats">
                     Platform Stats
