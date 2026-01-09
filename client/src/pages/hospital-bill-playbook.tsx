@@ -1386,110 +1386,1649 @@ Sincerely,
     id: "anesthesia-bill",
     title: "Anesthesia Bill (Separate from Surgery)",
     icon: Pill,
+    featured: true,
     situation: "You received a separate bill from an anesthesiologist or anesthesia group that's surprisingly high, often from a provider you never met before surgery.",
     insiderKnowledge: [
-      "Anesthesia is billed in 'units' - time units plus base units plus modifier units",
-      "Each 15 minutes typically equals one time unit - verify the billed time matches reality",
-      "Anesthesiologists are frequently out-of-network, even at in-network facilities",
-      "CRNA (nurse anesthetist) rates should be lower than MD anesthesiologist rates",
-      "No Surprises Act protects you from balance billing for anesthesia services"
+      "Anesthesia is billed in 'units' - time units plus base units plus modifier units - verify each",
+      "Each 15 minutes typically equals one time unit - compare billed time to surgical notes",
+      "Anesthesiologists are frequently out-of-network, even at in-network facilities - No Surprises Act applies",
+      "CRNA (nurse anesthetist) rates should be lower than MD anesthesiologist rates - check who provided care",
+      "Base units are procedure-specific and standardized by ASA - look up the correct base units",
+      "Physical status modifiers (P1-P6) add units - P1 is healthy, P4+ adds significant units",
+      "Difficult intubation modifiers can add units - verify this was documented if billed",
+      "Post-anesthesia care unit (PACU) time may be billed separately from OR time",
+      "Nerve blocks and regional anesthesia are billed separately from general anesthesia",
+      "The conversion factor (dollar per unit) varies wildly - compare to Medicare rates"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "00100-01999", description: "Anesthesia procedure codes (by body area)" },
+        { code: "99100", description: "Anesthesia for patient of extreme age (under 1 or over 70)" },
+        { code: "99116", description: "Anesthesia complicated by total body hypothermia" },
+        { code: "99140", description: "Anesthesia complicated by emergency conditions" },
+        { code: "01996", description: "Daily hospital management of epidural/subarachnoid infusion" }
+      ],
+      redFlags: [
+        "Time units exceeding surgical time by more than 15-30 minutes",
+        "Base units higher than ASA Relative Value Guide specifies",
+        "Physical status modifier (P3+) without corresponding medical documentation",
+        "Emergency modifier (99140) when surgery was scheduled electively",
+        "Multiple providers billing simultaneously"
+      ],
+      unbundlingSchemes: [
+        "Billing intubation separately when included in base anesthesia",
+        "Billing arterial line placement when bundled with the anesthesia",
+        "Separate charges for anesthesia machine, monitors, or supplies",
+        "Billing pre-op evaluation as separate from anesthesia service"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Time Unit Verification",
+        opener: "I'm reviewing my anesthesia bill and need to verify the time units billed.",
+        script: "I've compared the billed anesthesia time of [X] hours to my surgical notes which show procedure duration of [Y]. Can you explain the [Z] minute discrepancy? I'd like documentation of anesthesia start and end times.",
+        escalation: "If they can't document actual start/end times, request time unit reduction to match surgical record."
+      },
+      {
+        name: "No Surprises Act Protection",
+        opener: "I received care at an in-network facility but this anesthesiologist was out-of-network.",
+        script: "Under the No Surprises Act, I'm protected from balance billing for anesthesia services provided at an in-network facility. I should only owe my in-network cost-sharing amount. Please reprocess this bill to comply with federal law.",
+        escalation: "File complaint with CMS No Surprises Help Desk if they refuse."
+      },
+      {
+        name: "CRNA vs. MD Rate Challenge",
+        opener: "I need clarification on the provider type who administered my anesthesia.",
+        script: "My records indicate a CRNA (Certified Registered Nurse Anesthetist) provided my care, but I'm being billed at physician rates. CRNA services are typically reimbursed at 85% of physician rates. Please adjust accordingly.",
+        escalation: "Request supervision documentation if billed as MD-supervised CRNA."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "No Surprises Act (2022): Protects against balance billing for anesthesia at in-network facilities",
+        "Medicare Anesthesia Rules: If Medicare patient, strict time documentation required",
+        "ASA Relative Value Guide: Industry standard for base units - can challenge if exceeded"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 72: Strong surprise billing protection. Anesthesiologists at in-network facilities must accept in-network rates." },
+        { state: "New York", protection: "Surprise Bill Law: Patient held harmless for emergency anesthesia. Independent dispute resolution available." },
+        { state: "Texas", protection: "SB 1264: Comprehensive surprise bill protection. Anesthesia specifically included in protected services." }
+      ]
+    },
+    timeline: {
+      title: "Anesthesia Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request anesthesia record and OR notes", "Identify anesthesia provider type (MD, CRNA, AA)", "Verify network status at time of service", "Request itemized bill with time units breakdown"], status: "critical" },
+        { day: "Day 8-20", actions: ["Compare billed time to surgical notes", "Verify base units against ASA guide", "Check for inappropriate modifiers", "Identify any bundling violations"], status: "important" },
+        { day: "Day 21-40", actions: ["Submit written dispute with documentation", "File No Surprises Act complaint if applicable", "Request price reduction negotiation", "Apply for financial assistance"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on dispute resolution", "Request supervisor review if initial denial", "Negotiate payment plan if needed", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Anesthesia Bill Cut from $8,500 to $2,100",
+        outcome: "Patient discovered out-of-network anesthesiologist billed for 6 hours when surgery was 3.5 hours. Filed No Surprises Act complaint and time unit dispute. Bill reduced to in-network rate for corrected time.",
+        keyTactics: "Surgical record comparison, No Surprises Act complaint, time unit verification"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Anesthesia Group Billing", action: "Request time documentation, dispute units" },
+      { level: 2, entity: "Hospital Patient Advocate", action: "Report out-of-network surprise billing" },
+      { level: 3, entity: "Insurance Appeals", action: "Request payment based on in-network rate" },
+      { level: 4, entity: "CMS No Surprises Help Desk", action: "File federal complaint" },
+      { level: 5, entity: "State Insurance Commissioner", action: "File formal surprise billing complaint" }
     ]
   },
   {
     id: "specialist-bill",
     title: "Specialist Consultation Bill",
     icon: Stethoscope,
+    featured: true,
     situation: "You were referred to or saw a specialist and received a bill that seems high for the time spent or services provided.",
     insiderKnowledge: [
-      "Consultation codes (99241-99245) are higher than regular office visit codes",
+      "Consultation codes (99241-99245) pay higher than regular office visit codes - verify appropriate use",
       "Many specialists bill 'facility fees' on top of professional fees at hospital-owned practices",
-      "In-office procedures may be billed separately from the visit itself",
-      "New patient visits are billed higher than established patient visits"
+      "In-office procedures may be billed separately from the visit itself - check for bundling",
+      "New patient visits are billed higher than established patient visits",
+      "E/M code level (1-5) should match the complexity of your visit - upcoding is common",
+      "Hospital-based specialist practices can charge 40-50% more than independent practices",
+      "Some specialists add 'modifier 25' to bill a visit AND procedure - often inappropriate",
+      "Telehealth specialist visits should typically cost less than in-person",
+      "Pre-visit questionnaires may be used to justify higher-level coding",
+      "Second opinions are often covered differently - check before scheduling"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "99201-99215", description: "Office/outpatient visits (new and established)" },
+        { code: "99241-99245", description: "Office consultations" },
+        { code: "G0463", description: "Hospital outpatient clinic visit (facility fee)" },
+        { code: "99354-99357", description: "Prolonged services (adds significant cost)" }
+      ],
+      redFlags: [
+        "Level 4 or 5 E/M code for a brief visit (less than 20 minutes)",
+        "Facility fee (G0463) when seen at doctor's private office",
+        "Consultation code when it's actually a referral/new patient visit",
+        "Prolonged service add-on for standard length appointment",
+        "Modifier 25 with minor procedure - often inappropriate"
+      ],
+      unbundlingSchemes: [
+        "Separate bill for 'medical decision making' in addition to E/M",
+        "Billing EKG interpretation separately when included in visit",
+        "Separate charge for reviewing outside records",
+        "Billing telephone follow-up in addition to office visit"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "E/M Level Challenge",
+        opener: "I'm questioning the evaluation and management level billed for my visit.",
+        script: "I was billed a level [X] visit but my appointment lasted only [Y] minutes with straightforward issues discussed. According to CMS E/M guidelines, this should be a level [Z]. Can you provide documentation justifying this coding level?",
+        escalation: "Request audit of documentation by certified coder."
+      },
+      {
+        name: "Facility Fee Challenge",
+        opener: "I noticed a facility fee on my bill that I wasn't informed about in advance.",
+        script: "I received a $[X] facility fee even though I was seen in what appeared to be a normal doctor's office. I was not informed this was a hospital-based practice with additional facility fees. Please waive this fee as I would have chosen an independent practice if informed.",
+        escalation: "File complaint with hospital administration about lack of price transparency."
+      },
+      {
+        name: "Price Transparency Request",
+        opener: "I'd like to compare your charges to other specialists in the area.",
+        script: "Under the Hospital Price Transparency Rule, I'm entitled to see your prices. Can you provide a good faith estimate and show me how your charges compare to the Medicare rate for these services? I'm prepared to pay a fair market rate.",
+        escalation: "Reference competitors' published prices if available."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Hospital Price Transparency Rule: Hospitals must publish prices for shoppable services",
+        "Good Faith Estimate: Uninsured patients entitled to written estimate before service",
+        "No Surprises Act: Protects against balance billing for out-of-network specialists at in-network facilities"
+      ],
+      stateExamples: [
+        { state: "California", protection: "Patients must be informed in writing when physician's office is hospital-based with additional fees." },
+        { state: "Florida", protection: "Healthcare Price Transparency Law requires facilities to post prices for common services." },
+        { state: "Colorado", protection: "Out-of-network surprise billing protection includes specialist consultations at in-network facilities." }
+      ]
+    },
+    timeline: {
+      title: "Specialist Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Request itemized bill with CPT codes", "Verify specialist's network status", "Check if facility fee was disclosed in advance", "Compare billed codes to visit documentation"], status: "critical" },
+        { day: "Day 6-15", actions: ["Research Medicare rates for services billed", "Check for duplicate or bundled charges", "Verify E/M level matches visit complexity", "Document actual visit duration and content"], status: "important" },
+        { day: "Day 16-30", actions: ["Submit formal dispute for overcharges", "Request good faith estimate comparison", "Negotiate cash pay discount", "Apply for financial assistance if eligible"], status: "strategic" },
+        { day: "Day 31-45", actions: ["Follow up on dispute resolution", "Escalate to practice manager if needed", "Negotiate payment plan", "Keep all documentation"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Specialist Bill Reduced from $1,200 to $380",
+        outcome: "Patient challenged level 5 E/M code for 15-minute visit with one complaint. After requesting documentation review, practice acknowledged overcoding and adjusted to appropriate level 3. Additional $400 facility fee waived after patient proved no advance disclosure.",
+        keyTactics: "E/M level challenge, facility fee disclosure complaint, Medicare rate comparison"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Specialist's Billing Department", action: "Request itemized bill, challenge coding" },
+      { level: 2, entity: "Practice Manager", action: "Escalate pricing concerns, request adjustment" },
+      { level: 3, entity: "Hospital Patient Relations", action: "Complain about undisclosed facility fees" },
+      { level: 4, entity: "State Medical Board", action: "Report egregious upcoding practices" },
+      { level: 5, entity: "Insurance Company", action: "Report suspected fraud for investigation" }
     ]
   },
   {
     id: "physical-therapy-bill",
     title: "Physical/Occupational Therapy Bill",
     icon: Activity,
+    featured: true,
     situation: "You've been receiving therapy and the bills are adding up quickly, sometimes $200-500 per session.",
     insiderKnowledge: [
-      "Hospital-based PT costs 2-3x more than independent PT clinics",
+      "Hospital-based PT costs 2-3x more than independent PT clinics - always compare",
       "Each 'modality' (heat, ice, electrical stim, ultrasound) may be billed separately",
-      "15-minute billing increments may be rounded up significantly",
-      "Many insurance plans have strict visit limits - verify coverage before continuing"
+      "15-minute billing increments may be rounded up significantly - verify actual treatment time",
+      "Many insurance plans have strict visit limits (20-60 per year) - verify coverage before continuing",
+      "Supervised exercises vs. one-on-one time are billed differently - check ratio",
+      "Group therapy rates should be lower than individual - verify you weren't billed for individual",
+      "Home exercise program instruction shouldn't be billed every visit",
+      "Evaluation codes (97161-97163) are high - should only be billed at start and reassessment",
+      "Some modalities (like ultrasound) have questionable clinical evidence - may not be necessary",
+      "Direct access in many states means you don't need physician referral - saves a visit"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "97110", description: "Therapeutic exercises (per 15 min)" },
+        { code: "97140", description: "Manual therapy (per 15 min)" },
+        { code: "97530", description: "Therapeutic activities (per 15 min)" },
+        { code: "97161-97163", description: "PT evaluation (low/moderate/high complexity)" },
+        { code: "97035", description: "Ultrasound therapy" },
+        { code: "97014", description: "Electrical stimulation (unattended)" }
+      ],
+      redFlags: [
+        "More than 4-6 units (60-90 min) per session when actual treatment was shorter",
+        "Evaluation code (97161-97163) billed multiple times in treatment course",
+        "Modalities like ultrasound billed every session without clear benefit",
+        "97150 (group therapy) billed at individual rates",
+        "Billing for modalities when therapist was treating other patients"
+      ],
+      unbundlingSchemes: [
+        "Billing therapeutic exercises AND activities for same treatment",
+        "Separate charges for hot pack and exercise when done simultaneously",
+        "Billing evaluation codes for routine progress updates",
+        "Separate charge for 'exercise instruction' vs. therapeutic exercise"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Unit Count Verification",
+        opener: "I need to verify the units billed for my therapy sessions.",
+        script: "My bills show [X] units (15-minute increments) per session, but my appointments are only [Y] minutes long including check-in and warm-up. Can you provide minute-by-minute treatment logs showing [X x 15] = [total] minutes of skilled PT services?",
+        escalation: "Request the daily treatment notes which must document time for each CPT code."
+      },
+      {
+        name: "Hospital vs. Independent Rate Challenge",
+        opener: "I'd like to understand why PT at this location costs so much more than other clinics.",
+        script: "I'm being charged $[X] per session when independent PT clinics charge $[Y] for the same services. Can you match the going rate for outpatient PT in this area? I may need to transfer my care to a more affordable provider.",
+        escalation: "Request transfer of care to independent clinic - often motivates discount."
+      },
+      {
+        name: "Medical Necessity Challenge",
+        opener: "I want to understand which treatments are essential versus optional.",
+        script: "I notice I'm being charged for ultrasound/electrical stim every session. The clinical evidence for these modalities is limited. Can we focus on only the evidence-based treatments to reduce my costs?",
+        escalation: "Request written justification for each modality used."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Medicare 8-Minute Rule: Specific rules on how PT time is rounded - applies to all payers similarly",
+        "Therapy Cap Exception Process: If hit insurance limit, can request exception for medical necessity",
+        "Direct Access Laws: Many states allow PT without physician referral"
+      ],
+      stateExamples: [
+        { state: "California", protection: "Physical therapists must disclose fees before treatment begins. Price transparency required." },
+        { state: "Texas", protection: "Direct access to PT without physician referral. Consumer protection against unexpected bills." },
+        { state: "New York", protection: "Surprise billing protection includes outpatient PT at hospital-based facilities." }
+      ]
+    },
+    timeline: {
+      title: "PT Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Request itemized bill for all sessions", "Verify insurance benefits and remaining visits", "Check if facility is hospital-based vs. independent", "Calculate units vs. actual appointment times"], status: "critical" },
+        { day: "Day 6-15", actions: ["Compare charges to independent PT rates", "Review treatment notes for time documentation", "Identify unnecessary or duplicate modalities", "Calculate total out-of-pocket vs. expected"], status: "important" },
+        { day: "Day 16-30", actions: ["Submit dispute for time/unit discrepancies", "Request modality justification", "Negotiate cash pay rate for remaining sessions", "Consider transfer to independent clinic"], status: "strategic" },
+        { day: "Day 31-45", actions: ["Follow up on dispute resolution", "Finalize payment plan if needed", "Document all communications", "Report excessive billing if pattern found"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "PT Bills Cut from $4,800 to $1,600 (12 sessions)",
+        outcome: "Patient documented that 45-minute sessions were being billed as 6 units (90 minutes). After challenging with session duration records and threatening transfer to independent clinic, facility agreed to correct billing and match competitive rates.",
+        keyTactics: "Unit count verification, appointment duration tracking, competitor rate comparison"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "PT Clinic Billing", action: "Request itemized bills, dispute unit counts" },
+      { level: 2, entity: "Clinic Director/Manager", action: "Negotiate rates, discuss transfer of care" },
+      { level: 3, entity: "Hospital Patient Billing", action: "Challenge facility fees if hospital-based" },
+      { level: 4, entity: "State PT Board", action: "Report billing fraud if documented pattern" },
+      { level: 5, entity: "Insurance Fraud Hotline", action: "Report suspected fraudulent billing" }
     ]
   },
   {
     id: "mental-health-bill",
     title: "Mental Health/Therapy Bill",
     icon: Brain,
+    featured: true,
     situation: "You're receiving mental health treatment and facing high out-of-pocket costs despite having insurance.",
     insiderKnowledge: [
-      "Mental Health Parity Act requires equal coverage for mental and physical health",
-      "Many therapists are out-of-network - ask about 'out-of-network benefits'",
-      "Session length billing varies - 45 vs 60 minutes are different CPT codes",
-      "Telehealth may be billed differently (sometimes lower) than in-person"
+      "Mental Health Parity Act requires equal coverage for mental and physical health - violations are common",
+      "Many therapists are out-of-network - ask about 'out-of-network benefits' before starting",
+      "Session length billing varies - 45 vs 60 minutes are different CPT codes (90834 vs 90837)",
+      "Telehealth may be billed differently (sometimes lower) than in-person",
+      "Insurance often covers only certain diagnoses - verify yours is covered",
+      "Sliding scale fees are common in mental health - always ask",
+      "Community mental health centers offer significantly lower rates",
+      "Psychology Today and Open Path Collective list affordable therapists",
+      "Employee Assistance Programs (EAP) often provide 3-6 free sessions",
+      "Some therapists will negotiate a 'single case agreement' with your insurance"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "90791", description: "Psychiatric diagnostic evaluation" },
+        { code: "90834", description: "Psychotherapy, 45 minutes" },
+        { code: "90837", description: "Psychotherapy, 60 minutes" },
+        { code: "90847", description: "Family psychotherapy with patient present" },
+        { code: "90839", description: "Psychotherapy for crisis (first 60 min)" },
+        { code: "90785", description: "Interactive complexity add-on" }
+      ],
+      redFlags: [
+        "90837 (60-min) billed for shorter sessions",
+        "Interactive complexity add-on (90785) added without documented reason",
+        "Crisis codes (90839) for routine therapy sessions",
+        "Psychiatric evaluation (90791) billed multiple times",
+        "Facility fees for outpatient therapy in non-hospital setting"
+      ],
+      unbundlingSchemes: [
+        "Billing evaluation AND therapy on same initial visit when should be one code",
+        "Separate charges for 'treatment planning' in addition to therapy",
+        "Billing family therapy separately when family was briefly included in individual session",
+        "Add-on codes for normal therapeutic interventions"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Mental Health Parity Challenge",
+        opener: "I believe my mental health benefits are not at parity with my medical benefits.",
+        script: "Under the Mental Health Parity and Addiction Equity Act, my copay/coinsurance for mental health cannot be higher than for medical visits. My therapy copay is $[X] but my specialist copay is only $[Y]. Please explain how this complies with federal parity law.",
+        escalation: "File parity complaint with your state insurance commissioner and the DOL."
+      },
+      {
+        name: "Out-of-Network Benefits",
+        opener: "I need to understand my out-of-network mental health benefits.",
+        script: "My in-network therapist has a 6-month wait, which creates access issues. What percentage do you reimburse for out-of-network therapy after I meet my deductible? I'd like to file for out-of-network reimbursement for urgent mental health needs.",
+        escalation: "Request network adequacy exception if wait times are excessive."
+      },
+      {
+        name: "Sliding Scale Request",
+        opener: "I'm having difficulty affording my therapy sessions.",
+        script: "I value our work together but my current financial situation makes the full fee difficult. Would you consider a sliding scale fee based on my income? I'm committed to continuing treatment if we can find an affordable rate.",
+        escalation: "Ask for referral to community mental health center if therapist can't reduce fees."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Mental Health Parity and Addiction Equity Act: Requires equal treatment of mental and physical health benefits",
+        "ACA Essential Health Benefits: Mental health is required coverage in marketplace plans",
+        "HIPAA: Extra protections for mental health records and billing privacy"
+      ],
+      stateExamples: [
+        { state: "California", protection: "SB 855 extends parity to all state-regulated plans. Medically necessary mental health treatment cannot be denied." },
+        { state: "New York", protection: "Timothy's Law requires comprehensive mental health coverage. Strong parity enforcement." },
+        { state: "Illinois", protection: "Mental Health Parity Compliance Act with strict enforcement mechanisms." }
+      ]
+    },
+    timeline: {
+      title: "Mental Health Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Request itemized statement with CPT codes", "Verify insurance mental health benefits", "Check if therapist is in-network or out-of-network", "Review session lengths vs. codes billed"], status: "critical" },
+        { day: "Day 6-15", actions: ["Compare mental health benefits to medical benefits (parity check)", "Calculate out-of-network reimbursement rate", "Ask therapist about sliding scale options", "Research community mental health alternatives"], status: "important" },
+        { day: "Day 16-30", actions: ["File parity complaint if disparities found", "Submit out-of-network claims for reimbursement", "Negotiate sliding scale with current therapist", "Apply for EAP benefits if available"], status: "strategic" },
+        { day: "Day 31-45", actions: ["Follow up on insurance claims/complaints", "Finalize fee arrangement with therapist", "Set up payment plan if needed", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Therapy Costs Cut 60% Through Parity Complaint",
+        outcome: "Patient discovered mental health copay was $75 while specialist copay was only $40. Filed mental health parity complaint with state insurance commissioner. Insurer was required to adjust mental health copays to match medical, resulting in refund of $840.",
+        keyTactics: "Parity analysis, state insurance complaint, retroactive refund request"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Therapist's Billing Office", action: "Request sliding scale, verify coding" },
+      { level: 2, entity: "Insurance Mental Health Department", action: "Appeal denials, request parity review" },
+      { level: 3, entity: "Insurance Grievance Department", action: "File formal grievance for parity violations" },
+      { level: 4, entity: "State Insurance Commissioner", action: "File parity complaint" },
+      { level: 5, entity: "Department of Labor (employer plans)", action: "File MHPAEA violation complaint" }
     ]
   },
   {
     id: "ambulance-bill",
     title: "Ambulance/EMS Bill",
     icon: Ambulance,
+    featured: true,
     situation: "You received an ambulance bill for $1,000-$5,000+ for what may have been a short transport.",
     insiderKnowledge: [
-      "Ambulance services are often NOT covered by the No Surprises Act (ground ambulances are exempt)",
+      "Ground ambulance services are EXEMPT from the No Surprises Act - limited federal protection",
       "BLS (Basic Life Support) should cost less than ALS (Advanced Life Support) - verify level billed",
       "Mileage charges are separate from base rate - verify distance is accurate",
       "If ambulance wasn't medically necessary (you could have safely used other transport), you can dispute",
-      "Some municipalities have ambulance membership programs for $50-100/year"
+      "Some municipalities have ambulance membership programs for $50-100/year that cap costs",
+      "Many areas have multiple ambulance services - the one that responds may not be in your network",
+      "Wait time can be billed - if they waited for hospital bed, you might see extra charges",
+      "Supplies like oxygen, IV starts, and medications are often billed separately",
+      "Air ambulance has separate federal protections (No Surprises Act DOES apply to air)",
+      "Medicare rates for ambulance are publicly available - use as negotiation benchmark"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "A0429", description: "Ambulance BLS emergency" },
+        { code: "A0427", description: "Ambulance ALS Level 1 emergency" },
+        { code: "A0433", description: "Ambulance ALS Level 2 (advanced interventions)" },
+        { code: "A0425", description: "Mileage (per loaded mile)" },
+        { code: "A0422", description: "Ambulance oxygen and supplies" },
+        { code: "A0398", description: "Ambulance response - treatment, no transport" }
+      ],
+      redFlags: [
+        "ALS billed when only BLS interventions were provided (vital signs, basic first aid)",
+        "ALS2 billed without advanced interventions (intubation, cardiac monitoring, IV drugs)",
+        "Mileage that exceeds reasonable route to hospital",
+        "Wait time charges for brief loading times",
+        "Supplies billed when not documented as used"
+      ],
+      unbundlingSchemes: [
+        "Separate billing for oxygen when included in base rate",
+        "Separate charge for 'emergency response' on top of transport",
+        "Billing both ALS and BLS codes for same transport",
+        "Separate facility fee for ambulance dispatch"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Medical Necessity Challenge",
+        opener: "I need to understand why ambulance transport was deemed medically necessary.",
+        script: "I was transported by ambulance, but I could have safely traveled by [car/taxi/other means]. The ambulance was called by [third party/I wasn't given a choice]. Can you provide documentation of medical necessity for this transport?",
+        escalation: "If you called 911 and were ambulatory at scene, transport may not be justified at full rate."
+      },
+      {
+        name: "Service Level Dispute",
+        opener: "I'm disputing the level of service billed for my ambulance transport.",
+        script: "I was billed for ALS (Advanced Life Support) but the run report shows only basic interventions: vital signs, oxygen assessment, and transport. No IV, cardiac monitoring, or advanced medications were provided. This should be BLS billing.",
+        escalation: "Request the complete Patient Care Report (PCR) to verify interventions."
+      },
+      {
+        name: "Mileage and Route Verification",
+        opener: "I need to verify the mileage charges on my ambulance bill.",
+        script: "I'm being billed for [X] loaded miles, but Google Maps shows the hospital is only [Y] miles from the pickup location. Can you explain the route taken and provide documentation of actual mileage?",
+        escalation: "Request GPS log from transport if mileage seems inflated."
+      },
+      {
+        name: "Financial Hardship Appeal",
+        opener: "I'm unable to pay this ambulance bill and need assistance options.",
+        script: "This unexpected ambulance bill of $[X] represents significant financial hardship. Many ambulance services have financial assistance programs. Do you offer any discounts for financial hardship, payment plans, or write-off programs for patients unable to pay?",
+        escalation: "Ask about municipal programs - many fire department EMS have hardship provisions."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "No Surprises Act - AIR Ambulance: Air ambulance IS covered - you cannot be balance billed",
+        "Medicare Rates: Publicly available benchmark for ambulance pricing",
+        "EMTALA: If ambulance was called due to ER transfer requirement, may be hospital's responsibility"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 651: Prohibits ground ambulance balance billing for insured patients. Significant protections." },
+        { state: "Colorado", protection: "Ground ambulance surprise billing protection. Out-of-network billing restricted." },
+        { state: "New York", protection: "Surprise billing law includes some ground ambulance protections. IDR process available." },
+        { state: "Most States", protection: "Limited or no protection for ground ambulance - federal law specifically exempted ground ambulance." }
+      ]
+    },
+    timeline: {
+      title: "Ambulance Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request itemized bill with codes", "Request Patient Care Report (PCR)", "Verify your state's ambulance billing protections", "Check if ambulance service is government or private"], status: "critical" },
+        { day: "Day 8-20", actions: ["Compare billed service level to PCR interventions", "Verify mileage against actual route", "Research Medicare rates for comparison", "Identify any bundling/unbundling issues"], status: "important" },
+        { day: "Day 21-40", actions: ["Submit written dispute for overcharges", "Apply for financial hardship program", "Check for municipal ambulance membership programs", "Negotiate cash settlement"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on dispute/hardship application", "Negotiate payment plan if needed", "Consider state AG complaint if bad actor", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Ambulance Bill Reduced from $4,200 to $800",
+        outcome: "Patient billed for ALS2 transport when PCR showed only vital signs taken during 8-mile transport. After obtaining run report and disputing service level, bill was corrected to BLS rate. Additional mileage overcharge of 15 miles was also corrected.",
+        keyTactics: "PCR documentation review, service level challenge, mileage verification, Medicare rate benchmark"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Ambulance Billing Department", action: "Request PCR, dispute service level/mileage" },
+      { level: 2, entity: "Ambulance Service Management", action: "Request financial hardship review" },
+      { level: 3, entity: "Municipal Government (if public)", action: "Request ombudsman intervention" },
+      { level: 4, entity: "State Insurance Commissioner", action: "File complaint (if state has protections)" },
+      { level: 5, entity: "State Attorney General", action: "Report deceptive billing practices" }
     ]
   },
   {
     id: "dental-hospital-bill",
     title: "Dental Surgery/Hospital-Based Dental Bill",
     icon: Activity,
+    featured: true,
     situation: "You had dental work done in a hospital setting (wisdom teeth, oral surgery) and received a surprisingly high facility bill.",
     insiderKnowledge: [
       "Hospital facility fees for dental procedures can be 5-10x the procedure cost itself",
-      "General anesthesia for dental is often not covered by dental insurance OR medical insurance",
+      "General anesthesia for dental is often not covered by dental insurance OR medical insurance - gap in coverage",
       "Office-based dental surgery is typically 50-75% less than hospital-based",
-      "Many dental surgeries billed as 'complex' are actually routine"
+      "Many dental surgeries billed as 'complex' are actually routine and should be office-based",
+      "Oral surgeons can perform most procedures in-office with IV sedation at much lower cost",
+      "Hospital may bill dental procedure under medical codes to increase reimbursement",
+      "Anesthesiologist is often billed separately and may be out-of-network",
+      "Operating room time is billed by the minute - efficient surgery reduces cost",
+      "Pre-authorization doesn't guarantee payment - only confirms coverage intent",
+      "Dental discount plans (not insurance) may cover hospital dental at better rates than PPOs"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "D7210", description: "Extraction - surgical (impacted tooth)" },
+        { code: "D7240", description: "Extraction - impacted tooth (completely bony)" },
+        { code: "D9223", description: "Deep sedation/general anesthesia (first 15 min)" },
+        { code: "41899", description: "Unlisted oral surgery procedure (watch for abuse)" },
+        { code: "Revenue Code 0360", description: "Operating room services (facility fee)" }
+      ],
+      redFlags: [
+        "Facility fees exceeding the surgical fees by 3x or more",
+        "General anesthesia for procedures that could be done with local or IV sedation",
+        "Extended OR time that doesn't match procedure complexity",
+        "'Unlisted procedure' codes when standard codes exist",
+        "Separate anesthesiologist bill equal to or higher than surgical fee"
+      ],
+      unbundlingSchemes: [
+        "Billing surgical extraction AND simple extraction for same tooth",
+        "Separate charges for bone removal when included in impaction code",
+        "Billing both dental and medical codes for same procedure",
+        "Separate 'recovery room' charges when included in anesthesia"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Medical Necessity for Hospital Setting",
+        opener: "I need to understand why this procedure required a hospital setting.",
+        script: "My wisdom teeth extraction was performed in the hospital at a cost of $[X] when the same procedure is done in oral surgery offices for $[Y]. Can you document the specific medical necessity that required a hospital operating room rather than an outpatient oral surgery center?",
+        escalation: "If no documented medical necessity, dispute the facility charges."
+      },
+      {
+        name: "Anesthesia Level Challenge",
+        opener: "I'm questioning whether general anesthesia was necessary.",
+        script: "I was billed $[X] for general anesthesia when IV conscious sedation (commonly used for dental surgery) would cost far less. Was general anesthesia medically necessary, or was it chosen for convenience? I'd like documentation of why this level was required.",
+        escalation: "General anesthesia should only be billed when IV sedation is contraindicated."
+      },
+      {
+        name: "Dual Coverage Coordination",
+        opener: "I have both dental and medical insurance and am being caught in the middle.",
+        script: "My dental insurance says this is medical, and my medical insurance says it's dental. The procedure was medically necessary oral surgery. Under coordination of benefits rules, one of these plans should be primary. Can you help me file with both plans correctly?",
+        escalation: "File appeal with both plans simultaneously, citing medical necessity."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "No Surprises Act: Protects against out-of-network anesthesiologist billing at in-network facility",
+        "ERISA (employer plans): Appeal rights for coverage denials",
+        "ACA Pediatric Dental: Children's dental is essential health benefit in marketplace plans"
+      ],
+      stateExamples: [
+        { state: "California", protection: "Dental anesthesia for children and special needs patients often mandated coverage." },
+        { state: "Texas", protection: "SB 1264 surprise billing protection includes hospital-based dental services." },
+        { state: "Florida", protection: "Limited dental coverage requirements but facility fee disclosure required." }
+      ]
+    },
+    timeline: {
+      title: "Dental Hospital Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Separate hospital bill from surgeon bill from anesthesia bill", "Request itemized statement from each billing entity", "Check coverage under both dental AND medical insurance", "Verify anesthesiologist network status"], status: "critical" },
+        { day: "Day 8-20", actions: ["Compare hospital charges to oral surgery office rates", "Challenge medical necessity for hospital setting", "Verify anesthesia level was appropriate", "Identify any unbundling or duplicate charges"], status: "important" },
+        { day: "Day 21-40", actions: ["File claims with both dental and medical insurance", "Submit medical necessity appeal if denied", "Negotiate facility fee reduction directly", "Apply for hospital financial assistance"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on all insurance claims/appeals", "Finalize settlement with hospital", "Set up payment plan if needed", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Wisdom Teeth Bill Cut from $12,000 to $3,200",
+        outcome: "Patient billed $8,000 hospital facility fee plus $2,500 anesthesia plus $1,500 oral surgery for 4 wisdom teeth. After demonstrating same procedure done in oral surgery offices for $2,800, patient negotiated facility fee down 70%. Filed No Surprises Act complaint for out-of-network anesthesiologist.",
+        keyTactics: "Office-based rate comparison, facility fee negotiation, No Surprises Act complaint for anesthesia"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Hospital Billing", action: "Request itemized bill, challenge facility fees" },
+      { level: 2, entity: "Oral Surgeon's Office", action: "Request medical necessity documentation" },
+      { level: 3, entity: "Both Insurance Companies", action: "File with medical and dental, appeal denials" },
+      { level: 4, entity: "Hospital Financial Assistance", action: "Apply for charity care/payment plan" },
+      { level: 5, entity: "State Insurance Commissioner", action: "File complaint for coverage denial" }
     ]
   },
   {
     id: "durable-equipment-bill",
     title: "Medical Equipment (CPAP, Wheelchair, etc.)",
     icon: ClipboardList,
-    situation: "You received medical equipment and are being billed monthly amounts that seem excessive.",
+    featured: true,
+    situation: "You received medical equipment and are being billed monthly amounts that seem excessive or equipment that costs more than retail.",
     insiderKnowledge: [
       "DME (Durable Medical Equipment) is often rented when buying outright is cheaper",
-      "CPAP machines and supplies are commonly overpriced through insurance",
-      "You can often buy the same equipment online for a fraction of the billed price",
-      "Medicare rates for DME are publicly available for comparison"
+      "CPAP machines and supplies are commonly overpriced through insurance - check online prices",
+      "After rental payments exceed purchase price, you should own the equipment - verify this",
+      "Medicare rates for DME are publicly available for comparison (CMS DME fee schedule)",
+      "You can often buy the same equipment online for 40-70% less than billed amounts",
+      "DME suppliers have high profit margins - 50%+ discounts are often available",
+      "Competitive Bidding Program sets Medicare rates in many areas - use as benchmark",
+      "Supplies (CPAP masks, wheelchair cushions) are major profit center - compare prices",
+      "Many items billed as 'DME' should be covered as prosthetics or orthotics (different coverage)",
+      "If equipment doesn't work or fit properly, you may not owe for it"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "E0601", description: "CPAP device" },
+        { code: "E0470", description: "BiPAP without backup rate" },
+        { code: "A7030", description: "CPAP full face mask" },
+        { code: "A7031", description: "CPAP nasal mask" },
+        { code: "E1390", description: "Oxygen concentrator" },
+        { code: "K0823", description: "Power wheelchair, Group 2" }
+      ],
+      redFlags: [
+        "Monthly rental exceeding 10% of purchase price (rent-to-own should cap at 13 months)",
+        "CPAP machine billed at $2,000+ when retail is under $800",
+        "Supplies auto-shipped and billed without patient request",
+        "Equipment billed before delivery or patient training",
+        "Billing continues after patient stopped using equipment"
+      ],
+      unbundlingSchemes: [
+        "Separate billing for humidifier when bundled with CPAP",
+        "Charging for 'setup' when included in equipment rental",
+        "Billing training/instruction separately from equipment",
+        "Separate charges for carrying case and power cord"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Rent vs. Buy Analysis",
+        opener: "I want to compare rental costs to purchasing outright.",
+        script: "You're billing $[X] per month to rent this equipment. I can purchase the identical item online for $[Y] total. After [Z] months of rental, I'll have paid more than the purchase price. Will you sell me this equipment now for the equivalent of [A] months rental?",
+        escalation: "Many DME suppliers will sell at Medicare rate if you push."
+      },
+      {
+        name: "Medicare Rate Benchmark",
+        opener: "I'd like to understand how your pricing compares to Medicare rates.",
+        script: "The Medicare Competitive Bidding rate for this [equipment] is $[X]. You're charging my insurance $[Y], which is [Z]% higher. Can you explain this pricing disparity and consider matching the Medicare rate?",
+        escalation: "Uninsured patients can often get Medicare-equivalent rates by asking."
+      },
+      {
+        name: "Auto-Ship Cancellation",
+        opener: "I need to cancel automatic supply shipments and dispute past charges.",
+        script: "I've been receiving automatic shipments of supplies I didn't order or need. I want to cancel all auto-shipments immediately and dispute the last [X] months of charges for supplies I didn't request. Please confirm cancellation in writing.",
+        escalation: "Many DME auto-ship practices violate consumer protection laws."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Medicare DME Competitive Bidding: Sets benchmark pricing in many areas",
+        "Capped Rental Rules: Patient must own after 13 months of rental for many items",
+        "Prior Authorization: Many DME items require PA - not valid if not obtained"
+      ],
+      stateExamples: [
+        { state: "California", protection: "DME suppliers must provide written cost estimates before providing equipment." },
+        { state: "New York", protection: "Surprise billing protections apply to DME provided by out-of-network suppliers." },
+        { state: "Texas", protection: "DME providers must disclose if they're in-network before providing equipment." }
+      ]
+    },
+    timeline: {
+      title: "DME Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request itemized bill with HCPCS codes", "Look up Medicare rates for items billed", "Check online retail prices for comparison", "Review rental vs. purchase terms in agreement"], status: "critical" },
+        { day: "Day 8-20", actions: ["Calculate total rental cost vs. purchase price", "Identify any auto-shipped items you didn't request", "Verify equipment was received and working", "Check if rental period should have ended"], status: "important" },
+        { day: "Day 21-40", actions: ["Submit written request to purchase at fair value", "Cancel unwanted auto-ship subscriptions in writing", "Dispute charges for unwanted/unreceived supplies", "Negotiate cash purchase price"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on purchase/discount requests", "Confirm auto-ship cancellation", "Return any unused/unwanted supplies for credit", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "CPAP Costs Cut from $3,600/year to $650",
+        outcome: "Patient was being billed $200/month for CPAP rental plus $100/month for auto-shipped supplies. After 18 months, had paid $5,400. Discovered equipment ownership should have transferred at 13 months ($2,600). Purchased replacement CPAP online for $650 and supplies from Amazon at 70% savings.",
+        keyTactics: "Rent-to-own cap enforcement, online price comparison, auto-ship cancellation"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "DME Supplier Billing", action: "Request itemized bill, dispute pricing" },
+      { level: 2, entity: "DME Company Management", action: "Negotiate purchase or discount" },
+      { level: 3, entity: "Insurance DME Department", action: "Report excessive billing, request audit" },
+      { level: 4, entity: "Medicare (if applicable)", action: "Report DME fraud to OIG" },
+      { level: 5, entity: "State Attorney General", action: "Report deceptive consumer practices" }
     ]
   },
   {
     id: "medication-bill",
     title: "Hospital Pharmacy/Medication Bill",
     icon: Pill,
+    featured: true,
     situation: "You were charged hundreds or thousands for medications during a hospital stay or ER visit.",
     insiderKnowledge: [
       "Hospital pharmacies mark up common medications 200-1000% over retail",
       "A $10 antibiotic can be billed as $200+ in a hospital setting",
-      "IV medications are billed higher than oral versions of the same drug",
-      "Ask for your own prescriptions to be brought from home if hospitalized"
+      "IV medications are billed higher than oral versions of the same drug - oral is often equally effective",
+      "Ask for your own prescriptions to be brought from home if hospitalized (must be approved)",
+      "Unit dose packaging is much more expensive than dispensing from bulk",
+      "Generic and brand medications may be billed the same at hospital markup",
+      "340B hospitals buy drugs at huge discounts but may bill full price",
+      "Chemotherapy and specialty drugs have extreme hospital markups",
+      "Medication administration fees are often billed separately from the drug itself",
+      "Take-home prescriptions from hospital pharmacy are typically overpriced"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "J-codes", description: "Injectable drugs (J0000-J9999)" },
+        { code: "96374", description: "IV push administration" },
+        { code: "96365", description: "IV infusion (first hour)" },
+        { code: "Revenue Code 0250", description: "Pharmacy - general" },
+        { code: "Revenue Code 0636", description: "Drugs requiring specific identification" }
+      ],
+      redFlags: [
+        "Single dose of common medication billed at $100+",
+        "IV Tylenol ($100+) when oral Tylenol ($0.10) would work",
+        "Brand medication billed when generic was available",
+        "Multiple doses billed when medication was discontinued early",
+        "Take-home medications at hospital prices instead of pharmacy prices"
+      ],
+      unbundlingSchemes: [
+        "Billing drug AND administration fee when administration is bundled into room rate",
+        "Separate charges for IV bag, tubing, and fluid in addition to medication",
+        "Billing pharmacy dispensing fee separately from drug charge",
+        "Separate 'preparation' charge for compounded IV medications"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Market Price Comparison",
+        opener: "I'm disputing medication charges that far exceed retail prices.",
+        script: "I'm being charged $[X] for [medication] which costs $[Y] at retail pharmacies. This represents a [Z]% markup. I'd like these charges adjusted to a reasonable amount that reflects actual medication costs plus a fair dispensing fee.",
+        escalation: "GoodRx prices are excellent benchmarks - print them out."
+      },
+      {
+        name: "340B Hospital Challenge",
+        opener: "I understand this hospital participates in the 340B drug pricing program.",
+        script: "As a [non-profit/federally qualified] hospital, you receive medications at 340B discount pricing - up to 50% off. However, you're billing me at full price. How is this consistent with your charitable mission? I request pricing that reflects your actual drug costs.",
+        escalation: "340B program requires hospitals to use savings to benefit patients."
+      },
+      {
+        name: "Therapeutic Substitution Request",
+        opener: "I'm questioning whether expensive IV medications were necessary.",
+        script: "I see charges for IV [medication] at $[X] when oral [same drug] costs $[Y] and is equally effective for my condition. Was there a documented medical reason I couldn't take oral medications? I'd like this charge adjusted.",
+        escalation: "Request clinical justification for IV route when oral was an option."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "340B Program Requirements: Hospitals must use savings to benefit uninsured/underinsured",
+        "Hospital Price Transparency: Drug pricing should be included in disclosed prices",
+        "Medicare Drug Pricing: ASP+6% is Medicare's payment methodology - use as benchmark"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 1809: Hospitals must report 340B savings usage. Charity care obligations." },
+        { state: "New York", protection: "Hospital charity care requirements include medication assistance." },
+        { state: "Maryland", protection: "Rate-setting commission regulates hospital drug pricing." }
+      ]
+    },
+    timeline: {
+      title: "Medication Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request itemized pharmacy charges with drug names", "Look up retail/GoodRx prices for each medication", "Identify if hospital is 340B participant", "Check for medications you didn't receive or that were discontinued"], status: "critical" },
+        { day: "Day 8-20", actions: ["Calculate markup percentages for each drug", "Identify IV medications that could have been oral", "Check for duplicate or excessive quantities billed", "Research hospital's charity care obligations"], status: "important" },
+        { day: "Day 21-40", actions: ["Submit written dispute with price comparisons", "Request 340B pricing consideration if applicable", "Apply for medication assistance programs", "Negotiate overall bill reduction"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on disputes and assistance applications", "Finalize negotiated amount", "Set up payment plan if needed", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Medication Charges Cut from $4,800 to $620",
+        outcome: "Patient hospitalized for 3 days was billed $4,800 in pharmacy charges. Analysis revealed $1,200 for IV Tylenol (could have been oral), $800 for medications given after discharge order, and 400% markups on common drugs. After disputing with retail price evidence and 340B challenge, charges reduced 87%.",
+        keyTactics: "Retail price comparison, IV vs. oral challenge, 340B participation leverage, discontinued med dispute"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Hospital Billing", action: "Request itemized pharmacy charges, dispute pricing" },
+      { level: 2, entity: "Hospital Pharmacy Director", action: "Challenge clinical appropriateness of expensive drugs" },
+      { level: 3, entity: "Patient Financial Services", action: "Request charity care, negotiate settlement" },
+      { level: 4, entity: "Hospital Administration", action: "Cite 340B obligations, charitable mission" },
+      { level: 5, entity: "HRSA (for 340B issues)", action: "Report potential 340B program violations" }
     ]
   },
   {
     id: "preventive-care-bill",
     title: "Preventive Care Billed Incorrectly",
     icon: Heart,
+    featured: true,
     situation: "You received a bill for a checkup, screening, or preventive service that should have been covered at 100% by insurance.",
     insiderKnowledge: [
       "ACA requires 100% coverage for preventive services but only when billed correctly",
       "If a 'problem' is discussed during a preventive visit, the visit can be recoded as diagnostic",
       "Some labs ordered during preventive visits may not be classified as preventive",
-      "Verify the correct preventive care codes were used before paying"
+      "The same service can be 'preventive' or 'diagnostic' based solely on the diagnosis code used",
+      "Colonoscopies become diagnostic (with copay) if polyps are removed - some states ban this",
+      "Annual wellness visits and annual physicals are NOT the same thing - different coverage",
+      "Preventive mammograms become diagnostic if you have symptoms or history",
+      "HPV tests, STI screening, and many women's preventive services should be 100% covered",
+      "Provider may default to diagnostic coding because it pays better",
+      "You can request preventive coding be used if clinically appropriate"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "99381-99397", description: "Preventive visit codes (by age)" },
+        { code: "G0438/G0439", description: "Medicare Annual Wellness Visits" },
+        { code: "99201-99215", description: "Office visits (diagnostic - NOT preventive)" },
+        { code: "Z00.00", description: "Diagnosis code: Encounter for general exam WITHOUT abnormal findings" },
+        { code: "Z00.01", description: "Diagnosis code: Encounter for general exam WITH abnormal findings" }
+      ],
+      redFlags: [
+        "Preventive visit coded with 99201-99215 (E/M office visit) instead of preventive codes",
+        "Z00.01 (exam WITH abnormal findings) when nothing abnormal was found",
+        "Labs billed separately with diagnostic codes instead of screening codes",
+        "Colonoscopy reclassified as diagnostic due to polyp removal",
+        "Mammogram coded as diagnostic when it was routine screening"
+      ],
+      unbundlingSchemes: [
+        "Billing preventive visit AND separate E/M code for same appointment",
+        "Billing 'extended' visit for routine questions during preventive care",
+        "Separate charges for counseling that's included in preventive visit",
+        "Billing lab handling fee separately when bundled with preventive panel"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Coding Correction Request",
+        opener: "My preventive care visit was coded incorrectly as a diagnostic visit.",
+        script: "I scheduled and received a routine annual physical/[specific preventive service]. However, it was billed with diagnostic codes instead of preventive codes. The ACA requires preventive services to be covered at 100% with no cost-sharing. Please resubmit with appropriate preventive care codes.",
+        escalation: "Provide the correct preventive CPT codes and request resubmission."
+      },
+      {
+        name: "Colonoscopy Polyp Removal Fight",
+        opener: "I'm disputing cost-sharing for my colonoscopy due to polyp removal.",
+        script: "My screening colonoscopy was reclassified as 'diagnostic' because polyps were removed, resulting in a $[X] bill. The purpose of screening is to find and remove polyps. This recoding defeats the purpose of preventive care coverage. [If in covered state: My state prohibits this practice.]",
+        escalation: "Many insurers have stopped this practice after complaints - push back firmly."
+      },
+      {
+        name: "Lab Coding Correction",
+        opener: "Labs from my preventive visit should be covered as screening, not diagnostic.",
+        script: "The labs ordered during my annual preventive visit are being billed as diagnostic tests. These are standard screening labs for a patient of my age and risk profile. Please resubmit with screening diagnosis codes (Z-codes) so they're covered as preventive care.",
+        escalation: "Request the lab order to verify what the physician actually ordered."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "ACA Section 2713: Preventive services must be covered at 100% with no cost-sharing",
+        "USPSTF A and B Recommendations: These services MUST be covered as preventive",
+        "HRSA Women's Preventive Services: Comprehensive women's health coverage required"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 2342: Colonoscopy remains preventive even if polyps are removed." },
+        { state: "New York", protection: "Insurance Law 4303: Comprehensive preventive care coverage requirements." },
+        { state: "Colorado", protection: "Colonoscopy cost-sharing prohibited regardless of findings. Strong preventive care laws." },
+        { state: "Illinois", protection: "Mammography and colonoscopy protected from diagnostic recoding." }
+      ]
+    },
+    timeline: {
+      title: "Preventive Care Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Request itemized bill with CPT and diagnosis codes", "Compare codes used to correct preventive codes", "Check insurance EOB for how claim was processed", "Verify what services were ordered vs. billed"], status: "critical" },
+        { day: "Day 6-15", actions: ["Research correct preventive codes for your services", "Check if your state has enhanced preventive protections", "Document the preventive nature of your visit", "Identify any inappropriate diagnostic coding"], status: "important" },
+        { day: "Day 16-30", actions: ["Contact provider billing and request recoding", "File insurance appeal if claim was denied/cost-shared", "Cite ACA preventive care requirements", "Request supervisor review if initial refusal"], status: "strategic" },
+        { day: "Day 31-45", actions: ["Follow up on recoding request/appeal", "File complaint with state insurance commissioner if needed", "Escalate to CMS if marketplace plan", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Annual Physical Bill Reversed - $485 to $0",
+        outcome: "Patient billed $485 for 'annual physical' because provider coded it as diagnostic office visit (99215) with diagnosis of 'fatigue' when patient briefly mentioned tiredness. After requesting recoding to preventive exam (99396) with Z00.00 (routine exam), bill was rebilled and covered at 100%.",
+        keyTactics: "Preventive code identification, diagnosis code correction, ACA citation, provider recoding request"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Provider Billing Office", action: "Request recoding with correct preventive codes" },
+      { level: 2, entity: "Insurance Member Services", action: "Appeal claim processing, cite ACA requirements" },
+      { level: 3, entity: "Insurance Grievance Department", action: "File formal grievance for preventive care denial" },
+      { level: 4, entity: "State Insurance Commissioner", action: "File complaint about ACA preventive care violation" },
+      { level: 5, entity: "CMS (Marketplace plans)", action: "File complaint for essential health benefit violation" }
+    ]
+  },
+  {
+    id: "urgent-care-bill",
+    title: "Urgent Care Bill",
+    icon: Clock,
+    featured: true,
+    situation: "You visited an urgent care center for non-emergency treatment and received a bill that seems high for the level of care provided.",
+    insiderKnowledge: [
+      "Hospital-owned urgent cares can charge 2-3x more than independent urgent cares",
+      "Facility fees may be charged on top of professional fees at hospital-affiliated locations",
+      "Some 'urgent cares' are actually free-standing ERs that bill ER rates - check before you go",
+      "Level of service coding (99281-99285) should match the complexity of your visit",
+      "X-rays and labs at urgent care are often marked up significantly - compare to stand-alone facilities",
+      "Many insurance plans have different copays for urgent care vs. ER vs. primary care",
+      "If you have a primary care doctor, follow-up visits should be there, not urgent care",
+      "Urgent care should NOT be billing ER codes unless they're actually an ER",
+      "Virtual urgent care visits are typically much cheaper than in-person",
+      "Retail clinics (CVS, Walgreens) are often 50% cheaper than urgent care for simple issues"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "99201-99215", description: "Office/outpatient visits (appropriate for most urgent care)" },
+        { code: "99281-99285", description: "ER visit codes (should NOT be used by urgent care)" },
+        { code: "G0463", description: "Hospital outpatient clinic visit (facility fee)" },
+        { code: "99051", description: "Evening/weekend service (after-hours add-on)" }
+      ],
+      redFlags: [
+        "ER codes (99281-99285) used by urgent care facility",
+        "Facility fee (G0463) when it appeared to be a regular urgent care",
+        "Level 4-5 office visit for simple complaints (cold, sprain, minor cut)",
+        "After-hours fee when the urgent care's normal hours include your visit time",
+        "High-cost labs for simple diagnoses (strep, flu, UTI)"
+      ],
+      unbundlingSchemes: [
+        "Separate charge for 'medical screening' on top of office visit",
+        "Billing wound care supplies separately when included in procedure",
+        "Separate interpretation fee for in-house X-rays",
+        "Billing 'triage' as separate service from visit"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "ER vs. Urgent Care Coding",
+        opener: "I visited an urgent care, not an emergency room.",
+        script: "I'm being billed with ER codes (9928X) but I was treated at [facility name] which is marketed as an urgent care. Urgent care visits should use office visit codes (9920X-9921X) which are significantly lower. Please correct the coding or explain why ER codes are appropriate for a non-emergency.",
+        escalation: "Some free-standing ERs market as urgent cares - this may be deceptive practice."
+      },
+      {
+        name: "Level of Service Challenge",
+        opener: "The visit level doesn't match the care I received.",
+        script: "I came in for [simple complaint like sore throat/sprained ankle]. I was seen for [X] minutes and received [basic treatment]. Being billed a level [4 or 5] seems inconsistent with this straightforward visit. Can you provide documentation supporting this coding level?",
+        escalation: "Request the clinical notes to verify time and complexity."
+      },
+      {
+        name: "Facility Fee Dispute",
+        opener: "I wasn't informed this urgent care charges hospital facility fees.",
+        script: "I chose this urgent care expecting standard urgent care pricing. I wasn't informed that it's hospital-affiliated with additional facility fees. This should have been disclosed before treatment. Please waive the facility fee of $[X].",
+        escalation: "Lack of price transparency disclosure may violate state consumer protection laws."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Good Faith Estimate: Uninsured patients entitled to cost estimate before service",
+        "Price Transparency: Hospital-owned facilities must disclose their hospital affiliation",
+        "No Surprises Act: Protects against surprise bills from out-of-network urgent cares at in-network rates"
+      ],
+      stateExamples: [
+        { state: "Texas", protection: "HB 2041: Free-standing ERs must clearly disclose they're not urgent cares. Signage requirements." },
+        { state: "Colorado", protection: "Consumer protection against deceptive marketing of ERs as urgent cares." },
+        { state: "California", protection: "Hospital-owned urgent cares must disclose facility fees before service." }
+      ]
+    },
+    timeline: {
+      title: "Urgent Care Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Request itemized bill with CPT codes", "Verify if facility is hospital-owned or independent", "Check if ER codes were used inappropriately", "Compare to your insurance urgent care vs. ER benefits"], status: "critical" },
+        { day: "Day 6-15", actions: ["Research whether facility is actually an ER marketed as urgent care", "Check for facility fees that weren't disclosed", "Verify level of service matches your visit", "Compare pricing to other local urgent cares"], status: "important" },
+        { day: "Day 16-30", actions: ["Submit coding correction request if ER codes used", "Dispute undisclosed facility fees", "Negotiate based on comparable urgent care rates", "Apply for financial assistance if available"], status: "strategic" },
+        { day: "Day 31-45", actions: ["Follow up on disputes/corrections", "File complaint with state AG if deceptive marketing found", "Finalize payment arrangement", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Urgent Care Bill Cut from $1,850 to $290",
+        outcome: "Patient treated for flu symptoms at 'urgent care' was billed ER level 4 ($1,200) plus facility fee ($500) plus labs ($150). Investigation revealed facility was free-standing ER marketed as urgent care. After complaint to state AG and insurer, bill was reduced to standard urgent care rates.",
+        keyTactics: "ER vs. urgent care distinction, deceptive marketing complaint, facility fee dispute"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Urgent Care Billing", action: "Request itemized bill, challenge coding level" },
+      { level: 2, entity: "Urgent Care Manager", action: "Dispute facility fees, request adjustment" },
+      { level: 3, entity: "Insurance Company", action: "Request reprocessing as urgent care, not ER" },
+      { level: 4, entity: "State Attorney General", action: "Report deceptive marketing (ER as urgent care)" },
+      { level: 5, entity: "State Licensing Board", action: "Report facility operating outside its license type" }
+    ]
+  },
+  {
+    id: "telehealth-bill",
+    title: "Telehealth/Virtual Visit Bill",
+    icon: Phone,
+    featured: true,
+    situation: "You had a virtual doctor visit and were billed unexpectedly high amounts or charged for services you didn't expect.",
+    insiderKnowledge: [
+      "Telehealth visits should generally cost less than in-person visits - overhead is lower",
+      "Some providers bill telehealth at full in-person rates despite lower costs",
+      "Facility fees should NEVER be charged for a telehealth visit you took from home",
+      "Your insurance may have different cost-sharing for telehealth vs. in-person",
+      "Telehealth-only providers (Teladoc, MDLive, etc.) are often cheaper than hospital telehealth",
+      "Mental health telehealth has the same parity requirements as in-person therapy",
+      "Telehealth prescriptions may be limited - some providers bill for incomplete visits",
+      "Audio-only visits (phone calls) should be billed lower than video visits",
+      "Check if your employer offers free telehealth as a benefit",
+      "Some 'free' telehealth services have hidden costs for prescriptions or follow-ups"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "99441-99443", description: "Telephone E/M services (by time)" },
+        { code: "99421-99423", description: "Online digital E/M (by time)" },
+        { code: "Modifier 95", description: "Synchronous telemedicine service" },
+        { code: "G2012", description: "Virtual check-in (5-10 min)" },
+        { code: "Place of Service 02", description: "Telehealth (should not have facility fee)" }
+      ],
+      redFlags: [
+        "Facility fee charged for visit you took from home",
+        "Level 4-5 visit code for brief telehealth encounter",
+        "Billed as in-person visit without telehealth modifier",
+        "Audio-only visit billed at video visit rates",
+        "Virtual check-in billed as full E/M visit"
+      ],
+      unbundlingSchemes: [
+        "Billing 'technology fee' separately from telehealth visit",
+        "Separate charge for prescription sent electronically",
+        "Billing follow-up message as separate encounter",
+        "Charging for 'chart preparation' in addition to visit"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Facility Fee Challenge",
+        opener: "I'm disputing the facility fee on my telehealth visit.",
+        script: "I had a telehealth visit from my home, but I'm being charged a $[X] facility fee. Facility fees cover the cost of maintaining a physical treatment space - which wasn't used. Please remove this inappropriate charge.",
+        escalation: "CMS has clarified facility fees shouldn't apply when patient is at home."
+      },
+      {
+        name: "Telehealth Cost Comparison",
+        opener: "This telehealth visit costs more than it should for virtual care.",
+        script: "I'm being charged $[X] for a telehealth visit when services like Teladoc/MDLive charge $[Y] for similar care. Given the reduced overhead of virtual visits, can you adjust this charge to a competitive rate?",
+        escalation: "Many direct-to-consumer telehealth services publish their prices - use as benchmark."
+      },
+      {
+        name: "Audio vs. Video Rate",
+        opener: "I had a phone call, not a video visit, and should be billed accordingly.",
+        script: "My provider visit was audio-only (telephone), but I'm being billed at the higher video visit rate. Audio-only visits have specific, lower-paying CPT codes (99441-99443). Please correct this billing.",
+        escalation: "Request documentation of whether video was used to verify claim."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "CMS Telehealth Guidelines: Facility fees generally not appropriate when patient is at home",
+        "Mental Health Parity: Telehealth mental health has same coverage requirements as in-person",
+        "HIPAA: Telehealth platforms must be HIPAA-compliant - non-compliant visit may be voidable"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 744: Telehealth parity law - must be covered like in-person services." },
+        { state: "New York", protection: "Telehealth parity with in-person care. Audio-only visits covered." },
+        { state: "Texas", protection: "Telemedicine parity law. Coverage cannot be less than in-person." }
+      ]
+    },
+    timeline: {
+      title: "Telehealth Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Request itemized bill with CPT codes and modifiers", "Verify if telehealth modifier (95) was used", "Check for inappropriate facility fee", "Compare to your insurance telehealth benefits"], status: "critical" },
+        { day: "Day 6-15", actions: ["Verify audio vs. video coding is correct", "Check visit level matches time spent", "Research comparable telehealth service prices", "Review your employer's telehealth benefits"], status: "important" },
+        { day: "Day 16-30", actions: ["Dispute facility fees if charged", "Request coding correction if wrong visit type", "Negotiate based on telehealth market rates", "File insurance appeal if coverage denied"], status: "strategic" },
+        { day: "Day 31-45", actions: ["Follow up on disputes", "Consider switching to lower-cost telehealth option", "Finalize payment arrangement", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Telehealth Bill Cut from $425 to $89",
+        outcome: "Patient billed $425 for 15-minute telehealth visit including $180 facility fee and level 4 E/M code. After disputing facility fee (patient was at home) and challenging visit level (brief routine concern), bill was corrected to appropriate telehealth code at fair rate.",
+        keyTactics: "Facility fee removal, visit level challenge, telehealth modifier verification"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Provider Billing", action: "Dispute facility fee, verify telehealth coding" },
+      { level: 2, entity: "Practice Manager", action: "Negotiate fair telehealth rate" },
+      { level: 3, entity: "Insurance Appeals", action: "Challenge coverage denial, cite parity laws" },
+      { level: 4, entity: "State Insurance Commissioner", action: "File complaint about telehealth coverage violations" },
+      { level: 5, entity: "FTC", action: "Report deceptive pricing practices" }
+    ]
+  },
+  {
+    id: "cancer-treatment-bill",
+    title: "Cancer Treatment/Oncology Bill",
+    icon: Activity,
+    featured: true,
+    situation: "You or a loved one is facing cancer treatment bills that are overwhelming, including chemotherapy, radiation, and related care.",
+    insiderKnowledge: [
+      "Cancer drug markups are extreme - hospitals may mark up 200-600% above acquisition cost",
+      "The SAME chemotherapy drug can cost 50% less at an outpatient infusion center vs. hospital",
+      "Many pharmaceutical companies have patient assistance programs covering 100% of drug costs",
+      "340B hospitals buy cancer drugs at huge discounts but often bill full price",
+      "Biosimilar cancer drugs can be 30-50% cheaper than brand-name biologics - ask if available",
+      "Some oncologists have financial incentives to prescribe more expensive drugs",
+      "Clinical trials often provide treatment at no cost with excellent care quality",
+      "Cancer navigators and social workers can help access financial assistance programs",
+      "Copay assistance foundations can cover thousands in out-of-pocket costs",
+      "Many cancer centers have charity care that covers treatment even for middle-income patients"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "96413", description: "Chemotherapy IV infusion (first hour)" },
+        { code: "96415", description: "Chemotherapy IV infusion (additional hour)" },
+        { code: "77385-77387", description: "Radiation treatment delivery (IMRT)" },
+        { code: "J9XXX", description: "Chemotherapy drug codes" },
+        { code: "G0463", description: "Hospital outpatient clinic visit (facility fee)" }
+      ],
+      redFlags: [
+        "Drug charges exceeding Medicare ASP+6% by significant margin",
+        "Facility fee for each chemotherapy visit on top of drug/administration costs",
+        "Brand-name drug billed when less expensive biosimilar exists",
+        "Administration time billed that exceeds actual infusion duration",
+        "Drug wastage billed at full dose when partial vial was used"
+      ],
+      unbundlingSchemes: [
+        "Billing pre-medications (anti-nausea, steroids) at extreme markups",
+        "Separate IV hydration charges when bundled with chemotherapy",
+        "Billing port access separately from chemotherapy administration",
+        "Separate 'pharmacy preparation' fees for compounded drugs"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Site of Service Optimization",
+        opener: "I'd like to explore lower-cost options for my infusion treatments.",
+        script: "I understand that receiving chemotherapy at a hospital outpatient center costs significantly more than at a physician-office or freestanding infusion center. Can my treatment be safely provided at a lower-cost site? This could save me and my insurance thousands per treatment.",
+        escalation: "Request referral to independent oncology practice if available."
+      },
+      {
+        name: "Drug Cost Reduction",
+        opener: "I need help affording my cancer medications.",
+        script: "My [drug name] costs $[X] per treatment which is devastating financially. Can you check if: (1) there's a biosimilar available, (2) the pharmaceutical company has a patient assistance program, (3) there are copay assistance foundations that cover this drug?",
+        escalation: "Patient Access Network Foundation, HealthWell Foundation, and drug-specific programs often help."
+      },
+      {
+        name: "340B Hospital Leverage",
+        opener: "I understand this hospital participates in the 340B drug discount program.",
+        script: "As a 340B hospital, you purchase cancer drugs at substantial discounts - often 30-50% off. Yet patients are billed at full price. Given your charitable mission and 340B program requirements to benefit underserved patients, I'm requesting drug pricing that reflects your actual costs.",
+        escalation: "340B hospitals have legal obligations to use savings to benefit patients."
+      },
+      {
+        name: "Financial Catastrophe Assistance",
+        opener: "Cancer treatment is causing financial devastation for my family.",
+        script: "My total cancer treatment costs exceed my annual income. I've already depleted savings and face potential bankruptcy. I need comprehensive financial assistance including charity care for facility costs, drug manufacturer assistance, and foundation support. Can your financial counselor or patient navigator help me access all available resources?",
+        escalation: "Cancer centers with patient navigators have access to many assistance programs."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "340B Program: Non-profit hospitals must use drug savings to benefit patients",
+        "Clinical Trial Access: Insurance must cover routine costs of care during trials",
+        "No Surprises Act: Protects against surprise bills from hospital-based oncology specialists"
+      ],
+      stateExamples: [
+        { state: "California", protection: "SB 532: Hospital charity care requirements. 340B accountability laws." },
+        { state: "New York", protection: "Cancer clinical trial coverage mandate. Strong charity care requirements." },
+        { state: "Illinois", protection: "Hospital financial assistance requirements include cancer patients up to 600% FPL at some hospitals." }
+      ]
+    },
+    timeline: {
+      title: "Cancer Treatment Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Meet with cancer center financial counselor/navigator", "Request complete itemized bills for all treatments", "Apply for hospital financial assistance immediately", "Research manufacturer patient assistance programs"], status: "critical" },
+        { day: "Day 8-21", actions: ["Complete manufacturer drug assistance applications", "Apply to copay assistance foundations", "Compare costs at alternative treatment sites", "Check if 340B hospital and leverage accordingly"], status: "important" },
+        { day: "Day 22-45", actions: ["Follow up on all assistance applications", "Dispute any billing errors identified", "Negotiate facility fee reductions", "Set up 0% interest payment plans"], status: "strategic" },
+        { day: "Ongoing", actions: ["Maintain documentation of all communications", "Reapply for assistance programs as needed", "Monitor bills for continued errors", "Stay current on payment plans"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Cancer Treatment Bills Reduced from $180,000 to $8,400",
+        outcome: "Breast cancer patient facing $180,000 in treatment costs accessed comprehensive assistance: 340B hospital charity care covered 60% of facility costs, manufacturer assistance program covered $40,000 in drug costs, copay foundation covered remaining drug copays. Switched some infusions to lower-cost community oncology practice.",
+        keyTactics: "Financial navigator assistance, manufacturer patient assistance, 340B leverage, site-of-service optimization"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Cancer Center Financial Counselor", action: "Access all assistance programs, dispute errors" },
+      { level: 2, entity: "Pharmaceutical Manufacturer", action: "Apply for drug patient assistance programs" },
+      { level: 3, entity: "Copay Assistance Foundations", action: "HealthWell, PAN, CancerCare, disease-specific foundations" },
+      { level: 4, entity: "Hospital Administration", action: "Escalate charity care denial, cite 340B obligations" },
+      { level: 5, entity: "State Attorney General", action: "Report 340B program violations if non-profit not providing charity care" }
+    ]
+  },
+  {
+    id: "cardiac-care-bill",
+    title: "Cardiac Care/Heart Procedure Bill",
+    icon: HeartPulse,
+    featured: true,
+    situation: "You had a heart-related procedure (cardiac cath, stent, bypass, pacemaker) and are facing significant bills.",
+    insiderKnowledge: [
+      "Cardiac devices (stents, pacemakers, defibrillators) have extreme markups - 300-500% is common",
+      "The SAME cardiac procedure can cost 50% less at an ambulatory surgery center vs. hospital",
+      "Cardiac catheterization often leads to immediate stent placement - get second opinion if possible",
+      "Generic drug-eluting stents are now available at much lower cost than brand-name",
+      "Multiple stents placed in one procedure should have lower per-stent pricing",
+      "Cardiac rehab is often underutilized - very valuable and usually covered",
+      "Observation vs. inpatient status dramatically affects your coverage and costs",
+      "Some cardiac procedures have 'bundled payment' rates - verify appropriate billing",
+      "Post-procedure cardiac drugs can be expensive - manufacturer assistance often available",
+      "Second opinions for cardiac surgery are encouraged and covered by most insurance"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "93458/93459", description: "Cardiac catheterization with imaging" },
+        { code: "92928", description: "Percutaneous coronary stent (single vessel)" },
+        { code: "33533-33536", description: "Coronary artery bypass grafting (CABG)" },
+        { code: "33207-33249", description: "Pacemaker/defibrillator insertion" },
+        { code: "C1874-C1899", description: "Cardiac device codes (stents, leads)" }
+      ],
+      redFlags: [
+        "Device charges (stents, pacemakers) exceeding typical costs by 2x+",
+        "Multiple diagnostic caths billed when one would suffice",
+        "Stent procedure billed when drug therapy might have been appropriate first",
+        "Observation status for what should have been inpatient admission",
+        "Separate facility fees for catheterization and intervention on same day"
+      ],
+      unbundlingSchemes: [
+        "Billing diagnostic cath separately when done with intervention",
+        "Separate charges for guide wires and catheters bundled with procedures",
+        "Billing multiple imaging studies when one served multiple purposes",
+        "Separate cardiovascular lab fee from procedure fee"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Device Cost Challenge",
+        opener: "The charges for my cardiac device seem excessive.",
+        script: "I'm being charged $[X] for my [stent/pacemaker/defibrillator]. The Medicare payment for this device is $[Y], which suggests a significant markup. Given that device costs are a major portion of my bill, can you reduce this charge to a more reasonable amount?",
+        escalation: "Device manufacturer pricing is publicly available through CMS data."
+      },
+      {
+        name: "Observation vs. Inpatient",
+        opener: "I believe my admission status should have been inpatient, not observation.",
+        script: "I was hospitalized for [cardiac emergency/procedure] for [X] days but was classified as 'observation' status, leaving me with much higher out-of-pocket costs. Given the severity of my condition and length of stay, can you review whether this should have been an inpatient admission?",
+        escalation: "Medicare has specific criteria for inpatient admission - hospitals sometimes game this."
+      },
+      {
+        name: "Bundled Payment Inquiry",
+        opener: "I want to understand the bundled payment for my cardiac procedure.",
+        script: "Cardiac procedures often have bundled payment rates that include the procedure, device, and 90-day follow-up care. Can you show me how my bill aligns with bundled payment methodology? I should not be separately billed for services included in the bundle.",
+        escalation: "Many insurers and Medicare use bundled payments for cardiac care."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Medicare Bundled Payments: Many cardiac procedures have bundled rates covering 90 days",
+        "Device Price Transparency: Hospital must disclose device pricing under transparency rules",
+        "No Surprises Act: Protects against out-of-network surgeon or anesthesiologist balance billing"
+      ],
+      stateExamples: [
+        { state: "California", protection: "Hospital charity care requirements apply to cardiac patients. Price transparency mandated." },
+        { state: "Texas", protection: "Surprise billing protection for cardiac procedures at in-network facilities." },
+        { state: "Maryland", protection: "All-payer rate regulation means consistent pricing across all patients." }
+      ]
+    },
+    timeline: {
+      title: "Cardiac Care Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request itemized bill with device and procedure codes", "Verify admission status (inpatient vs. observation)", "Check network status of all physicians involved", "Request estimated total costs from all billing entities"], status: "critical" },
+        { day: "Day 8-21", actions: ["Research Medicare/fair market pricing for devices and procedures", "Verify bundled payment compliance", "Challenge observation status if inappropriate", "Identify any surprise out-of-network bills"], status: "important" },
+        { day: "Day 22-45", actions: ["Submit written disputes for overcharges", "Apply for hospital financial assistance", "Negotiate device pricing reduction", "File No Surprises Act complaints if applicable"], status: "strategic" },
+        { day: "Day 46-60", actions: ["Follow up on disputes and assistance", "Finalize payment arrangements", "Ensure cardiac rehab is covered", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Cardiac Stent Bill Reduced from $85,000 to $22,000",
+        outcome: "Patient received two stents during emergency cardiac cath. Device charges were $35,000 for two stents (Medicare pays ~$3,000 each). After challenging device pricing and applying for hospital charity care (income at 350% FPL), device charges were reduced 80% and remaining facility fees discounted 50%.",
+        keyTactics: "Device cost benchmarking, Medicare rate comparison, charity care application, payment plan"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Hospital Billing", action: "Request itemized bill, challenge device/procedure costs" },
+      { level: 2, entity: "Patient Financial Services", action: "Apply for charity care, negotiate pricing" },
+      { level: 3, entity: "Insurance Appeals", action: "Appeal observation status, surprise bill disputes" },
+      { level: 4, entity: "Hospital Administration", action: "Escalate charity care denial, cite 340B/non-profit status" },
+      { level: 5, entity: "State AG/Insurance Commissioner", action: "Report price gouging, surprise billing violations" }
+    ]
+  },
+  {
+    id: "dialysis-bill",
+    title: "Dialysis/Kidney Care Bill",
+    icon: Activity,
+    featured: true,
+    situation: "You or a loved one requires ongoing dialysis treatment and is facing mounting bills despite having insurance.",
+    insiderKnowledge: [
+      "Dialysis has extreme pricing disparities - Medicare pays ~$250/session while uninsured may be billed $800-1,500+",
+      "The two major dialysis chains (DaVita, Fresenius) control 70% of the market and set pricing",
+      "Home dialysis (peritoneal or home hemodialysis) is often cheaper and provides better quality of life",
+      "Medicare covers dialysis for ESRD patients regardless of age after 3-month waiting period",
+      "Private insurance is typically primary for 30 months before Medicare becomes primary",
+      "Dialysis facilities have significant financial incentive programs with pharmaceutical companies",
+      "Many dialysis-related drugs have patient assistance programs",
+      "Charity care and financial assistance are available at most dialysis centers",
+      "Transportation to dialysis is often covered by Medicaid or through facility programs",
+      "Some hospitals use dialysis as profit center with extreme markups for inpatient dialysis"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "90935", description: "Hemodialysis, one evaluation" },
+        { code: "90937", description: "Hemodialysis, repeated evaluation" },
+        { code: "90945/90947", description: "Peritoneal dialysis" },
+        { code: "J0881-J0882", description: "Darbepoetin (Aranesp)" },
+        { code: "J0885", description: "Epoetin alfa (Epogen/Procrit)" }
+      ],
+      redFlags: [
+        "Per-session charges far exceeding Medicare rate (~$250-300)",
+        "Drug charges (EPO, Aranesp) at extreme markups above ASP",
+        "Charges for supplies that should be bundled in treatment fee",
+        "Missing credits for manufacturer rebates on drugs",
+        "Facility fee charged for home dialysis supplies/training"
+      ],
+      unbundlingSchemes: [
+        "Billing dialysis supplies (tubing, solutions) separately when bundled",
+        "Separate charges for routine lab monitoring included in dialysis rate",
+        "Billing vascular access care separately from dialysis session",
+        "Separate 'facility fee' for training visits for home dialysis"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Medicare Rate Benchmark",
+        opener: "I want to understand why dialysis costs me so much more than Medicare rates.",
+        script: "Medicare pays approximately $[X] per dialysis session, but I'm being charged $[Y] - a [Z]% markup. While I understand private insurance may pay differently, this disparity is extreme. Can you work with me on pricing closer to what Medicare recognizes as fair value?",
+        escalation: "Use Medicare dialysis rates as non-negotiable benchmark for negotiations."
+      },
+      {
+        name: "Home Dialysis Cost Reduction",
+        opener: "I'd like to explore home dialysis to reduce my costs and improve flexibility.",
+        script: "I understand home peritoneal dialysis or home hemodialysis can reduce overall costs while improving quality of life. Is home dialysis appropriate for my situation? What would the cost difference be compared to in-center treatment?",
+        escalation: "Many patients on home dialysis have better outcomes and lower costs."
+      },
+      {
+        name: "Drug Cost Assistance",
+        opener: "I need help affording the drugs associated with my dialysis treatment.",
+        script: "The EPO/Aranesp for my anemia management costs $[X] per month out of pocket. Do you have information on manufacturer patient assistance programs? Can you help me apply for drug cost assistance?",
+        escalation: "EPO drugs have significant patient assistance programs - facilities should help access."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Medicare ESRD Entitlement: Medicare covers dialysis for ESRD after 3-month waiting period regardless of age",
+        "Medicare Secondary Payer: 30-month coordination period with private insurance",
+        "ESRD Treatment Choices Model: New payment model incentivizing home dialysis and transplant"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 290: Dialysis clinic staffing requirements and cost transparency." },
+        { state: "Ohio", protection: "Medicaid covers dialysis with patient transport assistance." },
+        { state: "Most States", protection: "Medicaid covers dialysis with varying patient cost-sharing based on income." }
+      ]
+    },
+    timeline: {
+      title: "Dialysis Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request itemized bills for treatment and drugs", "Verify Medicare enrollment if eligible", "Check insurance coordination of benefits", "Ask about facility financial assistance programs"], status: "critical" },
+        { day: "Day 8-21", actions: ["Compare charges to Medicare dialysis rates", "Apply for drug manufacturer assistance", "Research home dialysis options", "Apply for Medicaid if income-eligible"], status: "important" },
+        { day: "Day 22-45", actions: ["Submit written pricing disputes", "Apply for facility charity care", "Negotiate drug costs based on Medicare ASP", "Explore transplant evaluation if appropriate"], status: "strategic" },
+        { day: "Ongoing", actions: ["Monitor bills for ongoing accuracy", "Reapply for assistance programs annually", "Track insurance coordination period", "Stay current on payment plans"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Dialysis Costs Reduced from $4,200/month to $850/month",
+        outcome: "Patient on in-center hemodialysis was paying $4,200/month out-of-pocket (high deductible plan). Transitioned to home peritoneal dialysis reducing treatment costs 40%. Drug manufacturer assistance covered EPO costs. Medicare became primary after coordination period further reducing costs.",
+        keyTactics: "Home dialysis transition, Medicare coordination, drug manufacturer assistance, facility financial aid"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Dialysis Center Billing", action: "Request itemized bills, dispute excessive charges" },
+      { level: 2, entity: "Center Social Worker", action: "Access financial assistance, drug programs" },
+      { level: 3, entity: "Regional/Corporate Office", action: "Escalate pricing concerns for DaVita/Fresenius" },
+      { level: 4, entity: "Medicare/Medicaid", action: "Ensure proper enrollment and coordination" },
+      { level: 5, entity: "State AG/Health Department", action: "Report predatory pricing practices" }
+    ]
+  },
+  {
+    id: "home-health-bill",
+    title: "Home Health Care Bill",
+    icon: BedDouble,
+    featured: true,
+    situation: "You received home health services (nursing, therapy, aide) and are facing unexpected bills or coverage denials.",
+    insiderKnowledge: [
+      "Medicare home health has NO copay or deductible for covered services - you shouldn't owe anything",
+      "Home health must be 'skilled' to be covered - custodial care alone (bathing, dressing) isn't covered",
+      "The home health agency must be Medicare-certified for Medicare to pay",
+      "Private duty nursing is different from home health nursing - different coverage rules",
+      "If you were hospitalized first, transitional home health may be covered at 100%",
+      "Physical, occupational, and speech therapy at home should have same coverage as outpatient",
+      "Some agencies bill patients improperly for covered Medicare services",
+      "Medical equipment and supplies used during home health visits should be included",
+      "24-hour care is rarely covered - most insurance covers intermittent visits only",
+      "Long-term care insurance may cover what Medicare and health insurance don't"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "G0299", description: "Skilled nursing home health visit (Medicare)" },
+        { code: "G0300", description: "Skilled nursing per diem (Medicare)" },
+        { code: "G0151", description: "PT home health visit" },
+        { code: "G0152", description: "OT home health visit" },
+        { code: "Revenue Code 0551", description: "Skilled nursing visit" }
+      ],
+      redFlags: [
+        "Patient bill for services that Medicare should cover at 100%",
+        "Private pay rate charged when Medicare-covered services were provided",
+        "Custodial care billed at skilled care rates",
+        "Supplies billed separately when included in home health benefit",
+        "Visit charges for phone calls or administrative tasks"
+      ],
+      unbundlingSchemes: [
+        "Billing wound care supplies separately when included in nursing visit",
+        "Separate charges for travel time in addition to visit time",
+        "Billing aide services at nursing rates",
+        "Separate 'care coordination' fees for covered services"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Medicare Coverage Verification",
+        opener: "I believe Medicare should cover these home health services.",
+        script: "I'm receiving bills for home health nursing and therapy that I believe should be covered by Medicare. I'm homebound, I need skilled services, and the agency is Medicare-certified. Can you verify that claims were submitted correctly to Medicare?",
+        escalation: "Medicare home health has no copay - any patient billing for covered services is improper."
+      },
+      {
+        name: "Skilled vs. Custodial Clarification",
+        opener: "I need to understand which services are considered skilled versus custodial.",
+        script: "I'm being billed for services that seem to be custodial care (bathing, dressing assistance). However, my skilled nursing visits include wound care and medication management. Can you clarify which services should be covered as skilled care?",
+        escalation: "Skilled care includes teaching, assessment, and complex treatments - not just ADLs."
+      },
+      {
+        name: "Post-Hospitalization Coverage",
+        opener: "I received home health after a hospital stay and shouldn't have copays.",
+        script: "Following my hospitalization, I received skilled home health services. Under Medicare, home health after hospitalization should be covered at 100% with no copay. Why am I receiving a patient bill for these services?",
+        escalation: "Medicare home health has no cost-sharing for beneficiaries - push back firmly."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "Medicare Home Health Benefit: No copay, no deductible for covered home health services",
+        "Home Health Value-Based Purchasing: Quality incentives for home health agencies",
+        "Patient-Driven Groupings Model: New Medicare payment model for home health (2020+)"
+      ],
+      stateExamples: [
+        { state: "California", protection: "Medi-Cal covers additional home care for eligible patients beyond Medicare." },
+        { state: "New York", protection: "Extensive Medicaid personal care and home health coverage." },
+        { state: "Most States", protection: "Medicaid waiver programs may cover long-term home care not covered by Medicare." }
+      ]
+    },
+    timeline: {
+      title: "Home Health Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request itemized bill with service dates and codes", "Verify home health agency is Medicare-certified", "Check Medicare Summary Notice for coverage determination", "Identify if services are skilled vs. custodial"], status: "critical" },
+        { day: "Day 8-21", actions: ["Compare billed services to what was actually provided", "Verify no improper patient billing for Medicare-covered services", "Check if supplies were included or billed separately", "Review agency's Medicare certification status"], status: "important" },
+        { day: "Day 22-40", actions: ["Submit written dispute for improper billing", "File Medicare complaint if agency billed patient for covered services", "Apply for Medicaid if additional custodial care needed", "Explore long-term care insurance coverage"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on disputes and complaints", "Finalize any payment arrangements", "Document all communications", "Report billing fraud to OIG if confirmed"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Home Health Bills of $6,400 Eliminated",
+        outcome: "Patient was billed $6,400 for 8 weeks of home health nursing and PT after hip replacement. Investigation revealed agency was Medicare-certified and services were skilled care. Claims had been denied due to coding error. After correction and resubmission, Medicare paid 100% and patient owed nothing.",
+        keyTactics: "Medicare coverage verification, skilled care documentation, claim correction request"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Home Health Agency Billing", action: "Request itemized bill, verify Medicare submission" },
+      { level: 2, entity: "Medicare Administrative Contractor", action: "Verify coverage determination, request claim review" },
+      { level: 3, entity: "Medicare Ombudsman", action: "File complaint about improper patient billing" },
+      { level: 4, entity: "State Health Department", action: "Report agency licensure concerns" },
+      { level: 5, entity: "OIG Fraud Hotline", action: "Report Medicare fraud if agency billing patients for covered services" }
+    ]
+  },
+  {
+    id: "pathology-bill",
+    title: "Pathology/Biopsy Bill",
+    icon: Scan,
+    featured: true,
+    situation: "You had a biopsy or tissue sample taken and received separate, unexpectedly high bills from the pathology laboratory.",
+    insiderKnowledge: [
+      "Pathology services often involve multiple bills - hospital/surgeon for collection AND pathologist for interpretation",
+      "Pathology can be sent to out-of-network labs without your knowledge - surprise billing applies",
+      "The same pathology interpretation can cost 5-10x more at hospital-based labs vs. independent labs",
+      "Multiple 'levels' of interpretation may be billed when only one was needed",
+      "Technical vs. professional component billing can result in duplicate charges",
+      "Special stains and molecular testing add significant costs - verify medical necessity",
+      "Second opinions on pathology are covered by most insurance and sometimes identify overtreatment",
+      "Some biopsies trigger 'reflex' testing that adds costs without explicit patient consent",
+      "Academic medical center pathologists may bill differently than community labs",
+      "Frozen section (intraoperative) billing is separate from permanent section"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "88305", description: "Surgical pathology, gross and microscopic (Level IV)" },
+        { code: "88307", description: "Surgical pathology, gross and microscopic (Level V)" },
+        { code: "88342", description: "Immunohistochemistry (special stains)" },
+        { code: "88360/88361", description: "Morphometric analysis (tumor quantification)" },
+        { code: "Modifier 26", description: "Professional component only" },
+        { code: "Modifier TC", description: "Technical component only" }
+      ],
+      redFlags: [
+        "Multiple high-level pathology codes for single specimen",
+        "Both technical and professional components billed by same entity (should be global)",
+        "Numerous immunohistochemistry codes when standard H&E was sufficient",
+        "Out-of-network pathology lab when hospital/surgery center was in-network",
+        "Consultation code (88321-88325) when no second opinion was requested"
+      ],
+      unbundlingSchemes: [
+        "Billing multiple pathology levels for a single specimen type",
+        "Separate charges for 'gross examination' when bundled with microscopic",
+        "Billing both global AND component codes for same service",
+        "Separate 'specimen handling' fees when included in pathology code"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Surprise Pathology Billing",
+        opener: "I received care at an in-network facility but the pathologist was out-of-network.",
+        script: "My procedure was at [in-network facility] but the pathology was read by an out-of-network lab, resulting in a $[X] balance bill. Under the No Surprises Act, I'm protected from balance billing for ancillary services at in-network facilities. Please adjust my responsibility to in-network cost-sharing.",
+        escalation: "File No Surprises Act complaint if they refuse to adjust."
+      },
+      {
+        name: "Excessive Stain/Testing Challenge",
+        opener: "I'm questioning the medical necessity of all the tests performed.",
+        script: "I see [X] immunohistochemistry stains were performed at $[Y] each for a total of $[Z]. Can you explain the clinical necessity of each stain? Was this level of testing required for diagnosis, or was it reflexive/research-related?",
+        escalation: "Request pathologist documentation explaining necessity of each test."
+      },
+      {
+        name: "Duplicate Component Billing",
+        opener: "I may have been billed twice for the same pathology service.",
+        script: "I received bills from both the hospital lab and a pathologist for what appears to be the same pathology interpretation. Can you clarify whether these are separate services or if this represents duplicate billing for technical and professional components?",
+        escalation: "Technical and professional should either be billed globally or by separate entities."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "No Surprises Act: Pathology at in-network facility is protected from balance billing",
+        "Medicare Clinical Lab Fee Schedule: Benchmark pricing for pathology services",
+        "CLIA Requirements: Labs must meet quality standards - can dispute non-compliant lab charges"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 72: Strong protection against out-of-network pathology billing at in-network facilities." },
+        { state: "New York", protection: "Surprise bill law includes pathology services. Independent dispute resolution available." },
+        { state: "Texas", protection: "SB 1264: Comprehensive surprise billing protection includes ancillary services like pathology." }
+      ]
+    },
+    timeline: {
+      title: "Pathology Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Identify all billing entities (hospital, lab, pathologist)", "Request itemized bills with CPT codes from each", "Verify network status of pathology lab", "Check for duplicate technical/professional billing"], status: "critical" },
+        { day: "Day 8-21", actions: ["Compare pathology charges to Medicare Clinical Lab Fee Schedule", "Review for excessive or medically unnecessary testing", "Identify any unbundling issues", "Check if special stains were clinically indicated"], status: "important" },
+        { day: "Day 22-40", actions: ["File No Surprises Act complaint if out-of-network", "Submit written dispute for excessive charges", "Request pathologist documentation for each test", "Negotiate based on fair market pricing"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on disputes and complaints", "Finalize any payment arrangements", "Document all communications", "Report suspected fraud if billing issues confirmed"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Pathology Bill Reduced from $3,200 to $480",
+        outcome: "Patient had breast biopsy at in-network surgery center but pathology was sent to out-of-network lab. Filed No Surprises Act complaint for the $2,400 balance bill. Additionally, challenged 8 immunohistochemistry stains when only 3 were clinically indicated. Final bill adjusted to in-network rate for necessary services only.",
+        keyTactics: "No Surprises Act complaint, immunohistochemistry necessity challenge, Medicare fee schedule comparison"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Pathology Lab Billing", action: "Request itemized bill, dispute excessive testing" },
+      { level: 2, entity: "Referring Physician", action: "Request clarification on tests ordered" },
+      { level: 3, entity: "Insurance Company", action: "Appeal out-of-network charges, file No Surprises complaint" },
+      { level: 4, entity: "CMS No Surprises Help Desk", action: "File federal surprise billing complaint" },
+      { level: 5, entity: "State Clinical Lab Licensing Board", action: "Report billing fraud or quality concerns" }
+    ]
+  },
+  {
+    id: "outpatient-surgery-bill",
+    title: "Outpatient/Ambulatory Surgery Center Bill",
+    icon: Scissors,
+    featured: true,
+    situation: "You had surgery at an ambulatory surgery center (ASC) or hospital outpatient department and received multiple confusing bills.",
+    insiderKnowledge: [
+      "The SAME surgery costs 40-60% less at an ASC than at a hospital outpatient department",
+      "Hospital outpatient departments (HOPDs) charge facility fees that ASCs cannot charge",
+      "You'll receive separate bills from facility, surgeon, anesthesiologist - plan for 3+ bills",
+      "Surgeon's 'global period' includes some follow-up visits for 10-90 days - shouldn't be billed separately",
+      "ASC rates are capped by Medicare - use as negotiation benchmark",
+      "Some surgeries done at hospitals could have been done at lower-cost ASCs",
+      "Pre-op testing should be recent enough to use - repeat testing may be unnecessary billing",
+      "Recovery room time is included in facility fee - should not be billed separately",
+      "Surgical supplies (implants, mesh, hardware) have extreme markups at hospitals",
+      "Second opinions before elective surgery are covered and can prevent unnecessary procedures"
+    ],
+    billForensics: {
+      commonCptCodes: [
+        { code: "Surgery CPT (10000-69999)", description: "Surgical procedure codes by body system" },
+        { code: "Revenue Code 0360", description: "Operating room services" },
+        { code: "Revenue Code 0490", description: "Ambulatory surgery" },
+        { code: "G0463", description: "Hospital outpatient clinic visit (facility fee - HOPD only)" },
+        { code: "Modifier 50", description: "Bilateral procedure" }
+      ],
+      redFlags: [
+        "Hospital facility fees for outpatient surgery that could be done at ASC",
+        "Surgeon billing follow-up visits within global period (10-90 days post-op)",
+        "Separate recovery room charges when included in facility fee",
+        "Implant/device charges far exceeding fair market or Medicare rates",
+        "Pre-op testing duplicated when recent results were available"
+      ],
+      unbundlingSchemes: [
+        "Billing surgical tray/supplies separately when bundled with procedure",
+        "Separate charges for surgical dressings included in procedure",
+        "Billing wound closure separately when included in primary surgery code",
+        "Separate 'surgical observation' charges included in facility fee"
+      ]
+    },
+    negotiationPlaybooks: [
+      {
+        name: "Site of Service Pricing",
+        opener: "I'd like to understand why my surgery cost so much more than at an ASC.",
+        script: "My outpatient surgery at this hospital facility cost $[X]. The same procedure at an ambulatory surgery center costs $[Y]. I wasn't informed this hospital outpatient department would cost significantly more. Can you match competitive ASC pricing?",
+        escalation: "Use CMS ASC payment rates as benchmark - typically 40-60% of HOPD rates."
+      },
+      {
+        name: "Global Period Billing Dispute",
+        opener: "I'm being billed for follow-up visits that should be included in surgical global.",
+        script: "My surgery was performed on [date] and I'm being billed for follow-up visits on [dates]. Under Medicare's global surgery rules (which most insurers follow), routine post-op visits within [X] days are included in the surgical fee. Please remove these charges.",
+        escalation: "Check CMS global surgery days for your procedure code (10, 0, or 90 day)."
+      },
+      {
+        name: "Implant/Device Cost Challenge",
+        opener: "The charges for surgical implants seem excessive.",
+        script: "I'm being charged $[X] for [implant/hardware] when fair market pricing is $[Y]. This represents a [Z]% markup. Can you provide documentation of your acquisition cost and explain this pricing? I'd like this adjusted to a reasonable amount.",
+        escalation: "Many device manufacturers publish suggested pricing - use as benchmark."
+      }
+    ],
+    legalProtections: {
+      federal: [
+        "No Surprises Act: Protects against balance billing from out-of-network surgeons/anesthesiologists at in-network facilities",
+        "Good Faith Estimate: Uninsured patients entitled to pre-surgery cost estimate",
+        "Medicare ASC Payment: Benchmark for fair pricing of outpatient surgical procedures"
+      ],
+      stateExamples: [
+        { state: "California", protection: "AB 72: Out-of-network ancillary providers at in-network facility must accept in-network rates." },
+        { state: "New York", protection: "Surprise bill law with strong protection for outpatient surgery. IDR available." },
+        { state: "Texas", protection: "SB 1264: Comprehensive surprise billing protection for outpatient surgical services." }
+      ]
+    },
+    timeline: {
+      title: "Outpatient Surgery Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Collect all bills (facility, surgeon, anesthesia, others)", "Request itemized statement from each billing entity", "Verify network status of all providers", "Identify the global period for your surgery"], status: "critical" },
+        { day: "Day 8-21", actions: ["Compare facility charges to ASC benchmark rates", "Check for follow-up visits incorrectly billed within global period", "Verify implant/device pricing against fair market", "Identify any unbundling or duplicate charges"], status: "important" },
+        { day: "Day 22-40", actions: ["Submit written disputes for overcharges", "File No Surprises Act complaints for out-of-network balance bills", "Negotiate facility fees based on ASC rates", "Apply for financial assistance if needed"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on disputes", "Finalize payment arrangements", "Ensure global period visits aren't future-billed", "Document all communications"], status: "resolution" }
+      ]
+    },
+    successStories: [
+      {
+        title: "Outpatient Knee Surgery Bill Cut from $42,000 to $18,500",
+        outcome: "Patient had arthroscopic knee surgery at hospital outpatient department. Challenged $8,000 in implant charges (Medicare pays ~$2,500), identified $3,500 in post-op visits billed within 90-day global period, and negotiated facility fee based on ASC rates. Total reduction of 56%.",
+        keyTactics: "ASC rate comparison, global period enforcement, implant pricing challenge, No Surprises Act for anesthesia"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Facility Billing", action: "Request itemized bill, dispute facility fees" },
+      { level: 2, entity: "Surgeon's Billing", action: "Dispute post-op billing within global period" },
+      { level: 3, entity: "Insurance Company", action: "Appeal, request out-of-network protection" },
+      { level: 4, entity: "CMS No Surprises Help Desk", action: "File surprise billing complaint" },
+      { level: 5, entity: "State AG/Insurance Commissioner", action: "Report pricing practices, surprise billing violations" }
     ]
   }
 ];

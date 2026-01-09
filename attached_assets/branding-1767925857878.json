@@ -1,0 +1,93 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "OpenAI Sans",
+      "count": 132
+    },
+    {
+      "family": "sans-serif",
+      "count": 132
+    }
+  ],
+  "colors": {
+    "primary": "#C9D1D9",
+    "accent": "#9CA3AF",
+    "background": "#FFFFFF",
+    "textPrimary": "#000000",
+    "link": "#9CA3AF"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "OpenAI Sans",
+      "heading": "OpenAI Sans"
+    },
+    "fontStacks": {
+      "body": [
+        "OpenAI Sans",
+        "sans-serif"
+      ],
+      "heading": [
+        "OpenAI Sans",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "OpenAI Sans",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "64px",
+      "h2": "30px",
+      "body": "14px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "6px"
+  },
+  "components": {
+    "input": {
+      "background": "transparent",
+      "textColor": "#000000",
+      "borderColor": null,
+      "borderRadius": "9999px",
+      "borderRadiusCorners": {
+        "topLeft": "9999px",
+        "topRight": "9999px",
+        "bottomRight": "9999px",
+        "bottomLeft": "9999px"
+      },
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "File saved at: attached_assets/logo.svg",
+    "favicon": "File saved at: attached_assets/favicon.ico",
+    "ogImage": "File saved at: attached_assets/ogImage.png"
+  },
+  "__framework_hints": [],
+  "__llm_logo_reasoning": {
+    "selectedIndex": 1,
+    "reasoning": "Strong indicators: header logo linking to homepage, header location, visible, top-left position, reasonable size, SVG format. Score: 103 (clear winner by 25 points)",
+    "confidence": 0.9
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "secondary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "confidence": 0
+  },
+  "confidence": {
+    "buttons": 0,
+    "colors": 0,
+    "overall": 0
+  }
+}
