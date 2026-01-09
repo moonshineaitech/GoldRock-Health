@@ -35,40 +35,52 @@ interface Message {
 
 const quickPrompts = [
   {
+    icon: Heart,
+    title: "Childbirth Bill in Collections",
+    prompt: "My hospital bill for childbirth is in collections. It's $30,000+. What are my options? Can I apply for charity care even now? How do I negotiate this down?",
+    color: "from-pink-500 to-rose-600"
+  },
+  {
     icon: AlertTriangle,
-    title: "Collector Just Called",
-    prompt: "A debt collector just called me about a medical bill. What should I say and NOT say? Give me step-by-step guidance.",
+    title: "Lost Insurance - Baby Bill",
+    prompt: "I lost my insurance during pregnancy and now have a massive childbirth bill in collections. Can I get retroactive COBRA or Medicaid? What should I do?",
     color: "from-red-500 to-rose-600"
+  },
+  {
+    icon: Shield,
+    title: "Back on Insurance Now",
+    prompt: "I was uninsured when I had my baby but now I have insurance again. The old bill is in collections. Can my new insurance help? What about charity care?",
+    color: "from-teal-500 to-emerald-600"
   },
   {
     icon: FileText,
     title: "Debt Validation Letter",
-    prompt: "Write me a debt validation letter template I can customize. I want to request proof they can legally collect this debt.",
+    prompt: "Write me a debt validation letter template for my childbirth bill that's in collections. I want to request proof they can legally collect this debt.",
     color: "from-blue-500 to-indigo-600"
   },
   {
     icon: DollarSign,
     title: "Negotiate Settlement",
-    prompt: "How do I negotiate a settlement on medical debt? What percentage should I offer and how do I get it in writing?",
+    prompt: "How do I negotiate a settlement on medical debt in collections? What percentage should I offer and how do I get pay-for-delete in writing?",
     color: "from-emerald-500 to-teal-600"
   },
   {
     icon: Scale,
-    title: "Lawsuit Threat",
-    prompt: "A collector is threatening to sue me. Is this real? What are my options and defenses?",
+    title: "Collector Tactics",
+    prompt: "A debt collector keeps calling about my medical bill and threatening to sue. What should I say? What are my rights? How do I stop the harassment?",
     color: "from-purple-500 to-violet-600"
   },
   {
-    icon: Shield,
-    title: "Statute of Limitations",
-    prompt: "How do I check if my debt is too old to collect? What's the statute of limitations for medical debt?",
+    icon: Lightbulb,
+    title: "Charity Care Application",
+    prompt: "How do I apply for hospital charity care for a bill that's already in collections? Can they recall the debt? What documentation do I need?",
     color: "from-amber-500 to-orange-600"
   },
   {
     icon: CreditCard,
-    title: "Pay-for-Delete",
-    prompt: "Explain pay-for-delete agreements. How do I get the collector to remove this from my credit report?",
-    color: "from-pink-500 to-rose-600"
+    title: "Credit Report Impact",
+    prompt: "Medical debt is on my credit report. I heard the rules changed - does medical debt under $500 still show? How do I get pay-for-delete?",
+    color: "from-violet-500 to-purple-600"
   }
 ];
 

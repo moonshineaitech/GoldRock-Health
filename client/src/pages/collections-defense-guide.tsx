@@ -289,6 +289,125 @@ Sincerely,
         }
       }
     },
+    inCollectionsDefense: {
+      title: "Your Bill is ALREADY in Collections - What to Do NOW",
+      urgentActions: [
+        {
+          priority: "IMMEDIATE",
+          action: "Send Debt Validation Letter",
+          why: "You have 30 days from first contact. This LEGALLY freezes collection activity until they validate.",
+          script: "Send certified mail: 'Under the FDCPA 15 U.S.C. § 1692g, I dispute this debt and demand validation. Provide: 1) Itemized bill with CPT codes, 2) Proof of assignment from [Hospital], 3) Your license to collect in [State]. Cease all contact until validated.'"
+        },
+        {
+          priority: "CRITICAL",
+          action: "Do NOT Acknowledge the Debt on Phone Calls",
+          why: "Verbal acknowledgment can restart statute of limitations and weaken your negotiating position.",
+          script: "If they call, say ONLY: 'I am disputing this debt. Please communicate in writing only. I do not acknowledge this debt.' Then hang up."
+        },
+        {
+          priority: "URGENT",
+          action: "Request Recall to Hospital",
+          why: "Hospitals CAN and DO recall debts from collections - especially for charity care applications.",
+          script: "Call hospital billing: 'My childbirth account [number] was sent to [collection agency]. I'm applying for charity care and request you recall this account while my application is reviewed. Under ACA 501(r), you must consider charity care before collection.'"
+        }
+      ],
+      collectorTactics: {
+        title: "Debt Collector Tricks to Watch For",
+        tricks: [
+          { 
+            tactic: "Pressure to pay 'something now'", 
+            reality: "Any payment restarts the statute of limitations in many states. NEVER pay without written agreement.",
+            response: "I will not make any payment until I receive a written settlement agreement with pay-for-delete terms."
+          },
+          { 
+            tactic: "'This is your last chance before we sue'", 
+            reality: "Lawsuits are expensive. Most collectors never sue. This is usually a bluff.",
+            response: "If you're threatening legal action, please provide that in writing so I can forward it to my attorney."
+          },
+          { 
+            tactic: "Offering a 'discount' of 50%", 
+            reality: "They paid 4-7 cents on the dollar. A 50% discount is still a 600% profit for them.",
+            response: "Given the age and disputed nature of this account, I'm prepared to offer [15-25%] as a full settlement."
+          },
+          { 
+            tactic: "Calling at odd hours or calling family", 
+            reality: "Both are FDCPA violations - they can only call 8am-9pm and cannot discuss your debt with others.",
+            response: "Document the violation. Say: 'This call is a violation of the FDCPA. I'm documenting this for my formal complaint.'"
+          },
+          { 
+            tactic: "'We can't do pay-for-delete'", 
+            reality: "They absolutely can. They just don't want to. Push back or escalate to supervisor.",
+            response: "I know pay-for-delete is possible. If you can't authorize it, please transfer me to someone who can."
+          }
+        ]
+      },
+      negotiationLeverage: {
+        title: "Your Leverage Points for Childbirth Debt",
+        points: [
+          {
+            leverage: "Billing Errors Are Almost Guaranteed",
+            power: "HIGH",
+            explanation: "Childbirth bills have the highest error rate in healthcare. Document every error and use them to dispute the total amount."
+          },
+          {
+            leverage: "Charity Care Was Not Offered",
+            power: "HIGH",
+            explanation: "If you weren't screened for financial assistance before collections, this is an ACA violation. Threaten complaints to IRS and state AG."
+          },
+          {
+            leverage: "Collector Paid Pennies for Your Debt",
+            power: "MEDIUM",
+            explanation: "They bought your $30,000 debt for $1,200-$2,100. Even a $5,000 payment is 300%+ profit. Use this knowledge."
+          },
+          {
+            leverage: "Time is on Your Side",
+            power: "MEDIUM",
+            explanation: "Statute of limitations (3-6 years) means they have limited time to sue. After SOL, they cannot legally collect via court."
+          },
+          {
+            leverage: "Credit Reporting Rules Changed",
+            power: "HIGH",
+            explanation: "Medical debt under $500 cannot be reported. All medical debt waits 1 year. Paid medical debt must be removed."
+          }
+        ]
+      },
+      settlementRoadmap: {
+        title: "Step-by-Step Settlement Process",
+        steps: [
+          {
+            step: 1,
+            action: "Calculate Your Opening Offer",
+            formula: "Start at 15-20% of the original bill. For a $30,000 childbirth bill, offer $4,500-$6,000 initially.",
+            rationale: "They paid $1,200-$2,100 for it. Your offer gives them 300-400% profit."
+          },
+          {
+            step: 2,
+            action: "Make Initial Contact in Writing",
+            template: "I'm willing to settle account [#] for $[AMOUNT] as payment in full. This offer is contingent on: 1) Written agreement before payment, 2) Deletion from all credit bureaus within 30 days, 3) Zero-balance letter provided upon payment. This offer expires in 15 days."
+          },
+          {
+            step: 3,
+            action: "Expect Counter-Offer at 40-50%",
+            response: "Their counter is still too high. Counter at 25-30%. Say: 'Given the documented billing errors and my financial situation, the highest I can go is [25-30%].'"
+          },
+          {
+            step: 4,
+            action: "Hold Firm - Timing Matters",
+            tip: "Call on the last day of the month or quarter. Collectors have quotas and are more flexible when trying to close accounts."
+          },
+          {
+            step: 5,
+            action: "Get WRITTEN Agreement BEFORE Payment",
+            warning: "NEVER pay based on verbal promise. Require written agreement signed by collector specifying: exact amount, that payment is 'full settlement', credit bureau deletion, timeline."
+          },
+          {
+            step: 6,
+            action: "Pay with Traceable Method",
+            method: "Use cashier's check or money order. NEVER give them access to your bank account. Keep all records for 7 years."
+          }
+        ]
+      }
+    },
     successStories: [
       {
         title: "Sarah's $47,000 C-Section Bill",
@@ -605,6 +724,95 @@ cc: [Your Attorney, if any]
     Department of Labor [optional]`
       }
     },
+    inCollectionsDefense: {
+      title: "Your Childbirth Bill is in Collections After Insurance Termination - What to Do NOW",
+      urgentActions: [
+        {
+          priority: "CHECK FIRST",
+          action: "Verify COBRA Deadline Status",
+          why: "You have 60 days from termination OR notice (whichever is later). If still within window, ELECT COBRA IMMEDIATELY.",
+          script: "Even if unsure, elect COBRA now. Say: 'I'm electing COBRA retroactive to [termination date]. Please send confirmation and premium amount. I need this processed immediately.'"
+        },
+        {
+          priority: "IMMEDIATE",
+          action: "Demand Collector Stop Activity While Dispute Active",
+          why: "Active coverage disputes and pending appeals mean they should pause collection.",
+          script: "This debt is under active dispute. I am pursuing insurance reinstatement/COBRA election/employer liability claim. Under the FDCPA, you must note this as disputed. I'm sending written notice today. Continue collection at your legal risk."
+        },
+        {
+          priority: "CRITICAL",
+          action: "Apply for Retroactive Medicaid",
+          why: "Pregnant women qualify at higher income levels. 3 months retroactive coverage possible.",
+          script: "Call state Medicaid: 'I'm applying for retroactive Medicaid. I was pregnant and uninsured when I gave birth on [date]. I request presumptive eligibility and 3-month retroactive coverage.'"
+        }
+      ],
+      collectorTactics: {
+        title: "Special Tactics Collectors Use for Insurance-Related Debts",
+        tricks: [
+          { 
+            tactic: "'Your insurance issues aren't our problem'", 
+            reality: "Wrong. Active disputes MUST be noted. You have rights under FDCPA.",
+            response: "This debt is formally disputed due to wrongful insurance termination. Please note this dispute. Any credit reporting without noting the dispute violates the FCRA."
+          },
+          { 
+            tactic: "'The deadline for COBRA/appeals has passed'", 
+            reality: "Collectors often don't know insurance law. Verify deadlines yourself.",
+            response: "I've verified my deadlines with the insurance company directly. Please put your claim in writing so I can review with my attorney."
+          },
+          { 
+            tactic: "'Your employer won't pay - it's your responsibility'", 
+            reality: "Employer liability is a separate legal matter. Don't let collectors discourage you.",
+            response: "I'm pursuing employer liability through proper legal channels. This is not your concern. The debt remains disputed."
+          }
+        ]
+      },
+      multiPartyStrategy: {
+        title: "Negotiating When Multiple Parties Are Involved",
+        parties: [
+          {
+            party: "Hospital/Provider",
+            leverage: "Request charity care even if in collections. Hospitals can recall debt and apply assistance retroactively.",
+            script: "I'm applying for charity care. Please recall this account from [collector] while my application is reviewed. I understand this is required under ACA 501(r)."
+          },
+          {
+            party: "Former Employer",
+            leverage: "If coverage terminated due to employer error, they may pay the bill to avoid lawsuit.",
+            script: "My health insurance was terminated due to [employer's error]. I have $[amount] in medical bills as a result. I'm requesting you make me whole. Otherwise, I will pursue legal action for ERISA/FMLA violations."
+          },
+          {
+            party: "Insurance Company",
+            leverage: "If termination was improper or not properly notified, demand retroactive reinstatement.",
+            script: "My coverage was terminated without proper notification as required by law. I'm filing a formal grievance and requesting retroactive reinstatement to [date]. I'm also filing a complaint with the state insurance commissioner."
+          },
+          {
+            party: "Collections Agency",
+            leverage: "With pending disputes, you have significant leverage to settle for pennies.",
+            script: "This account is under active dispute with pending insurance reinstatement and employer liability claims. Given the uncertainty, I'm prepared to settle for [10-20%] while preserving my rights to pursue other parties."
+          }
+        ]
+      },
+      settlementWhileDisputing: {
+        title: "How to Settle Collections While Pursuing Other Remedies",
+        strategy: "You can negotiate with collections while also pursuing COBRA, Medicaid, or employer liability. If you get coverage restored, you get a refund or credit. If not, you've limited your loss.",
+        steps: [
+          {
+            step: 1,
+            action: "Get Settlement IN WRITING with Refund Clause",
+            template: "Any settlement I pay is contingent on the following: If retroactive insurance coverage is obtained, [collector] agrees to refund payments to the extent covered by insurance."
+          },
+          {
+            step: 2,
+            action: "Negotiate Lower Amount Due to Pending Disputes",
+            script: "Given the complexity of this case - pending COBRA election, employer liability claim, and Medicaid application - I'm offering [15-20%] to settle while I pursue these remedies. This protects both of us."
+          },
+          {
+            step: 3,
+            action: "Document Everything for Potential Reimbursement",
+            tip: "If you later get coverage restored or win employer liability claim, you can seek reimbursement for what you paid. Keep all receipts."
+          }
+        ]
+      }
+    },
     successStories: [
       {
         title: "Amanda's COBRA Victory",
@@ -676,6 +884,259 @@ cc: [Your Attorney, if any]
       { level: 3, entity: "Department of Labor", action: "File complaint for ERISA/FMLA violations" },
       { level: 4, entity: "EEOC", action: "File complaint if pregnancy discrimination suspected" },
       { level: 5, entity: "Employment Attorney", action: "Evaluate lawsuit for damages, negotiate settlement" }
+    ]
+  },
+  {
+    id: "childbirth-back-on-insurance",
+    title: "Childbirth Bill in Collections - Now Back on Insurance",
+    icon: Baby,
+    featured: true,
+    situation: "You had a baby while uninsured or during a coverage gap. The hospital bill went to collections. Now you're back on insurance (through new job, ACA marketplace, Medicaid, or spouse's plan) - but the collector is still hounding you for the old bill.",
+    insiderKnowledge: [
+      "Your NEW insurance CANNOT pay old bills from before your coverage started - but there are workarounds",
+      "If you obtained Medicaid, check if you qualify for RETROACTIVE coverage (up to 3 months back)",
+      "Some employers offer day-one coverage with no waiting period - if birth was close to start date, it might be covered",
+      "Special Enrollment Periods allow 60-day retroactive coverage in some circumstances",
+      "Hospitals can apply charity care RETROACTIVELY even after the bill went to collections",
+      "If you're now on Medicaid, some states have 'estate recovery' protections that limit what can be collected",
+      "The fact that you're now insured shows financial instability - use this as leverage for charity care",
+      "Collectors know people with new insurance are 'trying to get back on their feet' - they may settle lower",
+      "If your new coverage is through the same employer who dropped you, explore employer liability",
+      "ACA marketplace plans have income-based subsidies - if you qualified for subsidies, you might qualify for hospital charity care too"
+    ],
+    coverageAnalysis: {
+      title: "Can Your Current Insurance Help?",
+      scenarios: [
+        {
+          scenario: "You Got Medicaid After Birth",
+          canHelp: true,
+          explanation: "Medicaid can cover medical bills retroactively for 3 months before your application. If your birth was within that window, apply immediately.",
+          action: "Contact Medicaid and request retroactive coverage for your delivery date. Even if denied, this creates documentation for charity care."
+        },
+        {
+          scenario: "You Got New Job with Insurance",
+          canHelp: "Maybe",
+          explanation: "Standard plans only cover services AFTER effective date. BUT: If effective date is close to birth, if employer has day-one coverage, or if there was a coverage dispute, there may be options.",
+          action: "Request your plan documents. Check the 'effective date' and any 'prior coverage' provisions. Ask HR about retroactive coverage options."
+        },
+        {
+          scenario: "You Got ACA Marketplace Plan",
+          canHelp: "Limited",
+          explanation: "ACA plans generally don't cover pre-enrollment services. However, if you had a Special Enrollment Period within 60 days of losing coverage, you may have retroactive rights.",
+          action: "Review your enrollment. If it was a Special Enrollment triggered by job loss, the coverage may be effective from the date you lost prior coverage."
+        },
+        {
+          scenario: "You Got on Spouse's Plan (Qualifying Life Event)",
+          canHelp: "Maybe",
+          explanation: "Joining spouse's plan after birth or marriage is a Qualifying Life Event with potential for backdated coverage.",
+          action: "Contact the spouse's HR and insurance. Ask if coverage can be backdated to the Qualifying Life Event date."
+        }
+      ]
+    },
+    charityCarePath: {
+      title: "Charity Care is Your Best Option (Even Now)",
+      keyPoint: "Being previously uninsured and now getting back on your feet is EXACTLY the situation charity care programs are designed for.",
+      steps: [
+        {
+          step: 1,
+          action: "Document Your Coverage Gap",
+          details: "Gather proof of your uninsured period (job loss letter, insurance termination notice, etc.). This supports your hardship claim."
+        },
+        {
+          step: 2,
+          action: "Apply for Hospital Charity Care",
+          details: "Contact the hospital's billing department (NOT collections). Request charity care application. Most hospitals must provide 100% charity care at 200% FPL.",
+          script: "I'm calling about account [number] which is now with [collector]. I was uninsured during my childbirth due to [reason]. I'm now back on insurance and trying to get back on my feet. I'd like to apply for retroactive charity care/financial assistance."
+        },
+        {
+          step: 3,
+          action: "Request Debt Recall from Collections",
+          details: "When you apply for charity care, request that the hospital recall the debt from the collector while your application is reviewed.",
+          script: "I understand my account is with [collector]. Under ACA 501(r), I'm requesting you recall this account while my charity care application is reviewed. The hospital must screen for financial assistance before pursuing extraordinary collection actions."
+        },
+        {
+          step: 4,
+          action: "Include All Relevant Documentation",
+          details: "Provide: proof of prior uninsured status, current income, proof of new coverage (shows you're stabilizing), any unemployment/hardship letters."
+        }
+      ]
+    },
+    negotiationPlaybooks: {
+      withHospital: {
+        title: "Hospital Negotiation - Returning Patient Leverage",
+        approach: "Hospitals want patients with new insurance to return for future care. Use this as leverage.",
+        script: "I'm calling about account [number] for childbirth services. I was uninsured at that time due to [reason]. I'm now insured through [new plan] and am establishing myself as a patient at [hospital/different hospital]. I'd like to resolve this old account. I'm applying for charity care and asking for the debt to be recalled from collections for review."
+      },
+      withCollections: {
+        title: "Collections Negotiation - Financial Turnaround Story",
+        approach: "Frame yourself as someone who hit hard times and is rebuilding. Collectors understand this and may settle lower.",
+        initialScript: "I'm calling about account [number]. This debt is from when I was uninsured during a difficult period. I'm now back on insurance and trying to rebuild my finances. I can't pay the full amount, but I want to resolve this. What can you accept as a settlement?",
+        settlementScript: "I'm prepared to settle this account for [15-25% of balance]. I can pay this amount today if we can agree on pay-for-delete terms. I'll need the agreement in writing before payment.",
+        hardballScript: "I've also applied for hospital charity care, which could eliminate this debt entirely. I'm offering you [amount] as an alternative to getting nothing if the charity care is approved. This is a one-time offer."
+      }
+    },
+    legalProtections: {
+      federal: [
+        { law: "ACA Section 501(r)", protection: "Hospitals must screen for charity care eligibility before sending to collections. If they didn't, this is a violation.", enforcement: "File complaint with IRS and state attorney general" },
+        { law: "Fair Debt Collection Practices Act", protection: "Collectors cannot harass, lie, or use unfair practices. You can dispute the debt and demand validation.", enforcement: "CFPB complaint, potential FDCPA lawsuit" },
+        { law: "Fair Credit Reporting Act", protection: "Medical debt under $500 not reportable. All medical debt waits 1 year. Paid medical debt removed.", enforcement: "Credit bureau disputes" }
+      ]
+    },
+    timeline: {
+      title: "Action Plan: You're Back on Insurance",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Check if current insurance has any retroactive coverage options", "Apply for Medicaid retroactive coverage if income-eligible", "Send debt validation letter to collector", "Request itemized bill from hospital"], status: "critical" },
+        { day: "Day 8-21", actions: ["Apply for hospital charity care", "Request hospital recall debt from collections", "Gather all documentation of your coverage gap", "Research your state's medical debt protections"], status: "important" },
+        { day: "Day 22-45", actions: ["Follow up on charity care application", "If denied, appeal with additional documentation", "Begin settlement negotiations with collector if needed", "Dispute any credit bureau reporting"], status: "strategic" },
+        { day: "Day 46-90", actions: ["Finalize charity care or settlement", "Get all agreements in writing", "Verify credit bureau deletion if agreed", "Document resolution for your records"], status: "resolution" }
+      ]
+    },
+    templates: {
+      charityCareLetter: {
+        title: "Charity Care Application Letter - Previously Uninsured",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Hospital Name]
+Patient Financial Services
+[Hospital Address]
+[City, State ZIP]
+
+RE: Charity Care/Financial Assistance Application - Account #[ACCOUNT NUMBER]
+
+Dear Patient Financial Services:
+
+I am writing to request consideration for your charity care/financial assistance program for my account dated [SERVICE DATE] for maternity services.
+
+CIRCUMSTANCES:
+- At the time of my childbirth, I was uninsured due to [job loss/coverage termination/unable to afford coverage/gap between coverage]
+- My account has been sent to [COLLECTION AGENCY], but I understand you can recall it for charity care review
+- I have since obtained health insurance through [NEW SOURCE] and am working to rebuild my financial stability
+
+FINANCIAL INFORMATION:
+- Household size: [NUMBER]
+- Current annual income: $[AMOUNT]
+- I believe this qualifies me for [full/partial] charity care under your published policy
+
+REQUEST:
+1. Please send your financial assistance application and list of required documents
+2. Please recall my account from [COLLECTION AGENCY] while my application is under review
+3. Please consider retroactive charity care for this delivery
+
+Under the Affordable Care Act Section 501(r), hospitals must make reasonable efforts to determine financial assistance eligibility before pursuing collection actions.
+
+Thank you for your consideration. I can be reached at [PHONE] or [EMAIL].
+
+Sincerely,
+[Your Signature]
+[Your Printed Name]`
+      },
+      settlementLetter: {
+        title: "Settlement Offer Letter - Previously Uninsured Parent",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Collection Agency Name]
+[Agency Address]
+[City, State ZIP]
+
+RE: Settlement Offer - Account #[ACCOUNT NUMBER]
+
+To Whom It May Concern:
+
+I am writing regarding the above-referenced account for approximately $[AMOUNT] originating from [HOSPITAL NAME] for maternity services.
+
+BACKGROUND:
+This debt arose during a period when I was uninsured. Since then, I have obtained health insurance and am working to resolve outstanding debts from that difficult period.
+
+OFFER:
+I am prepared to settle this account for $[15-25% of balance] as payment in full, contingent on the following terms:
+
+1. Payment is accepted as FULL SETTLEMENT of all amounts owed
+2. [AGENCY] agrees to DELETE (not update) this account from all credit bureaus within 30 days of payment
+3. [AGENCY] provides a zero-balance letter upon payment
+4. All terms are provided IN WRITING before payment is made
+
+I have also applied for charity care with [HOSPITAL], which may result in the debt being dismissed entirely. This settlement offer represents an alternative that provides you guaranteed payment.
+
+This offer expires on [DATE - 15 days from letter date]. If I do not receive written acceptance by that date, I will pursue the charity care process exclusively.
+
+Sincerely,
+[Your Printed Name]
+[Do NOT sign - keep for your records until you receive written acceptance]`
+      }
+    },
+    successStories: [
+      {
+        title: "Maria's Charity Care Victory",
+        outcome: "$38,000 hospital bill reduced to $0",
+        strategy: "Applied for charity care 6 months after birth while in collections. Hospital recalled debt, approved 100% charity care based on income at time of delivery.",
+        timeline: "45 days from application to debt dismissal"
+      },
+      {
+        title: "The Thompsons' Medicaid Retroactive Coverage",
+        outcome: "$52,000 covered by retroactive Medicaid",
+        strategy: "Applied for Medicaid after getting new job with insurance. Qualified for retroactive coverage back to delivery month based on low income during unemployment.",
+        timeline: "3 months from application to coverage confirmation"
+      },
+      {
+        title: "David's Strategic Settlement",
+        outcome: "Settled $27,000 debt for $4,050 (15%)",
+        strategy: "Used pending charity care application as leverage. Collector accepted low settlement rather than risk getting nothing.",
+        timeline: "21 days from initial offer to settlement"
+      }
+    ],
+    inCollectionsDefense: {
+      title: "You're Back on Insurance But Collectors Won't Stop - What to Do",
+      urgentActions: [
+        {
+          priority: "FIRST",
+          action: "Check for Retroactive Coverage Options",
+          why: "Medicaid and some other plans can cover bills from BEFORE you enrolled.",
+          script: "Call your insurance: 'I enrolled on [date]. Are there any retroactive coverage provisions? I had medical bills from [delivery date] I'm hoping might be covered.'"
+        },
+        {
+          priority: "IMMEDIATE",
+          action: "Apply for Hospital Charity Care NOW",
+          why: "Even with the bill in collections, hospitals can recall it and apply charity care. Your past uninsured status qualifies you.",
+          script: "Call hospital billing: 'I have an account in collections for childbirth. I was uninsured then but have insurance now. I want to apply for retroactive charity care. Please recall my account from collections.'"
+        },
+        {
+          priority: "CRITICAL",
+          action: "Send Debt Validation to Collector",
+          why: "Buying time while pursuing charity care. This freezes collection legally.",
+          script: "Certified mail: 'I dispute this debt and request validation under the FDCPA. I am also pursuing charity care with [hospital]. Cease contact until debt is validated.'"
+        }
+      ],
+      leveragePoints: [
+        {
+          leverage: "You're Rebuilding - Hospitals Want Your Future Business",
+          explanation: "Now that you have insurance, hospitals want you as a patient. Use this as leverage for charity care.",
+          script: "I'm now insured and looking for a hospital system for my family's care. I'd like to resolve this old account and establish care here. Can we discuss charity care?"
+        },
+        {
+          leverage: "Charity Care Pending = Collector Gets Nothing",
+          explanation: "If charity care is approved, the hospital writes off the debt and the collector gets nothing. Use this as leverage.",
+          script: "I have a pending charity care application with [hospital]. If approved, you get nothing. I'm offering [15-20%] as an alternative settlement. This is your chance to collect something."
+        },
+        {
+          leverage: "Your Hardship Period is Documented",
+          explanation: "Job loss, coverage termination, pregnancy - these all support charity care eligibility.",
+          script: "I can document the circumstances that led to my uninsured status at delivery. This supports my charity care application and demonstrates why I cannot pay the full amount."
+        }
+      ]
+    },
+    expectedOutcome: "High probability of 70-100% reduction through charity care, or 75-85% reduction through settlement with pending charity care as leverage",
+    escalationPath: [
+      { level: 1, entity: "Hospital Patient Financial Services", action: "Apply for charity care, request debt recall from collections" },
+      { level: 2, entity: "Hospital Patient Advocate", action: "Escalate if charity care denied, appeal decision" },
+      { level: 3, entity: "Hospital Compliance Officer", action: "Report failure to screen for charity care before collections" },
+      { level: 4, entity: "State Attorney General", action: "File complaint for charity care violations" },
+      { level: 5, entity: "Consumer Rights Attorney", action: "Potential FDCPA claims against collector, charity care enforcement" }
     ]
   },
   {
@@ -3351,6 +3812,7 @@ export default function CollectionsDefenseGuide() {
                             )}
 
                             {/* Step by Step */}
+                            {scenario.stepByStep && (
                             <div>
                               <h4 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                                 <Target className="h-4 w-4 text-green-500" />
@@ -3400,6 +3862,7 @@ export default function CollectionsDefenseGuide() {
                                 ))}
                               </div>
                             </div>
+                            )}
 
                             {/* Expected Outcome */}
                             <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-700">
