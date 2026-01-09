@@ -133,7 +133,7 @@ export function NavigationDropdown() {
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
                 left: 'max(-1rem, calc(-100vw + 100% + 2rem))',
                 right: 'auto',
-                maxHeight: 'calc(100vh - 100px)'
+                maxHeight: 'calc(100vh - 180px)'
               }}
               initial={{ opacity: 0, scale: 0.9, y: -15, rotateX: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
@@ -154,7 +154,7 @@ export function NavigationDropdown() {
               </div>
 
               {/* Menu Items - Scrollable */}
-              <div className="py-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 180px)' }}>
+              <div className="py-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 260px)' }}>
                 {navigationItems.map((item, index) => {
                   const IconComponent = item.icon;
                   return (
