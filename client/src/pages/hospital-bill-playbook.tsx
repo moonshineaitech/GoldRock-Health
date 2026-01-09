@@ -1544,10 +1544,10 @@ export default function PreCollectionsGuide() {
                 </div>
                 <div className="flex-1">
                   <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                    Pre-Collections Bill Defense Guide
+                    Hospital Bill Playbook
                   </h1>
                   <p className="text-lg text-gray-600 dark:text-gray-400">
-                    Act NOW before your bill goes to collections. Reduce hospital bills by 40-70% with insider strategies.
+                    Act NOW before your bill goes to collections. Reduce hospital bills by 40-70% with insider strategies and step-by-step guides.
                   </p>
                 </div>
               </div>
@@ -1585,6 +1585,59 @@ export default function PreCollectionsGuide() {
               </div>
             </motion.div>
 
+            {/* Mobile Quick Actions - Fast access on mobile */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="md:hidden mb-6"
+            >
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-lg">
+                <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-amber-500" />
+                  Quick Actions - Start Here
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-emerald-200 dark:border-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                    onClick={() => setShowChatbot(true)}
+                  >
+                    <MessageSquare className="h-5 w-5 text-emerald-600" />
+                    <span>AI Help</span>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-purple-200 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                    onClick={() => document.getElementById('insider-secrets')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    <Lightbulb className="h-5 w-5 text-purple-600" />
+                    <span>Secrets</span>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    onClick={() => document.getElementById('bill-scenarios')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    <Receipt className="h-5 w-5 text-blue-600" />
+                    <span>My Bill Type</span>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-amber-200 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                    onClick={() => document.getElementById('first-steps')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    <FileText className="h-5 w-5 text-amber-600" />
+                    <span>First Steps</span>
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+
             {/* AI Chatbot Toggle */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -1613,8 +1666,58 @@ export default function PreCollectionsGuide() {
               )}
             </motion.div>
 
+            {/* First Steps Section */}
+            <motion.div
+              id="first-steps"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="mb-10"
+            >
+              <Card className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-blue-200 dark:border-blue-700">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-3 text-blue-800 dark:text-blue-300">
+                    <Target className="h-6 w-6" />
+                    Your First 3 Steps (Do These TODAY)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Request Itemized Bill</h3>
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Call billing and say: "I need an itemized bill with CPT codes for all charges." This reveals errors.</p>
+                    </div>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Ask About Financial Assistance</h3>
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Say: "Do you have a financial assistance or charity care application?" Apply even if you think you won't qualify.</p>
+                    </div>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Ask About Discounts</h3>
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Say: "What is your prompt-pay or cash-pay discount if I pay today/this month?" Get it in writing before paying.</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg border border-amber-200 dark:border-amber-700">
+                    <p className="text-xs text-amber-800 dark:text-amber-300 font-medium flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4" />
+                      IMPORTANT: Never pay anything until you've received and reviewed the itemized bill. Partial payments can waive your dispute rights.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
             {/* Insider Secrets Section */}
             <motion.div
+              id="insider-secrets"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -1624,7 +1727,7 @@ export default function PreCollectionsGuide() {
                 <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
                   <Lightbulb className="h-6 w-6 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">12 Insider Secrets Hospitals Don't Want You to Know</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{insiderSecrets.length} Insider Secrets Hospitals Don't Want You to Know</h2>
               </div>
 
               <div className="grid gap-4">
@@ -1670,6 +1773,7 @@ export default function PreCollectionsGuide() {
 
             {/* Scenarios Section */}
             <motion.div
+              id="bill-scenarios"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -1679,7 +1783,10 @@ export default function PreCollectionsGuide() {
                 <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg">
                   <Target className="h-6 w-6 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Choose Your Bill Type for Specific Guidance</h2>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Choose Your Bill Type for Specific Guidance</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Tap any bill type for step-by-step scripts, templates, and insider tactics</p>
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -2083,6 +2190,24 @@ export default function PreCollectionsGuide() {
             </motion.div>
           </motion.div>
         </main>
+
+        {/* Sticky Mobile Action Banner */}
+        <div className="md:hidden fixed bottom-16 left-0 right-0 bg-gradient-to-r from-emerald-600 to-green-700 text-white py-3 px-4 shadow-lg z-40">
+          <div className="flex items-center justify-between max-w-lg mx-auto">
+            <div className="flex items-center gap-2">
+              <Zap className="h-5 w-5" />
+              <span className="text-sm font-medium">Ready to reduce your bill?</span>
+            </div>
+            <Button 
+              size="sm"
+              variant="secondary"
+              className="bg-white text-emerald-700 hover:bg-gray-100 font-semibold"
+              onClick={() => setShowChatbot(true)}
+            >
+              Get AI Help
+            </Button>
+          </div>
+        </div>
 
         <MobileBottomNav />
       </div>
