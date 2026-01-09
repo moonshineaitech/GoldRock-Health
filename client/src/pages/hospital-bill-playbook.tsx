@@ -680,56 +680,706 @@ Sincerely,
     id: "surgery-hospital-bill",
     title: "Surgery/Procedure Bill Just Received",
     icon: Scissors,
+    featured: true,
     situation: "You had a planned or semi-planned surgery and the bill is much higher than expected - potentially $10,000 to $100,000+. The charges are confusing and may include many providers you don't remember seeing.",
     insiderKnowledge: [
-      "Surgical bills should come with an 'operative report' that details exactly what was done - request this to verify charges",
-      "Assistant surgeon fees are the #1 phantom charge in surgery - verify an assistant was actually present",
-      "Anesthesia is often billed in 15-minute increments - verify the billed time matches your actual surgery duration",
-      "Operating room time is typically $50-150 per minute - challenge excessive OR charges",
-      "Many 'implants' and 'surgical supplies' are marked up 300-1000% over cost",
-      "Pre-op and post-op care are often 'bundled' into the surgical fee but billed separately anyway",
-      "If your surgery was outpatient but you were charged inpatient rates, this is a significant overcharge"
+      "Surgical bills should come with an 'operative report' that details exactly what was done - request this to verify every charge",
+      "Assistant surgeon fees are the #1 phantom charge in surgery - 30% of bills include assistants who weren't present",
+      "Anesthesia is billed in 15-minute increments and hospitals routinely round up by 30-60 minutes - verify against OR log",
+      "Operating room time is typically $50-200 per minute - hospitals add pre-op and post-op time that shouldn't count",
+      "Surgical 'implants' and supplies are marked up 300-1000% - a $20 mesh costs you $2,000, a $100 screw costs $5,000",
+      "Pre-op and post-op care are 'globally bundled' into surgical fees but billed separately anyway - this is double billing",
+      "If your surgery was outpatient but you were charged inpatient rates, you're paying 2-4x what you should",
+      "The surgical 'tray' or 'pack' charge is a catch-all for supplies - often $1,000-5,000 for items worth $100-500",
+      "Multiple surgeons may appear on your bill even if only one operated - 'co-surgeon' and 'assistant surgeon' codes are commonly abused",
+      "Recovery room charges should be 1-2 hours for most surgeries - challenge anything over 3 hours unless medically justified",
+      "Surgical pathology fees (tissue examination) are often charged even when no tissue was sent for analysis",
+      "Hospital-employed surgeons still generate separate 'professional fees' - you'll get at least 2 bills for every surgery"
+    ],
+    billForensics: {
+      title: "Common Surgical Billing Errors to Challenge NOW",
+      redFlags: [
+        { code: "80061/82985", description: "Assistant surgeon - Verify an assistant was actually present AND necessary. Many simple surgeries don't require assistants", amount: "$2,000-8,000" },
+        { code: "00100-01999", description: "Anesthesia base units + time - Compare billed time to actual OR log. Dispute any time over actual procedure + 15 min", amount: "$1,500-10,000" },
+        { code: "99356/99357", description: "Prolonged surgical services - Often billed when surgery ran slightly longer, even if not unusually complex", amount: "$500-1,500" },
+        { code: "C1713-C2699", description: "Implant codes - Request itemized list and compare to manufacturer prices. Challenge markups over 200%", amount: "$2,000-50,000" },
+        { code: "99213-99215", description: "Pre-op evaluation - Often billed separately when it should be included in surgical global period", amount: "$150-400" },
+        { code: "88305/88307", description: "Surgical pathology - Verify tissue was actually sent for analysis. Common phantom charge", amount: "$300-1,500" },
+        { code: "49083/49084", description: "Drain placement - Sometimes billed when no drain was placed or was routine part of procedure", amount: "$500-2,000" },
+        { code: "99024", description: "Post-op visits - All follow-up for 90 days is included in surgical fee. Separate billing is fraud", amount: "$150-500 each" }
+      ],
+      unbundlingSchemes: [
+        "Surgical prep, draping, and positioning billed separately from operating room fee",
+        "Anesthesia monitoring, medication administration, and recovery billed as 3 charges",
+        "Surgical instruments, sutures, and 'surgical pack' all billed individually",
+        "Pre-operative evaluation billed separately when it's included in global surgical fee",
+        "Wound closure and dressing changes billed separately from the procedure",
+        "IV access and medication administration billed separately from anesthesia",
+        "Pathology 'handling' fee billed separately from pathology analysis",
+        "Post-operative admission billed when surgery was supposed to be outpatient"
+      ],
+      phantomCharges: [
+        "Second surgeon or 'surgical assistant' who wasn't in the OR",
+        "Implants or devices that weren't actually used in your procedure",
+        "Recovery room hours that exceed your actual recovery time",
+        "Physical therapy 'evaluation' you don't remember receiving",
+        "Medications administered after you were discharged",
+        "Supplies charged to your account but used for other patients",
+        "Post-operative visits within 90 days that should be free",
+        "Labs drawn 'pre-op' that were never actually performed"
+      ]
+    },
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "First Call to Hospital Billing (Within 7 Days)",
+        approach: "Establish yourself as informed and prepared to negotiate. Gather information before paying anything.",
+        script: "Hello, I'm calling about my surgery account for [DATE]. I've received bills totaling $[AMOUNT] and need several things before I can address this. First, I need the complete itemized bill with all CPT codes for the hospital facility, surgeon, anesthesiologist, and any other providers. Second, I need a copy of the operative report showing exactly what procedures were performed. Third, I'd like information about your financial assistance programs. Can you also tell me who I should speak with about billing questions?",
+        followUp: "If they push for payment: 'I need to review the operative report against the charges first. There appear to be discrepancies I need to understand before making any payment commitment.'"
+      },
+      operativeReportReview: {
+        title: "Reviewing the Operative Report Against Charges",
+        approach: "The operative report is your truth document. Every charge should match what's documented in that report.",
+        script: "I've compared my operative report to my itemized bill and found discrepancies. The operative report shows the procedure took [X] minutes, but I'm being billed for [Y] minutes of OR time. The report doesn't mention an assistant surgeon, but there's a charge for one. The report lists [specific items], but I'm being charged for [different items]. Can you explain these discrepancies?",
+        escalationScript: "If they can't explain: 'I need to speak with your billing compliance department. These charges don't match the medical documentation, which is a serious concern I need addressed before paying.'"
+      },
+      anesthesiaDispute: {
+        title: "Challenging Anesthesia Time and Charges",
+        approach: "Anesthesia billing is based on time and complexity. Both are often inflated.",
+        script: "I'm reviewing my anesthesia charges and have concerns. According to the OR log, my procedure took [X] minutes from incision to close. I'm being billed for [Y] minutes of anesthesia time. Also, the base unit assignment seems high for what was a [routine/straightforward] procedure. Can you explain how the time and complexity were determined?",
+        followUp: "Request the anesthesia record showing exact start and stop times. Compare to surgical record. Any discrepancy is disputable."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation After Disputes",
+        approach: "Once errors are addressed, negotiate a lump-sum settlement.",
+        script: "After reviewing the corrected charges, the balance is $[AMOUNT]. I'm prepared to settle this account today for $[40-50% of balance]. I've researched Medicare reimbursement rates for these procedures, which total $[AMOUNT]. My offer of $[YOUR OFFER] represents [X]% above Medicare rates, which is a fair market value. Can we close this account with a one-time payment?",
+        escalationScript: "If they refuse: 'I understand. Please note that if we can't reach an agreement, I'll need to request a formal review by your billing compliance office and potentially file a complaint with the state medical board regarding the documentation discrepancies we've discussed.'"
+      }
+    },
+    legalProtections: {
+      federal: [
+        { law: "No Surprises Act (2022)", protection: "Protects you from balance billing by out-of-network surgeons, anesthesiologists, and other specialists at in-network facilities", enforcement: "File complaint at cms.gov/nosurprises or call 1-800-985-3059" },
+        { law: "Hospital Price Transparency Rule", protection: "Hospitals must publish negotiated rates and self-pay prices for surgical procedures. Cannot charge more than published prices", enforcement: "File complaint at hospitalpricetransparency@cms.hhs.gov" },
+        { law: "False Claims Act", protection: "Billing for services not rendered, upcoding, and unbundling can constitute healthcare fraud", enforcement: "Report concerns to OIG hotline 1-800-HHS-TIPS" },
+        { law: "Good Faith Estimate (Uninsured)", protection: "If uninsured or self-paying, you have the right to a Good Faith Estimate before surgery. Actual charges exceeding estimate by $400+ are disputable", enforcement: "Initiate patient-provider dispute resolution process" }
+      ],
+      stateExamples: [
+        { state: "California", protection: "Hospitals must provide itemized bills within 10 days. Cannot charge uninsured more than insured rates. Strong charity care requirements." },
+        { state: "New York", protection: "Surprise Bill Law covers all surgical services by out-of-network providers at in-network facilities. Patient held harmless." },
+        { state: "Texas", protection: "Out-of-network surgical providers cannot balance bill for amounts over in-network cost sharing. Mediation available." },
+        { state: "Florida", protection: "Must provide written financial estimate for non-emergency surgeries. Hospital liens limited to actual charges, not inflated rates." },
+        { state: "Colorado", protection: "Hospital Discounted Care Program applies to surgical bills. Billing disputes can be reported to Division of Insurance." },
+        { state: "New Jersey", protection: "All hospital-based physicians treated as in-network if the hospital is in-network. No balance billing for surgical teams." }
+      ]
+    },
+    timeline: {
+      title: "Post-Surgery Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Open all bills but DON'T pay anything yet", "Request operative report from surgeon's office", "Request OR log showing exact procedure times", "Request itemized bills with CPT codes from ALL providers"], status: "critical" },
+        { day: "Day 8-21", actions: ["Compare operative report to all charges line by line", "Identify any assistant surgeon, extended time, or implant charges to verify", "Research Medicare rates for your procedure codes", "Document all discrepancies found"], status: "important" },
+        { day: "Day 22-45", actions: ["Submit written disputes for specific billing errors", "Apply for financial assistance programs", "Request prompt pay discount quotes from each provider", "File No Surprises Act complaint if any provider was out-of-network"], status: "strategic" },
+        { day: "Day 46-60", actions: ["Follow up on all disputes and applications", "Begin settlement negotiations with corrected balances", "Set up 0% interest payment plans if needed", "Get all agreements in writing before paying"], status: "resolution" }
+      ]
+    },
+    templates: {
+      operativeReportRequest: {
+        title: "Operative Report Request Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Surgeon Name/Practice]
+[Address]
+[City, State ZIP]
+
+RE: Medical Records Request - Operative Report
+Patient: [YOUR NAME]
+Date of Surgery: [DATE]
+Procedure: [PROCEDURE NAME]
+
+To Whom It May Concern:
+
+I am requesting a copy of my complete operative report for the surgical procedure performed on [DATE]. Under HIPAA, I am entitled to receive this documentation within 30 days.
+
+Please provide:
+1. Complete operative report/surgical note
+2. Anesthesia record with start/stop times
+3. Recovery room/PACU notes
+4. List of all implants, devices, or supplies used
+
+I need this documentation to review my billing statements for accuracy. Please send to the address above or email to [EMAIL].
+
+Sincerely,
+[Your Signature]
+[Your Name]
+[Phone Number]`
+      },
+      surgicalBillingDispute: {
+        title: "Surgical Bill Dispute Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Hospital Name]
+Patient Billing Department
+[Hospital Address]
+[City, State ZIP]
+
+RE: Formal Billing Dispute - Surgery Account #[ACCOUNT NUMBER]
+Date of Surgery: [DATE]
+Billed Amount: $[AMOUNT]
+
+SENT VIA CERTIFIED MAIL, RETURN RECEIPT REQUESTED
+
+To Whom It May Concern:
+
+After reviewing my operative report against my itemized bill, I am formally disputing the following charges:
+
+1. ASSISTANT SURGEON CHARGES - $[AMOUNT]
+   My operative report does not document an assistant surgeon. Please provide documentation showing an assistant was present and medically necessary, or remove this charge.
+
+2. OPERATING ROOM TIME - $[AMOUNT]
+   The operative report shows the procedure lasted [X] minutes. I am being billed for [Y] minutes of OR time. Please adjust to reflect actual documented time.
+
+3. [SPECIFIC CHARGE] - $[AMOUNT]
+   [REASON FOR DISPUTE]
+
+Total Disputed Amount: $[TOTAL]
+
+I am requesting:
+1. Billing compliance review of these charges
+2. Adjustment of charges to match operative documentation
+3. Corrected itemized bill
+4. Written response within 30 days
+
+If these charges cannot be justified against the medical documentation, they must be removed. I remain willing to pay legitimate, documented charges.
+
+Sincerely,
+[Your Signature]
+[Your Name]
+[Phone Number]
+
+Enclosures:
+- Copy of operative report
+- Highlighted itemized bill showing disputed charges`
+      }
+    },
+    calculators: {
+      charityCareLikelihood: {
+        description: "2024 Federal Poverty Level guidelines for charity care eligibility:",
+        fplThresholds2024: {
+          "1": 15060,
+          "2": 20440,
+          "3": 25820,
+          "4": 31200,
+          "5": 36580,
+          "6": 41960
+        }
+      },
+      negotiationTargets: {
+        description: "Typical negotiation outcomes for surgical bills:",
+        targets: [
+          { scenario: "Cash pay / Uninsured", discount: "40-65% off", typical: "Pay 35-60% of billed charges" },
+          { scenario: "Documentation discrepancies found", discount: "Errors removed + 15-25%", typical: "Pay corrected amount minus negotiated discount" },
+          { scenario: "High deductible insurance", discount: "15-35% off patient responsibility", typical: "Pay 65-85% of your portion" },
+          { scenario: "Medicare rate comparison", discount: "Pay 100-150% of Medicare", typical: "Often 50-70% off chargemaster rates" }
+        ]
+      }
+    },
+    successStories: [
+      { 
+        title: "Knee Surgery Bill Reduced from $67,000 to $18,500",
+        outcome: "Patient requested operative report and found: no assistant surgeon despite $6,500 charge, OR time billed 45 min over actual, phantom implant charges. After dispute and financial assistance, final payment was 72% off.",
+        keyTactics: "Operative report comparison, OR log review, implant verification, escalation to compliance officer"
+      },
+      {
+        title: "Gallbladder Surgery Cut from $42,000 to $11,200",
+        outcome: "Outpatient procedure was billed at inpatient rates. Patient caught coding error and insisted on correction. Combined with self-pay discount, saved over $30,000.",
+        keyTactics: "Verified outpatient status, challenged inpatient billing codes, negotiated Medicare-plus rates"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Hospital Patient Billing", action: "Request itemized bill, identify discrepancies" },
+      { level: 2, entity: "Surgeon's Billing Office", action: "Request operative report, compare to charges" },
+      { level: 3, entity: "Patient Financial Counselor", action: "Dispute specific charges, apply for assistance" },
+      { level: 4, entity: "Billing Compliance Officer", action: "Escalate documentation mismatches, request audit" },
+      { level: 5, entity: "Hospital CEO / CFO", action: "Written complaint with documentation evidence" },
+      { level: 6, entity: "State Medical Board / Attorney General", action: "File formal complaint for billing irregularities" }
     ]
   },
   {
     id: "imaging-hospital-bill",
     title: "CT/MRI/X-Ray Imaging Bill",
     icon: Scan,
+    featured: true,
     situation: "You had diagnostic imaging (CT scan, MRI, X-ray, ultrasound) at a hospital and received a surprisingly high bill for what seemed like a quick procedure.",
     insiderKnowledge: [
-      "Hospital imaging costs 2-5x more than freestanding imaging centers for the SAME test",
-      "Hospitals often charge separate 'technical' and 'professional' fees - one for equipment, one for reading",
-      "Contrast dye for CT/MRI is often billed at extreme markups - $50 in cost billed as $500+",
-      "Multiple 'views' may be billed separately when they should be bundled",
-      "If imaging was done 'stat' or 'emergency,' you may be charged premium rates",
-      "Radiologist reading fees are often out-of-network even at in-network hospitals"
+      "Hospital imaging costs 2-5x more than freestanding imaging centers for the EXACT same test on the EXACT same machine",
+      "Hospitals charge separate 'technical' (facility/equipment) and 'professional' (radiologist reading) fees - often to different entities",
+      "Contrast dye for CT/MRI is billed at 500-1000% markup - $30 of contrast becomes $500-1,000 on your bill",
+      "Multiple 'views' or 'sequences' may be billed separately when they should be bundled into one CPT code",
+      "If imaging was done 'stat' or 'emergency,' you may be charged 50-100% premium rates - challenge if it wasn't truly urgent",
+      "The radiologist reading your scan is often out-of-network even at in-network hospitals - No Surprises Act applies",
+      "3D reconstruction, 'CAD' (computer-aided detection), and other add-ons are often billed separately and may not have been necessary",
+      "If you had the same area imaged multiple times (e.g., with and without contrast), each is billed separately - verify all were medically necessary",
+      "Guidance charges (CT-guided, ultrasound-guided) for biopsies or procedures are often billed at inflated rates",
+      "If imaging was ordered but then repeated because of 'motion artifact' or 'technical issues,' you should not pay for both"
+    ],
+    billForensics: {
+      title: "Common Imaging Billing Errors to Challenge",
+      redFlags: [
+        { code: "70553", description: "MRI Brain with/without contrast - Charged separately for with and without when one comprehensive code should apply", amount: "$2,000-6,000" },
+        { code: "74177/74178", description: "CT Abdomen/Pelvis - Separate charges for abdomen AND pelvis when combined code 74177 applies", amount: "$1,500-4,000" },
+        { code: "A9576-A9585", description: "Contrast/radiopharmaceuticals - Extreme markup on contrast dye. Compare to Medicare allowable", amount: "$200-1,500" },
+        { code: "76377", description: "3D rendering/reconstruction - Often unnecessary add-on for routine imaging", amount: "$200-800" },
+        { code: "76497/76498", description: "Unlisted CT/MRI codes - 'Unlisted' codes allow unlimited pricing. Request justification", amount: "$500-5,000" },
+        { code: "76942", description: "Ultrasound guidance - May be billed separately when included in procedure code", amount: "$300-800" },
+        { code: "71271", description: "Low-dose CT lung screening - Different code than diagnostic CT. Verify correct code used", amount: "$200-1,000" }
+      ],
+      unbundlingSchemes: [
+        "Technical and professional components billed as two full charges instead of TC/26 modifiers",
+        "With and without contrast billed as two separate exams instead of combined code",
+        "Each sequence of MRI billed separately instead of comprehensive code",
+        "Left and right side imaging billed as two complete exams",
+        "3D reconstruction billed separately when included in primary imaging code",
+        "Contrast injection billed separately from contrast material cost",
+        "IV access for contrast billed separately from imaging procedure"
+      ],
+      phantomCharges: [
+        "Multiple imaging studies billed when only one was performed",
+        "Contrast dye charged but imaging was done without contrast",
+        "Radiologist reading fee for images read by AI or not formally reported",
+        "Stat/emergency fee when imaging was scheduled or non-urgent",
+        "CD/film charges when images were only provided electronically",
+        "Second read or 'wet read' not requested or delivered"
+      ]
+    },
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "First Call About Imaging Bill",
+        approach: "Imaging bills are highly negotiable because hospitals know their prices are inflated compared to independent centers.",
+        script: "I'm calling about an imaging bill for a [CT/MRI/X-ray] performed on [DATE]. The charge of $[AMOUNT] seems very high. Before I can address this, I need the itemized bill showing the technical and professional components separately, with CPT codes. I also need to understand why a hospital facility was used when freestanding imaging centers charge 70% less for the same test.",
+        followUp: "If they say it's the standard rate: 'I've researched imaging prices and your charge is [X]% above the Medicare rate and [Y]% above average market rates. I need to speak with someone about adjusting this to a reasonable amount.'"
+      },
+      radiologistDispute: {
+        title: "Out-of-Network Radiologist Challenge",
+        approach: "Radiologists are frequently out-of-network. The No Surprises Act protects you.",
+        script: "I received a separate bill from [RADIOLOGY GROUP] for $[AMOUNT] for reading my imaging study. This radiologist was out-of-network, but I had no choice in who read my scan. Under the No Surprises Act, I should only be responsible for in-network cost sharing. Please rebill this at the appropriate rate or direct me to the dispute process.",
+        escalationScript: "If they refuse: 'The No Surprises Act specifically covers diagnostic imaging performed at in-network facilities. I'm filing a complaint with CMS and will only pay my in-network cost sharing amount.'"
+      },
+      priceComparisonStrategy: {
+        title: "Price Comparison Negotiation",
+        approach: "Use the hospital's own price transparency data against inflated charges.",
+        script: "I've reviewed your hospital's published price transparency file. The negotiated rate for this imaging study with [MAJOR INSURER] is $[LOWER AMOUNT]. I'm being charged $[HIGHER AMOUNT] as a self-pay/patient responsibility. I'm requesting that my bill be adjusted to match the rates you've agreed are fair with insurance companies.",
+        followUp: "If they claim different rates apply: 'Under the Hospital Price Transparency Rule, you cannot charge self-pay patients more than insured patients. I'm requesting the lowest rate offered to any payer.'"
+      }
+    },
+    legalProtections: {
+      federal: [
+        { law: "No Surprises Act", protection: "Protects you from balance billing by out-of-network radiologists when imaging is performed at in-network facilities", enforcement: "File complaint at cms.gov/nosurprises" },
+        { law: "Hospital Price Transparency Rule", protection: "Hospitals must publish their negotiated rates and self-pay prices for imaging services publicly online", enforcement: "Report non-compliance to hospitalpricetransparency@cms.hhs.gov" },
+        { law: "ACA Preventive Services", protection: "Certain screening imaging (mammograms, some CT scans) must be covered at 100% with no cost sharing when coded correctly", enforcement: "Appeal to insurance with correct preventive coding" }
+      ],
+      stateExamples: [
+        { state: "California", protection: "Uninsured patients cannot be charged more than the lowest price paid by any government payer. Strong price transparency requirements." },
+        { state: "New York", protection: "Surprise bill protections cover all ancillary services including radiology. Patients held harmless for out-of-network radiologist fees." },
+        { state: "Texas", protection: "Balance billing banned for imaging at in-network facilities. Mediation available for disputes over $500." },
+        { state: "Colorado", protection: "All hospitals must provide cost estimates before scheduled imaging. Actual charges within $400 of estimate required." }
+      ]
+    },
+    timeline: {
+      title: "Imaging Bill Response Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Identify what imaging was performed and verify it was completed", "Check if radiologist was in-network or out-of-network", "Request itemized bill with technical and professional fee breakdown", "Compare to Medicare rates and market rates"], status: "critical" },
+        { day: "Day 6-20", actions: ["Research hospital's price transparency file for negotiated rates", "Identify any unbundling or phantom charges", "Prepare price comparison documentation", "File No Surprises complaint if radiologist was out-of-network"], status: "important" },
+        { day: "Day 21-40", actions: ["Submit formal dispute for overcharges", "Request price match to insurance-negotiated rates", "Apply for financial assistance", "Negotiate cash pay discount"], status: "strategic" },
+        { day: "Day 41-60", actions: ["Follow up on disputes", "Negotiate final settlement amount", "Get payment agreement in writing", "Make payment once resolved"], status: "resolution" }
+      ]
+    },
+    templates: {
+      imagingDisputeLetter: {
+        title: "Imaging Bill Dispute Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Hospital/Imaging Center]
+Patient Billing Department
+[Address]
+[City, State ZIP]
+
+RE: Imaging Bill Dispute - Account #[ACCOUNT NUMBER]
+Date of Service: [DATE]
+Procedure: [CT/MRI/X-ray of ___]
+Billed Amount: $[AMOUNT]
+
+To Whom It May Concern:
+
+I am disputing the charges for imaging services performed on [DATE]. My concerns are:
+
+1. PRICE DISPARITY
+Your published price transparency data shows negotiated rates of $[LOWER AMOUNT] for this procedure with major insurers. I am being charged $[HIGHER AMOUNT], which is [X]% more than your negotiated rates.
+
+2. SPECIFIC CHARGE DISPUTES
+[List specific issues - unbundling, phantom charges, contrast markup, etc.]
+
+3. REQUEST
+I am requesting that my bill be adjusted to:
+- Match your lowest negotiated rate for this procedure
+- Remove any disputed charges identified above
+- Apply any available prompt-pay or self-pay discount
+
+Under the Hospital Price Transparency Rule, you must offer self-pay patients rates no higher than those offered to insured patients. Please respond within 30 days.
+
+Sincerely,
+[Your Signature]
+[Your Name]`
+      }
+    },
+    successStories: [
+      {
+        title: "MRI Bill Reduced from $8,400 to $1,800",
+        outcome: "Patient discovered hospital's price transparency file showed $1,600 negotiated rate with Blue Cross. After demanding price match and applying for financial assistance, bill was reduced 78%.",
+        keyTactics: "Price transparency research, negotiated rate comparison, persistence through multiple escalations"
+      },
+      {
+        title: "CT Scan Bill Eliminated Under No Surprises Act",
+        outcome: "Radiologist billed $2,100 above insurance payment. Patient filed No Surprises complaint within 30 days. Entire balance billing amount was withdrawn.",
+        keyTactics: "Identified out-of-network status, filed federal complaint, documented all communication"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Hospital Billing Department", action: "Request itemized bill, challenge pricing" },
+      { level: 2, entity: "Radiology Billing (if separate)", action: "Dispute out-of-network charges" },
+      { level: 3, entity: "Patient Financial Counselor", action: "Request price match and financial assistance" },
+      { level: 4, entity: "CMS No Surprises Hotline", action: "Report out-of-network balance billing" },
+      { level: 5, entity: "State Attorney General", action: "File price transparency violation complaint" }
     ]
   },
   {
     id: "hospitalization-bill",
     title: "Hospital Stay/Admission Bill",
     icon: BedDouble,
+    featured: true,
     situation: "You were hospitalized for one or more nights and received a bill for $20,000 to $200,000+ that seems impossibly high for your length of stay.",
     insiderKnowledge: [
-      "Daily room rates can vary from $2,000-$15,000 depending on unit - verify you were in the correct unit",
-      "ICU/CCU rates are 3-5x regular room rates - verify you actually needed intensive care",
-      "Every specialist who 'rounded' on you may bill separately - verify you actually saw each one",
-      "Hospital pharmacies mark up medications 200-500% - compare to retail pharmacy prices",
-      "Physical therapy, occupational therapy, and other services often appear for visits that didn't happen",
-      "Observation vs. inpatient status significantly affects both billing and insurance coverage"
+      "Daily room rates vary from $2,000-$15,000+ depending on unit - verify you were in the correct unit level throughout your stay",
+      "ICU/CCU rates are 3-5x regular room rates - challenge ICU charges if you were stable and didn't need intensive monitoring",
+      "Every specialist who 'rounded' on you bills separately - you may have 5-15 doctors billing for one stay, many you never saw",
+      "Hospital pharmacies mark up medications 300-1000% - a $5 aspirin becomes $100, a $10 antibiotic becomes $500",
+      "Physical therapy, occupational therapy, and speech therapy often appear for visits that lasted 5 minutes or never happened",
+      "Observation vs. inpatient status determines insurance coverage AND can triple your out-of-pocket costs - this is often wrong",
+      "Each time a nurse gives you a pill, checks your vitals, or changes your IV is NOT separately billable - but hospitals try",
+      "'Hospital fees' or 'daily service charges' are vague catch-all charges that can be $1,000-5,000/day on top of room rate",
+      "If you were transferred between units (ICU to step-down to regular room), verify dates match your actual movements",
+      "Consultation fees are only billable for NEW physician consultations, not follow-up rounds by the same doctor",
+      "If you brought your own medications from home, you should NOT be charged for hospital-dispensed versions",
+      "Night-time medication doses are sometimes charged at premium 'emergency' rates"
+    ],
+    billForensics: {
+      title: "Common Hospitalization Billing Errors to Challenge",
+      redFlags: [
+        { code: "99223/99233", description: "Initial/subsequent hospital care - Highest complexity level billed for routine cases. Verify documentation supports complexity", amount: "$500-1,500/day" },
+        { code: "99291/99292", description: "Critical care - Billed per hour for ICU. Verify you actually received critical care intervention, not just monitoring", amount: "$500-1,000/hour" },
+        { code: "99251-99255", description: "Consultation codes - Each specialist consultation. Verify you actually SAW each consulting physician", amount: "$200-800 each" },
+        { code: "G0378/G0379", description: "Observation services - Often billed incorrectly. May have been inpatient or should have been billed differently", amount: "$300-2,000/hour" },
+        { code: "97110-97542", description: "Physical/occupational therapy - Verify duration matches billing. Each 15-min increment is separately billed", amount: "$100-300 per unit" },
+        { code: "J0120-J9999", description: "Medications (J-codes) - Compare to GoodRx/retail prices. Challenge markups over 300%", amount: "$50-10,000 per med" },
+        { code: "99024", description: "Post-discharge care - Follow-up related to hospitalization should be included, not billed separately", amount: "$150-400 each" }
+      ],
+      unbundlingSchemes: [
+        "Room rate, nursing care, and 'hospital services' billed as three separate daily charges",
+        "Each medication administration billed separately from the medication cost",
+        "Vital signs, monitoring, and 'nursing assessment' billed in addition to room rate",
+        "IV fluids, IV access, and IV medication administration as three separate charges",
+        "Oxygen therapy billed separately from room rate even for routine low-flow supplementation",
+        "Admission and discharge 'processing' fees billed on top of physician admission/discharge charges",
+        "Each day of stay billed at the initial high rate instead of decreasing for subsequent days"
+      ],
+      phantomCharges: [
+        "Specialist consultations for doctors you never met or spoke with",
+        "Physical therapy or respiratory therapy visits that didn't occur",
+        "Medications you didn't receive or refused to take",
+        "Supplies charged to your room that were used for other patients",
+        "ICU-level charges for days you were in regular room",
+        "Private room charges when you were in shared room",
+        "Tests ordered but cancelled before being performed",
+        "Equipment rental (wheelchair, crutches) you never used"
+      ]
+    },
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "First Call After Receiving Hospital Bill",
+        approach: "Hospital stays generate complex bills from multiple sources. Your first goal is getting complete information.",
+        script: "I'm calling about my recent hospitalization from [DATE] to [DATE]. I've received bills totaling $[AMOUNT] and need complete documentation before I can address this. I need: 1) A complete itemized bill with all charges and CPT codes, 2) A list of all physicians who billed during my stay, 3) My medical record showing daily progress notes, and 4) Information about your financial assistance programs. When can I expect these documents?",
+        followUp: "If they push for payment: 'With multiple providers and complex charges, I need to review everything for accuracy first. What is your typical timeline before accounts go to collections?'"
+      },
+      observationStatusChallenge: {
+        title: "Challenging Observation Status",
+        approach: "If you were on 'observation' instead of 'inpatient' status, your costs may be 2-3x higher and you lose certain benefits.",
+        script: "I'm reviewing my hospital stay and see I was classified as 'observation' status. I believe my condition warranted inpatient admission because [EXPLAIN: severity, length of stay, treatments received]. I'm requesting a formal review of this status determination. Under CMS guidelines, patients can request Condition Code 44 review if they believe observation status was incorrect.",
+        escalationScript: "If they won't review: 'I have the right to a formal Medicare/Medicaid review of this status determination. Please provide me with the Self-Administered Status Determination form and escalate this to your utilization review department.'"
+      },
+      specialistDispute: {
+        title: "Disputing Multiple Specialist Bills",
+        approach: "Challenge consultations from doctors you never meaningfully interacted with.",
+        script: "I've received bills from [NUMBER] different specialists during my [X]-day stay. I need to verify each consultation. Specifically, I don't recall meeting with [SPECIALIST NAME] and have no record of their consultation in my discharge paperwork. Can you provide documentation showing when each consultant physically examined me and what specific questions prompted their consultation?",
+        followUp: "If they can't document the consultation: 'Without documentation of a face-to-face consultation and clear medical necessity, these charges should be removed as they represent billing for services not rendered.'"
+      },
+      medicationDispute: {
+        title: "Challenging Medication Markups",
+        approach: "Hospital medication prices are notoriously inflated. Use comparison pricing to negotiate.",
+        script: "I'm reviewing the medication charges on my itemized bill. I'm seeing charges like $[AMOUNT] for [MEDICATION] which has a retail price of $[LOWER AMOUNT] at local pharmacies. Hospital markup of [X]% over retail is unreasonable. I'm requesting that medication charges be adjusted to no more than 200% of retail/GoodRx pricing.",
+        escalationScript: "If they refuse: 'These medication prices are significantly above fair market value. If we can't resolve this, I'll file a complaint with the state attorney general regarding predatory pricing and seek a billing compliance review.'"
+      }
+    },
+    legalProtections: {
+      federal: [
+        { law: "Medicare Observation Notice (MOON)", protection: "Hospitals must give written notice within 36 hours if you're on observation status. Failure to notify may be grounds for appeal", enforcement: "File Medicare complaint if notice wasn't provided" },
+        { law: "EMTALA", protection: "Cannot be discharged until medically stable. Premature discharge leading to readmission may indicate the hospital cut corners", enforcement: "File complaint with CMS regional office" },
+        { law: "No Surprises Act", protection: "Protects from balance billing by out-of-network specialists who treated you during in-network hospital stay", enforcement: "File complaint at cms.gov/nosurprises" },
+        { law: "Hospital Price Transparency Rule", protection: "Hospitals must publish room rates, daily charges, and ancillary service prices", enforcement: "Compare bill to published prices, report violations" }
+      ],
+      stateExamples: [
+        { state: "California", protection: "Emergency stabilization must occur before ability-to-pay discussion. Strong charity care requirements. Bill disputes can delay collections indefinitely." },
+        { state: "New York", protection: "Interest-free payment plans required up to 36 months. Hospitals cannot report to credit bureaus during active disputes." },
+        { state: "Texas", protection: "Itemized bills required within 10 days. Cannot charge more than fair market value for emergency admissions." },
+        { state: "Illinois", protection: "Hospital Uninsured Patient Discount Act requires 25-100% discounts based on income for all hospital charges." },
+        { state: "Maryland", protection: "All-payer rate setting means hospitals charge same rates to all patients. Unique price protection." }
+      ]
+    },
+    timeline: {
+      title: "Post-Hospitalization Bill Action Timeline",
+      checkpoints: [
+        { day: "Day 1-7", actions: ["Request medical records and discharge summary", "Identify all providers who may bill separately", "Request itemized bills from hospital AND each specialist", "Note your observation vs. inpatient status from paperwork"], status: "critical" },
+        { day: "Day 8-21", actions: ["Cross-reference medical records with all charges", "Identify any consultants you don't remember seeing", "Compare medication charges to retail/GoodRx prices", "Research hospital's price transparency file for rate comparisons"], status: "important" },
+        { day: "Day 22-45", actions: ["Submit written disputes for unsupported charges", "Challenge observation status if applicable", "Apply for financial assistance at hospital", "File No Surprises complaints for out-of-network specialist bills"], status: "strategic" },
+        { day: "Day 46-60", actions: ["Follow up on all disputes and applications", "Negotiate settlement amounts with corrected bills", "Request 0% interest payment plan if needed", "Get all agreements in writing"], status: "resolution" }
+      ]
+    },
+    templates: {
+      hospitalizationDisputeLetter: {
+        title: "Hospital Stay Billing Dispute Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Hospital Name]
+Patient Billing Department
+[Hospital Address]
+[City, State ZIP]
+
+RE: Billing Dispute - Hospitalization Account #[ACCOUNT NUMBER]
+Dates of Service: [ADMISSION DATE] to [DISCHARGE DATE]
+Billed Amount: $[AMOUNT]
+
+SENT VIA CERTIFIED MAIL
+
+To Whom It May Concern:
+
+After reviewing my medical records against my itemized hospital bill, I am disputing the following charges:
+
+1. SPECIALIST CONSULTATIONS
+I am being billed for consultations by [NUMBER] specialists totaling $[AMOUNT]. My medical records do not document meaningful face-to-face encounters with [SPECIFIC DOCTORS]. Please provide consultation notes proving services were rendered or remove these charges.
+
+2. ROOM/UNIT LEVEL
+My records show I was transferred to a regular room on [DATE], but I am being billed at [ICU/STEP-DOWN] rates through [LATER DATE]. Please correct room charges to match my actual unit assignments.
+
+3. MEDICATION CHARGES
+The following medications are billed at excessive markups:
+- [MEDICATION]: Billed $[X], retail price $[Y] = [Z]% markup
+- [MEDICATION]: Billed $[X], retail price $[Y] = [Z]% markup
+
+I am requesting these charges be reduced to reasonable market rates.
+
+Total Disputed Amount: $[TOTAL]
+
+Please respond in writing within 30 days. My account should not be referred to collections while this dispute is pending.
+
+Sincerely,
+[Your Signature]
+[Your Name]`
+      }
+    },
+    successStories: [
+      {
+        title: "5-Day Hospital Stay Reduced from $89,000 to $28,500",
+        outcome: "Patient identified: 3 days billed at ICU rates when only 1 was spent in ICU, 6 specialist consultations for doctors never seen, and medication markups averaging 800%. After formal disputes and financial assistance, saved 68%.",
+        keyTactics: "Medical record comparison, unit transfer verification, consultant documentation requests, medication price research"
+      },
+      {
+        title: "Observation Status Reversed, Saving $12,000",
+        outcome: "Patient challenged 48-hour observation status that should have been inpatient admission. After Condition Code 44 review, status was changed retroactively, Medicare coverage improved, and patient responsibility dropped from $15,000 to $3,000.",
+        keyTactics: "Status determination challenge, formal Medicare review request, persistence through multiple appeals"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Hospital Patient Billing", action: "Request complete itemized bills, identify discrepancies" },
+      { level: 2, entity: "Patient Financial Counselor", action: "Dispute charges, apply for financial assistance" },
+      { level: 3, entity: "Each Specialist's Billing Office", action: "Dispute individual physician charges" },
+      { level: 4, entity: "Utilization Review Department", action: "Challenge observation status, request status review" },
+      { level: 5, entity: "Hospital Compliance Officer", action: "Report billing irregularities, request formal audit" },
+      { level: 6, entity: "State Health Department / CMS", action: "File formal complaints for billing violations" }
     ]
   },
   {
     id: "lab-work-bill",
     title: "Laboratory/Blood Work Bill",
     icon: Syringe,
+    featured: true,
     situation: "You had blood work or other lab tests and received a bill for hundreds or thousands of dollars for what you thought were routine tests.",
     insiderKnowledge: [
-      "Hospital labs charge 5-10x more than independent labs like Quest or LabCorp",
-      "A 'comprehensive metabolic panel' should be ONE charge, not 14 separate test charges",
-      "Many labs bill for the same test multiple times using different codes",
-      "If your doctor ordered labs, they may have been sent to an out-of-network lab without your knowledge",
-      "Genetic testing can cost $100-$10,000 depending on whether it's medically necessary"
+      "Hospital labs charge 5-10x more than independent labs like Quest or LabCorp for IDENTICAL tests",
+      "A 'comprehensive metabolic panel' should be ONE charge (~$15-50), not 14 separate test charges ($300-700)",
+      "Labs frequently bill for the same test multiple times using different codes (unbundling)",
+      "Your doctor may send labs to an out-of-network lab without your knowledge - No Surprises Act applies",
+      "Genetic testing ranges from $100-$10,000+ depending on medical necessity and insurance coverage",
+      "The 'collection fee' (drawing blood) is often billed separately at $25-200 and is sometimes duplicate billed",
+      "Panels (CBC, CMP, Lipid) are BUNDLES - charging for individual components is fraud if the panel code was used",
+      "Labs run at hospitals have both 'technical' (performing) and 'professional' (interpretation) fees - double check for duplication",
+      "If labs were repeated due to 'hemolysis' (blood sample destroyed) or other lab errors, you should NOT pay for both",
+      "Reference lab charges occur when hospital sends your sample to another lab - you may be billed by BOTH",
+      "Pathology interpretation fees can be billed for routine labs that don't actually require physician review"
+    ],
+    billForensics: {
+      title: "Common Laboratory Billing Errors to Challenge",
+      redFlags: [
+        { code: "80053", description: "Comprehensive Metabolic Panel - Should be ONE charge for 14 tests. If individual tests also appear (82565, 82947, etc.), it's unbundling", amount: "$100-500" },
+        { code: "85025/85027", description: "Complete Blood Count (CBC) - Includes all component tests. Separate charges for WBC, RBC, platelets are unbundling", amount: "$50-200" },
+        { code: "80061", description: "Lipid Panel - Total cholesterol, HDL, triglycerides bundled. Separate component billing is improper", amount: "$75-300" },
+        { code: "36415", description: "Venipuncture (blood draw) - Standard collection fee. Challenge if billed multiple times or at hospital markup", amount: "$25-200" },
+        { code: "99000", description: "Handling/conveyance fee - Often added on top of collection. May be duplicate charge", amount: "$15-75" },
+        { code: "88305", description: "Pathology interpretation - Often billed for routine labs that don't require physician review", amount: "$100-500" },
+        { code: "81479", description: "Unlisted molecular pathology - Genetic tests using 'unlisted' codes can be priced arbitrarily high", amount: "$500-10,000" }
+      ],
+      unbundlingSchemes: [
+        "Comprehensive Metabolic Panel billed PLUS individual component tests (glucose, sodium, potassium)",
+        "CBC billed PLUS individual component tests (WBC, RBC, hemoglobin, hematocrit)",
+        "Lipid panel billed PLUS total cholesterol, HDL, LDL, triglycerides separately",
+        "Blood collection fee billed multiple times for single blood draw",
+        "Both the hospital lab AND the reference lab billing for same test",
+        "Pathology/interpretation fee for routine chemistry panels that don't require interpretation",
+        "Duplicate billing for tests run on same specimen"
+      ],
+      phantomCharges: [
+        "Tests ordered but never actually performed",
+        "Repeat tests due to lab errors charged to patient",
+        "Pathology interpretation for automated tests",
+        "Collection fees when blood was drawn for other purposes (IV start)",
+        "Stat/rush fees when no rush was requested or needed",
+        "Multiple collection fees for single blood draw session",
+        "Reference lab fees passed through at markup"
+      ]
+    },
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "First Call About Lab Bill",
+        approach: "Lab bills are among the most error-prone. Start by verifying what was actually ordered and performed.",
+        script: "I'm calling about a laboratory bill for $[AMOUNT] for tests on [DATE]. This amount seems very high for routine blood work. I need an itemized bill showing each test with its CPT code. I also need to verify which tests my doctor actually ordered versus what was billed. Can you send me a copy of the order along with the itemized bill?",
+        followUp: "If they say the charges are standard: 'Your prices are [X] times higher than Quest/LabCorp for identical tests. I'd like to discuss a price adjustment to bring these charges in line with market rates.'"
+      },
+      unbundlingDispute: {
+        title: "Challenging Panel Unbundling",
+        approach: "Panels are meant to be billed as single codes. Component billing is improper.",
+        script: "I'm reviewing my lab bill and see charges for both a [Comprehensive Metabolic Panel / CBC / Lipid Panel] AND separate charges for [INDIVIDUAL TESTS]. According to CMS billing guidelines, these component tests are included in the panel code and cannot be billed separately. This appears to be unbundling, which is a billing compliance issue. Please remove the duplicate component charges.",
+        escalationScript: "If they won't remove: 'Unbundling lab tests is a documented form of billing fraud. I'm requesting a compliance review and will file a complaint with the OIG if these improper charges are not removed.'"
+      },
+      priceComparisonNegotiation: {
+        title: "Negotiating Based on Market Rates",
+        approach: "Lab pricing varies wildly. Use competitor pricing to negotiate.",
+        script: "I've researched pricing for these lab tests. Quest Diagnostics charges $[AMOUNT] for the same panel, and LabCorp charges $[AMOUNT]. Your charge of $[HOSPITAL AMOUNT] is [X]% higher than market rates. I'm willing to pay a reasonable amount in line with market pricing. Can we agree on $[PROPOSED AMOUNT] to resolve this account?",
+        followUp: "If they claim hospital labs cost more: 'The tests and equipment are identical. The only difference is location. Medicare pays the same amount regardless of where labs are performed. I'm requesting you match Medicare or market rates.'"
+      }
+    },
+    legalProtections: {
+      federal: [
+        { law: "Clinical Laboratory Fee Schedule", protection: "Medicare sets maximum prices for lab tests. These rates reflect fair market value and can be used as negotiation benchmarks", enforcement: "Reference CMS Clinical Lab Fee Schedule in disputes" },
+        { law: "No Surprises Act", protection: "If labs were sent to an out-of-network laboratory, you're protected from balance billing", enforcement: "File complaint at cms.gov/nosurprises" },
+        { law: "ACA Preventive Care", protection: "Many screening labs (cholesterol, glucose, etc.) should be covered at 100% when properly coded as preventive", enforcement: "Appeal to insurance with correct preventive codes" },
+        { law: "False Claims Act", protection: "Unbundling laboratory tests to increase charges is a form of healthcare fraud", enforcement: "Report to OIG hotline if unbundling is confirmed" }
+      ],
+      stateExamples: [
+        { state: "California", protection: "Hospital lab charges capped at rates paid by government payers for uninsured patients." },
+        { state: "New York", protection: "Labs must provide cost estimates before drawing blood for non-emergency testing." },
+        { state: "Texas", protection: "Balance billing banned for lab services provided during in-network hospital stays." },
+        { state: "Colorado", protection: "Hospital price transparency includes laboratory pricing. Compare before disputing." }
+      ]
+    },
+    timeline: {
+      title: "Lab Bill Response Timeline",
+      checkpoints: [
+        { day: "Day 1-5", actions: ["Request itemized bill with CPT codes for each test", "Request copy of original lab order from your doctor", "Compare billed tests to ordered tests", "Check if lab was in-network or out-of-network"], status: "critical" },
+        { day: "Day 6-15", actions: ["Compare prices to Quest/LabCorp/Medicare rates", "Identify any unbundling (panels + components)", "Verify tests weren't duplicated or repeated", "Research No Surprises Act applicability"], status: "important" },
+        { day: "Day 16-30", actions: ["Submit written dispute for identified errors", "Request price adjustment to market rates", "Apply for financial assistance if hospital", "File No Surprises complaint if out-of-network"], status: "strategic" },
+        { day: "Day 31-45", actions: ["Follow up on disputes", "Negotiate final settlement", "Get agreement in writing", "Pay only after resolution"], status: "resolution" }
+      ]
+    },
+    templates: {
+      labDisputeLetter: {
+        title: "Laboratory Bill Dispute Letter",
+        content: `[Your Name]
+[Your Address]
+[City, State ZIP]
+[Date]
+
+[Laboratory/Hospital Name]
+Billing Department
+[Address]
+[City, State ZIP]
+
+RE: Laboratory Bill Dispute - Account #[ACCOUNT NUMBER]
+Date of Service: [DATE]
+Billed Amount: $[AMOUNT]
+
+To Whom It May Concern:
+
+I am disputing the laboratory charges for tests performed on [DATE]. After reviewing my itemized bill, I have identified the following issues:
+
+1. UNBUNDLING
+I am being charged for both [PANEL NAME] (CPT [CODE]) AND individual component tests that are included in this panel:
+- [COMPONENT TEST] - $[AMOUNT]
+- [COMPONENT TEST] - $[AMOUNT]
+According to CMS guidelines, these components cannot be billed separately when the panel is performed. Please remove these duplicate charges.
+
+2. PRICE DISPARITY
+Your charges are significantly above market rates:
+- Your charge: $[AMOUNT] for [TEST]
+- Quest/LabCorp price: $[AMOUNT] for same test
+- Medicare allowable: $[AMOUNT]
+I am requesting an adjustment to reasonable market rates.
+
+3. [ANY OTHER SPECIFIC DISPUTES]
+
+Total Amount in Dispute: $[TOTAL]
+
+Please respond within 30 days with an explanation or adjustment. My account should not be sent to collections while this dispute is pending.
+
+Sincerely,
+[Your Signature]
+[Your Name]`
+      }
+    },
+    successStories: [
+      {
+        title: "Lab Bill Reduced from $2,800 to $380",
+        outcome: "Patient identified unbundling: Comprehensive Metabolic Panel was billed at $400 PLUS 14 individual component tests at $150 each. After filing unbundling complaint, only the single panel charge remained at market rate.",
+        keyTactics: "CPT code analysis, CMS billing guideline reference, compliance escalation"
+      },
+      {
+        title: "Out-of-Network Lab Bill Eliminated",
+        outcome: "Hospital sent routine blood work to out-of-network reference lab that billed $1,900. Patient filed No Surprises Act complaint within 30 days. Entire balance was written off.",
+        keyTactics: "Network status verification, No Surprises Act dispute, documentation of patient choice violation"
+      }
+    ],
+    escalationPath: [
+      { level: 1, entity: "Laboratory Billing Department", action: "Request itemized bill, verify tests ordered" },
+      { level: 2, entity: "Hospital Patient Billing", action: "Dispute unbundling and pricing" },
+      { level: 3, entity: "Patient Financial Counselor", action: "Request price adjustment, financial assistance" },
+      { level: 4, entity: "Billing Compliance Office", action: "Report suspected unbundling fraud" },
+      { level: 5, entity: "OIG / State AG", action: "File formal fraud complaint if unbundling confirmed" }
     ]
   },
   {
