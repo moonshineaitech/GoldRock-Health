@@ -1,4 +1,4 @@
-import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download, Shield, Heart, Search, Phone } from "lucide-react";
+import { ArrowLeft, Menu, User, Settings, Crown, LogOut, Palette, Volume2, ChevronDown, Home, BookOpen, FileText, Crown as PremiumIcon, Gamepad2, TrendingDown, Download, Shield, Heart, Search, Phone, Receipt } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
 import { useState } from "react";
@@ -90,9 +90,9 @@ export function NavigationDropdown() {
       featured: true
     },
     {
-      icon: TrendingDown,
-      label: "Pre-Collections Guide",
-      href: "/pre-collections-guide",
+      icon: Receipt,
+      label: "Hospital Bill Playbook",
+      href: "/hospital-bill-playbook",
       description: "Reduce Bills Before Collections",
       featured: true
     },

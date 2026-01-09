@@ -124,11 +124,11 @@ function formatMessageContent(content: string): JSX.Element {
   return <div className="space-y-1">{elements}</div>;
 }
 
-export function PreCollectionsChatbot() {
+export function PlaybookChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hello! I'm your Pre-Collections Bill Defense Assistant. I can help you understand your hospital bill, find errors, negotiate reductions, and prevent your bill from going to collections.\n\n**What I can help with:**\n\n1. **Bill Analysis** - Identify overcharges and billing errors\n2. **Negotiation Scripts** - Word-for-word scripts to reduce your bill\n3. **Financial Assistance** - Find charity care and payment options\n4. **Legal Rights** - Understand your protections\n5. **Prevention Strategies** - Keep your bill out of collections\n\nTell me about your situation or select a topic below to get started!",
+      content: "Hello! I'm your Hospital Bill Defense Assistant. I can help you understand your hospital bill, find errors, negotiate reductions, and prevent your bill from going to collections.\n\n**What I can help with:**\n\n1. **Bill Analysis** - Identify overcharges and billing errors\n2. **Negotiation Scripts** - Word-for-word scripts to reduce your bill\n3. **Financial Assistance** - Find charity care and payment options\n4. **Legal Rights** - Understand your protections\n5. **Prevention Strategies** - Keep your bill out of collections\n\nTell me about your situation or select a topic below to get started!",
       timestamp: new Date()
     }
   ]);

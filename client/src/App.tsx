@@ -78,7 +78,7 @@ import ForVCs from "@/pages/for-vcs";
 import ForHealthcare from "@/pages/for-healthcare";
 import ForInsurance from "@/pages/for-insurance";
 import CollectionsDefenseGuide from "@/pages/collections-defense-guide";
-import PreCollectionsGuide from "@/pages/pre-collections-guide";
+import HospitalBillPlaybook from "@/pages/hospital-bill-playbook";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -321,7 +321,7 @@ function Router() {
       <Route path="/for-healthcare" component={ForHealthcare} />
       <Route path="/for-insurance" component={ForInsurance} />
       <Route path="/collections-defense-guide" component={CollectionsDefenseGuide} />
-      <Route path="/pre-collections-guide" component={PreCollectionsGuide} />
+      <Route path="/hospital-bill-playbook" component={HospitalBillPlaybook} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

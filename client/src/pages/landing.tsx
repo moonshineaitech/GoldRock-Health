@@ -709,7 +709,7 @@ export default function Landing() {
               { icon: Stethoscope, label: "Diagnostics", href: "/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
               { icon: Dna, label: "LunaFold", href: "/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
               { icon: Shield, label: "Collections Defense", href: "/collections-defense-guide", description: "Fight debt collectors", gradient: "from-red-500 to-rose-600", featured: true },
-              { icon: Receipt, label: "Pre-Collections", href: "/pre-collections-guide", description: "Reduce bills now", gradient: "from-emerald-500 to-green-600", featured: true },
+              { icon: Receipt, label: "Bill Playbook", href: "/hospital-bill-playbook", description: "Reduce bills now", gradient: "from-emerald-500 to-green-600", featured: true },
               { icon: Target, label: "Industry Secrets", href: "/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
               { icon: FileText, label: "Templates", href: "/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
               { icon: Trophy, label: "Achievements", href: "/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },

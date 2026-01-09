@@ -52,7 +52,7 @@ import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { PreCollectionsChatbot } from "@/components/pre-collections-chatbot";
+import { PlaybookChatbot } from "@/components/playbook-chatbot";
 
 const insiderSecrets = [
   {
@@ -804,14 +804,14 @@ export default function PreCollectionsGuide() {
   return (
     <>
       <SEOHead 
-        title="Pre-Collections Guide - Stop Bills Before Collections | GoldRock Health"
-        description="Act NOW before your medical bill goes to collections. Insider strategies, negotiation scripts, and step-by-step guides to reduce hospital bills by 40-70%."
+        title="Hospital Bill Playbook - Reduce Your Medical Bills | GoldRock Health"
+        description="Insider strategies, negotiation scripts, and step-by-step guides to reduce hospital bills by 40-70%. Act now before your bill goes to collections."
         keywords={["hospital bill negotiation", "reduce medical bill", "prevent collections", "medical bill help", "hospital billing errors"]}
-        canonicalPath="/pre-collections-guide"
+        canonicalPath="/hospital-bill-playbook"
       />
       
       <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
-        <MobileHeader title="Pre-Collections Guide" />
+        <MobileHeader title="Hospital Bill Playbook" />
         
         <main className="container mx-auto px-4 py-8 pb-24 md:pb-8 pt-20">
           <motion.div
@@ -898,7 +898,7 @@ export default function PreCollectionsGuide() {
                   exit={{ opacity: 0, height: 0 }}
                   className="mt-4"
                 >
-                  <PreCollectionsChatbot />
+                  <PlaybookChatbot />
                 </motion.div>
               )}
             </motion.div>
