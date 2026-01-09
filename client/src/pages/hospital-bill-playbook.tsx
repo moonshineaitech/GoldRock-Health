@@ -1422,26 +1422,32 @@ Sincerely,
         "Billing pre-op evaluation as separate from anesthesia service"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Time Unit Verification",
-        opener: "I'm reviewing my anesthesia bill and need to verify the time units billed.",
-        script: "I've compared the billed anesthesia time of [X] hours to my surgical notes which show procedure duration of [Y]. Can you explain the [Z] minute discrepancy? I'd like documentation of anesthesia start and end times.",
-        escalation: "If they can't document actual start/end times, request time unit reduction to match surgical record."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Time Unit Verification Call",
+        approach: "Anesthesia time is the easiest billing component to dispute with documentation.",
+        script: "I'm reviewing my anesthesia bill and need to verify the time units billed. I've compared the billed anesthesia time of [X] hours to my surgical notes which show procedure duration of [Y]. Can you explain the [Z] minute discrepancy? I'd like documentation of anesthesia start and end times.",
+        followUp: "If they can't document actual start/end times, request time unit reduction to match surgical record."
       },
-      {
-        name: "No Surprises Act Protection",
-        opener: "I received care at an in-network facility but this anesthesiologist was out-of-network.",
-        script: "Under the No Surprises Act, I'm protected from balance billing for anesthesia services provided at an in-network facility. I should only owe my in-network cost-sharing amount. Please reprocess this bill to comply with federal law.",
-        escalation: "File complaint with CMS No Surprises Help Desk if they refuse."
+      disputeCall: {
+        title: "No Surprises Act Protection",
+        approach: "Out-of-network anesthesiologists at in-network facilities are protected under federal law.",
+        script: "I received care at an in-network facility but this anesthesiologist was out-of-network. Under the No Surprises Act, I'm protected from balance billing for anesthesia services provided at an in-network facility. I should only owe my in-network cost-sharing amount. Please reprocess this bill to comply with federal law.",
+        escalationScript: "If they refuse to adjust: 'I will be filing a complaint with the CMS No Surprises Help Desk and my state insurance commissioner. Please provide your compliance officer's contact information.'"
       },
-      {
-        name: "CRNA vs. MD Rate Challenge",
-        opener: "I need clarification on the provider type who administered my anesthesia.",
-        script: "My records indicate a CRNA (Certified Registered Nurse Anesthetist) provided my care, but I'm being billed at physician rates. CRNA services are typically reimbursed at 85% of physician rates. Please adjust accordingly.",
-        escalation: "Request supervision documentation if billed as MD-supervised CRNA."
+      financialAssistance: {
+        title: "CRNA vs. MD Rate Challenge",
+        approach: "Nurse anesthetists provide most anesthesia care and should be billed at lower rates.",
+        script: "I need clarification on the provider type who administered my anesthesia. My records indicate a CRNA (Certified Registered Nurse Anesthetist) provided my care, but I'm being billed at physician rates. CRNA services are typically reimbursed at 85% of physician rates. Please adjust accordingly.",
+        followUp: "Request supervision documentation if billed as MD-supervised CRNA to verify the level of physician involvement."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "After disputes are addressed, negotiate a reduced lump-sum payment.",
+        script: "I've reviewed the adjusted balance of $[AMOUNT]. Given the time unit corrections and rate adjustments we discussed, I'm prepared to settle this account today with a payment of $[30-50% OF BALANCE]. This would be a one-time payment in full settlement.",
+        escalationScript: "If they refuse: 'I understand. I'll need to continue my dispute and file formal complaints. Please provide confirmation of our discussion today.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "No Surprises Act (2022): Protects against balance billing for anesthesia at in-network facilities",
@@ -1517,26 +1523,32 @@ Sincerely,
         "Billing telephone follow-up in addition to office visit"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "E/M Level Challenge",
-        opener: "I'm questioning the evaluation and management level billed for my visit.",
-        script: "I was billed a level [X] visit but my appointment lasted only [Y] minutes with straightforward issues discussed. According to CMS E/M guidelines, this should be a level [Z]. Can you provide documentation justifying this coding level?",
-        escalation: "Request audit of documentation by certified coder."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "E/M Level Challenge",
+        approach: "Visit level is the most common source of overcharging at specialist offices.",
+        script: "I'm questioning the evaluation and management level billed for my visit. I was billed a level [X] visit but my appointment lasted only [Y] minutes with straightforward issues discussed. According to CMS E/M guidelines, this should be a level [Z]. Can you provide documentation justifying this coding level?",
+        followUp: "Request audit of documentation by certified coder if they can't explain."
       },
-      {
-        name: "Facility Fee Challenge",
-        opener: "I noticed a facility fee on my bill that I wasn't informed about in advance.",
-        script: "I received a $[X] facility fee even though I was seen in what appeared to be a normal doctor's office. I was not informed this was a hospital-based practice with additional facility fees. Please waive this fee as I would have chosen an independent practice if informed.",
-        escalation: "File complaint with hospital administration about lack of price transparency."
+      disputeCall: {
+        title: "Facility Fee Challenge",
+        approach: "Hospital-based practices must disclose facility fees in advance under many state laws.",
+        script: "I noticed a facility fee on my bill that I wasn't informed about in advance. I received a $[X] facility fee even though I was seen in what appeared to be a normal doctor's office. I was not informed this was a hospital-based practice with additional facility fees. Please waive this fee as I would have chosen an independent practice if informed.",
+        escalationScript: "If they refuse: 'I'm filing a complaint with hospital administration about lack of price transparency and will report this to my state insurance commissioner.'"
       },
-      {
-        name: "Price Transparency Request",
-        opener: "I'd like to compare your charges to other specialists in the area.",
+      financialAssistance: {
+        title: "Price Transparency Request",
+        approach: "Use price transparency laws to negotiate fair market rates.",
         script: "Under the Hospital Price Transparency Rule, I'm entitled to see your prices. Can you provide a good faith estimate and show me how your charges compare to the Medicare rate for these services? I'm prepared to pay a fair market rate.",
-        escalation: "Reference competitors' published prices if available."
+        followUp: "Reference competitors' published prices if available to support your negotiation."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "After addressing disputes, negotiate a lump-sum settlement.",
+        script: "I've reviewed the adjusted charges after our discussion about the E/M level and facility fee. I'm prepared to settle this account today with a payment of $[30-50% OF BALANCE] as a one-time payment in full settlement.",
+        escalationScript: "If they refuse: 'I understand. I'll continue pursuing my options including formal complaints and will request the minimum monthly payment plan.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Hospital Price Transparency Rule: Hospitals must publish prices for shoppable services",
@@ -1614,26 +1626,32 @@ Sincerely,
         "Separate charge for 'exercise instruction' vs. therapeutic exercise"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Unit Count Verification",
-        opener: "I need to verify the units billed for my therapy sessions.",
-        script: "My bills show [X] units (15-minute increments) per session, but my appointments are only [Y] minutes long including check-in and warm-up. Can you provide minute-by-minute treatment logs showing [X x 15] = [total] minutes of skilled PT services?",
-        escalation: "Request the daily treatment notes which must document time for each CPT code."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Unit Count Verification",
+        approach: "PT billing is based on 15-minute units. Verify actual treatment time matches billed time.",
+        script: "I need to verify the units billed for my therapy sessions. My bills show [X] units (15-minute increments) per session, but my appointments are only [Y] minutes long including check-in and warm-up. Can you provide minute-by-minute treatment logs showing [X x 15] = [total] minutes of skilled PT services?",
+        followUp: "Request the daily treatment notes which must document time for each CPT code."
       },
-      {
-        name: "Hospital vs. Independent Rate Challenge",
-        opener: "I'd like to understand why PT at this location costs so much more than other clinics.",
-        script: "I'm being charged $[X] per session when independent PT clinics charge $[Y] for the same services. Can you match the going rate for outpatient PT in this area? I may need to transfer my care to a more affordable provider.",
-        escalation: "Request transfer of care to independent clinic - often motivates discount."
+      disputeCall: {
+        title: "Hospital vs. Independent Rate Challenge",
+        approach: "Hospital-based PT costs 2-3x more than independent clinics. Use this as leverage.",
+        script: "I'd like to understand why PT at this location costs so much more than other clinics. I'm being charged $[X] per session when independent PT clinics charge $[Y] for the same services. Can you match the going rate for outpatient PT in this area? I may need to transfer my care to a more affordable provider.",
+        escalationScript: "If they won't adjust: 'Please process my transfer of care to [independent clinic name]. I'll need my records sent within 10 business days.'"
       },
-      {
-        name: "Medical Necessity Challenge",
-        opener: "I want to understand which treatments are essential versus optional.",
-        script: "I notice I'm being charged for ultrasound/electrical stim every session. The clinical evidence for these modalities is limited. Can we focus on only the evidence-based treatments to reduce my costs?",
-        escalation: "Request written justification for each modality used."
+      financialAssistance: {
+        title: "Medical Necessity Challenge",
+        approach: "Some PT modalities have limited clinical evidence and add significant cost.",
+        script: "I want to understand which treatments are essential versus optional. I notice I'm being charged for ultrasound/electrical stim every session. The clinical evidence for these modalities is limited. Can we focus on only the evidence-based treatments to reduce my costs?",
+        followUp: "Request written justification for each modality used to support your care."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "Negotiate a lump-sum settlement for accumulated PT bills.",
+        script: "I have accumulated PT bills totaling $[AMOUNT]. I'm prepared to settle this balance today with a payment of $[30-50% OF BALANCE]. This would resolve all outstanding PT charges.",
+        escalationScript: "If they refuse: 'I understand. Please set up a payment plan at the minimum monthly amount while I explore other options.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Medicare 8-Minute Rule: Specific rules on how PT time is rounded - applies to all payers similarly",
@@ -1711,26 +1729,32 @@ Sincerely,
         "Add-on codes for normal therapeutic interventions"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Mental Health Parity Challenge",
-        opener: "I believe my mental health benefits are not at parity with my medical benefits.",
-        script: "Under the Mental Health Parity and Addiction Equity Act, my copay/coinsurance for mental health cannot be higher than for medical visits. My therapy copay is $[X] but my specialist copay is only $[Y]. Please explain how this complies with federal parity law.",
-        escalation: "File parity complaint with your state insurance commissioner and the DOL."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Mental Health Parity Challenge",
+        approach: "Federal law requires equal treatment of mental and physical health benefits.",
+        script: "I believe my mental health benefits are not at parity with my medical benefits. Under the Mental Health Parity and Addiction Equity Act, my copay/coinsurance for mental health cannot be higher than for medical visits. My therapy copay is $[X] but my specialist copay is only $[Y]. Please explain how this complies with federal parity law.",
+        followUp: "Document the disparity in writing and prepare to file a parity complaint."
       },
-      {
-        name: "Out-of-Network Benefits",
-        opener: "I need to understand my out-of-network mental health benefits.",
-        script: "My in-network therapist has a 6-month wait, which creates access issues. What percentage do you reimburse for out-of-network therapy after I meet my deductible? I'd like to file for out-of-network reimbursement for urgent mental health needs.",
-        escalation: "Request network adequacy exception if wait times are excessive."
+      disputeCall: {
+        title: "Out-of-Network Benefits Request",
+        approach: "Out-of-network mental health benefits can provide significant reimbursement.",
+        script: "I need to understand my out-of-network mental health benefits. My in-network therapist has a 6-month wait, which creates access issues. What percentage do you reimburse for out-of-network therapy after I meet my deductible? I'd like to file for out-of-network reimbursement for urgent mental health needs.",
+        escalationScript: "If denied: 'The wait time for in-network providers creates an access issue. I'm requesting a network adequacy exception under my plan's appeal process.'"
       },
-      {
-        name: "Sliding Scale Request",
-        opener: "I'm having difficulty affording my therapy sessions.",
-        script: "I value our work together but my current financial situation makes the full fee difficult. Would you consider a sliding scale fee based on my income? I'm committed to continuing treatment if we can find an affordable rate.",
-        escalation: "Ask for referral to community mental health center if therapist can't reduce fees."
+      financialAssistance: {
+        title: "Sliding Scale Request",
+        approach: "Many therapists offer income-based sliding scale fees. Always ask.",
+        script: "I'm having difficulty affording my therapy sessions. I value our work together but my current financial situation makes the full fee difficult. Would you consider a sliding scale fee based on my income? I'm committed to continuing treatment if we can find an affordable rate.",
+        followUp: "If they can't reduce fees, ask for referral to community mental health center or Open Path Collective."
+      },
+      settlementOffer: {
+        title: "Insurance Parity Complaint",
+        approach: "File formal complaints if parity violations are documented.",
+        script: "I've documented parity violations in my mental health coverage and am prepared to file complaints with the state insurance commissioner and Department of Labor. I'd prefer to resolve this directly. Will you adjust my copays to match my medical benefits and provide retroactive refunds?",
+        escalationScript: "If they refuse: 'I will be filing formal complaints. Please note my account that this dispute is ongoing.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Mental Health Parity and Addiction Equity Act: Requires equal treatment of mental and physical health benefits",
@@ -1808,32 +1832,32 @@ Sincerely,
         "Separate facility fee for ambulance dispatch"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Medical Necessity Challenge",
-        opener: "I need to understand why ambulance transport was deemed medically necessary.",
-        script: "I was transported by ambulance, but I could have safely traveled by [car/taxi/other means]. The ambulance was called by [third party/I wasn't given a choice]. Can you provide documentation of medical necessity for this transport?",
-        escalation: "If you called 911 and were ambulatory at scene, transport may not be justified at full rate."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Service Level Dispute",
+        approach: "ALS vs. BLS billing is the most common ambulance overcharge - verify against the run report.",
+        script: "I'm disputing the level of service billed for my ambulance transport. I was billed for ALS (Advanced Life Support) but the run report shows only basic interventions: vital signs, oxygen assessment, and transport. No IV, cardiac monitoring, or advanced medications were provided. This should be BLS billing.",
+        followUp: "Request the complete Patient Care Report (PCR) to verify interventions performed."
       },
-      {
-        name: "Service Level Dispute",
-        opener: "I'm disputing the level of service billed for my ambulance transport.",
-        script: "I was billed for ALS (Advanced Life Support) but the run report shows only basic interventions: vital signs, oxygen assessment, and transport. No IV, cardiac monitoring, or advanced medications were provided. This should be BLS billing.",
-        escalation: "Request the complete Patient Care Report (PCR) to verify interventions."
+      disputeCall: {
+        title: "Mileage and Route Verification",
+        approach: "Mileage charges are often inflated. Compare billed miles to actual route.",
+        script: "I need to verify the mileage charges on my ambulance bill. I'm being billed for [X] loaded miles, but Google Maps shows the hospital is only [Y] miles from the pickup location. Can you explain the route taken and provide documentation of actual mileage?",
+        escalationScript: "If they can't document the route: 'I'm requesting the GPS log from the transport. Please adjust the mileage charges to reflect the actual distance traveled.'"
       },
-      {
-        name: "Mileage and Route Verification",
-        opener: "I need to verify the mileage charges on my ambulance bill.",
-        script: "I'm being billed for [X] loaded miles, but Google Maps shows the hospital is only [Y] miles from the pickup location. Can you explain the route taken and provide documentation of actual mileage?",
-        escalation: "Request GPS log from transport if mileage seems inflated."
+      financialAssistance: {
+        title: "Financial Hardship Appeal",
+        approach: "Many ambulance services, especially municipal ones, have hardship programs.",
+        script: "I'm unable to pay this ambulance bill and need assistance options. This unexpected ambulance bill of $[X] represents significant financial hardship. Do you offer any discounts for financial hardship, payment plans, or write-off programs for patients unable to pay?",
+        followUp: "Ask specifically about municipal ambulance membership or subscription programs that may apply retroactively."
       },
-      {
-        name: "Financial Hardship Appeal",
-        opener: "I'm unable to pay this ambulance bill and need assistance options.",
-        script: "This unexpected ambulance bill of $[X] represents significant financial hardship. Many ambulance services have financial assistance programs. Do you offer any discounts for financial hardship, payment plans, or write-off programs for patients unable to pay?",
-        escalation: "Ask about municipal programs - many fire department EMS have hardship provisions."
+      settlementOffer: {
+        title: "Medical Necessity Challenge",
+        approach: "If transport wasn't medically necessary, you may not owe for it.",
+        script: "I need to understand why ambulance transport was deemed medically necessary. I was transported by ambulance, but I could have safely traveled by [car/taxi/other means]. The ambulance was called by [third party/I wasn't given a choice]. Can you provide documentation of medical necessity for this transport?",
+        escalationScript: "If they can't document medical necessity: 'Without documentation of medical necessity, I'm disputing the entire charge. Please provide written justification or adjust the bill accordingly.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "No Surprises Act - AIR Ambulance: Air ambulance IS covered - you cannot be balance billed",
@@ -1911,26 +1935,32 @@ Sincerely,
         "Separate 'recovery room' charges when included in anesthesia"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Medical Necessity for Hospital Setting",
-        opener: "I need to understand why this procedure required a hospital setting.",
-        script: "My wisdom teeth extraction was performed in the hospital at a cost of $[X] when the same procedure is done in oral surgery offices for $[Y]. Can you document the specific medical necessity that required a hospital operating room rather than an outpatient oral surgery center?",
-        escalation: "If no documented medical necessity, dispute the facility charges."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Medical Necessity for Hospital Setting",
+        approach: "Hospital dental costs 3-5x more than office-based. Challenge if not medically necessary.",
+        script: "I need to understand why this procedure required a hospital setting. My wisdom teeth extraction was performed in the hospital at a cost of $[X] when the same procedure is done in oral surgery offices for $[Y]. Can you document the specific medical necessity that required a hospital operating room rather than an outpatient oral surgery center?",
+        followUp: "If no documented medical necessity, dispute the facility charges entirely."
       },
-      {
-        name: "Anesthesia Level Challenge",
-        opener: "I'm questioning whether general anesthesia was necessary.",
-        script: "I was billed $[X] for general anesthesia when IV conscious sedation (commonly used for dental surgery) would cost far less. Was general anesthesia medically necessary, or was it chosen for convenience? I'd like documentation of why this level was required.",
-        escalation: "General anesthesia should only be billed when IV sedation is contraindicated."
+      disputeCall: {
+        title: "Anesthesia Level Challenge",
+        approach: "General anesthesia costs much more than IV sedation. Verify it was medically required.",
+        script: "I'm questioning whether general anesthesia was necessary. I was billed $[X] for general anesthesia when IV conscious sedation (commonly used for dental surgery) would cost far less. Was general anesthesia medically necessary, or was it chosen for convenience? I'd like documentation of why this level was required.",
+        escalationScript: "If they can't document necessity: 'I'm disputing the difference between general anesthesia and IV sedation rates. Please adjust accordingly.'"
       },
-      {
-        name: "Dual Coverage Coordination",
-        opener: "I have both dental and medical insurance and am being caught in the middle.",
-        script: "My dental insurance says this is medical, and my medical insurance says it's dental. The procedure was medically necessary oral surgery. Under coordination of benefits rules, one of these plans should be primary. Can you help me file with both plans correctly?",
-        escalation: "File appeal with both plans simultaneously, citing medical necessity."
+      financialAssistance: {
+        title: "Dual Coverage Coordination",
+        approach: "When you have both dental and medical insurance, coordinate benefits correctly.",
+        script: "I have both dental and medical insurance and am being caught in the middle. My dental insurance says this is medical, and my medical insurance says it's dental. The procedure was medically necessary oral surgery. Under coordination of benefits rules, one of these plans should be primary. Can you help me file with both plans correctly?",
+        followUp: "File appeal with both plans simultaneously, citing medical necessity documentation."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "After addressing disputes, negotiate a lump-sum settlement.",
+        script: "I've reviewed my adjusted balance after our discussions about facility fees and anesthesia charges. I'm prepared to settle all outstanding dental surgery bills today with a payment of $[30-50% OF BALANCE] as final settlement.",
+        escalationScript: "If they refuse: 'I'll continue pursuing my formal disputes. Please set up minimum monthly payments while this is resolved.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "No Surprises Act: Protects against out-of-network anesthesiologist billing at in-network facility",
@@ -2008,26 +2038,32 @@ Sincerely,
         "Separate charges for carrying case and power cord"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Rent vs. Buy Analysis",
-        opener: "I want to compare rental costs to purchasing outright.",
-        script: "You're billing $[X] per month to rent this equipment. I can purchase the identical item online for $[Y] total. After [Z] months of rental, I'll have paid more than the purchase price. Will you sell me this equipment now for the equivalent of [A] months rental?",
-        escalation: "Many DME suppliers will sell at Medicare rate if you push."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Rent vs. Buy Analysis",
+        approach: "Calculate whether renting costs more than buying. After 13 months, you should own the equipment.",
+        script: "I want to compare rental costs to purchasing outright. You're billing $[X] per month to rent this equipment. I can purchase the identical item online for $[Y] total. After [Z] months of rental, I'll have paid more than the purchase price. Will you sell me this equipment now for the equivalent of [A] months rental?",
+        followUp: "Many DME suppliers will sell at Medicare rate if you push. Get it in writing."
       },
-      {
-        name: "Medicare Rate Benchmark",
-        opener: "I'd like to understand how your pricing compares to Medicare rates.",
-        script: "The Medicare Competitive Bidding rate for this [equipment] is $[X]. You're charging my insurance $[Y], which is [Z]% higher. Can you explain this pricing disparity and consider matching the Medicare rate?",
-        escalation: "Uninsured patients can often get Medicare-equivalent rates by asking."
+      disputeCall: {
+        title: "Medicare Rate Benchmark",
+        approach: "Medicare rates are public and serve as fair market value benchmark.",
+        script: "I'd like to understand how your pricing compares to Medicare rates. The Medicare Competitive Bidding rate for this [equipment] is $[X]. You're charging my insurance $[Y], which is [Z]% higher. Can you explain this pricing disparity and consider matching the Medicare rate?",
+        escalationScript: "If they won't match: 'I'll be purchasing my own equipment at fair market value. Please confirm when my rental agreement can be terminated.'"
       },
-      {
-        name: "Auto-Ship Cancellation",
-        opener: "I need to cancel automatic supply shipments and dispute past charges.",
-        script: "I've been receiving automatic shipments of supplies I didn't order or need. I want to cancel all auto-shipments immediately and dispute the last [X] months of charges for supplies I didn't request. Please confirm cancellation in writing.",
-        escalation: "Many DME auto-ship practices violate consumer protection laws."
+      financialAssistance: {
+        title: "Auto-Ship Cancellation",
+        approach: "Auto-shipped supplies you didn't request are disputable. Cancel in writing.",
+        script: "I need to cancel automatic supply shipments and dispute past charges. I've been receiving automatic shipments of supplies I didn't order or need. I want to cancel all auto-shipments immediately and dispute the last [X] months of charges for supplies I didn't request. Please confirm cancellation in writing.",
+        followUp: "Many DME auto-ship practices violate consumer protection laws. File FTC complaint if they don't comply."
+      },
+      settlementOffer: {
+        title: "Equipment Ownership Transfer",
+        approach: "After rental cap period, you own the equipment. Verify and stop payments.",
+        script: "I've been renting this equipment for [X] months. Under the capped rental rules, I should own this equipment after 13 months of rental. Please confirm transfer of ownership and stop all future rental charges.",
+        escalationScript: "If they dispute: 'I'll be filing a complaint with Medicare (if applicable) and my state attorney general for continuing to bill rental after ownership should have transferred.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Medicare DME Competitive Bidding: Sets benchmark pricing in many areas",
@@ -2104,26 +2140,32 @@ Sincerely,
         "Separate 'preparation' charge for compounded IV medications"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Market Price Comparison",
-        opener: "I'm disputing medication charges that far exceed retail prices.",
-        script: "I'm being charged $[X] for [medication] which costs $[Y] at retail pharmacies. This represents a [Z]% markup. I'd like these charges adjusted to a reasonable amount that reflects actual medication costs plus a fair dispensing fee.",
-        escalation: "GoodRx prices are excellent benchmarks - print them out."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Market Price Comparison",
+        approach: "Compare hospital drug prices to retail pharmacy prices. Markups of 200-1000% are common.",
+        script: "I'm disputing medication charges that far exceed retail prices. I'm being charged $[X] for [medication] which costs $[Y] at retail pharmacies. This represents a [Z]% markup. I'd like these charges adjusted to a reasonable amount that reflects actual medication costs plus a fair dispensing fee.",
+        followUp: "GoodRx prices are excellent benchmarks - print them out to support your case."
       },
-      {
-        name: "340B Hospital Challenge",
-        opener: "I understand this hospital participates in the 340B drug pricing program.",
-        script: "As a [non-profit/federally qualified] hospital, you receive medications at 340B discount pricing - up to 50% off. However, you're billing me at full price. How is this consistent with your charitable mission? I request pricing that reflects your actual drug costs.",
-        escalation: "340B program requires hospitals to use savings to benefit patients."
+      disputeCall: {
+        title: "340B Hospital Challenge",
+        approach: "340B hospitals get 30-50% discounts on drugs but often charge full price.",
+        script: "I understand this hospital participates in the 340B drug pricing program. As a [non-profit/federally qualified] hospital, you receive medications at 340B discount pricing - up to 50% off. However, you're billing me at full price. How is this consistent with your charitable mission? I request pricing that reflects your actual drug costs.",
+        escalationScript: "If they refuse: 'I'll be filing a complaint with HRSA about 340B program violations and contacting local media about your pricing practices.'"
       },
-      {
-        name: "Therapeutic Substitution Request",
-        opener: "I'm questioning whether expensive IV medications were necessary.",
-        script: "I see charges for IV [medication] at $[X] when oral [same drug] costs $[Y] and is equally effective for my condition. Was there a documented medical reason I couldn't take oral medications? I'd like this charge adjusted.",
-        escalation: "Request clinical justification for IV route when oral was an option."
+      financialAssistance: {
+        title: "Therapeutic Substitution Request",
+        approach: "IV medications cost much more than oral equivalents. Challenge if oral was possible.",
+        script: "I'm questioning whether expensive IV medications were necessary. I see charges for IV [medication] at $[X] when oral [same drug] costs $[Y] and is equally effective for my condition. Was there a documented medical reason I couldn't take oral medications? I'd like this charge adjusted.",
+        followUp: "Request clinical justification for IV route when oral was an option."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "After challenging specific drug prices, negotiate overall pharmacy charges.",
+        script: "I've reviewed the adjusted pharmacy charges after our discussions. I'm prepared to settle all outstanding medication bills with a payment of $[30-50% OF BALANCE] as final settlement.",
+        escalationScript: "If they refuse: 'I'll continue pursuing formal complaints about 340B and pricing practices. Please set up minimum monthly payments.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "340B Program Requirements: Hospitals must use savings to benefit uninsured/underinsured",
@@ -2200,26 +2242,32 @@ Sincerely,
         "Billing lab handling fee separately when bundled with preventive panel"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Coding Correction Request",
-        opener: "My preventive care visit was coded incorrectly as a diagnostic visit.",
-        script: "I scheduled and received a routine annual physical/[specific preventive service]. However, it was billed with diagnostic codes instead of preventive codes. The ACA requires preventive services to be covered at 100% with no cost-sharing. Please resubmit with appropriate preventive care codes.",
-        escalation: "Provide the correct preventive CPT codes and request resubmission."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Coding Correction Request",
+        approach: "Preventive visits coded as diagnostic is the most common cause of unexpected bills.",
+        script: "My preventive care visit was coded incorrectly as a diagnostic visit. I scheduled and received a routine annual physical/[specific preventive service]. However, it was billed with diagnostic codes instead of preventive codes. The ACA requires preventive services to be covered at 100% with no cost-sharing. Please resubmit with appropriate preventive care codes.",
+        followUp: "Provide the correct preventive CPT codes and request resubmission."
       },
-      {
-        name: "Colonoscopy Polyp Removal Fight",
-        opener: "I'm disputing cost-sharing for my colonoscopy due to polyp removal.",
-        script: "My screening colonoscopy was reclassified as 'diagnostic' because polyps were removed, resulting in a $[X] bill. The purpose of screening is to find and remove polyps. This recoding defeats the purpose of preventive care coverage. [If in covered state: My state prohibits this practice.]",
-        escalation: "Many insurers have stopped this practice after complaints - push back firmly."
+      disputeCall: {
+        title: "Colonoscopy Polyp Removal Fight",
+        approach: "Many states now prohibit reclassifying screening colonoscopies when polyps are found.",
+        script: "I'm disputing cost-sharing for my colonoscopy due to polyp removal. My screening colonoscopy was reclassified as 'diagnostic' because polyps were removed, resulting in a $[X] bill. The purpose of screening is to find and remove polyps. This recoding defeats the purpose of preventive care coverage. [If in covered state: My state prohibits this practice.]",
+        escalationScript: "If they refuse: 'I'm filing a complaint with the state insurance commissioner. Many insurers have changed this practice after formal complaints.'"
       },
-      {
-        name: "Lab Coding Correction",
-        opener: "Labs from my preventive visit should be covered as screening, not diagnostic.",
-        script: "The labs ordered during my annual preventive visit are being billed as diagnostic tests. These are standard screening labs for a patient of my age and risk profile. Please resubmit with screening diagnosis codes (Z-codes) so they're covered as preventive care.",
-        escalation: "Request the lab order to verify what the physician actually ordered."
+      financialAssistance: {
+        title: "Lab Coding Correction",
+        approach: "Screening labs should use Z-codes (preventive) not diagnostic codes.",
+        script: "Labs from my preventive visit should be covered as screening, not diagnostic. The labs ordered during my annual preventive visit are being billed as diagnostic tests. These are standard screening labs for a patient of my age and risk profile. Please resubmit with screening diagnosis codes (Z-codes) so they're covered as preventive care.",
+        followUp: "Request the lab order to verify what the physician actually ordered."
+      },
+      settlementOffer: {
+        title: "Insurance Appeal for Preventive Coverage",
+        approach: "Cite ACA requirements when appealing preventive care denials.",
+        script: "I'm appealing the cost-sharing applied to my preventive care services. Under ACA Section 2713, these services must be covered at 100% with no cost-sharing. I've provided documentation that these were preventive, not diagnostic services. Please reprocess this claim correctly.",
+        escalationScript: "If denied: 'I'll be filing formal complaints with the state insurance commissioner and CMS for violation of ACA essential health benefit requirements.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "ACA Section 2713: Preventive services must be covered at 100% with no cost-sharing",
@@ -2296,26 +2344,32 @@ Sincerely,
         "Billing 'triage' as separate service from visit"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "ER vs. Urgent Care Coding",
-        opener: "I visited an urgent care, not an emergency room.",
-        script: "I'm being billed with ER codes (9928X) but I was treated at [facility name] which is marketed as an urgent care. Urgent care visits should use office visit codes (9920X-9921X) which are significantly lower. Please correct the coding or explain why ER codes are appropriate for a non-emergency.",
-        escalation: "Some free-standing ERs market as urgent cares - this may be deceptive practice."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "ER vs. Urgent Care Coding",
+        approach: "Some facilities bill ER rates but market as urgent care. This is a major red flag.",
+        script: "I visited an urgent care, not an emergency room. I'm being billed with ER codes (9928X) but I was treated at [facility name] which is marketed as an urgent care. Urgent care visits should use office visit codes (9920X-9921X) which are significantly lower. Please correct the coding or explain why ER codes are appropriate for a non-emergency.",
+        followUp: "Some free-standing ERs market as urgent cares - this may be deceptive practice reportable to state AG."
       },
-      {
-        name: "Level of Service Challenge",
-        opener: "The visit level doesn't match the care I received.",
-        script: "I came in for [simple complaint like sore throat/sprained ankle]. I was seen for [X] minutes and received [basic treatment]. Being billed a level [4 or 5] seems inconsistent with this straightforward visit. Can you provide documentation supporting this coding level?",
-        escalation: "Request the clinical notes to verify time and complexity."
+      disputeCall: {
+        title: "Level of Service Challenge",
+        approach: "Visit level should match the complexity and time of your encounter.",
+        script: "The visit level doesn't match the care I received. I came in for [simple complaint like sore throat/sprained ankle]. I was seen for [X] minutes and received [basic treatment]. Being billed a level [4 or 5] seems inconsistent with this straightforward visit. Can you provide documentation supporting this coding level?",
+        escalationScript: "If they can't justify: 'Please adjust the visit level to match the actual complexity. I'll request clinical notes to verify if needed.'"
       },
-      {
-        name: "Facility Fee Dispute",
-        opener: "I wasn't informed this urgent care charges hospital facility fees.",
-        script: "I chose this urgent care expecting standard urgent care pricing. I wasn't informed that it's hospital-affiliated with additional facility fees. This should have been disclosed before treatment. Please waive the facility fee of $[X].",
-        escalation: "Lack of price transparency disclosure may violate state consumer protection laws."
+      financialAssistance: {
+        title: "Facility Fee Dispute",
+        approach: "Hospital-affiliated urgent cares often add surprise facility fees.",
+        script: "I wasn't informed this urgent care charges hospital facility fees. I chose this urgent care expecting standard urgent care pricing. I wasn't informed that it's hospital-affiliated with additional facility fees. This should have been disclosed before treatment. Please waive the facility fee of $[X].",
+        followUp: "Lack of price transparency disclosure may violate state consumer protection laws."
+      },
+      settlementOffer: {
+        title: "Comparable Rate Negotiation",
+        approach: "Compare to what independent urgent cares charge for the same service.",
+        script: "Independent urgent cares in this area charge $[X] for similar services. I'm being charged $[Y] which is [Z]% higher. I'm willing to pay $[comparable rate] which is the fair market rate for urgent care services in this area.",
+        escalationScript: "If they refuse: 'I'll be filing complaints about deceptive pricing and marketing. Please set up minimum monthly payments while this is resolved.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Good Faith Estimate: Uninsured patients entitled to cost estimate before service",
@@ -2392,26 +2446,32 @@ Sincerely,
         "Charging for 'chart preparation' in addition to visit"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Facility Fee Challenge",
-        opener: "I'm disputing the facility fee on my telehealth visit.",
-        script: "I had a telehealth visit from my home, but I'm being charged a $[X] facility fee. Facility fees cover the cost of maintaining a physical treatment space - which wasn't used. Please remove this inappropriate charge.",
-        escalation: "CMS has clarified facility fees shouldn't apply when patient is at home."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Facility Fee Challenge",
+        approach: "Facility fees on telehealth visits from your home are inappropriate.",
+        script: "I'm disputing the facility fee on my telehealth visit. I had a telehealth visit from my home, but I'm being charged a $[X] facility fee. Facility fees cover the cost of maintaining a physical treatment space - which wasn't used. Please remove this inappropriate charge.",
+        followUp: "CMS has clarified facility fees shouldn't apply when patient is at home."
       },
-      {
-        name: "Telehealth Cost Comparison",
-        opener: "This telehealth visit costs more than it should for virtual care.",
-        script: "I'm being charged $[X] for a telehealth visit when services like Teladoc/MDLive charge $[Y] for similar care. Given the reduced overhead of virtual visits, can you adjust this charge to a competitive rate?",
-        escalation: "Many direct-to-consumer telehealth services publish their prices - use as benchmark."
+      disputeCall: {
+        title: "Audio vs. Video Rate",
+        approach: "Audio-only visits should be billed at lower rates than video visits.",
+        script: "I had a phone call, not a video visit, and should be billed accordingly. My provider visit was audio-only (telephone), but I'm being billed at the higher video visit rate. Audio-only visits have specific, lower-paying CPT codes (99441-99443). Please correct this billing.",
+        escalationScript: "If they dispute: 'Please provide documentation showing video was used during this encounter. I have no record of video being used.'"
       },
-      {
-        name: "Audio vs. Video Rate",
-        opener: "I had a phone call, not a video visit, and should be billed accordingly.",
-        script: "My provider visit was audio-only (telephone), but I'm being billed at the higher video visit rate. Audio-only visits have specific, lower-paying CPT codes (99441-99443). Please correct this billing.",
-        escalation: "Request documentation of whether video was used to verify claim."
+      financialAssistance: {
+        title: "Telehealth Cost Comparison",
+        approach: "Compare to direct-to-consumer telehealth services which are typically cheaper.",
+        script: "This telehealth visit costs more than it should for virtual care. I'm being charged $[X] for a telehealth visit when services like Teladoc/MDLive charge $[Y] for similar care. Given the reduced overhead of virtual visits, can you adjust this charge to a competitive rate?",
+        followUp: "Many direct-to-consumer telehealth services publish their prices - use as benchmark."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "After addressing specific issues, negotiate a fair telehealth rate.",
+        script: "I've reviewed the telehealth charges after our discussions about facility fees and visit type. I'm prepared to pay $[fair market rate] for this telehealth encounter, which reflects appropriate pricing for virtual care.",
+        escalationScript: "If they refuse: 'I'll be filing complaints about inappropriate telehealth billing practices. Please set up minimum payments.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "CMS Telehealth Guidelines: Facility fees generally not appropriate when patient is at home",
@@ -2488,32 +2548,32 @@ Sincerely,
         "Separate 'pharmacy preparation' fees for compounded drugs"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Site of Service Optimization",
-        opener: "I'd like to explore lower-cost options for my infusion treatments.",
-        script: "I understand that receiving chemotherapy at a hospital outpatient center costs significantly more than at a physician-office or freestanding infusion center. Can my treatment be safely provided at a lower-cost site? This could save me and my insurance thousands per treatment.",
-        escalation: "Request referral to independent oncology practice if available."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Site of Service Optimization",
+        approach: "Hospital infusion centers cost 50% more than independent centers. Explore options.",
+        script: "I'd like to explore lower-cost options for my infusion treatments. I understand that receiving chemotherapy at a hospital outpatient center costs significantly more than at a physician-office or freestanding infusion center. Can my treatment be safely provided at a lower-cost site? This could save me and my insurance thousands per treatment.",
+        followUp: "Request referral to independent oncology practice if available and appropriate."
       },
-      {
-        name: "Drug Cost Reduction",
-        opener: "I need help affording my cancer medications.",
-        script: "My [drug name] costs $[X] per treatment which is devastating financially. Can you check if: (1) there's a biosimilar available, (2) the pharmaceutical company has a patient assistance program, (3) there are copay assistance foundations that cover this drug?",
-        escalation: "Patient Access Network Foundation, HealthWell Foundation, and drug-specific programs often help."
+      disputeCall: {
+        title: "Drug Cost Reduction",
+        approach: "Cancer drugs have extreme markups. Explore biosimilars and assistance programs.",
+        script: "I need help affording my cancer medications. My [drug name] costs $[X] per treatment which is devastating financially. Can you check if: (1) there's a biosimilar available, (2) the pharmaceutical company has a patient assistance program, (3) there are copay assistance foundations that cover this drug?",
+        escalationScript: "If they don't help: 'Please connect me with your patient navigator or financial counselor. Patient Access Network Foundation and HealthWell Foundation may help.'"
       },
-      {
-        name: "340B Hospital Leverage",
-        opener: "I understand this hospital participates in the 340B drug discount program.",
-        script: "As a 340B hospital, you purchase cancer drugs at substantial discounts - often 30-50% off. Yet patients are billed at full price. Given your charitable mission and 340B program requirements to benefit underserved patients, I'm requesting drug pricing that reflects your actual costs.",
-        escalation: "340B hospitals have legal obligations to use savings to benefit patients."
+      financialAssistance: {
+        title: "340B Hospital Leverage",
+        approach: "340B hospitals get 30-50% discounts on cancer drugs but often bill full price.",
+        script: "I understand this hospital participates in the 340B drug discount program. As a 340B hospital, you purchase cancer drugs at substantial discounts - often 30-50% off. Yet patients are billed at full price. Given your charitable mission and 340B program requirements to benefit underserved patients, I'm requesting drug pricing that reflects your actual costs.",
+        followUp: "340B hospitals have legal obligations to use savings to benefit patients."
       },
-      {
-        name: "Financial Catastrophe Assistance",
-        opener: "Cancer treatment is causing financial devastation for my family.",
-        script: "My total cancer treatment costs exceed my annual income. I've already depleted savings and face potential bankruptcy. I need comprehensive financial assistance including charity care for facility costs, drug manufacturer assistance, and foundation support. Can your financial counselor or patient navigator help me access all available resources?",
-        escalation: "Cancer centers with patient navigators have access to many assistance programs."
+      settlementOffer: {
+        title: "Financial Catastrophe Assistance",
+        approach: "Cancer centers have extensive financial assistance programs. Access all available resources.",
+        script: "Cancer treatment is causing financial devastation for my family. My total cancer treatment costs exceed my annual income. I've already depleted savings and face potential bankruptcy. I need comprehensive financial assistance including charity care for facility costs, drug manufacturer assistance, and foundation support. Can your financial counselor or patient navigator help me access all available resources?",
+        escalationScript: "If minimal help offered: 'I understand there are multiple assistance programs. Please have your patient navigator or social worker contact me to ensure I'm accessing all available resources.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "340B Program: Non-profit hospitals must use drug savings to benefit patients",
@@ -2590,26 +2650,32 @@ Sincerely,
         "Separate cardiovascular lab fee from procedure fee"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Device Cost Challenge",
-        opener: "The charges for my cardiac device seem excessive.",
-        script: "I'm being charged $[X] for my [stent/pacemaker/defibrillator]. The Medicare payment for this device is $[Y], which suggests a significant markup. Given that device costs are a major portion of my bill, can you reduce this charge to a more reasonable amount?",
-        escalation: "Device manufacturer pricing is publicly available through CMS data."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Device Cost Challenge",
+        approach: "Cardiac devices have 300-500% markups. Compare to Medicare device pricing.",
+        script: "The charges for my cardiac device seem excessive. I'm being charged $[X] for my [stent/pacemaker/defibrillator]. The Medicare payment for this device is $[Y], which suggests a significant markup. Given that device costs are a major portion of my bill, can you reduce this charge to a more reasonable amount?",
+        followUp: "Device manufacturer pricing is publicly available through CMS data."
       },
-      {
-        name: "Observation vs. Inpatient",
-        opener: "I believe my admission status should have been inpatient, not observation.",
-        script: "I was hospitalized for [cardiac emergency/procedure] for [X] days but was classified as 'observation' status, leaving me with much higher out-of-pocket costs. Given the severity of my condition and length of stay, can you review whether this should have been an inpatient admission?",
-        escalation: "Medicare has specific criteria for inpatient admission - hospitals sometimes game this."
+      disputeCall: {
+        title: "Observation vs. Inpatient",
+        approach: "Observation status can dramatically increase your costs. Challenge if inappropriate.",
+        script: "I believe my admission status should have been inpatient, not observation. I was hospitalized for [cardiac emergency/procedure] for [X] days but was classified as 'observation' status, leaving me with much higher out-of-pocket costs. Given the severity of my condition and length of stay, can you review whether this should have been an inpatient admission?",
+        escalationScript: "If they refuse to change: 'I'm requesting a formal review of my admission status. Medicare has specific criteria and I believe I meet them.'"
       },
-      {
-        name: "Bundled Payment Inquiry",
-        opener: "I want to understand the bundled payment for my cardiac procedure.",
-        script: "Cardiac procedures often have bundled payment rates that include the procedure, device, and 90-day follow-up care. Can you show me how my bill aligns with bundled payment methodology? I should not be separately billed for services included in the bundle.",
-        escalation: "Many insurers and Medicare use bundled payments for cardiac care."
+      financialAssistance: {
+        title: "Bundled Payment Inquiry",
+        approach: "Cardiac procedures often have bundled payments covering procedure, device, and follow-up.",
+        script: "I want to understand the bundled payment for my cardiac procedure. Cardiac procedures often have bundled payment rates that include the procedure, device, and 90-day follow-up care. Can you show me how my bill aligns with bundled payment methodology? I should not be separately billed for services included in the bundle.",
+        followUp: "Many insurers and Medicare use bundled payments for cardiac care."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "After addressing specific issues, negotiate overall cardiac care costs.",
+        script: "I've reviewed the adjusted balance after our discussions about device pricing and admission status. I'm prepared to settle all cardiac care bills with a payment of $[30-50% OF BALANCE] as final settlement.",
+        escalationScript: "If they refuse: 'I'll continue pursuing formal disputes and apply for financial assistance. Please set up minimum monthly payments.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Medicare Bundled Payments: Many cardiac procedures have bundled rates covering 90 days",
@@ -2686,26 +2752,32 @@ Sincerely,
         "Separate 'facility fee' for training visits for home dialysis"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Medicare Rate Benchmark",
-        opener: "I want to understand why dialysis costs me so much more than Medicare rates.",
-        script: "Medicare pays approximately $[X] per dialysis session, but I'm being charged $[Y] - a [Z]% markup. While I understand private insurance may pay differently, this disparity is extreme. Can you work with me on pricing closer to what Medicare recognizes as fair value?",
-        escalation: "Use Medicare dialysis rates as non-negotiable benchmark for negotiations."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Medicare Rate Benchmark",
+        approach: "Medicare pays ~$250-300/session. Use this as your negotiation baseline.",
+        script: "I want to understand why dialysis costs me so much more than Medicare rates. Medicare pays approximately $[X] per dialysis session, but I'm being charged $[Y] - a [Z]% markup. While I understand private insurance may pay differently, this disparity is extreme. Can you work with me on pricing closer to what Medicare recognizes as fair value?",
+        followUp: "Use Medicare dialysis rates as non-negotiable benchmark for negotiations."
       },
-      {
-        name: "Home Dialysis Cost Reduction",
-        opener: "I'd like to explore home dialysis to reduce my costs and improve flexibility.",
-        script: "I understand home peritoneal dialysis or home hemodialysis can reduce overall costs while improving quality of life. Is home dialysis appropriate for my situation? What would the cost difference be compared to in-center treatment?",
-        escalation: "Many patients on home dialysis have better outcomes and lower costs."
+      disputeCall: {
+        title: "Home Dialysis Cost Reduction",
+        approach: "Home dialysis is often cheaper and provides better quality of life.",
+        script: "I'd like to explore home dialysis to reduce my costs and improve flexibility. I understand home peritoneal dialysis or home hemodialysis can reduce overall costs while improving quality of life. Is home dialysis appropriate for my situation? What would the cost difference be compared to in-center treatment?",
+        escalationScript: "If they discourage home dialysis: 'I'd like a referral to discuss home dialysis options. Many patients have better outcomes with home treatment.'"
       },
-      {
-        name: "Drug Cost Assistance",
-        opener: "I need help affording the drugs associated with my dialysis treatment.",
-        script: "The EPO/Aranesp for my anemia management costs $[X] per month out of pocket. Do you have information on manufacturer patient assistance programs? Can you help me apply for drug cost assistance?",
-        escalation: "EPO drugs have significant patient assistance programs - facilities should help access."
+      financialAssistance: {
+        title: "Drug Cost Assistance",
+        approach: "EPO drugs have significant patient assistance programs. Always apply.",
+        script: "I need help affording the drugs associated with my dialysis treatment. The EPO/Aranesp for my anemia management costs $[X] per month out of pocket. Do you have information on manufacturer patient assistance programs? Can you help me apply for drug cost assistance?",
+        followUp: "EPO drugs have significant patient assistance programs - facilities should help access."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "Negotiate overall dialysis costs based on Medicare benchmarks.",
+        script: "I've reviewed my accumulated dialysis bills totaling $[AMOUNT]. Based on Medicare rates and my financial situation, I'm prepared to settle this balance with a payment of $[30-50% OF BALANCE] as final settlement.",
+        escalationScript: "If they refuse: 'I'll continue pursuing formal complaints about pricing and apply for additional assistance programs. Please set up minimum monthly payments.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Medicare ESRD Entitlement: Medicare covers dialysis for ESRD after 3-month waiting period regardless of age",
@@ -2782,26 +2854,32 @@ Sincerely,
         "Separate 'care coordination' fees for covered services"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Medicare Coverage Verification",
-        opener: "I believe Medicare should cover these home health services.",
-        script: "I'm receiving bills for home health nursing and therapy that I believe should be covered by Medicare. I'm homebound, I need skilled services, and the agency is Medicare-certified. Can you verify that claims were submitted correctly to Medicare?",
-        escalation: "Medicare home health has no copay - any patient billing for covered services is improper."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Medicare Coverage Verification",
+        approach: "Medicare home health has NO copay. Any patient bill may be improper.",
+        script: "I believe Medicare should cover these home health services. I'm receiving bills for home health nursing and therapy that I believe should be covered by Medicare. I'm homebound, I need skilled services, and the agency is Medicare-certified. Can you verify that claims were submitted correctly to Medicare?",
+        followUp: "Medicare home health has no copay - any patient billing for covered services is improper."
       },
-      {
-        name: "Skilled vs. Custodial Clarification",
-        opener: "I need to understand which services are considered skilled versus custodial.",
-        script: "I'm being billed for services that seem to be custodial care (bathing, dressing assistance). However, my skilled nursing visits include wound care and medication management. Can you clarify which services should be covered as skilled care?",
-        escalation: "Skilled care includes teaching, assessment, and complex treatments - not just ADLs."
+      disputeCall: {
+        title: "Skilled vs. Custodial Clarification",
+        approach: "Only skilled services are covered. Verify what was actually provided.",
+        script: "I need to understand which services are considered skilled versus custodial. I'm being billed for services that seem to be custodial care (bathing, dressing assistance). However, my skilled nursing visits include wound care and medication management. Can you clarify which services should be covered as skilled care?",
+        escalationScript: "If they insist services were custodial: 'Please provide documentation showing the level of care provided. Skilled care includes teaching, assessment, and complex treatments.'"
       },
-      {
-        name: "Post-Hospitalization Coverage",
-        opener: "I received home health after a hospital stay and shouldn't have copays.",
-        script: "Following my hospitalization, I received skilled home health services. Under Medicare, home health after hospitalization should be covered at 100% with no copay. Why am I receiving a patient bill for these services?",
-        escalation: "Medicare home health has no cost-sharing for beneficiaries - push back firmly."
+      financialAssistance: {
+        title: "Post-Hospitalization Coverage",
+        approach: "Home health after hospitalization should be covered at 100% with no copay.",
+        script: "I received home health after a hospital stay and shouldn't have copays. Following my hospitalization, I received skilled home health services. Under Medicare, home health after hospitalization should be covered at 100% with no copay. Why am I receiving a patient bill for these services?",
+        followUp: "Medicare home health has no cost-sharing for beneficiaries - push back firmly."
+      },
+      settlementOffer: {
+        title: "Billing Fraud Report",
+        approach: "If being billed for Medicare-covered services, this may constitute fraud.",
+        script: "I've confirmed that these home health services should be covered by Medicare at 100%. Billing patients for covered Medicare services is improper. Please remove these charges immediately or I will file a complaint with Medicare and the OIG.",
+        escalationScript: "If they refuse: 'I'm filing a complaint with the Medicare Administrative Contractor and the OIG Fraud Hotline. This billing practice appears to violate Medicare rules.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "Medicare Home Health Benefit: No copay, no deductible for covered home health services",
@@ -2879,26 +2957,32 @@ Sincerely,
         "Separate 'specimen handling' fees when included in pathology code"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Surprise Pathology Billing",
-        opener: "I received care at an in-network facility but the pathologist was out-of-network.",
-        script: "My procedure was at [in-network facility] but the pathology was read by an out-of-network lab, resulting in a $[X] balance bill. Under the No Surprises Act, I'm protected from balance billing for ancillary services at in-network facilities. Please adjust my responsibility to in-network cost-sharing.",
-        escalation: "File No Surprises Act complaint if they refuse to adjust."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Surprise Pathology Billing",
+        approach: "No Surprises Act protects you from out-of-network pathology at in-network facilities.",
+        script: "I received care at an in-network facility but the pathologist was out-of-network. My procedure was at [in-network facility] but the pathology was read by an out-of-network lab, resulting in a $[X] balance bill. Under the No Surprises Act, I'm protected from balance billing for ancillary services at in-network facilities. Please adjust my responsibility to in-network cost-sharing.",
+        followUp: "File No Surprises Act complaint if they refuse to adjust."
       },
-      {
-        name: "Excessive Stain/Testing Challenge",
-        opener: "I'm questioning the medical necessity of all the tests performed.",
-        script: "I see [X] immunohistochemistry stains were performed at $[Y] each for a total of $[Z]. Can you explain the clinical necessity of each stain? Was this level of testing required for diagnosis, or was it reflexive/research-related?",
-        escalation: "Request pathologist documentation explaining necessity of each test."
+      disputeCall: {
+        title: "Excessive Stain/Testing Challenge",
+        approach: "Multiple immunohistochemistry stains add significant cost. Verify necessity.",
+        script: "I'm questioning the medical necessity of all the tests performed. I see [X] immunohistochemistry stains were performed at $[Y] each for a total of $[Z]. Can you explain the clinical necessity of each stain? Was this level of testing required for diagnosis, or was it reflexive/research-related?",
+        escalationScript: "If they can't justify each test: 'Please provide written documentation from the pathologist explaining why each test was medically necessary. I'll dispute any tests that lack justification.'"
       },
-      {
-        name: "Duplicate Component Billing",
-        opener: "I may have been billed twice for the same pathology service.",
-        script: "I received bills from both the hospital lab and a pathologist for what appears to be the same pathology interpretation. Can you clarify whether these are separate services or if this represents duplicate billing for technical and professional components?",
-        escalation: "Technical and professional should either be billed globally or by separate entities."
+      financialAssistance: {
+        title: "Duplicate Component Billing",
+        approach: "Technical and professional components should be billed globally or by separate entities.",
+        script: "I may have been billed twice for the same pathology service. I received bills from both the hospital lab and a pathologist for what appears to be the same pathology interpretation. Can you clarify whether these are separate services or if this represents duplicate billing for technical and professional components?",
+        followUp: "Technical and professional should either be billed globally or by separate entities."
+      },
+      settlementOffer: {
+        title: "Fair Market Price Negotiation",
+        approach: "Compare to Medicare Clinical Lab Fee Schedule for fair pricing.",
+        script: "I've reviewed the pathology charges and compared them to the Medicare Clinical Lab Fee Schedule. The fair market value for these services is $[X], but I'm being charged $[Y]. I'm willing to pay $[fair amount] which reflects appropriate pricing for pathology services.",
+        escalationScript: "If they refuse: 'I'll continue pursuing formal complaints including No Surprises Act violations. Please set up minimum payments while this is resolved.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "No Surprises Act: Pathology at in-network facility is protected from balance billing",
@@ -2975,26 +3059,32 @@ Sincerely,
         "Separate 'surgical observation' charges included in facility fee"
       ]
     },
-    negotiationPlaybooks: [
-      {
-        name: "Site of Service Pricing",
-        opener: "I'd like to understand why my surgery cost so much more than at an ASC.",
-        script: "My outpatient surgery at this hospital facility cost $[X]. The same procedure at an ambulatory surgery center costs $[Y]. I wasn't informed this hospital outpatient department would cost significantly more. Can you match competitive ASC pricing?",
-        escalation: "Use CMS ASC payment rates as benchmark - typically 40-60% of HOPD rates."
+    negotiationPlaybooks: {
+      initialCall: {
+        title: "Site of Service Pricing",
+        approach: "Hospital outpatient surgery costs 40-60% more than ASCs. Use ASC rates as benchmark.",
+        script: "I'd like to understand why my surgery cost so much more than at an ASC. My outpatient surgery at this hospital facility cost $[X]. The same procedure at an ambulatory surgery center costs $[Y]. I wasn't informed this hospital outpatient department would cost significantly more. Can you match competitive ASC pricing?",
+        followUp: "Use CMS ASC payment rates as benchmark - typically 40-60% of HOPD rates."
       },
-      {
-        name: "Global Period Billing Dispute",
-        opener: "I'm being billed for follow-up visits that should be included in surgical global.",
-        script: "My surgery was performed on [date] and I'm being billed for follow-up visits on [dates]. Under Medicare's global surgery rules (which most insurers follow), routine post-op visits within [X] days are included in the surgical fee. Please remove these charges.",
-        escalation: "Check CMS global surgery days for your procedure code (10, 0, or 90 day)."
+      disputeCall: {
+        title: "Global Period Billing Dispute",
+        approach: "Post-op visits within the global period should be included in surgical fee.",
+        script: "I'm being billed for follow-up visits that should be included in surgical global. My surgery was performed on [date] and I'm being billed for follow-up visits on [dates]. Under Medicare's global surgery rules (which most insurers follow), routine post-op visits within [X] days are included in the surgical fee. Please remove these charges.",
+        escalationScript: "If they refuse: 'Check CMS global surgery days for procedure code [XXXXX]. These post-op visits fall within the global period and should be removed.'"
       },
-      {
-        name: "Implant/Device Cost Challenge",
-        opener: "The charges for surgical implants seem excessive.",
-        script: "I'm being charged $[X] for [implant/hardware] when fair market pricing is $[Y]. This represents a [Z]% markup. Can you provide documentation of your acquisition cost and explain this pricing? I'd like this adjusted to a reasonable amount.",
-        escalation: "Many device manufacturers publish suggested pricing - use as benchmark."
+      financialAssistance: {
+        title: "Implant/Device Cost Challenge",
+        approach: "Surgical implants have extreme markups. Compare to fair market or Medicare pricing.",
+        script: "The charges for surgical implants seem excessive. I'm being charged $[X] for [implant/hardware] when fair market pricing is $[Y]. This represents a [Z]% markup. Can you provide documentation of your acquisition cost and explain this pricing? I'd like this adjusted to a reasonable amount.",
+        followUp: "Many device manufacturers publish suggested pricing - use as benchmark."
+      },
+      settlementOffer: {
+        title: "Settlement Negotiation",
+        approach: "After addressing specific issues, negotiate overall surgery costs.",
+        script: "I've reviewed the adjusted balance after our discussions about site of service, global period billing, and implant costs. I'm prepared to settle all surgery-related bills with a payment of $[30-50% OF BALANCE] as final settlement.",
+        escalationScript: "If they refuse: 'I'll continue pursuing formal disputes and apply for financial assistance. Please set up minimum monthly payments.'"
       }
-    ],
+    },
     legalProtections: {
       federal: [
         "No Surprises Act: Protects against balance billing from out-of-network surgeons/anesthesiologists at in-network facilities",
