@@ -51,7 +51,7 @@ export function SEOHead({ title, description, keywords = [], canonicalPath, ogIm
     }
     
     return () => {
-      document.title = 'GoldRock Health - Your Complete Health AI Command Center';
+      document.title = 'GoldRock Health - Medical Debt Keeps You Up at Night. We Help You Sleep Again.';
     };
   }, [title, description, keywords, canonicalPath, ogImage]);
   
