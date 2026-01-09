@@ -3177,13 +3177,13 @@ export default function CollectionsDefenseGuide() {
                                   <div className="space-y-3">
                                     <h5 className="font-semibold text-cyan-700 dark:text-cyan-400 text-sm">COBRA Scripts:</h5>
                                     {(scenario.cobraAnalysis as any).scripts.employerCall && (
-                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700">
+                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700" data-testid="script-cobra-employer">
                                         <p className="text-xs font-medium text-cyan-800 dark:text-cyan-300 mb-1">EMPLOYER CALL SCRIPT:</p>
                                         <p className="text-sm text-cyan-900 dark:text-cyan-200 italic">"{(scenario.cobraAnalysis as any).scripts.employerCall}"</p>
                                       </div>
                                     )}
                                     {(scenario.cobraAnalysis as any).scripts.insuranceCall && (
-                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700">
+                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700" data-testid="script-cobra-insurance">
                                         <p className="text-xs font-medium text-cyan-800 dark:text-cyan-300 mb-1">INSURANCE CALL SCRIPT:</p>
                                         <p className="text-sm text-cyan-900 dark:text-cyan-200 italic">"{(scenario.cobraAnalysis as any).scripts.insuranceCall}"</p>
                                       </div>
@@ -3304,7 +3304,7 @@ export default function CollectionsDefenseGuide() {
                                     </div>
                                   </div>
                                   {(scenario.employerLiability as any).consultationScript && (
-                                    <div className="bg-orange-100 dark:bg-orange-900/40 rounded-lg p-3 border border-orange-200 dark:border-orange-700 mt-4">
+                                    <div className="bg-orange-100 dark:bg-orange-900/40 rounded-lg p-3 border border-orange-200 dark:border-orange-700 mt-4" data-testid="script-attorney-consultation">
                                       <p className="text-xs font-medium text-orange-800 dark:text-orange-300 mb-1">ATTORNEY CONSULTATION SCRIPT:</p>
                                       <p className="text-sm text-orange-900 dark:text-orange-200 italic">"{(scenario.employerLiability as any).consultationScript}"</p>
                                     </div>
