@@ -4,7 +4,6 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { elevenLabsService } from "./services/elevenlabs";
 import { medicalCasesService } from "./services/medicalCases";
-// OpenAI service is accessed via aiProvider for automatic Gemini 3 Flash fallback
 import { aiProvider } from "./services/aiProvider";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
@@ -16,40 +15,27 @@ import * as bindingSiteAnalyzer from "./ai/binding-site-analyzer";
 import { PROTEIN_COLLECTIONS, getAllProteins, getProteinByUniprotId, searchProteins, getTopProteins } from "@shared/protein-collections";
 import { setupAuth, isAuthenticated, requiresSubscription, requiresAiAgreement, isAdmin } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
-import Stripe from "stripe";
+import { getUncachableStripeClient, getStripePublishableKey } from "./stripeClient";
 import { z } from "zod";
 import multer from "multer";
-// We'll import pdfParse dynamically when needed to avoid loading issues
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
-}
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-08-27.basil",
-});
-
-// Store Stripe price IDs
 let MONTHLY_PRICE_ID: string;
 let ANNUAL_PRICE_ID: string;
 let LIFETIME_PRICE_ID: string;
 
-// Helper to get base URL for Stripe redirects
 function getBaseUrl(): string {
-  // Use REPLIT_DOMAINS (comma-separated list) - take the first domain
   if (process.env.REPLIT_DOMAINS) {
     const primaryDomain = process.env.REPLIT_DOMAINS.split(',')[0];
     return `https://${primaryDomain}`;
   }
-  // Fallback for local development
   return 'http://localhost:5000';
 }
 
-// Setup Stripe prices on startup
 async function setupStripe() {
   try {
     console.log('Setting up Stripe prices...');
+    const stripe = await getUncachableStripeClient();
     
-    // Create or retrieve monthly price ($25)
     const existingPrices = await stripe.prices.list({ limit: 100 });
     
     let monthlyPrice = existingPrices.data.find(
@@ -59,20 +45,16 @@ async function setupStripe() {
     if (!monthlyPrice) {
       console.log('Creating monthly price...');
       const product = await stripe.products.create({
-        name: 'GoldRock AI Premium Monthly',
-        description: 'Monthly subscription for GoldRock AI Premium features including medical bill AI analysis and unlimited medical training',
+        name: 'GoldRock Health Premium Monthly',
+        description: 'Monthly subscription for GoldRock Health Premium features including medical bill AI analysis and step-by-step playbooks',
       });
       
       monthlyPrice = await stripe.prices.create({
-        unit_amount: 2500, // $25.00
+        unit_amount: 2500,
         currency: 'usd',
-        recurring: {
-          interval: 'month',
-        },
+        recurring: { interval: 'month' },
         product: product.id,
-        metadata: {
-          plan: 'monthly',
-        },
+        metadata: { plan: 'monthly' },
       });
     }
     
@@ -83,24 +65,19 @@ async function setupStripe() {
     if (!annualPrice) {
       console.log('Creating annual price...');
       const product = await stripe.products.create({
-        name: 'GoldRock AI Premium Annual',
-        description: 'Annual subscription for GoldRock AI Premium features including medical bill AI analysis and unlimited medical training (Save 17%)',
+        name: 'GoldRock Health Premium Annual',
+        description: 'Annual subscription for GoldRock Health Premium features (Save 17%)',
       });
       
       annualPrice = await stripe.prices.create({
-        unit_amount: 24900, // $249.00
+        unit_amount: 24900,
         currency: 'usd',
-        recurring: {
-          interval: 'year',
-        },
+        recurring: { interval: 'year' },
         product: product.id,
-        metadata: {
-          plan: 'annual',
-        },
+        metadata: { plan: 'annual' },
       });
     }
     
-    // Create or retrieve lifetime price ($747)
     let lifetimePrice = existingPrices.data.find(
       price => price.metadata?.plan === 'lifetime' && price.unit_amount === 74700
     );
@@ -108,17 +85,15 @@ async function setupStripe() {
     if (!lifetimePrice) {
       console.log('Creating lifetime price...');
       const product = await stripe.products.create({
-        name: 'GoldRock AI Premium Lifetime',
-        description: 'Lifetime access to GoldRock AI Premium features - pay once, use forever',
+        name: 'GoldRock Health Premium Lifetime',
+        description: 'Lifetime access to GoldRock Health Premium features - pay once, use forever',
       });
       
       lifetimePrice = await stripe.prices.create({
-        unit_amount: 74700, // $747.00
+        unit_amount: 74700,
         currency: 'usd',
         product: product.id,
-        metadata: {
-          plan: 'lifetime',
-        },
+        metadata: { plan: 'lifetime' },
       });
     }
     
@@ -414,11 +389,11 @@ RULES:
       // Cancel active Stripe subscription if exists
       if (user.stripeSubscriptionId) {
         try {
-          await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+          const stripeClient = await getUncachableStripeClient();
+          await stripeClient.subscriptions.cancel(user.stripeSubscriptionId);
           console.log(`Cancelled Stripe subscription: ${user.stripeSubscriptionId}`);
         } catch (stripeError) {
           console.error('Error canceling Stripe subscription:', stripeError);
-          // Continue with deletion even if subscription cancellation fails
         }
       }
 
@@ -715,8 +690,9 @@ RULES:
   app.post("/api/create-payment-intent", async (req, res) => {
     try {
       const { amount } = req.body;
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(amount * 100), // Convert to cents
+      const stripeClient = await getUncachableStripeClient();
+      const paymentIntent = await stripeClient.paymentIntents.create({
+        amount: Math.round(amount * 100),
         currency: "usd",
       });
       res.json({ clientSecret: paymentIntent.client_secret });
@@ -736,17 +712,18 @@ RULES:
         return res.status(400).json({ message: "Minimum donation is $1" });
       }
 
-      const session = await stripe.checkout.sessions.create({
+      const stripeClient = await getUncachableStripeClient();
+      const session = await stripeClient.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [
           {
             price_data: {
               currency: 'usd',
               product_data: {
-                name: 'Support GoldRock AI',
-                description: 'Your donation helps keep the platform free and accessible',
+                name: 'Support GoldRock Health',
+                description: 'Your donation helps keep the platform accessible',
               },
-              unit_amount: amount, // Amount already in cents
+              unit_amount: amount,
             },
             quantity: 1,
           },
@@ -776,8 +753,9 @@ RULES:
       
       // Handle lifetime plan differently - it's a one-time payment, not a subscription
       if (planType === 'lifetime') {
-        const session = await stripe.checkout.sessions.create({
-          payment_method_types: ['card', 'link'], // Enable Link for one-click checkout
+        const stripeClient = await getUncachableStripeClient();
+        const session = await stripeClient.checkout.sessions.create({
+          payment_method_types: ['card', 'link'],
           line_items: [
             {
               price: LIFETIME_PRICE_ID,
@@ -808,9 +786,9 @@ RULES:
       // Create Stripe customer if doesn't exist
       let customerId = user.stripeCustomerId;
       if (!customerId) {
-        // Use user email if available, otherwise use a placeholder based on userId
+        const stripeClient = await getUncachableStripeClient();
         const customerEmail = user.email || `user_${userId}@goldrock.health`;
-        const customer = await stripe.customers.create({
+        const customer = await stripeClient.customers.create({
           email: customerEmail,
           name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || `User ${userId.substring(0, 8)}`,
           metadata: {
@@ -831,7 +809,8 @@ RULES:
       // Handle existing subscription case
       if (user.stripeSubscriptionId) {
         try {
-          const existingSubscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+          const stripeClient = await getUncachableStripeClient();
+          const existingSubscription = await stripeClient.subscriptions.retrieve(user.stripeSubscriptionId);
 
           // If subscription is active, return success
           if (existingSubscription.status === 'active') {
@@ -846,7 +825,7 @@ RULES:
           if (['incomplete', 'incomplete_expired', 'past_due', 'canceled'].includes(existingSubscription.status)) {
             console.log(`Cleaning up existing ${existingSubscription.status} subscription ${existingSubscription.id}`);
             try {
-              await stripe.subscriptions.cancel(existingSubscription.id);
+              await stripeClient.subscriptions.cancel(existingSubscription.id);
             } catch (cancelError) {
               console.warn('Error cancelling existing subscription:', cancelError);
             }
@@ -871,8 +850,8 @@ RULES:
       console.log(`Creating subscription for user ${userId} with plan ${planType}, priceId: ${selectedPriceId}`);
       
       // Create subscription with payment_behavior: 'default_incomplete'
-      // This creates the subscription and returns a PaymentIntent for the first invoice
-      const subscription = await stripe.subscriptions.create({
+      const stripeClientForSub = await getUncachableStripeClient();
+      const subscription = await stripeClientForSub.subscriptions.create({
         customer: customerId,
         items: [{
           price: selectedPriceId,
@@ -880,7 +859,7 @@ RULES:
         payment_behavior: 'default_incomplete',
         payment_settings: {
           save_default_payment_method: 'on_subscription',
-          payment_method_types: ['card', 'link'], // Enable Link for one-click checkout
+          payment_method_types: ['card', 'link'],
         },
         expand: ['latest_invoice.payment_intent'],
         metadata: {
@@ -944,7 +923,8 @@ RULES:
       }
 
       // Retrieve the subscription from Stripe to get current status
-      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
+      const stripeClient = await getUncachableStripeClient();
+      const subscription = await stripeClient.subscriptions.retrieve(user.stripeSubscriptionId, {
         expand: ['latest_invoice.payment_intent']
       });
 
@@ -1050,113 +1030,6 @@ RULES:
     }
   });
 
-  // Stripe webhook endpoint - needs raw body for signature verification
-  app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    
-    if (!process.env.STRIPE_WEBHOOK_SECRET) {
-      console.error('Missing STRIPE_WEBHOOK_SECRET environment variable');
-      return res.status(400).send('Webhook secret not configured');
-    }
-
-    let event;
-
-    try {
-      event = stripe.webhooks.constructEvent(req.body, sig as string, process.env.STRIPE_WEBHOOK_SECRET);
-    } catch (err: any) {
-      console.error('Webhook signature verification failed:', err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
-
-    console.log('Received Stripe webhook:', event.type);
-
-    try {
-      switch (event.type) {
-        case 'invoice.payment_succeeded': {
-          const invoice = event.data.object as any;
-          if (invoice.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
-            
-            // Find user by stripe customer ID
-            const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
-            
-            if (user) {
-              console.log(`Payment succeeded for user ${user.id}, activating subscription`);
-              await storage.upsertUser({
-                ...user,
-                subscriptionStatus: 'active',
-                subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
-              });
-            }
-          }
-          break;
-        }
-
-        case 'customer.subscription.updated': {
-          const subscription = event.data.object as any;
-          
-          // Find user by stripe customer ID
-          const users = await storage.getAllUsers();
-          const user = users.find(u => u.stripeCustomerId === subscription.customer);
-          
-          if (user) {
-            console.log(`Subscription updated for user ${user.id}, status: ${subscription.status}`);
-            await storage.upsertUser({
-              ...user,
-              subscriptionStatus: subscription.status === 'active' ? 'active' : 'inactive',
-              subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
-            });
-          }
-          break;
-        }
-
-        case 'customer.subscription.deleted': {
-          const subscription = event.data.object as any;
-          
-          // Find user by stripe customer ID
-          const users = await storage.getAllUsers();
-          const user = users.find(u => u.stripeCustomerId === subscription.customer);
-          
-          if (user) {
-            console.log(`Subscription cancelled for user ${user.id}`);
-            await storage.upsertUser({
-              ...user,
-              subscriptionStatus: 'cancelled',
-              subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
-            });
-          }
-          break;
-        }
-
-        case 'invoice.payment_failed': {
-          const invoice = event.data.object as any;
-          if (invoice.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
-            
-            // Find user by stripe customer ID
-            const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
-            
-            if (user) {
-              console.log(`Payment failed for user ${user.id}, marking subscription as past_due`);
-              await storage.upsertUser({
-                ...user,
-                subscriptionStatus: 'past_due'
-              });
-            }
-          }
-          break;
-        }
-
-        default:
-          console.log(`Unhandled webhook event type: ${event.type}`);
-      }
-
-      res.json({ received: true });
-    } catch (error) {
-      console.error('Error processing webhook:', error);
-      res.status(500).json({ error: 'Webhook processing failed' });
-    }
-  });
 
   // RevenueCat webhook endpoint for iOS subscription events
   app.post('/api/webhooks/revenuecat', express.json(), async (req, res) => {
