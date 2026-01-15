@@ -1471,9 +1471,9 @@ export default function AuthLanding() {
             </div>
           </div>
           
-          <div className="pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+          <div className="pt-6 border-t border-gray-800 text-center text-xs text-gray-500 pb-24">
             <p className="mb-1">Educational use only. Not for clinical diagnosis or treatment decisions. Not medical, legal, or financial advice.</p>
-            <p>&copy; {new Date().getFullYear()} Eldest AI LLC dba GoldRock AI. All rights reserved. • Colorado, USA</p>
+            <p>&copy; {new Date().getFullYear()} Eldest AI LLC (DBA GoldRock AI). All rights reserved. • Colorado, USA</p>
           </div>
         </div>
       </footer>
