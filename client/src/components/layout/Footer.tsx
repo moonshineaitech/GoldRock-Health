@@ -73,7 +73,7 @@ export default function Footer() {
         
         <div className="pt-4 border-t border-cyan-500/10 text-center text-xs text-gray-500">
           <p>Educational use only. Not for clinical diagnosis or treatment decisions.</p>
-          <p className="mt-1">&copy; {new Date().getFullYear()} Eldest AI LLC (DBA GoldRock AI). All rights reserved.</p>
+          <p className="mt-1">&copy; {new Date().getFullYear()} GoldRock Health by Eldest AI LLC. All rights reserved.</p>
           <p className="mt-1 text-gray-600">State of Incorporation: Colorado, USA</p>
         </div>
       </div>

@@ -1827,7 +1827,7 @@ export default function Landing() {
             Educational use only. Not for clinical diagnosis or treatment decisions.
           </p>
           <p className="text-center text-xs text-gray-400 pb-24">
-            © {new Date().getFullYear()} Eldest AI LLC (DBA GoldRock AI). All rights reserved. • Colorado, USA
+            © {new Date().getFullYear()} GoldRock Health by Eldest AI LLC. All rights reserved. • Colorado, USA
           </p>
         </div>
       </motion.div>
