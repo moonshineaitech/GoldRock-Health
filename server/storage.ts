@@ -110,10 +110,13 @@ import {
   type InsertLabNote,
   hospitalReviews,
   partnerApiKeys,
+  billSummaries,
   type HospitalReview,
   type InsertHospitalReview,
   type PartnerApiKey,
-  type InsertPartnerApiKey
+  type InsertPartnerApiKey,
+  type BillSummary,
+  type InsertBillSummary
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count, lte, inArray, asc } from "drizzle-orm";
@@ -292,6 +295,11 @@ export interface IStorage {
   getPartnerApiKeysByCompany(companyId: string): Promise<PartnerApiKey[]>;
   updatePartnerApiKeyUsage(id: string): Promise<PartnerApiKey | undefined>;
   deactivatePartnerApiKey(id: string): Promise<boolean>;
+
+  // Bill Summaries
+  createBillSummary(data: InsertBillSummary): Promise<BillSummary>;
+  getBillSummariesByUser(userId: string, limit?: number): Promise<Pick<BillSummary, 'id' | 'summary' | 'totalAmount' | 'providerName' | 'serviceDate' | 'createdAt'>[]>;
+  getBillSummaryById(id: string, userId: string): Promise<BillSummary | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1598,6 +1606,34 @@ export class DatabaseStorage implements IStorage {
       .set({ isActive: false })
       .where(eq(partnerApiKeys.id, id));
     return true;
+  }
+
+  // Bill Summaries
+  async createBillSummary(data: InsertBillSummary): Promise<BillSummary> {
+    const [created] = await db.insert(billSummaries).values(data).returning();
+    return created;
+  }
+
+  async getBillSummariesByUser(userId: string, limit: number = 20): Promise<Pick<BillSummary, 'id' | 'summary' | 'totalAmount' | 'providerName' | 'serviceDate' | 'createdAt'>[]> {
+    return await db.select({
+      id: billSummaries.id,
+      summary: billSummaries.summary,
+      totalAmount: billSummaries.totalAmount,
+      providerName: billSummaries.providerName,
+      serviceDate: billSummaries.serviceDate,
+      createdAt: billSummaries.createdAt,
+    })
+    .from(billSummaries)
+    .where(eq(billSummaries.userId, userId))
+    .orderBy(desc(billSummaries.createdAt))
+    .limit(limit);
+  }
+
+  async getBillSummaryById(id: string, userId: string): Promise<BillSummary | undefined> {
+    const [summary] = await db.select()
+      .from(billSummaries)
+      .where(and(eq(billSummaries.id, id), eq(billSummaries.userId, userId)));
+    return summary;
   }
 }
 

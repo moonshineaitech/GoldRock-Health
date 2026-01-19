@@ -80,6 +80,7 @@ import ForInsurance from "@/pages/for-insurance";
 import CollectionsDefenseGuide from "@/pages/collections-defense-guide";
 import HospitalBillPlaybook from "@/pages/hospital-bill-playbook";
 import AboutGoldRock from "@/pages/about-goldrock";
+import BillSummarizer from "@/pages/bill-summarizer";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -102,6 +103,7 @@ const AI_PROTECTED_ROUTES = [
   '/bill-ai', 
   '/bill-analyzer',
   '/bill-grader',
+  '/bill-summarizer',
   '/image-analysis',
   '/training',
   '/game',
@@ -305,6 +307,11 @@ function Router() {
       <Route path="/bill-grader">
         <AIRouteGuard path="/bill-grader">
           <BillGrader />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/bill-summarizer">
+        <AIRouteGuard path="/bill-summarizer">
+          <BillSummarizer />
         </AIRouteGuard>
       </Route>
       <Route path="/hospital-reviews" component={HospitalReviews} />

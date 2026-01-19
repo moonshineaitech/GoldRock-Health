@@ -37,6 +37,7 @@ Preferred communication style: Simple, everyday language.
 
 ### AI Features
 - **Real AI Bill Analysis**: Powered by OpenAI GPT-5 (via Replit AI Integrations) providing structured JSON output for issues, recommendations, negotiation strategies, financial assistance, and insider tactics.
+- **Bill Summarizer & Jargon Simplifier**: AI-powered tool that translates complex medical bills into plain English, explains CPT codes and billing terms, identifies potential issues, and provides actionable next steps.
 - **Medicare/Medicaid Enrollment System**: Voice-enabled wizard with AI-powered eligibility analysis.
 - **Insurance Benefits Explainer**: AI-powered explanations and plan comparison.
 - **LunaFold Platform**: AI-powered protein analysis via GPT for functional insights, binding site detection, mutation scanning, and molecular docking simulations.

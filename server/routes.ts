@@ -3218,6 +3218,225 @@ What specific insurance issue are you facing? I can provide exact templates and 
     }
   });
 
+  // ===== BILL SUMMARIZER & JARGON SIMPLIFIER ENDPOINTS =====
+  
+  // Validation schema for bill summarizer request
+  const billSummarizerRequestSchema = z.object({
+    billText: z.string().min(20, 'Please provide bill text (at least 20 characters)').max(50000, 'Bill text too long (max 50000 characters)')
+  });
+  
+  // Summarize medical bill and simplify jargon
+  app.post('/api/bill-summarizer', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Validate request body with Zod
+      const validationResult = billSummarizerRequestSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: validationResult.error.errors[0]?.message || 'Invalid request' 
+        });
+      }
+      
+      const { billText } = validationResult.data;
+      
+      const prompt = `You are a medical billing expert. Analyze this medical bill and provide a comprehensive summary in JSON format.
+
+MEDICAL BILL TEXT:
+${billText}
+
+Respond with ONLY valid JSON (no markdown, no backticks) in this exact format:
+{
+  "summary": "A 2-3 sentence plain English summary of what this bill is for and the key takeaways",
+  "totalAmount": 0,
+  "providerName": "Name of the healthcare provider or hospital",
+  "serviceDate": "Date of service if found, or null",
+  "lineItems": [
+    {
+      "description": "Original description from the bill",
+      "code": "CPT/HCPCS code if present",
+      "amount": 0,
+      "simplifiedDescription": "What this actually means in plain English",
+      "category": "One of: Office Visit, Lab Work, Imaging, Surgery, Medication, Supplies, Facility Fee, Professional Fee, Emergency, Other"
+    }
+  ],
+  "jargonTerms": [
+    {
+      "term": "The medical/billing term",
+      "definition": "Simple definition anyone can understand",
+      "context": "How it applies to THIS bill"
+    }
+  ],
+  "keyInsights": [
+    "Important observation about the bill",
+    "Another key insight"
+  ],
+  "potentialIssues": [
+    "Any billing errors, overcharges, or concerns spotted",
+    "Items that seem unusually priced"
+  ],
+  "actionItems": [
+    "Specific action the patient should take",
+    "Another recommended action"
+  ]
+}
+
+IMPORTANT GUIDELINES:
+1. Identify ALL medical jargon, billing codes, and technical terms
+2. Convert complex medical terminology to 5th-grade reading level
+3. Flag any charges that seem unusually high or potentially incorrect
+4. Suggest specific questions to ask the billing department
+5. If you see CPT codes, explain what procedures they represent
+6. Look for common billing errors (duplicate charges, unbundling, upcoding)`;
+
+      const systemPrompt = 'You are a medical billing expert. Always respond with valid JSON only. No markdown, no code blocks, no extra text. Just the JSON object.';
+      
+      let result;
+      try {
+        const aiResponse = await aiProvider.generateText(prompt, systemPrompt, {
+          provider: 'auto',
+          maxTokens: 2000,
+          temperature: 0.3
+        });
+        
+        // Parse the JSON response
+        const cleanedResponse = aiResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        result = JSON.parse(cleanedResponse);
+      } catch (aiError) {
+        console.error('AI parsing error:', aiError);
+        // Fallback with basic analysis
+        result = {
+          summary: "We analyzed your medical bill. To get detailed insights, try pasting the full itemized statement with CPT codes and charges.",
+          totalAmount: null,
+          providerName: null,
+          serviceDate: null,
+          lineItems: [],
+          jargonTerms: [
+            { term: "CPT Code", definition: "A 5-digit code that identifies medical procedures", context: "Used to bill for specific services" },
+            { term: "EOB", definition: "Explanation of Benefits - a statement from your insurance", context: "Shows what insurance paid vs what you owe" },
+            { term: "Allowed Amount", definition: "The maximum your insurance will pay for a service", context: "Often much less than the billed amount" }
+          ],
+          keyInsights: [
+            "Request an itemized bill with all CPT codes for complete analysis",
+            "Compare charges against Medicare rates for fair pricing"
+          ],
+          potentialIssues: [],
+          actionItems: [
+            "Request a detailed itemized statement from the billing department",
+            "Ask for all CPT and ICD-10 codes for each charge"
+          ]
+        };
+      }
+      
+      // Store the summary using storage interface
+      const savedSummary = await storage.createBillSummary({
+        userId,
+        originalText: billText.substring(0, 10000),
+        summary: result.summary || '',
+        totalAmount: result.totalAmount?.toString() || null,
+        lineItems: result.lineItems || [],
+        jargonTerms: result.jargonTerms || [],
+        keyInsights: result.keyInsights || [],
+        potentialIssues: result.potentialIssues || [],
+        actionItems: result.actionItems || [],
+        providerName: result.providerName || null,
+        serviceDate: result.serviceDate || null,
+      });
+      
+      res.json({
+        id: savedSummary.id,
+        ...result,
+        message: 'Bill analyzed successfully'
+      });
+    } catch (error) {
+      console.error('Error in bill summarizer:', error);
+      res.status(500).json({ message: 'Failed to analyze bill. Please try again.' });
+    }
+  });
+  
+  // Get user's bill summaries history
+  app.get('/api/bill-summaries', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const summaries = await storage.getBillSummariesByUser(userId);
+      res.json(summaries);
+    } catch (error) {
+      console.error('Error fetching bill summaries:', error);
+      res.status(500).json({ message: 'Failed to fetch bill summaries' });
+    }
+  });
+  
+  // Get specific bill summary details
+  app.get('/api/bill-summaries/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id } = req.params;
+      
+      const summary = await storage.getBillSummaryById(id, userId);
+      
+      if (!summary) {
+        return res.status(404).json({ message: 'Bill summary not found' });
+      }
+      
+      res.json(summary);
+    } catch (error) {
+      console.error('Error fetching bill summary:', error);
+      res.status(500).json({ message: 'Failed to fetch bill summary' });
+    }
+  });
+
+  // Medical Jargon Dictionary - lookup common terms
+  app.get('/api/jargon-dictionary', async (req, res) => {
+    try {
+      const { term } = req.query;
+      
+      // Common medical billing jargon dictionary
+      const jargonDictionary: Record<string, { term: string; definition: string; examples?: string[] }> = {
+        'cpt': { term: 'CPT Code', definition: 'Current Procedural Terminology - a 5-digit code that identifies specific medical procedures and services', examples: ['99213 - Office visit, established patient', '99284 - ER visit, moderate severity'] },
+        'icd': { term: 'ICD-10 Code', definition: 'International Classification of Diseases - codes that describe diagnoses and medical conditions', examples: ['J06.9 - Upper respiratory infection', 'R10.9 - Abdominal pain'] },
+        'eob': { term: 'EOB (Explanation of Benefits)', definition: 'A document from your insurance company showing what was billed, what they paid, and what you owe' },
+        'deductible': { term: 'Deductible', definition: 'The amount you must pay out-of-pocket each year before insurance starts paying' },
+        'copay': { term: 'Copay', definition: 'A fixed amount you pay for a covered service (like $30 for a doctor visit)' },
+        'coinsurance': { term: 'Coinsurance', definition: 'Your share of costs after meeting your deductible, usually expressed as a percentage (like 20%)' },
+        'allowed amount': { term: 'Allowed Amount', definition: 'The maximum amount your insurance will pay for a covered service - often much less than the billed amount' },
+        'out of pocket maximum': { term: 'Out-of-Pocket Maximum', definition: 'The most you have to pay for covered services in a year. After reaching this, insurance pays 100%' },
+        'prior authorization': { term: 'Prior Authorization', definition: 'Approval required from insurance before certain services to confirm they will be covered' },
+        'hcpcs': { term: 'HCPCS Codes', definition: 'Healthcare Common Procedure Coding System - codes for supplies, equipment, and non-physician services' },
+        'chargemaster': { term: 'Chargemaster', definition: 'The hospital\'s master list of prices for all services - these are inflated "sticker prices" that almost nobody pays' },
+        'facility fee': { term: 'Facility Fee', definition: 'An extra charge for using the hospital\'s space and equipment, separate from the doctor\'s fee' },
+        'balance billing': { term: 'Balance Billing', definition: 'When a provider bills you for the difference between their charge and what insurance paid - often prohibited for emergencies' },
+        'unbundling': { term: 'Unbundling', definition: 'A billing error where procedures that should be billed together are separated to charge more' },
+        'upcoding': { term: 'Upcoding', definition: 'A billing error where a more expensive code is used than the actual service provided' },
+        'modifier': { term: 'Modifier', definition: 'A 2-character code added to CPT codes to provide more detail about the service' },
+        'revenue code': { term: 'Revenue Code', definition: 'A 4-digit code on hospital bills that categorizes the department or type of service' },
+        'drg': { term: 'DRG (Diagnosis Related Group)', definition: 'A system that groups hospital stays for payment purposes - determines how much Medicare pays' },
+        'ndc': { term: 'NDC (National Drug Code)', definition: 'A unique identifier for medications that includes manufacturer, product, and package size' },
+        'ub-04': { term: 'UB-04', definition: 'The standard claim form used by hospitals and facilities to bill insurance' },
+        'cms-1500': { term: 'CMS-1500', definition: 'The standard claim form used by physicians and non-facility providers' },
+      };
+      
+      if (term) {
+        const searchTerm = term.toString().toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
+        const match = jargonDictionary[searchTerm] || 
+                      Object.values(jargonDictionary).find(j => 
+                        j.term.toLowerCase().includes(searchTerm) || 
+                        j.definition.toLowerCase().includes(searchTerm)
+                      );
+        
+        if (match) {
+          return res.json(match);
+        }
+        return res.status(404).json({ message: 'Term not found in dictionary' });
+      }
+      
+      // Return all terms
+      res.json(Object.values(jargonDictionary));
+    } catch (error) {
+      console.error('Error in jargon dictionary:', error);
+      res.status(500).json({ message: 'Failed to fetch jargon definitions' });
+    }
+  });
+
   // ===== SYNTHETIC PATIENT DIAGNOSTICS ENDPOINTS =====
   
   // Get all synthetic patients for the authenticated user
