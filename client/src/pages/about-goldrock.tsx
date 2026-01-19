@@ -4,9 +4,14 @@ import {
   ArrowRight, Shield, DollarSign, FileText, Brain, MessageSquare, 
   Clock, Scale, Heart, Users, Sparkles, CheckCircle, Phone, 
   Calculator, Gavel, BookOpen, AlertTriangle, Zap, Target,
-  FileCheck, TrendingDown, Award, Lock, Stethoscope, Dna
+  FileCheck, TrendingDown, Award, Lock, Mail, Lightbulb, Eye, 
+  HandHeart, Rocket, Star, Quote
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroImage from "@assets/generated_images/patient_advocacy_team_empowerment.png";
+import missionImage from "@assets/generated_images/shield_protecting_from_medical_debt.png";
+import teamImage from "@assets/generated_images/diverse_tech_startup_team_collaboration.png";
+import appImage from "@assets/generated_images/mobile_app_showing_savings.png";
 
 const FloatingParticle = ({ delay = 0, duration = 20, size = 4 }: { delay?: number; duration?: number; size?: number }) => (
   <motion.div
@@ -59,438 +64,683 @@ const GlowingOrb = ({ className, color1, color2, size = 400, blur = 100 }: { cla
   />
 );
 
-const FeatureSection = ({ 
-  icon: Icon, 
-  title, 
-  description, 
-  features, 
-  color,
-  reversed = false 
-}: {
-  icon: any;
-  title: string;
-  description: string;
-  features: string[];
-  color: string;
-  reversed?: boolean;
-}) => (
+const ValueCard = ({ icon: Icon, title, description, color, delay }: { icon: any; title: string; description: string; color: string; delay: number }) => (
   <motion.div 
-    className={`grid md:grid-cols-2 gap-12 items-center py-16 ${reversed ? 'md:flex-row-reverse' : ''}`}
-    initial={{ opacity: 0, y: 40 }}
+    className="relative group"
+    initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    transition={{ duration: 0.6 }}
+    transition={{ delay, duration: 0.5 }}
   >
-    <div className={reversed ? 'md:order-2' : ''}>
-      <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r ${color} mb-6`}>
-        <Icon className="h-5 w-5 text-white" />
-        <span className="text-white font-semibold text-sm">{title}</span>
+    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-0 group-hover:opacity-100" />
+    <div className="relative bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl hover:border-emerald-200 transition-all duration-500 h-full">
+      <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${color} mb-6 shadow-lg`}>
+        <Icon className="h-7 w-7 text-white" />
       </div>
-      <p className="text-xl text-gray-700 leading-relaxed mb-6">{description}</p>
-      <ul className="space-y-3">
-        {features.map((feature, i) => (
-          <li key={i} className="flex items-start gap-3">
-            <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />
-            <span className="text-gray-600">{feature}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-    <div className={`relative ${reversed ? 'md:order-1' : ''}`}>
-      <div className={`aspect-video rounded-2xl bg-gradient-to-br ${color} p-8 flex items-center justify-center shadow-2xl`}>
-        <Icon className="h-24 w-24 text-white/90" strokeWidth={1.5} />
-      </div>
+      <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
+      <p className="text-gray-600 leading-relaxed">{description}</p>
     </div>
   </motion.div>
 );
 
+const StatCard = ({ number, label, suffix = "", delay }: { number: string; label: string; suffix?: string; delay: number }) => (
+  <motion.div 
+    className="text-center"
+    initial={{ opacity: 0, scale: 0.9 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true }}
+    transition={{ delay, duration: 0.5 }}
+  >
+    <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+      {number}{suffix}
+    </div>
+    <p className="text-gray-600 text-lg">{label}</p>
+  </motion.div>
+);
+
 export default function AboutGoldRock() {
-  const coreFeatures = [
+  const values = [
     {
-      icon: Brain,
-      title: "AI Bill Analysis",
-      description: "Upload any medical bill and our AI instantly scans for errors, overcharges, and savings opportunities. Get personalized negotiation strategies based on your specific situation.",
-      features: [
-        "Automatic CPT code verification and error detection",
-        "Comparison against fair market rates and Medicare benchmarks",
-        "Personalized negotiation scripts and talking points",
-        "Financial assistance program recommendations"
-      ],
-      color: "from-purple-500 to-violet-600"
-    },
-    {
-      icon: FileText,
-      title: "Hospital Bill Playbook",
-      description: "A comprehensive guide with 22+ scenarios covering every type of hospital bill. Take action within the critical 30-60 day window BEFORE bills go to collections.",
-      features: [
-        "Step-by-step playbooks for ER, surgery, imaging, and more",
-        "Insider knowledge from billing industry experts",
-        "Ready-to-use letter templates and dispute scripts",
-        "Federal and state legal protections explained"
-      ],
-      color: "from-emerald-500 to-teal-600"
+      icon: Heart,
+      title: "Compassion First",
+      description: "We understand the stress and anxiety of medical debt. Every feature we build starts with empathy for your situation.",
+      color: "from-rose-500 to-pink-600"
     },
     {
       icon: Shield,
-      title: "Collections Defense Guide",
-      description: "Already have bills in collections? Our defense guide helps you understand your rights and navigate the collections process to minimize damage and maximize savings.",
-      features: [
-        "Debt validation letter templates",
-        "FDCPA rights and violation identification",
-        "Statute of limitations lookup by state",
-        "Credit report dispute strategies"
-      ],
+      title: "Your Champion",
+      description: "We're in your corner. Our tools give you the same insider knowledge that billing professionals use—leveling the playing field.",
       color: "from-blue-500 to-indigo-600"
     },
     {
-      icon: Phone,
-      title: "Medicare & Medicaid Enrollment",
-      description: "Voice-enabled enrollment wizard with AI-powered eligibility analysis. Understand your options and get help applying for government healthcare programs.",
-      features: [
-        "AI eligibility screening for Medicare and Medicaid",
-        "Step-by-step enrollment guidance",
-        "Deadline tracking and reminders",
-        "Plan comparison and benefit explanations"
-      ],
+      icon: Eye,
+      title: "Radical Transparency",
+      description: "No hidden fees, no surprise charges, no selling your data. What you see is what you get—unlike the bills we help you fight.",
+      color: "from-purple-500 to-violet-600"
+    },
+    {
+      icon: Lightbulb,
+      title: "Empowerment Through Knowledge",
+      description: "We don't just solve problems—we teach you how the system works so you can advocate for yourself and your family.",
       color: "from-amber-500 to-orange-600"
+    },
+    {
+      icon: Lock,
+      title: "Privacy Sacred",
+      description: "Your medical information is deeply personal. We use bank-level encryption and never share or sell your data. Period.",
+      color: "from-emerald-500 to-teal-600"
+    },
+    {
+      icon: Rocket,
+      title: "Relentless Innovation",
+      description: "Healthcare billing is complex, but our AI gets smarter every day, finding new ways to identify savings and protect your rights.",
+      color: "from-cyan-500 to-blue-600"
     }
-  ];
-
-  const additionalTools = [
-    { icon: Calculator, title: "Bill Calculators", description: "Estimate fair prices and potential savings" },
-    { icon: Gavel, title: "Dispute Arsenal", description: "Templates, scripts, and escalation strategies" },
-    { icon: BookOpen, title: "Rights Hub", description: "Know your patient rights in every state" },
-    { icon: MessageSquare, title: "AI Coaching", description: "Practice negotiations with AI role-play" },
-    { icon: AlertTriangle, title: "Emergency Help", description: "Quick guidance for urgent billing crises" },
-    { icon: TrendingDown, title: "Industry Insights", description: "Insider tactics from billing professionals" }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      <section className="relative overflow-hidden pt-8 pb-16">
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(180deg, rgba(248,250,252,1) 0%, rgba(255,255,255,1) 30%, rgba(240,253,244,0.5) 70%, rgba(236,253,245,0.8) 100%)",
-          }}
-        />
+      {/* Hero Section */}
+      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+        <div className="absolute inset-0">
+          <img 
+            src={heroImage} 
+            alt="Healthcare advocacy team" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-gray-900/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent" />
+        </div>
         
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <GlowingOrb 
-            className="top-0 -left-32" 
-            color1="rgba(16, 185, 129, 0.2)" 
-            color2="rgba(6, 182, 212, 0.08)" 
-            size={500}
-            blur={120}
-          />
-          <GlowingOrb 
-            className="-bottom-32 -right-32" 
-            color1="rgba(139, 92, 246, 0.15)" 
-            color2="rgba(59, 130, 246, 0.06)" 
-            size={450}
-            blur={100}
-          />
-          
-          {[...Array(10)].map((_, i) => (
-            <FloatingParticle key={i} delay={i * 1.5} duration={20 + Math.random() * 8} size={3 + Math.random() * 4} />
+          {[...Array(15)].map((_, i) => (
+            <FloatingParticle key={i} delay={i * 1.2} duration={18 + Math.random() * 8} size={2 + Math.random() * 4} />
           ))}
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center text-gray-500 mb-6">
-            <span className="text-sm">About Us</span>
-          </div>
-          
-          <motion.h1 
-            className="text-4xl md:text-6xl font-bold text-center text-gray-900 mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Introducing GoldRock Health
-          </motion.h1>
-          
-          <motion.p 
-            className="text-xl text-center text-gray-600 max-w-3xl mx-auto mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            An AI-powered platform designed to help you understand, challenge, and reduce your medical bills.
-          </motion.p>
-
+        <div className="container mx-auto px-4 relative z-10 py-20">
           <motion.div 
-            className="flex justify-center gap-4 flex-wrap"
-            initial={{ opacity: 0, y: 20 }}
+            className="max-w-3xl"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.8 }}
           >
-            <Link href="/api/login">
-              <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-8 shadow-lg">
-                Get Started Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/hospital-bill-playbook">
-              <Button variant="outline" size="lg" className="rounded-full px-8 border-2">
-                Explore Bill Playbook
-              </Button>
-            </Link>
+            <motion.div 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm mb-6"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Sparkles className="h-4 w-4 text-emerald-400" />
+              <span>AI-Powered Healthcare Advocacy</span>
+            </motion.div>
+            
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              Medical Debt Keeps You Up at Night.
+              <span className="block mt-2 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                We Help You Sleep Again.
+              </span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-white/80 mb-10 leading-relaxed max-w-2xl">
+              GoldRock Health combines AI intelligence with insider billing expertise to help you understand, challenge, and reduce unfair medical bills.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <Link href="/api/login">
+                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-8 py-6 text-lg shadow-xl shadow-emerald-500/25">
+                  Start Saving Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/hospital-bill-playbook">
+                <Button variant="outline" size="lg" className="rounded-full px-8 py-6 text-lg border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50">
+                  Explore Free Guides
+                </Button>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-b from-white to-gray-50/50">
+      {/* Mission Section */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <GlowingOrb 
+            className="-top-32 -right-32" 
+            color1="rgba(16, 185, 129, 0.15)" 
+            color2="rgba(6, 182, 212, 0.05)" 
+            size={600}
+            blur={150}
+          />
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-6">
+                <Target className="h-4 w-4" />
+                <span>Our Mission</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Fighting for fair healthcare billing—
+                <span className="text-emerald-600"> one patient at a time</span>
+              </h2>
+              
+              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                Every year, Americans pay billions in medical bills that contain errors, overcharges, and fees they shouldn't owe. 
+                The healthcare billing system is complex, opaque, and often unfair. Most people don't know their rights—or how to fight back.
+              </p>
+              
+              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                <strong className="text-gray-900">GoldRock Health exists to change that.</strong> We combine cutting-edge AI with insider knowledge from billing industry professionals to give you the tools, strategies, and confidence to take control of your medical finances.
+              </p>
+
+              <div className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                  <Mail className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Questions? Reach us at</p>
+                  <a href="mailto:CONTACT@GOLDROCK.ai" className="text-lg font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                    CONTACT@GOLDROCK.ai
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src={missionImage} 
+                  alt="Protection from medical debt" 
+                  className="w-full h-auto"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/40 to-transparent" />
+              </div>
+              
+              {/* Floating stat cards */}
+              <motion.div 
+                className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+              >
+                <div className="text-3xl font-bold text-emerald-600 mb-1">80%</div>
+                <p className="text-gray-600 text-sm">of medical bills contain errors</p>
+              </motion.div>
+              
+              <motion.div 
+                className="absolute -top-6 -right-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+              >
+                <div className="text-3xl font-bold text-purple-600 mb-1">$400B+</div>
+                <p className="text-gray-600 text-sm">medical debt in America</p>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Story Section */}
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <motion.div 
-            className="max-w-4xl mx-auto text-center mb-16"
+            className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Medical billing is broken. We're here to help.
-            </h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              Every year, Americans pay billions in medical bills that contain errors, overcharges, and fees they shouldn't owe. 
-              Most people don't know their rights or how to fight back. GoldRock Health gives you the knowledge, tools, and AI-powered 
-              guidance to take control of your medical finances.
-            </p>
-          </motion.div>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium mb-6">
+                <BookOpen className="h-4 w-4" />
+                <span>Our Story</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Born from frustration. Built with purpose.
+              </h2>
+            </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <motion.div 
-              className="text-center p-8 rounded-3xl bg-white shadow-lg border border-gray-100"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0 }}
-            >
-              <div className="text-5xl font-bold text-emerald-600 mb-3">80%</div>
-              <p className="text-gray-600">of medical bills contain errors according to industry studies</p>
-            </motion.div>
-            <motion.div 
-              className="text-center p-8 rounded-3xl bg-white shadow-lg border border-gray-100"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              <div className="text-5xl font-bold text-purple-600 mb-3">$400B+</div>
-              <p className="text-gray-600">in medical debt currently held by Americans</p>
-            </motion.div>
-            <motion.div 
-              className="text-center p-8 rounded-3xl bg-white shadow-lg border border-gray-100"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="text-5xl font-bold text-blue-600 mb-3">30-60</div>
-              <p className="text-gray-600">days is your critical window to act before collections</p>
-            </motion.div>
-          </div>
+            <div className="relative">
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-500 via-purple-500 to-blue-500 hidden md:block" />
+              
+              <div className="space-y-12">
+                <motion.div 
+                  className="md:pl-20 relative"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="absolute left-6 top-0 w-4 h-4 rounded-full bg-emerald-500 hidden md:block" />
+                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <Quote className="h-10 w-10 text-emerald-300 mb-4" />
+                    <p className="text-xl text-gray-700 leading-relaxed mb-4">
+                      It started with a $47,000 emergency room bill—for a 3-hour visit. The charges made no sense. 
+                      The "itemized bill" was incomprehensible. And every phone call led to a different answer.
+                    </p>
+                    <p className="text-gray-600">
+                      After weeks of research, we discovered hidden billing codes, duplicate charges, and rates far above 
+                      Medicare benchmarks. That one bill sparked a mission to help others navigate this broken system.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  className="md:pl-20 relative"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <div className="absolute left-6 top-0 w-4 h-4 rounded-full bg-purple-500 hidden md:block" />
+                  <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <p className="text-xl text-gray-700 leading-relaxed mb-4">
+                      We partnered with billing industry insiders, patient advocates, and healthcare policy experts. 
+                      We learned how hospitals price services, how insurance companies negotiate, and where the leverage points really are.
+                    </p>
+                    <p className="text-gray-600">
+                      Then we built AI to make that knowledge accessible to everyone—not just those who can afford 
+                      expensive patient advocates or healthcare attorneys.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  className="md:pl-20 relative"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="absolute left-6 top-0 w-4 h-4 rounded-full bg-blue-500 hidden md:block" />
+                  <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 shadow-lg border border-emerald-100">
+                    <p className="text-xl text-gray-700 leading-relaxed mb-4">
+                      <strong className="text-emerald-700">Today, GoldRock Health helps thousands of people</strong> understand 
+                      their medical bills, identify errors, and fight for fair prices. We're not done until the healthcare 
+                      billing system works for patients—not against them.
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="container mx-auto px-4">
+      {/* Stats Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <GlowingOrb 
+            className="-bottom-32 -left-32" 
+            color1="rgba(16, 185, 129, 0.3)" 
+            color2="rgba(6, 182, 212, 0.1)" 
+            size={500}
+            blur={120}
+          />
+          <GlowingOrb 
+            className="-top-32 -right-32" 
+            color1="rgba(139, 92, 246, 0.2)" 
+            color2="rgba(59, 130, 246, 0.08)" 
+            size={400}
+            blur={100}
+          />
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Everything you need to fight unfair medical bills
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              The medical billing crisis in numbers
+            </h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+              These aren't just statistics—they represent real people struggling with a broken system.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            <StatCard number="80" suffix="%" label="of bills have errors" delay={0} />
+            <StatCard number="$400" suffix="B+" label="in medical debt" delay={0.1} />
+            <StatCard number="66" suffix="%" label="bankruptcies tied to medical bills" delay={0.2} />
+            <StatCard number="30-60" suffix="" label="days to act before collections" delay={0.3} />
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <GlowingOrb 
+            className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" 
+            color1="rgba(16, 185, 129, 0.08)" 
+            color2="rgba(6, 182, 212, 0.03)" 
+            size={800}
+            blur={200}
+          />
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6">
+              <Star className="h-4 w-4" />
+              <span>Our Values</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              What we stand for
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              From AI-powered analysis to step-by-step playbooks, we provide the tools and knowledge to help you save.
+              Every decision we make is guided by these core principles.
             </p>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto">
-            {coreFeatures.map((feature, index) => (
-              <FeatureSection 
-                key={feature.title}
-                {...feature}
-                reversed={index % 2 === 1}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {values.map((value, index) => (
+              <ValueCard key={value.title} {...value} delay={index * 0.1} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              className="relative order-2 lg:order-1"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src={teamImage} 
+                  alt="GoldRock Health team" 
+                  className="w-full h-auto"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/30 to-transparent" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="order-1 lg:order-2"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 text-amber-700 text-sm font-medium mb-6">
+                <Users className="h-4 w-4" />
+                <span>Our Team</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Built by people who've been there
+              </h2>
+              
+              <p className="text-xl text-gray-600 leading-relaxed mb-6">
+                Our team brings together healthcare billing experts, patient advocates, technology innovators, 
+                and—most importantly—people who have personally experienced the frustration of unfair medical bills.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                    <Brain className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Healthcare Billing Experts</h4>
+                    <p className="text-gray-600">Former billing department professionals who know where savings hide.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center">
+                    <HandHeart className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Patient Advocates</h4>
+                    <p className="text-gray-600">Professionals who have helped thousands navigate the healthcare system.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                    <Zap className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">AI & Technology Innovators</h4>
+                    <p className="text-gray-600">Engineers building intelligent tools to automate bill analysis and advocacy.</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* App Preview Section */}
+      <section className="py-24 bg-gradient-to-br from-emerald-50 to-teal-50 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-6">
+                <Sparkles className="h-4 w-4" />
+                <span>Powerful Tools</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Everything you need to fight back—in one platform
+              </h2>
+              
+              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                From AI bill analysis to letter templates, negotiation scripts to government program enrollment—GoldRock Health 
+                puts the power of healthcare advocacy in your hands.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
+                  <FileText className="h-6 w-6 text-emerald-600" />
+                  <span className="font-medium text-gray-900">Bill Analysis</span>
+                </div>
+                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
+                  <MessageSquare className="h-6 w-6 text-purple-600" />
+                  <span className="font-medium text-gray-900">AI Coaching</span>
+                </div>
+                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
+                  <Gavel className="h-6 w-6 text-blue-600" />
+                  <span className="font-medium text-gray-900">Letter Templates</span>
+                </div>
+                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
+                  <Calculator className="h-6 w-6 text-amber-600" />
+                  <span className="font-medium text-gray-900">Savings Calculator</span>
+                </div>
+              </div>
+
+              <Link href="/api/login">
+                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-8 shadow-xl">
+                  Start For Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src={appImage} 
+                  alt="GoldRock Health app showing savings" 
+                  className="w-full h-auto"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="max-w-5xl mx-auto bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 md:p-16 text-center shadow-2xl relative overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <GlowingOrb 
+                className="-top-20 -right-20" 
+                color1="rgba(16, 185, 129, 0.3)" 
+                color2="rgba(6, 182, 212, 0.1)" 
+                size={300}
+                blur={80}
               />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Plus many more tools
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Everything you need to navigate the complex world of medical billing.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {additionalTools.map((tool, index) => (
-              <motion.div
-                key={tool.title}
-                className="p-6 rounded-2xl bg-white shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <tool.icon className="h-8 w-8 text-emerald-600 mb-4" />
-                <h3 className="font-bold text-gray-900 mb-2">{tool.title}</h3>
-                <p className="text-gray-600 text-sm">{tool.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="max-w-4xl mx-auto bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-12 text-center shadow-2xl"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <Lock className="h-12 w-12 text-white/80 mx-auto mb-6" />
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Your privacy is our priority
-            </h2>
-            <p className="text-white/90 text-lg max-w-2xl mx-auto mb-8">
-              GoldRock Health is built with privacy at its core. Your medical information is encrypted and never shared. 
-              We use industry-standard security practices to keep your data safe.
-            </p>
-            <div className="flex flex-wrap justify-center gap-6 text-white/80">
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                <span>End-to-end encryption</span>
+              <GlowingOrb 
+                className="-bottom-20 -left-20" 
+                color1="rgba(139, 92, 246, 0.2)" 
+                color2="rgba(59, 130, 246, 0.08)" 
+                size={250}
+                blur={70}
+              />
+            </div>
+            
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 mb-8 mx-auto shadow-xl">
+                <Lock className="h-10 w-10 text-white" />
               </div>
-              <div className="flex items-center gap-2">
-                <Lock className="h-5 w-5" />
-                <span>HIPAA-conscious design</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5" />
-                <span>No data selling</span>
+              
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                Your privacy is sacred to us
+              </h2>
+              
+              <p className="text-white/80 text-xl max-w-2xl mx-auto mb-10">
+                Your medical information is deeply personal. We protect it with the same level of security 
+                used by major financial institutions—and we <strong className="text-white">never</strong> sell or share your data.
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-8">
+                <div className="flex items-center gap-3 text-white/90">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <Shield className="h-5 w-5" />
+                  </div>
+                  <span>256-bit encryption</span>
+                </div>
+                <div className="flex items-center gap-3 text-white/90">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <Lock className="h-5 w-5" />
+                  </div>
+                  <span>HIPAA-conscious design</span>
+                </div>
+                <div className="flex items-center gap-3 text-white/90">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <span>No data selling—ever</span>
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Designed with care
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              GoldRock Health was created with input from healthcare billing experts, patient advocates, 
-              and people who have navigated the medical billing system themselves.
-            </p>
-          </motion.div>
-
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-            <motion.div 
-              className="p-8 rounded-2xl bg-white shadow-lg"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <Heart className="h-10 w-10 text-rose-500 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Built for patients, not profits</h3>
-              <p className="text-gray-600">
-                We believe everyone deserves access to fair medical billing. Our tools are designed to level 
-                the playing field between patients and the complex healthcare billing system.
-              </p>
-            </motion.div>
-            <motion.div 
-              className="p-8 rounded-2xl bg-white shadow-lg"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <Users className="h-10 w-10 text-blue-500 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Real-world expertise</h3>
-              <p className="text-gray-600">
-                Our playbooks and strategies come from billing industry insiders, patient advocates, 
-                and healthcare professionals who understand how the system really works.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20">
+      {/* CTA Section */}
+      <section className="py-24 bg-gradient-to-b from-white to-emerald-50">
         <div className="container mx-auto px-4 text-center">
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            Ready to take control of your medical bills?
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-gray-600 max-w-2xl mx-auto mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
-            Join thousands of patients who are fighting back against unfair medical billing.
-          </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            className="max-w-3xl mx-auto"
           >
-            <Link href="/api/login">
-              <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-12 py-6 text-lg shadow-xl">
-                Get Started Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Ready to stop losing sleep over medical bills?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+              Join thousands of people who are taking control of their healthcare finances with GoldRock Health.
+            </p>
+            
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/api/login">
+                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-12 py-6 text-lg shadow-xl shadow-emerald-500/25">
+                  Get Started Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/collections-defense-guide">
+                <Button variant="outline" size="lg" className="rounded-full px-12 py-6 text-lg border-2">
+                  View Collections Guide
+                </Button>
+              </Link>
+            </div>
+            
+            <p className="mt-8 text-gray-500">
+              Questions? Email us at <a href="mailto:CONTACT@GOLDROCK.ai" className="text-emerald-600 hover:text-emerald-700 font-medium">CONTACT@GOLDROCK.ai</a>
+            </p>
           </motion.div>
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-white py-12">
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-16">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
+                <DollarSign className="h-7 w-7 text-white" />
               </div>
-              <span className="text-xl font-bold">GoldRock Health</span>
+              <div>
+                <span className="text-2xl font-bold">GoldRock Health</span>
+                <p className="text-gray-400 text-sm">AI-Powered Healthcare Advocacy</p>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-6 text-gray-400 text-sm">
+            
+            <div className="flex flex-wrap justify-center gap-8 text-gray-400">
               <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
               <Link href="/support" className="hover:text-white transition-colors">Support</Link>
-              <a href="mailto:CONTACT@GOLDROCK.ai" className="hover:text-white transition-colors">CONTACT@GOLDROCK.ai</a>
+              <a href="mailto:CONTACT@GOLDROCK.ai" className="hover:text-emerald-400 transition-colors font-medium">CONTACT@GOLDROCK.ai</a>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-            <p>GoldRock Health provides educational information and tools. Always consult with qualified professionals for medical and legal advice.</p>
+          
+          <div className="pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
+            <p className="mb-4">
+              GoldRock Health provides educational information and tools. Always consult with qualified professionals for medical and legal advice.
+            </p>
+            <p>© {new Date().getFullYear()} GoldRock Health. All rights reserved.</p>
           </div>
         </div>
       </footer>
