@@ -1,11 +1,14 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { 
   ArrowRight, Shield, DollarSign, FileText, Brain, MessageSquare, 
   Clock, Scale, Heart, Users, Sparkles, CheckCircle, Phone, 
   Calculator, Gavel, BookOpen, AlertTriangle, Zap, Target,
   FileCheck, TrendingDown, Award, Lock, Mail, Lightbulb, Eye, 
-  HandHeart, Rocket, Star, Quote
+  HandHeart, Rocket, Star, Quote, Upload, Search, ChevronDown,
+  ChevronRight, HelpCircle, ArrowDown, Minus, Check, X,
+  type LucideIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@assets/generated_images/patient_advocacy_team_empowerment.png";
@@ -64,19 +67,24 @@ const GlowingOrb = ({ className, color1, color2, size = 400, blur = 100 }: { cla
   />
 );
 
-const ValueCard = ({ icon: Icon, title, description, color, delay }: { icon: any; title: string; description: string; color: string; delay: number }) => (
+const ValueCard = ({ icon: Icon, title, description, color, delay }: { icon: LucideIcon; title: string; description: string; color: string; delay: number }) => (
   <motion.div 
     className="relative group"
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay, duration: 0.5 }}
+    whileHover={{ y: -8, transition: { duration: 0.3 } }}
   >
     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-0 group-hover:opacity-100" />
     <div className="relative bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl hover:border-emerald-200 transition-all duration-500 h-full">
-      <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${color} mb-6 shadow-lg`}>
+      <motion.div 
+        className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${color} mb-6 shadow-lg`}
+        whileHover={{ scale: 1.1, rotate: 5 }}
+        transition={{ type: "spring", stiffness: 400 }}
+      >
         <Icon className="h-7 w-7 text-white" />
-      </div>
+      </motion.div>
       <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
       <p className="text-gray-600 leading-relaxed">{description}</p>
     </div>
@@ -90,6 +98,7 @@ const StatCard = ({ number, label, suffix = "", delay }: { number: string; label
     whileInView={{ opacity: 1, scale: 1 }}
     viewport={{ once: true }}
     transition={{ delay, duration: 0.5 }}
+    whileHover={{ scale: 1.05 }}
   >
     <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-2">
       {number}{suffix}
@@ -98,7 +107,115 @@ const StatCard = ({ number, label, suffix = "", delay }: { number: string; label
   </motion.div>
 );
 
+const ProcessStep = ({ step, icon: Icon, title, description, delay, isLast }: { step: number; icon: LucideIcon; title: string; description: string; delay: number; isLast?: boolean }) => (
+  <motion.div 
+    className="relative"
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay, duration: 0.5 }}
+  >
+    <div className="flex flex-col items-center text-center">
+      <motion.div 
+        className="relative mb-6"
+        whileHover={{ scale: 1.1 }}
+        transition={{ type: "spring", stiffness: 400 }}
+      >
+        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-xl shadow-emerald-500/25">
+          <Icon className="h-10 w-10 text-white" />
+        </div>
+        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center">
+          <span className="text-sm font-bold text-emerald-600">{step}</span>
+        </div>
+      </motion.div>
+      
+      <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
+      <p className="text-gray-600 leading-relaxed max-w-xs">{description}</p>
+    </div>
+    
+    {!isLast && (
+      <div className="hidden md:block absolute top-10 left-[60%] w-[80%]">
+        <motion.div 
+          className="h-0.5 bg-gradient-to-r from-emerald-300 to-teal-300"
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: delay + 0.3, duration: 0.5 }}
+          style={{ originX: 0 }}
+        />
+        <motion.div
+          className="absolute right-0 top-1/2 -translate-y-1/2"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: delay + 0.6 }}
+        >
+          <ChevronRight className="h-5 w-5 text-teal-400" />
+        </motion.div>
+      </div>
+    )}
+  </motion.div>
+);
+
+const FAQItem = ({ question, answer, isOpen, onClick }: { question: string; answer: string; isOpen: boolean; onClick: () => void }) => (
+  <motion.div 
+    className="border-b border-gray-200 last:border-b-0"
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+  >
+    <button
+      onClick={onClick}
+      className="w-full py-6 flex items-center justify-between text-left hover:text-emerald-600 transition-colors"
+    >
+      <span className="text-lg font-semibold text-gray-900 pr-8">{question}</span>
+      <motion.div
+        animate={{ rotate: isOpen ? 180 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="flex-shrink-0"
+      >
+        <ChevronDown className={`h-5 w-5 ${isOpen ? 'text-emerald-600' : 'text-gray-400'}`} />
+      </motion.div>
+    </button>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <p className="pb-6 text-gray-600 leading-relaxed">{answer}</p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </motion.div>
+);
+
+const ComparisonRow = ({ feature, without, withGoldrock, delay }: { feature: string; without: string; withGoldrock: string; delay: number }) => (
+  <motion.div 
+    className="grid grid-cols-3 gap-4 py-4 border-b border-gray-100 last:border-b-0"
+    initial={{ opacity: 0, x: -20 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay }}
+  >
+    <div className="font-medium text-gray-900">{feature}</div>
+    <div className="flex items-center gap-2 text-red-500">
+      <X className="h-4 w-4 flex-shrink-0" />
+      <span className="text-sm">{without}</span>
+    </div>
+    <div className="flex items-center gap-2 text-emerald-600">
+      <Check className="h-4 w-4 flex-shrink-0" />
+      <span className="text-sm font-medium">{withGoldrock}</span>
+    </div>
+  </motion.div>
+);
+
 export default function AboutGoldRock() {
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+
   const values = [
     {
       icon: Heart,
@@ -138,6 +255,59 @@ export default function AboutGoldRock() {
     }
   ];
 
+  const faqs = [
+    {
+      question: "How does GoldRock Health help me save money on medical bills?",
+      answer: "Our AI analyzes your medical bills to identify errors, overcharges, and opportunities for negotiation. We provide personalized scripts, letter templates, and step-by-step guidance to help you challenge unfair charges and negotiate lower payments. Many users save 30-50% on their bills."
+    },
+    {
+      question: "Is my medical information secure?",
+      answer: "Absolutely. We use 256-bit encryption (the same level used by major banks) to protect your data. We never sell or share your personal information with third parties. Your privacy is our top priority, and we follow HIPAA-conscious design principles."
+    },
+    {
+      question: "What if my bill is already in collections?",
+      answer: "We have a dedicated Collections Defense Guide with specific strategies for bills in collections. This includes debt validation letters, FDCPA rights information, statute of limitations guidance, and credit report dispute strategies to help minimize damage and maximize your options."
+    },
+    {
+      question: "How quickly should I act on a medical bill?",
+      answer: "The critical window is 30-60 days after receiving a bill. Acting quickly gives you more negotiating power and prevents the bill from going to collections. Our Hospital Bill Playbook provides specific timelines and strategies for each type of bill."
+    },
+    {
+      question: "Do I need to be tech-savvy to use GoldRock Health?",
+      answer: "Not at all! Our platform is designed to be simple and intuitive. Just upload your bill or describe your situation, and we'll guide you through every step with plain-English explanations and ready-to-use templates."
+    },
+    {
+      question: "What makes GoldRock Health different from other services?",
+      answer: "We combine AI-powered analysis with insider knowledge from billing industry professionals. Unlike expensive patient advocates, our tools are accessible and affordable. We don't just identify problems—we give you the exact words to say and letters to send."
+    }
+  ];
+
+  const comparisonData = [
+    { feature: "Understanding your bill", without: "Confusing jargon", withGoldrock: "Plain English explanations" },
+    { feature: "Finding errors", without: "Hope for the best", withGoldrock: "AI-powered error detection" },
+    { feature: "Knowing your rights", without: "Uninformed", withGoldrock: "State-specific legal protections" },
+    { feature: "Negotiation support", without: "On your own", withGoldrock: "Expert scripts & templates" },
+    { feature: "Time to resolution", without: "Months of stress", withGoldrock: "Days with clear steps" },
+  ];
+
+  const processSteps = [
+    {
+      icon: Upload,
+      title: "Upload Your Bill",
+      description: "Simply upload a photo or PDF of your medical bill. Our AI gets to work immediately."
+    },
+    {
+      icon: Search,
+      title: "AI Analysis",
+      description: "We scan for errors, compare against fair prices, and identify negotiation opportunities."
+    },
+    {
+      icon: MessageSquare,
+      title: "Get Your Playbook",
+      description: "Receive personalized scripts, letter templates, and step-by-step guidance to save money."
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -170,6 +340,7 @@ export default function AboutGoldRock() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
+              whileHover={{ scale: 1.05 }}
             >
               <Sparkles className="h-4 w-4 text-emerald-400" />
               <span>AI-Powered Healthcare Advocacy</span>
@@ -177,20 +348,35 @@ export default function AboutGoldRock() {
             
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
               Medical Debt Keeps You Up at Night.
-              <span className="block mt-2 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+              <motion.span 
+                className="block mt-2 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
                 We Help You Sleep Again.
-              </span>
+              </motion.span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-white/80 mb-10 leading-relaxed max-w-2xl">
+            <motion.p 
+              className="text-xl md:text-2xl text-white/80 mb-10 leading-relaxed max-w-2xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
               GoldRock Health combines AI intelligence with insider billing expertise to help you understand, challenge, and reduce unfair medical bills.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-wrap gap-4">
+            <motion.div 
+              className="flex flex-wrap gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
               <Link href="/api/login">
-                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-8 py-6 text-lg shadow-xl shadow-emerald-500/25">
+                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-8 py-6 text-lg shadow-xl shadow-emerald-500/25 group">
                   Start Saving Now
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/hospital-bill-playbook">
@@ -198,13 +384,60 @@ export default function AboutGoldRock() {
                   Explore Free Guides
                 </Button>
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
+        </div>
+        
+        {/* Scroll indicator */}
+        <motion.div 
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <ArrowDown className="h-6 w-6 text-white/50" />
+        </motion.div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-6">
+              <Zap className="h-4 w-4" />
+              <span>Simple Process</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              How it works
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Three simple steps to start saving on your medical bills
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+            {processSteps.map((step, index) => (
+              <ProcessStep 
+                key={step.title}
+                step={index + 1}
+                icon={step.icon}
+                title={step.title}
+                description={step.description}
+                delay={index * 0.15}
+                isLast={index === processSteps.length - 1}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <GlowingOrb 
             className="-top-32 -right-32" 
@@ -242,7 +475,11 @@ export default function AboutGoldRock() {
                 <strong className="text-gray-900">GoldRock Health exists to change that.</strong> We combine cutting-edge AI with insider knowledge from billing industry professionals to give you the tools, strategies, and confidence to take control of your medical finances.
               </p>
 
-              <div className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+              <motion.div 
+                className="flex items-center gap-4 p-6 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl shadow-lg border border-emerald-100"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
                   <Mail className="h-6 w-6 text-white" />
                 </div>
@@ -252,7 +489,7 @@ export default function AboutGoldRock() {
                     CONTACT@GOLDROCK.ai
                   </a>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
 
             <motion.div
@@ -262,22 +499,26 @@ export default function AboutGoldRock() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <motion.div 
+                className="relative rounded-3xl overflow-hidden shadow-2xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <img 
                   src={missionImage} 
                   alt="Protection from medical debt" 
                   className="w-full h-auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/40 to-transparent" />
-              </div>
+              </motion.div>
               
-              {/* Floating stat cards */}
               <motion.div 
                 className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
+                whileHover={{ y: -5 }}
               >
                 <div className="text-3xl font-bold text-emerald-600 mb-1">80%</div>
                 <p className="text-gray-600 text-sm">of medical bills contain errors</p>
@@ -289,10 +530,57 @@ export default function AboutGoldRock() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
+                whileHover={{ y: -5 }}
               >
                 <div className="text-3xl font-bold text-purple-600 mb-1">$400B+</div>
                 <p className="text-gray-600 text-sm">medical debt in America</p>
               </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Before/After Comparison Section */}
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium mb-6">
+              <Scale className="h-4 w-4" />
+              <span>The Difference</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Fighting medical bills alone vs. with GoldRock
+            </h2>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto">
+            <motion.div 
+              className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="grid grid-cols-3 gap-4 p-6 bg-gray-50 border-b border-gray-200">
+                <div className="font-bold text-gray-900">Challenge</div>
+                <div className="font-bold text-red-600 flex items-center gap-2">
+                  <X className="h-4 w-4" /> Without Help
+                </div>
+                <div className="font-bold text-emerald-600 flex items-center gap-2">
+                  <Check className="h-4 w-4" /> With GoldRock
+                </div>
+              </div>
+              
+              <div className="p-6">
+                {comparisonData.map((row, index) => (
+                  <ComparisonRow key={row.feature} {...row} delay={index * 0.1} />
+                ))}
+              </div>
             </motion.div>
           </div>
         </div>
@@ -477,14 +765,18 @@ export default function AboutGoldRock() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <motion.div 
+                className="relative rounded-3xl overflow-hidden shadow-2xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <img 
                   src={teamImage} 
                   alt="GoldRock Health team" 
                   className="w-full h-auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/30 to-transparent" />
-              </div>
+              </motion.div>
             </motion.div>
 
             <motion.div
@@ -508,37 +800,68 @@ export default function AboutGoldRock() {
               </p>
               
               <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
-                    <Brain className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Healthcare Billing Experts</h4>
-                    <p className="text-gray-600">Former billing department professionals who know where savings hide.</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center">
-                    <HandHeart className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Patient Advocates</h4>
-                    <p className="text-gray-600">Professionals who have helped thousands navigate the healthcare system.</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-                    <Zap className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">AI & Technology Innovators</h4>
-                    <p className="text-gray-600">Engineers building intelligent tools to automate bill analysis and advocacy.</p>
-                  </div>
-                </div>
+                {[
+                  { icon: Brain, title: "Healthcare Billing Experts", desc: "Former billing department professionals who know where savings hide.", color: "from-emerald-500 to-teal-600" },
+                  { icon: HandHeart, title: "Patient Advocates", desc: "Professionals who have helped thousands navigate the healthcare system.", color: "from-purple-500 to-violet-600" },
+                  { icon: Zap, title: "AI & Technology Innovators", desc: "Engineers building intelligent tools to automate bill analysis and advocacy.", color: "from-blue-500 to-indigo-600" }
+                ].map((item, index) => (
+                  <motion.div 
+                    key={item.title}
+                    className="flex items-start gap-4"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className={`flex-shrink-0 w-10 h-10 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center`}>
+                      <item.icon className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-1">{item.title}</h4>
+                      <p className="text-gray-600">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 text-amber-700 text-sm font-medium mb-6">
+              <HelpCircle className="h-4 w-4" />
+              <span>FAQ</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Common questions
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Everything you need to know about GoldRock Health
+            </p>
+          </motion.div>
+
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+              {faqs.map((faq, index) => (
+                <FAQItem 
+                  key={index}
+                  question={faq.question}
+                  answer={faq.answer}
+                  isOpen={openFAQ === index}
+                  onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -567,28 +890,31 @@ export default function AboutGoldRock() {
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
-                  <FileText className="h-6 w-6 text-emerald-600" />
-                  <span className="font-medium text-gray-900">Bill Analysis</span>
-                </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
-                  <MessageSquare className="h-6 w-6 text-purple-600" />
-                  <span className="font-medium text-gray-900">AI Coaching</span>
-                </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
-                  <Gavel className="h-6 w-6 text-blue-600" />
-                  <span className="font-medium text-gray-900">Letter Templates</span>
-                </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md">
-                  <Calculator className="h-6 w-6 text-amber-600" />
-                  <span className="font-medium text-gray-900">Savings Calculator</span>
-                </div>
+                {[
+                  { icon: FileText, title: "Bill Analysis", color: "text-emerald-600" },
+                  { icon: MessageSquare, title: "AI Coaching", color: "text-purple-600" },
+                  { icon: Gavel, title: "Letter Templates", color: "text-blue-600" },
+                  { icon: Calculator, title: "Savings Calculator", color: "text-amber-600" }
+                ].map((item, index) => (
+                  <motion.div 
+                    key={item.title}
+                    className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-md"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <item.icon className={`h-6 w-6 ${item.color}`} />
+                    <span className="font-medium text-gray-900">{item.title}</span>
+                  </motion.div>
+                ))}
               </div>
 
               <Link href="/api/login">
-                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-8 shadow-xl">
+                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-8 shadow-xl group">
                   Start For Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
             </motion.div>
@@ -600,13 +926,17 @@ export default function AboutGoldRock() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <motion.div 
+                className="relative rounded-3xl overflow-hidden shadow-2xl"
+                whileHover={{ scale: 1.02, rotate: 1 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <img 
                   src={appImage} 
                   alt="GoldRock Health app showing savings" 
                   className="w-full h-auto"
                 />
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -639,9 +969,13 @@ export default function AboutGoldRock() {
             </div>
             
             <div className="relative z-10">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 mb-8 mx-auto shadow-xl">
+              <motion.div 
+                className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 mb-8 mx-auto shadow-xl"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
                 <Lock className="h-10 w-10 text-white" />
-              </div>
+              </motion.div>
               
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Your privacy is sacred to us
@@ -653,24 +987,25 @@ export default function AboutGoldRock() {
               </p>
               
               <div className="flex flex-wrap justify-center gap-8">
-                <div className="flex items-center gap-3 text-white/90">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <Shield className="h-5 w-5" />
-                  </div>
-                  <span>256-bit encryption</span>
-                </div>
-                <div className="flex items-center gap-3 text-white/90">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <Lock className="h-5 w-5" />
-                  </div>
-                  <span>HIPAA-conscious design</span>
-                </div>
-                <div className="flex items-center gap-3 text-white/90">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <CheckCircle className="h-5 w-5" />
-                  </div>
-                  <span>No data selling—ever</span>
-                </div>
+                {[
+                  { icon: Shield, label: "256-bit encryption" },
+                  { icon: Lock, label: "HIPAA-conscious design" },
+                  { icon: CheckCircle, label: "No data selling—ever" }
+                ].map((item, index) => (
+                  <motion.div 
+                    key={item.label}
+                    className="flex items-center gap-3 text-white/90"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <span>{item.label}</span>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -686,26 +1021,37 @@ export default function AboutGoldRock() {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <motion.h2 
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+            >
               Ready to stop losing sleep over medical bills?
-            </h2>
+            </motion.h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
               Join thousands of people who are taking control of their healthcare finances with GoldRock Health.
             </p>
             
-            <div className="flex flex-wrap justify-center gap-4">
+            <motion.div 
+              className="flex flex-wrap justify-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
               <Link href="/api/login">
-                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-12 py-6 text-lg shadow-xl shadow-emerald-500/25">
+                <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full px-12 py-6 text-lg shadow-xl shadow-emerald-500/25 group">
                   Get Started Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/collections-defense-guide">
-                <Button variant="outline" size="lg" className="rounded-full px-12 py-6 text-lg border-2">
+                <Button variant="outline" size="lg" className="rounded-full px-12 py-6 text-lg border-2 hover:bg-gray-50">
                   View Collections Guide
                 </Button>
               </Link>
-            </div>
+            </motion.div>
             
             <p className="mt-8 text-gray-500">
               Questions? Email us at <a href="mailto:CONTACT@GOLDROCK.ai" className="text-emerald-600 hover:text-emerald-700 font-medium">CONTACT@GOLDROCK.ai</a>
@@ -719,9 +1065,12 @@ export default function AboutGoldRock() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
+              <motion.div 
+                className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+              >
                 <DollarSign className="h-7 w-7 text-white" />
-              </div>
+              </motion.div>
               <div>
                 <span className="text-2xl font-bold">GoldRock Health</span>
                 <p className="text-gray-400 text-sm">AI-Powered Healthcare Advocacy</p>
