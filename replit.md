@@ -76,4 +76,22 @@ Preferred communication style: Simple, everyday language.
 
 ### Payment Gateways
 - **RevenueCat**: For In-App Purchases on iOS.
-- **Stripe**: For web subscriptions.
+- **Stripe**: For web subscriptions (via stripe-replit-sync connector).
+
+## iOS Publishing
+
+### App Store Readiness
+- **App ID**: `com.goldrockhealth.app`
+- **Demo Account**: appreviewer@goldrock.com (Premium, never expires)
+- **Checklist**: See `IOS_PUBLISHING_CHECKLIST.md` for full publishing guide
+
+### Required External Setup
+1. Apple Developer account ($99/year)
+2. RevenueCat project configuration
+3. App Store Connect product setup (Monthly $24.99, Annual $249.99)
+4. Xcode build and signing on Mac
+
+### Payment Routing
+- iOS native: StoreKit via RevenueCat (Apple requirement)
+- Web browser: Stripe checkout
+- Lifetime plan: Web only (Apple policy)

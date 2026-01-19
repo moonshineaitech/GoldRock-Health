@@ -41,3 +41,8 @@ integrations = ["javascript_anthropic:1.0.0", "javascript_openai:1.0.0", "javasc
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+VITE_REVENUECAT_IOS_API_KEY = "${REVENUECAT_IOS_API_KEY}"
