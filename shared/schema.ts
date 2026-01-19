@@ -2434,3 +2434,38 @@ export const insertSeoArticleSchema = createInsertSchema(seoArticles).omit({
   updatedAt: true,
   viewCount: true,
 });
+
+// Bill Summaries - AI-powered bill summarization and jargon simplification
+export const billSummaries = pgTable("bill_summaries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  originalText: text("original_text").notNull(),
+  summary: text("summary").notNull(),
+  totalAmount: decimal("total_amount", { precision: 12, scale: 2 }),
+  lineItems: jsonb("line_items").$type<Array<{
+    description: string;
+    code?: string;
+    amount: number;
+    simplifiedDescription: string;
+    category: string;
+  }>>().default([]),
+  jargonTerms: jsonb("jargon_terms").$type<Array<{
+    term: string;
+    definition: string;
+    context: string;
+  }>>().default([]),
+  keyInsights: jsonb("key_insights").$type<string[]>().default([]),
+  potentialIssues: jsonb("potential_issues").$type<string[]>().default([]),
+  actionItems: jsonb("action_items").$type<string[]>().default([]),
+  providerName: varchar("provider_name", { length: 255 }),
+  serviceDate: varchar("service_date", { length: 50 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type BillSummary = typeof billSummaries.$inferSelect;
+export type InsertBillSummary = typeof billSummaries.$inferInsert;
+
+export const insertBillSummarySchema = createInsertSchema(billSummaries).omit({
+  id: true,
+  createdAt: true,
+});
