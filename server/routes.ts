@@ -4,7 +4,6 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { elevenLabsService } from "./services/elevenlabs";
 import { medicalCasesService } from "./services/medicalCases";
-// OpenAI service is accessed via aiProvider for automatic Gemini 3 Flash fallback
 import { aiProvider } from "./services/aiProvider";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
@@ -16,40 +15,29 @@ import * as bindingSiteAnalyzer from "./ai/binding-site-analyzer";
 import { PROTEIN_COLLECTIONS, getAllProteins, getProteinByUniprotId, searchProteins, getTopProteins } from "@shared/protein-collections";
 import { setupAuth, isAuthenticated, requiresSubscription, requiresAiAgreement, isAdmin } from "./replitAuth";
 import { AchievementService } from "./services/achievementService";
-import Stripe from "stripe";
+import { getUncachableStripeClient, getStripePublishableKey } from "./stripeClient";
+import { stripeService } from "./stripeService";
+import { stripeStorage } from "./stripeStorage";
 import { z } from "zod";
 import multer from "multer";
-// We'll import pdfParse dynamically when needed to avoid loading issues
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
-}
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-08-27.basil",
-});
-
-// Store Stripe price IDs
 let MONTHLY_PRICE_ID: string;
 let ANNUAL_PRICE_ID: string;
 let LIFETIME_PRICE_ID: string;
 
-// Helper to get base URL for Stripe redirects
 function getBaseUrl(): string {
-  // Use REPLIT_DOMAINS (comma-separated list) - take the first domain
   if (process.env.REPLIT_DOMAINS) {
     const primaryDomain = process.env.REPLIT_DOMAINS.split(',')[0];
     return `https://${primaryDomain}`;
   }
-  // Fallback for local development
   return 'http://localhost:5000';
 }
 
-// Setup Stripe prices on startup
 async function setupStripe() {
   try {
     console.log('Setting up Stripe prices...');
+    const stripe = await getUncachableStripeClient();
     
-    // Create or retrieve monthly price ($25)
     const existingPrices = await stripe.prices.list({ limit: 100 });
     
     let monthlyPrice = existingPrices.data.find(
@@ -59,20 +47,16 @@ async function setupStripe() {
     if (!monthlyPrice) {
       console.log('Creating monthly price...');
       const product = await stripe.products.create({
-        name: 'GoldRock AI Premium Monthly',
-        description: 'Monthly subscription for GoldRock AI Premium features including medical bill AI analysis and unlimited medical training',
+        name: 'GoldRock Health Premium Monthly',
+        description: 'Monthly subscription for GoldRock Health Premium features including AI medical bill analysis, negotiation coaching, and dispute templates',
       });
       
       monthlyPrice = await stripe.prices.create({
-        unit_amount: 2500, // $25.00
+        unit_amount: 2500,
         currency: 'usd',
-        recurring: {
-          interval: 'month',
-        },
+        recurring: { interval: 'month' },
         product: product.id,
-        metadata: {
-          plan: 'monthly',
-        },
+        metadata: { plan: 'monthly' },
       });
     }
     
@@ -83,24 +67,19 @@ async function setupStripe() {
     if (!annualPrice) {
       console.log('Creating annual price...');
       const product = await stripe.products.create({
-        name: 'GoldRock AI Premium Annual',
-        description: 'Annual subscription for GoldRock AI Premium features including medical bill AI analysis and unlimited medical training (Save 17%)',
+        name: 'GoldRock Health Premium Annual',
+        description: 'Annual subscription for GoldRock Health Premium - Save 17% with annual billing',
       });
       
       annualPrice = await stripe.prices.create({
-        unit_amount: 24900, // $249.00
+        unit_amount: 24900,
         currency: 'usd',
-        recurring: {
-          interval: 'year',
-        },
+        recurring: { interval: 'year' },
         product: product.id,
-        metadata: {
-          plan: 'annual',
-        },
+        metadata: { plan: 'annual' },
       });
     }
     
-    // Create or retrieve lifetime price ($747)
     let lifetimePrice = existingPrices.data.find(
       price => price.metadata?.plan === 'lifetime' && price.unit_amount === 74700
     );
@@ -108,17 +87,15 @@ async function setupStripe() {
     if (!lifetimePrice) {
       console.log('Creating lifetime price...');
       const product = await stripe.products.create({
-        name: 'GoldRock AI Premium Lifetime',
-        description: 'Lifetime access to GoldRock AI Premium features - pay once, use forever',
+        name: 'GoldRock Health Premium Lifetime',
+        description: 'Lifetime access to GoldRock Health Premium - pay once, use forever',
       });
       
       lifetimePrice = await stripe.prices.create({
-        unit_amount: 74700, // $747.00
+        unit_amount: 74700,
         currency: 'usd',
         product: product.id,
-        metadata: {
-          plan: 'lifetime',
-        },
+        metadata: { plan: 'lifetime' },
       });
     }
     
@@ -398,14 +375,13 @@ RULES:
         return res.status(404).json({ message: 'User not found' });
       }
 
-      // Cancel active Stripe subscription if exists
       if (user.stripeSubscriptionId) {
         try {
+          const stripe = await getUncachableStripeClient();
           await stripe.subscriptions.cancel(user.stripeSubscriptionId);
           console.log(`Cancelled Stripe subscription: ${user.stripeSubscriptionId}`);
         } catch (stripeError) {
           console.error('Error canceling Stripe subscription:', stripeError);
-          // Continue with deletion even if subscription cancellation fails
         }
       }
 
@@ -698,25 +674,23 @@ RULES:
 
   // ==================== END ADMIN ROUTES ====================
 
-  // Stripe payment routes
   app.post("/api/create-payment-intent", async (req, res) => {
     try {
+      const stripe = await getUncachableStripeClient();
       const { amount } = req.body;
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(amount * 100), // Convert to cents
+        amount: Math.round(amount * 100),
         currency: "usd",
       });
       res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error: any) {
-      res
-        .status(500)
-        .json({ message: "Error creating payment intent: " + error.message });
+      res.status(500).json({ message: "Error creating payment intent: " + error.message });
     }
   });
 
-  // Donation checkout session
   app.post("/api/create-donation-session", async (req, res) => {
     try {
+      const stripe = await getUncachableStripeClient();
       const { amount } = req.body;
       
       if (!amount || amount < 100) {
@@ -730,10 +704,10 @@ RULES:
             price_data: {
               currency: 'usd',
               product_data: {
-                name: 'Support GoldRock AI',
+                name: 'Support GoldRock Health',
                 description: 'Your donation helps keep the platform free and accessible',
               },
-              unit_amount: amount, // Amount already in cents
+              unit_amount: amount,
             },
             quantity: 1,
           },
@@ -750,41 +724,28 @@ RULES:
     }
   });
 
-  // REBUILT SUBSCRIPTION SYSTEM - SetupIntent approach for reliable payment flow
   app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
     try {
+      const stripe = await getUncachableStripeClient();
       const userId = req.user.claims.sub;
       const { planType } = req.body;
       
-      // Validate planType against allowlist
       if (!planType || !['monthly', 'annual', 'lifetime'].includes(planType)) {
         return res.status(400).json({ message: 'Invalid plan type. Must be "monthly", "annual", or "lifetime"' });
       }
       
-      // Handle lifetime plan differently - it's a one-time payment, not a subscription
       if (planType === 'lifetime') {
         const session = await stripe.checkout.sessions.create({
-          payment_method_types: ['card', 'link'], // Enable Link for one-click checkout
-          line_items: [
-            {
-              price: LIFETIME_PRICE_ID,
-              quantity: 1,
-            },
-          ],
+          payment_method_types: ['card', 'link'],
+          line_items: [{ price: LIFETIME_PRICE_ID, quantity: 1 }],
           mode: 'payment',
           success_url: `${getBaseUrl()}/premium?success=true&plan=lifetime`,
           cancel_url: `${getBaseUrl()}/premium?cancelled=true`,
           client_reference_id: userId,
-          metadata: {
-            userId,
-            planType: 'lifetime',
-          },
+          metadata: { userId, planType: 'lifetime' },
         });
         
-        return res.json({
-          sessionId: session.id,
-          sessionUrl: session.url,
-        });
+        return res.json({ sessionId: session.id, sessionUrl: session.url });
       }
       
       let user = await storage.getUser(userId);
@@ -792,35 +753,24 @@ RULES:
         return res.status(404).json({ message: 'User not found' });
       }
 
-      // Create Stripe customer if doesn't exist
       let customerId = user.stripeCustomerId;
       if (!customerId) {
-        // Use user email if available, otherwise use a placeholder based on userId
         const customerEmail = user.email || `user_${userId}@goldrock.health`;
         const customer = await stripe.customers.create({
           email: customerEmail,
           name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || `User ${userId.substring(0, 8)}`,
-          metadata: {
-            userId: userId,
-            platform: 'goldrock_health'
-          }
+          metadata: { userId, platform: 'goldrock_health' }
         });
         customerId = customer.id;
         
-        // Update user with Stripe customer ID
-        await storage.upsertUser({
-          ...user,
-          stripeCustomerId: customerId,
-        });
+        await storage.upsertUser({ ...user, stripeCustomerId: customerId });
         user = { ...user, stripeCustomerId: customerId };
       }
 
-      // Handle existing subscription case
       if (user.stripeSubscriptionId) {
         try {
           const existingSubscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
 
-          // If subscription is active, return success
           if (existingSubscription.status === 'active') {
             return res.json({
               subscriptionId: existingSubscription.id,
@@ -829,7 +779,6 @@ RULES:
             });
           }
 
-          // Clean up any incomplete subscriptions
           if (['incomplete', 'incomplete_expired', 'past_due', 'canceled'].includes(existingSubscription.status)) {
             console.log(`Cleaning up existing ${existingSubscription.status} subscription ${existingSubscription.id}`);
             try {
@@ -838,7 +787,6 @@ RULES:
               console.warn('Error cancelling existing subscription:', cancelError);
             }
             
-            // Clear subscription from user record
             await storage.upsertUser({
               ...user,
               stripeSubscriptionId: null,
@@ -848,32 +796,23 @@ RULES:
           }
         } catch (error: any) {
           console.error('Error checking existing subscription:', error);
-          // Continue with creating new subscription
         }
       }
 
-      // Get the correct price ID based on plan type
       const selectedPriceId = planType === 'annual' ? ANNUAL_PRICE_ID : MONTHLY_PRICE_ID;
       
       console.log(`Creating subscription for user ${userId} with plan ${planType}, priceId: ${selectedPriceId}`);
       
-      // Create subscription with payment_behavior: 'default_incomplete'
-      // This creates the subscription and returns a PaymentIntent for the first invoice
       const subscription = await stripe.subscriptions.create({
         customer: customerId,
-        items: [{
-          price: selectedPriceId,
-        }],
+        items: [{ price: selectedPriceId }],
         payment_behavior: 'default_incomplete',
         payment_settings: {
           save_default_payment_method: 'on_subscription',
-          payment_method_types: ['card', 'link'], // Enable Link for one-click checkout
+          payment_method_types: ['card', 'link'],
         },
         expand: ['latest_invoice.payment_intent'],
-        metadata: {
-          userId: userId,
-          planType: planType,
-        },
+        metadata: { userId, planType },
       });
 
       const invoice = subscription.latest_invoice as any;
@@ -916,9 +855,9 @@ RULES:
     }
   });
 
-  // Verify subscription status after payment confirmation
   app.post('/api/verify-subscription', isAuthenticated, async (req: any, res) => {
     try {
+      const stripe = await getUncachableStripeClient();
       const userId = req.user.claims.sub;
       
       let user = await storage.getUser(userId);
@@ -930,7 +869,6 @@ RULES:
         return res.status(400).json({ message: 'No subscription found' });
       }
 
-      // Retrieve the subscription from Stripe to get current status
       const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
         expand: ['latest_invoice.payment_intent']
       });
@@ -1037,111 +975,69 @@ RULES:
     }
   });
 
-  // Stripe webhook endpoint - needs raw body for signature verification
-  app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    
-    if (!process.env.STRIPE_WEBHOOK_SECRET) {
-      console.error('Missing STRIPE_WEBHOOK_SECRET environment variable');
-      return res.status(400).send('Webhook secret not configured');
-    }
-
-    let event;
-
+  app.get('/api/stripe/publishable-key', async (req, res) => {
     try {
-      event = stripe.webhooks.constructEvent(req.body, sig as string, process.env.STRIPE_WEBHOOK_SECRET);
-    } catch (err: any) {
-      console.error('Webhook signature verification failed:', err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
+      const publishableKey = await getStripePublishableKey();
+      res.json({ publishableKey });
+    } catch (error: any) {
+      console.error('Error getting publishable key:', error);
+      res.status(500).json({ message: 'Failed to get Stripe configuration' });
     }
+  });
 
-    console.log('Received Stripe webhook:', event.type);
-
+  app.get('/api/stripe/products', async (req, res) => {
     try {
-      switch (event.type) {
-        case 'invoice.payment_succeeded': {
-          const invoice = event.data.object as any;
-          if (invoice.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
-            
-            // Find user by stripe customer ID
-            const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
-            
-            if (user) {
-              console.log(`Payment succeeded for user ${user.id}, activating subscription`);
-              await storage.upsertUser({
-                ...user,
-                subscriptionStatus: 'active',
-                subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
-              });
-            }
-          }
-          break;
+      const products = await stripeStorage.listProductsWithPrices();
+      
+      const productsMap = new Map();
+      for (const row of products as any[]) {
+        if (!productsMap.has(row.product_id)) {
+          productsMap.set(row.product_id, {
+            id: row.product_id,
+            name: row.product_name,
+            description: row.product_description,
+            active: row.product_active,
+            metadata: row.product_metadata,
+            prices: []
+          });
         }
-
-        case 'customer.subscription.updated': {
-          const subscription = event.data.object as any;
-          
-          // Find user by stripe customer ID
-          const users = await storage.getAllUsers();
-          const user = users.find(u => u.stripeCustomerId === subscription.customer);
-          
-          if (user) {
-            console.log(`Subscription updated for user ${user.id}, status: ${subscription.status}`);
-            await storage.upsertUser({
-              ...user,
-              subscriptionStatus: subscription.status === 'active' ? 'active' : 'inactive',
-              subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
-            });
-          }
-          break;
+        if (row.price_id) {
+          productsMap.get(row.product_id).prices.push({
+            id: row.price_id,
+            unit_amount: row.unit_amount,
+            currency: row.currency,
+            recurring: row.recurring,
+            active: row.price_active,
+            metadata: row.price_metadata,
+          });
         }
-
-        case 'customer.subscription.deleted': {
-          const subscription = event.data.object as any;
-          
-          // Find user by stripe customer ID
-          const users = await storage.getAllUsers();
-          const user = users.find(u => u.stripeCustomerId === subscription.customer);
-          
-          if (user) {
-            console.log(`Subscription cancelled for user ${user.id}`);
-            await storage.upsertUser({
-              ...user,
-              subscriptionStatus: 'cancelled',
-              subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
-            });
-          }
-          break;
-        }
-
-        case 'invoice.payment_failed': {
-          const invoice = event.data.object as any;
-          if (invoice.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
-            
-            // Find user by stripe customer ID
-            const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
-            
-            if (user) {
-              console.log(`Payment failed for user ${user.id}, marking subscription as past_due`);
-              await storage.upsertUser({
-                ...user,
-                subscriptionStatus: 'past_due'
-              });
-            }
-          }
-          break;
-        }
-
-        default:
-          console.log(`Unhandled webhook event type: ${event.type}`);
       }
 
-      res.json({ received: true });
-    } catch (error) {
-      console.error('Error processing webhook:', error);
-      res.status(500).json({ error: 'Webhook processing failed' });
+      res.json({ data: Array.from(productsMap.values()) });
+    } catch (error: any) {
+      console.error('Error listing products:', error);
+      res.status(500).json({ message: 'Failed to list products' });
+    }
+  });
+
+  app.post('/api/stripe/customer-portal', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user?.stripeCustomerId) {
+        return res.status(400).json({ message: 'No subscription found' });
+      }
+
+      const session = await stripeService.createCustomerPortalSession(
+        user.stripeCustomerId,
+        `${getBaseUrl()}/premium`
+      );
+
+      res.json({ url: session.url });
+    } catch (error: any) {
+      console.error('Error creating portal session:', error);
+      res.status(500).json({ message: 'Failed to create portal session' });
     }
   });
 

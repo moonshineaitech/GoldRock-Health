@@ -4,17 +4,36 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/queryClient";
 import { Capacitor } from "@capacitor/core";
 import { Link } from "wouter";
 
-if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
-  throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
+let stripePromise: Promise<Stripe | null> | null = null;
+
+async function getStripePromise(): Promise<Stripe | null> {
+  if (stripePromise) return stripePromise;
+  
+  try {
+    const response = await fetch('/api/stripe/publishable-key');
+    const data = await response.json();
+    if (data.publishableKey) {
+      stripePromise = loadStripe(data.publishableKey);
+      return stripePromise;
+    }
+  } catch (error) {
+    console.error('Failed to fetch Stripe publishable key:', error);
+  }
+  
+  if (import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+    stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+    return stripePromise;
+  }
+  
+  return null;
 }
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const premiumFeatures = [
   { icon: DollarSign, title: "AI Bill Analysis", description: "Identify billing errors and overcharges automatically" },
@@ -395,6 +414,20 @@ function AuthenticatedPremium() {
   const [selectedPlan, setSelectedPlan] = useState<string>("annual");
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isCreatingIntent, setIsCreatingIntent] = useState(false);
+  const [stripeInstance, setStripeInstance] = useState<Promise<Stripe | null> | null>(null);
+  const [stripeError, setStripeError] = useState<boolean>(false);
+
+  useEffect(() => {
+    getStripePromise().then((stripe) => {
+      if (stripe) {
+        setStripeInstance(Promise.resolve(stripe));
+      } else {
+        setStripeError(true);
+      }
+    }).catch(() => {
+      setStripeError(true);
+    });
+  }, []);
 
   const plans = getAvailablePlans();
   const sub = subscription as SubscriptionData | undefined;
@@ -550,15 +583,23 @@ function AuthenticatedPremium() {
         </div>
 
         {/* Payment Form */}
-        {clientSecret && !isCreatingIntent && (
+        {clientSecret && !isCreatingIntent && stripeInstance && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'stripe' } }}>
+            <Elements stripe={stripeInstance} options={{ clientSecret, appearance: { theme: 'stripe' } }}>
               <SubscriptionForm planType={selectedPlan} />
             </Elements>
           </motion.div>
+        )}
+
+        {stripeError && (
+          <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-center">
+            <p className="text-red-700 text-sm font-medium">
+              Payment system temporarily unavailable. Please try again later or contact CONTACT@GOLDROCK.ai for assistance.
+            </p>
+          </div>
         )}
 
         {isCreatingIntent && (
