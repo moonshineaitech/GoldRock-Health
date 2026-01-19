@@ -91,10 +91,10 @@ const StatCard = ({ number, label, suffix = "", delay }: { number: string; label
     viewport={{ once: true }}
     transition={{ delay, duration: 0.5 }}
   >
-    <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+    <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-2">
       {number}{suffix}
     </div>
-    <p className="text-gray-600 text-lg">{label}</p>
+    <p className="text-white/80 text-lg">{label}</p>
   </motion.div>
 );
 
@@ -194,7 +194,7 @@ export default function AboutGoldRock() {
                 </Button>
               </Link>
               <Link href="/hospital-bill-playbook">
-                <Button variant="outline" size="lg" className="rounded-full px-8 py-6 text-lg border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50">
+                <Button variant="outline" size="lg" className="rounded-full px-8 py-6 text-lg border-2 border-white/40 text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/60">
                   Explore Free Guides
                 </Button>
               </Link>
