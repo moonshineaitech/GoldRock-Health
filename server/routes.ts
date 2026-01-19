@@ -3437,6 +3437,263 @@ IMPORTANT GUIDELINES:
     }
   });
 
+  // ===== INTERACTIVE DEBT NEGOTIATION SIMULATOR =====
+  
+  // Validation schema for negotiation simulator request
+  const negotiationSimulatorRequestSchema = z.object({
+    scenario: z.enum(['emergency-room', 'surgical-bills', 'hospital-stays', 'insurance-appeals', 'charity-care', 'collections']),
+    billAmount: z.number().min(100).max(500000),
+    message: z.string().min(1).max(2000),
+    conversationHistory: z.array(z.object({
+      role: z.enum(['user', 'billing_rep']),
+      content: z.string()
+    })).optional().default([])
+  });
+  
+  // Negotiation simulator - AI plays the billing representative
+  app.post('/api/negotiation-simulator', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Validate request body with Zod
+      const validationResult = negotiationSimulatorRequestSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: validationResult.error.errors[0]?.message || 'Invalid request' 
+        });
+      }
+      
+      const { scenario, billAmount, message, conversationHistory } = validationResult.data;
+      
+      const scenarioDescriptions: Record<string, string> = {
+        'emergency-room': 'Emergency Room visit with high charges for facility fees, imaging, and emergency physician services',
+        'surgical-bills': 'Outpatient surgery with operating room fees, anesthesia, and surgical supplies',
+        'hospital-stays': 'Multi-day hospital admission with room charges, nursing care, and various departmental charges',
+        'insurance-appeals': 'Insurance claim denial that needs appeal and reversal negotiation',
+        'charity-care': 'Financial hardship case applying for hospital charity care or payment assistance',
+        'collections': 'Medical debt in collections with collection agency representative'
+      };
+      
+      const repPersonalities: Record<string, string> = {
+        'emergency-room': 'firm but somewhat willing to help if the patient provides good reasons',
+        'surgical-bills': 'defensive about charges but open to reviewing itemized bills',
+        'hospital-stays': 'bureaucratic and follows strict policies but can escalate to supervisor',
+        'insurance-appeals': 'initially denies everything but responds to proper documentation and appeals',
+        'charity-care': 'helpful and informative about financial assistance programs',
+        'collections': 'aggressive about payment but legally bound to follow FDCPA rules'
+      };
+      
+      // Build conversation context
+      const conversationContext = conversationHistory.map(msg => 
+        `${msg.role === 'user' ? 'PATIENT' : 'BILLING REP'}: ${msg.content}`
+      ).join('\n\n');
+      
+      const prompt = `You are playing the role of a hospital billing representative in an interactive negotiation training simulation. Your goal is to provide a REALISTIC experience that helps patients practice negotiation skills.
+
+SCENARIO: ${scenarioDescriptions[scenario]}
+BILL AMOUNT: $${billAmount.toLocaleString()}
+YOUR PERSONALITY: You are ${repPersonalities[scenario]}
+
+CONVERSATION SO FAR:
+${conversationContext || '(This is the start of the conversation)'}
+
+PATIENT'S LATEST MESSAGE: ${message}
+
+INSTRUCTIONS FOR YOUR RESPONSE:
+1. Stay in character as the billing representative - use realistic dialogue
+2. React naturally to the patient's negotiation tactics
+3. Provide some resistance but be willing to negotiate if the patient uses good strategies
+4. If the patient mentions specific tactics (asking for itemized bills, charity care, payment plans, price matching, etc.), acknowledge and respond appropriately
+5. Drop hints about what might work if the patient is struggling
+6. Be realistic - don't give away huge discounts too easily, but don't be completely unreasonable
+
+Respond with ONLY valid JSON (no markdown, no backticks) in this exact format:
+{
+  "response": "Your in-character response as the billing representative",
+  "tactics_used": ["List of negotiation tactics the patient used in their message"],
+  "effectiveness": "poor" | "fair" | "good" | "excellent",
+  "coaching_tip": "A brief tip on what the patient did well or could improve (speak directly to the patient)",
+  "current_offer": ${billAmount},
+  "potential_reduction": 0,
+  "is_final": false
+}
+
+The "current_offer" should reflect any negotiated changes. Start with the full amount and reduce based on effective negotiation.
+The "potential_reduction" shows dollars saved from the original bill.
+Set "is_final" to true only if a deal is reached or conversation should end.
+
+SCORING RUBRIC:
+- poor: Patient didn't use any negotiation tactics or was rude/demanding
+- fair: Patient used basic tactics but could be more strategic
+- good: Patient used multiple effective tactics professionally
+- excellent: Patient masterfully combined insider knowledge with assertive but polite negotiation`;
+      
+      // Define expected response shape for validation
+      interface SimulatorResponse {
+        response: string;
+        tactics_used: string[];
+        effectiveness: 'poor' | 'fair' | 'good' | 'excellent';
+        coaching_tip: string;
+        current_offer: number;
+        potential_reduction: number;
+        is_final: boolean;
+      }
+      
+      // Use aiProvider for robust AI calls with fallback
+      const systemPrompt = `You are a hospital billing representative in a negotiation training simulation. Respond only with valid JSON.`;
+      
+      let simulatorResponse: SimulatorResponse;
+      try {
+        simulatorResponse = await aiProvider.generateJSON<SimulatorResponse>(
+          prompt, 
+          systemPrompt, 
+          { maxTokens: 1000, temperature: 0.8 }
+        );
+      } catch (aiError) {
+        console.error('AI generation error:', aiError);
+        // Return a graceful fallback response
+        simulatorResponse = {
+          response: "I apologize, but I'm having technical difficulties right now. Can you please repeat your last statement?",
+          tactics_used: [],
+          effectiveness: 'fair',
+          coaching_tip: "The system encountered an issue. Try rephrasing your message.",
+          current_offer: billAmount,
+          potential_reduction: 0,
+          is_final: false
+        };
+      }
+      
+      // Validate and sanitize response with safe defaults and clamping
+      const rawCurrentOffer = typeof simulatorResponse.current_offer === 'number' ? simulatorResponse.current_offer : billAmount;
+      const rawReduction = typeof simulatorResponse.potential_reduction === 'number' ? simulatorResponse.potential_reduction : 0;
+      
+      // Clamp values to ensure non-negative and logical bounds
+      const clampedCurrentOffer = Math.max(0, Math.min(rawCurrentOffer, billAmount));
+      const clampedReduction = Math.max(0, billAmount - clampedCurrentOffer);
+      
+      const safeResponse = {
+        response: typeof simulatorResponse.response === 'string' ? simulatorResponse.response : "I need a moment to review your request.",
+        tactics_used: Array.isArray(simulatorResponse.tactics_used) ? simulatorResponse.tactics_used : [],
+        effectiveness: ['poor', 'fair', 'good', 'excellent'].includes(simulatorResponse.effectiveness) ? simulatorResponse.effectiveness : 'fair',
+        coaching_tip: typeof simulatorResponse.coaching_tip === 'string' ? simulatorResponse.coaching_tip : "Keep practicing your negotiation skills.",
+        current_offer: clampedCurrentOffer,
+        potential_reduction: clampedReduction,
+        is_final: typeof simulatorResponse.is_final === 'boolean' ? simulatorResponse.is_final : false,
+        originalBill: billAmount,
+        messageCount: conversationHistory.length + 1
+      };
+      
+      res.json(safeResponse);
+      
+    } catch (error) {
+      console.error('Error in negotiation simulator:', error);
+      res.status(500).json({ message: 'Failed to process negotiation. Please try again.' });
+    }
+  });
+  
+  // Get negotiation scenarios with tips
+  app.get('/api/negotiation-scenarios', async (req, res) => {
+    try {
+      const scenarios = [
+        {
+          id: 'emergency-room',
+          title: 'Emergency Room Bills',
+          description: 'Practice negotiating high ER charges including facility fees and emergency physician costs',
+          difficulty: 'Advanced',
+          averageSavings: '40-60%',
+          keyTactics: [
+            'Ask for an itemized bill to identify errors',
+            'Request the Medicare rate comparison',
+            'Invoke No Surprises Act for out-of-network charges',
+            'Ask about emergency exception policies'
+          ],
+          defaultBillAmount: 8500,
+          icon: 'AlertTriangle'
+        },
+        {
+          id: 'surgical-bills',
+          title: 'Surgery & Procedures',
+          description: 'Negotiate operating room fees, anesthesia charges, and surgical supply markups',
+          difficulty: 'Expert',
+          averageSavings: '50-70%',
+          keyTactics: [
+            'Challenge unbundled procedure codes',
+            'Question OR time documentation',
+            'Request surgical supply itemization',
+            'Ask for cash-pay pricing'
+          ],
+          defaultBillAmount: 25000,
+          icon: 'FileCheck'
+        },
+        {
+          id: 'hospital-stays',
+          title: 'Hospital Admissions',
+          description: 'Tackle multi-day hospital bills with room charges and department fees',
+          difficulty: 'Intermediate',
+          averageSavings: '35-55%',
+          keyTactics: [
+            'Audit daily charges for duplicates',
+            'Challenge observation vs admission status',
+            'Request length of stay justification',
+            'Ask for financial counselor'
+          ],
+          defaultBillAmount: 15000,
+          icon: 'Building2'
+        },
+        {
+          id: 'insurance-appeals',
+          title: 'Insurance Denials',
+          description: 'Practice appealing claim denials and fighting for coverage',
+          difficulty: 'Intermediate',
+          averageSavings: '30-100%',
+          keyTactics: [
+            'Request denial in writing',
+            'Cite medical necessity',
+            'Request peer-to-peer review',
+            'Escalate to external review'
+          ],
+          defaultBillAmount: 12000,
+          icon: 'Shield'
+        },
+        {
+          id: 'charity-care',
+          title: 'Financial Assistance',
+          description: 'Apply for charity care and negotiate hardship-based reductions',
+          difficulty: 'Beginner',
+          averageSavings: '50-100%',
+          keyTactics: [
+            'Request charity care application',
+            'Document income and expenses',
+            'Ask about sliding scale programs',
+            'Negotiate zero-interest payment plans'
+          ],
+          defaultBillAmount: 20000,
+          icon: 'Heart'
+        },
+        {
+          id: 'collections',
+          title: 'Bills in Collections',
+          description: 'Handle medical debt already sent to collection agencies',
+          difficulty: 'Advanced',
+          averageSavings: '40-80%',
+          keyTactics: [
+            'Request debt validation',
+            'Know your FDCPA rights',
+            'Negotiate pay-for-delete agreements',
+            'Offer lump sum settlements'
+          ],
+          defaultBillAmount: 5000,
+          icon: 'Phone'
+        }
+      ];
+      
+      res.json(scenarios);
+    } catch (error) {
+      console.error('Error fetching negotiation scenarios:', error);
+      res.status(500).json({ message: 'Failed to fetch scenarios' });
+    }
+  });
+
   // ===== SYNTHETIC PATIENT DIAGNOSTICS ENDPOINTS =====
   
   // Get all synthetic patients for the authenticated user

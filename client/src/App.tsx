@@ -81,6 +81,7 @@ import CollectionsDefenseGuide from "@/pages/collections-defense-guide";
 import HospitalBillPlaybook from "@/pages/hospital-bill-playbook";
 import AboutGoldRock from "@/pages/about-goldrock";
 import BillSummarizer from "@/pages/bill-summarizer";
+import NegotiationSimulator from "@/pages/negotiation-simulator";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -113,7 +114,8 @@ const AI_PROTECTED_ROUTES = [
   '/clinical-command-center',
   '/lab-analyzer',
   '/drug-interactions',
-  '/symptom-checker'
+  '/symptom-checker',
+  '/negotiation-simulator'
 ];
 
 // Component wrapper to protect AI routes
@@ -312,6 +314,11 @@ function Router() {
       <Route path="/bill-summarizer">
         <AIRouteGuard path="/bill-summarizer">
           <BillSummarizer />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/negotiation-simulator">
+        <AIRouteGuard path="/negotiation-simulator">
+          <NegotiationSimulator />
         </AIRouteGuard>
       </Route>
       <Route path="/hospital-reviews" component={HospitalReviews} />
