@@ -270,7 +270,7 @@ export function DemoChat() {
             <div 
               ref={messagesContainerRef}
               className="overflow-y-auto space-y-3"
-              style={{ maxHeight: messages.length > 2 ? '300px' : 'none' }}
+              style={{ maxHeight: messages.length > 1 ? '400px' : 'none' }}
             >
               {messages.map((msg, i) => (
                 <motion.div
