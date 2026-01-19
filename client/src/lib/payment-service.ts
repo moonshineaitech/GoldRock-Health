@@ -25,14 +25,16 @@ export const paymentService = {
 
   /**
    * Get the appropriate payment method for the current platform
+   * For iOS native, ALWAYS use RevenueCat (Apple requirement) - even if not yet initialized
    */
   getPaymentMethod(): 'revenuecat' | 'stripe' {
-    if (this.isIOSNative() && revenueCatService.isAvailable()) {
-      // Use RevenueCat/StoreKit on iOS native
+    if (this.isIOSNative()) {
+      // iOS native MUST use RevenueCat/StoreKit per Apple guidelines
+      // Even if not yet initialized, return 'revenuecat' to prevent Stripe checkout exposure
       return 'revenuecat';
     }
     
-    // Fallback to Stripe on web or if RevenueCat not available
+    // Fallback to Stripe on web
     return 'stripe';
   },
 

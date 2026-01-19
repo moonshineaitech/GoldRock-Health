@@ -12,8 +12,26 @@ The web application is ready to be wrapped as an iOS native app using Capacitor.
 - [ ] Active Apple Developer Program membership ($99/year)
 - [ ] App Store Connect access configured
 - [ ] Certificates and provisioning profiles created
+- [ ] Enable In-App Purchase capability in App ID
 
-### 2. RevenueCat Configuration
+### 2. App Store Connect Privacy Setup
+Apple requires detailed privacy disclosures before app submission:
+
+- [ ] **App Privacy Questionnaire** - Complete in App Store Connect:
+  - Data Types Collected: Health & Fitness, Financial Info, Contact Info (Email, Name), Photos
+  - Data Linked to User: Yes (for personalization)
+  - Data Used for Tracking: No
+  
+- [ ] **Privacy Manifest** - `PrivacyInfo.xcprivacy` already configured in `ios/App/App/`:
+  - NSPrivacyTracking: false
+  - Health & Fitness data for app functionality
+  - Financial Info for bill analysis
+  - Email/Name for account management
+  - Photos for bill scanning
+
+- [ ] **App Tracking Transparency (ATT)** - Not required (app does not track users)
+
+### 3. RevenueCat Configuration
 - [ ] Create RevenueCat account at https://app.revenuecat.com
 - [ ] Add new project for "GoldRock Health"
 - [ ] Configure iOS App:
@@ -179,6 +197,26 @@ npx cap open ios
 
 ---
 
+## Pre-Submission Testing
+
+### RevenueCat Smoke Test (Required)
+Before submitting to App Store, verify StoreKit integration works:
+
+1. **Build on physical iOS device** (simulator doesn't support StoreKit)
+2. **Login with test Apple ID** (sandbox tester configured in App Store Connect)
+3. **Navigate to Premium page** - verify Monthly/Annual options appear
+4. **Tap "Subscribe"** - verify Apple Pay sheet appears (not Stripe checkout)
+5. **Complete sandbox purchase** - verify subscription activates
+6. **Check "Restore Purchases"** - verify previous purchases restore correctly
+
+### Payment Routing Verification
+- [ ] iOS native app shows StoreKit/Apple Pay UI (NOT Stripe)
+- [ ] Lifetime plan is NOT visible on iOS (Apple policy)
+- [ ] Web browser shows Stripe checkout
+- [ ] Lifetime plan IS visible on web
+
+---
+
 ## Post-Submission Checklist
 
 - [ ] Monitor App Store Connect for review status
@@ -186,6 +224,22 @@ npx cap open ios
 - [ ] Prepare responses for common rejection reasons
 - [ ] Test production app after approval
 - [ ] Set up App Analytics monitoring
+
+---
+
+## Common Rejection Reasons & Responses
+
+### 3.1.1 - In-App Purchase Required
+**Issue**: App attempts to use external payment link
+**Response**: Verified - iOS uses StoreKit via RevenueCat exclusively. Stripe checkout only available on web.
+
+### 2.1 - App Completeness
+**Issue**: App crashes or has bugs
+**Response**: Tested extensively; demo account (appreviewer@goldrock.com) provides full access.
+
+### 5.1.1 - Data Collection
+**Issue**: Privacy policy or data disclosures insufficient
+**Response**: PrivacyInfo.xcprivacy configured; App Privacy questionnaire completed in App Store Connect.
 
 ---
 
