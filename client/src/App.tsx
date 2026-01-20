@@ -82,6 +82,7 @@ import HospitalBillPlaybook from "@/pages/hospital-bill-playbook";
 import AboutGoldRock from "@/pages/about-goldrock";
 import BillSummarizer from "@/pages/bill-summarizer";
 import NegotiationSimulator from "@/pages/negotiation-simulator";
+import GetStarted from "@/pages/get-started";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -201,6 +202,7 @@ function Router() {
       <Switch>
       <Route path="/ai-agreement" component={AiUsageAgreement} />
       <Route path="/" component={Landing} />
+      <Route path="/get-started" component={GetStarted} />
       <Route path="/training">
         <AIRouteGuard path="/training">
           <Training />

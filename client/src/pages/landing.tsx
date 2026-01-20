@@ -539,7 +539,7 @@ export default function Landing() {
             </motion.div>
           </Link>
 
-          <Link href="/patient-diagnostics">
+          <Link href="/get-started">
             <motion.div 
               whileHover={{ scale: 1.01, y: -2 }} 
               whileTap={{ scale: 0.99 }}
@@ -552,8 +552,8 @@ export default function Landing() {
                 variant="secondary" 
                 className="relative w-full border-2 border-gray-200 hover:border-blue-300 text-gray-800 shadow-lg bg-white/90 backdrop-blur-xl py-3.5 font-semibold"
               >
-                <Brain className="h-5 w-5 mr-2 text-blue-600" />
-                Explore AI Health Tools
+                <Play className="h-5 w-5 mr-2 text-blue-600" />
+                New Here? Start the Guided Tour
                 <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </MobileButton>
             </motion.div>
