@@ -110,7 +110,7 @@ async function setupStripe() {
     
   } catch (error) {
     console.error('Failed to setup Stripe prices:', error);
-    throw error;
+    console.log('Stripe will be unavailable - app will continue without payment processing');
   }
 }
 

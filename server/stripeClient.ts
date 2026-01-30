@@ -4,6 +4,11 @@ let connectionSettings: any;
 
 async function getCredentials() {
   const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
+  
+  if (!hostname) {
+    throw new Error('REPLIT_CONNECTORS_HOSTNAME not found - Stripe connector may not be configured');
+  }
+  
   const xReplitToken = process.env.REPL_IDENTITY
     ? 'repl ' + process.env.REPL_IDENTITY
     : process.env.WEB_REPL_RENEWAL
