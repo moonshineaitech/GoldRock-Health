@@ -1186,8 +1186,8 @@ export default function AuthLanding() {
             </div>
 
             <Link href="/premium">
-              <motion.a
-                className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white font-black text-lg rounded-2xl relative overflow-hidden group"
+              <motion.div
+                className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white font-black text-lg rounded-2xl relative overflow-hidden group cursor-pointer"
                 style={{
                   boxShadow: "0 25px 50px -12px rgba(245, 158, 11, 0.4)"
                 }}
@@ -1207,7 +1207,7 @@ export default function AuthLanding() {
                 <Crown className="h-6 w-6 relative z-10" />
                 <span className="relative z-10">Upgrade to Premium</span>
                 <Sparkles className="h-5 w-5 relative z-10" />
-              </motion.a>
+              </motion.div>
             </Link>
 
             <p className="text-sm text-gray-600 mt-6 font-medium">
@@ -1328,8 +1328,8 @@ export default function AuthLanding() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
             <Link href="/bill-ai">
-              <motion.a
-                className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white font-black text-lg rounded-2xl relative overflow-hidden group"
+              <motion.div
+                className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white font-black text-lg rounded-2xl relative overflow-hidden group cursor-pointer"
                 style={{
                   boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4)"
                 }}
@@ -1349,19 +1349,19 @@ export default function AuthLanding() {
                 <Zap className="h-6 w-6 relative z-10" />
                 <span className="relative z-10">Start Free Bill Analysis</span>
                 <ArrowRight className="h-6 w-6 relative z-10" />
-              </motion.a>
+              </motion.div>
             </Link>
 
             <Link href="/premium">
-              <motion.a
-                className="inline-flex items-center gap-2 px-10 py-6 bg-white/80 backdrop-blur-xl border-2 border-emerald-300 text-emerald-700 font-black text-lg rounded-2xl shadow-xl"
+              <motion.div
+                className="inline-flex items-center gap-2 px-10 py-6 bg-white/80 backdrop-blur-xl border-2 border-emerald-300 text-emerald-700 font-black text-lg rounded-2xl shadow-xl cursor-pointer"
                 whileHover={{ scale: 1.03, y: -2 }}
                 data-testid="button-view-premium-final"
               >
                 <Crown className="h-5 w-5" />
                 View Premium Plans
                 <ChevronRight className="h-5 w-5" />
-              </motion.a>
+              </motion.div>
             </Link>
           </div>
 
@@ -1393,25 +1393,17 @@ export default function AuthLanding() {
             <div>
               <h4 className="text-white font-semibold mb-4">Platform</h4>
               <div className="flex flex-col gap-2 text-sm">
-                <Link href="/about">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-about">
-                    About GoldRock Health
-                  </a>
+                <Link href="/about" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-about">
+                  About GoldRock Health
                 </Link>
-                <Link href="/platform-stats">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-stats">
-                    Platform Stats
-                  </a>
+                <Link href="/platform-stats" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-stats">
+                  Platform Stats
                 </Link>
-                <Link href="/case-studies">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-case-studies">
-                    Case Studies
-                  </a>
+                <Link href="/case-studies" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-case-studies">
+                  Case Studies
                 </Link>
-                <Link href="/articles">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-articles">
-                    Resources
-                  </a>
+                <Link href="/articles" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-articles">
+                  Resources
                 </Link>
               </div>
             </div>
@@ -1419,25 +1411,17 @@ export default function AuthLanding() {
             <div>
               <h4 className="text-white font-semibold mb-4">Partnerships</h4>
               <div className="flex flex-col gap-2 text-sm">
-                <Link href="/for-vcs">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-vcs">
-                    For VCs
-                  </a>
+                <Link href="/for-vcs" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-vcs">
+                  For VCs
                 </Link>
-                <Link href="/investors">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-investors">
-                    For Investors
-                  </a>
+                <Link href="/investors" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-investors">
+                  For Investors
                 </Link>
-                <Link href="/for-healthcare">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-healthcare">
-                    For Healthcare Companies
-                  </a>
+                <Link href="/for-healthcare" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-healthcare">
+                  For Healthcare Companies
                 </Link>
-                <Link href="/for-insurance">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-insurance">
-                    For Insurance Companies
-                  </a>
+                <Link href="/for-insurance" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-insurance">
+                  For Insurance Companies
                 </Link>
               </div>
             </div>
@@ -1445,20 +1429,14 @@ export default function AuthLanding() {
             <div>
               <h4 className="text-white font-semibold mb-4">Legal</h4>
               <div className="flex flex-col gap-2 text-sm">
-                <Link href="/privacy-policy">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-privacy-landing">
-                    Privacy Policy
-                  </a>
+                <Link href="/privacy-policy" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-privacy-landing">
+                  Privacy Policy
                 </Link>
-                <Link href="/terms-of-service">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-terms-landing">
-                    Terms of Service
-                  </a>
+                <Link href="/terms-of-service" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-terms-landing">
+                  Terms of Service
                 </Link>
-                <Link href="/support">
-                  <a className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-support-landing">
-                    Support
-                  </a>
+                <Link href="/support" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-support-landing">
+                  Support
                 </Link>
                 <a 
                   href="mailto:contact@goldrock.ai" 
