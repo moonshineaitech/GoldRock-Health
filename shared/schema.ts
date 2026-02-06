@@ -2786,3 +2786,25 @@ export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents).om
   id: true,
   createdAt: true,
 });
+
+export const billDocuments = pgTable("bill_documents", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  billId: varchar("bill_id").references(() => medicalBills.id),
+  fileName: text("file_name").notNull(),
+  fileType: varchar("file_type", { length: 50 }).notNull(),
+  fileSize: integer("file_size").notNull(),
+  objectPath: text("object_path").notNull(),
+  category: varchar("category", { length: 30 }).default("bill"),
+  notes: text("notes"),
+  isAnalyzed: boolean("is_analyzed").default(false),
+  uploadedAt: timestamp("uploaded_at").defaultNow(),
+});
+
+export type BillDocument = typeof billDocuments.$inferSelect;
+export type InsertBillDocument = typeof billDocuments.$inferInsert;
+
+export const insertBillDocumentSchema = createInsertSchema(billDocuments).omit({
+  id: true,
+  uploadedAt: true,
+});

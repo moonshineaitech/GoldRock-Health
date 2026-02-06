@@ -20,6 +20,7 @@ import { stripeService } from "./stripeService";
 import { stripeStorage } from "./stripeStorage";
 import { z } from "zod";
 import multer from "multer";
+import { registerObjectStorageRoutes, ObjectStorageService } from "./replit_integrations/object_storage";
 
 let MONTHLY_PRICE_ID: string;
 let ANNUAL_PRICE_ID: string;
@@ -131,6 +132,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     },
   });
+
+  registerObjectStorageRoutes(app);
+  const objectStorageService = new ObjectStorageService();
 
   // Initialize Stripe prices first
   await setupStripe();
@@ -2968,6 +2972,188 @@ Provide detailed analysis with specific dollar amounts, error categories, and pr
     } catch (error) {
       console.error('Error uploading multiple bills:', error);
       res.status(500).json({ message: 'Failed to upload and analyze bill images. Please try again.' });
+    }
+  });
+
+  // === Secure Document Upload & Management ===
+
+  app.post('/api/documents/upload-url', isAuthenticated, async (req: any, res) => {
+    try {
+      const { name, size, contentType } = req.body;
+      if (!name) return res.status(400).json({ error: "File name is required" });
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+      if (contentType && !allowedTypes.includes(contentType)) {
+        return res.status(400).json({ error: "Only JPEG, PNG, WebP images and PDF files are allowed" });
+      }
+      if (size && size > 10 * 1024 * 1024) {
+        return res.status(400).json({ error: "File size cannot exceed 10MB" });
+      }
+
+      const uploadURL = await objectStorageService.getObjectEntityUploadURL();
+      const objectPath = objectStorageService.normalizeObjectEntityPath(uploadURL);
+
+      res.json({ uploadURL, objectPath, metadata: { name, size, contentType } });
+    } catch (error) {
+      console.error("Error generating upload URL:", error);
+      res.status(500).json({ error: "Failed to generate upload URL" });
+    }
+  });
+
+  app.post('/api/documents', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) return res.status(401).json({ error: "Not authenticated" });
+
+      const { fileName, fileType, fileSize, objectPath, billId, category, notes } = req.body;
+      if (!fileName || !fileType || !fileSize || !objectPath) {
+        return res.status(400).json({ error: "Missing required fields: fileName, fileType, fileSize, objectPath" });
+      }
+
+      const { db } = await import("./db");
+      const { billDocuments } = await import("@shared/schema");
+
+      const [doc] = await db.insert(billDocuments).values({
+        userId,
+        billId: billId || null,
+        fileName,
+        fileType,
+        fileSize: parseInt(fileSize),
+        objectPath,
+        category: category || "bill",
+        notes: notes || null,
+      }).returning();
+
+      await objectStorageService.trySetObjectEntityAclPolicy(objectPath, {
+        owner: userId,
+        visibility: "private",
+      });
+
+      res.json(doc);
+    } catch (error) {
+      console.error("Error saving document:", error);
+      res.status(500).json({ error: "Failed to save document" });
+    }
+  });
+
+  app.get('/api/documents', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) return res.status(401).json({ error: "Not authenticated" });
+
+      const { db } = await import("./db");
+      const { billDocuments } = await import("@shared/schema");
+      const { eq, desc } = await import("drizzle-orm");
+
+      const docs = await db.select().from(billDocuments)
+        .where(eq(billDocuments.userId, userId))
+        .orderBy(desc(billDocuments.uploadedAt));
+
+      res.json(docs);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      res.status(500).json({ error: "Failed to fetch documents" });
+    }
+  });
+
+  app.get('/api/documents/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) return res.status(401).json({ error: "Not authenticated" });
+
+      const { db } = await import("./db");
+      const { billDocuments } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+
+      const [doc] = await db.select().from(billDocuments)
+        .where(and(eq(billDocuments.id, req.params.id), eq(billDocuments.userId, userId)));
+
+      if (!doc) return res.status(404).json({ error: "Document not found" });
+      res.json(doc);
+    } catch (error) {
+      console.error("Error fetching document:", error);
+      res.status(500).json({ error: "Failed to fetch document" });
+    }
+  });
+
+  app.get('/api/documents/:id/download', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) return res.status(401).json({ error: "Not authenticated" });
+
+      const { db } = await import("./db");
+      const { billDocuments } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+
+      const [doc] = await db.select().from(billDocuments)
+        .where(and(eq(billDocuments.id, req.params.id), eq(billDocuments.userId, userId)));
+
+      if (!doc) return res.status(404).json({ error: "Document not found" });
+
+      const objectFile = await objectStorageService.getObjectEntityFile(doc.objectPath);
+      await objectStorageService.downloadObject(objectFile, res);
+    } catch (error) {
+      console.error("Error downloading document:", error);
+      res.status(500).json({ error: "Failed to download document" });
+    }
+  });
+
+  app.patch('/api/documents/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) return res.status(401).json({ error: "Not authenticated" });
+
+      const { db } = await import("./db");
+      const { billDocuments } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+
+      const [existing] = await db.select().from(billDocuments)
+        .where(and(eq(billDocuments.id, req.params.id), eq(billDocuments.userId, userId)));
+      if (!existing) return res.status(404).json({ error: "Document not found" });
+
+      const updates: any = {};
+      if (req.body.category) updates.category = req.body.category;
+      if (req.body.notes !== undefined) updates.notes = req.body.notes;
+      if (req.body.billId !== undefined) updates.billId = req.body.billId;
+
+      const [updated] = await db.update(billDocuments).set(updates)
+        .where(eq(billDocuments.id, req.params.id)).returning();
+
+      res.json(updated);
+    } catch (error) {
+      console.error("Error updating document:", error);
+      res.status(500).json({ error: "Failed to update document" });
+    }
+  });
+
+  app.delete('/api/documents/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) return res.status(401).json({ error: "Not authenticated" });
+
+      const { db } = await import("./db");
+      const { billDocuments } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+
+      const [doc] = await db.select().from(billDocuments)
+        .where(and(eq(billDocuments.id, req.params.id), eq(billDocuments.userId, userId)));
+
+      if (!doc) return res.status(404).json({ error: "Document not found" });
+
+      try {
+        const objectFile = await objectStorageService.getObjectEntityFile(doc.objectPath);
+        await objectFile.delete();
+      } catch (storageErr) {
+        console.warn("Could not delete file from storage:", storageErr);
+      }
+
+      await db.delete(billDocuments)
+        .where(eq(billDocuments.id, req.params.id));
+
+      res.json({ success: true, message: "Document deleted" });
+    } catch (error) {
+      console.error("Error deleting document:", error);
+      res.status(500).json({ error: "Failed to delete document" });
     }
   });
 

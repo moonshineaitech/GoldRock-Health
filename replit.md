@@ -32,6 +32,7 @@ Preferred communication style: Simple, everyday language.
 - **Achievements**: Gamification system based on specialty and performance.
 - **Platform Statistics**: Real-time analytics.
 - **LunaFold Integration**: Tables for protein `predictions`, `binding_sites`, `mutations`, `docking_jobs`, `compounds`, and `lab_notes`.
+- **Document Vault**: `bill_documents` table for secure medical document storage with file metadata, object storage paths, categories, and user ownership.
 - **Enrollment System**: Tables for `enrollment_sessions`, `enrollment_responses`, `enrollment_applicants`.
 - **Insurance Benefits**: Tables for `insurance_providers`, `insurance_plans`, `insurance_benefits`, `insurance_copays`, `user_insurance_plans`.
 
@@ -41,6 +42,7 @@ Preferred communication style: Simple, everyday language.
 - **Medicare/Medicaid Enrollment System**: Voice-enabled wizard with AI-powered eligibility analysis.
 - **Insurance Benefits Explainer**: AI-powered explanations and plan comparison.
 - **LunaFold Platform**: AI-powered protein analysis via GPT for functional insights, binding site detection, mutation scanning, and molecular docking simulations.
+- **Document Vault**: Secure document upload and management for medical bills, EOBs, insurance letters, and receipts. Uses Replit Object Storage with presigned URL upload flow, private ACL policies, and authenticated-only access. All files encrypted at rest and in transit.
 
 ### Mobile Application (iOS Native via Capacitor)
 - **Platform**: Capacitor (wraps React web app, ~90% code reuse)
