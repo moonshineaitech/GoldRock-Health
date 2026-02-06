@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { SEOHead } from "@/components/seo-head";
+import { MedicalChatbot } from "@/components/medical-chatbot";
 import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { useToast } from "@/hooks/use-toast";
@@ -159,7 +160,7 @@ export default function ForVCs() {
       <MobileHeader title="For Investors" />
 
       <div className="min-h-screen bg-white dark:bg-gray-950">
-        <div className="max-w-5xl mx-auto px-4 py-8 pb-24 space-y-16">
+        <div className="max-w-5xl mx-auto px-4 pt-14 pb-24 space-y-10">
           <div>
             <Link href="/enterprise" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-6">
               <ArrowLeft className="w-4 h-4 mr-1" /> Enterprise Solutions
@@ -358,6 +359,7 @@ export default function ForVCs() {
         </div>
       </div>
 
+      <MedicalChatbot />
       <MobileBottomNav />
     </>
   );

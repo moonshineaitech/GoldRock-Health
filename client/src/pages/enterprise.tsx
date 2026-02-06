@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { SEOHead } from "@/components/seo-head";
+import { MedicalChatbot } from "@/components/medical-chatbot";
 import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { useToast } from "@/hooks/use-toast";
@@ -180,8 +181,8 @@ export default function Enterprise() {
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-4 py-20">
-          <div className="text-center mb-14">
+        <section className="max-w-5xl mx-auto px-4 py-12">
+          <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Built for Your Organization</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
               Whether you employ 50 people or insure 5 million, we have a path to work together.
@@ -227,8 +228,8 @@ export default function Enterprise() {
         </section>
 
         <section className="bg-gray-50 dark:bg-gray-900/50">
-          <div className="max-w-5xl mx-auto px-4 py-20">
-            <div className="text-center mb-14">
+          <div className="max-w-5xl mx-auto px-4 py-12">
+            <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">What We Actually Build</h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
                 Production-ready tools that work today, not vaporware roadmap slides.
@@ -253,8 +254,8 @@ export default function Enterprise() {
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-4 py-20">
-          <div className="text-center mb-14">
+        <section className="max-w-5xl mx-auto px-4 py-12">
+          <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">API Preview</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
               Embed medical bill analysis into your application with a single API call.
@@ -327,7 +328,7 @@ export default function Enterprise() {
           </div>
         </section>
 
-        <section className="max-w-3xl mx-auto px-4 py-20">
+        <section className="max-w-3xl mx-auto px-4 py-12">
           <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardContent className="p-8 md:p-10">
               <div className="text-center mb-8">
@@ -361,6 +362,7 @@ export default function Enterprise() {
         </footer>
       </div>
 
+      <MedicalChatbot />
       <MobileBottomNav />
     </>
   );
