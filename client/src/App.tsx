@@ -77,6 +77,7 @@ import Investors from "@/pages/investors";
 import ForVCs from "@/pages/for-vcs";
 import ForHealthcare from "@/pages/for-healthcare";
 import ForInsurance from "@/pages/for-insurance";
+import ForEmployers from "@/pages/for-employers";
 import CollectionsDefenseGuide from "@/pages/collections-defense-guide";
 import HospitalBillPlaybook from "@/pages/hospital-bill-playbook";
 import AboutGoldRock from "@/pages/about-goldrock";
@@ -200,6 +201,7 @@ function Router() {
         <Route path="/for-vcs" component={ForVCs} />
         <Route path="/for-healthcare" component={ForHealthcare} />
         <Route path="/for-insurance" component={ForInsurance} />
+        <Route path="/for-employers" component={ForEmployers} />
         <Route path="/about" component={AboutGoldRock} />
         <Route component={AuthLanding} />
       </Switch>
@@ -349,6 +351,7 @@ function Router() {
       <Route path="/for-vcs" component={ForVCs} />
       <Route path="/for-healthcare" component={ForHealthcare} />
       <Route path="/for-insurance" component={ForInsurance} />
+      <Route path="/for-employers" component={ForEmployers} />
       <Route path="/collections-defense-guide" component={CollectionsDefenseGuide} />
       <Route path="/hospital-bill-playbook" component={HospitalBillPlaybook} />
       <Route path="/about" component={AboutGoldRock} />
