@@ -11,16 +11,12 @@ export function LegalConsentFooter({ variant = "default", className = "" }: Lega
       <div className={`text-center ${className}`}>
         <p className="text-xs text-gray-500">
           By continuing, you agree to our{" "}
-          <Link href="/terms-of-service">
-            <a className="text-blue-600 hover:text-blue-700 underline" data-testid="link-terms">
-              Terms of Service
-            </a>
+          <Link href="/terms-of-service" className="text-blue-600 hover:text-blue-700 underline" data-testid="link-terms">
+            Terms of Service
           </Link>{" "}
           and{" "}
-          <Link href="/privacy-policy">
-            <a className="text-blue-600 hover:text-blue-700 underline" data-testid="link-privacy">
-              Privacy Policy
-            </a>
+          <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-700 underline" data-testid="link-privacy">
+            Privacy Policy
           </Link>
         </p>
       </div>
@@ -32,16 +28,12 @@ export function LegalConsentFooter({ variant = "default", className = "" }: Lega
       <div className="max-w-4xl mx-auto">
         <p className="text-sm text-gray-600 text-center mb-3">
           By continuing, you agree to our{" "}
-          <Link href="/terms-of-service">
-            <a className="text-blue-600 hover:text-blue-700 font-medium underline" data-testid="link-terms">
-              Terms of Service
-            </a>
+          <Link href="/terms-of-service" className="text-blue-600 hover:text-blue-700 font-medium underline" data-testid="link-terms">
+            Terms of Service
           </Link>{" "}
           and{" "}
-          <Link href="/privacy-policy">
-            <a className="text-blue-600 hover:text-blue-700 font-medium underline" data-testid="link-privacy">
-              Privacy Policy
-            </a>
+          <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-700 font-medium underline" data-testid="link-privacy">
+            Privacy Policy
           </Link>
         </p>
         
