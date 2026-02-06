@@ -2469,3 +2469,291 @@ export const insertBillSummarySchema = createInsertSchema(billSummaries).omit({
   id: true,
   createdAt: true,
 });
+
+// ============================================================================
+// TIER 1: HIGH-IMPACT FEATURES (User Growth & Retention)
+// ============================================================================
+
+// Bill Timeline Events - Track every status change for real-time bill tracking
+export const billTimelineEvents = pgTable("bill_timeline_events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  billId: varchar("bill_id").notNull().references(() => medicalBills.id),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  eventType: varchar("event_type", { length: 30 }).notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  metadata: jsonb("metadata").$type<Record<string, any>>(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type BillTimelineEvent = typeof billTimelineEvents.$inferSelect;
+export type InsertBillTimelineEvent = typeof billTimelineEvents.$inferInsert;
+
+export const insertBillTimelineEventSchema = createInsertSchema(billTimelineEvents).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Smart Notifications - Deadline reminders, program alerts, push notifications
+export const smartNotifications = pgTable("smart_notifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  type: varchar("type", { length: 30 }).notNull(),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  actionUrl: text("action_url"),
+  priority: varchar("priority", { length: 10 }).default("normal"),
+  read: boolean("read").default(false),
+  dismissed: boolean("dismissed").default(false),
+  scheduledFor: timestamp("scheduled_for"),
+  sentAt: timestamp("sent_at"),
+  metadata: jsonb("metadata").$type<Record<string, any>>(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type SmartNotification = typeof smartNotifications.$inferSelect;
+export type InsertSmartNotification = typeof smartNotifications.$inferInsert;
+
+export const insertSmartNotificationSchema = createInsertSchema(smartNotifications).omit({
+  id: true,
+  createdAt: true,
+  read: true,
+  dismissed: true,
+  sentAt: true,
+});
+
+// State Legal Rights - Medical debt protection laws by state
+export const stateLegalRights = pgTable("state_legal_rights", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  state: varchar("state", { length: 2 }).notNull(),
+  stateName: varchar("state_name", { length: 50 }).notNull(),
+  category: varchar("category", { length: 50 }).notNull(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  legalCitation: text("legal_citation"),
+  effectiveDate: varchar("effective_date", { length: 20 }),
+  keyProtections: jsonb("key_protections").$type<string[]>().default([]),
+  actionSteps: jsonb("action_steps").$type<string[]>().default([]),
+  resources: jsonb("resources").$type<Array<{ name: string; url: string; phone?: string }>>().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type StateLegalRight = typeof stateLegalRights.$inferSelect;
+export type InsertStateLegalRight = typeof stateLegalRights.$inferInsert;
+
+export const insertStateLegalRightSchema = createInsertSchema(stateLegalRights).omit({
+  id: true,
+  createdAt: true,
+});
+
+// ============================================================================
+// TIER 2: COMPETITIVE MOATS
+// ============================================================================
+
+// Provider Prices - CMS price transparency data for procedure comparison
+export const providerPrices = pgTable("provider_prices", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  providerName: text("provider_name").notNull(),
+  facilityType: varchar("facility_type", { length: 50 }),
+  city: varchar("city", { length: 100 }),
+  state: varchar("state", { length: 2 }),
+  zipCode: varchar("zip_code", { length: 10 }),
+  cptCode: varchar("cpt_code", { length: 20 }).notNull(),
+  procedureName: text("procedure_name").notNull(),
+  cashPrice: decimal("cash_price", { precision: 10, scale: 2 }),
+  insurancePrice: decimal("insurance_price", { precision: 10, scale: 2 }),
+  medicareRate: decimal("medicare_rate", { precision: 10, scale: 2 }),
+  nationalAverage: decimal("national_average", { precision: 10, scale: 2 }),
+  priceRating: varchar("price_rating", { length: 20 }),
+  lastUpdated: timestamp("last_updated").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type ProviderPrice = typeof providerPrices.$inferSelect;
+export type InsertProviderPrice = typeof providerPrices.$inferInsert;
+
+export const insertProviderPriceSchema = createInsertSchema(providerPrices).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
+});
+
+// Insurance Denials - Track and fight insurance denials
+export const insuranceDenialCases = pgTable("insurance_denial_cases", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  billId: varchar("bill_id").references(() => medicalBills.id),
+  insuranceCompany: text("insurance_company").notNull(),
+  denialCode: varchar("denial_code", { length: 20 }),
+  denialReason: text("denial_reason").notNull(),
+  procedureCode: varchar("procedure_code", { length: 20 }),
+  procedureDescription: text("procedure_description"),
+  claimAmount: decimal("claim_amount", { precision: 10, scale: 2 }),
+  dateOfDenial: timestamp("date_of_denial"),
+  appealDeadline: timestamp("appeal_deadline"),
+  appealLevel: varchar("appeal_level", { length: 20 }).default("internal_first"),
+  status: varchar("status", { length: 20 }).default("denied"),
+  generatedAppealLetter: text("generated_appeal_letter"),
+  appealArguments: jsonb("appeal_arguments").$type<string[]>().default([]),
+  medicalNecessityReasoning: text("medical_necessity_reasoning"),
+  supportingEvidence: jsonb("supporting_evidence").$type<string[]>().default([]),
+  outcome: varchar("outcome", { length: 20 }),
+  recoveredAmount: decimal("recovered_amount", { precision: 10, scale: 2 }),
+  createdAt: timestamp("created_at").defaultNow(),
+  resolvedAt: timestamp("resolved_at"),
+});
+
+export type InsuranceDenialCase = typeof insuranceDenialCases.$inferSelect;
+export type InsertInsuranceDenialCase = typeof insuranceDenialCases.$inferInsert;
+
+export const insertInsuranceDenialCaseSchema = createInsertSchema(insuranceDenialCases).omit({
+  id: true,
+  createdAt: true,
+  resolvedAt: true,
+  generatedAppealLetter: true,
+  appealArguments: true,
+  medicalNecessityReasoning: true,
+  outcome: true,
+  recoveredAmount: true,
+});
+
+// Community Success Stories - Anonymous verified savings stories
+export const communityStories = pgTable("community_stories", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  displayName: varchar("display_name", { length: 100 }).default("Anonymous"),
+  state: varchar("state", { length: 2 }),
+  billType: varchar("bill_type", { length: 50 }),
+  originalAmount: decimal("original_amount", { precision: 10, scale: 2 }).notNull(),
+  finalAmount: decimal("final_amount", { precision: 10, scale: 2 }).notNull(),
+  savedAmount: decimal("saved_amount", { precision: 10, scale: 2 }).notNull(),
+  savingsPercent: integer("savings_percent"),
+  strategyUsed: varchar("strategy_used", { length: 50 }),
+  story: text("story").notNull(),
+  advice: text("advice"),
+  tags: jsonb("tags").$type<string[]>().default([]),
+  verified: boolean("verified").default(false),
+  approved: boolean("approved").default(false),
+  featured: boolean("featured").default(false),
+  helpfulCount: integer("helpful_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type CommunityStory = typeof communityStories.$inferSelect;
+export type InsertCommunityStory = typeof communityStories.$inferInsert;
+
+export const insertCommunityStorySchema = createInsertSchema(communityStories).omit({
+  id: true,
+  createdAt: true,
+  verified: true,
+  approved: true,
+  featured: true,
+  helpfulCount: true,
+});
+
+// ============================================================================
+// TIER 3: ENTERPRISE / B2B
+// ============================================================================
+
+// Employer Organizations - Companies offering GoldRock as a benefit
+export const employerOrgs = pgTable("employer_orgs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  domain: varchar("domain", { length: 255 }),
+  industry: varchar("industry", { length: 100 }),
+  size: varchar("size", { length: 30 }),
+  contactName: text("contact_name"),
+  contactEmail: varchar("contact_email", { length: 255 }),
+  contactPhone: varchar("contact_phone", { length: 30 }),
+  plan: varchar("plan", { length: 20 }).default("starter"),
+  maxEmployees: integer("max_employees").default(50),
+  logoUrl: text("logo_url"),
+  settings: jsonb("settings").$type<{
+    allowSelfEnroll: boolean;
+    requireEmailDomain: boolean;
+    showAnalytics: boolean;
+    customBranding: boolean;
+  }>().default({ allowSelfEnroll: true, requireEmailDomain: true, showAnalytics: true, customBranding: false }),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type EmployerOrg = typeof employerOrgs.$inferSelect;
+export type InsertEmployerOrg = typeof employerOrgs.$inferInsert;
+
+export const insertEmployerOrgSchema = createInsertSchema(employerOrgs).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  isActive: true,
+});
+
+// Organization Members - Employees linked to employer orgs
+export const orgMembers = pgTable("org_members", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  orgId: varchar("org_id").notNull().references(() => employerOrgs.id),
+  userId: varchar("user_id").references(() => users.id),
+  email: varchar("email", { length: 255 }).notNull(),
+  role: varchar("role", { length: 20 }).default("member"),
+  status: varchar("status", { length: 20 }).default("invited"),
+  invitedAt: timestamp("invited_at").defaultNow(),
+  joinedAt: timestamp("joined_at"),
+  lastActiveAt: timestamp("last_active_at"),
+});
+
+export type OrgMember = typeof orgMembers.$inferSelect;
+export type InsertOrgMember = typeof orgMembers.$inferInsert;
+
+export const insertOrgMemberSchema = createInsertSchema(orgMembers).omit({
+  id: true,
+  invitedAt: true,
+  joinedAt: true,
+  lastActiveAt: true,
+});
+
+// Organization Usage Stats - Aggregated analytics for employer dashboards
+export const orgUsageStats = pgTable("org_usage_stats", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  orgId: varchar("org_id").notNull().references(() => employerOrgs.id),
+  period: varchar("period", { length: 20 }).notNull(),
+  activeUsers: integer("active_users").default(0),
+  billsAnalyzed: integer("bills_analyzed").default(0),
+  totalSavingsGenerated: decimal("total_savings_generated", { precision: 12, scale: 2 }).default("0.00"),
+  disputesInitiated: integer("disputes_initiated").default(0),
+  disputesWon: integer("disputes_won").default(0),
+  averageSavingsPerUser: decimal("average_savings_per_user", { precision: 10, scale: 2 }).default("0.00"),
+  topStrategies: jsonb("top_strategies").$type<Array<{ strategy: string; count: number; savings: number }>>().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type OrgUsageStat = typeof orgUsageStats.$inferSelect;
+export type InsertOrgUsageStat = typeof orgUsageStats.$inferInsert;
+
+export const insertOrgUsageStatSchema = createInsertSchema(orgUsageStats).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Analytics Events - Anonymized aggregate platform metrics
+export const analyticsEvents = pgTable("analytics_events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  eventType: varchar("event_type", { length: 50 }).notNull(),
+  category: varchar("category", { length: 50 }),
+  state: varchar("state", { length: 2 }),
+  procedureCode: varchar("procedure_code", { length: 20 }),
+  providerType: varchar("provider_type", { length: 50 }),
+  originalAmount: decimal("original_amount", { precision: 10, scale: 2 }),
+  savedAmount: decimal("saved_amount", { precision: 10, scale: 2 }),
+  savingsMethod: varchar("savings_method", { length: 50 }),
+  metadata: jsonb("metadata").$type<Record<string, any>>(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type AnalyticsEvent = typeof analyticsEvents.$inferSelect;
+export type InsertAnalyticsEvent = typeof analyticsEvents.$inferInsert;
+
+export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents).omit({
+  id: true,
+  createdAt: true,
+});

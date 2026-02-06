@@ -83,6 +83,16 @@ import AboutGoldRock from "@/pages/about-goldrock";
 import BillSummarizer from "@/pages/bill-summarizer";
 import NegotiationSimulator from "@/pages/negotiation-simulator";
 import GetStarted from "@/pages/get-started";
+import BillTracker from "@/pages/bill-tracker";
+import SavingsDashboard from "@/pages/savings-dashboard";
+import NotificationsCenter from "@/pages/notifications-center";
+import StateRights from "@/pages/state-rights";
+import PriceComparison from "@/pages/price-comparison";
+import DenialAppeals from "@/pages/denial-appeals";
+import CommunityStories from "@/pages/community-stories";
+import EmployerPortal from "@/pages/employer-portal";
+import DataInsights from "@/pages/data-insights";
+import PartnerApi from "@/pages/partner-api";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -341,6 +351,16 @@ function Router() {
       <Route path="/collections-defense-guide" component={CollectionsDefenseGuide} />
       <Route path="/hospital-bill-playbook" component={HospitalBillPlaybook} />
       <Route path="/about" component={AboutGoldRock} />
+      <Route path="/bill-tracker" component={BillTracker} />
+      <Route path="/savings" component={SavingsDashboard} />
+      <Route path="/notifications" component={NotificationsCenter} />
+      <Route path="/state-rights" component={StateRights} />
+      <Route path="/price-comparison" component={PriceComparison} />
+      <Route path="/denial-appeals" component={DenialAppeals} />
+      <Route path="/community-stories" component={CommunityStories} />
+      <Route path="/employer" component={EmployerPortal} />
+      <Route path="/data-insights" component={DataInsights} />
+      <Route path="/partner-api" component={PartnerApi} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

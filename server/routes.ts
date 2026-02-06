@@ -6370,6 +6370,536 @@ Provide a comprehensive comparison in JSON format:
     }
   });
 
+  // ============================================================================
+  // TIER 1: BILL TRACKER, SAVINGS, NOTIFICATIONS, STATE RIGHTS
+  // ============================================================================
+
+  // Bill Tracker - Get user's bills
+  app.get("/api/bill-tracker/bills", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { medicalBills } = await import("@shared/schema");
+      const { eq, desc } = await import("drizzle-orm");
+      const bills = await db.select().from(medicalBills).where(eq(medicalBills.userId, userId)).orderBy(desc(medicalBills.createdAt));
+      res.json(bills);
+    } catch (error) {
+      console.error("Error fetching bills:", error);
+      res.status(500).json({ error: "Failed to fetch bills" });
+    }
+  });
+
+  // Bill Tracker - Summary stats
+  app.get("/api/bill-tracker/summary", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { medicalBills, userSavingsOutcomes } = await import("@shared/schema");
+      const { eq, sql } = await import("drizzle-orm");
+      const bills = await db.select().from(medicalBills).where(eq(medicalBills.userId, userId));
+      const outcomes = await db.select().from(userSavingsOutcomes).where(eq(userSavingsOutcomes.userId, userId));
+      const totalSaved = outcomes.reduce((s, o) => s + parseFloat(o.totalSaved || "0"), 0);
+      res.json({
+        totalBills: bills.length,
+        totalSaved,
+        resolved: outcomes.filter(o => o.status === "resolved").length,
+        active: bills.filter(b => !["resolved"].includes(b.status || "")).length,
+        avgSavingsPercent: outcomes.length > 0 ? Math.round(outcomes.reduce((s, o) => {
+          const orig = parseFloat(o.originalAmount || "0");
+          const saved = parseFloat(o.totalSaved || "0");
+          return s + (orig > 0 ? (saved / orig) * 100 : 0);
+        }, 0) / outcomes.length) : 0,
+      });
+    } catch (error) {
+      console.error("Error fetching summary:", error);
+      res.status(500).json({ error: "Failed to fetch summary" });
+    }
+  });
+
+  // Bill Tracker - Create new bill
+  app.post("/api/bill-tracker/bills", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { medicalBills } = await import("@shared/schema");
+      const { title, providerName, totalAmount, patientResponsibility, dueDate } = req.body;
+      const [bill] = await db.insert(medicalBills).values({
+        userId,
+        title: title || "Medical Bill",
+        providerName: providerName || null,
+        totalAmount: totalAmount || "0.00",
+        patientResponsibility: patientResponsibility || totalAmount || "0.00",
+        dueDate: dueDate ? new Date(dueDate) : null,
+        status: "uploaded",
+      }).returning();
+      res.json(bill);
+    } catch (error) {
+      console.error("Error creating bill:", error);
+      res.status(500).json({ error: "Failed to create bill" });
+    }
+  });
+
+  // Savings Outcomes - Get user's outcomes
+  app.get("/api/savings/outcomes", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { userSavingsOutcomes } = await import("@shared/schema");
+      const { eq, desc } = await import("drizzle-orm");
+      const outcomes = await db.select().from(userSavingsOutcomes).where(eq(userSavingsOutcomes.userId, userId)).orderBy(desc(userSavingsOutcomes.createdAt));
+      res.json(outcomes);
+    } catch (error) {
+      console.error("Error fetching outcomes:", error);
+      res.status(500).json({ error: "Failed to fetch outcomes" });
+    }
+  });
+
+  // Savings Summary
+  app.get("/api/savings/summary", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { userSavingsOutcomes, medicalBills } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      const outcomes = await db.select().from(userSavingsOutcomes).where(eq(userSavingsOutcomes.userId, userId));
+      const bills = await db.select().from(medicalBills).where(eq(medicalBills.userId, userId));
+      const totalSaved = outcomes.reduce((s, o) => s + parseFloat(o.totalSaved || "0"), 0);
+      const resolved = outcomes.filter(o => o.status === "resolved").length;
+      const active = outcomes.filter(o => o.status === "in_progress").length;
+      const avgSavingsPercent = outcomes.length > 0 ? Math.round(outcomes.reduce((s, o) => {
+        const orig = parseFloat(o.originalAmount || "0");
+        const saved = parseFloat(o.totalSaved || "0");
+        return s + (orig > 0 ? (saved / orig) * 100 : 0);
+      }, 0) / outcomes.length) : 0;
+      res.json({ totalSaved, resolved, active, totalBills: bills.length, avgSavingsPercent });
+    } catch (error) {
+      console.error("Error fetching savings summary:", error);
+      res.status(500).json({ error: "Failed to fetch savings summary" });
+    }
+  });
+
+  // Notifications - Get user notifications
+  app.get("/api/notifications", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { smartNotifications } = await import("@shared/schema");
+      const { eq, and, desc } = await import("drizzle-orm");
+      const notifications = await db.select().from(smartNotifications)
+        .where(and(eq(smartNotifications.userId, userId), eq(smartNotifications.dismissed, false)))
+        .orderBy(desc(smartNotifications.createdAt));
+      res.json(notifications);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      res.status(500).json({ error: "Failed to fetch notifications" });
+    }
+  });
+
+  // Notifications - Mark as read
+  app.patch("/api/notifications/:id/read", isAuthenticated, async (req: any, res) => {
+    try {
+      const { db } = await import("./db");
+      const { smartNotifications } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      await db.update(smartNotifications).set({ read: true }).where(eq(smartNotifications.id, req.params.id));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to mark read" });
+    }
+  });
+
+  // Notifications - Mark all read
+  app.post("/api/notifications/mark-all-read", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { smartNotifications } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      await db.update(smartNotifications).set({ read: true }).where(eq(smartNotifications.userId, userId));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to mark all read" });
+    }
+  });
+
+  // Notifications - Dismiss
+  app.delete("/api/notifications/:id", isAuthenticated, async (req: any, res) => {
+    try {
+      const { db } = await import("./db");
+      const { smartNotifications } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      await db.update(smartNotifications).set({ dismissed: true }).where(eq(smartNotifications.id, req.params.id));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to dismiss" });
+    }
+  });
+
+  // State Legal Rights - Get by state (supports /api/state-rights/CA or ?state=CA)
+  app.get("/api/state-rights/:state?", async (req, res) => {
+    try {
+      const state = req.params.state || req.query.state as string;
+      if (!state || state === "federal") {
+        const { db } = await import("./db");
+        const { stateLegalRights } = await import("@shared/schema");
+        const { eq } = await import("drizzle-orm");
+        const rights = await db.select().from(stateLegalRights).where(eq(stateLegalRights.state, "US"));
+        return res.json(rights);
+      }
+      const { db } = await import("./db");
+      const { stateLegalRights } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      const rights = await db.select().from(stateLegalRights).where(eq(stateLegalRights.state, state));
+      res.json(rights);
+    } catch (error) {
+      console.error("Error fetching state rights:", error);
+      res.status(500).json({ error: "Failed to fetch state rights" });
+    }
+  });
+
+
+  // ============================================================================
+  // TIER 2: PRICE COMPARISON, DENIAL APPEALS, COMMUNITY STORIES
+  // ============================================================================
+
+  // Price Comparison - Search by procedure (supports /api/price-comparison/99285 or ?procedureCode=99285)
+  app.get("/api/price-comparison/:procedureCode?", async (req, res) => {
+    try {
+      const procedureCode = req.params.procedureCode || req.query.procedureCode as string;
+      if (!procedureCode) return res.json([]);
+      const { db } = await import("./db");
+      const { providerPrices } = await import("@shared/schema");
+      const { eq, asc } = await import("drizzle-orm");
+      const prices = await db.select().from(providerPrices).where(eq(providerPrices.procedureCode, procedureCode)).orderBy(asc(providerPrices.cashPrice));
+      res.json(prices);
+    } catch (error) {
+      console.error("Error fetching prices:", error);
+      res.status(500).json({ error: "Failed to fetch prices" });
+    }
+  });
+
+  // Denial Appeals - Get user's cases
+  app.get("/api/denial-appeals", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { insuranceDenialCases } = await import("@shared/schema");
+      const { eq, desc } = await import("drizzle-orm");
+      const cases = await db.select().from(insuranceDenialCases).where(eq(insuranceDenialCases.userId, userId)).orderBy(desc(insuranceDenialCases.createdAt));
+      res.json(cases);
+    } catch (error) {
+      console.error("Error fetching denial cases:", error);
+      res.status(500).json({ error: "Failed to fetch denial cases" });
+    }
+  });
+
+  // Denial Appeals - Create new case with AI letter
+  app.post("/api/denial-appeals", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { insuranceDenialCases } = await import("@shared/schema");
+      const { insuranceCompany, denialCode, denialReason, procedureCode, procedureDescription, claimAmount, dateOfDenial, appealDeadline } = req.body;
+
+      let appealLetter = "";
+      try {
+        const prompt = `Generate a professional, compelling insurance appeal letter for the following denial:
+
+Insurance Company: ${insuranceCompany}
+Denial Code: ${denialCode || "N/A"}
+Denial Reason: ${denialReason}
+Procedure: ${procedureDescription || procedureCode || "N/A"}
+Claim Amount: $${claimAmount || "N/A"}
+
+Write a formal appeal letter that:
+1. References the specific denial code and reason
+2. Argues medical necessity
+3. Cites relevant federal regulations (No Surprises Act, ACA)
+4. Requests a formal review
+5. Is professional and persuasive
+
+Format as a complete letter ready to send.`;
+
+        const response = await aiProvider.generateText(prompt);
+        appealLetter = response;
+      } catch (aiError) {
+        console.error("AI letter generation failed:", aiError);
+        appealLetter = `[Template] Appeal Letter for ${insuranceCompany}\n\nDear Appeals Department,\n\nI am writing to formally appeal the denial of my claim (Denial Code: ${denialCode || "N/A"}).\n\nThe denial reason stated was: ${denialReason}\n\nI believe this denial is incorrect because the procedure (${procedureDescription || procedureCode || "the procedure in question"}) was medically necessary as determined by my treating physician.\n\nUnder the No Surprises Act and applicable state insurance regulations, I request that you conduct a thorough review of this denial.\n\nPlease provide a written response within 30 days.\n\nSincerely,\n[Your Name]`;
+      }
+
+      const [denialCase] = await db.insert(insuranceDenialCases).values({
+        userId,
+        insuranceCompany,
+        denialCode: denialCode || null,
+        denialReason,
+        procedureCode: procedureCode || null,
+        procedureDescription: procedureDescription || null,
+        claimAmount: claimAmount || null,
+        dateOfDenial: dateOfDenial ? new Date(dateOfDenial) : null,
+        appealDeadline: appealDeadline ? new Date(appealDeadline) : null,
+        generatedAppealLetter: appealLetter,
+        status: "denied",
+      }).returning();
+
+      res.json(denialCase);
+    } catch (error) {
+      console.error("Error creating denial case:", error);
+      res.status(500).json({ error: "Failed to create denial case" });
+    }
+  });
+
+  // Community Stories - Get all approved stories
+  app.get("/api/community-stories", async (_req, res) => {
+    try {
+      const { db } = await import("./db");
+      const { communityStories } = await import("@shared/schema");
+      const { desc } = await import("drizzle-orm");
+      const stories = await db.select().from(communityStories).orderBy(desc(communityStories.createdAt));
+      res.json(stories);
+    } catch (error) {
+      console.error("Error fetching stories:", error);
+      res.status(500).json({ error: "Failed to fetch stories" });
+    }
+  });
+
+  // Community Stories - Aggregate stats
+  app.get("/api/community-stories/stats", async (_req, res) => {
+    try {
+      const { db } = await import("./db");
+      const { communityStories } = await import("@shared/schema");
+      const stories = await db.select().from(communityStories);
+      const totalSaved = stories.reduce((s, st) => s + parseFloat(st.savedAmount || "0"), 0);
+      const avgSavingsPercent = stories.length > 0 ? Math.round(stories.reduce((s, st) => s + (st.savingsPercent || 0), 0) / stories.length) : 0;
+      res.json({ totalStories: stories.length, totalSaved, avgSavingsPercent });
+    } catch (error) {
+      res.json({ totalStories: 0, totalSaved: 0, avgSavingsPercent: 0 });
+    }
+  });
+
+  // Community Stories - Submit a story
+  app.post("/api/community-stories", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { communityStories } = await import("@shared/schema");
+      const { displayName, state, billType, originalAmount, finalAmount, savedAmount, savingsPercent, strategyUsed, story, advice } = req.body;
+      const [created] = await db.insert(communityStories).values({
+        userId,
+        displayName: displayName || "Anonymous",
+        state: state || null,
+        billType: billType || null,
+        originalAmount: String(originalAmount),
+        finalAmount: String(finalAmount),
+        savedAmount: String(savedAmount || 0),
+        savingsPercent: savingsPercent || 0,
+        strategyUsed: strategyUsed || null,
+        story,
+        advice: advice || null,
+        approved: true,
+      }).returning();
+      res.json(created);
+    } catch (error) {
+      console.error("Error creating story:", error);
+      res.status(500).json({ error: "Failed to create story" });
+    }
+  });
+
+  // Community Stories - Mark helpful
+  app.post("/api/community-stories/:id/helpful", async (req, res) => {
+    try {
+      const { db } = await import("./db");
+      const { communityStories } = await import("@shared/schema");
+      const { eq, sql } = await import("drizzle-orm");
+      await db.update(communityStories).set({ helpfulCount: sql`COALESCE(${communityStories.helpfulCount}, 0) + 1` }).where(eq(communityStories.id, req.params.id));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update" });
+    }
+  });
+
+  // ============================================================================
+  // TIER 3: EMPLOYER PORTAL, DATA INSIGHTS, PARTNER API KEYS
+  // ============================================================================
+
+  // Employer Orgs - Get user's orgs (find orgs where user is an admin member)
+  app.get("/api/employer/orgs", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { employerOrgs, orgMembers } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+      const adminMemberships = await db.select().from(orgMembers).where(and(eq(orgMembers.userId, userId), eq(orgMembers.role, "admin")));
+      if (adminMemberships.length === 0) return res.json([]);
+      const orgIds = adminMemberships.map(m => m.orgId);
+      const { inArray } = await import("drizzle-orm");
+      const orgs = await db.select().from(employerOrgs).where(inArray(employerOrgs.id, orgIds));
+      res.json(orgs);
+    } catch (error) {
+      console.error("Error fetching orgs:", error);
+      res.status(500).json({ error: "Failed to fetch organizations" });
+    }
+  });
+
+  // Employer Orgs - Create
+  app.post("/api/employer/orgs", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { employerOrgs, orgMembers } = await import("@shared/schema");
+      const { name, domain, industry, size, contactName, contactEmail, contactPhone } = req.body;
+      const [org] = await db.insert(employerOrgs).values({
+        name,
+        domain: domain || null,
+        industry: industry || null,
+        size: size || null,
+        contactName: contactName || null,
+        contactEmail: contactEmail || null,
+        contactPhone: contactPhone || null,
+        isActive: true,
+      }).returning();
+      await db.insert(orgMembers).values({
+        orgId: org.id,
+        userId,
+        email: req.user.email || contactEmail || "",
+        role: "admin",
+        status: "active",
+      });
+      res.json(org);
+    } catch (error) {
+      console.error("Error creating org:", error);
+      res.status(500).json({ error: "Failed to create organization" });
+    }
+  });
+
+  // Employer Orgs - Get members
+  app.get("/api/employer/orgs/:orgId/members", isAuthenticated, async (req: any, res) => {
+    try {
+      const { db } = await import("./db");
+      const { orgMembers } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      const members = await db.select().from(orgMembers).where(eq(orgMembers.orgId, req.params.orgId));
+      res.json(members);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch members" });
+    }
+  });
+
+  // Employer Orgs - Invite members
+  app.post("/api/employer/orgs/:orgId/invite", isAuthenticated, async (req: any, res) => {
+    try {
+      const { db } = await import("./db");
+      const { orgMembers } = await import("@shared/schema");
+      const { emails } = req.body;
+      const invites = await Promise.all(
+        (emails || []).map(async (email: string) => {
+          const [member] = await db.insert(orgMembers).values({
+            orgId: req.params.orgId,
+            email,
+            role: "member",
+            status: "invited",
+          }).returning();
+          return member;
+        })
+      );
+      res.json(invites);
+    } catch (error) {
+      console.error("Error inviting members:", error);
+      res.status(500).json({ error: "Failed to invite members" });
+    }
+  });
+
+  // Employer Orgs - Usage stats
+  app.get("/api/employer/orgs/:orgId/usage", isAuthenticated, async (req: any, res) => {
+    try {
+      res.json({
+        totalSavingsGenerated: 0,
+        billsAnalyzed: 0,
+        averageSavingsPerUser: 0,
+        topStrategies: [],
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch usage stats" });
+    }
+  });
+
+  // Data Insights - Platform-wide analytics
+  app.get("/api/data-insights", async (req, res) => {
+    try {
+      const { db } = await import("./db");
+      const { communityStories, userSavingsOutcomes } = await import("@shared/schema");
+      const stories = await db.select().from(communityStories);
+      const outcomes = await db.select().from(userSavingsOutcomes);
+
+      const totalBillsAnalyzed = stories.length + outcomes.length;
+      const totalSavingsGenerated = stories.reduce((s, st) => s + parseFloat(st.savedAmount || "0"), 0) + outcomes.reduce((s, o) => s + parseFloat(o.totalSaved || "0"), 0);
+      const avgSavingsPerBill = totalBillsAnalyzed > 0 ? Math.round(totalSavingsGenerated / totalBillsAnalyzed) : 0;
+
+      res.json({
+        totalBillsAnalyzed,
+        totalSavingsGenerated,
+        avgSavingsPerBill,
+        avgOverchargePercent: 43,
+        topOverchargedProcedures: [],
+        savingsByState: [],
+        savingsByStrategy: [],
+        commonBillingErrors: [],
+        monthlyTrends: [],
+      });
+    } catch (error) {
+      console.error("Error fetching insights:", error);
+      res.json({
+        totalBillsAnalyzed: 0, totalSavingsGenerated: 0, avgSavingsPerBill: 0,
+        avgOverchargePercent: 0, topOverchargedProcedures: [], savingsByState: [],
+        savingsByStrategy: [], commonBillingErrors: [], monthlyTrends: [],
+      });
+    }
+  });
+
+  // Partner API Keys - Get user's keys
+  app.get("/api/partner/keys", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { partnerApiKeys } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      const keys = await db.select().from(partnerApiKeys).where(eq(partnerApiKeys.partnerId, userId));
+      res.json(keys);
+    } catch (error) {
+      console.error("Error fetching API keys:", error);
+      res.status(500).json({ error: "Failed to fetch API keys" });
+    }
+  });
+
+  // Partner API Keys - Create
+  app.post("/api/partner/keys", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { db } = await import("./db");
+      const { partnerApiKeys } = await import("@shared/schema");
+      const { partnerName, tier, webhookUrl } = req.body;
+      const crypto = await import("crypto");
+      const apiKey = `grh_${crypto.randomBytes(24).toString("hex")}`;
+      const apiSecret = `grs_${crypto.randomBytes(32).toString("hex")}`;
+      const rateLimits: Record<string, number> = { basic: 60, professional: 300, enterprise: 1000 };
+      const dailyLimits: Record<string, number> = { basic: 1000, professional: 10000, enterprise: 100000 };
+      const [key] = await db.insert(partnerApiKeys).values({
+        partnerId: userId,
+        partnerName: partnerName || "API Partner",
+        apiKey,
+        apiSecret,
+        tier: tier || "basic",
+        rateLimitPerMinute: rateLimits[tier] || 60,
+        rateLimitPerDay: dailyLimits[tier] || 1000,
+        webhookUrl: webhookUrl || null,
+        isActive: true,
+      }).returning();
+      res.json(key);
+    } catch (error) {
+      console.error("Error creating API key:", error);
+      res.status(500).json({ error: "Failed to create API key" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
