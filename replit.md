@@ -17,7 +17,7 @@ Preferred communication style: Simple, everyday language.
 - **State Management**: TanStack Query v5
 - **Animation**: Framer Motion for UI transitions and glassmorphism effects
 - **Form Handling**: React Hook Form with Zod validation
-- **UI/UX**: Deep void blue (#0a1628) background with cyan neon (#00f6ff) accents, glassmorphism effects, professional medical interface design.
+- **UI/UX**: Light mode default with full dark mode support. Clean, modern design with blue (#2563eb) primary accents. Professional medical interface design with unique color identities per B2B vertical (blue=enterprise/employers, emerald=insurance, rose=healthcare, purple=investors). No fake metrics or fabricated data anywhere - all claims use qualitative language or verifiable product facts. Contact email: CONTACT@GOLDROCK.ai only.
 
 ### Backend Architecture
 - **Server**: Express.js with TypeScript
