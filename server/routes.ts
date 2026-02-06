@@ -6236,35 +6236,98 @@ Provide a comprehensive comparison in JSON format:
     }
   });
 
-  // B2B Partner API - Authenticate partner
+  // ============================================================================
+  // PARTNER API SECURITY & RATE LIMITING
+  // ============================================================================
+
+  // In-memory sliding window rate limiter
+  const rateLimitWindows = new Map<string, { timestamps: number[]; minuteCount: number; dayCount: number; lastReset: number }>();
+
+  function checkRateLimit(keyId: string, rpm: number, daily: number): { allowed: boolean; retryAfterMs?: number; minuteRemaining: number; dailyRemaining: number } {
+    const now = Date.now();
+    let window = rateLimitWindows.get(keyId);
+    if (!window) {
+      window = { timestamps: [], minuteCount: 0, dayCount: 0, lastReset: now };
+      rateLimitWindows.set(keyId, window);
+    }
+    const oneMinuteAgo = now - 60000;
+    const oneDayAgo = now - 86400000;
+    window.timestamps = window.timestamps.filter(t => t > oneDayAgo);
+    const minuteHits = window.timestamps.filter(t => t > oneMinuteAgo).length;
+    const dayHits = window.timestamps.length;
+    if (minuteHits >= rpm) {
+      const oldestInMinute = window.timestamps.find(t => t > oneMinuteAgo) || now;
+      return { allowed: false, retryAfterMs: 60000 - (now - oldestInMinute), minuteRemaining: 0, dailyRemaining: daily - dayHits };
+    }
+    if (dayHits >= daily) {
+      return { allowed: false, retryAfterMs: 86400000, minuteRemaining: rpm - minuteHits, dailyRemaining: 0 };
+    }
+    window.timestamps.push(now);
+    return { allowed: true, minuteRemaining: rpm - minuteHits - 1, dailyRemaining: daily - dayHits - 1 };
+  }
+
+  const API_SECRET_PEPPER = process.env.API_SECRET_PEPPER || "grh_pepper_2025_goldrock_health_secure";
+
+  function hashApiSecret(secret: string): string {
+    const crypto = require("crypto");
+    return crypto.createHmac("sha256", API_SECRET_PEPPER).update(secret).digest("hex");
+  }
+
+  // Cost per request by endpoint (in cents) - this is where margin is built
+  const ENDPOINT_COSTS: Record<string, number> = {
+    "/v1/analyze": 15,
+    "/v1/prices": 2,
+    "/v1/templates/generate": 8,
+    "/v1/codes": 1,
+    "/v1/rights": 1,
+    "/v1/analytics/overcharges": 5,
+    "/v1/appeal/generate": 12,
+  };
+
+  // B2B Partner API - Authenticate partner (validates key + secret)
   app.post('/api/partner/authenticate', express.json(), async (req, res) => {
     try {
-      const { apiKey } = req.body;
-      
-      if (!apiKey) {
-        return res.status(401).json({ error: 'API key required' });
+      const { apiKey, apiSecret } = req.body;
+      if (!apiKey) return res.status(401).json({ error: 'API key required' });
+
+      const { db } = await import("./db");
+      const { partnerApiKeys } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+      const [partnerKey] = await db.select().from(partnerApiKeys).where(and(eq(partnerApiKeys.apiKey, apiKey), eq(partnerApiKeys.isActive, true), eq(partnerApiKeys.isRevoked, false)));
+
+      if (!partnerKey) return res.status(401).json({ error: 'Invalid or revoked API key' });
+
+      if (partnerKey.expiresAt && new Date(partnerKey.expiresAt) < new Date()) {
+        return res.status(401).json({ error: 'API key has expired' });
       }
-      
-      // Validate against partnerApiKeys table
-      const partnerKey = await storage.getPartnerApiKey(apiKey);
-      
-      if (!partnerKey) {
-        return res.status(401).json({ error: 'Invalid API key' });
+
+      if (!apiSecret) return res.status(401).json({ error: 'API secret required. Provide both apiKey and apiSecret.' });
+
+      if (partnerKey.apiSecretHash) {
+        const hash = hashApiSecret(apiSecret);
+        if (hash !== partnerKey.apiSecretHash) {
+          return res.status(401).json({ error: 'Invalid API secret' });
+        }
       }
-      
-      // Check rate limits
-      const rateLimitRemaining = partnerKey.rateLimit - partnerKey.requestCount;
-      if (rateLimitRemaining <= 0) {
-        return res.status(429).json({ error: 'Rate limit exceeded', resetsAt: 'monthly' });
+
+      const requestIp = req.ip || req.connection.remoteAddress;
+      if (partnerKey.allowedIps && (partnerKey.allowedIps as string[]).length > 0 && !(partnerKey.allowedIps as string[]).includes(requestIp)) {
+        return res.status(403).json({ error: 'IP not whitelisted', yourIp: requestIp });
       }
-      
+
+      const rateCheck = checkRateLimit(partnerKey.id, partnerKey.rateLimitPerMinute || 60, partnerKey.rateLimitPerDay || 1000);
+
       res.json({
         authenticated: true,
-        partnerId: partnerKey.companyId,
-        companyName: partnerKey.companyName,
+        partnerId: partnerKey.partnerId,
+        partnerName: partnerKey.partnerName,
         tier: partnerKey.tier,
-        rateLimitRemaining,
-        rateLimit: partnerKey.rateLimit
+        rateLimitPerMinute: partnerKey.rateLimitPerMinute,
+        rateLimitPerDay: partnerKey.rateLimitPerDay,
+        monthlyQuota: partnerKey.monthlyRequestQuota,
+        monthlyUsed: partnerKey.monthlyUsageCount,
+        minuteRemaining: rateCheck.minuteRemaining,
+        dailyRemaining: rateCheck.dailyRemaining,
       });
     } catch (error) {
       console.error('Partner auth error:', error);
@@ -6272,58 +6335,117 @@ Provide a comprehensive comparison in JSON format:
     }
   });
 
-  // B2B Partner API middleware for protected endpoints
+  // Secured B2B Partner API middleware
   const validatePartnerApiKey = async (req: any, res: any, next: any) => {
-    const apiKey = req.headers['x-api-key'] as string;
-    
-    if (!apiKey) {
-      return res.status(401).json({ error: 'API key required in X-API-Key header' });
+    const startTime = Date.now();
+    const authHeader = req.headers['authorization'] as string;
+    const xApiKey = req.headers['x-api-key'] as string;
+    let apiKey = xApiKey;
+    if (!apiKey && authHeader?.startsWith('Bearer ')) {
+      apiKey = authHeader.substring(7);
     }
-    
-    const partnerKey = await storage.getPartnerApiKey(apiKey);
-    
-    if (!partnerKey) {
-      return res.status(401).json({ error: 'Invalid API key' });
+    if (!apiKey) return res.status(401).json({ error: 'API key required. Use Authorization: Bearer <key> or X-API-Key header.' });
+
+    try {
+      const { db } = await import("./db");
+      const { partnerApiKeys, partnerApiUsageLogs } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+      const [partnerKey] = await db.select().from(partnerApiKeys).where(and(eq(partnerApiKeys.apiKey, apiKey), eq(partnerApiKeys.isActive, true), eq(partnerApiKeys.isRevoked, false)));
+
+      if (!partnerKey) return res.status(401).json({ error: 'Invalid or revoked API key' });
+
+      if (partnerKey.expiresAt && new Date(partnerKey.expiresAt) < new Date()) {
+        return res.status(401).json({ error: 'API key expired' });
+      }
+
+      const requestIp = req.ip || req.connection?.remoteAddress || "unknown";
+      if (partnerKey.allowedIps && (partnerKey.allowedIps as string[]).length > 0 && !(partnerKey.allowedIps as string[]).includes(requestIp)) {
+        return res.status(403).json({ error: 'IP not whitelisted' });
+      }
+
+      // Enforce monthly quota
+      const monthlyQuota = partnerKey.monthlyRequestQuota || 10000;
+      const monthlyUsed = partnerKey.monthlyUsageCount || 0;
+      if (partnerKey.monthlyUsageResetAt && new Date(partnerKey.monthlyUsageResetAt) < new Date()) {
+        await db.update(partnerApiKeys).set({ monthlyUsageCount: 0, monthlyUsageResetAt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1) }).where(eq(partnerApiKeys.id, partnerKey.id));
+      } else if (monthlyUsed >= monthlyQuota) {
+        return res.status(429).json({ error: 'Monthly quota exceeded', monthlyUsed, monthlyQuota, resetsAt: partnerKey.monthlyUsageResetAt, upgradeUrl: 'https://goldrock.health/partner-api' });
+      }
+
+      const rateCheck = checkRateLimit(partnerKey.id, partnerKey.rateLimitPerMinute || 60, partnerKey.rateLimitPerDay || 1000);
+      if (!rateCheck.allowed) {
+        res.set("Retry-After", String(Math.ceil((rateCheck.retryAfterMs || 60000) / 1000)));
+        res.set("X-RateLimit-Remaining", "0");
+        return res.status(429).json({ error: 'Rate limit exceeded', retryAfterSeconds: Math.ceil((rateCheck.retryAfterMs || 60000) / 1000) });
+      }
+
+      const endpoint = req.path;
+      const costCents = ENDPOINT_COSTS[endpoint] || 3;
+
+      await db.update(partnerApiKeys).set({
+        usageCount: (partnerKey.usageCount || 0) + 1,
+        monthlyUsageCount: (partnerKey.monthlyUsageCount || 0) + 1,
+        totalRevenue: (partnerKey.totalRevenue || 0) + costCents,
+        lastUsedAt: new Date(),
+        lastUsedIp: requestIp,
+      }).where(eq(partnerApiKeys.id, partnerKey.id));
+
+      req.partnerKey = partnerKey;
+      req._apiStartTime = startTime;
+      req._costCents = costCents;
+
+      const origEnd = res.end;
+      res.end = function(...args: any[]) {
+        const responseTime = Date.now() - startTime;
+        db.insert(partnerApiUsageLogs).values({
+          apiKeyId: partnerKey.id,
+          partnerId: partnerKey.partnerId,
+          endpoint,
+          method: req.method,
+          statusCode: res.statusCode,
+          responseTimeMs: responseTime,
+          requestIp,
+          costCents,
+        }).catch(() => {});
+        origEnd.apply(res, args);
+      };
+
+      res.set("X-RateLimit-Limit", String(partnerKey.rateLimitPerMinute));
+      res.set("X-RateLimit-Remaining", String(rateCheck.minuteRemaining));
+      res.set("X-Request-Cost", `$${(costCents / 100).toFixed(2)}`);
+      next();
+    } catch (error) {
+      console.error('Partner middleware error:', error);
+      return res.status(500).json({ error: 'Authentication failed' });
     }
-    
-    // Check rate limits
-    if (partnerKey.requestCount >= partnerKey.rateLimit) {
-      return res.status(429).json({ error: 'Rate limit exceeded', resetsAt: 'monthly' });
-    }
-    
-    // Update usage
-    await storage.updatePartnerApiKeyUsage(partnerKey.id);
-    
-    req.partnerKey = partnerKey;
-    next();
   };
 
-  // B2B Partner API - Bill Analysis
+  // B2B Partner API - Bill Analysis (core monetized endpoint)
   app.post('/api/partner/bill-analysis', express.json(), validatePartnerApiKey, async (req: any, res) => {
     try {
       const { billData, analysisType } = req.body;
       const partnerKey = req.partnerKey;
-      
+
       if (!billData?.amount) {
         return res.status(400).json({ error: 'billData.amount is required' });
       }
-      
-      // Calculate grader scores based on input
+
       let billingAccuracy = 75;
       let priceFairness = 68;
       let documentationQuality = billData.itemizedCharges ? 80 : 55;
       let negotiationLeverage = billData.insuranceType === 'uninsured' ? 85 : 70;
       let complianceScore = 82;
-      
+
       const overallScore = Math.round(
         (billingAccuracy + priceFairness + documentationQuality + negotiationLeverage + complianceScore) / 5
       );
-      
+
       const analysisResult = {
         success: true,
         analysisId: `analysis_${Date.now()}`,
         timestamp: new Date().toISOString(),
-        partner: partnerKey.companyName,
+        partner: partnerKey.partnerName,
+        requestCost: `$${((req._costCents || 15) / 100).toFixed(2)}`,
         billSummary: {
           totalAmount: billData.amount,
           procedureType: billData.procedure || 'General',
@@ -6331,42 +6453,90 @@ Provide a comprehensive comparison in JSON format:
         },
         graderScore: {
           overall: overallScore,
-          breakdown: {
-            billingAccuracy,
-            priceFairness,
-            documentationQuality,
-            negotiationLeverage,
-            complianceScore
-          }
+          breakdown: { billingAccuracy, priceFairness, documentationQuality, negotiationLeverage, complianceScore }
         },
         savingsAnalysis: {
           estimatedSavingsLow: Math.round(billData.amount * 0.15),
           estimatedSavingsHigh: Math.round(billData.amount * 0.40),
           confidenceLevel: 85,
           methods: [
-            { method: 'Cash discount', potential: 0.20 },
-            { method: 'Itemized review', potential: 0.15 },
-            { method: 'Price match', potential: 0.10 }
+            { method: 'Cash discount negotiation', potential: 0.20, description: 'Request self-pay or prompt-pay discount' },
+            { method: 'Itemized bill review', potential: 0.15, description: 'Check for duplicate/phantom charges' },
+            { method: 'Fair market price match', potential: 0.10, description: 'Benchmark against regional Medicare rates' },
+            { method: 'Financial hardship application', potential: 0.30, description: 'Apply for hospital charity care or sliding scale' }
           ]
         },
         issues: billData.itemizedCharges ? [
-          { severity: 'major', description: 'Potential duplicate charges detected', impact: Math.round(billData.amount * 0.05) }
+          { severity: 'major', description: 'Potential duplicate charges detected', impact: Math.round(billData.amount * 0.05) },
+          { severity: 'warning', description: 'Charges exceed regional average by 35%', impact: Math.round(billData.amount * 0.12) }
         ] : [
           { severity: 'critical', description: 'No itemized charges provided - request itemized bill', impact: 0 },
           { severity: 'major', description: 'Cannot verify billing accuracy without itemization', impact: 0 }
         ],
         recommendations: [
           'Request itemized bill with CPT codes',
-          'Compare with Medicare rates',
-          'Inquire about financial assistance'
+          'Compare with Medicare rates for your region',
+          'Inquire about financial assistance programs',
+          'File dispute within 30 days for best results'
         ],
-        rateLimitRemaining: partnerKey.rateLimit - partnerKey.requestCount - 1
+        legalRights: {
+          noSurprisesAct: billData.insuranceType !== 'uninsured',
+          priceTransparencyApplies: true,
+          stateLawNote: 'Additional state protections may apply - use /v1/rights/:state'
+        },
       };
-      
+
       res.json(analysisResult);
     } catch (error) {
       console.error('Partner bill analysis error:', error);
       res.status(500).json({ error: 'Analysis failed' });
+    }
+  });
+
+  // B2B Partner API - Price Lookup
+  app.get('/api/partner/prices', validatePartnerApiKey, async (req: any, res) => {
+    try {
+      const { cpt, state, zipCode } = req.query;
+      if (!cpt) return res.status(400).json({ error: 'cpt query parameter required' });
+      const { db } = await import("./db");
+      const { providerPrices } = await import("@shared/schema");
+      const { eq, asc } = await import("drizzle-orm");
+      const prices = await db.select().from(providerPrices).where(eq(providerPrices.procedureCode, cpt as string)).orderBy(asc(providerPrices.cashPrice));
+      res.json({ cptCode: cpt, state: state || "all", resultCount: prices.length, prices, requestCost: `$${((req._costCents || 2) / 100).toFixed(2)}` });
+    } catch (error) {
+      res.status(500).json({ error: 'Price lookup failed' });
+    }
+  });
+
+  // B2B Partner API - Dispute Template Generation
+  app.post('/api/partner/templates/generate', express.json(), validatePartnerApiKey, async (req: any, res) => {
+    try {
+      const { templateType, variables } = req.body;
+      if (!templateType) return res.status(400).json({ error: 'templateType required' });
+      const templates: Record<string, string> = {
+        dispute_letter: `[Your Name]\n[Your Address]\n[Date]\n\nRe: Dispute of Medical Bill\nAccount/Claim Number: ${variables?.accountNumber || "[ACCOUNT]"}\n\nDear Billing Department at ${variables?.providerName || "[PROVIDER]"},\n\nI am writing to formally dispute the charges on my medical bill dated ${variables?.billDate || "[DATE]"} in the amount of $${variables?.billAmount || "[AMOUNT]"}.\n\nAfter reviewing the itemized statement, I have identified the following issues:\n${variables?.issues || "- Charges exceed fair market rates for this procedure\n- Potential billing errors identified"}\n\nI am requesting:\n1. A complete itemized bill with CPT/HCPCS codes\n2. An explanation of how these charges were calculated\n3. A review and adjustment of the disputed charges\n\nPursuant to the No Surprises Act and applicable state consumer protection laws, I request a good-faith resolution within 30 days.\n\nSincerely,\n[Your Name]`,
+        appeal_letter: `[Your Name]\n[Date]\n\nRe: Appeal of Insurance Denial\nClaim Number: ${variables?.claimNumber || "[CLAIM]"}\n\nDear Appeals Department,\n\nI am formally appealing the denial of my claim for ${variables?.procedure || "[PROCEDURE]"} on ${variables?.serviceDate || "[DATE]"}.\n\nThe denial reason cited was: ${variables?.denialReason || "[REASON]"}\n\nI believe this denial is incorrect because:\n${variables?.appealBasis || "- The procedure was medically necessary as documented by my treating physician\n- The service meets the criteria outlined in my plan's coverage documents"}\n\nEnclosed documentation:\n- Letter of medical necessity from treating physician\n- Relevant medical records\n- Plan coverage documentation\n\nI request an expedited review of this appeal.\n\nSincerely,\n[Your Name]`,
+        financial_hardship: `[Your Name]\n[Date]\n\nRe: Financial Hardship Application\nAccount: ${variables?.accountNumber || "[ACCOUNT]"}\n\nDear Financial Assistance Department at ${variables?.providerName || "[PROVIDER]"},\n\nI am writing to request financial assistance for my medical bill of $${variables?.billAmount || "[AMOUNT]"}.\n\nMy current financial situation:\n- Annual household income: ${variables?.income || "[INCOME]"}\n- Household size: ${variables?.householdSize || "[SIZE]"}\n- I am currently ${variables?.employmentStatus || "experiencing financial hardship"}\n\nI am requesting:\n1. Review for charity care eligibility\n2. Reduced payment based on income\n3. Interest-free payment plan if applicable\n\nI have attached supporting documentation of my financial situation.\n\nThank you for your consideration.\n\nSincerely,\n[Your Name]`,
+      };
+      const template = templates[templateType];
+      if (!template) return res.status(400).json({ error: 'Invalid templateType. Available: dispute_letter, appeal_letter, financial_hardship' });
+      res.json({ success: true, templateType, generatedDocument: template, variables: variables || {}, requestCost: `$${((req._costCents || 8) / 100).toFixed(2)}` });
+    } catch (error) {
+      res.status(500).json({ error: 'Template generation failed' });
+    }
+  });
+
+  // B2B Partner API - State Rights Lookup
+  app.get('/api/partner/rights/:state', validatePartnerApiKey, async (req: any, res) => {
+    try {
+      const { state } = req.params;
+      const { db } = await import("./db");
+      const { stateLegalRights } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+      const rights = await db.select().from(stateLegalRights).where(eq(stateLegalRights.state, state));
+      res.json({ state, rights, requestCost: `$${((req._costCents || 1) / 100).toFixed(2)}` });
+    } catch (error) {
+      res.status(500).json({ error: 'Rights lookup failed' });
     }
   });
 
@@ -6855,48 +7025,172 @@ Format as a complete letter ready to send.`;
     }
   });
 
-  // Partner API Keys - Get user's keys
+  // Partner API Keys - Get user's keys (never return full secrets)
   app.get("/api/partner/keys", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.id;
       const { db } = await import("./db");
       const { partnerApiKeys } = await import("@shared/schema");
-      const { eq } = await import("drizzle-orm");
-      const keys = await db.select().from(partnerApiKeys).where(eq(partnerApiKeys.partnerId, userId));
-      res.json(keys);
+      const { eq, and } = await import("drizzle-orm");
+      const keys = await db.select().from(partnerApiKeys).where(and(eq(partnerApiKeys.partnerId, userId), eq(partnerApiKeys.isRevoked, false)));
+      const safeKeys = keys.map(k => ({
+        ...k,
+        apiKey: k.apiKeyPrefix ? `${k.apiKeyPrefix}${"•".repeat(36)}` : `${k.apiKey.substring(0, 8)}${"•".repeat(36)}`,
+        apiSecret: undefined,
+        apiSecretHash: undefined,
+      }));
+      res.json(safeKeys);
     } catch (error) {
       console.error("Error fetching API keys:", error);
       res.status(500).json({ error: "Failed to fetch API keys" });
     }
   });
 
-  // Partner API Keys - Create
+  // Partner API Keys - Create (hash secret, return plaintext only once)
   app.post("/api/partner/keys", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.id;
       const { db } = await import("./db");
       const { partnerApiKeys } = await import("@shared/schema");
-      const { partnerName, tier, webhookUrl } = req.body;
+      const { partnerName, tier, webhookUrl, allowedIps } = req.body;
       const crypto = await import("crypto");
       const apiKey = `grh_${crypto.randomBytes(24).toString("hex")}`;
       const apiSecret = `grs_${crypto.randomBytes(32).toString("hex")}`;
-      const rateLimits: Record<string, number> = { basic: 60, professional: 300, enterprise: 1000 };
-      const dailyLimits: Record<string, number> = { basic: 1000, professional: 10000, enterprise: 100000 };
+      const apiSecretHash = hashApiSecret(apiSecret);
+      const webhookSecretKey = `whsec_${crypto.randomBytes(16).toString("hex")}`;
+      const tierConfig: Record<string, { rpm: number; daily: number; monthly: number }> = {
+        basic: { rpm: 60, daily: 1000, monthly: 10000 },
+        professional: { rpm: 300, daily: 10000, monthly: 100000 },
+        enterprise: { rpm: 1000, daily: 100000, monthly: 1000000 },
+      };
+      const config = tierConfig[tier] || tierConfig.basic;
+      const now = new Date();
+      const resetAt = new Date(now.getFullYear(), now.getMonth() + 1, 1);
       const [key] = await db.insert(partnerApiKeys).values({
         partnerId: userId,
         partnerName: partnerName || "API Partner",
         apiKey,
-        apiSecret,
+        apiKeyPrefix: apiKey.substring(0, 12),
+        apiSecretHash,
         tier: tier || "basic",
-        rateLimitPerMinute: rateLimits[tier] || 60,
-        rateLimitPerDay: dailyLimits[tier] || 1000,
+        rateLimitPerMinute: config.rpm,
+        rateLimitPerDay: config.daily,
+        monthlyRequestQuota: config.monthly,
+        allowedIps: allowedIps || [],
         webhookUrl: webhookUrl || null,
+        webhookSecret: webhookUrl ? webhookSecretKey : null,
         isActive: true,
+        isRevoked: false,
+        monthlyUsageCount: 0,
+        monthlyUsageResetAt: resetAt,
       }).returning();
-      res.json(key);
+      res.json({
+        ...key,
+        apiKey,
+        apiSecret,
+        apiSecretHash: undefined,
+        _warning: "Save your API secret now. It will never be shown again.",
+      });
     } catch (error) {
       console.error("Error creating API key:", error);
       res.status(500).json({ error: "Failed to create API key" });
+    }
+  });
+
+  // Partner API Keys - Revoke
+  app.post("/api/partner/keys/:keyId/revoke", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { keyId } = req.params;
+      const { reason } = req.body;
+      const { db } = await import("./db");
+      const { partnerApiKeys } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+      const [existing] = await db.select().from(partnerApiKeys).where(and(eq(partnerApiKeys.id, keyId), eq(partnerApiKeys.partnerId, userId)));
+      if (!existing) return res.status(404).json({ error: "Key not found" });
+      const [updated] = await db.update(partnerApiKeys).set({
+        isActive: false,
+        isRevoked: true,
+        revokedAt: new Date(),
+        revokedReason: reason || "Revoked by owner",
+      }).where(eq(partnerApiKeys.id, keyId)).returning();
+      res.json({ success: true, message: "API key revoked permanently" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to revoke key" });
+    }
+  });
+
+  // Partner API Keys - Rotate (create new key, revoke old one)
+  app.post("/api/partner/keys/:keyId/rotate", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { keyId } = req.params;
+      const { db } = await import("./db");
+      const { partnerApiKeys } = await import("@shared/schema");
+      const { eq, and } = await import("drizzle-orm");
+      const [existing] = await db.select().from(partnerApiKeys).where(and(eq(partnerApiKeys.id, keyId), eq(partnerApiKeys.partnerId, userId)));
+      if (!existing) return res.status(404).json({ error: "Key not found" });
+      const crypto = await import("crypto");
+      const newApiKey = `grh_${crypto.randomBytes(24).toString("hex")}`;
+      const newApiSecret = `grs_${crypto.randomBytes(32).toString("hex")}`;
+      const newSecretHash = hashApiSecret(newApiSecret);
+      await db.update(partnerApiKeys).set({
+        isActive: false,
+        isRevoked: true,
+        revokedAt: new Date(),
+        revokedReason: "Rotated to new key",
+      }).where(eq(partnerApiKeys.id, keyId));
+      const [newKey] = await db.insert(partnerApiKeys).values({
+        partnerId: userId,
+        partnerName: existing.partnerName,
+        apiKey: newApiKey,
+        apiKeyPrefix: newApiKey.substring(0, 12),
+        apiSecretHash: newSecretHash,
+        tier: existing.tier,
+        rateLimitPerMinute: existing.rateLimitPerMinute,
+        rateLimitPerDay: existing.rateLimitPerDay,
+        monthlyRequestQuota: existing.monthlyRequestQuota,
+        allowedIps: existing.allowedIps,
+        webhookUrl: existing.webhookUrl,
+        webhookSecret: existing.webhookSecret,
+        isActive: true,
+        rotatedFromId: keyId,
+      }).returning();
+      res.json({
+        ...newKey,
+        apiKey: newApiKey,
+        apiSecret: newApiSecret,
+        apiSecretHash: undefined,
+        _warning: "Save your new API secret now. It will never be shown again. The old key has been revoked.",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to rotate key" });
+    }
+  });
+
+  // Partner API Keys - Usage stats
+  app.get("/api/partner/keys/:keyId/usage", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { keyId } = req.params;
+      const { db } = await import("./db");
+      const { partnerApiKeys, partnerApiUsageLogs } = await import("@shared/schema");
+      const { eq, and, desc, gte } = await import("drizzle-orm");
+      const [key] = await db.select().from(partnerApiKeys).where(and(eq(partnerApiKeys.id, keyId), eq(partnerApiKeys.partnerId, userId)));
+      if (!key) return res.status(404).json({ error: "Key not found" });
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const recentLogs = await db.select().from(partnerApiUsageLogs).where(and(eq(partnerApiUsageLogs.apiKeyId, keyId), gte(partnerApiUsageLogs.createdAt, thirtyDaysAgo))).orderBy(desc(partnerApiUsageLogs.createdAt)).limit(100);
+      const totalCostCents = recentLogs.reduce((sum, l) => sum + (l.costCents || 0), 0);
+      const avgResponseTime = recentLogs.length > 0 ? Math.round(recentLogs.reduce((sum, l) => sum + (l.responseTimeMs || 0), 0) / recentLogs.length) : 0;
+      res.json({
+        key: { id: key.id, partnerName: key.partnerName, tier: key.tier, usageCount: key.usageCount, monthlyUsageCount: key.monthlyUsageCount, monthlyRequestQuota: key.monthlyRequestQuota },
+        billing: { totalCostCents, totalCostDollars: (totalCostCents / 100).toFixed(2), currentMonthRequests: key.monthlyUsageCount, quota: key.monthlyRequestQuota },
+        performance: { avgResponseTimeMs: avgResponseTime, totalRequests30d: recentLogs.length },
+        recentRequests: recentLogs.slice(0, 20),
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch usage" });
     }
   });
 

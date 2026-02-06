@@ -2329,21 +2329,50 @@ export const partnerApiKeys = pgTable("partner_api_keys", {
   partnerId: varchar("partner_id").notNull(),
   partnerName: varchar("partner_name", { length: 255 }).notNull(),
   apiKey: varchar("api_key", { length: 64 }).unique().notNull(),
-  apiSecret: varchar("api_secret", { length: 128 }).notNull(),
-  tier: varchar("tier", { length: 20 }).default("basic"), // basic, professional, enterprise
+  apiKeyPrefix: varchar("api_key_prefix", { length: 12 }),
+  apiSecret: varchar("api_secret", { length: 128 }),
+  apiSecretHash: varchar("api_secret_hash", { length: 128 }),
+  tier: varchar("tier", { length: 20 }).default("basic"),
   rateLimitPerMinute: integer("rate_limit_per_minute").default(60),
   rateLimitPerDay: integer("rate_limit_per_day").default(1000),
+  monthlyRequestQuota: integer("monthly_request_quota").default(1000),
   allowedEndpoints: jsonb("allowed_endpoints").$type<string[]>().default([]),
+  allowedIps: jsonb("allowed_ips").$type<string[]>().default([]),
   webhookUrl: text("webhook_url"),
+  webhookSecret: varchar("webhook_secret", { length: 64 }),
   isActive: boolean("is_active").default(true),
+  isRevoked: boolean("is_revoked").default(false),
+  revokedAt: timestamp("revoked_at"),
+  revokedReason: text("revoked_reason"),
   usageCount: integer("usage_count").default(0),
+  monthlyUsageCount: integer("monthly_usage_count").default(0),
+  monthlyUsageResetAt: timestamp("monthly_usage_reset_at"),
+  totalRevenue: integer("total_revenue").default(0),
   lastUsedAt: timestamp("last_used_at"),
+  lastUsedIp: varchar("last_used_ip", { length: 45 }),
   createdAt: timestamp("created_at").defaultNow(),
   expiresAt: timestamp("expires_at"),
+  rotatedFromId: varchar("rotated_from_id"),
 });
 
 export type PartnerApiKey = typeof partnerApiKeys.$inferSelect;
 export type InsertPartnerApiKey = typeof partnerApiKeys.$inferInsert;
+
+export const partnerApiUsageLogs = pgTable("partner_api_usage_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  apiKeyId: varchar("api_key_id").notNull(),
+  partnerId: varchar("partner_id").notNull(),
+  endpoint: varchar("endpoint", { length: 255 }).notNull(),
+  method: varchar("method", { length: 10 }).notNull(),
+  statusCode: integer("status_code"),
+  responseTimeMs: integer("response_time_ms"),
+  requestIp: varchar("request_ip", { length: 45 }),
+  billableUnits: integer("billable_units").default(1),
+  costCents: integer("cost_cents").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type PartnerApiUsageLog = typeof partnerApiUsageLogs.$inferSelect;
 
 // SEO Articles for Content Marketing
 export const seoArticles = pgTable("seo_articles", {
