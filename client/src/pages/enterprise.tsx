@@ -154,7 +154,7 @@ export default function Enterprise() {
       <div className="min-h-screen bg-white dark:bg-gray-950">
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-blue-50/50 to-gray-50 dark:from-gray-950 dark:via-blue-950/20 dark:to-gray-950" />
-          <div className="relative max-w-5xl mx-auto px-4 pt-16 pb-20 text-center">
+          <div className="relative max-w-5xl mx-auto px-4 pt-20 pb-10 text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <p className="text-sm font-medium text-blue-600 dark:text-blue-400 tracking-wide uppercase mb-4">Enterprise Solutions</p>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-[1.1] tracking-tight">
@@ -181,7 +181,7 @@ export default function Enterprise() {
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-4 py-12">
+        <section className="max-w-5xl mx-auto px-4 pt-6 pb-12">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Built for Your Organization</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
