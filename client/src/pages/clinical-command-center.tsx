@@ -47,18 +47,18 @@ export default function ClinicalCommandCenter() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pb-24">
       <SEOHead 
-        title="Health Information Center - Clinical Tools"
-        description="Free health information tools: Lab results interpreter, drug interaction checker, symptom checker, and health metrics tracker. AI-powered clinical reference tools."
+        title="Health Information Center - Wellness Tools"
+        description="Free health information tools: Lab results interpreter, drug interaction checker, symptom checker, and health metrics tracker. AI-powered reference tools."
         keywords={[...SEO_KEYWORDS.drugInteractions.slice(0, 5), ...SEO_KEYWORDS.labResults.slice(0, 5), ...SEO_KEYWORDS.symptoms.slice(0, 5)]}
         canonicalPath="/clinical-command-center"
       />
       <SEOContent content={[
-        "Health information center with clinical reference tools",
+        "Health information center with wellness reference tools",
         "Free drug interaction checker, lab results interpreter, symptom analyzer",
-        "Medical information tools for patients and healthcare education",
+        "Health information tools for patients and wellness education",
         "Blood test results explained, medication safety checker, health metrics",
-        "Clinical decision support tools, patient education resources",
-        "AI-powered health tools for understanding your medical information"
+        "Wellness reference tools, patient education resources",
+        "AI-powered health tools for understanding your health information"
       ]} />
       {/* Simple Header */}
       <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white px-4 pt-12 pb-6">
@@ -133,8 +133,8 @@ export default function ClinicalCommandCenter() {
                     <Heart className="h-5 w-5 text-violet-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Patient Diagnostics</h3>
-                    <p className="text-xs text-gray-500">Practice with AI patient cases</p>
+                    <h3 className="font-semibold text-gray-900">Learning Cases</h3>
+                    <p className="text-xs text-gray-500">Practice with AI health scenarios</p>
                   </div>
                 </div>
                 <ChevronRight className="h-5 w-5 text-gray-400" />

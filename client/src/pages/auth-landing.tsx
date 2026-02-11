@@ -1472,8 +1472,8 @@ export default function AuthLanding() {
           {[
             { id: "home", label: "Home", icon: HomeIcon, href: "/api/login", color: "#3B82F6", bgGradient: "blue" },
             { id: "billai", label: "Bill AI", icon: FileText, href: "/api/login?redirect=/bill-ai", color: "#8B5CF6", bgGradient: "purple" },
-            { id: "diagnostics", label: "Diagnose", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", color: "#14B8A6", bgGradient: "teal" },
-            { id: "clinical", label: "Clinical", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", color: "#6366F1", bgGradient: "indigo" },
+            { id: "learn", label: "Learn", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", color: "#14B8A6", bgGradient: "teal" },
+            { id: "tools", label: "Tools", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", color: "#6366F1", bgGradient: "indigo" },
             { id: "lunafold", label: "LunaFold", icon: Dna, href: "/api/login?redirect=/lunafold", color: "#06B6D4", bgGradient: "cyan" },
             { id: "premium", label: "Premium", icon: Crown, href: "/api/login?redirect=/premium", color: "#F59E0B", bgGradient: "amber", special: true },
           ].map((item, index) => {

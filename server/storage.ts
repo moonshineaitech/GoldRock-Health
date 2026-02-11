@@ -116,7 +116,10 @@ import {
   type PartnerApiKey,
   type InsertPartnerApiKey,
   type BillSummary,
-  type InsertBillSummary
+  type InsertBillSummary,
+  healthMetrics,
+  type HealthMetric,
+  type InsertHealthMetric
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count, lte, inArray, asc } from "drizzle-orm";
@@ -300,6 +303,11 @@ export interface IStorage {
   createBillSummary(data: InsertBillSummary): Promise<BillSummary>;
   getBillSummariesByUser(userId: string, limit?: number): Promise<Pick<BillSummary, 'id' | 'summary' | 'totalAmount' | 'providerName' | 'serviceDate' | 'createdAt'>[]>;
   getBillSummaryById(id: string, userId: string): Promise<BillSummary | undefined>;
+
+  // Health Metrics
+  getHealthMetrics(userId: string, type?: string): Promise<HealthMetric[]>;
+  createHealthMetric(data: InsertHealthMetric): Promise<HealthMetric>;
+  deleteHealthMetric(id: number, userId: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1634,6 +1642,30 @@ export class DatabaseStorage implements IStorage {
       .from(billSummaries)
       .where(and(eq(billSummaries.id, id), eq(billSummaries.userId, userId)));
     return summary;
+  }
+
+  async getHealthMetrics(userId: string, type?: string): Promise<HealthMetric[]> {
+    if (type) {
+      return await db.select()
+        .from(healthMetrics)
+        .where(and(eq(healthMetrics.userId, userId), eq(healthMetrics.type, type)))
+        .orderBy(desc(healthMetrics.recordedAt));
+    }
+    return await db.select()
+      .from(healthMetrics)
+      .where(eq(healthMetrics.userId, userId))
+      .orderBy(desc(healthMetrics.recordedAt));
+  }
+
+  async createHealthMetric(data: InsertHealthMetric): Promise<HealthMetric> {
+    const [created] = await db.insert(healthMetrics).values(data).returning();
+    return created;
+  }
+
+  async deleteHealthMetric(id: number, userId: string): Promise<boolean> {
+    const result = await db.delete(healthMetrics)
+      .where(and(eq(healthMetrics.id, id), eq(healthMetrics.userId, userId)));
+    return (result?.rowCount ?? 0) > 0;
   }
 }
 

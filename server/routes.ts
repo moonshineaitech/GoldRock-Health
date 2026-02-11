@@ -5002,6 +5002,80 @@ Provide analysis in this JSON format:
   });
 
   // ============================================================================
+  // Health Metrics API Endpoints
+  // ============================================================================
+
+  app.get('/api/health-metrics', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.user?.id;
+      const type = req.query.type as string | undefined;
+      const metrics = await storage.getHealthMetrics(userId, type);
+      res.json(metrics);
+    } catch (error) {
+      console.error('Error fetching health metrics:', error);
+      res.status(500).json({ message: 'Failed to fetch health metrics' });
+    }
+  });
+
+  app.post('/api/health-metrics', isAuthenticated, express.json(), async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.user?.id;
+      const { type, systolic, diastolic, heartRate, weight, temperature, notes } = req.body;
+
+      if (!type || !['bp', 'hr', 'weight', 'temp'].includes(type)) {
+        return res.status(400).json({ message: 'Valid type required: bp, hr, weight, or temp' });
+      }
+
+      if (type === 'bp' && (!systolic || !diastolic)) {
+        return res.status(400).json({ message: 'Systolic and diastolic values required for blood pressure' });
+      }
+      if (type === 'hr' && !heartRate) {
+        return res.status(400).json({ message: 'Heart rate value required' });
+      }
+      if (type === 'weight' && !weight) {
+        return res.status(400).json({ message: 'Weight value required' });
+      }
+      if (type === 'temp' && !temperature) {
+        return res.status(400).json({ message: 'Temperature value required' });
+      }
+
+      const metric = await storage.createHealthMetric({
+        userId,
+        type,
+        systolic: systolic ? parseInt(systolic) : null,
+        diastolic: diastolic ? parseInt(diastolic) : null,
+        heartRate: heartRate ? parseInt(heartRate) : null,
+        weight: weight ? parseFloat(weight) : null,
+        temperature: temperature ? parseFloat(temperature) : null,
+        notes: notes || null,
+      });
+
+      res.status(201).json(metric);
+    } catch (error) {
+      console.error('Error creating health metric:', error);
+      res.status(500).json({ message: 'Failed to save health metric' });
+    }
+  });
+
+  app.delete('/api/health-metrics/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.user?.id;
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: 'Invalid metric ID' });
+      }
+      const deleted = await storage.deleteHealthMetric(id, userId);
+      if (!deleted) {
+        return res.status(404).json({ message: 'Metric not found' });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting health metric:', error);
+      res.status(500).json({ message: 'Failed to delete health metric' });
+    }
+  });
+
+  // ============================================================================
   // Medicare/Medicaid Enrollment API Endpoints
   // ============================================================================
 

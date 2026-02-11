@@ -8,7 +8,9 @@ import {
   jsonb, 
   decimal,
   boolean,
-  index
+  index,
+  serial,
+  real
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -2807,4 +2809,25 @@ export type InsertBillDocument = typeof billDocuments.$inferInsert;
 export const insertBillDocumentSchema = createInsertSchema(billDocuments).omit({
   id: true,
   uploadedAt: true,
+});
+
+export const healthMetrics = pgTable("health_metrics", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(),
+  type: varchar("type", { length: 20 }).notNull(),
+  systolic: integer("systolic"),
+  diastolic: integer("diastolic"),
+  heartRate: integer("heart_rate"),
+  weight: real("weight"),
+  temperature: real("temperature"),
+  notes: text("notes"),
+  recordedAt: timestamp("recorded_at").defaultNow(),
+});
+
+export type HealthMetric = typeof healthMetrics.$inferSelect;
+export type InsertHealthMetric = typeof healthMetrics.$inferInsert;
+
+export const insertHealthMetricSchema = createInsertSchema(healthMetrics).omit({
+  id: true,
+  recordedAt: true,
 });

@@ -152,8 +152,8 @@ const PreLoginBottomNav = () => {
   const navItems = [
     { id: "home", label: "Home", icon: Home, href: "/api/login", color: "#3B82F6", gradient: "from-blue-500 to-indigo-600", bgGradient: "from-blue-50 to-indigo-50" },
     { id: "billai", label: "Bill AI", icon: FileText, href: "/api/login?redirect=/bill-ai", color: "#8B5CF6", gradient: "from-purple-500 to-violet-600", bgGradient: "from-purple-50 to-violet-50" },
-    { id: "diagnostics", label: "Diagnose", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", color: "#14B8A6", gradient: "from-teal-500 to-emerald-600", bgGradient: "from-teal-50 to-emerald-50" },
-    { id: "clinical", label: "Clinical", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", color: "#6366F1", gradient: "from-indigo-500 to-purple-600", bgGradient: "from-indigo-50 to-purple-50" },
+    { id: "learn", label: "Learn", icon: Brain, href: "/api/login?redirect=/patient-diagnostics", color: "#14B8A6", gradient: "from-teal-500 to-emerald-600", bgGradient: "from-teal-50 to-emerald-50" },
+    { id: "tools", label: "Tools", icon: Stethoscope, href: "/api/login?redirect=/clinical-command-center", color: "#6366F1", gradient: "from-indigo-500 to-purple-600", bgGradient: "from-indigo-50 to-purple-50" },
     { id: "lunafold", label: "LunaFold", icon: Dna, href: "/api/login?redirect=/lunafold", color: "#06B6D4", gradient: "from-cyan-500 to-blue-600", bgGradient: "from-cyan-50 to-blue-50" },
     { id: "premium", label: "Premium", icon: Crown, href: "/api/login?redirect=/premium", color: "#F59E0B", gradient: "from-amber-500 to-orange-600", bgGradient: "from-amber-50 to-orange-50", special: true },
   ];

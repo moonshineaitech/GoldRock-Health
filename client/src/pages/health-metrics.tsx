@@ -1,48 +1,56 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import type { HealthMetric } from "@shared/schema";
 import {
-  Activity, ArrowLeft, Heart, Thermometer, Scale, TrendingDown,
-  Plus, BarChart3
+  Activity, ArrowLeft, Heart, Thermometer, Scale, TrendingDown, TrendingUp,
+  Plus, BarChart3, Loader2, Trash2, AlertTriangle
 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
 
-const DEMO_BP = [
-  { day: 'Mon', sys: 128, dia: 82 },
-  { day: 'Tue', sys: 125, dia: 80 },
-  { day: 'Wed', sys: 130, dia: 85 },
-  { day: 'Thu', sys: 122, dia: 78 },
-  { day: 'Fri', sys: 126, dia: 81 },
-  { day: 'Sat', sys: 124, dia: 79 },
-  { day: 'Today', sys: 120, dia: 76 },
-];
+const getBpStatus = (sys: number) => {
+  if (sys < 120) return { label: 'Normal', color: 'bg-green-500' };
+  if (sys < 130) return { label: 'Elevated', color: 'bg-yellow-500' };
+  if (sys < 140) return { label: 'High', color: 'bg-orange-500' };
+  return { label: 'Very High', color: 'bg-red-500' };
+};
 
-const DEMO_HR = [
-  { day: 'Mon', bpm: 72 },
-  { day: 'Tue', bpm: 75 },
-  { day: 'Wed', bpm: 68 },
-  { day: 'Thu', bpm: 70 },
-  { day: 'Fri', bpm: 74 },
-  { day: 'Sat', bpm: 71 },
-  { day: 'Today', bpm: 69 },
-];
+const getHrStatus = (bpm: number) => {
+  if (bpm >= 60 && bpm <= 100) return { label: 'Normal', color: 'bg-green-500' };
+  if (bpm < 60) return { label: 'Low', color: 'bg-yellow-500' };
+  return { label: 'High', color: 'bg-orange-500' };
+};
 
-const DEMO_WEIGHT = [
-  { week: 'Wk 1', lbs: 175 },
-  { week: 'Wk 2', lbs: 174.5 },
-  { week: 'Wk 3', lbs: 173.8 },
-  { week: 'Wk 4', lbs: 173.2 },
-];
+const getTempStatus = (temp: number) => {
+  if (temp >= 97.8 && temp <= 99.1) return { label: 'Normal', color: 'bg-green-500' };
+  if (temp > 100.4) return { label: 'Fever', color: 'bg-red-500' };
+  if (temp > 99.1) return { label: 'Elevated', color: 'bg-yellow-500' };
+  return { label: 'Low', color: 'bg-blue-500' };
+};
+
+const formatDate = (date: string | Date) => {
+  const d = new Date(date);
+  const now = new Date();
+  const diff = now.getTime() - d.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  if (days === 0) return 'Today';
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return d.toLocaleDateString('en-US', { weekday: 'short' });
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
 
 export default function HealthMetrics() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [showLogForm, setShowLogForm] = useState(false);
   const [bpSys, setBpSys] = useState("");
   const [bpDia, setBpDia] = useState("");
@@ -50,28 +58,89 @@ export default function HealthMetrics() {
   const [weight, setWeight] = useState("");
   const [temp, setTemp] = useState("");
 
-  const currentBp = DEMO_BP[DEMO_BP.length - 1];
-  const currentHr = DEMO_HR[DEMO_HR.length - 1];
-  const currentWeight = DEMO_WEIGHT[DEMO_WEIGHT.length - 1];
+  const { data: metrics = [], isLoading } = useQuery<HealthMetric[]>({
+    queryKey: ['/api/health-metrics'],
+  });
 
-  const getBpStatus = (sys: number) => {
-    if (sys < 120) return { label: 'Normal', color: 'bg-green-500' };
-    if (sys < 130) return { label: 'Elevated', color: 'bg-yellow-500' };
-    if (sys < 140) return { label: 'High', color: 'bg-orange-500' };
-    return { label: 'Very High', color: 'bg-red-500' };
+  const createMutation = useMutation({
+    mutationFn: async (data: { type: string; systolic?: string; diastolic?: string; heartRate?: string; weight?: string; temperature?: string }) => {
+      const response = await apiRequest("POST", "/api/health-metrics", data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/health-metrics'] });
+    },
+    onError: (error: any) => {
+      toast({ title: "Error", description: error?.message || "Failed to save reading", variant: "destructive" });
+    }
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await apiRequest("DELETE", `/api/health-metrics/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/health-metrics'] });
+      toast({ title: "Deleted", description: "Reading removed" });
+    },
+  });
+
+  const handleLogBp = () => {
+    if (!bpSys || !bpDia) { toast({ title: "Missing values", description: "Enter both systolic and diastolic", variant: "destructive" }); return; }
+    createMutation.mutate({ type: 'bp', systolic: bpSys, diastolic: bpDia }, {
+      onSuccess: () => { setBpSys(""); setBpDia(""); toast({ title: "Logged", description: "Blood pressure recorded" }); }
+    });
   };
 
-  const bpStatus = getBpStatus(currentBp.sys);
-
-  const handleLog = (type: string) => {
-    toast({ title: "Logged", description: `${type} recorded successfully` });
-    setBpSys(""); setBpDia(""); setHr(""); setWeight(""); setTemp("");
-    setShowLogForm(false);
+  const handleLogHr = () => {
+    if (!hr) { toast({ title: "Missing value", description: "Enter heart rate", variant: "destructive" }); return; }
+    createMutation.mutate({ type: 'hr', heartRate: hr }, {
+      onSuccess: () => { setHr(""); toast({ title: "Logged", description: "Heart rate recorded" }); }
+    });
   };
+
+  const handleLogWeight = () => {
+    if (!weight) { toast({ title: "Missing value", description: "Enter weight", variant: "destructive" }); return; }
+    createMutation.mutate({ type: 'weight', weight: weight }, {
+      onSuccess: () => { setWeight(""); toast({ title: "Logged", description: "Weight recorded" }); }
+    });
+  };
+
+  const handleLogTemp = () => {
+    if (!temp) { toast({ title: "Missing value", description: "Enter temperature", variant: "destructive" }); return; }
+    createMutation.mutate({ type: 'temp', temperature: temp }, {
+      onSuccess: () => { setTemp(""); toast({ title: "Logged", description: "Temperature recorded" }); }
+    });
+  };
+
+  const bpData = metrics
+    .filter(m => m.type === 'bp' && m.systolic && m.diastolic)
+    .slice(0, 14)
+    .reverse()
+    .map(m => ({ day: formatDate(m.recordedAt!), sys: m.systolic!, dia: m.diastolic! }));
+
+  const hrData = metrics
+    .filter(m => m.type === 'hr' && m.heartRate)
+    .slice(0, 14)
+    .reverse()
+    .map(m => ({ day: formatDate(m.recordedAt!), bpm: m.heartRate! }));
+
+  const weightData = metrics
+    .filter(m => m.type === 'weight' && m.weight)
+    .slice(0, 14)
+    .reverse()
+    .map(m => ({ day: formatDate(m.recordedAt!), lbs: m.weight! }));
+
+  const latestBp = metrics.find(m => m.type === 'bp' && m.systolic);
+  const latestHr = metrics.find(m => m.type === 'hr' && m.heartRate);
+  const latestWeight = metrics.find(m => m.type === 'weight' && m.weight);
+  const latestTemp = metrics.find(m => m.type === 'temp' && m.temperature);
+
+  const hasAnyData = metrics.length > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 pb-24">
-      {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pb-24">
       <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">
           <Link href="/clinical-command-center">
@@ -101,275 +170,335 @@ export default function HealthMetrics() {
       </div>
 
       <div className="max-w-lg mx-auto px-4 py-5 space-y-4">
-        {/* Log Form */}
-        {showLogForm && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Log New Reading</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Blood Pressure */}
-                <div className="space-y-2">
-                  <Label className="text-sm flex items-center gap-2">
-                    <Heart className="h-4 w-4 text-red-500" /> Blood Pressure
-                  </Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      placeholder="120"
-                      value={bpSys}
-                      onChange={(e) => setBpSys(e.target.value)}
-                      className="w-20"
-                      data-testid="input-bp-sys"
-                    />
-                    <span className="text-gray-400">/</span>
-                    <Input
-                      type="number"
-                      placeholder="80"
-                      value={bpDia}
-                      onChange={(e) => setBpDia(e.target.value)}
-                      className="w-20"
-                      data-testid="input-bp-dia"
-                    />
-                    <span className="text-xs text-gray-500">mmHg</span>
-                    <Button size="sm" onClick={() => handleLog('Blood pressure')} className="bg-red-500 hover:bg-red-600 h-8">
-                      <Plus className="h-3 w-3" />
-                    </Button>
+        <AnimatePresence>
+          {showLogForm && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base dark:text-white">Log New Reading</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm flex items-center gap-2 dark:text-gray-200">
+                      <Heart className="h-4 w-4 text-red-500" /> Blood Pressure
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <Input type="number" placeholder="120" value={bpSys} onChange={(e) => setBpSys(e.target.value)} className="w-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-testid="input-bp-sys" />
+                      <span className="text-gray-400">/</span>
+                      <Input type="number" placeholder="80" value={bpDia} onChange={(e) => setBpDia(e.target.value)} className="w-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-testid="input-bp-dia" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">mmHg</span>
+                      <Button size="sm" onClick={handleLogBp} disabled={createMutation.isPending} className="bg-red-500 hover:bg-red-600 h-8">
+                        {createMutation.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
+                      </Button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Heart Rate */}
-                <div className="space-y-2">
-                  <Label className="text-sm flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-purple-500" /> Heart Rate
-                  </Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      placeholder="70"
-                      value={hr}
-                      onChange={(e) => setHr(e.target.value)}
-                      className="w-20"
-                      data-testid="input-hr"
-                    />
-                    <span className="text-xs text-gray-500">bpm</span>
-                    <Button size="sm" onClick={() => handleLog('Heart rate')} className="bg-purple-500 hover:bg-purple-600 h-8">
-                      <Plus className="h-3 w-3" />
-                    </Button>
+                  <div className="space-y-2">
+                    <Label className="text-sm flex items-center gap-2 dark:text-gray-200">
+                      <Activity className="h-4 w-4 text-purple-500" /> Heart Rate
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <Input type="number" placeholder="70" value={hr} onChange={(e) => setHr(e.target.value)} className="w-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-testid="input-hr" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">bpm</span>
+                      <Button size="sm" onClick={handleLogHr} disabled={createMutation.isPending} className="bg-purple-500 hover:bg-purple-600 h-8">
+                        {createMutation.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
+                      </Button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Weight */}
-                <div className="space-y-2">
-                  <Label className="text-sm flex items-center gap-2">
-                    <Scale className="h-4 w-4 text-blue-500" /> Weight
-                  </Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      step="0.1"
-                      placeholder="170"
-                      value={weight}
-                      onChange={(e) => setWeight(e.target.value)}
-                      className="w-24"
-                      data-testid="input-weight"
-                    />
-                    <span className="text-xs text-gray-500">lbs</span>
-                    <Button size="sm" onClick={() => handleLog('Weight')} className="bg-blue-500 hover:bg-blue-600 h-8">
-                      <Plus className="h-3 w-3" />
-                    </Button>
+                  <div className="space-y-2">
+                    <Label className="text-sm flex items-center gap-2 dark:text-gray-200">
+                      <Scale className="h-4 w-4 text-blue-500" /> Weight
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <Input type="number" step="0.1" placeholder="170" value={weight} onChange={(e) => setWeight(e.target.value)} className="w-24 dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-testid="input-weight" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">lbs</span>
+                      <Button size="sm" onClick={handleLogWeight} disabled={createMutation.isPending} className="bg-blue-500 hover:bg-blue-600 h-8">
+                        {createMutation.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
+                      </Button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Temperature */}
-                <div className="space-y-2">
-                  <Label className="text-sm flex items-center gap-2">
-                    <Thermometer className="h-4 w-4 text-orange-500" /> Temperature
-                  </Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      step="0.1"
-                      placeholder="98.6"
-                      value={temp}
-                      onChange={(e) => setTemp(e.target.value)}
-                      className="w-24"
-                      data-testid="input-temp"
-                    />
-                    <span className="text-xs text-gray-500">F</span>
-                    <Button size="sm" onClick={() => handleLog('Temperature')} className="bg-orange-500 hover:bg-orange-600 h-8">
-                      <Plus className="h-3 w-3" />
-                    </Button>
+                  <div className="space-y-2">
+                    <Label className="text-sm flex items-center gap-2 dark:text-gray-200">
+                      <Thermometer className="h-4 w-4 text-orange-500" /> Temperature
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <Input type="number" step="0.1" placeholder="98.6" value={temp} onChange={(e) => setTemp(e.target.value)} className="w-24 dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-testid="input-temp" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">°F</span>
+                      <Button size="sm" onClick={handleLogTemp} disabled={createMutation.isPending} className="bg-orange-500 hover:bg-orange-600 h-8">
+                        {createMutation.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {isLoading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          </div>
         )}
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-3">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-            <Card className="bg-gradient-to-br from-red-500 to-pink-600 text-white">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Heart className="h-4 w-4" />
-                  <span className="text-xs text-white/80">Blood Pressure</span>
-                </div>
-                <div className="text-2xl font-bold">{currentBp.sys}/{currentBp.dia}</div>
-                <div className="text-xs text-white/70 mb-1">mmHg</div>
-                <Badge className={`${bpStatus.color} text-xs`}>{bpStatus.label}</Badge>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-            <Card className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Activity className="h-4 w-4" />
-                  <span className="text-xs text-white/80">Heart Rate</span>
-                </div>
-                <div className="text-2xl font-bold">{currentHr.bpm}</div>
-                <div className="text-xs text-white/70 mb-1">bpm</div>
-                <Badge className="bg-green-500 text-xs">Normal</Badge>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <Card className="bg-gradient-to-br from-blue-500 to-cyan-600 text-white">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Scale className="h-4 w-4" />
-                  <span className="text-xs text-white/80">Weight</span>
-                </div>
-                <div className="text-2xl font-bold">{currentWeight.lbs}</div>
-                <div className="text-xs text-white/70 mb-1">lbs</div>
-                <div className="flex items-center gap-1 text-xs text-green-300">
-                  <TrendingDown className="h-3 w-3" /> -1.8 this month
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-            <Card className="bg-gradient-to-br from-orange-500 to-amber-600 text-white">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Thermometer className="h-4 w-4" />
-                  <span className="text-xs text-white/80">Temperature</span>
-                </div>
-                <div className="text-2xl font-bold">98.6</div>
-                <div className="text-xs text-white/70 mb-1">F</div>
-                <Badge className="bg-green-500 text-xs">Normal</Badge>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* Blood Pressure Chart */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-red-500" /> Blood Pressure (7 Days)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[160px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={DEMO_BP}>
-                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                  <XAxis dataKey="day" tick={{ fontSize: 10 }} />
-                  <YAxis domain={[60, 150]} tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="sys" stroke="#ef4444" fill="#fee2e2" name="Systolic" />
-                  <Area type="monotone" dataKey="dia" stroke="#3b82f6" fill="#dbeafe" name="Diastolic" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Heart Rate Chart */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Activity className="h-4 w-4 text-purple-500" /> Heart Rate (7 Days)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[120px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={DEMO_HR}>
-                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                  <XAxis dataKey="day" tick={{ fontSize: 10 }} />
-                  <YAxis domain={[50, 100]} tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="bpm" stroke="#8b5cf6" strokeWidth={2} dot={{ fill: '#8b5cf6', r: 3 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Weight Chart */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Scale className="h-4 w-4 text-blue-500" /> Weight Trend
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[120px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={DEMO_WEIGHT}>
-                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                  <XAxis dataKey="week" tick={{ fontSize: 10 }} />
-                  <YAxis domain={['dataMin - 3', 'dataMax + 3']} tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="lbs" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6', r: 3 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="grid grid-cols-3 gap-2 mt-3">
-              <div className="text-center p-2 bg-gray-50 rounded-lg">
-                <div className="font-bold text-gray-900">{currentWeight.lbs}</div>
-                <div className="text-xs text-gray-500">Current</div>
+        {!isLoading && !hasAnyData && (
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Activity className="h-8 w-8 text-blue-500" />
               </div>
-              <div className="text-center p-2 bg-green-50 rounded-lg">
-                <div className="font-bold text-green-600">-1.8</div>
-                <div className="text-xs text-gray-500">Change</div>
-              </div>
-              <div className="text-center p-2 bg-blue-50 rounded-lg">
-                <div className="font-bold text-blue-600">170</div>
-                <div className="text-xs text-gray-500">Goal</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              <h3 className="font-bold text-lg mb-2 dark:text-white">Start Tracking Your Health</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                Tap the "Log" button above to record your first blood pressure, heart rate, weight, or temperature reading.
+              </p>
+              <Button onClick={() => setShowLogForm(true)} className="bg-blue-600 hover:bg-blue-700">
+                <Plus className="h-4 w-4 mr-1" /> Log Your First Reading
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
-        {/* Reference Card */}
-        <Card>
+        {!isLoading && hasAnyData && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                <Card className="bg-gradient-to-br from-red-500 to-pink-600 text-white">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Heart className="h-4 w-4" />
+                      <span className="text-xs text-white/80">Blood Pressure</span>
+                    </div>
+                    {latestBp ? (
+                      <>
+                        <div className="text-2xl font-bold">{latestBp.systolic}/{latestBp.diastolic}</div>
+                        <div className="text-xs text-white/70 mb-1">mmHg</div>
+                        <Badge className={`${getBpStatus(latestBp.systolic!).color} text-xs`}>{getBpStatus(latestBp.systolic!).label}</Badge>
+                      </>
+                    ) : (
+                      <div className="text-sm text-white/70 mt-2">No readings yet</div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+                <Card className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Activity className="h-4 w-4" />
+                      <span className="text-xs text-white/80">Heart Rate</span>
+                    </div>
+                    {latestHr ? (
+                      <>
+                        <div className="text-2xl font-bold">{latestHr.heartRate}</div>
+                        <div className="text-xs text-white/70 mb-1">bpm</div>
+                        <Badge className={`${getHrStatus(latestHr.heartRate!).color} text-xs`}>{getHrStatus(latestHr.heartRate!).label}</Badge>
+                      </>
+                    ) : (
+                      <div className="text-sm text-white/70 mt-2">No readings yet</div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                <Card className="bg-gradient-to-br from-blue-500 to-cyan-600 text-white">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Scale className="h-4 w-4" />
+                      <span className="text-xs text-white/80">Weight</span>
+                    </div>
+                    {latestWeight ? (
+                      <>
+                        <div className="text-2xl font-bold">{latestWeight.weight}</div>
+                        <div className="text-xs text-white/70 mb-1">lbs</div>
+                        {weightData.length >= 2 && (
+                          <div className="flex items-center gap-1 text-xs">
+                            {weightData[weightData.length - 1].lbs <= weightData[0].lbs ? (
+                              <><TrendingDown className="h-3 w-3 text-green-300" /> <span className="text-green-300">{(weightData[weightData.length - 1].lbs - weightData[0].lbs).toFixed(1)}</span></>
+                            ) : (
+                              <><TrendingUp className="h-3 w-3 text-yellow-300" /> <span className="text-yellow-300">+{(weightData[weightData.length - 1].lbs - weightData[0].lbs).toFixed(1)}</span></>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-sm text-white/70 mt-2">No readings yet</div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+                <Card className="bg-gradient-to-br from-orange-500 to-amber-600 text-white">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Thermometer className="h-4 w-4" />
+                      <span className="text-xs text-white/80">Temperature</span>
+                    </div>
+                    {latestTemp ? (
+                      <>
+                        <div className="text-2xl font-bold">{latestTemp.temperature}</div>
+                        <div className="text-xs text-white/70 mb-1">°F</div>
+                        <Badge className={`${getTempStatus(latestTemp.temperature!).color} text-xs`}>{getTempStatus(latestTemp.temperature!).label}</Badge>
+                      </>
+                    ) : (
+                      <div className="text-sm text-white/70 mt-2">No readings yet</div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {bpData.length >= 2 && (
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2 dark:text-white">
+                    <BarChart3 className="h-4 w-4 text-red-500" /> Blood Pressure
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[160px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={bpData}>
+                        <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                        <XAxis dataKey="day" tick={{ fontSize: 10 }} />
+                        <YAxis domain={[60, 160]} tick={{ fontSize: 10 }} />
+                        <Tooltip />
+                        <Area type="monotone" dataKey="sys" stroke="#ef4444" fill="#fee2e2" name="Systolic" />
+                        <Area type="monotone" dataKey="dia" stroke="#3b82f6" fill="#dbeafe" name="Diastolic" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {hrData.length >= 2 && (
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2 dark:text-white">
+                    <Activity className="h-4 w-4 text-purple-500" /> Heart Rate
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[120px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={hrData}>
+                        <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                        <XAxis dataKey="day" tick={{ fontSize: 10 }} />
+                        <YAxis domain={[50, 110]} tick={{ fontSize: 10 }} />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="bpm" stroke="#8b5cf6" strokeWidth={2} dot={{ fill: '#8b5cf6', r: 3 }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {weightData.length >= 2 && (
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2 dark:text-white">
+                    <Scale className="h-4 w-4 text-blue-500" /> Weight Trend
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[120px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={weightData}>
+                        <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                        <XAxis dataKey="day" tick={{ fontSize: 10 }} />
+                        <YAxis domain={['dataMin - 3', 'dataMax + 3']} tick={{ fontSize: 10 }} />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="lbs" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6', r: 3 }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <Card className="dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base dark:text-white">Recent Readings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                  {metrics.slice(0, 20).map((m) => (
+                    <div key={m.id} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                          m.type === 'bp' ? 'bg-red-100 dark:bg-red-900/30' :
+                          m.type === 'hr' ? 'bg-purple-100 dark:bg-purple-900/30' :
+                          m.type === 'weight' ? 'bg-blue-100 dark:bg-blue-900/30' :
+                          'bg-orange-100 dark:bg-orange-900/30'
+                        }`}>
+                          {m.type === 'bp' && <Heart className="h-4 w-4 text-red-500" />}
+                          {m.type === 'hr' && <Activity className="h-4 w-4 text-purple-500" />}
+                          {m.type === 'weight' && <Scale className="h-4 w-4 text-blue-500" />}
+                          {m.type === 'temp' && <Thermometer className="h-4 w-4 text-orange-500" />}
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium dark:text-white">
+                            {m.type === 'bp' && `${m.systolic}/${m.diastolic} mmHg`}
+                            {m.type === 'hr' && `${m.heartRate} bpm`}
+                            {m.type === 'weight' && `${m.weight} lbs`}
+                            {m.type === 'temp' && `${m.temperature}°F`}
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {m.recordedAt ? formatDate(m.recordedAt) : ''}
+                          </div>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteMutation.mutate(m.id)}
+                        disabled={deleteMutation.isPending}
+                        className="h-8 w-8 p-0 text-gray-400 hover:text-red-500"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
+
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Normal Ranges</CardTitle>
+            <CardTitle className="text-base dark:text-white">Normal Ranges</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between py-1.5 border-b">
-                <span>Blood Pressure</span>
-                <span className="text-gray-600">Below 120/80 mmHg</span>
+              <div className="flex justify-between py-1.5 border-b dark:border-gray-700">
+                <span className="dark:text-gray-200">Blood Pressure</span>
+                <span className="text-gray-600 dark:text-gray-400">Below 120/80 mmHg</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b">
-                <span>Resting Heart Rate</span>
-                <span className="text-gray-600">60-100 bpm</span>
+              <div className="flex justify-between py-1.5 border-b dark:border-gray-700">
+                <span className="dark:text-gray-200">Resting Heart Rate</span>
+                <span className="text-gray-600 dark:text-gray-400">60-100 bpm</span>
               </div>
-              <div className="flex justify-between py-1.5">
-                <span>Body Temperature</span>
-                <span className="text-gray-600">97.8-99.1 F</span>
+              <div className="flex justify-between py-1.5 dark:border-gray-700">
+                <span className="dark:text-gray-200">Body Temperature</span>
+                <span className="text-gray-600 dark:text-gray-400">97.8-99.1°F</span>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-amber-200 bg-amber-50/80 dark:bg-amber-900/20 dark:border-amber-800">
+          <CardContent className="p-3 flex items-start gap-2">
+            <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-800 dark:text-amber-300">
+              <strong>For personal tracking only.</strong> This tool helps you log and visualize your health readings. Always consult your doctor for medical advice and interpretation of your vital signs.
+            </p>
           </CardContent>
         </Card>
       </div>

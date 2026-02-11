@@ -45,16 +45,16 @@ const navItems: NavItem[] = [
     bgGradient: "purple"
   },
   {
-    id: "diagnostics",
-    label: "Diagnose",
+    id: "learn",
+    label: "Learn",
     icon: Brain,
     path: "/patient-diagnostics",
     color: "#14B8A6",
     bgGradient: "teal"
   },
   {
-    id: "clinical",
-    label: "Clinical",
+    id: "tools",
+    label: "Tools",
     icon: Stethoscope,
     path: "/clinical-command-center",
     color: "#6366F1",
