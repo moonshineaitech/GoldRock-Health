@@ -219,6 +219,16 @@ function LoginPrompt() {
           >
             Sign In to Subscribe
           </motion.a>
+
+          <p className="text-[10px] leading-relaxed text-gray-400 text-center mt-4">
+            Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. 
+            Your account will be charged for renewal within 24 hours prior to the end of the current period. 
+            You can manage and cancel your subscriptions by going to your Account Settings on the App Store after purchase.
+            {' '}
+            <Link href="/privacy-policy" className="underline text-gray-500">Privacy Policy</Link>
+            {' · '}
+            <Link href="/terms-of-service" className="underline text-gray-500">Terms of Service</Link>
+          </p>
         </div>
       </section>
 
@@ -619,6 +629,29 @@ function AuthenticatedPremium() {
               <span className="text-xs font-medium">{item.label}</span>
             </div>
           ))}
+        </div>
+
+        {/* Apple Required Subscription Disclosure */}
+        <div className="pt-2 px-2">
+          <p className="text-[10px] leading-relaxed text-gray-400 text-center">
+            {Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios' ? (
+              <>
+                Payment will be charged to your Apple ID account at confirmation of purchase. 
+                Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. 
+                Your account will be charged for renewal within 24 hours prior to the end of the current period. 
+                You can manage and cancel your subscriptions by going to your Account Settings on the App Store after purchase.
+              </>
+            ) : (
+              <>
+                Subscriptions automatically renew unless cancelled before the end of the current billing period.
+                You can manage or cancel your subscription at any time from your account settings.
+              </>
+            )}
+            {' '}
+            <Link href="/privacy-policy" className="underline text-gray-500">Privacy Policy</Link>
+            {' · '}
+            <Link href="/terms-of-service" className="underline text-gray-500">Terms of Service</Link>
+          </p>
         </div>
 
         {/* Features Preview */}
