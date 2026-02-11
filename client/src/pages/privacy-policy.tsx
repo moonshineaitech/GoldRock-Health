@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
         <div className="prose prose-gray max-w-none">
           <div className="text-sm text-gray-600 mb-6">
             <strong>Effective Date:</strong> January 7, 2026<br />
-            <strong>Last Updated:</strong> January 7, 2026
+            <strong>Last Updated:</strong> February 11, 2026
           </div>
 
           <div className="bg-blue-50 p-5 rounded-xl border border-blue-200 mb-8">
@@ -320,7 +320,39 @@ export default function PrivacyPolicy() {
             <li><strong>Face ID/Touch ID:</strong> For secure authentication. Biometric data is processed entirely on your device by iOS; we never access or store your biometric data.</li>
           </ul>
 
-          <h3 className="text-lg font-medium text-gray-900 mb-3">10.3 Account Deletion from App</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-3">10.3 In-App Purchases and Subscriptions (iOS)</h3>
+          <p className="mb-4">
+            When you subscribe to Premium through our iOS app:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Payment Processing:</strong> All in-app purchases are processed by Apple through StoreKit. We never receive or store your Apple Pay, credit card, or payment method details.</li>
+            <li><strong>Subscription Management:</strong> Subscriptions are managed through your Apple ID account. You can view, change, or cancel subscriptions in your device's Settings → [Your Name] → Subscriptions.</li>
+            <li><strong>Auto-Renewal:</strong> Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current billing period. Your Apple ID account will be charged for renewal within 24 hours prior to the end of the current period.</li>
+            <li><strong>Subscription Verification:</strong> We use RevenueCat to verify your subscription status. RevenueCat receives your anonymized subscriber ID and subscription status from Apple — not your payment details.</li>
+            <li><strong>Price Changes:</strong> If subscription prices change, you will be notified by Apple before any price increase takes effect.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">10.4 Document Vault and File Storage</h3>
+          <p className="mb-4">
+            Our Document Vault feature allows you to securely upload and store medical documents including bills, Explanation of Benefits (EOBs), insurance letters, and receipts:
+          </p>
+          <ul className="list-disc pl-6 mb-4">
+            <li><strong>Storage:</strong> Documents are stored in encrypted cloud object storage with authenticated-only access. Each user's documents are isolated and only accessible to that user.</li>
+            <li><strong>Encryption:</strong> All files are encrypted at rest (AES-256) and in transit (TLS 1.3). Upload and download use time-limited presigned URLs that expire after use.</li>
+            <li><strong>Access Control:</strong> Documents are stored with private access control policies. No documents are publicly accessible. Only authenticated requests from your account can access your files.</li>
+            <li><strong>AI Processing:</strong> When you request AI analysis of a document, the document content is sent to our AI provider (OpenAI) for processing. OpenAI's data usage policy applies — they do not use API inputs to train their models.</li>
+            <li><strong>Retention:</strong> Documents remain in your vault until you manually delete them or delete your account. We do not automatically delete vault documents.</li>
+            <li><strong>Camera Uploads:</strong> When you use the camera to photograph a document, the photo is uploaded directly to your vault. It is not stored elsewhere on our servers.</li>
+          </ul>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">10.5 Apple App Tracking Transparency</h3>
+          <p className="mb-4">
+            GoldRock Health does not track you across other companies' apps or websites. We do not participate in advertising networks 
+            or share your data for cross-app tracking purposes. Therefore, we do not display Apple's App Tracking Transparency prompt, 
+            as there is no tracking to consent to.
+          </p>
+
+          <h3 className="text-lg font-medium text-gray-900 mb-3">10.6 Account Deletion from App</h3>
           <p className="mb-4">
             Per Apple's App Store requirements, you can delete your account and all associated data directly within the app:
           </p>

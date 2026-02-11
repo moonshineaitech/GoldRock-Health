@@ -1,5 +1,5 @@
 import { MobileLayout, MobileButton } from "@/components/mobile-layout";
-import { Crown, Check, ArrowRight, LogIn, Brain, DollarSign, FileText, Stethoscope, MessageCircle, Clock, Code, UserCheck, ShieldCheck, Sparkles, Lock, Award, BarChart3, Zap, Heart, Shield } from "lucide-react";
+import { Crown, Check, ArrowRight, LogIn, Brain, DollarSign, FileText, Stethoscope, MessageCircle, Clock, Code, UserCheck, ShieldCheck, Sparkles, Lock, Award, BarChart3, Zap, Heart, Shield, RefreshCw, RotateCcw } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -9,6 +9,7 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 import { useState, useEffect } from "react";
 import { apiRequest } from "@/lib/queryClient";
 import { Capacitor } from "@capacitor/core";
+import { revenueCatService } from "@/lib/revenuecat-service";
 import { Link } from "wouter";
 
 let stripePromise: Promise<Stripe | null> | null = null;
@@ -411,6 +412,51 @@ function PlanCard({ plan, isSelected, onSelect, isCurrentPlan }: {
   );
 }
 
+function RestorePurchasesButton() {
+  const { toast } = useToast();
+  const [isRestoring, setIsRestoring] = useState(false);
+  const isIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
+
+  const handleRestore = async () => {
+    setIsRestoring(true);
+    try {
+      if (isIOS && revenueCatService.isAvailable()) {
+        await revenueCatService.restorePurchases();
+        toast({ title: "Purchases Restored", description: "Your previous purchases have been restored successfully." });
+        setTimeout(() => window.location.reload(), 1500);
+      } else if (isIOS) {
+        toast({ title: "Not Available", description: "Purchase restoration requires an active App Store connection. Please try again.", variant: "destructive" });
+      } else {
+        const response = await apiRequest("POST", "/api/verify-subscription", {});
+        const result = await response.json();
+        if (result.status === 'active') {
+          toast({ title: "Subscription Found", description: "Your subscription has been verified and restored." });
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          toast({ title: "No Active Subscription", description: "No previous subscription was found for this account." });
+        }
+      }
+    } catch (error: any) {
+      toast({ title: "Restore Failed", description: error?.message || "Unable to restore purchases. Please try again or contact CONTACT@GOLDROCK.ai for help.", variant: "destructive" });
+    } finally {
+      setIsRestoring(false);
+    }
+  };
+
+  return (
+    <div className="text-center pt-2">
+      <button
+        onClick={handleRestore}
+        disabled={isRestoring}
+        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors disabled:opacity-50"
+      >
+        <RotateCcw className={`w-4 h-4 ${isRestoring ? 'animate-spin' : ''}`} />
+        {isRestoring ? 'Restoring...' : 'Restore Purchases'}
+      </button>
+    </div>
+  );
+}
+
 interface SubscriptionData {
   status?: string;
   planType?: string;
@@ -630,6 +676,9 @@ function AuthenticatedPremium() {
             </div>
           ))}
         </div>
+
+        {/* Restore Purchases Button */}
+        <RestorePurchasesButton />
 
         {/* Apple Required Subscription Disclosure */}
         <div className="pt-2 px-2">
