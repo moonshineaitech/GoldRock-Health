@@ -169,11 +169,15 @@ export function DemoChat() {
     { text: "Medicare/Medicaid enrollment help", icon: "🏛️" },
   ];
 
-  // Format message content with paragraph breaks
   const formatMessage = (content: string) => {
     return content.split('\n\n').map((paragraph, i) => (
-      <span key={i} className={i > 0 ? "block mt-2" : ""}>
-        {paragraph}
+      <span key={i} className={i > 0 ? "block mt-3" : ""}>
+        {paragraph.split('\n').map((line, j) => (
+          <span key={j}>
+            {j > 0 && <br />}
+            {line}
+          </span>
+        ))}
       </span>
     ));
   };
