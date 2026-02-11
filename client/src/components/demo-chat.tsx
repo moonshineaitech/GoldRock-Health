@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, MessageCircle, Sparkles, ArrowRight, Loader2, Lock, ChevronDown, ChevronUp, Check } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Message {
   role: "user" | "assistant";
@@ -33,6 +34,8 @@ export function DemoChat() {
     return localStorage.getItem('hasAgreedToDemoTerms') === 'true';
   });
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated } = useAuth();
+  const [, navigate] = useLocation();
 
   const handleAgreeToTerms = (checked: boolean) => {
     setHasAgreedToTerms(checked);
@@ -332,21 +335,32 @@ export function DemoChat() {
           )}
         </div>
 
-        {/* Suggested Workflow - Routes to login with redirect */}
+        {/* Suggested Workflow */}
         {suggestedWorkflow && !requiresSignup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-3 pb-2">
-            <a href={`/api/login?redirect=${encodeURIComponent(suggestedWorkflow.path)}`}>
-              <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold shadow-md hover:shadow-lg transition-shadow">
+            {isAuthenticated ? (
+              <button
+                onClick={() => navigate(suggestedWorkflow.path)}
+                className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold shadow-md hover:shadow-lg transition-shadow"
+              >
                 <Sparkles className="h-3 w-3" />
                 Try: {suggestedWorkflow.label}
                 <ArrowRight className="h-3 w-3" />
               </button>
-            </a>
+            ) : (
+              <a href={`/api/login?redirect=${encodeURIComponent(suggestedWorkflow.path)}`}>
+                <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold shadow-md hover:shadow-lg transition-shadow">
+                  <Sparkles className="h-3 w-3" />
+                  Try: {suggestedWorkflow.label}
+                  <ArrowRight className="h-3 w-3" />
+                </button>
+              </a>
+            )}
           </motion.div>
         )}
 
         {/* Sign Up Prompt */}
-        {requiresSignup && (
+        {requiresSignup && !isAuthenticated && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-3 pb-3">
             <a href="/api/login">
               <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-xs font-bold shadow-md">
