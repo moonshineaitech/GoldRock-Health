@@ -152,24 +152,21 @@ export function DemoChat() {
   };
 
   const quickPrompts = [
-    { text: "Scan my bill for errors", icon: "🔍" },
-    { text: "Reduce my bill amount", icon: "💰" },
-    { text: "Dispute unfair charges", icon: "⚖️" },
+    { text: "I got a bill I can't afford", icon: "💰" },
+    { text: "Help me find billing errors", icon: "🔍" },
+    { text: "My bill is in collections", icon: "⚠️" },
   ];
 
   const morePrompts = [
-    { text: "Appeal a denied claim", icon: "📋" },
-    { text: "Understand my EOB", icon: "📄" },
-    { text: "Find financial assistance", icon: "💸" },
-    { text: "Negotiate with hospital", icon: "🤝" },
-    { text: "Check my patient rights", icon: "🛡️" },
-    { text: "Explain insurance terms", icon: "📖" },
-    { text: "Decode medical codes", icon: "🔢" },
-    { text: "Medicare/Medicaid help", icon: "🏛️" },
-    { text: "Emergency bill help", icon: "🚨" },
-    { text: "When to pay vs fight", icon: "⏰" },
-    { text: "Contact my provider", icon: "📞" },
-    { text: "Understand my symptoms", icon: "🩺" },
+    { text: "How do I get an itemized bill?", icon: "📋" },
+    { text: "Negotiate my hospital bill down", icon: "🤝" },
+    { text: "Appeal a denied insurance claim", icon: "📄" },
+    { text: "Find charity care or financial aid", icon: "💸" },
+    { text: "Dispute unfair ER charges", icon: "🚨" },
+    { text: "Understand my Explanation of Benefits", icon: "📖" },
+    { text: "Was I overcharged for surgery?", icon: "🔢" },
+    { text: "What are my patient rights?", icon: "🛡️" },
+    { text: "Medicare/Medicaid enrollment help", icon: "🏛️" },
   ];
 
   // Format message content with paragraph breaks

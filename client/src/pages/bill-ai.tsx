@@ -1405,7 +1405,11 @@ export default function BillAI() {
         aiPrompt = contextualPrompt;
       }
 
-      // Make API call  
+      const chatHistory = localMessages.map(m => ({
+        role: m.role,
+        content: m.content
+      }));
+
       const response = await apiRequest('/api/bill-ai-chat', {
         method: 'POST',
         headers: {
@@ -1413,6 +1417,7 @@ export default function BillAI() {
         },
         body: JSON.stringify({ 
           message: aiPrompt,
+          conversationHistory: chatHistory,
           workflowId: selectedWorkflow?.id,
           intakeData: { ...intakeState, ...workflowIntakeData }
         })
@@ -1555,14 +1560,13 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
       return;
     }
 
-    // Validate file types (images only)
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'];
     const invalidFiles = fileArray.filter(file => !validTypes.includes(file.type));
     
     if (invalidFiles.length > 0) {
       toast({
         title: "Invalid file type",
-        description: "Please upload only JPG, PNG, or WebP image files.",
+        description: "Please upload JPG, PNG, WebP, or PDF files.",
         variant: "destructive",
       });
       return;
@@ -1986,7 +1990,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                     data-testid="quick-upload-button"
                   >
                     <Camera className="h-5 w-5 mr-2.5" strokeWidth={2.5} />
-                    Upload Bill Images
+                    Upload Bill Photo or PDF
                   </Button>
                 </motion.div>
               </motion.div>
@@ -2467,7 +2471,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/jpg,image/png,image/webp"
+          accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
           multiple
           className="hidden"
           onChange={handleFileInputChange}

@@ -383,10 +383,7 @@ export default function AuthLanding() {
             <span className="text-emerald-600 font-semibold">Now you have one protecting yours.</span>
           </motion.p>
 
-          {/* Demo Chat Interface - First, Above Everything */}
-          <DemoChat />
-
-          {/* CTA Buttons - Right After Chat */}
+          {/* CTA Buttons */}
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6"
             initial={{ opacity: 0, y: 20 }}
@@ -482,11 +479,21 @@ export default function AuthLanding() {
             ))}
           </motion.div>
 
+          {/* Try AI Chat - Below features and trust indicators */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.85 }}
+            className="mt-4"
+          >
+            <DemoChat />
+          </motion.div>
+
           <motion.p
             className="text-[10px] text-gray-400 font-medium"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.9 }}
           >
             Free to start • No credit card required
           </motion.p>
