@@ -277,25 +277,25 @@ RESPONSE RULES - STRICTLY FOLLOW:
       const allText = lowerMessage + ' ' + (response || '').toLowerCase();
       
       if (lowerMessage.includes('upload') || lowerMessage.includes('scan') || lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Upload & Analyze My Bill' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Upload & Analyze My Bill' };
       } else if (lowerMessage.includes('error') || lowerMessage.includes('overcharge') || lowerMessage.includes('duplicate') || lowerMessage.includes('upcod')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Find Billing Errors' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Find Billing Errors' };
       } else if (lowerMessage.includes('dispute') || lowerMessage.includes('fight') || lowerMessage.includes('letter') || lowerMessage.includes('appeal')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Generate Dispute Letter' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Generate Dispute Letter' };
       } else if (lowerMessage.includes('negotiate') || lowerMessage.includes('reduce') || lowerMessage.includes('lower') || lowerMessage.includes('discount')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Negotiate My Bill Down' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Negotiate My Bill Down' };
       } else if (lowerMessage.includes('collection') || lowerMessage.includes('collector') || lowerMessage.includes('credit report') || lowerMessage.includes('debt')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Collections Defense Guide' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Collections Defense Guide' };
       } else if (lowerMessage.includes('charity') || lowerMessage.includes('financial assistance') || lowerMessage.includes('afford') || lowerMessage.includes('hardship')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Find Financial Assistance' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Find Financial Assistance' };
       } else if (lowerMessage.includes('insurance') || lowerMessage.includes('coverage') || lowerMessage.includes('benefit') || lowerMessage.includes('deductible') || lowerMessage.includes('eob')) {
         suggestedWorkflow = { path: '/benefits-explainer', label: 'Understand My Insurance' };
       } else if (lowerMessage.includes('medicare') || lowerMessage.includes('medicaid') || lowerMessage.includes('enroll')) {
         suggestedWorkflow = { path: '/medicare-enrollment', label: 'Medicare/Medicaid Help' };
       } else if (lowerMessage.includes('bill') || lowerMessage.includes('charge') || lowerMessage.includes('hospital') || lowerMessage.includes('er ') || lowerMessage.includes('surgery')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Analyze My Bill' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Analyze My Bill' };
       } else if (lowerMessage.includes('right') || lowerMessage.includes('law') || lowerMessage.includes('protect')) {
-        suggestedWorkflow = { path: '/bill-ai', label: 'Know Your Rights' };
+        suggestedWorkflow = { path: '/bill-advocate', label: 'Know Your Rights' };
       }
       
       res.json({
@@ -2567,6 +2567,89 @@ Provide recommendations in JSON format:
     } catch (error) {
       console.error('Error creating chat message:', error);
       res.status(500).json({ message: 'Failed to create chat message' });
+    }
+  });
+
+  app.post('/api/generate-itemized-request', isAuthenticated, requiresAiAgreement, async (req: any, res) => {
+    try {
+      const schema = z.object({
+        patientName: z.string().min(1, 'Patient name is required'),
+        providerName: z.string().min(1, 'Provider name is required'),
+        accountNumber: z.string().optional().default(''),
+        serviceDate: z.string().optional().default(''),
+        patientAddress: z.string().optional().default(''),
+        state: z.string().optional().default(''),
+      });
+
+      const parsed = schema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: 'Invalid request data', errors: parsed.error.flatten().fieldErrors });
+      }
+
+      const { patientName, providerName, accountNumber, serviceDate, patientAddress, state } = parsed.data;
+
+      const systemPrompt = `You are a patient rights attorney specializing in medical billing transparency laws. Generate a professional, legally-compliant letter requesting an itemized bill from a healthcare provider.
+
+LEGAL FOUNDATIONS TO REFERENCE:
+- HIPAA Right of Access (45 CFR § 164.524): Patients have legal right to itemized bills and billing records within 30 days
+- Federal Price Transparency Rules (45 CFR § 180.50): Hospitals must make standard charges public
+- No Surprises Act (2022): Requires good faith estimates
+- State-specific laws when the patient's state is provided
+
+STATE-SPECIFIC CITATIONS (use when state is provided):
+- California: Health & Safety Code §127400 (itemized bill within 21 business days)
+- New York: Public Health Law §2807-k (itemized statement within 10 working days)
+- Texas: Health & Safety Code §311.002 (itemized statement within reasonable time)
+- Florida: Statute §395.301 (explanation of charges and itemized bill)
+- Illinois: Hospital Licensing Act 210 ILCS 85/6.18 (itemized statement within 30 days)
+- For other states, reference the general HIPAA Right of Access and federal price transparency rules
+
+LETTER REQUIREMENTS:
+1. Professional business letter format with today's date
+2. Clear subject line referencing the account
+3. Cite specific federal laws (HIPAA, Price Transparency Rule)
+4. Cite state-specific laws if state is provided
+5. Request a FULLY itemized bill with CPT codes, ICD-10 codes, descriptions, quantities, unit prices, and total amounts
+6. Request the hospital's financial assistance policy
+7. Set a 30-day deadline for response
+8. Note that failure to comply may constitute a HIPAA violation
+9. Professional but firm tone
+10. Include signature line for the patient
+
+FORMATTING:
+- Write the letter as plain text, ready to print and send
+- Use proper business letter formatting
+- Do NOT use markdown (no ** or ## or ---)
+- Include blank lines between paragraphs for readability`;
+
+      const userPrompt = `Generate a professional letter requesting an itemized bill with the following details:
+
+Patient Name: ${patientName}
+Provider/Hospital: ${providerName}
+Account Number: ${accountNumber || 'Not provided'}
+Date of Service: ${serviceDate || 'Not provided'}
+Patient Address: ${patientAddress || 'Not provided'}
+State: ${state || 'Not provided'}
+
+Create a complete, ready-to-send letter with proper legal citations. If a state is provided, include state-specific legal citations. The letter should be professional, firm, and legally sound.`;
+
+      const letterText = await aiProvider.generateText(userPrompt, systemPrompt, {
+        provider: 'auto',
+        maxTokens: 2000,
+        temperature: 0.3
+      });
+
+      res.json({
+        letter: letterText.trim(),
+        patientName,
+        providerName,
+        accountNumber,
+        serviceDate,
+        state,
+      });
+    } catch (error) {
+      console.error('Error generating itemized bill request:', error);
+      res.status(500).json({ message: 'Failed to generate itemized bill request letter. Please try again.' });
     }
   });
 

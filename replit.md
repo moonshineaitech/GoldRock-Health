@@ -37,6 +37,7 @@ Preferred communication style: Simple, everyday language.
 - **Insurance Benefits**: Tables for `insurance_providers`, `insurance_plans`, `insurance_benefits`, `insurance_copays`, `user_insurance_plans`.
 
 ### AI Features
+- **Bill Advocate Process** (`/bill-advocate`): Comprehensive 5-step AI-powered bill reduction wizard. Step 1: Choose situation (new bill, collections, denial, confused). Step 2: Generate legally-compliant itemized bill request letter via AI (`/api/generate-itemized-request`). Step 3: Upload bill images/PDFs or enter details manually. Step 4: Real AI analysis with charge categorization, CPT/ICD coding, overcharge detection, Medicare rate comparison. Step 5: Action plan with dispute letter generation, phone scripts, follow-up AI chat. This replaces the simulated Blitz Demo with real AI.
 - **Real AI Bill Analysis**: Powered by OpenAI GPT-5 (via Replit AI Integrations) providing structured JSON output for issues, recommendations, negotiation strategies, financial assistance, and insider tactics.
 - **Bill Summarizer & Jargon Simplifier**: AI-powered tool that translates complex medical bills into plain English, explains CPT codes and billing terms, identifies potential issues, and provides actionable next steps.
 - **Medicare/Medicaid Enrollment System**: Voice-enabled wizard with AI-powered eligibility analysis.

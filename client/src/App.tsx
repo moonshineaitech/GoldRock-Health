@@ -82,6 +82,7 @@ import CollectionsDefenseGuide from "@/pages/collections-defense-guide";
 import HospitalBillPlaybook from "@/pages/hospital-bill-playbook";
 import AboutGoldRock from "@/pages/about-goldrock";
 import BillSummarizer from "@/pages/bill-summarizer";
+import BillAdvocate from "@/pages/bill-advocate";
 import NegotiationSimulator from "@/pages/negotiation-simulator";
 import GetStarted from "@/pages/get-started";
 import BillTracker from "@/pages/bill-tracker";
@@ -122,6 +123,7 @@ const AI_PROTECTED_ROUTES = [
   '/training',
   '/game',
   '/blitz-demo',
+  '/bill-advocate',
   '/health-insights',
   '/patient-diagnostics',
   '/clinical-command-center',
@@ -254,6 +256,11 @@ function Router() {
       <Route path="/bill-ai">
         <AIRouteGuard path="/bill-ai">
           <BillAI />
+        </AIRouteGuard>
+      </Route>
+      <Route path="/bill-advocate">
+        <AIRouteGuard path="/bill-advocate">
+          <BillAdvocate />
         </AIRouteGuard>
       </Route>
       <Route path="/premium" component={Premium} />
