@@ -45,6 +45,13 @@ Preferred communication style: Simple, everyday language.
 - **LunaFold Platform**: AI-powered protein analysis via GPT for functional insights, binding site detection, mutation scanning, and molecular docking simulations.
 - **Document Vault**: Secure document upload and management for medical bills, EOBs, insurance letters, and receipts. Uses Replit Object Storage with presigned URL upload flow, private ACL policies, and authenticated-only access. All files encrypted at rest and in transit.
 
+### Healthcare Data Security & iOS Compliance (2026)
+- **AI Usage Agreement v2.0**: Updated with explicit Healthcare Billing Data section, AES-256/TLS 1.3 security language, named AI providers (OpenAI, Google) with DPA disclosure, and a third consent checkbox for sensitive health data. Re-prompts all existing v1.0.0 users.
+- **Healthcare PHI Consent Modal** (`client/src/components/healthcare-consent-modal.tsx`): Shown before any bill data entry (Bill Advocate Step 3) and Document Vault upload. Uses localStorage key `grh_healthcare_consent_v1` to show only once. Plain-English explanation of encryption, AI processing, 30-day deletion, and user controls.
+- **Data Security Hub** (`/data-security`): Dedicated page accessible from Settings > Data Security. Shows encryption standards, retention timelines, AI processor disclosures (OpenAI/Google with DPA status), export/delete controls, biometric lock toggle, and HIPAA-aligned practices note.
+- **PrivacyInfo.xcprivacy (2026)**: Updated with all Required Reason APIs: FileTimestamp (C617.1), UserDefaults (CA92.1), SystemBootTime (35F9.1), DiskSpace (E174.1), ActiveKeyboards (54BD.1). Added SensitiveInfo and OtherUserContent data types.
+- **iOS Publishing Checklist**: `IOS_PUBLISHING_CHECKLIST.md` includes a dedicated 2026 compliance section tracking all new requirements.
+
 ### Mobile Application (iOS Native via Capacitor)
 - **Platform**: Capacitor (wraps React web app, ~90% code reuse)
 - **Native Plugins**: Camera, Local Notifications, Push Notifications, Share, Haptics, App, Status Bar, Splash Screen, Preferences, Network.

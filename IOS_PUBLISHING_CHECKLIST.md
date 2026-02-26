@@ -18,16 +18,20 @@ The web application is ready to be wrapped as an iOS native app using Capacitor.
 Apple requires detailed privacy disclosures before app submission:
 
 - [ ] **App Privacy Questionnaire** - Complete in App Store Connect:
-  - Data Types Collected: Health & Fitness, Financial Info, Contact Info (Email, Name), Photos
+  - Data Types Collected: Health & Fitness, Sensitive Info, Financial Info, Other User Content, Contact Info (Email, Name), Photos
   - Data Linked to User: Yes (for personalization)
   - Data Used for Tracking: No
   
-- [ ] **Privacy Manifest** - `PrivacyInfo.xcprivacy` already configured in `ios/App/App/`:
+- [x] **Privacy Manifest** - `PrivacyInfo.xcprivacy` updated for 2026 in `ios/App/App/`:
   - NSPrivacyTracking: false
-  - Health & Fitness data for app functionality
-  - Financial Info for bill analysis
-  - Email/Name for account management
-  - Photos for bill scanning
+  - NSPrivacyTrackingDomains: empty (no tracking domains)
+  - Health & Fitness data — app functionality
+  - Sensitive Info (medical billing) — app functionality
+  - Financial Info — bill analysis
+  - Other User Content (chat/bill text) — app functionality
+  - Email/Name — account management
+  - Photos — bill scanning
+  - Required Reason APIs: FileTimestamp (C617.1), UserDefaults (CA92.1), SystemBootTime (35F9.1), DiskSpace (E174.1), ActiveKeyboards (54BD.1)
 
 - [ ] **App Tracking Transparency (ATT)** - Not required (app does not track users)
 
@@ -239,7 +243,24 @@ Before submitting to App Store, verify StoreKit integration works:
 
 ### 5.1.1 - Data Collection
 **Issue**: Privacy policy or data disclosures insufficient
-**Response**: PrivacyInfo.xcprivacy configured; App Privacy questionnaire completed in App Store Connect.
+**Response**: PrivacyInfo.xcprivacy updated for 2026 with all Required Reason APIs and Sensitive Info data type. AI Usage Agreement v2.0 includes explicit healthcare billing data consent. Healthcare PHI Consent Modal shown before any bill data entry. App Privacy questionnaire must be updated to include Sensitive Info and Other User Content.
+
+---
+
+## 2026 iOS Compliance Checklist
+
+New requirements effective for February 2026 App Store submissions:
+
+- [x] **Privacy Manifest updated** — Added SystemBootTime, DiskSpace, ActiveKeyboards Required Reason APIs; added SensitiveInfo and OtherUserContent data types
+- [x] **AI Usage Agreement v2.0** — Explicit healthcare billing data section, AES-256/TLS 1.3 security details, named AI providers (OpenAI, Google) with DPA disclosures, third consent checkbox for health data
+- [x] **Healthcare PHI Consent Modal** — Shown before bill data entry (Bill Advocate Step 3) and Document Vault upload; uses localStorage to show only once; plain-English explanation of data handling
+- [x] **Data Security Hub** — `/data-security` page accessible from Settings > Data Security; shows encryption standards, retention policy, AI processor disclosures, export/delete controls, biometric lock toggle
+- [x] **Data Security in Settings** — Added "Data Security" entry to Settings > Privacy & Legal section
+- [x] **App Store metadata updated** — Health Data Handling section added to App Review Notes in docs/app-store-metadata.md
+- [ ] **App Store Connect Privacy Questionnaire** — Must update to add: Sensitive Info, Other User Content data types during App Store Connect submission
+- [x] **Account deletion flow** — In-app account deletion (required by Apple) already implemented at DELETE /api/account
+- [x] **No tracking domains** — NSPrivacyTrackingDomains is empty, NSPrivacyTracking is false
+- [x] **Contact email** — All user-facing contact references use CONTACT@GOLDROCK.ai
 
 ---
 

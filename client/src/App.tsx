@@ -96,6 +96,7 @@ import EmployerPortal from "@/pages/employer-portal";
 import DataInsights from "@/pages/data-insights";
 import PartnerApi from "@/pages/partner-api";
 import DocumentVault from "@/pages/document-vault";
+import DataSecurity from "@/pages/data-security";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -373,6 +374,7 @@ function Router() {
       <Route path="/data-insights" component={DataInsights} />
       <Route path="/document-vault" component={DocumentVault} />
       <Route path="/partner-api" component={PartnerApi} />
+      <Route path="/data-security" component={DataSecurity} />
       <Route path="/important-disclaimer" component={ImportantDisclaimer} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />

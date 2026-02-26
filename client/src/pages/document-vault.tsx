@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useHealthcareConsent, HealthcareConsentModal } from "@/components/healthcare-consent-modal";
 import { MobileLayout, MobileCard } from "@/components/mobile-layout";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -315,6 +316,7 @@ export default function DocumentVault() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [showUpload, setShowUpload] = useState(false);
+  const { showModal, setShowModal, giveConsent, requestConsent } = useHealthcareConsent();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
   const [previewDoc, setPreviewDoc] = useState<BillDocument | null>(null);
@@ -401,7 +403,11 @@ export default function DocumentVault() {
                 <p className="text-emerald-100 text-sm mt-1">Securely store and manage your medical documents</p>
               </div>
               <Button
-                onClick={() => setShowUpload(true)}
+                onClick={() => {
+                  if (requestConsent()) {
+                    setShowUpload(true);
+                  }
+                }}
                 className="bg-white/20 hover:bg-white/30 border-white/30 text-white"
                 variant="outline"
               >
@@ -497,6 +503,11 @@ export default function DocumentVault() {
 
         <UploadDialog open={showUpload} onClose={() => setShowUpload(false)} />
         <PreviewDialog doc={previewDoc} open={!!previewDoc} onClose={() => setPreviewDoc(null)} />
+        <HealthcareConsentModal
+          open={showModal}
+          onAccept={() => { giveConsent(); setShowUpload(true); }}
+          onClose={() => setShowModal(false)}
+        />
       </div>
     </MobileLayout>
   );

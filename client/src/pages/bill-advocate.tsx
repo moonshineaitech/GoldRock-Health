@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useHealthcareConsent, HealthcareConsentModal } from "@/components/healthcare-consent-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -177,6 +178,7 @@ export default function BillAdvocate() {
   const { toast } = useToast();
   const [step, setStep] = useState(1);
   const [situation, setSituation] = useState<Situation>(null);
+  const { hasConsented, showModal, setShowModal, giveConsent, requestConsent } = useHealthcareConsent();
 
   const [patientName, setPatientName] = useState("");
   const [providerName, setProviderName] = useState("");
@@ -585,7 +587,11 @@ Generate a formal, professional dispute letter that references specific issues, 
           <ArrowLeft className="h-4 w-4 mr-2" /> Back
         </Button>
         <Button
-          onClick={() => setStep(3)}
+          onClick={() => {
+            if (requestConsent()) {
+              setStep(3);
+            }
+          }}
           className="flex-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white"
         >
           {generatedLetter ? "Continue to Bill Analysis" : "Skip — I already have my itemized bill"}
@@ -1171,6 +1177,12 @@ Generate a formal, professional dispute letter that references specific issues, 
           </AnimatePresence>
         </div>
       </div>
+
+      <HealthcareConsentModal
+        open={showModal}
+        onAccept={() => { giveConsent(); setStep(3); }}
+        onClose={() => setShowModal(false)}
+      />
     </MobileLayout>
   );
 }

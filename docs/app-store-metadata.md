@@ -196,17 +196,26 @@ Thank you for reviewing GoldRock AI!
 • Use test card: 4242 4242 4242 4242
 • Any future expiry date and 3-digit CVC
 
+**Health Data Handling (2026 Requirement):**
+
+• Users see a Healthcare PHI Consent Modal before entering any bill details (at Bill Advocate Step 3 and Document Vault upload). Modal explains exactly what happens to their data.
+• AI Usage Agreement v2.0 includes a dedicated "Healthcare Billing Data" section and a third consent checkbox specifically for sensitive health data.
+• Medical billing data is encrypted AES-256 at rest, TLS 1.3 in transit, stored on US-only servers.
+• Bill analyses and chat history are automatically deleted after 30 days.
+• Users can delete all health data at any time via Settings > Data Security (/data-security).
+• OpenAI and Google (Gemini) operate under Data Processing Agreements that prohibit training on user data.
+• HIPAA-aligned practices; BAA available for enterprise customers on request.
+
 **Important Notes:**
 
-• This is a medical billing education app, NOT a medical diagnosis tool
+• This is a medical billing assistance app, NOT a medical diagnosis tool
 • All AI analysis is for informational purposes only
 • Medical disclaimer prominently displayed throughout app
 • We do not provide medical advice or treatment
 
 **Contact:**
 
-For review questions: support@goldrock.ai  
-Emergency contact: +1 (555) 123-4567
+For review questions: CONTACT@GOLDROCK.ai
 
 Thank you for your time!
 

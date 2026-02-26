@@ -452,10 +452,24 @@ export default function Settings() {
           </h2>
           <MobileCard>
             <div className="divide-y divide-gray-100 dark:divide-gray-700">
+              <Link href="/data-security">
+                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
+                      <Shield className="h-4 w-4 text-indigo-600" />
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-white">Data Security</span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Manage your health data &amp; privacy</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                </div>
+              </Link>
               <Link href="/privacy-policy">
                 <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" data-testid="link-privacy-policy">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
                       <Shield className="h-4 w-4 text-gray-600" />
                     </div>
                     <span className="font-medium text-gray-900 dark:text-white">Privacy Policy</span>
