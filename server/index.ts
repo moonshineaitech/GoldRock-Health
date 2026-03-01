@@ -1,4 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import { runMigrations } from 'stripe-replit-sync';
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -6,6 +8,49 @@ import { getStripeSync } from "./stripeClient";
 import { WebhookHandlers } from "./webhookHandlers";
 
 const app = express();
+
+app.set("trust proxy", 1);
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: false,
+  })
+);
+
+const apiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 60,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again in a minute." },
+  skip: (req) => !req.path.startsWith("/api") || req.path === "/api/stripe/webhook" || req.path === "/api/webhooks/revenuecat",
+});
+
+const aiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 10,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: { error: "Too many AI requests. Please wait a moment before trying again." },
+});
+
+app.use(apiLimiter);
+
+const aiPaths = [
+  "/api/analyze-bill",
+  "/api/generate-itemized-request",
+  "/api/bill-summarizer",
+  "/api/generate-dispute-letter",
+  "/api/ai/",
+  "/api/voice/synthesize",
+  "/api/chat/",
+  "/api/gemini/",
+  "/api/enrollment/",
+];
+app.use(aiPaths, aiLimiter);
 
 async function initStripe() {
   const databaseUrl = process.env.DATABASE_URL;

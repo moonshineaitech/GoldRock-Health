@@ -46,6 +46,8 @@ Preferred communication style: Simple, everyday language.
 - **Document Vault**: Secure document upload and management for medical bills, EOBs, insurance letters, and receipts. Uses Replit Object Storage with presigned URL upload flow, private ACL policies, and authenticated-only access. All files encrypted at rest and in transit.
 
 ### Healthcare Data Security & iOS Compliance (2026)
+- **Security Headers** (`helmet`): HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, X-XSS-Protection, X-DNS-Prefetch-Control applied globally via helmet middleware in server/index.ts. CSP disabled for Capacitor WebView compatibility.
+- **Global Rate Limiting** (`express-rate-limit`): 60 requests/minute on all API endpoints. AI-heavy endpoints (bill analysis, dispute generation, chat, voice synthesis, enrollment) additionally limited to 10 requests/minute. Demo login limited to 5 attempts per 15 minutes.
 - **AI Usage Agreement v2.0**: Updated with explicit Healthcare Billing Data section, AES-256/TLS 1.3 security language, named AI providers (OpenAI, Google) with DPA disclosure, and a third consent checkbox for sensitive health data. Re-prompts all existing v1.0.0 users.
 - **PII Anonymization** (`server/utils/pii-anonymizer.ts`): Strips patient names, SSNs, phone numbers, emails, addresses, DOBs, member IDs, and account numbers from bill text before sending to AI providers. Only billing codes, descriptions, and charge amounts reach AI. Original data preserved locally for user display.
 - **Auto-Cleanup Scheduler**: 30-day auto-deletion of old bills and chat data runs daily via setInterval in routes.ts. Uses `storage.cleanupOldData(30)`.
