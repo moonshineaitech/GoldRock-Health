@@ -68,7 +68,7 @@ Respond in JSON format:
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: 500
+        max_completion_tokens: 500
       });
 
       const result = JSON.parse(response.choices[0].message.content || '{}');
@@ -138,7 +138,7 @@ Focus on educational value, clinical reasoning, and constructive guidance.`;
         ],
         response_format: { type: "json_object" },
         temperature: 0.3,
-        max_tokens: 800
+        max_completion_tokens: 800
       });
 
       const result = JSON.parse(response.choices[0].message.content || '{}');
@@ -218,7 +218,7 @@ Provide personalized recommendations in JSON format:
         ],
         response_format: { type: "json_object" },
         temperature: 0.4,
-        max_tokens: 600
+        max_completion_tokens: 600
       });
 
       const result = JSON.parse(response.choices[0].message.content || '{}');

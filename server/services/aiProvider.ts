@@ -106,7 +106,7 @@ class AIProvider {
     const response = await this.openAIService.openai.chat.completions.create({
       model: 'gpt-5.2',
       messages,
-      max_tokens: options?.maxTokens,
+      max_completion_tokens: options?.maxTokens,
       temperature: options?.temperature,
     });
 
@@ -161,7 +161,7 @@ class AIProvider {
     const response = await this.openAIService.openai.chat.completions.create({
       model: 'gpt-5.2',
       messages,
-      max_tokens: options?.maxTokens,
+      max_completion_tokens: options?.maxTokens,
       temperature: options?.temperature,
       response_format: { type: 'json_object' },
     });
@@ -221,7 +221,7 @@ class AIProvider {
           ],
         },
       ],
-      max_tokens: 4096,
+      max_completion_tokens: 4096,
     });
 
     return response.choices[0]?.message?.content || '';

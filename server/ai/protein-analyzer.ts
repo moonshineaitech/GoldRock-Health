@@ -259,7 +259,7 @@ Only include predictions with reasonable confidence. If uncertain, use lower con
         { role: "user", content: prompt }
       ],
       temperature: 0.3,
-      max_tokens: 1500,
+      max_completion_tokens: 1500,
     });
 
     const content = response.choices[0]?.message?.content || '{}';
@@ -358,7 +358,7 @@ Use precise scientific language but remain accessible. Reference the metrics.`;
         { role: "user", content: explanationPrompt }
       ],
       temperature: 0.4,
-      max_tokens: 800,
+      max_completion_tokens: 800,
     });
 
     explanation = response.choices[0]?.message?.content || explanation;
@@ -520,7 +520,7 @@ Keep each hypothesis concise (1-2 sentences) and scientifically rigorous. Focus 
         { role: "user", content: prompt }
       ],
       temperature: 0.7,
-      max_tokens: 500,
+      max_completion_tokens: 500,
     });
 
     const content = response.choices[0]?.message?.content || "";
