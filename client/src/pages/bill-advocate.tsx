@@ -445,7 +445,8 @@ Generate a formal, professional dispute letter that references specific issues, 
       <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800 mt-6">
         <Lock className="h-5 w-5 text-blue-500 flex-shrink-0" />
         <p className="text-sm text-blue-700 dark:text-blue-300">
-          Your information is encrypted and only used to help reduce your bill. You can delete your data anytime from Settings.
+          Your information is encrypted (AES-256) and only used to help reduce your bill. Auto-deleted after 30 days.{" "}
+          <a href="/data-security" className="underline font-medium hover:text-blue-900 dark:hover:text-blue-100">Learn more about how we protect your data</a>.
         </p>
       </div>
     </motion.div>

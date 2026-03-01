@@ -81,7 +81,7 @@ Preferred communication style: Simple, everyday language.
 ### AI and Data Services
 - **AlphaFold DB API**: Access to 200M+ pre-computed AlphaFold structures.
 - **Mol***: 3D molecular viewer.
-- **Google Gemini 3 Flash**: Primary AI provider for various AI endpoints.
+- **Google Gemini 2.5 Flash**: Primary AI provider for various AI endpoints (stable production model as of March 2026).
 - **OpenAI GPT-5**: Used for real AI bill analysis.
 
 ### Payment Gateways

@@ -478,10 +478,10 @@ export default function Settings() {
                 </div>
               </Link>
               <Link href="/terms-of-service">
-                <div className="flex items-center justify-between py-3 hover:bg-gray-50 transition-colors cursor-pointer" data-testid="link-terms-of-service">
+                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" data-testid="link-terms-of-service">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
-                      <FileText className="h-4 w-4 text-gray-600" />
+                    <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
+                      <FileText className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                     </div>
                     <span className="font-medium text-gray-900 dark:text-white">Terms of Service</span>
                   </div>
@@ -489,10 +489,10 @@ export default function Settings() {
                 </div>
               </Link>
               <Link href="/support">
-                <div className="flex items-center justify-between py-3 hover:bg-gray-50 transition-colors cursor-pointer" data-testid="link-support">
+                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" data-testid="link-support">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
-                      <HelpCircle className="h-4 w-4 text-gray-600" />
+                    <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
+                      <HelpCircle className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                     </div>
                     <span className="font-medium text-gray-900 dark:text-white">Help & Support</span>
                   </div>

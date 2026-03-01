@@ -7,20 +7,20 @@ export default function PrivacyPolicy() {
     <PublicLayout title="Privacy Policy">
       <Card className="p-6 lg:p-8">
         <div className="prose prose-gray max-w-none">
-          <div className="text-sm text-gray-600 mb-6">
+          <div className="text-sm text-gray-600 dark:text-gray-400 mb-6">
             <strong>Effective Date:</strong> January 7, 2026<br />
-            <strong>Last Updated:</strong> February 11, 2026
+            <strong>Last Updated:</strong> March 1, 2026
           </div>
 
-          <div className="bg-blue-50 p-5 rounded-xl border border-blue-200 mb-8">
-            <h3 className="font-bold text-blue-900 mb-3 text-lg">Privacy at a Glance</h3>
-            <ul className="text-sm text-blue-800 space-y-2">
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl border border-blue-200 dark:border-blue-800 mb-8">
+            <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-3 text-lg">Privacy at a Glance</h3>
+            <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-2">
               <li><strong>We align with HIPAA standards</strong> for handling health-related information</li>
               <li><strong>We don't sell your personal data</strong> to third parties</li>
               <li><strong>We don't train our AI on your personal medical bills</strong> — our training uses public and expert-curated data</li>
               <li><strong>You can delete your account and data</strong> at any time through Settings</li>
               <li><strong>Data encryption</strong> in transit and at rest protects your information</li>
-              <li><strong>Contact us at contact@goldrock.ai</strong> for privacy inquiries</li>
+              <li><strong>Contact us at CONTACT@GOLDROCK.ai</strong> for privacy inquiries</li>
             </ul>
           </div>
 
@@ -103,8 +103,9 @@ export default function PrivacyPolicy() {
             We share information with trusted service providers who assist us in operating our Services:
           </p>
           <ul className="list-disc pl-6 mb-4">
-            <li><strong>AI Service Providers:</strong> OpenAI and Anthropic receive your queries and uploaded content to generate AI responses. 
-            These providers process data according to their privacy policies and data processing agreements.</li>
+            <li><strong>AI Service Providers:</strong> OpenAI and Google (Gemini) receive your queries and uploaded content to generate AI responses. 
+            These providers operate under Data Processing Agreements (DPAs) that prohibit them from using your data for model training. 
+            Your data is deleted from their systems after processing.</li>
             <li><strong>Cloud Hosting:</strong> Our infrastructure is hosted on secure cloud platforms that store and process your data.</li>
             <li><strong>Payment Processors:</strong> Stripe and Apple process payment information for subscription services.</li>
             <li><strong>Analytics Providers:</strong> We use analytics services to understand how our Services are used.</li>
@@ -178,7 +179,7 @@ export default function PrivacyPolicy() {
           <h3 className="text-lg font-medium text-gray-900 mb-3">6.1 Access and Portability</h3>
           <p className="mb-4">
             You have the right to access and receive a copy of your personal information. You can export your data through your account settings 
-            or by contacting us at <strong>contact@goldrock.ai</strong>.
+            or by contacting us at <strong>CONTACT@GOLDROCK.ai</strong>.
           </p>
 
           <h3 className="text-lg font-medium text-gray-900 mb-3">6.2 Correction</h3>
@@ -190,6 +191,11 @@ export default function PrivacyPolicy() {
           <p className="mb-4">
             You can delete your account and all associated data through Settings → Account Deletion in the App or Website. Account deletion 
             is completed within 5 minutes and is irreversible. All personal data, medical bills, chat history, and achievements will be permanently deleted.
+          </p>
+          <p className="mb-4">
+            You can also delete only your health data (bill analyses, documents, and chat history) without deleting your account. 
+            Visit your <a href="/data-security" className="text-blue-600 hover:underline font-medium">Data Security settings</a> to 
+            manage, export, or delete your data at any time.
           </p>
 
           <h3 className="text-lg font-medium text-gray-900 mb-3">6.4 Communication Preferences</h3>
@@ -219,7 +225,7 @@ export default function PrivacyPolicy() {
             <li>Opt out of profiling in furtherance of automated decisions</li>
           </ul>
           <p className="mb-4">
-            To exercise these rights, contact us at <strong>contact@goldrock.ai</strong>. You may designate an authorized agent to make 
+            To exercise these rights, contact us at <strong>CONTACT@GOLDROCK.ai</strong>. You may designate an authorized agent to make 
             requests on your behalf. We may require verification of your identity before processing requests.
           </p>
 
@@ -282,14 +288,17 @@ export default function PrivacyPolicy() {
             <li>Insurance information</li>
           </ul>
           <p className="mb-4">
-            We process this information solely to provide our bill analysis services and handle it with the utmost care.
+            We process this information solely to provide our bill analysis services and handle it with the utmost care. 
+            Before any bill data is submitted, you will be asked to review and consent to our healthcare data processing practices 
+            through an in-app consent screen. Bill data is automatically deleted after 30 days. You can manage or delete your 
+            health data at any time from <a href="/data-security" className="text-blue-600 hover:underline font-medium">Data Security settings</a>.
           </p>
 
           <h2 className="text-xl font-semibold text-gray-900 mb-4">9. Children's Privacy</h2>
           <p className="mb-4">
             Our Services are not intended for users under 18 years of age. We do not knowingly collect personal information from children under 18. 
             If you are a parent or guardian and believe your child has provided us with personal information, please contact us at 
-            <strong> contact@goldrock.ai</strong> and we will delete such information.
+            <strong> CONTACT@GOLDROCK.ai</strong> and we will delete such information.
           </p>
           <p className="mb-4">
             In compliance with the Children's Online Privacy Protection Act (COPPA), we will never knowingly collect personal information from 
@@ -414,9 +423,9 @@ export default function PrivacyPolicy() {
           <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
             <p className="mb-2"><strong>Eldest AI LLC dba GoldRock AI</strong></p>
             <p className="mb-2">State of Incorporation: Colorado, United States</p>
-            <p className="mb-2">Privacy Inquiries: <strong>contact@goldrock.ai</strong></p>
-            <p className="mb-2">General Support: <strong>contact@goldrock.ai</strong></p>
-            <p className="mb-2">Data Protection Requests: <strong>contact@goldrock.ai</strong></p>
+            <p className="mb-2">Privacy Inquiries: <strong>CONTACT@GOLDROCK.ai</strong></p>
+            <p className="mb-2">General Support: <strong>CONTACT@GOLDROCK.ai</strong></p>
+            <p className="mb-2">Data Protection Requests: <strong>CONTACT@GOLDROCK.ai</strong></p>
           </div>
 
           <p className="mb-4">

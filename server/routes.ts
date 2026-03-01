@@ -1451,7 +1451,7 @@ RESPONSE RULES - STRICTLY FOLLOW:
       let medicalAccuracy = 5;
       let suggestionForDoctor = undefined;
 
-      // Use AI provider (Gemini 3 Flash primary, OpenAI fallback) for intelligent responses
+      // Use AI provider (Gemini 2.5 Flash primary, OpenAI fallback) for intelligent responses
       try {
         const patientPrompt = `You are a patient in a medical training simulation. Based on the following case, respond to the doctor's question as the patient would.
 
@@ -1541,7 +1541,7 @@ Respond in JSON format:
       let recommendations: string[] = [];
       let missedFindings: string[] = [];
 
-      // Use AI provider (Gemini 3 Flash primary, OpenAI fallback) for intelligent feedback
+      // Use AI provider (Gemini 2.5 Flash primary, OpenAI fallback) for intelligent feedback
       try {
         const feedbackPrompt = `You are a medical education AI providing feedback on a student's diagnosis.
 
@@ -1631,7 +1631,7 @@ Respond in JSON format:
 
       let isCorrect = false;
 
-      // Use AI provider (Gemini 3 Flash primary, OpenAI fallback) for intelligent diagnosis matching
+      // Use AI provider (Gemini 2.5 Flash primary, OpenAI fallback) for intelligent diagnosis matching
       try {
         const prompt = `You are a medical education AI that needs to determine if a student's diagnosis is medically equivalent to the correct diagnosis.
 
@@ -2786,7 +2786,7 @@ Now respond to the user's current message:`;
         });
       }
       
-      // Process image files with AI Vision (Gemini 3 Flash with OpenAI fallback)
+      // Process image files with AI Vision (Gemini 2.5 Flash with OpenAI fallback)
       else if (file.mimetype.startsWith('image/')) {
         try {
           const base64Image = file.buffer.toString('base64');
@@ -2801,7 +2801,7 @@ Now respond to the user's current message:`;
         }
       }
 
-      // Analyze the bill with expert AI prompting (Gemini 3 Flash with OpenAI fallback)
+      // Analyze the bill with expert AI prompting (Gemini 2.5 Flash with OpenAI fallback)
       if (billText) {
         try {
           const analysisPrompt = `You are a medical bill reduction expert with 25+ years of experience. Analyze this bill to find errors and savings.
@@ -2926,7 +2926,7 @@ Write everything in a friendly, empowering tone. The reader may be stressed abou
       let combinedBillText = '';
       let analysisData: any = {};
 
-      // Process each image file with AI Vision (Gemini 3 Flash with OpenAI fallback)
+      // Process each image file with AI Vision (Gemini 2.5 Flash with OpenAI fallback)
       const imageAnalyses: string[] = [];
 
       for (let i = 0; i < files.length; i++) {
@@ -2952,7 +2952,7 @@ Write everything in a friendly, empowering tone. The reader may be stressed abou
       // Combine all extracted text
       combinedBillText = `COMPLETE MEDICAL BILL ANALYSIS - ${files.length} PAGE${files.length > 1 ? 'S' : ''}:\n\n${imageAnalyses.join('')}`;
 
-      // Comprehensive analysis of all pages together (Gemini 3 Flash with OpenAI fallback)
+      // Comprehensive analysis of all pages together (Gemini 2.5 Flash with OpenAI fallback)
       try {
         const comprehensiveAnalysisPrompt = `Analyze this ${files.length}-page medical bill. Identify cross-page billing errors, duplicates, upcoding, unbundling issues. Provide specific savings amounts, action priorities, phone scripts, and charity care options.
 
@@ -3227,7 +3227,7 @@ Provide detailed analysis with specific dollar amounts, error categories, and pr
 
       let response = "I'm here to help with medical questions and insurance/healthcare billing. Please ask me about symptoms, treatments, or insurance-related concerns.";
 
-      // Use Gemini 3 Flash (via aiProvider) for intelligent medical responses
+      // Use Gemini 2.5 Flash (via aiProvider) for intelligent medical responses
       try {
         const prompt = `You are a bill reduction expert and medical bill advocate with 20+ years of experience.
 
@@ -4208,7 +4208,7 @@ Also include learning insights:
 
 Make it clinically accurate and educationally valuable.`;
 
-      // Use aiProvider (Gemini 3 Flash with OpenAI fallback)
+      // Use aiProvider (Gemini 2.5 Flash with OpenAI fallback)
       const aiResult = await aiProvider.generateJSON<{
         differentialDiagnoses: Array<{
           diagnosis: string;
