@@ -382,9 +382,9 @@ export default function Landing() {
               animate={{ rotate: 360 }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             />
-            <div className="relative flex items-center justify-center">
-              <Shield className="text-white/25 h-12 w-12 absolute inset-0 m-auto" strokeWidth={1} />
-              <Heart className="text-white h-8 w-8 drop-shadow-lg relative z-10" strokeWidth={2.5} fill="rgba(255,255,255,0.25)" />
+            <div className="relative flex items-center justify-center w-12 h-12">
+              <Shield className="text-white/25 h-12 w-12 absolute" style={{ top: '-2px', left: '0px' }} strokeWidth={1} />
+              <Heart className="text-white h-8 w-8 drop-shadow-lg relative z-10" style={{ marginTop: '-1px' }} strokeWidth={2.5} fill="rgba(255,255,255,0.25)" />
             </div>
           </motion.div>
         </motion.div>
