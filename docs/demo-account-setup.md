@@ -3,9 +3,10 @@
 ## Demo Account Credentials
 
 **Email:** appreviewer@goldrock.com  
-**Password:** AppReview2025!  
-**Status:** Premium Active (Annual Plan)  
-**Created:** Pre-configured for App Review
+**Password:** GoldRock2026!  
+**Status:** Premium Active (Annual Plan, never expires)  
+**Login Method:** Tap "App Store Reviewer? Sign in here" on the landing page  
+**User ID:** demo-appstore-reviewer
 
 ## Account Features
 
@@ -13,12 +14,10 @@
 
 The demo account includes:
 
-1. **Sample Medical Bills (5 bills)**
-   - Emergency Room visit - $12,450
-   - MRI scan - $3,800
-   - Outpatient surgery - $8,900
-   - Laboratory tests - $1,250
-   - Physical therapy session - $450
+1. **Sample Medical Bills (3 bills)**
+   - Emergency Room Visit - Chest Pain: $18,750 ($3,250 potential savings)
+   - Outpatient Surgery - Knee Arthroscopy: $24,500 ($4,850 potential savings, includes duplicate charge)
+   - Hospital Stay - Pneumonia Treatment: $42,300 ($5,800 potential savings)
 
 2. **AI Analysis Results**
    - Each bill has complete AI analysis

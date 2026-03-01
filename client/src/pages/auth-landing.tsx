@@ -105,6 +105,87 @@ const GlassmorphicCard = ({ children, className = "", glowColor = "emerald" }: {
   );
 };
 
+const DemoLoginForm = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/demo-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      if (res.ok) {
+        window.location.href = '/';
+      } else {
+        const data = await res.json();
+        setError(data.message || 'Login failed');
+      }
+    } catch {
+      setError('Connection error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!showForm) {
+    return (
+      <div className="text-center mt-3 mb-2">
+        <button
+          onClick={() => setShowForm(true)}
+          className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+          data-testid="demo-login-toggle"
+        >
+          App Store Reviewer? Sign in here
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      className="max-w-xs mx-auto mt-3 mb-2"
+    >
+      <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
+        <p className="text-xs text-gray-500 text-center font-medium">Demo Account Login</p>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          required
+        />
+        {error && <p className="text-xs text-red-500 text-center">{error}</p>}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-2 text-sm font-medium bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
+        >
+          {loading ? 'Signing in...' : 'Sign In'}
+        </button>
+      </form>
+    </motion.div>
+  );
+};
+
 const PremiumFeatureCard = ({ icon: Icon, title, description, color, delay = 0 }: {
   icon: any;
   title: string;
@@ -423,6 +504,8 @@ export default function AuthLanding() {
               Explore AI Health Tools
             </motion.a>
           </motion.div>
+
+          <DemoLoginForm />
 
           {/* Core Capabilities Grid - After CTAs */}
           <motion.div

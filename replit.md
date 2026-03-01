@@ -38,7 +38,7 @@ Preferred communication style: Simple, everyday language.
 
 ### AI Features
 - **Bill Advocate Process** (`/bill-advocate`): Comprehensive 5-step AI-powered bill reduction wizard. Step 1: Choose situation (new bill, collections, denial, confused). Step 2: Generate legally-compliant itemized bill request letter via AI (`/api/generate-itemized-request`). Step 3: Upload bill images/PDFs or enter details manually. Step 4: Real AI analysis with charge categorization, CPT/ICD coding, overcharge detection, Medicare rate comparison. Step 5: Action plan with dispute letter generation, phone scripts, follow-up AI chat. This replaces the simulated Blitz Demo with real AI.
-- **Real AI Bill Analysis**: Powered by OpenAI GPT-5 (via Replit AI Integrations) providing structured JSON output for issues, recommendations, negotiation strategies, financial assistance, and insider tactics.
+- **Real AI Bill Analysis**: Powered by OpenAI GPT-5 (via Replit AI Integrations) providing structured JSON output for issues, recommendations, negotiation strategies, financial assistance, and insider tactics. PII is automatically stripped from bill text before sending to AI providers (names, SSNs, addresses, phone numbers, member IDs anonymized via `server/utils/pii-anonymizer.ts`).
 - **Bill Summarizer & Jargon Simplifier**: AI-powered tool that translates complex medical bills into plain English, explains CPT codes and billing terms, identifies potential issues, and provides actionable next steps.
 - **Medicare/Medicaid Enrollment System**: Voice-enabled wizard with AI-powered eligibility analysis.
 - **Insurance Benefits Explainer**: AI-powered explanations and plan comparison.
@@ -47,6 +47,9 @@ Preferred communication style: Simple, everyday language.
 
 ### Healthcare Data Security & iOS Compliance (2026)
 - **AI Usage Agreement v2.0**: Updated with explicit Healthcare Billing Data section, AES-256/TLS 1.3 security language, named AI providers (OpenAI, Google) with DPA disclosure, and a third consent checkbox for sensitive health data. Re-prompts all existing v1.0.0 users.
+- **PII Anonymization** (`server/utils/pii-anonymizer.ts`): Strips patient names, SSNs, phone numbers, emails, addresses, DOBs, member IDs, and account numbers from bill text before sending to AI providers. Only billing codes, descriptions, and charge amounts reach AI. Original data preserved locally for user display.
+- **Auto-Cleanup Scheduler**: 30-day auto-deletion of old bills and chat data runs daily via setInterval in routes.ts. Uses `storage.cleanupOldData(30)`.
+- **Demo Account Login** (`POST /api/demo-login`): Email/password bypass for App Store reviewer (appreviewer@goldrock.com / GoldRock2026!). Creates session without Replit Auth. Frontend form on landing page.
 - **Healthcare PHI Consent Modal** (`client/src/components/healthcare-consent-modal.tsx`): Shown before any bill data entry (Bill Advocate Step 3) and Document Vault upload. Uses localStorage key `grh_healthcare_consent_v1` to show only once. Plain-English explanation of encryption, AI processing, 30-day deletion, and user controls.
 - **Data Security Hub** (`/data-security`): Dedicated page accessible from Settings > Data Security. Shows encryption standards, retention timelines, AI processor disclosures (OpenAI/Google with DPA status), export/delete controls, biometric lock toggle, and HIPAA-aligned practices note.
 - **PrivacyInfo.xcprivacy (2026)**: Updated with all Required Reason APIs: FileTimestamp (C617.1), UserDefaults (CA92.1), SystemBootTime (35F9.1), DiskSpace (E174.1), ActiveKeyboards (54BD.1). Added SensitiveInfo and OtherUserContent data types.
@@ -92,7 +95,7 @@ Preferred communication style: Simple, everyday language.
 
 ### App Store Readiness
 - **App ID**: `com.goldrockhealth.app`
-- **Demo Account**: appreviewer@goldrock.com (Premium, never expires)
+- **Demo Account**: appreviewer@goldrock.com / GoldRock2026! (Premium, never expires, email/password login via /api/demo-login)
 - **Checklist**: See `IOS_PUBLISHING_CHECKLIST.md` for full publishing guide
 
 ### Required External Setup

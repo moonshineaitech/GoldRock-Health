@@ -8,7 +8,8 @@ import { eq } from "drizzle-orm";
  */
 
 const DEMO_EMAIL = "appreviewer@goldrock.com";
-const DEMO_PASSWORD = "AppReview2025!"; // For documentation only - Replit Auth manages passwords
+const DEMO_PASSWORD = "GoldRock2026!";
+const DEMO_USER_ID = "demo-appstore-reviewer";
 
 export async function seedDemoAccount() {
   console.log("🌱 Seeding demo account for App Store review...");
@@ -46,15 +47,16 @@ export async function seedDemoAccount() {
       const newUsers = await db
         .insert(users)
         .values({
+          id: DEMO_USER_ID,
           email: DEMO_EMAIL,
           firstName: "App",
           lastName: "Reviewer",
           subscriptionStatus: "active",
           subscriptionPlan: "annual",
-          subscriptionEndsAt: null, // Never expires for demo
+          subscriptionEndsAt: null,
           acceptedAiTerms: true,
           aiTermsAcceptedAt: new Date(),
-          aiTermsVersion: "1.0",
+          aiTermsVersion: "2.0.0",
         })
         .returning();
       

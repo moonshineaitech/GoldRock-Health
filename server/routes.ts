@@ -163,6 +163,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
 
+  const demoLoginAttempts = new Map<string, { count: number; resetAt: number }>();
+  
+  app.post('/api/demo-login', async (req: any, res) => {
+    try {
+      const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+      const now = Date.now();
+      const attempt = demoLoginAttempts.get(ip);
+      if (attempt && now < attempt.resetAt) {
+        if (attempt.count >= 5) {
+          return res.status(429).json({ message: 'Too many login attempts. Please try again later.' });
+        }
+        attempt.count++;
+      } else {
+        demoLoginAttempts.set(ip, { count: 1, resetAt: now + 15 * 60 * 1000 });
+      }
+
+      const { email, password } = req.body;
+      
+      if (email !== 'appreviewer@goldrock.com' || password !== 'GoldRock2026!') {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+
+      const demoUser = await storage.getUserByEmail('appreviewer@goldrock.com');
+      if (!demoUser) {
+        return res.status(404).json({ message: 'Demo account not found. Please restart the server.' });
+      }
+
+      req.login({
+        claims: { sub: demoUser.id, email: demoUser.email },
+        expires_at: Math.floor(Date.now() / 1000) + 86400,
+      }, (err: any) => {
+        if (err) {
+          console.error('Demo login session error:', err);
+          return res.status(500).json({ message: 'Login failed' });
+        }
+        res.json({ 
+          message: 'Demo login successful',
+          user: { id: demoUser.id, email: demoUser.email, firstName: demoUser.firstName, lastName: demoUser.lastName }
+        });
+      });
+    } catch (error) {
+      console.error('Demo login error:', error);
+      res.status(500).json({ message: 'Login failed' });
+    }
+  });
+
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
@@ -2804,10 +2850,13 @@ Now respond to the user's current message:`;
       // Analyze the bill with expert AI prompting (Gemini 3 Flash with OpenAI fallback)
       if (billText) {
         try {
+          const { anonymizeBillText: anonymizeBill } = await import('./utils/pii-anonymizer');
+          const { anonymized: anonymizedBill } = anonymizeBill(billText);
+          
           const analysisPrompt = `You are a medical bill reduction expert with 25+ years of experience. Analyze this bill to find errors and savings.
 
 BILL CONTENT:
-${billText}
+${anonymizedBill}
 
 FORMATTING RULES (IMPORTANT):
 - Write in plain, conversational English
@@ -3350,10 +3399,13 @@ What specific insurance issue are you facing? I can provide exact templates and 
       
       const { billText } = validationResult.data;
       
+      const { anonymizeBillText } = await import('./utils/pii-anonymizer');
+      const { anonymized: anonymizedBillText, mappings: piiMappings } = anonymizeBillText(billText);
+      
       const prompt = `You are a medical billing expert. Analyze this medical bill and provide a comprehensive summary in JSON format.
 
 MEDICAL BILL TEXT:
-${billText}
+${anonymizedBillText}
 
 Respond with ONLY valid JSON (no markdown, no backticks) in this exact format:
 {
@@ -7481,6 +7533,19 @@ Format as a complete letter ready to send.`;
       res.status(500).json({ error: "Failed to fetch usage" });
     }
   });
+
+  const runCleanup = async () => {
+    try {
+      const result = await storage.cleanupOldData(30);
+      if (result.billsDeleted > 0 || result.chatsDeleted > 0) {
+        console.log(`[Auto-Cleanup] Deleted ${result.billsDeleted} bills, ${result.chatsDeleted} chats older than 30 days`);
+      }
+    } catch (err) {
+      console.error('[Auto-Cleanup] Error:', err);
+    }
+  };
+  setTimeout(runCleanup, 60000);
+  setInterval(runCleanup, 24 * 60 * 60 * 1000);
 
   const httpServer = createServer(app);
   return httpServer;
