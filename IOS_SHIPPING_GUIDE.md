@@ -184,7 +184,7 @@ In your new app's page:
 
 Apple's review team will need to test your app. A demo account is already configured:
 
-- **Email**: `appreviewer@goldrock.com`
+- **Email**: `appreviewer@goldrockhealth.com`
 - **Password**: Set this up in your app's backend (it's already pre-configured with Premium access that never expires)
 
 When submitting, you'll enter these credentials in the "App Review Information" section.
@@ -484,7 +484,7 @@ medical bills, bill reduction, healthcare savings, negotiate medical, insurance 
 
 6. **App Review Information**:
    - Contact: CONTACT@GOLDROCK.ai
-   - Demo Account Username: `appreviewer@goldrock.com`
+   - Demo Account Username: `appreviewer@goldrockhealth.com`
    - Demo Account Password: (your demo password)
    - Notes to reviewer: `This app uses AI to analyze medical bills. The demo account has Premium access with sample bills pre-loaded. Tap "AI Bill Analysis" to see the core feature.`
 

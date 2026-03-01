@@ -277,7 +277,7 @@ If supporting iPad (currently iPhone-only in capacitor.config.ts)
 
 **Demo Account Credentials:**
 ```
-Email: appreviewer@goldrock.com
+Email: appreviewer@goldrockhealth.com
 Password: [Managed by Replit Auth - use Google/Apple/Email login with this email]
 ```
 ✅ **DEMO ACCOUNT IS PRE-CONFIGURED:**
@@ -315,7 +315,7 @@ DISCLAIMERS SHOWN TO USERS:
 ---
 
 TESTING INSTRUCTIONS:
-1. Log in with appreviewer@goldrock.com (has Premium access - you'll see a "Demo Account" banner)
+1. Log in with appreviewer@goldrockhealth.com (has Premium access - you'll see a "Demo Account" banner)
 2. View Dashboard to see 3 pre-analyzed sample bills showing $13,900+ potential savings
 3. Tap any bill to view detailed AI analysis with:
    - Itemized overcharge breakdown
@@ -371,7 +371,7 @@ REVENUE MODEL:
 - No ads, no data selling, no hidden fees
 
 DEMO ACCOUNT FEATURES:
-The demo account (appreviewer@goldrock.com) demonstrates the full Premium experience:
+The demo account (appreviewer@goldrockhealth.com) demonstrates the full Premium experience:
 - Premium Annual subscription (active, no expiration required)
 - 3 anonymized sample medical bills pre-loaded with AI analysis
 - Total potential savings displayed: $13,900 across all bills

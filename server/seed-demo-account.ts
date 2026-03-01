@@ -4,10 +4,10 @@ import { eq } from "drizzle-orm";
 
 /**
  * Demo Account Seeding for App Store Reviewers
- * Creates appreviewer@goldrock.com with Premium access and sample bills
+ * Creates appreviewer@goldrockhealth.com with Premium access and sample bills
  */
 
-const DEMO_EMAIL = "appreviewer@goldrock.com";
+const DEMO_EMAIL = "appreviewer@goldrockhealth.com";
 const DEMO_PASSWORD = "GoldRock2026!";
 const DEMO_USER_ID = "demo-appstore-reviewer";
 

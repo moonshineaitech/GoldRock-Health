@@ -5,7 +5,7 @@ export function DemoAccountBanner() {
   const { user } = useAuth();
   
   // Only show for demo account
-  if (user?.email !== "appreviewer@goldrock.com") {
+  if (user?.email !== "appreviewer@goldrockhealth.com") {
     return null;
   }
 

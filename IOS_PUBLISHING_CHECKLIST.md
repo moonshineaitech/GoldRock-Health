@@ -89,7 +89,7 @@ Apple requires detailed privacy disclosures before app submission:
 ## App Store Review Requirements
 
 ### Demo Account
-- [x] Email: `appreviewer@goldrock.com`
+- [x] Email: `appreviewer@goldrockhealth.com`
 - [x] Premium subscription pre-activated (never expires)
 - [x] 3 sample medical bills with AI analysis
 - [x] Full access to all premium features
@@ -239,7 +239,7 @@ Before submitting to App Store, verify StoreKit integration works:
 
 ### 2.1 - App Completeness
 **Issue**: App crashes or has bugs
-**Response**: Tested extensively; demo account (appreviewer@goldrock.com) provides full access.
+**Response**: Tested extensively; demo account (appreviewer@goldrockhealth.com) provides full access.
 
 ### 5.1.1 - Data Collection
 **Issue**: Privacy policy or data disclosures insufficient

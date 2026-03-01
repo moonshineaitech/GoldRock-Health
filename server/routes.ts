@@ -181,11 +181,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { email, password } = req.body;
       
-      if (email !== 'appreviewer@goldrock.com' || password !== 'GoldRock2026!') {
+      if (email !== 'appreviewer@goldrockhealth.com' || password !== 'GoldRock2026!') {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      const demoUser = await storage.getUserByEmail('appreviewer@goldrock.com');
+      const demoUser = await storage.getUserByEmail('appreviewer@goldrockhealth.com');
       if (!demoUser) {
         return res.status(404).json({ message: 'Demo account not found. Please restart the server.' });
       }

@@ -222,14 +222,14 @@ const authenticateWithBiometrics = async () => {
 ## Phase 6: Testing & Launch (Week 7-8)
 
 ### 6.1 Demo Account Setup ✅
-- [x] Create appreviewer@goldrock.com demo account
+- [x] Create appreviewer@goldrockhealth.com demo account
 - [x] Pre-load sample medical bills
 - [x] Generate AI analysis for sample bills
 - [x] Activate Premium subscription
 - [x] Document testing instructions
 
 **Demo Account Details:**
-- ✅ Email: appreviewer@goldrock.com
+- ✅ Email: appreviewer@goldrockhealth.com
 - ✅ Password: AppReview2025!
 - ✅ Status: Premium (Annual)
 - ✅ Sample bills: 5 pre-loaded with analysis

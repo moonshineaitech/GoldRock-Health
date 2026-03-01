@@ -241,7 +241,7 @@ Navigate to **Monetization** > **Subscriptions**:
 Under **App Review Information**:
 
 - **Sign-in required**: Yes
-- **Demo Account Email**: `appreviewer@goldrock.com`
+- **Demo Account Email**: `appreviewer@goldrockhealth.com`
 - **Demo Account Password**: `TestReview2025!`
 - **Notes for Reviewer**: Copy the reviewer notes from [`docs/app-store-metadata.md`](docs/app-store-metadata.md) (see the "App Review Information" section)
 

@@ -159,8 +159,8 @@ https://goldrock.ai/terms-of-service
 ## App Review Information
 
 ### Demo Account Credentials
-**Email:** appreviewer@goldrock.com  
-**Password:** AppReview2025!
+**Email:** appreviewer@goldrockhealth.com  
+**Password:** GoldRock2026!
 
 ### Notes for Reviewer
 
@@ -168,7 +168,7 @@ Thank you for reviewing GoldRock AI!
 
 **How to Test:**
 
-1. Log in with demo account (appreviewer@goldrock.com / AppReview2025!)
+1. Log in with demo account (appreviewer@goldrockhealth.com / GoldRock2026!)
 2. The account has Premium access pre-activated
 3. Sample medical bills are already loaded in the account
 4. Test the AI analysis by clicking any bill

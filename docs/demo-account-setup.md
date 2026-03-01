@@ -2,7 +2,7 @@
 
 ## Demo Account Credentials
 
-**Email:** appreviewer@goldrock.com  
+**Email:** appreviewer@goldrockhealth.com  
 **Password:** GoldRock2026!  
 **Status:** Premium Active (Annual Plan, never expires)  
 **Login Method:** Tap "App Store Reviewer? Sign in here" on the landing page  
@@ -47,7 +47,7 @@ psql $DATABASE_URL
 INSERT INTO users (id, email, name, subscription_status, subscription_plan, stripe_customer_id, created_at)
 VALUES (
   'demo-reviewer-001',
-  'appreviewer@goldrock.com',
+  'appreviewer@goldrockhealth.com',
   'App Store Reviewer',
   'active',
   'annual',
