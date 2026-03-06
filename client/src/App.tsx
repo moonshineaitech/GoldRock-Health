@@ -97,6 +97,7 @@ import DataInsights from "@/pages/data-insights";
 import PartnerApi from "@/pages/partner-api";
 import DocumentVault from "@/pages/document-vault";
 import DataSecurity from "@/pages/data-security";
+import CommandCenter2026 from "@/pages/command-center-2026";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -131,7 +132,8 @@ const AI_PROTECTED_ROUTES = [
   '/lab-analyzer',
   '/drug-interactions',
   '/symptom-checker',
-  '/negotiation-simulator'
+  '/negotiation-simulator',
+  '/command-center'
 ];
 
 // Component wrapper to protect AI routes
@@ -217,6 +219,11 @@ function Router() {
       <DemoAccountBanner />
       <Switch>
       <Route path="/ai-agreement" component={AiUsageAgreement} />
+      <Route path="/command-center">
+        <AIRouteGuard path="/command-center">
+          <CommandCenter2026 />
+        </AIRouteGuard>
+      </Route>
       <Route path="/" component={Landing} />
       <Route path="/get-started" component={GetStarted} />
       <Route path="/training">

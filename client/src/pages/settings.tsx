@@ -508,17 +508,17 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
             Medical Disclaimer
           </h2>
-          <MobileCard className="bg-amber-50 border border-amber-200">
+          <MobileCard className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
             <div className="flex items-start space-x-3 py-1">
-              <div className="w-8 h-8 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                <AlertTriangle className="h-4 w-4 text-amber-600" />
+              <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               </div>
               <div>
-                <p className="font-medium text-amber-900">Important Medical Notice</p>
-                <p className="text-sm text-amber-700 mt-1">
+                <p className="font-medium text-amber-900 dark:text-amber-100">Important Medical Notice</p>
+                <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
                   This app provides educational information and billing analysis only. Not medical advice. Always consult a licensed physician for health decisions.
                 </p>
               </div>
@@ -531,7 +531,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
             Data Management
           </h2>
           <MobileCard>
@@ -554,7 +554,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
             Danger Zone
           </h2>
           <AccountDeletion userEmail={user?.email || undefined} />
@@ -566,14 +566,14 @@ export default function Settings() {
           transition={{ delay: 0.5 }}
         >
           <a href="/api/logout" className="block">
-            <MobileCard className="hover:bg-gray-50 transition-colors cursor-pointer">
+            <MobileCard className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
               <div className="flex items-center space-x-3 py-1">
-                <div className="w-10 h-10 bg-gray-100 rounded-2xl flex items-center justify-center">
-                  <LogOut className="h-5 w-5 text-gray-600" />
+                <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center">
+                  <LogOut className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-gray-900">Log Out</h3>
-                  <p className="text-sm text-gray-600">Sign out of your account</p>
+                  <h3 className="font-bold text-gray-900 dark:text-white">Log Out</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Sign out of your account</p>
                 </div>
               </div>
             </MobileCard>

@@ -24,7 +24,7 @@ Preferred communication style: Simple, everyday language.
 - **Database**: PostgreSQL with Drizzle ORM
 - **Session Management**: Session-based for user progress
 - **API Design**: RESTful endpoints
-- **AI Integration**: Orchestration layer using Google Gemini 3 Flash with OpenAI fallback for various AI-powered features (bill analysis, eligibility checks, benefit explanations).
+- **AI Integration**: Orchestration layer using Google Gemini 2.5 Flash with OpenAI fallback for various AI-powered features (bill analysis, eligibility checks, benefit explanations).
 
 ### Database Schema
 - **Medical Cases**: Comprehensive case data for patient demographics, symptoms, history, exams, lab results, and diagnoses.
@@ -86,7 +86,7 @@ Preferred communication style: Simple, everyday language.
 ### AI and Data Services
 - **AlphaFold DB API**: Access to 200M+ pre-computed AlphaFold structures.
 - **Mol***: 3D molecular viewer.
-- **Google Gemini 3 Flash**: Primary AI provider for various AI endpoints (preview model, March 2026).
+- **Google Gemini 2.5 Flash**: Primary AI provider for various AI endpoints (latest stable, March 2026).
 - **OpenAI GPT-5**: Used for real AI bill analysis.
 
 ### Payment Gateways

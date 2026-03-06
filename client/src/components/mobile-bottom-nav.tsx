@@ -12,7 +12,8 @@ import {
   Lightbulb,
   Brain,
   Stethoscope,
-  Dna
+  Dna,
+  LayoutGrid
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSubscription } from "@/hooks/useSubscription";
@@ -31,8 +32,8 @@ const navItems: NavItem[] = [
   {
     id: "home",
     label: "Home",
-    icon: Home,
-    path: "/",
+    icon: LayoutGrid,
+    path: "/command-center",
     color: "#3B82F6",
     bgGradient: "blue"
   },

@@ -41,7 +41,7 @@ const THINKING_BUDGETS: Record<ThinkingLevel, number> = {
   HIGH: 24576,
 };
 
-const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
+const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 export class GeminiService {
   private apiKey: string;
