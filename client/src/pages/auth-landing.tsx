@@ -1529,7 +1529,7 @@ export default function AuthLanding() {
                   Support
                 </Link>
                 <a 
-                  href="mailto:contact@goldrock.ai" 
+                  href="mailto:CONTACT@GOLDROCK.ai" 
                   className="text-gray-400 hover:text-emerald-400 transition-colors"
                   data-testid="footer-link-email-landing"
                 >

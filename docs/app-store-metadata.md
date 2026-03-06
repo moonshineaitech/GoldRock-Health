@@ -1,249 +1,274 @@
-# GoldRock AI - App Store Metadata
+# GoldRock Health — App Store Metadata (March 2026)
 
 ## App Information
 
-**App Name:** GoldRock AI  
-**Subtitle:** AI Medical Bill Reduction  
-**Bundle ID:** com.eldestai.goldrockhealth  
-**SKU:** GOLDROCK-HEALTH-001  
-**Primary Category:** Medical  
-**Secondary Category:** Finance  
+**App Name:** GoldRock Health
+**Subtitle:** AI Medical Bill Advocate
+**Bundle ID:** com.goldrockhealth.app
+**SKU:** GOLDROCK-HEALTH-001
+**Primary Category:** Health & Fitness
+**Secondary Category:** Finance
+
+---
 
 ## App Description
 
 ### Short Description (30 characters max)
-Fight medical bills with AI
+AI medical bill advocate
+
+### Promotional Text (170 characters max)
+Your AI-powered medical bill advocate. Upload bills, detect overcharges, generate dispute letters, and get step-by-step coaching to reduce what you owe. Start saving today.
 
 ### Full Description (4000 characters max)
 
-**Example Potential: $2,000-$35,000+ on Your Medical Bills with AI-Powered Analysis**
+GoldRock Health is your AI-powered medical bill advocate — designed to help you understand, challenge, and reduce unfair medical charges.
 
-GoldRock AI is your AI fighter against unfair medical billing. Upload your medical bills, get instant AI analysis, and access expert strategies to reduce your healthcare costs by thousands of dollars.
-
-**Why GoldRock AI?**
-
-• **AI Bill Analysis:** Our advanced AI scans every line item, detecting overcharges, billing errors, and negotiation opportunities in seconds
-
-• **Personalized Reduction Strategies:** Get custom action plans tailored to your specific bills, insurance, and situation
-
-• **Expert Dispute Templates:** Access professionally-written dispute letters and negotiation scripts that have saved users thousands
-
-• **Bill Timing Intelligence:** Know exactly when to pay, when to wait, and when to negotiate for maximum savings
-
-• **Insurance Code Mastery:** Understand CPT codes, modifiers, and billing practices that hospitals don't want you to know
-
-• **Financial Hardship Programs:** Discover hospital assistance programs and charity care you qualify for
+Medical billing is broken. Bills arrive filled with codes you can't read, charges you can't verify, and amounts that don't match what others pay. GoldRock Health puts AI analysis and professional advocacy tools in your hands so you can fight back.
 
 **How It Works:**
 
-1. **Snap & Upload:** Take a photo of your medical bill or upload a PDF
-2. **AI Analysis:** Our AI analyzes every charge in under 60 seconds
-3. **Get Strategies:** Receive personalized reduction tactics and dispute templates
-4. **Take Action:** Follow our step-by-step guidance to slash your bills
-5. **Track Results:** Monitor your savings and progress in real-time
+1. Upload Your Bill — Snap a photo or upload a PDF of any medical bill
+2. AI Analysis — Our AI scans every line item, identifies potential overcharges, decodes CPT/ICD billing codes, and compares charges against fair pricing data
+3. Get Your Action Plan — Receive personalized reduction strategies, ready-to-use dispute letters, and phone scripts tailored to your situation
+4. Take Action — Follow step-by-step coaching to negotiate directly with billing departments
+5. Track Progress — Monitor your bills, savings, and dispute status in one place
 
-**Key Features:**
+**Core Features:**
 
-✓ AI-powered bill scanning and analysis
-✓ Line-by-line overcharge detection
-✓ Personalized negotiation strategies
-✓ Dispute letter generator
-✓ Hospital billing practices database
-✓ Financial assistance program finder
-✓ CPT code decoder and explainer
-✓ Timing optimization for payments
-✓ Success tracking and analytics
-✓ 24/7 AI chat support
+- AI Bill Analysis: Upload any medical bill for instant line-by-line review. Our AI flags duplicate charges, upcoding, unbundling, and pricing above fair market rates.
+
+- Dispute Letter Generator: Generate professionally-written dispute letters customized to your specific bill, citing relevant billing codes and consumer protections.
+
+- Negotiation Coaching: Get phone scripts, timing strategies, and step-by-step guidance for calling hospital billing departments.
+
+- Bill Summarizer: Translates complex medical bills into plain English. Understand exactly what you're being charged for and why.
+
+- Document Vault: Securely store and organize your medical bills, EOBs, insurance letters, and receipts in one encrypted location.
+
+- Collections Defense: If a bill has gone to collections, access specialized strategies including FDCPA protections, debt validation letters, and negotiation tactics.
+
+- Insurance Benefits Explainer: Understand your insurance plan's coverage, copays, and deductibles with AI-powered explanations.
+
+- Financial Assistance Finder: Discover hospital charity care programs, hardship discounts, and payment plan options you may qualify for.
+
+- Health & Wellness Tools: Lab result reference guide, medication information lookup, symptom library, and personal health journal.
 
 **Who This Is For:**
 
-• Anyone with medical bills over $500
-• Uninsured or underinsured patients
-• People with high-deductible health plans
-• Families facing financial hardship from medical costs
-• Anyone who's been overcharged by hospitals
-
-**Our Track Record:**
-
-• Example outcomes show potential savings of $8,200
-• 94% find billing errors or overcharges
-• Example data shows 3x faster resolution
-• Trusted by 10,000+ Americans fighting unfair bills
-
-**Premium Features ($25/month or $299/year):**
-
-• Unlimited bill uploads and analysis
-• Advanced AI negotiation coaching
-• Priority dispute template access
-• Expert billing insights
-• Premium support
-
-**Medical Disclaimer:**
-
-This app provides educational information and billing analysis only. It is not a substitute for professional medical, legal, or financial advice. Always consult qualified professionals for health-related decisions.
+- Anyone who received a medical bill they think is too high
+- Patients with high-deductible health plans
+- Uninsured or underinsured individuals
+- Families facing medical debt or bills in collections
+- Anyone who wants to understand what they're actually being charged for
 
 **Privacy & Security:**
 
-• Bank-level encryption
-• HIPAA-compliant data handling
-• No data selling or sharing
-• Easy account deletion
-• Full privacy control
+- AES-256 encryption at rest, TLS 1.3 in transit
+- Personal information is stripped from bill data before AI processing
+- 30-day automatic data deletion (or delete anytime in Settings)
+- Full data export available
+- No advertising, no data selling, no third-party tracking
+- AI providers (OpenAI, Google) operate under Data Processing Agreements prohibiting training on your data
 
-**Why We Built This:**
+**Pricing:**
 
-We believe healthcare costs shouldn't bankrupt American families. GoldRock AI empowers you with the same AI tools and strategies used by professional medical billing advocates—putting the power back in your hands.
+GoldRock Health Premium unlocks unlimited AI analysis, advanced coaching, and the full dispute template library.
+- Monthly: $24.99/month
+- Annual: $249.99/year (save 17%)
 
-Download GoldRock AI today and start fighting back against unfair medical bills.
+Free users can explore the platform and access educational content.
+
+**Important:**
+
+GoldRock Health provides billing analysis and advocacy tools for informational purposes. It is not a substitute for professional medical, legal, or financial advice. Results vary based on individual circumstances.
+
+Questions? Reach us at CONTACT@GOLDROCK.ai
 
 ---
 
-*Note: Results vary by individual circumstances. Past savings do not guarantee future results.*
-
 ## Keywords (100 characters max, comma-separated)
 
-medical bills,healthcare costs,hospital bill,reduce medical debt,billing errors,insurance,health finance,medical debt,bill negotiation,AI health
+medical bill,hospital bill,healthcare costs,medical debt,bill negotiation,overcharge,dispute,billing
 
 ## What's New (4000 characters max)
 
-**Version 1.0 - Initial Release**
+**Version 1.0 — Launch Release**
 
-Welcome to GoldRock AI! 🎉
+GoldRock Health is here to help you fight unfair medical bills.
 
-We're excited to help you fight unfair medical bills with the power of AI. This initial release includes:
+**AI Bill Analysis**
+- Upload bills via camera or PDF
+- Line-by-line overcharge detection
+- CPT/ICD code decoding and fair price comparison
 
-✨ **AI Bill Analysis**
-• Upload bills via camera or photo library
-• Instant AI-powered overcharge detection
-• Line-by-line cost breakdown
+**Advocacy Tools**
+- Dispute letter generator with customizable templates
+- Negotiation phone scripts and timing strategies
+- Collections defense with FDCPA protections
+- Financial assistance program finder
 
-💰 **Reduction Strategies**
-• Personalized negotiation tactics
-• Dispute letter templates
-• Financial assistance finder
+**Document Vault**
+- Securely store medical bills, EOBs, and insurance letters
+- Encrypted storage with 30-day auto-deletion
 
-📊 **Premium Features**
-• Unlimited bill uploads
-• Advanced AI coaching
-• Expert billing insights
+**Health & Wellness**
+- Lab result reference tool
+- Medication information lookup
+- Symptom library
+- Personal health journal
 
-🔒 **Privacy First**
-• Bank-level encryption
-• Easy account deletion
-• Full data control
+**Privacy First**
+- AES-256 encryption
+- PII stripped before AI processing
+- Full data export and deletion controls
+- No ads, no tracking, no data selling
 
-We're committed to helping Americans identify potential savings on medical bills. Have feedback? Contact us at support@goldrock.ai
+Questions or feedback? Contact us at CONTACT@GOLDROCK.ai
 
-Thank you for trusting GoldRock AI with your medical billing challenges!
-
-## Promotional Text (170 characters max)
-
-Fight back against unfair medical bills! AI-powered analysis finds overcharges & errors in seconds. Save $2,000-$35,000+ with expert strategies. Download now!
+---
 
 ## Support URL
 
-https://goldrock.ai/support
+https://goldrockhealth.com/support
 
 ## Marketing URL
 
-https://goldrock.ai
+https://goldrockhealth.com
 
 ## Privacy Policy URL
 
-https://goldrock.ai/privacy-policy
+https://goldrockhealth.com/privacy-policy
 
 ## Terms of Service URL
 
-https://goldrock.ai/terms-of-service
+https://goldrockhealth.com/terms-of-service
+
+---
 
 ## App Review Information
 
 ### Demo Account Credentials
-**Email:** appreviewer@goldrockhealth.com  
+
+**Email:** appreviewer@goldrockhealth.com
 **Password:** GoldRock2026!
 
 ### Notes for Reviewer
 
-Thank you for reviewing GoldRock AI!
+Thank you for reviewing GoldRock Health.
 
-**How to Test:**
+**Quick Start (2 minutes):**
 
-1. Log in with demo account (appreviewer@goldrockhealth.com / GoldRock2026!)
-2. The account has Premium access pre-activated
-3. Sample medical bills are already loaded in the account
-4. Test the AI analysis by clicking any bill
-5. Explore the reduction strategies, dispute templates, and coaching features
+1. On the landing page, tap "App Store Reviewer? Sign in here"
+2. Enter the demo credentials above (email/password login)
+3. The account has Premium access pre-activated with 3 sample medical bills already loaded
 
-**Key Features to Test:**
+**What to Test:**
 
-• **Bill Upload:** Tap "Upload Bill" → Use camera or photo library (sample bills available in Photos app)
-• **AI Analysis:** View instant bill analysis with overcharge detection
-• **Reduction Strategies:** Access personalized negotiation tactics
-• **Dispute Templates:** Generate customized dispute letters
-• **Account Deletion:** Settings → Account Deletion (please don't actually delete the demo account!)
+BILL ANALYSIS (Core Feature):
+- Tap "Bill AI" in the bottom navigation
+- Select any of the 3 pre-loaded sample bills to see full AI analysis results
+- Each bill shows: line-by-line charge breakdown, identified issues (overcharges, duplicates), potential savings, and recommended actions
+- Try "Upload Bill" to test the camera/photo upload flow (you can use any image)
 
-**Privacy Compliance:**
+DISPUTE TOOLS:
+- From any analyzed bill, tap "Generate Dispute Letter" to see a customized letter
+- Explore the Dispute Arsenal for template library and legal protections reference
 
-• Medical disclaimer shown on first app launch
-• Account deletion available in Settings (completes in < 5 minutes)
-• All data handling disclosed in Privacy Policy
-• Camera/photo permissions requested only when needed
-• No third-party tracking or advertising
+DOCUMENT VAULT:
+- Tap the vault icon to access secure document storage
+- Test upload functionality (accepts JPEG, PNG, WebP, PDF up to 10MB)
+- A Healthcare Consent Modal appears before first upload explaining data handling
 
-**Subscription Testing:**
+HEALTH & WELLNESS:
+- Access via "Tools" in bottom navigation
+- Lab Analyzer: reference ranges and explanations
+- Drug Info: medication lookup
+- Symptom Library: educational symptom reference
+- Health Journal: personal vitals tracking
 
-• Sandbox Stripe test mode enabled
-• Use test card: 4242 4242 4242 4242
-• Any future expiry date and 3-digit CVC
+SETTINGS & PRIVACY:
+- Settings > Data Security: view encryption details, AI provider disclosures, export/delete controls
+- Settings > Account Deletion: full account deletion (please don't delete the demo account)
 
-**Health Data Handling (2026 Requirement):**
+**Privacy & Health Data Compliance:**
 
-• Users see a Healthcare PHI Consent Modal before entering any bill details (at Bill Advocate Step 3 and Document Vault upload). Modal explains exactly what happens to their data.
-• AI Usage Agreement v2.0 includes a dedicated "Healthcare Billing Data" section and a third consent checkbox specifically for sensitive health data.
-• Medical billing data is encrypted AES-256 at rest, TLS 1.3 in transit, stored on US-only servers.
-• Bill analyses and chat history are automatically deleted after 30 days.
-• Users can delete all health data at any time via Settings > Data Security (/data-security).
-• OpenAI and Google (Gemini) operate under Data Processing Agreements that prohibit training on user data.
-• HIPAA-aligned practices; BAA available for enterprise customers on request.
+- Healthcare PHI Consent Modal appears before any bill data entry or document upload. Users must acknowledge data handling before proceeding.
+- AI Usage Agreement v2.0 with dedicated Healthcare Billing Data section and explicit consent checkbox for sensitive health data processing.
+- Personal information (names, SSNs, addresses, phone numbers, member IDs) is automatically stripped from bill text before sending to AI providers. Only billing codes, descriptions, and charge amounts are processed by AI.
+- Medical billing data encrypted AES-256 at rest, TLS 1.3 in transit.
+- Automatic 30-day data deletion with user-accessible manual deletion at any time via Settings > Data Security.
+- AI providers (OpenAI, Google/Gemini) operate under Data Processing Agreements prohibiting use of data for model training.
+- Full data export available via Settings.
 
-**Important Notes:**
+**Subscription Information:**
 
-• This is a medical billing assistance app, NOT a medical diagnosis tool
-• All AI analysis is for informational purposes only
-• Medical disclaimer prominently displayed throughout app
-• We do not provide medical advice or treatment
+- Demo account has Premium pre-activated (no purchase needed to test all features)
+- In-App Purchases use StoreKit/RevenueCat:
+  - Monthly: $24.99/month (auto-renewable)
+  - Annual: $249.99/year (auto-renewable)
+- Subscription management available in Settings
+- Restore purchases functionality included
+
+**Classification Note:**
+
+GoldRock Health is a medical billing advocacy and financial wellness tool. It helps users understand and dispute medical charges. It does NOT provide medical diagnoses, treatment recommendations, or clinical decision-making. All health reference tools (symptom library, lab reference, medication info) are educational only.
+
+**Camera Usage:**
+
+Camera permission is requested only when the user taps "Upload Bill" and chooses to take a photo. It is used exclusively for capturing images of medical bills for AI analysis.
 
 **Contact:**
 
 For review questions: CONTACT@GOLDROCK.ai
 
-Thank you for your time!
+---
 
 ## Age Rating
 
-**Age Rating:** 17+  
-**Reason:** Medical/Treatment Information
+**Age Rating:** 12+
+**Reason:** Infrequent/Mild Medical/Treatment Information
+
+---
 
 ## Content Rights
 
-I confirm that I have the rights to upload this content and it complies with Apple's Terms and Conditions.
+I confirm that I have the rights to distribute this content and it complies with Apple's Terms and Conditions.
+
+---
 
 ## Export Compliance
 
-This app does not use encryption beyond standard HTTPS.
+**Uses Encryption:** Yes
+**Exempt from Export Compliance:** Yes
+**Reason:** Uses standard HTTPS/TLS for network communication and AES-256 for local data encryption. These are standard, widely available encryption methods exempt under Category 5, Part 2 of the EAR.
 
-**Export Compliance:** No  
-**Contains Proprietary Encryption:** No
+---
 
 ## App Store Categories
 
-**Primary Category:** Medical  
+**Primary Category:** Health & Fitness
 **Secondary Category:** Finance
 
-## App Store Icons & Screenshots
+---
 
-See `/docs/app-store-assets/` folder for:
-- App icon (1024x1024)
-- iPhone screenshots (6.7", 6.5", 5.5")
-- iPad screenshots (12.9", 11")
-- App preview videos (optional)
+## In-App Purchases
+
+| Reference Name | Product ID | Type | Price |
+|:---------------|:-----------|:-----|:------|
+| Monthly Premium | com.goldrockhealth.app.monthly | Auto-Renewable Subscription | $24.99 |
+| Annual Premium | com.goldrockhealth.app.annual | Auto-Renewable Subscription | $249.99 |
+
+**Subscription Group:** GoldRock Health Premium
+
+---
+
+## Screenshot Guidance
+
+Capture these screens for App Store screenshots (iPhone 6.7", 6.5", 5.5"):
+
+1. **Landing Page** — Hero section with tagline "The Healthcare System Wasn't Built for You. We Are."
+2. **Bill AI Dashboard** — Show an analyzed bill with overcharge detection highlighted
+3. **AI Analysis Results** — Line-by-line breakdown with savings identified
+4. **Dispute Letter** — Generated dispute letter ready to send
+5. **Document Vault** — Secure storage interface with uploaded bills
+6. **Health Tools** — Clinical Command Center with lab analyzer, drug info, symptom library

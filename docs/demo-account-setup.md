@@ -199,12 +199,12 @@ Sample bill PDFs and images are available in the iOS Photos app on the demo devi
 2. **Medical Disclaimer** - This app provides billing education, NOT medical advice
 3. **Data Privacy** - All sample data is fictional and for testing only
 4. **Subscription** - Premium access is pre-activated, no payment required for review
-5. **Support** - Contact support@goldrockhealth.com for review questions
+5. **Support** - Contact CONTACT@GOLDROCK.ai for review questions
 
 ## Emergency Contact
 
 **For urgent review questions:**
-- Email: support@goldrockhealth.com
+- Email: CONTACT@GOLDROCK.ai
 - Phone: +1 (555) 123-4567 (business hours: 9 AM - 5 PM MT)
 
 ## Resetting Demo Account

@@ -83,7 +83,7 @@
 **Screenshot 5: Premium Features**
 - Title: "Unlock Unlimited Bill Analysis"
 - Show: Premium subscription benefits
-- Highlight: $25/month or $299/year pricing
+- Highlight: $24.99/month or $249.99/year pricing
 
 **Screenshot 6: Privacy & Security**
 - Title: "Your Data, Your Control"

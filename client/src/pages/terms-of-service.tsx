@@ -116,9 +116,9 @@ export default function TermsOfService() {
           <h3 className="text-lg font-medium text-gray-900 mb-3">2.3 Subscription Plans and Pricing</h3>
           <p className="mb-4">We offer the following subscription plans:</p>
           <ul className="list-disc pl-6 mb-4">
-            <li><strong>Monthly Premium:</strong> $25/month with automatic monthly renewal</li>
-            <li><strong>Annual Premium:</strong> $249/year with automatic annual renewal (save $51 vs monthly)</li>
-            <li><strong>Lifetime Access:</strong> $747 one-time payment for permanent access</li>
+            <li><strong>Monthly Premium:</strong> $24.99/month with automatic monthly renewal</li>
+            <li><strong>Annual Premium:</strong> $249.99/year with automatic annual renewal (save 17% vs monthly)</li>
+            <li><strong>Lifetime Access:</strong> $747 one-time payment for permanent access (web only, not available on iOS)</li>
           </ul>
           <p className="mb-4">
             Subscription pricing is subject to change with 30 days' prior notice. Existing subscribers will be grandfathered at their current rate 

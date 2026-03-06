@@ -230,7 +230,7 @@ const authenticateWithBiometrics = async () => {
 
 **Demo Account Details:**
 - ✅ Email: appreviewer@goldrockhealth.com
-- ✅ Password: AppReview2025!
+- ✅ Password: GoldRock2026!
 - ✅ Status: Premium (Annual)
 - ✅ Sample bills: 5 pre-loaded with analysis
 

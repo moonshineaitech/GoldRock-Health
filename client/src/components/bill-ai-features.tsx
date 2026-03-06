@@ -70,14 +70,12 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   
-  // Enhanced dispute letter templates with comprehensive success data
   const disputeTemplates = [
     {
       id: 'professional',
       name: 'Professional & Direct',
       description: 'Firm but respectful tone for clear billing errors',
-      successRate: '78%',
-      avgSavings: '$3,200',
+      approach: 'Most common',
       bestFor: 'Obvious overcharges, duplicate charges',
       icon: Shield,
       timeframe: '14-21 days',
@@ -88,8 +86,7 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
       id: 'legal-heavy',
       name: 'Legal-Referenced',
       description: 'Cites specific laws and regulations',
-      successRate: '85%',
-      avgSavings: '$8,900',
+      approach: 'Strongest leverage',
       bestFor: 'Complex billing violations, EMTALA issues',
       icon: FileEdit,
       timeframe: '21-30 days',
@@ -100,8 +97,7 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
       id: 'compassionate',
       name: 'Financial Hardship',
       description: 'Emphasizes patient financial situation',
-      successRate: '71%',
-      avgSavings: '$5,100',
+      approach: 'Fastest response',
       bestFor: 'High bills, payment plan requests',
       icon: DollarSign,
       timeframe: '10-14 days',
@@ -112,8 +108,7 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
       id: 'evidence-based',
       name: 'Evidence-Heavy',
       description: 'Detailed documentation and proof',
-      successRate: '82%',
-      avgSavings: '$12,300',
+      approach: 'Most thorough',
       bestFor: 'Insurance denials, medical necessity disputes',
       icon: AlertTriangle,
       timeframe: '30-45 days',
@@ -124,8 +119,7 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
       id: 'emergency-specific',
       name: 'Emergency Care Rights',
       description: 'Specialized for ER surprise billing',
-      successRate: '89%',
-      avgSavings: '$18,500',
+      approach: 'Best for ER bills',
       bestFor: 'Emergency room surprise bills, EMTALA violations',
       icon: AlertTriangle,
       timeframe: '14-21 days',
@@ -136,8 +130,7 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
       id: 'insurance-appeal',
       name: 'Insurance Appeal Strategy',
       description: 'Targets insurance company denials',
-      successRate: '76%',
-      avgSavings: '$9,800',
+      approach: 'Best for denials',
       bestFor: 'Insurance claim denials, prior auth issues',
       icon: Shield,
       timeframe: '60-90 days',
@@ -148,8 +141,7 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
       id: 'audit-challenge',
       name: 'Medical Coding Audit',
       description: 'Technical coding error identification',
-      successRate: '91%',
-      avgSavings: '$15,700',
+      approach: 'Most technical',
       bestFor: 'Incorrect CPT codes, upcoding violations',
       icon: FileText,
       timeframe: '21-35 days',
@@ -174,8 +166,7 @@ export function DisputeLetterGenerator({ onSendMessage }: FeatureProps) {
     const prompt = `I need you to create a comprehensive, legally-compliant medical bill dispute letter using the "${selectedTemplateData?.name}" strategy that follows the exact format and language that has proven successful in obtaining hospital billing corrections and refunds.
 
 STRATEGY DETAILS:
-- Success Rate: ${selectedTemplateData?.successRate}
-- Average Savings: ${selectedTemplateData?.avgSavings}
+- Approach: ${selectedTemplateData?.approach}
 - Specializes in: ${selectedTemplateData?.specialties?.join(', ')}
 - Expected Timeline: ${selectedTemplateData?.timeframe}
 - Difficulty Level: ${selectedTemplateData?.difficulty}
@@ -234,10 +225,10 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-lg font-bold text-gray-900">AI Dispute Letter Generator</h3>
             <Badge className="bg-emerald-600 text-white text-xs">
-              94% Success Rate
+              AI-Powered
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Professional letters that get results • $50M+ saved</p>
+          <p className="text-sm text-gray-600">Professional dispute letters customized to your specific bill</p>
         </div>
       </div>
       
@@ -276,12 +267,12 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
                     <p className="text-sm text-gray-600 mb-3">{template.description}</p>
                     <div className="grid grid-cols-3 gap-3 text-xs">
                       <div>
-                        <span className="text-gray-500">Success Rate:</span>
-                        <div className="font-semibold text-emerald-600">{template.successRate}</div>
+                        <span className="text-gray-500">Approach:</span>
+                        <div className="font-semibold text-emerald-600">{template.approach}</div>
                       </div>
                       <div>
-                        <span className="text-gray-500">Avg. Savings:</span>
-                        <div className="font-semibold text-blue-600">{template.avgSavings}</div>
+                        <span className="text-gray-500">Difficulty:</span>
+                        <div className="font-semibold text-blue-600">{template.difficulty}</div>
                       </div>
                       <div>
                         <span className="text-gray-500">Timeline:</span>
@@ -319,7 +310,7 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
               })()}
             </div>
             <p className="text-xs text-blue-700 leading-relaxed">
-              This approach has a {disputeTemplates.find(t => t.id === selectedTemplate)?.successRate} success rate with average savings of {disputeTemplates.find(t => t.id === selectedTemplate)?.avgSavings}. Expected response time: {disputeTemplates.find(t => t.id === selectedTemplate)?.timeframe}.
+              {disputeTemplates.find(t => t.id === selectedTemplate)?.approach} approach for {disputeTemplates.find(t => t.id === selectedTemplate)?.bestFor}. Expected response time: {disputeTemplates.find(t => t.id === selectedTemplate)?.timeframe}.
             </p>
           </div>
           
@@ -1115,10 +1106,10 @@ The appeal package should demonstrate sophisticated understanding of insurance o
         <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
           <div className="flex items-center space-x-2 mb-2">
             <FileEdit className="h-4 w-4 text-indigo-600" />
-            <span className="text-sm font-medium text-indigo-700">Appeal Success Rate</span>
+            <span className="text-sm font-medium text-indigo-700">Appeal Pathways</span>
           </div>
-          <p className="text-sm text-indigo-700">Internal appeals: 50-60% success rate</p>
-          <p className="text-xs text-indigo-600">External reviews: 20-40% success rate</p>
+          <p className="text-sm text-indigo-700">Covers internal and external appeal pathways</p>
+          <p className="text-xs text-indigo-600">Includes required medical documentation framework</p>
         </div>
 
         <Button
@@ -1253,9 +1244,9 @@ This appeal must be designed to compel ${selectedCompanyData?.name} to overturn 
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-lg font-bold text-gray-900">Advanced Appeal Generator</h3>
-            <Badge className="bg-emerald-600 text-white text-xs">91% Success Rate</Badge>
+            <Badge className="bg-emerald-600 text-white text-xs">AI-Powered</Badge>
           </div>
-          <p className="text-sm text-gray-600">Elite insurance appeal system • $500M+ recovered</p>
+          <p className="text-sm text-gray-600">AI-powered insurance appeal system</p>
         </div>
       </div>
 
@@ -1428,9 +1419,9 @@ This documentation must meet insurance company medical director standards and fo
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-lg font-bold text-gray-900">Medical Necessity Builder</h3>
-            <Badge className="bg-blue-600 text-white text-xs">89% Success Rate</Badge>
+            <Badge className="bg-blue-600 text-white text-xs">AI-Powered</Badge>
           </div>
-          <p className="text-sm text-gray-600">Clinical justification expert • 20+ years experience</p>
+          <p className="text-sm text-gray-600">AI-assisted clinical justification builder</p>
         </div>
       </div>
 

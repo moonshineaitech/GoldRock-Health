@@ -1378,9 +1378,9 @@ export default function Landing() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
-              { icon: Brain, label: "AI-Powered Analysis", desc: "GPT-4 medical bill scanner", gradient: "from-purple-600 to-indigo-600", glow: "rgba(139, 92, 246, 0.2)" },
-              { icon: Award, label: "Expert Strategies", desc: "Marshall Allen's tactics", gradient: "from-emerald-600 to-teal-600", glow: "rgba(16, 185, 129, 0.2)" },
-              { icon: ShieldCheck, label: "Legal Templates", desc: "87-94% success rates", gradient: "from-blue-600 to-cyan-600", glow: "rgba(59, 130, 246, 0.2)" }
+              { icon: Brain, label: "AI-Powered Analysis", desc: "Advanced medical bill scanner", gradient: "from-purple-600 to-indigo-600", glow: "rgba(139, 92, 246, 0.2)" },
+              { icon: Award, label: "Expert Strategies", desc: "Professional advocacy tactics", gradient: "from-emerald-600 to-teal-600", glow: "rgba(16, 185, 129, 0.2)" },
+              { icon: ShieldCheck, label: "Legal Templates", desc: "Professional dispute letters", gradient: "from-blue-600 to-cyan-600", glow: "rgba(59, 130, 246, 0.2)" }
             ].map((credential, index) => (
               <motion.div
                 key={index}

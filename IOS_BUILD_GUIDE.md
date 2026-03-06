@@ -212,7 +212,7 @@ SUBSCRIPTION OPTIONS:
 
 SECURITY & PRIVACY:
 • Bank-level encryption for all medical data
-• HIPAA-compliant data handling
+• HIPAA-aligned data practices
 • Secure authentication via Replit Auth
 • No data sold to third parties
 
@@ -339,7 +339,7 @@ NATIVE FEATURES USED:
 
 PAYMENT IMPLEMENTATION (COMPLIES WITH APP STORE GUIDELINES):
 - iOS Native: StoreKit In-App Purchases via RevenueCat (PRIMARY - native payment processing)
-  - Product IDs: goldrock_premium_monthly ($29.99/mo), goldrock_premium_annual ($299.99/yr)
+  - Product IDs: goldrock_premium_monthly ($24.99/mo), goldrock_premium_annual ($249.99/yr)
   - RevenueCat handles receipt validation and subscription management
   - Webhook endpoint: /api/webhooks/revenuecat for real-time sync
 - Web Browser: Stripe checkout (fully functional for web users only)
@@ -348,7 +348,7 @@ PAYMENT IMPLEMENTATION (COMPLIES WITH APP STORE GUIDELINES):
 
 SECURITY & COMPLIANCE:
 - All medical data encrypted at rest (AES-256) and in transit (TLS 1.3)
-- HIPAA-compliant data handling with bank-level encryption
+- HIPAA-aligned data practices with bank-level encryption
 - Medical disclaimers displayed on first use (educational purpose only, not medical advice)
 - Privacy Manifest (PrivacyInfo.xcprivacy) declares:
   - Data collection: Health info, financial info for app functionality only
@@ -401,8 +401,8 @@ Thank you for reviewing GoldRock AI. We've designed this platform to empower use
 **Price:** Free (with in-app subscription)
 
 **In-App Purchases** (configure in App Store Connect):
-- Premium Monthly: $29.99/month
-- Premium Annual: $299.99/year (17% savings)
+- Premium Monthly: $24.99/month
+- Premium Annual: $249.99/year (17% savings)
 
 ✅ **Payment Strategy - StoreKit IAP via RevenueCat (Primary) + Stripe (Web Fallback):**  
 
@@ -426,12 +426,12 @@ npx cap sync ios
 Create these subscription products in App Store Connect:
 - **Product ID:** `goldrock_premium_monthly`
   - Type: Auto-renewable subscription
-  - Price: $29.99/month
+  - Price: $24.99/month
   - Subscription Group: "GoldRock Premium"
 
 - **Product ID:** `goldrock_premium_annual`
   - Type: Auto-renewable subscription
-  - Price: $299.99/year (17% savings)
+  - Price: $249.99/year (17% savings)
   - Subscription Group: "GoldRock Premium"
 
 **3. RevenueCat Dashboard Setup:**
@@ -701,5 +701,5 @@ npx cap copy ios
 ---
 
 **Questions or Issues?**  
-Contact: contact@goldrock.ai  
+Contact: CONTACT@GOLDROCK.ai  
 Last Updated: January 2025
