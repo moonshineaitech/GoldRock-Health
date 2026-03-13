@@ -50,17 +50,17 @@ Preferred communication style: Simple, everyday language.
 - **Global Rate Limiting** (`express-rate-limit`): 60 requests/minute on all API endpoints. AI-heavy endpoints (bill analysis, dispute generation, chat, voice synthesis, enrollment) additionally limited to 10 requests/minute. Demo login limited to 5 attempts per 15 minutes.
 - **AI Usage Agreement v2.0**: Updated with explicit Healthcare Billing Data section, AES-256/TLS 1.3 security language, named AI providers (OpenAI, Google) with DPA disclosure, and a third consent checkbox for sensitive health data. Re-prompts all existing v1.0.0 users.
 - **PII Anonymization** (`server/utils/pii-anonymizer.ts`): Strips patient names, SSNs, phone numbers, emails, addresses, DOBs, member IDs, and account numbers from bill text before sending to AI providers. Only billing codes, descriptions, and charge amounts reach AI. Original data preserved locally for user display.
-- **Auto-Cleanup Scheduler**: 30-day auto-deletion of old bills and chat data runs daily via setInterval in routes.ts. Uses `storage.cleanupOldData(30)`.
+- **Auto-Cleanup Scheduler**: 30-day auto-deletion of old bills and chat data runs daily via setInterval in routes.ts. Uses `storage.cleanupOldData(30)`. Deletes in correct FK dependency order: chat messages/sessions first, then generated_documents → reduction_strategies → bill_analysis_results → bill_grader_scores → savings_reports → bill_timeline_events → insurance_denial_cases → bill_documents → medical_bills.
 - **Demo Account Login** (`POST /api/demo-login`): Email/password bypass for App Store reviewer (appreviewer@goldrockhealth.com / GoldRock2026!). Creates session without Replit Auth. Frontend form on landing page.
 - **Healthcare PHI Consent Modal** (`client/src/components/healthcare-consent-modal.tsx`): Shown before any bill data entry (Bill Advocate Step 3) and Document Vault upload. Uses localStorage key `grh_healthcare_consent_v1` to show only once. Plain-English explanation of encryption, AI processing, 30-day deletion, and user controls.
 - **Data Security Hub** (`/data-security`): Dedicated page accessible from Settings > Data Security. Shows encryption standards, retention timelines, AI processor disclosures (OpenAI/Google with DPA status), export/delete controls, biometric lock toggle, and HIPAA-aligned practices note.
 - **PrivacyInfo.xcprivacy (2026)**: Updated with all Required Reason APIs: FileTimestamp (C617.1), UserDefaults (CA92.1), SystemBootTime (35F9.1), DiskSpace (E174.1), ActiveKeyboards (54BD.1). Added SensitiveInfo and OtherUserContent data types.
 - **iOS Publishing Checklist**: `IOS_PUBLISHING_CHECKLIST.md` includes a dedicated 2026 compliance section tracking all new requirements.
 
-### Mobile Application (iOS Native via Capacitor)
-- **Platform**: Capacitor (wraps React web app, ~90% code reuse)
-- **Native Plugins**: Camera, Local Notifications, Push Notifications, Share, Haptics, App, Status Bar, Splash Screen, Preferences, Network.
-- **Payment Processing**: Dual rail system with StoreKit In-App Purchases (via RevenueCat) for iOS and Stripe for web.
+### Mobile Application (iOS)
+- **Recommended Approach**: Native Swift WKWebView wrapper (`ios-native/` directory) — lightweight, no third-party framework dependency. See `ios-native/SHIP_TO_APP_STORE.md` for submission guide.
+- **Alternative**: Capacitor wrapper also available (wraps React web app, ~90% code reuse).
+- **Payment Processing**: Dual rail system — Stripe for web purchases; on iOS native (Capacitor), RevenueCat/StoreKit handles IAP with lifetime plan web-only (Apple policy).
 
 ## External Dependencies
 

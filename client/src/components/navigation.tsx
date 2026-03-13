@@ -67,7 +67,7 @@ export function Navigation() {
                 </div>
               </div>
             </div>
-            <Link href="/achievements" className="text-slate-700 hover:text-indigo-600 transition-colors font-medium">
+            <Link href="/progress" className="text-slate-700 hover:text-indigo-600 transition-colors font-medium">
               Progress
             </Link>
             <Button asChild className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl font-medium hover:shadow-lg transition-all duration-300">

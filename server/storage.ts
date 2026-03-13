@@ -17,6 +17,12 @@ import {
   medicalBills,
   billAnalysisResults,
   reductionStrategies,
+  generatedDocuments,
+  billGraderScores,
+  savingsReports,
+  billTimelineEvents,
+  insuranceDenialCases,
+  billDocuments,
   chatSessions,
   chatMessages,
   syntheticPatients,
@@ -1226,15 +1232,7 @@ export class DatabaseStorage implements IStorage {
       const oldBills = await db.select().from(medicalBills)
         .where(sql`${medicalBills.createdAt} < ${cutoffDate}`);
       
-      let billsDeleted = 0;
-      for (const bill of oldBills) {
-        await db.delete(billAnalysisResults).where(eq(billAnalysisResults.billId, bill.id));
-        await db.delete(reductionStrategies).where(eq(reductionStrategies.billId, bill.id));
-        billsDeleted++;
-      }
-      await db.delete(medicalBills).where(sql`${medicalBills.createdAt} < ${cutoffDate}`);
-
-      // Clean up old chat sessions and messages
+      // Clean up old chat sessions and messages first (chatSessions.billId references medicalBills)
       const oldChatSessions = await db.select().from(chatSessions)
         .where(sql`${chatSessions.createdAt} < ${cutoffDate}`);
       
@@ -1244,6 +1242,21 @@ export class DatabaseStorage implements IStorage {
         chatsDeleted++;
       }
       await db.delete(chatSessions).where(sql`${chatSessions.createdAt} < ${cutoffDate}`);
+
+      let billsDeleted = oldBills.length;
+      if (oldBills.length > 0) {
+        const oldBillIds = oldBills.map(b => b.id);
+        const idList = sql.join(oldBillIds.map(id => sql`${id}`), sql`, `);
+        await db.delete(generatedDocuments).where(sql`${generatedDocuments.billId} IN (${idList})`);
+        await db.delete(reductionStrategies).where(sql`${reductionStrategies.billId} IN (${idList})`);
+        await db.delete(billAnalysisResults).where(sql`${billAnalysisResults.billId} IN (${idList})`);
+        await db.delete(billGraderScores).where(sql`${billGraderScores.billId} IN (${idList})`);
+        await db.delete(savingsReports).where(sql`${savingsReports.billId} IN (${idList})`);
+        await db.delete(billTimelineEvents).where(sql`${billTimelineEvents.billId} IN (${idList})`);
+        await db.delete(insuranceDenialCases).where(sql`${insuranceDenialCases.billId} IN (${idList})`);
+        await db.delete(billDocuments).where(sql`${billDocuments.billId} IN (${idList})`);
+        await db.delete(medicalBills).where(sql`${medicalBills.createdAt} < ${cutoffDate}`);
+      }
 
       // Clean up voice cache (file system cleanup would require additional implementation)
       let voiceCacheCleared = false;

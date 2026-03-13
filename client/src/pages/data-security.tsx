@@ -25,7 +25,10 @@ export default function DataSecurity() {
   );
 
   const exportMutation = useMutation({
-    mutationFn: () => apiRequest("POST", "/api/user/export-data"),
+    mutationFn: async () => {
+      const res = await apiRequest("GET", "/api/user/export-data");
+      return await res.json();
+    },
     onSuccess: (data: any) => {
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);

@@ -784,7 +784,7 @@ export default function AuthLanding() {
               { icon: Receipt, label: "Bill Playbook", href: "/hospital-bill-playbook", description: "Reduce bills now", gradient: "from-emerald-500 to-green-600", featured: true },
               { icon: Target, label: "Industry Secrets", href: "/api/login?redirect=/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
               { icon: FileText, label: "Templates", href: "/api/login?redirect=/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
-              { icon: Trophy, label: "Achievements", href: "/api/login?redirect=/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
+              { icon: Trophy, label: "Progress", href: "/api/login?redirect=/progress", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
             ].map((item, index) => (
               <motion.a
                 key={item.label}

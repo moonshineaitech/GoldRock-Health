@@ -712,7 +712,7 @@ export default function Landing() {
               { icon: Receipt, label: "Bill Playbook", href: "/hospital-bill-playbook", description: "Reduce bills now", gradient: "from-emerald-500 to-green-600", featured: true },
               { icon: Target, label: "Industry Secrets", href: "/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
               { icon: FileText, label: "Templates", href: "/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
-              { icon: Trophy, label: "Achievements", href: "/achievements", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
+              { icon: Trophy, label: "Progress", href: "/progress", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
             ].map((item, index) => (
               <Link key={item.label} href={item.href}>
                 <motion.div

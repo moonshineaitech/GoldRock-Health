@@ -335,9 +335,9 @@ RESPONSE RULES - STRICTLY FOLLOW:
       } else if (lowerMessage.includes('charity') || lowerMessage.includes('financial assistance') || lowerMessage.includes('afford') || lowerMessage.includes('hardship')) {
         suggestedWorkflow = { path: '/bill-advocate', label: 'Find Financial Assistance' };
       } else if (lowerMessage.includes('insurance') || lowerMessage.includes('coverage') || lowerMessage.includes('benefit') || lowerMessage.includes('deductible') || lowerMessage.includes('eob')) {
-        suggestedWorkflow = { path: '/benefits-explainer', label: 'Understand My Insurance' };
+        suggestedWorkflow = { path: '/insurance-benefits', label: 'Understand My Insurance' };
       } else if (lowerMessage.includes('medicare') || lowerMessage.includes('medicaid') || lowerMessage.includes('enroll')) {
-        suggestedWorkflow = { path: '/medicare-enrollment', label: 'Medicare/Medicaid Help' };
+        suggestedWorkflow = { path: '/enrollment', label: 'Medicare/Medicaid Help' };
       } else if (lowerMessage.includes('bill') || lowerMessage.includes('charge') || lowerMessage.includes('hospital') || lowerMessage.includes('er ') || lowerMessage.includes('surgery')) {
         suggestedWorkflow = { path: '/bill-advocate', label: 'Analyze My Bill' };
       } else if (lowerMessage.includes('right') || lowerMessage.includes('law') || lowerMessage.includes('protect')) {
