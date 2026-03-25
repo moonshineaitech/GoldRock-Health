@@ -133,8 +133,8 @@ export default function ImportantDisclaimer() {
                   provider policies, and negotiation success.
                 </p>
                 <p className="text-gray-700 leading-relaxed font-medium">
-                  Users report average savings of <strong>$2,000-$35,000+</strong>, but your results may differ. 
-                  These figures represent user-reported outcomes and are not guarantees of future performance.
+                  Many users report meaningful savings, but your results will vary based on your specific situation. 
+                  Past outcomes are not guarantees of future performance.
                 </p>
               </div>
             </div>

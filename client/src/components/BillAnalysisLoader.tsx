@@ -62,7 +62,7 @@ const analysisStages = [
     color: "text-green-500",
     bgColor: "bg-green-100",
     duration: 3800,
-    details: "Calculating potential savings: $2,000 - $35,000+"
+    details: "Calculating your potential savings opportunities"
   },
   {
     icon: AlertTriangle,
@@ -94,17 +94,17 @@ const analysisStages = [
 ];
 
 const savingsFacts = [
-  "80% of medical bills contain billing errors worth $2,000-$35,000+",
-  "Average patient saves $8,500 when disputing billing errors professionally",
-  "Hospital markup on services averages 417% above actual cost",
-  "Most hospitals offer 25-90% charity care discounts for qualifying patients",
-  "Bundled services are often illegally unbundled for 300-800% higher charges",
-  "Emergency room charges vary 1,000% between hospitals for identical care",
-  "Many patients qualify for 50-90% bill reductions they don't know about",
-  "Medicare rates are often 60-80% lower than what hospitals charge patients",
-  "Professional bill disputes succeed in 78% of cases with proper documentation",
-  "AI analysis finds an average of 12.3 billing errors per hospital statement",
-  "Patients who negotiate save an average of $6,200 per major medical bill",
+  "Medical billing errors are common — always review your itemized bill carefully",
+  "Many patients find overcharges when they compare bills to Medicare fair pricing",
+  "Hospitals often have significant markup on services above actual cost",
+  "Most hospitals offer charity care discounts for qualifying patients",
+  "Bundled services are sometimes improperly unbundled, leading to higher charges",
+  "Emergency room charges can vary widely between hospitals for identical care",
+  "Many patients qualify for financial assistance programs they don't know about",
+  "Medicare rates are publicly available and useful for comparing what you're charged",
+  "Proper documentation strengthens any bill dispute significantly",
+  "AI analysis can help identify billing errors that are easy to overlook",
+  "Patients who negotiate their bills often see meaningful reductions",
   "Out-of-network bills can often be reduced to in-network rates with advocacy"
 ];
 

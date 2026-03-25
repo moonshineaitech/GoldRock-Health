@@ -96,7 +96,7 @@ export default function TermsOfService() {
           
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">2.1 Creating and Safeguarding your Account</h3>
           <p className="mb-4">
-            To use certain of the Services, you need to create an account or link another account, such as your Apple, Facebook, Google, or Replit account 
+            To use certain of the Services, you need to create an account or link another account, such as your Apple or Google account 
             ("<strong>Account</strong>"). You agree to provide us with accurate, complete and updated information for your Account. You can access, edit and 
             update your Account through the Website, App, or via email to <strong>CONTACT@GOLDROCK.ai</strong>. You are solely responsible for any 
             activity on your Account and for maintaining the confidentiality and security of your Account credentials. You should never share or disclose 

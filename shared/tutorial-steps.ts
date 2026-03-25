@@ -19,7 +19,7 @@ export const tutorialSteps: TutorialStep[] = [
   {
     id: 'welcome',
     title: '👋 Welcome to GoldRock Health!',
-    description: 'Your AI-powered medical bill reduction platform. We\'ll help you save $2,000-$35,000+ on inflated hospital bills through expert analysis and negotiation strategies.',
+    description: 'Your AI-powered medical bill reduction platform. We help you find billing errors and negotiate lower medical bills through expert analysis and proven strategies.',
     page: '/',
     position: 'center',
     action: 'none',

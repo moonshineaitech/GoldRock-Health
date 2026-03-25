@@ -3283,8 +3283,8 @@ Provide detailed analysis with specific dollar amounts, error categories, and pr
 EXPERT KNOWLEDGE BASE:
 
 CORE FACTS:
-- 80% of medical bills contain errors worth $2,000-$35,000+
-- Average reductions: 50-90% with proper strategies
+- Medical billing errors are common — patients should always request an itemized bill
+- Significant reductions are often possible with proper strategies and documentation
 - Bills typically go to collections after 90-120 days (use this window to negotiate)
 - Charity care available even WITH insurance
 
@@ -3329,7 +3329,7 @@ RESPONSE GUIDELINES:
         // Enhanced fallback responses with expert bill reduction knowledge
         const messageLower = message.toLowerCase();
         if (messageLower.includes('bill') || messageLower.includes('charge') || messageLower.includes('hospital') || messageLower.includes('cost') || messageLower.includes('reduce') || messageLower.includes('expensive')) {
-          response = `🚨 CRITICAL: Don't pay that bill immediately! 80% of medical bills contain errors worth $2,000-$35,000+.
+          response = `🚨 CRITICAL: Don't pay that bill immediately! Medical billing errors are very common — always review before paying.
 
 IMMEDIATE ACTION PLAN:
 1. REQUEST ITEMIZED BILL: Call and say "I need a complete itemized statement with all CPT and ICD-10 codes, service dates, and provider information within 5 business days."
@@ -3355,15 +3355,15 @@ PROFESSIONAL APPEAL APPROACH:
 
 APPEAL SUCCESS RATES: 50-60% for internal appeals, 20-40% for external reviews.
 
-For medical bills after insurance, remember: 80% contain errors and average reductions are 50-90% with proper negotiation.
+For medical bills after insurance, remember: billing errors are common and significant reductions are often possible with proper negotiation.
 
 What specific insurance issue are you facing? I can provide exact templates and strategies.`;
         } else if (messageLower.includes('symptom') || messageLower.includes('pain') || messageLower.includes('fever')) {
-          response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.\n\nAs a medical bill reduction specialist, I also help patients save 50-90% on medical costs through expert negotiation strategies if you receive any bills from your care.";
+          response = "For any concerning symptoms, especially persistent pain or fever, it's important to consult with a healthcare provider for proper evaluation and diagnosis. If you're experiencing severe symptoms, seek immediate medical attention.\n\nAs a medical bill reduction specialist, I also help patients find savings on medical costs through expert negotiation strategies if you receive any bills from your care.";
         } else if (messageLower.includes('medication') || messageLower.includes('prescription')) {
           response = "Please consult your doctor or pharmacist about medications and prescriptions. They can provide personalized advice based on your medical history and current health status.\n\nIf you're concerned about prescription costs, I can also help with medical bill reduction strategies and pharmaceutical assistance programs.";
         } else {
-          response = "I'm a bill reduction expert specializing in both health guidance and medical bill reduction. I help patients save $2,000-$35,000+ through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies that typically reduce bills by 50-90%.\n\nHow can I help you today?";
+          response = "I'm a bill reduction expert specializing in both health guidance and medical bill reduction. I help patients identify billing errors and find savings through expert negotiation strategies.\n\nFor medical questions, I provide guidance while recommending you consult healthcare providers.\nFor billing questions, I offer professional-grade strategies to help reduce your bills.\n\nHow can I help you today?";
         }
       }
 

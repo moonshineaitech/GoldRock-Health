@@ -119,9 +119,9 @@ export function ChargeMasterDecoder({ onSendMessage }: InsiderStrategyProps) {
     }
 
     setIsAnalyzing(true);
-    const prompt = `I need you to execute a comprehensive CHARGE MASTER SECRETS DECODING STRATEGY using insider hospital revenue cycle knowledge. This should be a step-by-step tactical approach that leverages insider secrets to force massive bill reductions.
+    const prompt = `Provide a comprehensive CHARGE MASTER ANALYSIS to help this patient understand their hospital billing and negotiate a fair price.
 
-CHARGE MASTER INTELLIGENCE INPUTS:
+BILLING DETAILS:
 - Hospital System: ${strategyData.hospitalSystem}
 - Bill Amount: $${strategyData.billAmount}
 - Service Type: ${strategyData.serviceType}
@@ -129,51 +129,32 @@ CHARGE MASTER INTELLIGENCE INPUTS:
 - Facility Type: ${strategyData.facilityType}
 - Current Strategy Step: ${currentStep}/4
 
-Execute CHARGE MASTER DECODING STRATEGY with the following insider tactics:
+Provide analysis covering these areas:
 
-**STEP 1: HOSPITAL INTELLIGENCE GATHERING**
-- Revenue cycle vulnerabilities specific to this hospital system
-- Executive compensation structures and performance pressure points
-- Recent financial performance and cash flow pressures
-- Regulatory compliance issues and audit vulnerabilities
-- Insider knowledge of billing department KPIs and metrics
+**STEP 1: BILLING RESEARCH**
+- How to look up this hospital's publicly available charge master and pricing data
+- Where to find Medicare cost reports for price comparison
+- How to use CMS price transparency data for this facility type
 
-**STEP 2: CHARGE MASTER PRICING ALGORITHM DECODING**
-- Calculate actual markup percentages using insider cost-to-charge ratios
-- Identify pricing manipulation patterns used by this hospital system
-- Reveal hidden pricing rules and algorithmic overcharging methods
-- Compare charges to Medicare cost reports and insider cost data
-- Expose charity care qualification secrets and hidden criteria
+**STEP 2: CHARGE ANALYSIS**
+- How to calculate markup by comparing charges to Medicare rates
+- Common billing patterns to look for with this type of service
+- How to verify charges against publicly available fair pricing data
+- How to check charity care eligibility at this facility
 
-**STEP 3: REVENUE CYCLE VULNERABILITY EXPLOITATION**
-- Target specific billing department pressure points and weaknesses
-- Identify collection cost thresholds and break-even analysis
-- Map decision-making authority and escalation bypass methods
-- Exploit patient satisfaction score impacts on executive compensation
-- Apply regulatory compliance pressure at vulnerable points
+**STEP 3: NEGOTIATION STRATEGY**
+- Effective approaches for contacting the billing department
+- How to request a fair price adjustment with supporting data
+- When and how to escalate to a patient advocate or supervisor
+- How to apply for financial assistance programs
 
-**STEP 4: INSIDER PRESSURE APPLICATION & BILL REDUCTION**
-- Execute insider negotiation triggers that force immediate reductions
-- Apply executive escalation tactics using insider authority maps
-- Leverage charity care budget allocations and internal quotas
-- Use compliance violation threats and regulatory pressure points
-- Implement board-level escalation strategies for maximum impact
+**STEP 4: DOCUMENTATION & FOLLOW-UP**
+- What to document during each call and interaction
+- How to write an effective appeal letter
+- Timeline and deadlines to be aware of
+- When to involve your state's patient advocacy resources
 
-**INSIDER SECRETS TO REVEAL:**
-- Exact markup percentages and pricing manipulation methods
-- Internal cost accounting that proves overcharging
-- Executive compensation metrics tied to billing revenue
-- Hidden charity care qualifications and approval criteria
-- Revenue department KPIs that can be exploited for bill reduction
-
-**TACTICAL IMPLEMENTATION:**
-- Specific language and pressure points that trigger immediate action
-- Direct contact information and escalation pathways to decision makers
-- Timing strategies that exploit hospital financial and audit cycles
-- Documentation requirements that force compliance department attention
-- Media pressure tactics that protect hospital reputation concerns
-
-Provide step-by-step tactical instructions with specific dollar amounts, contact strategies, and insider pressure tactics that would not be available to the general public. Include insider secrets, executive pressure points, and hospital-specific vulnerabilities.`;
+Provide practical, step-by-step guidance with specific scripts, timing recommendations, and documentation tips.`;
 
     onSendMessage(prompt);
     setIsAnalyzing(false);
@@ -188,9 +169,9 @@ Provide step-by-step tactical instructions with specific dollar amounts, contact
       {!isSubscribed && (
         <PremiumPaywallOverlay
           title="Charge Master Secrets Decoder"
-          description="Insider secrets that reveal hospital pricing manipulation tactics and force massive bill reductions using charge master vulnerabilities."
-          featureName="Charge Master Intelligence"
-          savingsPotential="$25,000-$500,000+"
+          description="Understand how hospital pricing works and get data-driven negotiation strategies based on publicly available charge master data."
+          featureName="Charge Master Analysis"
+          savingsPotential="Varies by case"
         />
       )}
       

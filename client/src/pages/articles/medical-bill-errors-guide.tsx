@@ -133,7 +133,7 @@ export default function MedicalBillErrorsGuide() {
                 The Complete Guide to Finding Errors on Your Medical Bill
               </h1>
               <p className="text-xl text-gray-400 mb-6">
-                Medical billing errors occur in up to 80% of hospital bills, costing Americans 
+                Medical billing errors are extremely common in hospital bills, costing Americans 
                 billions of dollars annually. Learn to identify the 12 most common mistakes 
                 and how to dispute them.
               </p>
@@ -152,8 +152,8 @@ export default function MedicalBillErrorsGuide() {
                     <div>
                       <h3 className="text-lg font-semibold text-red-400 mb-2">The Problem is Massive</h3>
                       <p className="text-gray-300">
-                        According to a 2024 study, <strong>medical billing errors occur in 80% of hospital bills</strong>. 
-                        These errors result in overcharges totaling over $68 billion annually in the United States. 
+                        Medical billing errors are one of the most common issues patients face. 
+                        These errors result in significant overcharges across the United States. 
                         Most patients never check their bills, meaning they pay for errors without knowing it.
                       </p>
                     </div>

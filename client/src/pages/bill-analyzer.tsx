@@ -104,7 +104,7 @@ ESCALATION SCRIPT (if initial request denied):
 
 ENHANCED ANALYSIS OPPORTUNITY:
 
-This itemized documentation reveals specific line items where 80% of bills contain errors. Professional advocates use a 47-point error detection checklist focusing on:
+This itemized documentation reveals specific line items where billing errors commonly occur. Professional advocates use an error detection checklist focusing on:
 - Duplicate charges for same procedure
 - Wrong procedure codes (upcoding)
 - Unbundled charges (should be packaged)
@@ -335,15 +335,15 @@ What specific billing errors have you identified that need to be included in you
     // Default response with enhanced Bill Reduction Guide strategies
     return `I am a medical bill reduction specialist with expertise in identifying overcharges and negotiating substantial reductions for patients facing large medical bills.
 
-🎯 KEY INSIGHT: 80% of medical bills contain errors worth $2,000-$35,000+ in total overcharges annually.
+🎯 KEY INSIGHT: Medical billing errors are very common — always review your itemized bill before paying.
 
 CORE SPECIALIZATION AREAS:
 
-📊 SYSTEMATIC BILL ANALYSIS (Professional 47-Point Error Detection):
+📊 SYSTEMATIC BILL ANALYSIS (Professional Error Detection):
    • Identifying billing errors using proven methodologies
    • Cross-referencing charges against medical records  
    • Detecting upcoding, duplicate billing, phantom charges, and unbundling schemes
-   • Professional advocates find 3-8 errors per bill worth $2,000-$35,000
+   • Professional advocates regularly find multiple errors per bill
 
 ⚖️ STRATEGIC TIMING ADVANTAGE:
    • DON'T PAY IMMEDIATELY - Use your 90-120 day collection window

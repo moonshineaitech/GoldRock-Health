@@ -533,7 +533,7 @@ const practiceStrategies = [
       "Cross-reference insurance EOB with hospital charges"
     ],
     tips: [
-      "Hospitals make errors on 80% of bills - always request itemized breakdown",
+      "Billing errors are very common - always request an itemized breakdown",
       "Emergency room visits are most prone to overbilling",
       "Surgical procedures often include 'phantom' charges for unused supplies",
       "Room charges should match exact admission/discharge times"
@@ -602,7 +602,7 @@ const practiceStrategies = [
       "File complaints with state insurance commissioner if needed"
     ],
     tips: [
-      "80% of insurance denials are never appealed - they count on this",
+      "Most insurance denials are never appealed - they count on this",
       "Emergency services can't be denied for prior authorization",
       "Get everything in writing - verbal approvals don't count",
       "Use medical provider's National Provider Identifier (NPI) in appeals"

@@ -52,7 +52,7 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
       {
         label: 'Billing Error Detection',
         value: `$${Math.round(amount * 0.08).toLocaleString()} - $${Math.round(amount * 0.15).toLocaleString()}`,
-        description: 'Studies show 80% of bills contain errors. Conservative estimate: 8-15%',
+        description: 'Medical billing errors are common. Conservative estimate: 8-15%',
         icon: CheckCircle2,
         color: 'text-emerald-600',
         bgColor: 'bg-emerald-100'

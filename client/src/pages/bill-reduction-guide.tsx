@@ -129,21 +129,21 @@ export default function BillReductionGuide() {
         >
           <div className="text-center mb-4">
             <h1 className="text-xl font-black text-emerald-700 mb-2">Expert Bill Reduction Strategies</h1>
-            <p className="text-sm text-emerald-600">Professional techniques that save patients $2,000-$35,000+</p>
+            <p className="text-sm text-emerald-600">Professional techniques to help you reduce your medical bills</p>
           </div>
           
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center">
-              <div className="text-2xl font-black text-emerald-700">80%</div>
-              <div className="text-xs text-emerald-600">Bills Have Errors</div>
+              <div className="text-2xl font-black text-emerald-700">Common</div>
+              <div className="text-xs text-emerald-600">Billing Errors</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-black text-emerald-700">50-90%</div>
-              <div className="text-xs text-emerald-600">Avg Reduction</div>
+              <div className="text-2xl font-black text-emerald-700">Real</div>
+              <div className="text-xs text-emerald-600">Savings Found</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-black text-emerald-700">95%</div>
-              <div className="text-xs text-emerald-600">Success Rate</div>
+              <div className="text-2xl font-black text-emerald-700">Proven</div>
+              <div className="text-xs text-emerald-600">Strategies</div>
             </div>
           </div>
         </motion.div>
@@ -1287,7 +1287,7 @@ Respectfully,
           <Heart className="h-8 w-8 mx-auto mb-2" />
           <h3 className="font-bold text-lg mb-1">Ready to Start Saving?</h3>
           <p className="text-emerald-100 text-sm mb-3">
-            Join thousands who've reduced their medical bills by $2,000-$35,000+
+            Join others who've successfully reduced their medical bills
           </p>
           <MobileButton 
             className="bg-white text-emerald-600 hover:bg-gray-50 font-bold"

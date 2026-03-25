@@ -214,7 +214,7 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
           title="Professional Dispute Letters"
           description="Generate legally-compliant dispute letters that hospitals must respond to. Get results with our proven templates."
           featureName="Dispute Letter Generator"
-          savingsPotential="$2,000-$35,000"
+          savingsPotential="Varies by case"
         />
       )}
       <div className="flex items-center space-x-3 mb-6">

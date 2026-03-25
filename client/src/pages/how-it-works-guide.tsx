@@ -60,7 +60,7 @@ const JOURNEY_STEPS: Step[] = [
     bgColor: "bg-blue-50",
     timeEstimate: "1-2 minutes",
     difficulty: "Easy",
-    successRate: "99%",
+    successRate: "High",
     detailedInfo: [
       "Use your phone camera to capture clear images of all bill pages",
       "Include itemized statements, EOBs (Explanation of Benefits), and payment receipts",
@@ -181,7 +181,7 @@ const JOURNEY_STEPS: Step[] = [
     id: 6,
     title: "Track & Celebrate Savings",
     subtitle: "Watch your savings grow",
-    description: "Monitor your dispute progress, track responses, and celebrate every dollar saved. Average users save $2,000-$35,000 per case.",
+    description: "Monitor your dispute progress, track responses, and celebrate every dollar saved. Many users report meaningful reductions on their medical bills.",
     icon: TrendingUp,
     color: "text-green-600",
     gradient: "from-green-500 to-emerald-600",

@@ -67,7 +67,7 @@ const insiderSecrets = [
   },
   {
     title: "Itemized bills reveal massive overcharges",
-    secret: "60-80% of hospital bills contain errors. Without an itemized bill, you can't find them. Hospitals know this and often provide summary bills hoping you won't request details.",
+    secret: "Medical billing errors are very common. Without an itemized bill, you can't find them. Hospitals know this and often provide summary bills hoping you won't request details.",
     actionable: "ALWAYS request an itemized bill with CPT/HCPCS codes. Compare each line item to fair market rates using Healthcare Bluebook."
   },
   {
@@ -157,7 +157,7 @@ const insiderSecrets = [
   },
   {
     title: "Self-pay rates are often lower than insurance rates",
-    secret: "Paradoxically, paying cash as a 'self-pay' patient can be cheaper than using insurance if you have a high deductible. Hospitals offer self-pay discounts of 30-70%.",
+    secret: "Paradoxically, paying cash as a 'self-pay' patient can be cheaper than using insurance if you have a high deductible. Hospitals often offer significant self-pay discounts.",
     actionable: "Before using insurance, ask: 'What is your self-pay cash price?' Compare to your out-of-pocket after deductible. Choose the lower option."
   },
   {

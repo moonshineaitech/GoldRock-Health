@@ -1333,11 +1333,11 @@ export default function AuthLanding() {
             {[
               {
                 q: "How does GoldRock Health work?",
-                a: "Upload your medical bill and our AI analyzes it for billing errors, overcharges, and negotiation opportunities. You'll receive a detailed analysis, legal dispute templates, and expert negotiation strategies to reduce your bill by 40-90%."
+                a: "Upload your medical bill and our AI analyzes it for billing errors, overcharges, and negotiation opportunities. You'll receive a detailed analysis, legal dispute templates, and expert negotiation strategies tailored to your situation."
               },
               {
                 q: "How much can I save on my medical bills?",
-                a: "Users typically report savings between $2,000-$35,000+ depending on their bill size. Our AI identifies billing errors, coding mistakes, and negotiation opportunities that most people miss."
+                a: "Savings vary based on your bill size and situation. Our AI identifies billing errors, coding mistakes, and negotiation opportunities that most people miss, helping you pay only what you truly owe."
               },
               {
                 q: "Is my health information private and secure?",

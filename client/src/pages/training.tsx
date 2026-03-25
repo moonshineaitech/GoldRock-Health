@@ -183,7 +183,7 @@ export default function Training() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          See exactly how real people reduced their medical bills by $2,000-$35,000+ using simple strategies you can copy.
+          Learn how real people reduced their medical bills using simple strategies you can apply to your own situation.
         </motion.p>
         
         <motion.div 

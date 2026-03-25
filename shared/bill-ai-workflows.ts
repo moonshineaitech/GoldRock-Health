@@ -347,7 +347,7 @@ HOSPITAL BILLING DEPARTMENT PSYCHOLOGY:
 STRATEGIC ADVANTAGES OF COMPREHENSIVE REQUESTS:
 1. Cross-Reference Power: Medical records reveal services not actually provided, timing discrepancies, and documentation gaps
 2. Leverage Creation: Hospitals aware of sophisticated review are more willing to negotiate
-3. Error Detection: 80% of bills have errors revealed through document cross-reference
+3. Error Detection: Billing errors are commonly revealed through document cross-reference
 4. Legal Foundation: Creates paper trail for potential disputes, appeals, or litigation
 5. Compliance Pressure: Regulatory obligations create internal pressure for bill reduction negotiations
 
@@ -780,8 +780,8 @@ Make this feel achievable and reduce anxiety about the negotiation process. Focu
     color: 'text-purple-600',
     bgColor: 'bg-purple-100',
     estimatedTime: '5-10 minutes',
-    savingsPotential: '$2,000-$35,000',
-    successRate: '73%',
+    savingsPotential: 'Varies by case',
+    successRate: 'High',
     isPremium: false,
     conversationStarter: `Hello! I'm a professional medical bill advocate with extensive experience in healthcare billing disputes and patient advocacy. Throughout my career, I've helped patients save over $100 million by creating compelling dispute letters and appeals that hospital billing departments take seriously and respond to appropriately.
 

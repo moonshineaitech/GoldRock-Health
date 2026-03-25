@@ -30,7 +30,7 @@ const negotiationStrategies = [
   },
   {
     title: "Ask for the Cash Pay Rate",
-    description: "Hospitals often offer significant discounts to patients who pay cash. These rates can be 30-70% lower than billed charges and are often available even if you have insurance.",
+    description: "Hospitals often offer significant discounts to patients who pay cash. These rates can be substantially lower than billed charges and are often available even if you have insurance.",
     tip: "The cash rate may be lower than your after-insurance cost if you have a high deductible."
   },
   {
@@ -74,7 +74,7 @@ export default function NegotiateMedicalBills() {
     <>
       <SEOHead
         title="How to Negotiate Medical Bills: Step-by-Step Guide | GoldRock Health"
-        description="Learn proven negotiation strategies that help patients reduce medical bills by 30-70%. Includes word-for-word scripts, tactics, and real examples."
+        description="Learn proven negotiation strategies that help patients reduce medical bills. Includes word-for-word scripts, tactics, and real examples."
         keywords={["negotiate medical bills", "reduce hospital bill", "medical bill negotiation", "healthcare bill discount", "hospital payment negotiation"]}
       />
 
@@ -100,7 +100,7 @@ export default function NegotiateMedicalBills() {
               </h1>
               <p className="text-xl text-gray-400 mb-6">
                 Most patients don't realize medical bills are negotiable. With the right approach, 
-                you can reduce your bills by 30-70%. This guide provides proven strategies and 
+                you can often significantly reduce what you owe. This guide provides proven strategies and 
                 word-for-word scripts you can use today.
               </p>
               <div className="flex items-center gap-4 text-sm text-gray-500">

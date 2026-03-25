@@ -43,7 +43,7 @@ export default function PrivacyPolicy() {
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">1.1 Information You Provide Directly</h3>
           <ul className="list-disc pl-6 mb-4">
             <li><strong>Account Information:</strong> When you create an account, we collect your email address, name, and authentication credentials. 
-            You may also authenticate using third-party services (Apple, Google, Replit), in which case we receive basic profile information from those services.</li>
+            You may also authenticate using third-party services (Apple or Google), in which case we receive basic profile information from those services.</li>
             <li><strong>Medical Bills and Health Documents:</strong> When you upload medical bills for analysis, we collect the images or documents you provide, 
             which may contain health-related information, billing codes, provider information, and personal identifiers.</li>
             <li><strong>Chat and Interaction Data:</strong> We collect messages and interactions you have with our AI systems, including questions you ask 
@@ -65,7 +65,7 @@ export default function PrivacyPolicy() {
 
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">1.3 Information from Third Parties</h3>
           <ul className="list-disc pl-6 mb-4">
-            <li><strong>Authentication Providers:</strong> If you sign in using Apple, Google, or Replit, we receive basic profile information they provide.</li>
+            <li><strong>Authentication Providers:</strong> If you sign in using Apple or Google, we receive basic profile information they provide.</li>
             <li><strong>Payment Processors:</strong> Confirmation of payment status and subscription information from Stripe and Apple.</li>
             <li><strong>Analytics Partners:</strong> Aggregated usage data from analytics services.</li>
           </ul>

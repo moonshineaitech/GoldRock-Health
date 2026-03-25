@@ -55,7 +55,7 @@ const articles: Article[] = [
   {
     slug: "negotiate-medical-bills",
     title: "How to Negotiate Medical Bills: A Step-by-Step Guide",
-    description: "Proven negotiation strategies that help patients reduce their medical bills by 30-70% on average.",
+    description: "Proven negotiation strategies that help patients significantly reduce their medical bills.",
     category: "Negotiation",
     readTime: "10 min",
     icon: TrendingDown,
