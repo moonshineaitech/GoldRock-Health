@@ -549,7 +549,6 @@ export async function seedDemoAccount() {
 
     console.log("\n🎉 Demo account seeding complete!");
     console.log(`\n📧 Demo Login: ${DEMO_EMAIL}`);
-    console.log(`🔑 Password: ${DEMO_PASSWORD} (managed by Replit Auth)`);
     console.log(`💎 Subscription: Premium (Annual, Never Expires)`);
     console.log(`📊 Sample Bills: ${createdBills.length}`);
     console.log(`📈 Total Potential Savings: $${
