@@ -46,3 +46,7 @@ externalPort = 80
 
 [userenv.shared]
 VITE_REVENUECAT_IOS_API_KEY = "${REVENUECAT_IOS_API_KEY}"
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
