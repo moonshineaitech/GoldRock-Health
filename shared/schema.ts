@@ -36,6 +36,7 @@ export const users = pgTable("users", {
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
+  clerkUserId: varchar("clerk_user_id").unique(),
   stripeCustomerId: varchar("stripe_customer_id"),
   stripeSubscriptionId: varchar("stripe_subscription_id"),
   revenuecatCustomerId: varchar("revenuecat_customer_id"), // RevenueCat customer ID for iOS IAP

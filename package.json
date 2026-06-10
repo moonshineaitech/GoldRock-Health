@@ -26,6 +26,8 @@
     "@capacitor/share": "^7.0.2",
     "@capacitor/splash-screen": "^7.0.3",
     "@capacitor/status-bar": "^7.0.3",
+    "@clerk/clerk-react": "^5.61.8",
+    "@clerk/express": "^2.1.25",
     "@google-cloud/storage": "^7.19.0",
     "@hookform/resolvers": "^3.10.0",
     "@isaacs/brace-expansion": "^5.0.1",

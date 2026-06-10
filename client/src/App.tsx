@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useAuth } from "@/hooks/useAuth";
 import AuthLanding from "@/pages/auth-landing";
+import SignInPage from "@/pages/sign-in";
+import SignOutPage from "@/pages/sign-out";
 import Landing from "@/pages/landing";
 import Training from "@/pages/training";
 import Game from "@/pages/game";
@@ -208,6 +210,8 @@ function Router() {
         <Route path="/for-insurance" component={ForInsurance} />
         <Route path="/for-employers" component={ForEmployers} />
         <Route path="/about" component={AboutGoldRock} />
+        <Route path="/sign-in" component={SignInPage} />
+        <Route path="/sign-out" component={SignOutPage} />
         <Route component={AuthLanding} />
       </Switch>
     );
@@ -218,6 +222,8 @@ function Router() {
     <>
       <DemoAccountBanner />
       <Switch>
+      <Route path="/sign-in" component={SignInPage} />
+      <Route path="/sign-out" component={SignOutPage} />
       <Route path="/ai-agreement" component={AiUsageAgreement} />
       <Route path="/command-center">
         <AIRouteGuard path="/command-center">

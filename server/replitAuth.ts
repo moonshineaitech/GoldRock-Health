@@ -1,50 +1,44 @@
-import * as client from "openid-client";
-import { Strategy, type VerifyFunction } from "openid-client/passport";
+// Authentication layer.
+//
+// Identity is provided by Clerk (managed sign-in: Google / Apple / email).
+// This module is an ADAPTER: it keeps the same exported surface the rest of the
+// app already depends on (`setupAuth`, `isAuthenticated`, `requiresAiAgreement`,
+// `requiresSubscription`, `isAdmin`, `getSession`) and always exposes the acting
+// user as `req.user.claims.sub` set to our INTERNAL `users.id`. That keeps all
+// existing route handlers and ownership checks working unchanged.
+//
+// The legacy passport/express-session stack is retained ONLY to power the
+// email/password demo login used by the App Store reviewer.
 
 import passport from "passport";
 import session from "express-session";
 import type { Express, RequestHandler } from "express";
-import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
+import { clerkMiddleware, getAuth, createClerkClient } from "@clerk/express";
 import { storage } from "./storage";
 
-if (!process.env.REPLIT_DOMAINS) {
-  throw new Error("Environment variable REPLIT_DOMAINS not provided");
-}
+const CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY;
+const CLERK_PUBLISHABLE_KEY = process.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-const getOidcConfig = memoize(
-  async () => {
-    return await client.discovery(
-      new URL(process.env.ISSUER_URL ?? "https://replit.com/oidc"),
-      process.env.REPL_ID!
-    );
-  },
-  { maxAge: 3600 * 1000 }
-);
+// When keys are absent the app still runs (demo login only); Clerk is inert.
+export const clerkEnabled = !!CLERK_SECRET_KEY;
 
-// Track registered domains to avoid duplicate strategy registration
-const registeredDomains = new Set<string>();
+const clerkClient = clerkEnabled
+  ? createClerkClient({
+      secretKey: CLERK_SECRET_KEY,
+      publishableKey: CLERK_PUBLISHABLE_KEY,
+    })
+  : null;
 
-// Function to dynamically register auth strategy for a domain
-async function registerDomainStrategy(domain: string, config: any, verify: VerifyFunction) {
-  if (registeredDomains.has(domain)) {
-    return; // Already registered
-  }
-  
-  console.log(`Registering auth strategy for domain: ${domain}`);
-  
-  const strategy = new Strategy(
-    {
-      name: `replitauth:${domain}`,
-      config,
-      scope: "openid email profile offline_access",
-      callbackURL: `https://${domain}/api/callback`,
-    },
-    verify,
-  );
-  passport.use(strategy);
-  registeredDomains.add(domain);
-}
+// Maps a Clerk user id -> our internal user (id + email). Avoids hitting the
+// Clerk API + DB on every authenticated request. Only stable identifiers are
+// cached; fresh user state (subscription, terms, etc.) is always re-read
+// downstream via storage.getUser(claims.sub).
+const clerkUserCache = new Map<
+  string,
+  { id: string; email: string | null; expires: number }
+>();
+const CLERK_CACHE_TTL = 5 * 60 * 1000;
 
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
@@ -63,249 +57,223 @@ export function getSession() {
     cookie: {
       httpOnly: true,
       secure: true,
-      sameSite: 'lax',
+      sameSite: "lax",
       maxAge: sessionTtl,
     },
   });
 }
 
-function updateUserSession(
-  user: any,
-  tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers
-) {
-  user.claims = tokens.claims();
-  user.access_token = tokens.access_token;
-  user.refresh_token = tokens.refresh_token;
-  user.expires_at = user.claims?.exp;
-}
+// Resolve a Clerk user id to our internal user record, creating/linking as
+// needed. Linking to an existing account by email is ONLY done when Clerk
+// reports the email as verified (prevents account-takeover via unverified
+// emails).
+async function resolveClerkUser(
+  clerkUserId: string,
+): Promise<{ id: string; email: string | null } | null> {
+  const cached = clerkUserCache.get(clerkUserId);
+  if (cached && cached.expires > Date.now()) {
+    return { id: cached.id, email: cached.email };
+  }
 
-async function upsertUser(
-  claims: any,
-) {
-  // Log claims to debug what fields Replit Auth actually returns
-  console.log("OIDC Claims received:", JSON.stringify(claims, null, 2));
-  
-  // Replit OIDC uses different claim names - try multiple variations
-  const email = claims["email"] || claims["preferred_username"] || null;
-  const firstName = claims["first_name"] || claims["given_name"] || claims["name"]?.split(" ")[0] || null;
-  const lastName = claims["last_name"] || claims["family_name"] || claims["name"]?.split(" ").slice(1).join(" ") || null;
-  const profileImageUrl = claims["profile_image_url"] || claims["picture"] || null;
-  
-  console.log("Parsed user data:", { id: claims["sub"], email, firstName, lastName, profileImageUrl });
-  
-  return await storage.upsertUser({
-    id: claims["sub"],
-    email,
-    firstName,
-    lastName,
-    profileImageUrl,
+  let user = await storage.getUserByClerkId(clerkUserId);
+
+  if (!user && clerkClient) {
+    const clerkUser = await clerkClient.users.getUser(clerkUserId);
+    const primary = clerkUser.emailAddresses.find(
+      (e: any) => e.id === clerkUser.primaryEmailAddressId,
+    );
+    const rawEmail =
+      primary?.emailAddress || clerkUser.emailAddresses[0]?.emailAddress || "";
+    const email = rawEmail ? rawEmail.toLowerCase() : null;
+    const emailVerified = primary?.verification?.status === "verified";
+
+    // Link to an existing account ONLY by a verified email.
+    if (email && emailVerified) {
+      const existing = await storage.getUserByEmail(email);
+      if (existing) {
+        user = await storage.setUserClerkId(existing.id, clerkUserId);
+      }
+    }
+
+    // Otherwise provision a fresh account (id defaults to a uuid).
+    if (!user) {
+      user = await storage.upsertUser({
+        clerkUserId,
+        email,
+        firstName: clerkUser.firstName ?? null,
+        lastName: clerkUser.lastName ?? null,
+        profileImageUrl: clerkUser.imageUrl ?? null,
+      } as any);
+    }
+  }
+
+  if (!user) return null;
+
+  clerkUserCache.set(clerkUserId, {
+    id: user.id,
+    email: user.email ?? null,
+    expires: Date.now() + CLERK_CACHE_TTL,
   });
+  return { id: user.id, email: user.email ?? null };
 }
-
-// Store verify function and config globally so they can be used for dynamic registration
-let globalVerify: VerifyFunction;
-let globalConfig: any;
 
 export async function setupAuth(app: Express) {
+  // Session + passport retained for the demo-login path only.
   app.use(getSession());
   app.use(passport.initialize());
   app.use(passport.session());
-
-  globalConfig = await getOidcConfig();
-
-  globalVerify = async (
-    tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers,
-    verified: passport.AuthenticateCallback
-  ) => {
-    const user = {};
-    updateUserSession(user, tokens);
-    const dbUser = await upsertUser(tokens.claims());
-    
-    // Store AI agreement status in session for redirect logic
-    (user as any).needsAiAgreement = !dbUser.acceptedAiTerms;
-    
-    verified(null, user);
-  };
-
-  // Pre-register strategies for domains in REPLIT_DOMAINS
-  for (const domain of process.env.REPLIT_DOMAINS!.split(",")) {
-    await registerDomainStrategy(domain, globalConfig, globalVerify);
-  }
-
   passport.serializeUser((user: Express.User, cb) => cb(null, user));
   passport.deserializeUser((user: Express.User, cb) => cb(null, user));
 
-  app.get("/api/login", async (req, res, next) => {
-    const hostname = req.hostname;
-    
-    // Dynamically register strategy for this domain if not already registered
-    if (!registeredDomains.has(hostname)) {
-      await registerDomainStrategy(hostname, globalConfig, globalVerify);
-    }
-    
-    passport.authenticate(`replitauth:${hostname}`, {
-      prompt: "login consent",
-      scope: ["openid", "email", "profile", "offline_access"],
-    })(req, res, next);
+  // Clerk: reads the session token (cookie/header) and populates req.auth.
+  if (clerkEnabled) {
+    app.use(
+      clerkMiddleware({
+        secretKey: CLERK_SECRET_KEY,
+        publishableKey: CLERK_PUBLISHABLE_KEY,
+      }),
+    );
+    console.log("Clerk authentication enabled");
+  } else {
+    console.warn(
+      "CLERK_SECRET_KEY not set — Clerk sign-in is disabled (demo login only).",
+    );
+  }
+
+  // Login: hand off to the in-app Clerk sign-in page, preserving the redirect.
+  // All existing `/api/login?redirect=...` links continue to work unchanged.
+  app.get("/api/login", (req, res) => {
+    const redirect =
+      typeof req.query.redirect === "string" && req.query.redirect.startsWith("/")
+        ? req.query.redirect
+        : "/";
+    res.redirect(`/sign-in?redirect=${encodeURIComponent(redirect)}`);
   });
 
-  app.get("/api/callback", async (req, res, next) => {
-    const hostname = req.hostname;
-    
-    // Dynamically register strategy for this domain if not already registered
-    if (!registeredDomains.has(hostname)) {
-      await registerDomainStrategy(hostname, globalConfig, globalVerify);
+  // Logout: clear the demo/passport session, then let the client clear Clerk.
+  app.get("/api/logout", (req: any, res) => {
+    const done = () => res.redirect("/sign-out");
+    if (typeof req.logout === "function") {
+      req.logout(() => done());
+    } else {
+      done();
     }
-    
-    passport.authenticate(`replitauth:${hostname}`, {
-      successReturnToOrRedirect: "/",
-      failureRedirect: "/api/login",
-    })(req, res, next);
-  });
-
-  app.get("/api/logout", (req, res) => {
-    req.logout(() => {
-      res.redirect(
-        client.buildEndSessionUrl(globalConfig, {
-          client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
-        }).href
-      );
-    });
   });
 }
 
-export const isAuthenticated: RequestHandler = async (req, res, next) => {
-  const user = req.user as any;
-
-  if (!req.isAuthenticated() || !user.expires_at) {
-    return res.status(401).json({ message: "Unauthorized" });
+export const isAuthenticated: RequestHandler = async (req: any, res, next) => {
+  // 1) Demo / passport session (App Store reviewer).
+  if (
+    typeof req.isAuthenticated === "function" &&
+    req.isAuthenticated() &&
+    req.user?.claims?.sub
+  ) {
+    const expiresAt = req.user.expires_at;
+    if (!expiresAt || Math.floor(Date.now() / 1000) <= expiresAt) {
+      return next();
+    }
   }
 
-  const now = Math.floor(Date.now() / 1000);
-  if (now <= user.expires_at) {
-    return next();
+  // 2) Clerk session.
+  if (clerkEnabled) {
+    try {
+      const auth = getAuth(req);
+      if (auth?.userId) {
+        const resolved = await resolveClerkUser(auth.userId);
+        if (resolved) {
+          req.user = { claims: { sub: resolved.id, email: resolved.email } };
+          return next();
+        }
+      }
+    } catch (error) {
+      // fall through to 401
+    }
   }
 
-  const refreshToken = user.refresh_token;
-  if (!refreshToken) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
-
-  try {
-    const config = await getOidcConfig();
-    const tokenResponse = await client.refreshTokenGrant(config, refreshToken);
-    updateUserSession(user, tokenResponse);
-    return next();
-  } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+  return res.status(401).json({ message: "Unauthorized" });
 };
 
-// Middleware to check if user has accepted AI terms
-export const requiresAiAgreement: RequestHandler = async (req, res, next) => {
-  // First ensure user is authenticated
-  const user = req.user as any;
-  if (!req.isAuthenticated() || !user) {
+// Middleware to check if user has accepted AI terms.
+export const requiresAiAgreement: RequestHandler = async (req: any, res, next) => {
+  const userId = req.user?.claims?.sub;
+  if (!userId) {
     return res.status(401).json({ message: "Authentication required" });
   }
 
   try {
-    const { storage } = await import("./storage");
-    const userId = user.claims.sub;
     const userData = await storage.getUser(userId);
-    
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Check if user has accepted AI terms
     if (!userData.acceptedAiTerms) {
-      return res.status(451).json({ 
+      return res.status(451).json({
         message: "AI agreement acceptance required",
         code: "AI_AGREEMENT_REQUIRED",
-        requiresAgreement: true
+        requiresAgreement: true,
       });
     }
-
-    // User has accepted AI terms, continue
     return next();
   } catch (error) {
-    console.error('Error checking AI agreement status:', error);
+    console.error("Error checking AI agreement status:", error);
     return res.status(500).json({ message: "Failed to verify AI agreement status" });
   }
 };
 
-// Middleware to check if user has an active subscription
-export const requiresSubscription: RequestHandler = async (req, res, next) => {
-  // First ensure user is authenticated
-  const user = req.user as any;
-  if (!req.isAuthenticated() || !user) {
+// Middleware to check if user has an active subscription.
+export const requiresSubscription: RequestHandler = async (req: any, res, next) => {
+  const userId = req.user?.claims?.sub;
+  if (!userId) {
     return res.status(401).json({ message: "Authentication required" });
   }
 
   try {
-    const { storage } = await import("./storage");
-    const userId = user.claims.sub;
     const userData = await storage.getUser(userId);
-    
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Check if user has active subscription
-    if (userData.subscriptionStatus !== 'active') {
-      return res.status(402).json({ 
+    if (userData.subscriptionStatus !== "active") {
+      return res.status(402).json({
         message: "Premium subscription required",
         code: "SUBSCRIPTION_REQUIRED",
-        upgradeRequired: true
+        upgradeRequired: true,
       });
     }
-
-    // User has active subscription, continue
     return next();
   } catch (error) {
-    console.error('Error checking subscription status:', error);
+    console.error("Error checking subscription status:", error);
     return res.status(500).json({ message: "Failed to verify subscription status" });
   }
 };
 
-// Admin email whitelist - only these users can have admin access
-const ADMIN_EMAIL_WHITELIST = ['ryan@moonshineai.com'];
+// Admin email whitelist - only these users can have admin access.
+const ADMIN_EMAIL_WHITELIST = ["ryan@moonshineai.com"];
 
-// Middleware to check if user is an admin
-export const isAdmin: RequestHandler = async (req, res, next) => {
-  // First ensure user is authenticated
-  const user = req.user as any;
-  if (!req.isAuthenticated() || !user) {
+// Middleware to check if user is an admin.
+export const isAdmin: RequestHandler = async (req: any, res, next) => {
+  const userId = req.user?.claims?.sub;
+  if (!userId) {
     return res.status(401).json({ message: "Authentication required" });
   }
 
   try {
-    const { storage } = await import("./storage");
-    const userId = user.claims.sub;
     const userData = await storage.getUser(userId);
-    
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if user's email is in the whitelist and they have admin flag
-    const isWhitelisted = userData.email && ADMIN_EMAIL_WHITELIST.includes(userData.email.toLowerCase());
-    
+    const isWhitelisted =
+      userData.email &&
+      ADMIN_EMAIL_WHITELIST.includes(userData.email.toLowerCase());
+
     if (!userData.isAdmin || !isWhitelisted) {
-      return res.status(403).json({ 
+      return res.status(403).json({
         message: "Admin access required",
-        code: "ADMIN_REQUIRED"
+        code: "ADMIN_REQUIRED",
       });
     }
-
-    // User is admin, continue
     return next();
   } catch (error) {
-    console.error('Error checking admin status:', error);
+    console.error("Error checking admin status:", error);
     return res.status(500).json({ message: "Failed to verify admin status" });
   }
 };
