@@ -62,8 +62,8 @@ export function TrainingQuickAccess() {
     <>
       {/* Floating Action Button */}
       <motion.button
-        className="fixed right-4 z-40 w-14 h-14 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full shadow-lg flex items-center justify-center"
-        style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom))' }}
+        className="fixed right-4 z-40 w-14 h-14 rounded-full shadow-lg flex items-center justify-center"
+        style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom))', background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.05 }}
         onClick={() => setIsOpen(!isOpen)}
@@ -83,7 +83,7 @@ export function TrainingQuickAccess() {
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
+              className="fixed inset-0 bg-black/20 z-30"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -110,34 +110,28 @@ export function TrainingQuickAccess() {
                   >
                     <Link href={module.href} onClick={() => setIsOpen(false)}>
                       <motion.div 
-                        className={`bg-white/95 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/30 flex items-center space-x-3 min-w-48 ${
+                        className={`bg-card border border-border rounded-2xl p-4 shadow-sm flex items-center space-x-3 min-w-48 ${
                           !module.isWorking ? 'opacity-60' : ''
                         }`}
                         whileTap={{ scale: 0.95 }}
                         whileHover={{ scale: module.isWorking ? 1.02 : 1 }}
                         data-testid={`quick-access-${module.title.toLowerCase().replace(/\s+/g, '-')}`}
                       >
-                        <div className={`w-10 h-10 ${
-                          module.isWorking 
-                            ? `bg-${module.color}-100` 
-                            : 'bg-gray-100'
-                        } rounded-xl flex items-center justify-center`}>
+                        <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
                           <IconComponent className={`h-5 w-5 ${
                             module.isWorking 
-                              ? `text-${module.color}-600` 
-                              : 'text-gray-400'
+                              ? 'text-gold' 
+                              : 'text-muted-foreground'
                           }`} />
                         </div>
                         <div className="flex-1">
                           <div className={`font-semibold text-sm ${
-                            module.isWorking ? 'text-gray-900' : 'text-gray-500'
+                            module.isWorking ? 'text-foreground' : 'text-muted-foreground'
                           }`}>{module.title}</div>
-                          <div className={`text-xs ${
-                            module.isWorking ? 'text-gray-600' : 'text-gray-400'
-                          }`}>{module.desc}</div>
+                          <div className="text-xs text-muted-foreground">{module.desc}</div>
                         </div>
                         {!module.isWorking && (
-                          <div className="text-xs text-gray-400 font-medium">Soon</div>
+                          <div className="text-xs text-muted-foreground font-medium">Soon</div>
                         )}
                       </motion.div>
                     </Link>

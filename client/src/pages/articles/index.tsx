@@ -158,33 +158,34 @@ export default function ArticlesIndex() {
         keywords={["medical bill help", "reduce medical bills", "hospital bill negotiation", "insurance denial appeals", "patient rights", "healthcare costs"]}
       />
 
-      <div className="min-h-screen bg-[#0a1628]">
+      <div className="min-h-screen bg-background">
         <div className="max-w-6xl mx-auto px-4 py-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="text-center mb-12"
           >
-            <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 mb-4">
+            <Badge className="bg-secondary text-gold border-border mb-4">
               <BookOpen className="w-3 h-3 mr-1" />
               Knowledge Center
             </Badge>
-            <h1 className="text-4xl font-bold text-white mb-4">
+            <h1 className="font-serif text-4xl font-bold text-foreground mb-4">
               Medical Bill Savings Guides
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Expert articles and step-by-step guides to help you understand, negotiate, and reduce your medical bills.
             </p>
           </motion.div>
 
           <div className="mb-8 flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-white/5 border-white/10 text-white"
+                className="pl-10 bg-card border-border text-foreground"
                 data-testid="input-search-articles"
               />
             </div>
@@ -195,8 +196,8 @@ export default function ArticlesIndex() {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-lg text-sm transition-all ${
                     selectedCategory === category
-                      ? "bg-cyan-500 text-white"
-                      : "bg-white/5 text-gray-400 hover:bg-white/10"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-muted-foreground hover:bg-muted"
                   }`}
                   data-testid={`button-category-${category.toLowerCase().replace(/\s/g, '-')}`}
                 >
@@ -208,33 +209,33 @@ export default function ArticlesIndex() {
 
           {selectedCategory === "All" && searchQuery === "" && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
               className="mb-12"
             >
-              <h2 className="text-2xl font-bold text-white mb-6">Featured Articles</h2>
+              <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Featured Articles</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {featuredArticles.map((article, index) => (
                   <Link key={article.slug} href={`/articles/${article.slug}`}>
-                    <Card className="bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border-cyan-500/20 hover:border-cyan-500/40 transition-all cursor-pointer h-full">
+                    <Card className="luxury-card hover:-translate-y-0.5 transition-all cursor-pointer h-full">
                       <CardHeader>
                         <div className="flex items-center justify-between mb-2">
-                          <Badge variant="outline" className="text-cyan-400 border-cyan-400/30">
+                          <Badge variant="outline" className="text-gold border-border">
                             {article.category}
                           </Badge>
-                          <span className="text-sm text-gray-500 flex items-center gap-1">
+                          <span className="text-sm text-muted-foreground flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {article.readTime}
                           </span>
                         </div>
-                        <CardTitle className="text-white text-lg">{article.title}</CardTitle>
-                        <CardDescription className="text-gray-400">
+                        <CardTitle className="text-foreground text-lg">{article.title}</CardTitle>
+                        <CardDescription className="text-muted-foreground">
                           {article.description}
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <span className="text-cyan-400 flex items-center gap-1 text-sm font-medium">
+                        <span className="text-gold flex items-center gap-1 text-sm font-medium">
                           Read Article <ArrowRight className="w-4 h-4" />
                         </span>
                       </CardContent>
@@ -246,34 +247,34 @@ export default function ArticlesIndex() {
           )}
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
           >
-            <h2 className="text-2xl font-bold text-white mb-6">
+            <h2 className="font-serif text-2xl font-bold text-foreground mb-6">
               {selectedCategory === "All" ? "All Articles" : selectedCategory}
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {filteredArticles.map((article) => (
                 <Link key={article.slug} href={`/articles/${article.slug}`}>
-                  <Card className="bg-white/5 border-white/10 hover:border-cyan-500/30 transition-all cursor-pointer h-full">
+                  <Card className="bg-card border border-border shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer h-full">
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
-                        <Badge variant="outline" className="text-gray-400 border-gray-600">
+                        <Badge variant="outline" className="text-muted-foreground border-border">
                           {article.category}
                         </Badge>
-                        <span className="text-sm text-gray-500 flex items-center gap-1">
+                        <span className="text-sm text-muted-foreground flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {article.readTime}
                         </span>
                       </div>
-                      <CardTitle className="text-white">{article.title}</CardTitle>
-                      <CardDescription className="text-gray-400">
+                      <CardTitle className="text-foreground">{article.title}</CardTitle>
+                      <CardDescription className="text-muted-foreground">
                         {article.description}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <span className="text-cyan-400 flex items-center gap-1 text-sm">
+                      <span className="text-gold flex items-center gap-1 text-sm">
                         Read More <ArrowRight className="w-4 h-4" />
                       </span>
                     </CardContent>
@@ -284,28 +285,28 @@ export default function ArticlesIndex() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
             className="mt-16 text-center"
           >
-            <Card className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-500/30">
+            <Card className="luxury-card">
               <CardContent className="py-12">
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <h3 className="font-serif text-2xl font-bold text-foreground mb-4">
                   Ready to Analyze Your Medical Bills?
                 </h3>
-                <p className="text-gray-400 mb-6 max-w-xl mx-auto">
+                <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                   Our AI-powered platform can identify billing errors, calculate fair prices, 
                   and generate negotiation strategies in seconds.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link href="/bill-grader">
-                    <button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-all" data-testid="button-grade-bill">
+                    <button className="px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground font-semibold rounded-lg transition-all" data-testid="button-grade-bill">
                       Grade Your Bill Free
                     </button>
                   </Link>
                   <Link href="/conditions">
-                    <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all" data-testid="button-browse-conditions">
+                    <button className="px-6 py-3 bg-secondary hover:bg-muted text-foreground font-semibold rounded-lg transition-all" data-testid="button-browse-conditions">
                       Browse Medical Conditions
                     </button>
                   </Link>

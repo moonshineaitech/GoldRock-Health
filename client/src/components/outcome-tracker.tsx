@@ -144,10 +144,10 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'resolved': return 'bg-emerald-100 text-emerald-700';
-      case 'in_progress': return 'bg-amber-100 text-amber-700';
-      case 'abandoned': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'resolved': return 'bg-secondary text-emerald-700';
+      case 'in_progress': return 'bg-secondary text-gold';
+      case 'abandoned': return 'bg-secondary text-muted-foreground';
+      default: return 'bg-secondary text-muted-foreground';
     }
   };
 
@@ -173,12 +173,12 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
     <div className="space-y-4" data-testid="outcome-tracker">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Trophy className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h2 className="font-semibold text-gray-900">Savings Tracker</h2>
-            <p className="text-xs text-gray-500">Track your bill reduction wins</p>
+            <h2 className="font-semibold font-serif text-foreground">Savings Tracker</h2>
+            <p className="text-xs text-muted-foreground">Track your bill reduction wins</p>
           </div>
         </div>
         {onClose && (
@@ -190,42 +190,42 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
 
       <div className="grid grid-cols-3 gap-3">
         <motion.div 
-          className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-3 text-center"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.1 }}
+          className="luxury-card rounded-xl p-3 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="flex items-center justify-center gap-1 mb-1">
-            <DollarSign className="h-4 w-4 text-emerald-600" />
-            <span className="text-xs text-emerald-600 font-medium">Total Saved</span>
+            <DollarSign className="h-4 w-4 text-gold" />
+            <span className="text-xs text-muted-foreground font-medium">Total Saved</span>
           </div>
-          <p className="text-xl font-bold text-emerald-700">${totalSavings.toLocaleString()}</p>
+          <p className="text-xl font-bold text-gold">${totalSavings.toLocaleString()}</p>
         </motion.div>
 
         <motion.div 
-          className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3 text-center"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          className="luxury-card rounded-xl p-3 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="flex items-center justify-center gap-1 mb-1">
-            <Target className="h-4 w-4 text-blue-600" />
-            <span className="text-xs text-blue-600 font-medium">Avg Savings</span>
+            <Target className="h-4 w-4 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground font-medium">Avg Savings</span>
           </div>
-          <p className="text-xl font-bold text-blue-700">{avgSavingsPercent}%</p>
+          <p className="text-xl font-bold text-foreground">{avgSavingsPercent}%</p>
         </motion.div>
 
         <motion.div 
-          className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-3 text-center"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          className="luxury-card rounded-xl p-3 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="flex items-center justify-center gap-1 mb-1">
-            <Award className="h-4 w-4 text-purple-600" />
-            <span className="text-xs text-purple-600 font-medium">Resolved</span>
+            <Award className="h-4 w-4 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground font-medium">Resolved</span>
           </div>
-          <p className="text-xl font-bold text-purple-700">{resolvedCount}</p>
+          <p className="text-xl font-bold text-foreground">{resolvedCount}</p>
         </motion.div>
       </div>
 
@@ -237,10 +237,10 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <Card className="border-emerald-200 bg-emerald-50/50">
+            <Card className="luxury-card">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-emerald-600" />
+                  <Sparkles className="h-4 w-4 text-gold" />
                   Record a Win
                 </CardTitle>
               </CardHeader>
@@ -249,7 +249,7 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
                   <div className="space-y-1">
                     <Label className="text-xs">Original Bill</Label>
                     <div className="relative">
-                      <DollarSign className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <DollarSign className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="number"
                         placeholder="12,450"
@@ -263,7 +263,7 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
                   <div className="space-y-1">
                     <Label className="text-xs">Final Amount</Label>
                     <div className="relative">
-                      <DollarSign className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <DollarSign className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="number"
                         placeholder="4,980"
@@ -342,7 +342,7 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
                 <div className="flex gap-2">
                   <Button 
                     onClick={handleSubmit}
-                    className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600"
+                    className="flex-1 bg-primary text-primary-foreground"
                     disabled={createMutation.isPending}
                     data-testid="button-save-outcome"
                   >
@@ -370,7 +370,7 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
       {!showForm && (
         <Button 
           onClick={() => setShowForm(true)}
-          className="w-full bg-gradient-to-r from-emerald-600 to-teal-600"
+          className="w-full bg-primary text-primary-foreground"
           data-testid="button-record-win"
         >
           <PartyPopper className="h-4 w-4 mr-2" />
@@ -379,21 +379,21 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
       )}
 
       <div className="space-y-3">
-        <h3 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-emerald-600" />
+        <h3 className="font-medium text-sm text-foreground flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-gold" />
           Your Wins
         </h3>
 
         {isLoading ? (
           <div className="text-center py-8">
-            <Loader2 className="h-8 w-8 text-emerald-500 mx-auto animate-spin" />
-            <p className="text-sm text-gray-500 mt-2">Loading your outcomes...</p>
+            <Loader2 className="h-8 w-8 text-gold mx-auto animate-spin" />
+            <p className="text-sm text-muted-foreground mt-2">Loading your outcomes...</p>
           </div>
         ) : outcomes.length === 0 ? (
-          <div className="text-center py-8 bg-gray-50 rounded-xl">
-            <Heart className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-            <p className="text-sm text-gray-500">No outcomes recorded yet</p>
-            <p className="text-xs text-gray-400">Track your savings to see your progress</p>
+          <div className="text-center py-8 bg-secondary rounded-xl">
+            <Heart className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-sm text-muted-foreground">No outcomes recorded yet</p>
+            <p className="text-xs text-muted-foreground">Track your savings to see your progress</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -414,8 +414,8 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
                     <CardContent className="p-3">
                       <div className="flex items-start justify-between mb-2">
                         <div>
-                          <h4 className="font-medium text-sm text-gray-900">{outcome.providerName || 'Provider'}</h4>
-                          <p className="text-xs text-gray-500">{outcome.savingsMethod?.replace('_', ' ') || 'Method not specified'}</p>
+                          <h4 className="font-medium text-sm text-foreground">{outcome.providerName || 'Provider'}</h4>
+                          <p className="text-xs text-muted-foreground">{outcome.savingsMethod?.replace('_', ' ') || 'Method not specified'}</p>
                         </div>
                         <Badge className={getStatusColor(outcome.status)}>
                           <span className="flex items-center gap-1">
@@ -428,29 +428,29 @@ export function OutcomeTracker({ onClose, initialBillAmount, providerName }: Out
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-3">
                           <div>
-                            <p className="text-xs text-gray-400 line-through">${original.toLocaleString()}</p>
-                            <p className="text-sm font-medium text-gray-700">${final.toLocaleString()}</p>
+                            <p className="text-xs text-muted-foreground line-through">${original.toLocaleString()}</p>
+                            <p className="text-sm font-medium text-foreground">${final.toLocaleString()}</p>
                           </div>
                           <div className="flex items-center gap-1">
-                            <Zap className="h-4 w-4 text-emerald-600" />
-                            <span className="text-sm font-bold text-emerald-600">
+                            <Zap className="h-4 w-4 text-gold" />
+                            <span className="text-sm font-bold text-gold">
                               -{savingsPercent}%
                             </span>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs text-gray-400">Saved</p>
-                          <p className="text-sm font-bold text-emerald-600">${saved.toLocaleString()}</p>
+                          <p className="text-xs text-muted-foreground">Saved</p>
+                          <p className="text-sm font-bold text-gold">${saved.toLocaleString()}</p>
                         </div>
                       </div>
 
                       <Progress 
                         value={savingsPercent} 
-                        className="h-1.5 bg-gray-100"
+                        className="h-1.5 bg-secondary"
                       />
 
                       {outcome.userNotes && (
-                        <p className="text-xs text-gray-500 mt-2 italic">"{outcome.userNotes}"</p>
+                        <p className="text-xs text-muted-foreground mt-2 italic">"{outcome.userNotes}"</p>
                       )}
                     </CardContent>
                   </Card>

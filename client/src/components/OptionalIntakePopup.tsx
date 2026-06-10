@@ -52,8 +52,8 @@ const INTAKE_STEPS = [
     type: 'upload' as const,
     placeholder: 'Drag & drop or click to upload medical bill images',
     required: false,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-100'
+    color: 'text-muted-foreground',
+    bgColor: 'bg-secondary'
   },
   {
     id: 2,
@@ -64,8 +64,8 @@ const INTAKE_STEPS = [
     type: 'text' as const,
     placeholder: 'e.g., $15,000 or $50,000+',
     required: false,
-    color: 'text-green-600',
-    bgColor: 'bg-green-100'
+    color: 'text-muted-foreground',
+    bgColor: 'bg-secondary'
   },
   {
     id: 3,
@@ -76,8 +76,8 @@ const INTAKE_STEPS = [
     type: 'text' as const,
     placeholder: 'e.g., General Hospital, Medical Center',
     required: false,
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-100'
+    color: 'text-muted-foreground',
+    bgColor: 'bg-secondary'
   },
   {
     id: 4,
@@ -88,8 +88,8 @@ const INTAKE_STEPS = [
     type: 'text' as const,
     placeholder: 'e.g., January 2025, Last month',
     required: false,
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-100'
+    color: 'text-muted-foreground',
+    bgColor: 'bg-secondary'
   },
   {
     id: 5,
@@ -100,8 +100,8 @@ const INTAKE_STEPS = [
     type: 'text' as const,
     placeholder: 'e.g., Blue Cross, Claim denied',
     required: false,
-    color: 'text-indigo-600',
-    bgColor: 'bg-indigo-100'
+    color: 'text-muted-foreground',
+    bgColor: 'bg-secondary'
   },
   {
     id: 6,
@@ -112,8 +112,8 @@ const INTAKE_STEPS = [
     type: 'textarea' as const,
     placeholder: 'e.g., Duplicate charges, Services not received, Emergency room overcharge',
     required: false,
-    color: 'text-teal-600',
-    bgColor: 'bg-teal-100'
+    color: 'text-muted-foreground',
+    bgColor: 'bg-secondary'
   }
 ];
 
@@ -241,25 +241,25 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.95, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.95, y: 20 }}
-        className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-hidden mb-20"
+        className="bg-card rounded-3xl w-full max-w-lg shadow-xl border border-border max-h-[90vh] overflow-hidden mb-20"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Brain className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Quick Info Capture</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Optional helper to speed up analysis</p>
+              <h2 className="text-lg font-bold font-serif text-foreground">Quick Info Capture</h2>
+              <p className="text-sm text-muted-foreground">Optional helper to speed up analysis</p>
             </div>
           </div>
           <Button
@@ -274,9 +274,9 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
         </div>
 
         {/* Progress Bar */}
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800">
+        <div className="px-6 py-4 border-b border-border">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
+            <span className="text-sm font-medium text-foreground">
               Step {currentStep} of {INTAKE_STEPS.length}
             </span>
             <Badge variant="secondary" className="text-xs">
@@ -297,14 +297,14 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
               className="space-y-6"
             >
               <div className="text-center space-y-3">
-                <div className={`w-16 h-16 ${currentStepData.bgColor} rounded-2xl flex items-center justify-center mx-auto shadow-lg`}>
+                <div className={`w-16 h-16 ${currentStepData.bgColor} rounded-2xl flex items-center justify-center mx-auto shadow-sm`}>
                   <currentStepData.icon className={`h-8 w-8 ${currentStepData.color}`} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                  <h3 className="text-xl font-bold font-serif text-foreground mb-1">
                     {currentStepData.title}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     {currentStepData.description}
                   </p>
                 </div>
@@ -316,8 +316,8 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                   <div
                     className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer ${
                       dragActive 
-                        ? 'border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20' 
-                        : 'border-gray-300 dark:border-gray-600 hover:border-emerald-300 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10'
+                        ? 'border-gold bg-secondary' 
+                        : 'border-border hover:border-gold hover:bg-secondary'
                     }`}
                     onDragEnter={handleDrag}
                     onDragLeave={handleDrag}
@@ -326,11 +326,11 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                     onClick={() => fileInputRef.current?.click()}
                     data-testid="upload-area"
                   >
-                    <Upload className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-                    <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                    <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-sm font-medium text-foreground mb-1">
                       Drop medical bill images here or click to browse
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       JPG, PNG, WebP • Max 10MB each • Up to 5 files
                     </p>
                   </div>
@@ -338,20 +338,20 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                   {/* Uploaded Files Preview */}
                   {uploadedFiles.length > 0 && (
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      <p className="text-sm font-medium text-foreground">
                         Uploaded Files ({uploadedFiles.length}/5)
                       </p>
                       {uploadedFiles.map((file, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                        <div key={index} className="flex items-center justify-between p-3 bg-secondary rounded-xl">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
-                              <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                            <div className="w-8 h-8 bg-card border border-border rounded-lg flex items-center justify-center">
+                              <CheckCircle className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-gray-900 dark:text-white truncate max-w-[200px]">
+                              <p className="text-sm font-medium text-foreground truncate max-w-[200px]">
                                 {file.name}
                               </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                              <p className="text-xs text-muted-foreground">
                                 {(file.size / 1024 / 1024).toFixed(1)} MB
                               </p>
                             </div>
@@ -363,7 +363,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                               e.stopPropagation();
                               removeFile(index);
                             }}
-                            className="w-8 h-8 p-0 text-gray-400 hover:text-red-500"
+                            className="w-8 h-8 p-0 text-muted-foreground hover:text-destructive"
                           >
                             <X className="h-4 w-4" />
                           </Button>
@@ -373,21 +373,22 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                   )}
 
                   {/* Data Consent Checkbox */}
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-start gap-3">
                       <input
                         type="checkbox"
                         id="data-consent-checkbox"
                         checked={dataConsent}
                         onChange={(e) => setDataConsent(e.target.checked)}
-                        className="mt-1 w-4 h-4 text-blue-600 bg-white border-2 border-blue-300 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-blue-600"
+                        className="mt-1 w-4 h-4 bg-card border-2 border-border rounded focus:ring-2 focus:ring-ring"
+                        style={{ accentColor: 'var(--gold)' }}
                         data-testid="data-consent-checkbox"
                       />
                       <div className="flex-1">
-                        <label htmlFor="data-consent-checkbox" className="text-sm font-medium text-blue-900 dark:text-blue-100 cursor-pointer">
+                        <label htmlFor="data-consent-checkbox" className="text-sm font-medium text-foreground cursor-pointer">
                           I understand my data processing
                         </label>
-                        <p className="text-xs text-blue-700 dark:text-blue-200 mt-1 leading-relaxed">
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                           I understand that my uploaded medical bill images will be processed by AI systems (including OpenAI) to analyze and identify potential billing errors, overcharges, and savings opportunities. My data will be handled securely and retained for 30 days maximum.
                         </p>
                       </div>
@@ -409,7 +410,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                   value={formData[currentStepData.field] as string || ''}
                   onChange={(e) => handleInputChange(currentStepData.field, e.target.value)}
                   placeholder={currentStepData.placeholder}
-                  className="min-h-[120px] resize-none rounded-2xl border-gray-200 dark:border-gray-700"
+                  className="min-h-[120px] resize-none rounded-2xl border-border"
                   data-testid={`input-${currentStepData.field}`}
                 />
               ) : (
@@ -417,19 +418,19 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                   value={formData[currentStepData.field] as string || ''}
                   onChange={(e) => handleInputChange(currentStepData.field, e.target.value)}
                   placeholder={currentStepData.placeholder}
-                  className="h-12 rounded-2xl border-gray-200 dark:border-gray-700"
+                  className="h-12 rounded-2xl border-border"
                   data-testid={`input-${currentStepData.field}`}
                 />
               )}
 
               {/* Step-specific Tips */}
               {currentStep === 1 && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-2xl p-4">
+                <div className="bg-secondary border border-border rounded-2xl p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                    <span className="text-sm font-semibold text-blue-800 dark:text-blue-300">Pro Tip</span>
+                    <Sparkles className="h-4 w-4 text-gold" />
+                    <span className="text-sm font-semibold text-foreground">Pro Tip</span>
                   </div>
-                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                  <p className="text-sm text-muted-foreground">
                     Uploading bill images is the fastest way to get accurate analysis. Our AI can extract all details automatically!
                   </p>
                 </div>
@@ -439,7 +440,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
         </div>
 
         {/* Footer Navigation */}
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700 space-y-4">
+        <div className="p-6 border-t border-border space-y-4">
           {/* Navigation Buttons */}
           <div className="flex gap-3">
             <Button
@@ -456,7 +457,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
             {currentStep < INTAKE_STEPS.length ? (
               <Button
                 onClick={nextStep}
-                className="flex-1 h-12 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl"
+                className="flex-1 h-12 bg-primary text-primary-foreground hover:opacity-90 rounded-2xl"
                 data-testid="next-step"
               >
                 Next
@@ -467,14 +468,15 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
                 <Button
                   onClick={() => handleSubmit('chat')}
                   variant="outline"
-                  className="flex-1 h-12 rounded-2xl border-emerald-300 text-emerald-600 hover:bg-emerald-50"
+                  className="flex-1 h-12 rounded-2xl border-border text-foreground hover:bg-secondary"
                   data-testid="start-chat"
                 >
                   Start Chat
                 </Button>
                 <Button
                   onClick={() => handleSubmit('analysis')}
-                  className="flex-1 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl"
+                  className="flex-1 h-12 text-white rounded-2xl hover:opacity-90"
+                  style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                   data-testid="run-analysis"
                 >
                   <Zap className="h-4 w-4 mr-2" />
@@ -490,7 +492,7 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
               onClick={() => handleSubmit('chat')}
               variant="ghost"
               size="sm"
-              className="text-gray-500 hover:text-emerald-600"
+              className="text-muted-foreground hover:text-foreground"
               data-testid="skip-to-chat"
             >
               {hasAnyData ? 'Continue with provided info' : 'Skip and start chatting'}
@@ -498,13 +500,13 @@ export function OptionalIntakePopup({ isOpen, onClose, onSubmit, onFileUpload }:
           </div>
 
           {/* Success Metrics */}
-          <div className="flex items-center justify-center gap-6 text-xs text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
-              <Target className="h-3 w-3 text-emerald-600" />
+              <Target className="h-3 w-3 text-gold" />
               <span>94% Success Rate</span>
             </div>
             <div className="flex items-center gap-1">
-              <DollarSign className="h-3 w-3 text-emerald-600" />
+              <DollarSign className="h-3 w-3 text-gold" />
               <span>$12K Avg Savings</span>
             </div>
           </div>

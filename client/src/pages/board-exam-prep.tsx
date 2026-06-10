@@ -178,20 +178,20 @@ export default function BoardExamPrepPage() {
 
   const getExamTypeColor = (type: string) => {
     switch (type) {
-      case 'USMLE Step 1': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'USMLE Step 1': return 'bg-secondary text-foreground';
       case 'USMLE Step 2': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-      case 'USMLE Step 3': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
+      case 'USMLE Step 3': return 'bg-secondary text-foreground';
       case 'COMLEX': return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
+      default: return 'bg-secondary text-foreground';
     }
   };
 
   const getDifficultyColor = (difficulty: number) => {
     switch (difficulty) {
-      case 1: return 'text-green-600';
-      case 2: return 'text-yellow-600';
-      case 3: return 'text-red-600';
-      default: return 'text-gray-600';
+      case 1: return 'text-green-600 dark:text-green-400';
+      case 2: return 'text-yellow-600 dark:text-yellow-400';
+      case 3: return 'text-red-600 dark:text-red-400';
+      default: return 'text-muted-foreground';
     }
   };
 
@@ -221,22 +221,22 @@ export default function BoardExamPrepPage() {
       <MobileCard className="p-4 mb-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="font-semibold text-blue-600 text-lg">{userAttempts.length}</div>
-            <div className="text-gray-600 text-sm">Attempts</div>
+            <div className="font-semibold text-foreground text-lg">{userAttempts.length}</div>
+            <div className="text-muted-foreground text-sm">Attempts</div>
           </div>
           <div>
-            <div className="font-semibold text-green-600 text-lg">
+            <div className="font-semibold text-foreground text-lg">
               {userAttempts.length > 0 
                 ? Math.round(userAttempts.reduce((sum: number, a: BoardExamAttempt) => sum + a.score, 0) / userAttempts.length)
                 : 0}%
             </div>
-            <div className="text-gray-600 text-sm">Avg Score</div>
+            <div className="text-muted-foreground text-sm">Avg Score</div>
           </div>
           <div>
-            <div className="font-semibold text-purple-600 text-lg">
+            <div className="font-semibold text-foreground text-lg">
               {Math.floor(userAttempts.reduce((sum: number, a: BoardExamAttempt) => sum + (a.timeSpent || 0), 0) / 3600)}h
             </div>
-            <div className="text-gray-600 text-sm">Study Time</div>
+            <div className="text-muted-foreground text-sm">Study Time</div>
           </div>
         </div>
       </MobileCard>
@@ -244,7 +244,7 @@ export default function BoardExamPrepPage() {
       {/* Filters */}
       <MobileCard className="p-4 mb-6">
           <div className="flex items-center space-x-4 mb-4">
-            <Filter className="w-5 h-5 text-gray-600" />
+            <Filter className="w-5 h-5 text-muted-foreground" />
             <h3 className="font-medium">Filter Exams</h3>
           </div>
           
@@ -302,9 +302,9 @@ export default function BoardExamPrepPage() {
             {[...Array(6)].map((_, i) => (
               <MobileCard key={i} className="p-4">
                 <div className="animate-pulse">
-                  <div className="h-4 bg-gray-200 rounded mb-2" />
-                  <div className="h-3 bg-gray-200 rounded w-2/3 mb-4" />
-                  <div className="h-16 bg-gray-200 rounded" />
+                  <div className="h-4 bg-muted rounded mb-2" />
+                  <div className="h-3 bg-muted rounded w-2/3 mb-4" />
+                  <div className="h-16 bg-muted rounded" />
                 </div>
               </MobileCard>
             ))}
@@ -343,7 +343,7 @@ export default function BoardExamPrepPage() {
                         </div>
                       </div>
 
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                         {exam.description}
                       </p>
 
@@ -354,30 +354,30 @@ export default function BoardExamPrepPage() {
                             <Timer className="w-3 h-3" />
                             <span className="font-medium">{exam.timeLimit}m</span>
                           </div>
-                          <div className="text-gray-500">Duration</div>
+                          <div className="text-muted-foreground">Duration</div>
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center space-x-1">
                             <Brain className="w-3 h-3" />
                             <span className="font-medium">{exam.questions?.length || 0}</span>
                           </div>
-                          <div className="text-gray-500">Questions</div>
+                          <div className="text-muted-foreground">Questions</div>
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center space-x-1">
                             <Target className="w-3 h-3" />
                             <span className="font-medium">{exam.passingScore}%</span>
                           </div>
-                          <div className="text-gray-500">Pass Score</div>
+                          <div className="text-muted-foreground">Pass Score</div>
                         </div>
                       </div>
 
                       {/* User Progress */}
                       {userProgress && (
-                        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <div className="mb-4 p-3 bg-secondary rounded-lg">
                           <div className="flex items-center justify-between text-sm">
-                            <span>Best Score: <span className="font-semibold text-blue-600">{userProgress.bestScore}%</span></span>
-                            <span className="text-gray-600">{userProgress.totalAttempts} attempts</span>
+                            <span>Best Score: <span className="font-semibold text-gold">{userProgress.bestScore}%</span></span>
+                            <span className="text-muted-foreground">{userProgress.totalAttempts} attempts</span>
                           </div>
                           <Progress 
                             value={userProgress.bestScore} 
@@ -427,11 +427,11 @@ export default function BoardExamPrepPage() {
         {/* No Results */}
         {exams.length === 0 && !examsLoading && (
           <MobileCard className="p-8 text-center">
-            <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">
               No exams found
             </h3>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Try adjusting your filters to see more exams
             </p>
           </MobileCard>
@@ -478,7 +478,7 @@ export default function BoardExamPrepPage() {
                     {selectedExam.questions?.[quizState.currentQuestion]?.options?.map((option, index) => (
                       <label
                         key={index}
-                        className="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                        className="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-secondary"
                       >
                         <input
                           type="radio"
@@ -486,7 +486,7 @@ export default function BoardExamPrepPage() {
                           value={option}
                           checked={quizState.answers[quizState.currentQuestion] === option}
                           onChange={(e) => submitAnswer(quizState.currentQuestion, e.target.value)}
-                          className="text-blue-600"
+                          className="text-foreground"
                         />
                         <span>{option}</span>
                       </label>

@@ -16,28 +16,27 @@ interface ToolCardProps {
   title: string;
   description: string;
   href: string;
-  gradient: string;
   badge?: string;
 }
 
-const ToolCard = ({ icon: Icon, title, description, href, gradient, badge }: ToolCardProps) => (
+const ToolCard = ({ icon: Icon, title, description, href, badge }: ToolCardProps) => (
   <Link href={href}>
     <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
+      whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
-      className="relative overflow-hidden rounded-2xl cursor-pointer h-full"
+      className="luxury-card relative overflow-hidden rounded-2xl cursor-pointer h-full"
       data-testid={`card-tool-${title.toLowerCase().replace(/\s+/g, '-')}`}
     >
-      <div className={`bg-gradient-to-br ${gradient} p-5 text-white min-h-[140px] flex flex-col h-full`}>
-        <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-          <Icon className="h-5 w-5 text-white" />
+      <div className="p-5 min-h-[140px] flex flex-col h-full">
+        <div className="w-11 h-11 bg-secondary rounded-xl flex items-center justify-center mb-3">
+          <Icon className="h-5 w-5 text-muted-foreground" />
         </div>
-        <h3 className="font-bold text-lg mb-1">{title}</h3>
-        <p className="text-white/85 text-sm flex-1 leading-snug">{description}</p>
+        <h3 className="font-bold text-lg mb-1 text-foreground">{title}</h3>
+        <p className="text-muted-foreground text-sm flex-1 leading-snug">{description}</p>
         {badge && (
-          <Badge className="bg-white/25 text-white text-xs mt-2 w-fit">{badge}</Badge>
+          <Badge className="bg-secondary text-muted-foreground text-xs mt-2 w-fit">{badge}</Badge>
         )}
-        <ChevronRight className="absolute bottom-4 right-4 h-5 w-5 text-white/60" />
+        <ChevronRight className="absolute bottom-4 right-4 h-5 w-5 text-muted-foreground" />
       </div>
     </motion.div>
   </Link>
@@ -45,7 +44,7 @@ const ToolCard = ({ icon: Icon, title, description, href, gradient, badge }: Too
 
 export default function ClinicalCommandCenter() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <SEOHead 
         title="Health Information Center - Wellness Tools"
         description="Free health information tools: Lab results interpreter, drug interaction checker, symptom checker, and health metrics tracker. AI-powered reference tools."
@@ -61,15 +60,15 @@ export default function ClinicalCommandCenter() {
         "AI-powered health tools for understanding your health information"
       ]} />
       {/* Simple Header */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white px-4 pt-12 pb-6">
+      <div className="px-4 pt-12 pb-6 border-b border-border" style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}>
         <div className="max-w-lg mx-auto text-center">
-          <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Stethoscope className="h-7 w-7 text-white" />
           </div>
-          <h1 className="text-2xl font-black mb-2" data-testid="heading-clinical-command">
+          <h1 className="text-2xl font-black mb-2 font-serif text-foreground" data-testid="heading-clinical-command">
             Health Information Center
           </h1>
-          <p className="text-white/90 text-sm">
+          <p className="text-muted-foreground text-sm">
             Educational reference tools for health topics
           </p>
         </div>
@@ -93,7 +92,6 @@ export default function ClinicalCommandCenter() {
             title="Lab Reference"
             description="Look up lab values and terminology"
             href="/lab-analyzer"
-            gradient="from-blue-500 to-indigo-600"
             badge="Reference Guide"
           />
           <ToolCard
@@ -101,7 +99,6 @@ export default function ClinicalCommandCenter() {
             title="Medication Info"
             description="Look up medication information"
             href="/drug-interactions"
-            gradient="from-purple-500 to-violet-600"
             badge="Drug Database"
           />
           <ToolCard
@@ -109,7 +106,6 @@ export default function ClinicalCommandCenter() {
             title="Symptom Library"
             description="Browse symptom information"
             href="/symptom-checker"
-            gradient="from-emerald-500 to-teal-600"
             badge="Educational"
           />
           <ToolCard
@@ -117,68 +113,69 @@ export default function ClinicalCommandCenter() {
             title="Health Journal"
             description="Log blood pressure, weight, and more"
             href="/health-metrics"
-            gradient="from-rose-500 to-pink-600"
           />
         </div>
 
         {/* Quick Links Section */}
         <div className="space-y-3">
-          <h2 className="text-sm font-semibold text-gray-600 px-1">More Tools</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground px-1">More Tools</h2>
           
           <Link href="/patient-diagnostics">
-            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <Card className="luxury-card hover:shadow-md transition-shadow cursor-pointer">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-violet-100 rounded-xl flex items-center justify-center">
-                    <Heart className="h-5 w-5 text-violet-600" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+                    <Heart className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Learning Cases</h3>
-                    <p className="text-xs text-gray-500">Practice with AI health scenarios</p>
+                    <h3 className="font-semibold text-foreground">Learning Cases</h3>
+                    <p className="text-xs text-muted-foreground">Practice with AI health scenarios</p>
                   </div>
                 </div>
-                <ChevronRight className="h-5 w-5 text-gray-400" />
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
               </CardContent>
             </Card>
           </Link>
 
           <Link href="/health-insights">
-            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <Card className="luxury-card hover:shadow-md transition-shadow cursor-pointer">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center">
-                    <Shield className="h-5 w-5 text-cyan-600" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+                    <Shield className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Health Insights AI</h3>
-                    <p className="text-xs text-gray-500">Chat about health questions</p>
+                    <h3 className="font-semibold text-foreground">Health Insights AI</h3>
+                    <p className="text-xs text-muted-foreground">Chat about health questions</p>
                   </div>
                 </div>
-                <ChevronRight className="h-5 w-5 text-gray-400" />
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
               </CardContent>
             </Card>
           </Link>
         </div>
 
         {/* Financial Tools Quick Access */}
-        <Card className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
+        <Card className="luxury-card">
           <CardContent className="p-5">
             <div className="flex items-center gap-3 mb-3">
-              <Scale className="h-6 w-6" />
-              <h3 className="font-bold text-lg">Medical Bill Help</h3>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
+                <Scale className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="font-bold text-lg text-foreground">Medical Bill Help</h3>
             </div>
-            <p className="text-white/90 text-sm mb-4">
+            <p className="text-muted-foreground text-sm mb-4">
               Save money on medical bills with AI analysis and negotiation coaching
             </p>
             <div className="flex gap-2">
               <Link href="/bill-ai">
-                <Button className="bg-white text-emerald-700 hover:bg-white/90" data-testid="button-bill-ai">
+                <Button className="bg-primary text-primary-foreground hover:opacity-90" data-testid="button-bill-ai">
                   Bill AI
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>
               </Link>
               <Link href="/dispute-arsenal">
-                <Button className="bg-white/20 text-white border border-white/50 hover:bg-white/30" data-testid="button-dispute">
+                <Button variant="outline" data-testid="button-dispute">
                   Disputes
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>

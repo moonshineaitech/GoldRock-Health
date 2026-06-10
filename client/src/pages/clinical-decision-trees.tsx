@@ -193,21 +193,21 @@ export default function ClinicalDecisionTreesPage() {
   const getSpecialtyColor = (specialty: string) => {
     const colors: Record<string, string> = {
       'Emergency Medicine': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-      'Cardiology': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      'Neurology': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+      'Cardiology': 'bg-secondary text-foreground',
+      'Neurology': 'bg-secondary text-foreground',
       'Internal Medicine': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
       'Pediatrics': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
       'Surgery': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
     };
-    return colors[specialty] || 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
+    return colors[specialty] || 'bg-secondary text-foreground';
   };
 
   const getDifficultyIcon = (difficulty: number) => {
     switch (difficulty) {
-      case 1: return <Target className="w-4 h-4 text-green-600" />;
-      case 2: return <Activity className="w-4 h-4 text-yellow-600" />;
-      case 3: return <Zap className="w-4 h-4 text-red-600" />;
-      default: return <Target className="w-4 h-4 text-gray-600" />;
+      case 1: return <Target className="w-4 h-4 text-green-600 dark:text-green-400" />;
+      case 2: return <Activity className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />;
+      case 3: return <Zap className="w-4 h-4 text-red-600 dark:text-red-400" />;
+      default: return <Target className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -251,22 +251,22 @@ export default function ClinicalDecisionTreesPage() {
       <MobileCard className="p-4 mb-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="font-semibold text-blue-600 text-lg">{userProgress.length}</div>
-            <div className="text-gray-600 text-sm">Completed</div>
+            <div className="font-semibold text-foreground text-lg">{userProgress.length}</div>
+            <div className="text-muted-foreground text-sm">Completed</div>
           </div>
           <div>
-            <div className="font-semibold text-green-600 text-lg">
+            <div className="font-semibold text-foreground text-lg">
               {userProgress.length > 0 
                 ? Math.round(userProgress.reduce((sum: number, p: DecisionTreeProgress) => sum + (p.score || 0), 0) / userProgress.length)
                 : 0}%
             </div>
-            <div className="text-gray-600 text-sm">Avg Score</div>
+            <div className="text-muted-foreground text-sm">Avg Score</div>
           </div>
           <div>
-            <div className="font-semibold text-purple-600 text-lg">
+            <div className="font-semibold text-foreground text-lg">
               {userProgress.filter((p: DecisionTreeProgress) => p.isOptimalPath).length}
             </div>
-            <div className="text-gray-600 text-sm">Optimal Paths</div>
+            <div className="text-muted-foreground text-sm">Optimal Paths</div>
           </div>
         </div>
       </MobileCard>
@@ -274,7 +274,7 @@ export default function ClinicalDecisionTreesPage() {
       {/* Filters */}
       <MobileCard className="p-4 mb-6">
           <div className="flex items-center space-x-4 mb-4">
-            <Filter className="w-5 h-5 text-gray-600" />
+            <Filter className="w-5 h-5 text-muted-foreground" />
             <h3 className="font-medium">Filter Decision Trees</h3>
           </div>
           
@@ -338,9 +338,9 @@ export default function ClinicalDecisionTreesPage() {
             {[...Array(6)].map((_, i) => (
               <MobileCard key={i} className="p-4">
                 <div className="animate-pulse">
-                  <div className="h-4 bg-gray-200 rounded mb-2" />
-                  <div className="h-3 bg-gray-200 rounded w-2/3 mb-4" />
-                  <div className="h-16 bg-gray-200 rounded" />
+                  <div className="h-4 bg-muted rounded mb-2" />
+                  <div className="h-3 bg-muted rounded w-2/3 mb-4" />
+                  <div className="h-16 bg-muted rounded" />
                 </div>
               </MobileCard>
             ))}
@@ -379,7 +379,7 @@ export default function ClinicalDecisionTreesPage() {
                         </div>
                       </div>
 
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                         {tree.description}
                       </p>
 
@@ -390,30 +390,30 @@ export default function ClinicalDecisionTreesPage() {
                             <GitBranch className="w-3 h-3" />
                             <span className="font-medium">{tree.estimatedTime}m</span>
                           </div>
-                          <div className="text-gray-500">Duration</div>
+                          <div className="text-muted-foreground">Duration</div>
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center space-x-1">
                             <Brain className="w-3 h-3" />
                             <span className="font-medium">{tree.nodes?.length || 0}</span>
                           </div>
-                          <div className="text-gray-500">Decision Points</div>
+                          <div className="text-muted-foreground">Decision Points</div>
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center space-x-1">
                             <Target className="w-3 h-3" />
                             <span className="font-medium">{tree.optimalPathLength || 'N/A'}</span>
                           </div>
-                          <div className="text-gray-500">Optimal Path</div>
+                          <div className="text-muted-foreground">Optimal Path</div>
                         </div>
                       </div>
 
                       {/* User Progress */}
                       {progress && (
-                        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <div className="mb-4 p-3 bg-secondary rounded-lg">
                           <div className="flex items-center justify-between text-sm">
-                            <span>Best Score: <span className="font-semibold text-blue-600">{progress.bestScore}%</span></span>
-                            <span className="text-gray-600">{progress.totalAttempts} attempts</span>
+                            <span>Best Score: <span className="font-semibold text-gold">{progress.bestScore}%</span></span>
+                            <span className="text-muted-foreground">{progress.totalAttempts} attempts</span>
                           </div>
                           <Progress 
                             value={progress.bestScore} 
@@ -463,11 +463,11 @@ export default function ClinicalDecisionTreesPage() {
         {/* No Results */}
         {filteredTrees.length === 0 && !treesLoading && (
           <MobileCard className="p-8 text-center">
-            <GitBranch className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <GitBranch className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">
               No decision trees found
             </h3>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Try adjusting your filters to see more clinical algorithms
             </p>
           </MobileCard>
@@ -508,13 +508,13 @@ export default function ClinicalDecisionTreesPage() {
                   return (
                     <div className="space-y-6">
                       {/* Node Content */}
-                      <div className="p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                      <div className="p-6 bg-secondary rounded-lg">
                         <div className="flex items-start space-x-3">
-                          {currentNode.type === 'decision' && <Brain className="w-6 h-6 text-blue-600 mt-1" />}
-                          {currentNode.type === 'outcome' && <Target className="w-6 h-6 text-green-600 mt-1" />}
+                          {currentNode.type === 'decision' && <Brain className="w-6 h-6 text-gold mt-1" />}
+                          {currentNode.type === 'outcome' && <Target className="w-6 h-6 text-green-600 dark:text-green-400 mt-1" />}
                           <div className="flex-1">
                             <h3 className="font-semibold text-lg mb-2">{currentNode.title}</h3>
-                            <p className="text-gray-700 dark:text-gray-300">{currentNode.content}</p>
+                            <p className="text-foreground">{currentNode.content}</p>
                             
                             {currentNode.additionalInfo && (
                               <div className="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded border-l-4 border-yellow-400">
@@ -538,7 +538,7 @@ export default function ClinicalDecisionTreesPage() {
                               data-testid={`button-option-${index}`}
                             >
                               <div className="flex items-center space-x-3">
-                                <ArrowRight className="w-4 h-4 text-blue-600" />
+                                <ArrowRight className="w-4 h-4 text-muted-foreground" />
                                 <span>{option.text}</span>
                               </div>
                             </Button>
@@ -555,9 +555,9 @@ export default function ClinicalDecisionTreesPage() {
                         }`}>
                           <div className="flex items-center space-x-2 mb-2">
                             {currentNode.isOptimal ? (
-                              <CheckCircle className="w-5 h-5 text-green-600" />
+                              <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                             ) : (
-                              <AlertTriangle className="w-5 h-5 text-orange-600" />
+                              <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                             )}
                             <span className="font-semibold">
                               {currentNode.isOptimal ? 'Optimal Outcome' : 'Alternative Outcome'}
@@ -565,7 +565,7 @@ export default function ClinicalDecisionTreesPage() {
                           </div>
                           
                           {currentNode.explanation && (
-                            <p className="text-sm text-gray-700 dark:text-gray-300">
+                            <p className="text-sm text-foreground">
                               {currentNode.explanation}
                             </p>
                           )}

@@ -118,86 +118,55 @@ export default function Training() {
       {/* Hero Section */}
       <motion.div 
         className="text-center py-8 px-4 relative overflow-hidden"
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-1/4 w-32 h-32 bg-gradient-to-r from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 -right-1/4 w-28 h-28 bg-gradient-to-r from-amber-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-        </div>
-        
         <motion.div 
-          className="w-20 h-20 bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-emerald-500/25 relative overflow-hidden"
-          initial={{ scale: 0, rotate: -180, opacity: 0 }}
-          animate={{ scale: 1, rotate: 0, opacity: 1 }}
-          transition={{ 
-            duration: 0.8, 
-            delay: 0.3,
-            type: "spring",
-            stiffness: 180,
-            damping: 12
-          }}
-          whileHover={{ scale: 1.05, rotate: 3 }}
+          className="w-20 h-20 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-sm relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ y: -2 }}
         >
-          <div className="absolute inset-0 bg-white/20 rounded-[1.75rem] backdrop-blur-sm" />
           <BookCheck className="text-white text-2xl relative z-10" />
-          
-          <motion.div 
-            className="absolute -top-2 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [-6, 6, -6],
-              scale: [1, 1.3, 1],
-              opacity: [0.8, 1, 0.8]
-            }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-full shadow-lg"
-            animate={{ 
-              y: [4, -4, 4],
-              scale: [0.9, 1.2, 0.9],
-              opacity: [0.7, 1, 0.7]
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
         </motion.div>
         
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.7 }}
+          transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h1 className="text-3xl font-black mb-3 leading-tight tracking-tight">
-            <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-green-600 bg-clip-text text-transparent">Real Cases</span>{" "}
-            <span className="text-gray-900">Real Savings</span>
+          <h1 className="font-serif text-3xl font-bold mb-3 leading-tight tracking-tight text-foreground">
+            Real Cases, Real Savings
           </h1>
-          <h2 className="text-xl font-bold bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-6 leading-tight">
+          <h2 className="font-serif text-xl font-semibold text-gold mb-6 leading-tight">
             Learn From People Who Won
           </h2>
         </motion.div>
         
         <motion.p 
-          className="text-base text-gray-700 mb-6 max-w-sm mx-auto leading-relaxed font-medium"
-          initial={{ opacity: 0, y: 25 }}
+          className="text-base text-muted-foreground mb-6 max-w-sm mx-auto leading-relaxed font-medium"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           Learn how real people reduced their medical bills using simple strategies you can apply to your own situation.
         </motion.p>
         
         <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl p-5 mb-6 max-w-sm mx-auto shadow-lg"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
+          className="luxury-card rounded-2xl p-5 mb-6 max-w-sm mx-auto"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-2">
-              <Trophy className="h-5 w-5 text-emerald-600" />
-              <span className="font-black text-emerald-700 text-lg">$67,450 Total Saved</span>
+              <Trophy className="h-5 w-5 text-gold" />
+              <span className="font-bold text-foreground text-lg">$67,450 Total Saved</span>
             </div>
-            <p className="text-sm text-emerald-600 font-semibold">Across {caseStudies.length} documented victories</p>
+            <p className="text-sm text-muted-foreground font-semibold">Across {caseStudies.length} documented victories</p>
           </div>
         </motion.div>
       </motion.div>
@@ -215,11 +184,11 @@ export default function Training() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.4, duration: 0.6 }}
         >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 bg-clip-text text-transparent mb-3">
+          <h2 className="font-serif text-2xl font-bold text-foreground mb-3">
             Browse Success Stories
           </h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto" />
-          <p className="text-sm text-gray-600 mt-3 max-w-sm mx-auto font-medium">
+          <div className="h-1 w-20 bg-gold rounded-full mx-auto" />
+          <p className="text-sm text-muted-foreground mt-3 max-w-sm mx-auto font-medium">
             Each case shows the full story, tactics used, and exact steps taken
           </p>
         </motion.div>
@@ -232,23 +201,22 @@ export default function Training() {
         transition={{ duration: 0.5, delay: 1.6 }}
         className="mt-8"
       >
-        <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl mb-6">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30 rounded-3xl" />
+        <MobileCard className="luxury-card mb-6">
           <div className="relative z-10 space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input 
                 placeholder="Search case studies..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 rounded-xl bg-white/80 backdrop-blur-sm"
+                className="pl-10 border-border focus:border-gold rounded-xl bg-card"
                 data-testid="input-search-cases"
               />
             </div>
             
             <div className="grid grid-cols-2 gap-3">
               <Select value={specialty} onValueChange={setSpecialty}>
-                <SelectTrigger className="rounded-xl border-gray-200 bg-white/80 backdrop-blur-sm" data-testid="select-bill-category">
+                <SelectTrigger className="rounded-xl border-border bg-card" data-testid="select-bill-category">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -259,7 +227,7 @@ export default function Training() {
               </Select>
               
               <Select value={difficulty} onValueChange={setDifficulty}>
-                <SelectTrigger className="rounded-xl border-gray-200 bg-white/80 backdrop-blur-sm" data-testid="select-difficulty-level">
+                <SelectTrigger className="rounded-xl border-border bg-card" data-testid="select-difficulty-level">
                   <SelectValue placeholder="Level" />
                 </SelectTrigger>
                 <SelectContent>
@@ -283,48 +251,46 @@ export default function Training() {
             transition={{ delay: 1.8 + index * 0.1, duration: 0.4 }}
           >
             <Link href={`/cases/${caseStudy.id}`}>
-              <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden group cursor-pointer hover:shadow-2xl transition-shadow" data-testid={`case-study-${caseStudy.id}`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30" />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
+              <MobileCard className="luxury-card overflow-hidden group cursor-pointer hover:shadow-md transition-shadow" data-testid={`case-study-${caseStudy.id}`}>
                 <div className="relative z-10">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
                       <motion.div 
-                        className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                        style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                        whileHover={{ y: -2 }}
                       >
                         <DollarSign className="h-6 w-6 text-white" />
                       </motion.div>
                       <div>
-                        <h3 className="font-bold text-gray-900 text-base">{caseStudy.title}</h3>
-                        <p className="text-sm text-gray-600 font-medium">{caseStudy.strategy}</p>
+                        <h3 className="font-bold text-foreground text-base">{caseStudy.title}</h3>
+                        <p className="text-sm text-muted-foreground font-medium">{caseStudy.strategy}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-black text-emerald-700">{caseStudy.savings}</div>
-                      <div className="text-xs text-emerald-600 font-semibold">{caseStudy.savingsPercentage} saved</div>
+                      <div className="text-2xl font-bold text-gold">{caseStudy.savings}</div>
+                      <div className="text-xs text-muted-foreground font-semibold">{caseStudy.savingsPercentage} saved</div>
                     </div>
                   </div>
                   
                   <div className="mb-4">
                     <div className="grid grid-cols-2 gap-3 text-sm">
                       <div>
-                        <span className="text-gray-500 font-medium">Original Bill:</span>
-                        <div className="font-bold text-red-700">{caseStudy.originalBill}</div>
+                        <span className="text-muted-foreground font-medium">Original Bill:</span>
+                        <div className="font-bold text-foreground">{caseStudy.originalBill}</div>
                       </div>
                       <div>
-                        <span className="text-gray-500 font-medium">Final Amount:</span>
+                        <span className="text-muted-foreground font-medium">Final Amount:</span>
                         <div className="font-bold text-emerald-700">{caseStudy.finalAmount}</div>
                       </div>
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <p className="text-sm text-gray-700 font-medium mb-2">
+                    <p className="text-sm text-foreground font-medium mb-2">
                       <span className="font-bold">{caseStudy.patient}:</span> {caseStudy.condition}
                     </p>
-                    <div className="text-xs text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       <strong>Key Tactics Used:</strong>
                       <ul className="list-disc list-inside mt-1 space-y-1">
                         {caseStudy.keyTactics.slice(0, 2).map((tactic, i) => (
@@ -336,7 +302,7 @@ export default function Training() {
                   
                   <div className="flex items-center justify-between text-sm mb-4">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-lg text-xs font-medium">
+                      <span className="px-2 py-1 bg-secondary text-muted-foreground rounded-lg text-xs font-medium">
                         {caseStudy.category}
                       </span>
                       <span className={`px-2 py-1 rounded-lg text-xs font-medium ${
@@ -348,13 +314,13 @@ export default function Training() {
                          caseStudy.difficulty === 2 ? 'Intermediate' : 'Advanced'}
                       </span>
                     </div>
-                    <div className="flex items-center space-x-1 text-gray-600">
+                    <div className="flex items-center space-x-1 text-muted-foreground">
                       <Clock className="h-4 w-4" />
                       <span className="font-medium">{caseStudy.timeline}</span>
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between text-emerald-700 font-bold group-hover:translate-x-2 transition-transform">
+                  <div className="flex items-center justify-between text-gold font-bold group-hover:translate-x-2 transition-transform">
                     <span className="flex items-center">
                       <BookOpen className="h-4 w-4 mr-2" />
                       Read Full Case Study
@@ -375,14 +341,13 @@ export default function Training() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl text-center py-8">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/30 rounded-3xl" />
+          <MobileCard className="luxury-card text-center py-8">
             <div className="relative z-10">
-              <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Search className="h-8 w-8 text-gray-400" />
+              <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Search className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">No case studies found</h3>
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+              <h3 className="font-semibold text-foreground mb-2">No case studies found</h3>
+              <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                 Try adjusting your search criteria or browse different categories
               </p>
               <MobileButton 
@@ -409,34 +374,23 @@ export default function Training() {
         transition={{ delay: 2.2, duration: 0.6 }}
         className="mt-8 mb-6"
       >
-        <MobileCard className="backdrop-blur-xl border border-white/40 shadow-xl overflow-hidden relative"
-          style={{
-            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.08) 50%, rgba(20, 184, 166, 0.08) 100%)'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/20 to-white/30" />
-          
+        <MobileCard className="luxury-card overflow-hidden relative">
           <div className="relative z-10 text-center">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <FileText className="h-6 w-6 text-emerald-600" />
-              </motion.div>
-              <span className="font-black text-emerald-700 text-lg">Ready to Save?</span>
+              <FileText className="h-6 w-6 text-gold" />
+              <span className="font-serif font-bold text-foreground text-lg">Ready to Save?</span>
             </div>
-            <p className="text-sm text-emerald-700 font-semibold mb-4">
+            <p className="text-sm text-muted-foreground font-medium mb-4">
               Use the same strategies these people used to reduce your own medical bills
             </p>
             
             <Link href="/bill-ai">
               <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.2 }}
               >
-                <MobileButton className="bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 hover:from-emerald-700 hover:via-teal-700 hover:to-green-700 text-white font-bold shadow-xl shadow-emerald-500/30">
+                <MobileButton className="bg-primary text-primary-foreground font-bold shadow-sm">
                   <Receipt className="h-4 w-4 mr-2" />
                   Analyze My Bill Now
                   <Sparkles className="h-4 w-4 ml-2" />

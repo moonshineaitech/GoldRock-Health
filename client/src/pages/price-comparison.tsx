@@ -33,14 +33,14 @@ function PriceBar({ label, price, maxPrice, color }: { label: string; price: num
   const pct = maxPrice > 0 ? (price / maxPrice) * 100 : 0;
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-gray-500 w-24 text-right">{label}</span>
-      <div className="flex-1 bg-gray-100 rounded-full h-6 overflow-hidden">
+      <span className="text-xs text-muted-foreground w-24 text-right">{label}</span>
+      <div className="flex-1 bg-secondary rounded-full h-6 overflow-hidden">
         <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.6 }}
           className={`h-full ${color} rounded-full flex items-center justify-end pr-2`}>
           {pct > 20 && <span className="text-[10px] font-bold text-white">${price.toLocaleString()}</span>}
         </motion.div>
       </div>
-      {pct <= 20 && <span className="text-xs font-medium text-gray-700">${price.toLocaleString()}</span>}
+      {pct <= 20 && <span className="text-xs font-medium text-foreground">${price.toLocaleString()}</span>}
     </div>
   );
 }
@@ -52,18 +52,18 @@ function ProviderPriceCard({ provider, cheapest }: { provider: any; cheapest: bo
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-      className={`bg-white rounded-xl border p-4 ${cheapest ? 'border-emerald-300 ring-1 ring-emerald-200' : 'border-gray-200'}`}>
+      className={`bg-card rounded-xl border p-4 ${cheapest ? 'border-gold shadow-sm' : 'border-border'}`}>
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold text-gray-900">{provider.providerName}</h3>
-            {cheapest && <Badge className="bg-emerald-100 text-emerald-700 text-[10px]"><Star className="w-3 h-3 mr-0.5" />Best Price</Badge>}
+            <h3 className="text-sm font-semibold text-foreground">{provider.providerName}</h3>
+            {cheapest && <Badge className="text-white text-[10px]" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}><Star className="w-3 h-3 mr-0.5" />Best Price</Badge>}
           </div>
-          <p className="text-xs text-gray-500 flex items-center gap-1"><MapPin className="w-3 h-3" />{provider.city}, {provider.state}</p>
+          <p className="text-xs text-muted-foreground flex items-center gap-1"><MapPin className="w-3 h-3" />{provider.city}, {provider.state}</p>
         </div>
         <div className="text-right">
-          <p className="text-lg font-bold text-gray-900">${cashPrice.toLocaleString()}</p>
-          <p className={`text-xs flex items-center gap-0.5 justify-end ${diff < 0 ? 'text-emerald-600' : diff > 0 ? 'text-red-600' : 'text-gray-500'}`}>
+          <p className="text-lg font-bold text-foreground">${cashPrice.toLocaleString()}</p>
+          <p className={`text-xs flex items-center gap-0.5 justify-end ${diff < 0 ? 'text-emerald-600' : diff > 0 ? 'text-red-600' : 'text-muted-foreground'}`}>
             {diff < 0 ? <TrendingDown className="w-3 h-3" /> : diff > 0 ? <TrendingUp className="w-3 h-3" /> : null}
             {Math.abs(Math.round(diff))}% vs average
           </p>
@@ -72,20 +72,20 @@ function ProviderPriceCard({ provider, cheapest }: { provider: any; cheapest: bo
 
       <div className="grid grid-cols-3 gap-2 mt-3">
         {provider.cashPrice && (
-          <div className="text-center p-2 bg-gray-50 rounded-lg">
-            <p className="text-[10px] text-gray-500">Cash Price</p>
+          <div className="text-center p-2 bg-secondary rounded-lg">
+            <p className="text-[10px] text-muted-foreground">Cash Price</p>
             <p className="text-xs font-bold">${cashPrice.toLocaleString()}</p>
           </div>
         )}
         {provider.insurancePrice && (
-          <div className="text-center p-2 bg-blue-50 rounded-lg">
-            <p className="text-[10px] text-gray-500">Insured</p>
+          <div className="text-center p-2 bg-secondary rounded-lg">
+            <p className="text-[10px] text-muted-foreground">Insured</p>
             <p className="text-xs font-bold">${parseFloat(provider.insurancePrice).toLocaleString()}</p>
           </div>
         )}
         {provider.medicareRate && (
-          <div className="text-center p-2 bg-purple-50 rounded-lg">
-            <p className="text-[10px] text-gray-500">Medicare</p>
+          <div className="text-center p-2 bg-secondary rounded-lg">
+            <p className="text-[10px] text-muted-foreground">Medicare</p>
             <p className="text-xs font-bold">${parseFloat(provider.medicareRate).toLocaleString()}</p>
           </div>
         )}
@@ -112,18 +112,18 @@ export default function PriceComparison() {
   return (
     <MobileLayout title="Price Compare">
       <div className="space-y-6 pb-20">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-6 text-white">
-          <DollarSign className="w-8 h-8 mb-2 text-blue-200" />
-          <h2 className="text-xl font-bold mb-1">Compare Procedure Prices</h2>
-          <p className="text-blue-200 text-sm">See what hospitals charge for the same procedure. The exact same MRI can cost $400 at one facility and $4,000 at another.</p>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="luxury-card rounded-2xl p-6">
+          <DollarSign className="w-8 h-8 mb-2 text-gold" />
+          <h2 className="text-xl font-bold font-serif text-foreground mb-1">Compare Procedure Prices</h2>
+          <p className="text-muted-foreground text-sm">See what hospitals charge for the same procedure. The exact same MRI can cost $400 at one facility and $4,000 at another.</p>
         </motion.div>
 
         <div className="space-y-3">
           <div>
-            <Label className="text-xs text-gray-500">Search Procedures</Label>
+            <Label className="text-xs text-muted-foreground">Search Procedures</Label>
             <div className="relative">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
               <Input placeholder="Search by name or CPT code..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9" />
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function PriceComparison() {
           <div className="grid grid-cols-2 gap-2">
             {filteredProcedures.slice(0, 8).map((p) => (
               <Button key={p.code} variant={selectedProcedure === p.code ? "default" : "outline"}
-                className={`text-xs h-auto py-2 px-3 justify-start ${selectedProcedure === p.code ? 'bg-blue-600' : ''}`}
+                className="text-xs h-auto py-2 px-3 justify-start"
                 onClick={() => setSelectedProcedure(p.code)}>
                 <div className="text-left">
                   <p className="font-medium truncate">{p.name}</p>
@@ -146,23 +146,23 @@ export default function PriceComparison() {
           <>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-gray-900">{COMMON_PROCEDURES.find(p => p.code === selectedProcedure)?.name}</h3>
-                <p className="text-xs text-gray-500">CPT Code: {selectedProcedure}</p>
+                <h3 className="font-semibold font-serif text-foreground">{COMMON_PROCEDURES.find(p => p.code === selectedProcedure)?.name}</h3>
+                <p className="text-xs text-muted-foreground">CPT Code: {selectedProcedure}</p>
               </div>
-              <Badge className="bg-blue-100 text-blue-700">{sortedResults.length} facilities</Badge>
+              <Badge className="bg-secondary text-foreground">{sortedResults.length} facilities</Badge>
             </div>
 
             {isLoading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <Loader2 className="w-8 h-8 animate-spin text-gold" />
               </div>
             ) : sortedResults.length > 0 ? (
               <>
-                <Card className="bg-emerald-50 border-emerald-200">
+                <Card className="bg-card border-border">
                   <CardContent className="py-3">
                     <div className="flex items-center gap-2 text-sm">
-                      <TrendingDown className="w-4 h-4 text-emerald-600" />
-                      <span className="text-emerald-800 font-medium">
+                      <TrendingDown className="w-4 h-4 text-gold" />
+                      <span className="text-foreground font-medium">
                         Potential savings: up to ${(parseFloat(sortedResults[sortedResults.length - 1]?.cashPrice || 0) - parseFloat(sortedResults[0]?.cashPrice || 0)).toLocaleString()}
                       </span>
                     </div>
@@ -175,11 +175,11 @@ export default function PriceComparison() {
                 </div>
               </>
             ) : (
-              <Card className="bg-gray-50 border-dashed">
+              <Card className="bg-secondary border-dashed">
                 <CardContent className="py-8 text-center">
-                  <Building2 className="w-10 h-10 mx-auto text-gray-300 mb-2" />
-                  <h3 className="font-semibold text-gray-700 mb-1">No price data yet</h3>
-                  <p className="text-sm text-gray-500">Price transparency data for this procedure will be added as hospitals publish their rates</p>
+                  <Building2 className="w-10 h-10 mx-auto text-muted-foreground mb-2" />
+                  <h3 className="font-semibold text-foreground mb-1">No price data yet</h3>
+                  <p className="text-sm text-muted-foreground">Price transparency data for this procedure will be added as hospitals publish their rates</p>
                 </CardContent>
               </Card>
             )}

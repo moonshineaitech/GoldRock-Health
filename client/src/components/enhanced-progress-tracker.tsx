@@ -331,20 +331,20 @@ export function EnhancedProgressTracker({
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'text-red-600 bg-red-100';
-      case 'high': return 'text-orange-600 bg-orange-100';
-      case 'medium': return 'text-yellow-600 bg-yellow-100';
-      case 'low': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'critical': return 'text-destructive bg-secondary';
+      case 'high': return 'text-gold bg-secondary';
+      case 'medium': return 'text-muted-foreground bg-secondary';
+      case 'low': return 'text-emerald-700 bg-secondary';
+      default: return 'text-muted-foreground bg-secondary';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle2 className="h-5 w-5 text-green-600" />;
-      case 'in-progress': return <Clock className="h-5 w-5 text-blue-600 animate-pulse" />;
-      case 'pending': return <Circle className="h-5 w-5 text-gray-400" />;
-      default: return <Circle className="h-5 w-5 text-gray-400" />;
+      case 'completed': return <CheckCircle2 className="h-5 w-5 text-emerald-700" />;
+      case 'in-progress': return <Clock className="h-5 w-5 text-gold animate-pulse" />;
+      case 'pending': return <Circle className="h-5 w-5 text-muted-foreground" />;
+      default: return <Circle className="h-5 w-5 text-muted-foreground" />;
     }
   };
 
@@ -362,22 +362,22 @@ export function EnhancedProgressTracker({
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4">
           <motion.div 
-            className="w-16 h-16 bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-lg relative overflow-hidden"
-            whileHover={{ scale: 1.05, rotate: 3 }}
+            className="w-16 h-16 rounded-3xl flex items-center justify-center shadow-sm relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+            whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
             <Target className="h-8 w-8 text-white relative z-10" />
           </motion.div>
           <div>
-            <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-1">
+            <h3 className="text-xl font-bold font-serif text-foreground mb-1">
               Bill Analysis Progress
             </h3>
             <div className="flex items-center space-x-3 text-sm">
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+              <Badge variant="outline" className="bg-secondary text-muted-foreground border-border">
                 {overallProgress.completed}/{overallProgress.total} steps
               </Badge>
-              <span className="text-gray-600 dark:text-gray-400 flex items-center">
+              <span className="text-muted-foreground flex items-center">
                 <Clock className="h-3 w-3 mr-1" />
                 {timeElapsed} min elapsed
               </span>
@@ -386,19 +386,15 @@ export function EnhancedProgressTracker({
         </div>
         <motion.div 
           className="text-right"
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ y: -2 }}
         >
-          <motion.div 
-            className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-            animate={{ scale: [1, 1.02, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
+          <div className="text-4xl font-bold font-serif text-gold">
             {overallProgress.percentage}%
-          </motion.div>
-          <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Complete</div>
+          </div>
+          <div className="text-sm font-medium text-muted-foreground">Complete</div>
           <div className={`text-xs font-medium ${
-            overallProgress.percentage >= 80 ? 'text-green-600' :
-            overallProgress.percentage >= 50 ? 'text-blue-600' : 'text-orange-600'
+            overallProgress.percentage >= 80 ? 'text-emerald-700' :
+            overallProgress.percentage >= 50 ? 'text-gold' : 'text-muted-foreground'
           }`}>
             {overallProgress.percentage >= 80 ? 'Almost Done!' :
              overallProgress.percentage >= 50 ? 'Making Progress' : 'Getting Started'}
@@ -409,24 +405,22 @@ export function EnhancedProgressTracker({
       {/* Enhanced Progress Bar */}
       <div className="mb-8">
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 rounded-full h-4" />
+          <div className="absolute inset-0 bg-secondary rounded-full h-4" />
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 rounded-full h-4 shadow-lg"
+            className="absolute inset-0 rounded-full h-4 shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
             initial={{ width: 0 }}
             animate={{ width: `${overallProgress.percentage}%` }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/10 to-transparent rounded-full h-4" />
           <motion.div
-            className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white rounded-full shadow-lg border-2 border-blue-500 z-10"
+            className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-card rounded-full shadow-sm border-2 border-gold z-10"
             style={{ left: `calc(${overallProgress.percentage}% - 12px)` }}
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
           >
-            <div className="absolute inset-1 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full" />
+            <div className="absolute inset-1 rounded-full" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }} />
           </motion.div>
         </div>
-        <div className="flex justify-between mt-2 text-xs text-gray-500">
+        <div className="flex justify-between mt-2 text-xs text-muted-foreground">
           <span>Started</span>
           <span>Analysis</span>
           <span>Action</span>
@@ -465,25 +459,25 @@ export function EnhancedProgressTracker({
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`p-5 rounded-xl cursor-pointer transition-all duration-300 relative overflow-hidden group ${
+                  className={`p-5 rounded-xl cursor-pointer transition-all duration-300 relative overflow-hidden group luxury-card ${
                     step.status === 'completed' 
-                      ? 'luxury-card border-green-200 shadow-lg shadow-green-500/10' 
+                      ? 'border-emerald-200' 
                       : step.actionRequired 
-                        ? 'luxury-card border-blue-200 shadow-lg shadow-blue-500/10' 
-                        : 'luxury-card border-gray-200'
+                        ? 'border-gold' 
+                        : 'border-border'
                   }`}
                   onClick={() => setExpandedStep(expandedStep === step.id ? null : step.id)}
                 >
                   <div className="flex items-center space-x-3">
                     {getStatusIcon(step.status)}
-                    <step.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                    <step.icon className="h-5 w-5 text-muted-foreground" />
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white">{step.title}</h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{step.description}</p>
+                          <h4 className="font-medium text-foreground">{step.title}</h4>
+                          <p className="text-sm text-muted-foreground">{step.description}</p>
                           {step.value && (
-                            <div className="text-sm font-medium text-blue-600 dark:text-blue-400 mt-1">
+                            <div className="text-sm font-medium text-gold mt-1">
                               ✓ {step.value}
                             </div>
                           )}
@@ -493,11 +487,11 @@ export function EnhancedProgressTracker({
                             {step.priority}
                           </Badge>
                           {step.estimatedTime && (
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                            <div className="text-xs text-muted-foreground">
                               {step.estimatedTime}
                             </div>
                           )}
-                          <ChevronRight className={`h-4 w-4 text-gray-400 transition-transform ${
+                          <ChevronRight className={`h-4 w-4 text-muted-foreground transition-transform ${
                             expandedStep === step.id ? 'transform rotate-90' : ''
                           }`} />
                         </div>
@@ -511,10 +505,10 @@ export function EnhancedProgressTracker({
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
+                        className="mt-4 pt-4 border-t border-border"
                       >
                         {step.helpText && (
-                          <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                          <div className="text-sm text-muted-foreground mb-3">
                             💡 {step.helpText}
                           </div>
                         )}
@@ -524,13 +518,13 @@ export function EnhancedProgressTracker({
                             {step.substeps.map((substep) => (
                               <div key={substep.id} className="flex items-center space-x-2 text-sm">
                                 {substep.status === 'completed' ? (
-                                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                                  <CheckCircle2 className="h-4 w-4 text-emerald-700" />
                                 ) : (
-                                  <Circle className="h-4 w-4 text-gray-400" />
+                                  <Circle className="h-4 w-4 text-muted-foreground" />
                                 )}
-                                <span className="text-gray-900 dark:text-white">{substep.title}</span>
+                                <span className="text-foreground">{substep.title}</span>
                                 {substep.description && (
-                                  <span className="text-gray-500 dark:text-gray-400">- {substep.description}</span>
+                                  <span className="text-muted-foreground">- {substep.description}</span>
                                 )}
                               </div>
                             ))}
@@ -547,10 +541,9 @@ export function EnhancedProgressTracker({
                                 e.stopPropagation();
                                 handleStepAction(step);
                               }}
-                              className="w-full bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 hover:from-blue-600 hover:via-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25 relative overflow-hidden group"
+                              className="w-full bg-primary text-primary-foreground shadow-sm relative overflow-hidden group"
                               size="sm"
                             >
-                              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                               <PlayCircle className="h-4 w-4 mr-2" />
                               <span className="font-semibold">Start This Step</span>
                               <ChevronRight className="h-3 w-3 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -571,18 +564,18 @@ export function EnhancedProgressTracker({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+          className="mt-6 p-4 bg-card rounded-lg border border-border shadow-sm"
         >
           <div className="flex items-center space-x-3">
-            <Zap className="h-5 w-5 text-blue-600" />
+            <Zap className="h-5 w-5 text-gold" />
             <div className="flex-1">
-              <h4 className="font-medium text-blue-900 dark:text-blue-100">Next Step:</h4>
-              <p className="text-sm text-blue-700 dark:text-blue-300">{nextStep.title}</p>
+              <h4 className="font-medium text-foreground">Next Step:</h4>
+              <p className="text-sm text-muted-foreground">{nextStep.title}</p>
             </div>
             <Button
               onClick={() => handleStepAction(nextStep)}
               size="sm"
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-primary text-primary-foreground"
             >
               Continue
               <ArrowRight className="h-3 w-3 ml-1" />

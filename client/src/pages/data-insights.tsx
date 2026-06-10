@@ -20,11 +20,11 @@ function MetricCard({ icon: Icon, label, value, change, color, bg }: any) {
       className={`${bg} rounded-xl p-4`}>
       <div className="flex items-center gap-2 mb-1">
         <Icon className={`w-4 h-4 ${color}`} />
-        <span className="text-xs text-gray-500">{label}</span>
+        <span className="text-xs text-muted-foreground">{label}</span>
       </div>
       <p className={`text-xl font-bold ${color}`}>{value}</p>
       {change && (
-        <p className={`text-xs mt-0.5 ${change > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+        <p className={`text-xs mt-0.5 ${change > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
           {change > 0 ? '+' : ''}{change}% vs last month
         </p>
       )}
@@ -36,12 +36,12 @@ function InsightBar({ label, value, maxValue, color, suffix = "" }: any) {
   const pct = maxValue > 0 ? (value / maxValue) * 100 : 0;
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-gray-600 w-32 truncate">{label}</span>
-      <div className="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+      <span className="text-xs text-muted-foreground w-32 truncate">{label}</span>
+      <div className="flex-1 bg-secondary rounded-full h-4 overflow-hidden">
         <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.5 }}
           className={`h-full ${color} rounded-full`} />
       </div>
-      <span className="text-xs font-medium text-gray-700 w-20 text-right">{typeof value === 'number' && value > 999 ? `$${(value/1000).toFixed(1)}k` : `${value}${suffix}`}</span>
+      <span className="text-xs font-medium text-foreground w-20 text-right">{typeof value === 'number' && value > 999 ? `$${(value/1000).toFixed(1)}k` : `${value}${suffix}`}</span>
     </div>
   );
 }
@@ -70,15 +70,17 @@ export default function DataInsights() {
     <MobileLayout title="Data Insights">
       <div className="space-y-6 pb-20">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl p-6 text-white">
-          <Database className="w-8 h-8 mb-2 text-slate-300" />
-          <h2 className="text-xl font-bold mb-1">Platform Analytics</h2>
-          <p className="text-slate-300 text-sm">Anonymized, aggregate insights about medical billing patterns, overcharges, and consumer savings across the platform.</p>
+          className="luxury-card rounded-2xl p-6">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
+            <Database className="w-6 h-6 text-white" />
+          </div>
+          <h2 className="text-xl font-bold mb-1 font-serif text-foreground">Platform Analytics</h2>
+          <p className="text-muted-foreground text-sm">Anonymized, aggregate insights about medical billing patterns, overcharges, and consumer savings across the platform.</p>
         </motion.div>
 
         <div className="flex items-center justify-between">
           <Select value={period} onValueChange={setPeriod}>
-            <SelectTrigger className="w-40 bg-white">
+            <SelectTrigger className="w-40 bg-card">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -92,10 +94,10 @@ export default function DataInsights() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <MetricCard icon={FileText} label="Bills Analyzed" value={platformData.totalBillsAnalyzed.toLocaleString()} color="text-blue-600" bg="bg-blue-50" />
-          <MetricCard icon={DollarSign} label="Total Savings" value={`$${(platformData.totalSavingsGenerated / 1000).toFixed(0)}k`} color="text-emerald-600" bg="bg-emerald-50" />
-          <MetricCard icon={Target} label="Avg Savings/Bill" value={`$${platformData.avgSavingsPerBill.toLocaleString()}`} color="text-purple-600" bg="bg-purple-50" />
-          <MetricCard icon={AlertTriangle} label="Avg Overcharge" value={`${platformData.avgOverchargePercent}%`} color="text-red-600" bg="bg-red-50" />
+          <MetricCard icon={FileText} label="Bills Analyzed" value={platformData.totalBillsAnalyzed.toLocaleString()} color="text-foreground" bg="bg-secondary" />
+          <MetricCard icon={DollarSign} label="Total Savings" value={`$${(platformData.totalSavingsGenerated / 1000).toFixed(0)}k`} color="text-emerald-600 dark:text-emerald-400" bg="bg-emerald-50 dark:bg-emerald-900/20" />
+          <MetricCard icon={Target} label="Avg Savings/Bill" value={`$${platformData.avgSavingsPerBill.toLocaleString()}`} color="text-gold" bg="bg-secondary" />
+          <MetricCard icon={AlertTriangle} label="Avg Overcharge" value={`${platformData.avgOverchargePercent}%`} color="text-red-600 dark:text-red-400" bg="bg-red-50 dark:bg-red-900/20" />
         </div>
 
         <Tabs value={tab} onValueChange={setTab}>
@@ -109,7 +111,7 @@ export default function DataInsights() {
           <TabsContent value="overview" className="space-y-4">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2"><Zap className="w-4 h-4 text-amber-500" />Savings by Strategy</CardTitle>
+                <CardTitle className="text-sm flex items-center gap-2"><Zap className="w-4 h-4 text-gold" />Savings by Strategy</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {(platformData.savingsByStrategy || [
@@ -126,7 +128,7 @@ export default function DataInsights() {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2"><Activity className="w-4 h-4 text-blue-500" />Key Findings</CardTitle>
+                <CardTitle className="text-sm flex items-center gap-2"><Activity className="w-4 h-4 text-gold" />Key Findings</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {[
@@ -136,9 +138,9 @@ export default function DataInsights() {
                   { insight: "Insurance denials are successfully overturned 60% of the time when appealed", severity: "medium" },
                   { insight: "Most nonprofit hospitals offer charity care but only 15% of eligible patients apply", severity: "high" },
                 ].map((f, i) => (
-                  <div key={i} className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg">
+                  <div key={i} className="flex items-start gap-2 p-2 bg-secondary rounded-lg">
                     <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${f.severity === 'high' ? 'bg-red-500' : 'bg-amber-500'}`} />
-                    <p className="text-xs text-gray-700">{f.insight}</p>
+                    <p className="text-xs text-muted-foreground">{f.insight}</p>
                   </div>
                 ))}
               </CardContent>
@@ -161,10 +163,10 @@ export default function DataInsights() {
                 ]).map((p: any) => (
                   <div key={p.procedure} className="flex items-center justify-between py-2 border-b last:border-0">
                     <div>
-                      <p className="text-xs font-medium text-gray-900">{p.procedure}</p>
-                      <p className="text-[10px] text-gray-500">Avg bill: ${p.avgBill.toLocaleString()}</p>
+                      <p className="text-xs font-medium text-foreground">{p.procedure}</p>
+                      <p className="text-[10px] text-muted-foreground">Avg bill: ${p.avgBill.toLocaleString()}</p>
                     </div>
-                    <Badge className="bg-red-100 text-red-700">{p.avgOvercharge}% overcharged</Badge>
+                    <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">{p.avgOvercharge}% overcharged</Badge>
                   </div>
                 ))}
               </CardContent>
@@ -174,7 +176,7 @@ export default function DataInsights() {
           <TabsContent value="states" className="space-y-4">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2"><MapPin className="w-4 h-4 text-indigo-500" />Savings by State (Top 10)</CardTitle>
+                <CardTitle className="text-sm flex items-center gap-2"><MapPin className="w-4 h-4 text-gold" />Savings by State (Top 10)</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {(platformData.savingsByState || [
@@ -189,7 +191,7 @@ export default function DataInsights() {
                   { state: "North Carolina", savings: 26000, bills: 130 },
                   { state: "Michigan", savings: 23000, bills: 110 },
                 ]).map((s: any) => (
-                  <InsightBar key={s.state} label={s.state} value={s.savings} maxValue={100000} color="bg-indigo-500" />
+                  <InsightBar key={s.state} label={s.state} value={s.savings} maxValue={100000} color="bg-emerald-500" />
                 ))}
               </CardContent>
             </Card>
@@ -198,7 +200,7 @@ export default function DataInsights() {
           <TabsContent value="errors" className="space-y-4">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-amber-500" />Most Common Billing Errors</CardTitle>
+                <CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-gold" />Most Common Billing Errors</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {(platformData.commonBillingErrors || [
@@ -218,13 +220,13 @@ export default function DataInsights() {
           </TabsContent>
         </Tabs>
 
-        <Card className="bg-slate-50 border-slate-200">
+        <Card className="bg-secondary border-border">
           <CardContent className="py-4">
             <div className="flex items-start gap-3">
-              <Eye className="w-5 h-5 text-slate-500 mt-0.5" />
+              <Eye className="w-5 h-5 text-muted-foreground mt-0.5" />
               <div>
-                <h4 className="text-sm font-medium text-slate-800">Data Privacy</h4>
-                <p className="text-xs text-slate-600">All data shown is anonymized and aggregated. No individual patient information is ever exposed. Data is used solely to help consumers understand billing patterns and fight overcharges.</p>
+                <h4 className="text-sm font-medium text-foreground">Data Privacy</h4>
+                <p className="text-xs text-muted-foreground">All data shown is anonymized and aggregated. No individual patient information is ever exposed. Data is used solely to help consumers understand billing patterns and fight overcharges.</p>
               </div>
             </div>
           </CardContent>

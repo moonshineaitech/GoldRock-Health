@@ -112,7 +112,7 @@ export function ShareButtons({ type, data }: ShareButtonsProps) {
           variant="default"
           size="sm"
           onClick={handleShare}
-          className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
+          className="bg-primary text-primary-foreground hover:bg-primary"
           data-testid="button-share"
         >
           {shared ? (
@@ -169,7 +169,7 @@ export function ShareButtons({ type, data }: ShareButtonsProps) {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-xs text-gray-500"
+          className="text-xs text-muted-foreground"
         >
           📱 Share sheet available on iOS app
         </motion.p>

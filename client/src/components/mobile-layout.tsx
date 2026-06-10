@@ -6,36 +6,32 @@ import { motion } from "framer-motion";
 interface MobileLayoutProps {
   children: React.ReactNode;
   title: string;
+  subtitle?: string;
   showBackButton?: boolean;
   onBackClick?: () => void;
   showBottomNav?: boolean;
   className?: string;
+  "data-testid"?: string;
 }
 
 export function MobileLayout({ 
   children, 
   title, 
+  subtitle,
   showBackButton = false,
   onBackClick,
   showBottomNav = true,
-  className = ""
+  className = "",
+  ...rest
 }: MobileLayoutProps) {
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ 
+    <div className="min-h-screen relative" style={{ 
       WebkitOverflowScrolling: 'touch',
       touchAction: 'manipulation'
-    }}>
-      {/* Nostalgic Fruitger Aero Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-gradient-to-r from-cyan-200/8 to-emerald-200/8 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-gradient-to-r from-blue-200/8 to-teal-200/8 rounded-full blur-3xl animate-float" style={{animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-200/6 to-cyan-200/6 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
-        <div className="absolute top-3/4 left-1/4 w-72 h-72 bg-gradient-to-r from-sky-200/5 to-blue-200/5 rounded-full blur-3xl animate-float" style={{animationDelay: '4.5s'}}></div>
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gradient-to-r from-teal-200/6 to-cyan-200/6 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
-      </div>
-
+    }} {...rest}>
       <MobileHeader 
         title={title}
+        subtitle={subtitle}
         showBackButton={showBackButton}
         onBackClick={onBackClick}
         rightAction={<UserAvatarDropdown />}
@@ -48,12 +44,12 @@ export function MobileLayout({
           paddingBottom: showBottomNav ? 'calc(4rem + env(safe-area-inset-bottom, 0px))' : '1rem',
           WebkitOverflowScrolling: 'touch'
         }}
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ 
-          duration: 0.6, 
-          delay: 0.2,
-          ease: "easeOut"
+          duration: 0.5, 
+          delay: 0.05,
+          ease: [0.22, 1, 0.36, 1]
         }}
       >
         <SafeAreaProvider>
@@ -65,14 +61,11 @@ export function MobileLayout({
       
       {showBottomNav && <MobileBottomNav />}
       {showBottomNav && !['/bill-ai', '/bill-analyzer'].includes(window.location.pathname) && <MedicalChatbot />}
-      
-      {/* Soft Floating Gradient Accent */}
-      <div className="fixed bottom-4 left-4 right-4 h-16 bg-gradient-to-r from-cyan-300/8 to-emerald-300/8 rounded-2xl blur-xl pointer-events-none"></div>
     </div>
   );
 }
 
-// Mobile-optimized card component
+// Editorial paper card
 export function MobileCard({ 
   children, 
   className = "",
@@ -81,15 +74,14 @@ export function MobileCard({
 }: React.ComponentProps<"div">) {
   return (
     <motion.div 
-      className={`luxury-card backdrop-blur-xl p-6 border border-white/30 shadow-2xl animate-float ${className}`}
-      whileTap={{ scale: 0.98 }}
-      whileHover={{ scale: 1.01, y: -1 }}
-      initial={{ opacity: 0, y: 20, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      className={`luxury-card p-6 ${className}`}
+      whileTap={{ scale: 0.995 }}
+      whileHover={{ y: -2 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ 
-        duration: 0.3,
-        scale: { duration: 0.15, type: "spring", stiffness: 400 },
-        y: { type: "spring", stiffness: 500, damping: 30 }
+        duration: 0.4,
+        ease: [0.22, 1, 0.36, 1]
       }}
       onClick={onClick}
       style={{ 
@@ -103,7 +95,7 @@ export function MobileCard({
   );
 }
 
-// Mobile-optimized button component
+// Editorial button
 export function MobileButton({ 
   children, 
   variant = "primary",
@@ -118,9 +110,9 @@ export function MobileButton({
   size?: "sm" | "md" | "lg";
 }) {
   const variants = {
-    primary: "bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 text-white shadow-xl shadow-cyan-500/25",
-    secondary: "luxury-card text-gray-800 border border-white/30 shadow-2xl",
-    ghost: "frosted-glass text-gray-700 hover:bg-white/30"
+    primary: "bg-primary text-primary-foreground shadow-sm hover:shadow-md",
+    secondary: "luxury-card text-foreground hover:shadow-md",
+    ghost: "text-foreground hover:bg-secondary"
   };
 
   const sizes = {
@@ -134,18 +126,18 @@ export function MobileButton({
       className={`
         ${variants[variant]} 
         ${sizes[size]} 
-        rounded-2xl font-semibold transition-all duration-200 
+        rounded-xl font-medium transition-all duration-200 
         disabled:opacity-50 disabled:cursor-not-allowed
         touch-target
         ${className}
       `}
-      whileTap={{ scale: disabled ? 1 : 0.97 }}
-      whileHover={{ scale: disabled ? 1 : 1.01 }}
-      initial={{ opacity: 0, scale: 0.95 }}
+      whileTap={{ scale: disabled ? 1 : 0.98 }}
+      whileHover={{ scale: disabled ? 1 : 1.005 }}
+      initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
-        scale: { duration: 0.15, type: "spring", stiffness: 400 },
-        opacity: { duration: 0.2 }
+        duration: 0.2,
+        ease: [0.22, 1, 0.36, 1]
       }}
       style={{
         touchAction: 'manipulation',

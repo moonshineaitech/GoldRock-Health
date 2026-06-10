@@ -69,6 +69,8 @@ import {
   Package,
   CreditCard,
   Calculator,
+  CheckSquare,
+  ArrowRight,
   TrendingUp as TrendingUpIcon
 } from "lucide-react";
 
@@ -458,7 +460,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-lg border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -470,18 +472,18 @@ Include specific cost savings analysis, manufacturer assistance program details,
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Pill className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Pharmaceutical & Device Database</h3>
+            <h3 className="text-lg font-bold text-foreground">Pharmaceutical & Device Database</h3>
             <Badge className="bg-green-600 text-white text-xs">
               <Crown className="h-3 w-3 mr-1" />
               Pricing Intelligence
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Drug pricing • Device costs • PBM tactics • Patient assistance</p>
+          <p className="text-sm text-muted-foreground">Drug pricing • Device costs • PBM tactics • Patient assistance</p>
         </div>
       </div>
 
@@ -496,7 +498,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
         <TabsContent value="search" className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Drug Name
               </label>
               <Input
@@ -507,7 +509,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Device Type
               </label>
               <Input
@@ -521,7 +523,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Category
               </label>
               <Select value={searchData.category} onValueChange={(value) => setSearchData({...searchData, category: value})}>
@@ -541,7 +543,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Manufacturer
               </label>
               <Input
@@ -552,7 +554,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Bill Amount
               </label>
               <Input
@@ -566,7 +568,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Insurance Type
             </label>
             <Select value={searchData.insuranceType} onValueChange={(value) => setSearchData({...searchData, insuranceType: value})}>
@@ -587,7 +589,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
           <Button 
             onClick={searchPharmaceuticalIntelligence} 
             disabled={isSearching} 
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            className="w-full bg-primary text-primary-foreground hover:opacity-90"
             data-testid="button-search-pharmaceutical-intelligence"
           >
             {isSearching ? (
@@ -604,26 +606,26 @@ Include specific cost savings analysis, manufacturer assistance program details,
           </Button>
 
           <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="p-3 bg-green-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg border border-border">
               <div className="flex items-center gap-2 mb-2">
-                <Pill className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-semibold text-green-800">Pricing Expert</span>
+                <Pill className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">Pricing Expert</span>
               </div>
-              <div className="text-xs text-green-700">Drug & device cost intelligence</div>
+              <div className="text-xs text-muted-foreground">Drug & device cost intelligence</div>
             </div>
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg border border-border">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-800">77% Success Rate</span>
+                <Target className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">77% Success Rate</span>
               </div>
-              <div className="text-xs text-blue-700">Cost reduction & assistance</div>
+              <div className="text-xs text-muted-foreground">Cost reduction & assistance</div>
             </div>
-            <div className="p-3 bg-purple-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg border border-border">
               <div className="flex items-center gap-2 mb-2">
-                <Crown className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-semibold text-purple-800">$85M+ Saved</span>
+                <Crown className="h-4 w-4 text-gold" />
+                <span className="text-sm font-semibold text-foreground">$85M+ Saved</span>
               </div>
-              <div className="text-xs text-purple-700">Pharmaceutical advocacy</div>
+              <div className="text-xs text-muted-foreground">Pharmaceutical advocacy</div>
             </div>
           </div>
         </TabsContent>
@@ -633,8 +635,8 @@ Include specific cost savings analysis, manufacturer assistance program details,
             {drugIntelligence.map((category, catIndex) => (
               <div key={catIndex} className="space-y-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <Pill className="h-5 w-5 text-green-600" />
-                  <h3 className="text-lg font-bold text-gray-900">{category.category}</h3>
+                  <Pill className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <h3 className="text-lg font-bold text-foreground">{category.category}</h3>
                 </div>
                 
                 {category.drugs.map((drug, drugIndex) => (
@@ -646,7 +648,7 @@ Include specific cost savings analysis, manufacturer assistance program details,
                           <CardDescription className="flex items-center gap-4 mt-2">
                             <Badge variant="outline">{drug.avgCost} Avg Cost</Badge>
                             <Badge variant="outline">Markup: {drug.markup}</Badge>
-                            <Badge variant="outline" className="text-green-600">{drug.successRate} Success Rate</Badge>
+                            <Badge variant="outline" className="text-green-600 dark:text-green-400">{drug.successRate} Success Rate</Badge>
                             <Badge variant="outline">{drug.avgSavings} Avg Savings</Badge>
                           </CardDescription>
                         </div>
@@ -655,14 +657,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                            <AlertTriangle className="h-4 w-4 text-red-600" />
+                          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                            <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
                             Common Overcharges
                           </h4>
                           <div className="space-y-1">
                             {drug.commonOvercharges.map((charge, index) => (
-                              <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                                <DollarSign className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
+                              <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                                <DollarSign className="h-3 w-3 text-red-500 dark:text-red-400 mt-0.5 flex-shrink-0" />
                                 <span>{charge}</span>
                               </div>
                             ))}
@@ -670,14 +672,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                         </div>
 
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                            <Target className="h-4 w-4 text-green-600" />
+                          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                            <Target className="h-4 w-4 text-green-600 dark:text-green-400" />
                             Negotiation Tactics
                           </h4>
                           <div className="space-y-1">
                             {drug.negotiationTactics.map((tactic, index) => (
-                              <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                                <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                              <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" />
                                 <span>{tactic}</span>
                               </div>
                             ))}
@@ -686,14 +688,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                       </div>
 
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                          <Award className="h-4 w-4 text-blue-600" />
+                        <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                          <Award className="h-4 w-4 text-muted-foreground" />
                           Patient Assistance Programs
                         </h4>
                         <div className="space-y-1">
                           {drug.patientAssistancePrograms.map((program, index) => (
-                            <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                              <Star className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                            <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                              <Star className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                               <span>{program}</span>
                             </div>
                           ))}
@@ -712,12 +714,12 @@ Include specific cost savings analysis, manufacturer assistance program details,
             {deviceIntelligence.map((category, catIndex) => (
               <div key={catIndex} className="space-y-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <Package className="h-5 w-5 text-blue-600" />
-                  <h3 className="text-lg font-bold text-gray-900">{category.category}</h3>
+                  <Package className="h-5 w-5 text-muted-foreground" />
+                  <h3 className="text-lg font-bold text-foreground">{category.category}</h3>
                 </div>
                 
                 {category.devices.map((device, deviceIndex) => (
-                  <Card key={deviceIndex} className="border-l-4 border-l-blue-500">
+                  <Card key={deviceIndex} className="border-l-4 border-l-border">
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
                         <div>
@@ -725,8 +727,8 @@ Include specific cost savings analysis, manufacturer assistance program details,
                           <CardDescription className="flex items-center gap-4 mt-2">
                             <Badge variant="outline">{device.avgCost} Avg Cost</Badge>
                             <Badge variant="outline">Wholesale: {device.wholesaleCost}</Badge>
-                            <Badge variant="outline" className="text-red-600">Markup: {device.markup}</Badge>
-                            <Badge variant="outline" className="text-green-600">{device.successRate} Success Rate</Badge>
+                            <Badge variant="outline" className="text-red-600 dark:text-red-400">Markup: {device.markup}</Badge>
+                            <Badge variant="outline" className="text-green-600 dark:text-green-400">{device.successRate} Success Rate</Badge>
                           </CardDescription>
                         </div>
                       </div>
@@ -734,14 +736,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                            <AlertTriangle className="h-4 w-4 text-red-600" />
+                          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                            <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
                             Common Overcharges
                           </h4>
                           <div className="space-y-1">
                             {device.commonOvercharges.map((charge, index) => (
-                              <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                                <DollarSign className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
+                              <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                                <DollarSign className="h-3 w-3 text-red-500 dark:text-red-400 mt-0.5 flex-shrink-0" />
                                 <span>{charge}</span>
                               </div>
                             ))}
@@ -749,14 +751,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                         </div>
 
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                            <Target className="h-4 w-4 text-green-600" />
+                          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                            <Target className="h-4 w-4 text-green-600 dark:text-green-400" />
                             Negotiation Tactics
                           </h4>
                           <div className="space-y-1">
                             {device.negotiationTactics.map((tactic, index) => (
-                              <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                                <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                              <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" />
                                 <span>{tactic}</span>
                               </div>
                             ))}
@@ -765,24 +767,24 @@ Include specific cost savings analysis, manufacturer assistance program details,
                       </div>
 
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                          <Shield className="h-4 w-4 text-purple-600" />
+                        <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                          <Shield className="h-4 w-4 text-muted-foreground" />
                           Device Warranty & Coverage
                         </h4>
                         <div className="space-y-1">
                           {device.deviceWarranty.map((warranty, index) => (
-                            <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                              <CheckCircle className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
+                            <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                              <CheckCircle className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                               <span>{warranty}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <div className="bg-green-50 p-3 rounded-lg">
+                      <div className="bg-secondary border border-border p-3 rounded-lg">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm font-semibold text-green-800">Average Savings</span>
-                          <span className="text-lg font-bold text-green-600">{device.avgSavings}</span>
+                          <span className="text-sm font-semibold text-foreground">Average Savings</span>
+                          <span className="text-lg font-bold text-green-600 dark:text-green-400">{device.avgSavings}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -801,11 +803,11 @@ Include specific cost savings analysis, manufacturer assistance program details,
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <Award className="h-5 w-5 text-orange-600" />
+                        <Award className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                         {program.programType}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-4 mt-2">
-                        <Badge variant="outline" className="text-green-600">{program.successRate} Success Rate</Badge>
+                        <Badge variant="outline" className="text-green-600 dark:text-green-400">{program.successRate} Success Rate</Badge>
                         <Badge variant="outline">{program.avgSavings} Avg Savings</Badge>
                       </CardDescription>
                     </div>
@@ -814,14 +816,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-blue-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-muted-foreground" />
                         Eligibility Requirements
                       </h4>
                       <div className="space-y-1">
                         {program.eligibilityRequirements.map((req, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <CheckSquare className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <CheckSquare className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{req}</span>
                           </div>
                         ))}
@@ -829,14 +831,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Settings className="h-4 w-4 text-purple-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Settings className="h-4 w-4 text-muted-foreground" />
                         Application Process
                       </h4>
                       <div className="space-y-1">
                         {program.applicationProcess.map((process, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <ArrowRight className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <ArrowRight className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{process}</span>
                           </div>
                         ))}
@@ -844,14 +846,14 @@ Include specific cost savings analysis, manufacturer assistance program details,
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Shield className="h-4 w-4 text-green-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Shield className="h-4 w-4 text-green-600 dark:text-green-400" />
                         Coverage Details
                       </h4>
                       <div className="space-y-1">
                         {program.coverageDetails.map((detail, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <CheckCircle className="h-3 w-3 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" />
                             <span>{detail}</span>
                           </div>
                         ))}

@@ -59,8 +59,8 @@ const WorkflowCard = ({ workflow, onClick, isCompact = false }: WorkflowCardProp
       transition={{ duration: 0.2 }}
     >
       <Card 
-        className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-gray-200/50 ${
-          workflow.isPremium && !isSubscribed ? 'opacity-60' : 'hover:border-emerald-300/50'
+        className={`cursor-pointer transition-all duration-200 hover:shadow-md bg-card border border-border ${
+          workflow.isPremium && !isSubscribed ? 'opacity-60' : 'hover:border-gold'
         } ${isCompact ? 'p-3' : ''}`}
         onClick={onClick}
         data-testid={`workflow-card-${workflow.id}`}
@@ -68,40 +68,40 @@ const WorkflowCard = ({ workflow, onClick, isCompact = false }: WorkflowCardProp
         <CardContent className={`${isCompact ? 'p-0' : 'p-4'} space-y-3`}>
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3">
-              <div className={`${workflow.bgColor} ${isCompact ? 'w-8 h-8' : 'w-10 h-10'} rounded-xl flex items-center justify-center shadow-sm`}>
-                <IconComponent className={`${workflow.color} ${isCompact ? 'h-4 w-4' : 'h-5 w-5'}`} />
+              <div className={`bg-secondary ${isCompact ? 'w-8 h-8' : 'w-10 h-10'} rounded-xl flex items-center justify-center`}>
+                <IconComponent className={`text-muted-foreground ${isCompact ? 'h-4 w-4' : 'h-5 w-5'}`} />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <h3 className={`font-semibold text-gray-900 truncate ${isCompact ? 'text-sm' : 'text-base'}`}>
+                  <h3 className={`font-semibold text-foreground truncate ${isCompact ? 'text-sm' : 'text-base'}`}>
                     {workflow.title}
                   </h3>
                   {workflow.isPremium && (
-                    <Crown className="h-3 w-3 text-yellow-600 flex-shrink-0" />
+                    <Crown className="h-3 w-3 text-gold flex-shrink-0" />
                   )}
                 </div>
-                <p className={`text-gray-600 truncate ${isCompact ? 'text-xs' : 'text-sm'}`}>
+                <p className={`text-muted-foreground truncate ${isCompact ? 'text-xs' : 'text-sm'}`}>
                   {workflow.subtitle}
                 </p>
               </div>
             </div>
-            <ChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />
+            <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
           </div>
           
           {!isCompact && (
             <>
-              <p className="text-sm text-gray-600 line-clamp-2">
+              <p className="text-sm text-muted-foreground line-clamp-2">
                 {workflow.description}
               </p>
               
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center space-x-3">
-                  <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                  <Badge variant="secondary" className="bg-secondary text-muted-foreground border-border">
                     {workflow.successRate} success
                   </Badge>
-                  <span className="text-gray-500">{workflow.estimatedTime}</span>
+                  <span className="text-muted-foreground">{workflow.estimatedTime}</span>
                 </div>
-                <span className="font-medium text-emerald-600">{workflow.savingsPotential}</span>
+                <span className="font-medium text-gold">{workflow.savingsPotential}</span>
               </div>
             </>
           )}
@@ -146,7 +146,7 @@ const WorkflowCategory = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Icon className={`h-4 w-4 ${iconColor}`} />
-          <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+          <h3 className="text-sm font-semibold text-foreground">{title}</h3>
           <Badge variant="outline" className="text-xs">
             {workflows.length}
           </Badge>
@@ -218,7 +218,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
         <Button
           variant="outline"
           size="sm"
-          className="h-8 px-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/50 text-blue-700 hover:from-blue-100 hover:to-indigo-100 hover:border-blue-300/50 text-xs"
+          className="h-8 px-3 rounded-xl bg-card border border-border text-foreground hover:bg-secondary hover:border-gold text-xs"
           data-testid="run-another-workflow-button"
         >
           <ArrowRight className="h-3 w-3 mr-1.5" />
@@ -228,22 +228,22 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
       
       <SheetContent side="bottom" className="h-[90vh] p-0">
         <div className="flex flex-col h-full">
-          <SheetHeader className="px-6 py-4 border-b bg-gradient-to-r from-emerald-50 to-teal-50">
+          <SheetHeader className="px-6 py-4 border-b border-border" style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}>
             <div className="flex items-center justify-between">
               <div>
-                <SheetTitle className="text-lg font-bold text-gray-900">
+                <SheetTitle className="text-lg font-bold font-serif text-foreground">
                   Run Another Workflow
                 </SheetTitle>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Continue your analysis with {totalWorkflows} powerful tools
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
+                <Badge className="bg-secondary text-foreground border border-border">
                   {totalWorkflows} Tools
                 </Badge>
                 {premiumWorkflows > 0 && (
-                  <Badge className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 border-purple-200">
+                  <Badge className="text-white border-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                     <Crown className="h-3 w-3 mr-1" />
                     {premiumWorkflows} Premium
                   </Badge>
@@ -259,7 +259,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
               <WorkflowCategory
                 title="Essential Workflows"
                 icon={Sparkles}
-                iconColor="text-emerald-600"
+                iconColor="text-muted-foreground"
                 workflows={coreWorkflows}
                 onWorkflowSelect={handleWorkflowSelect}
                 maxVisible={4}
@@ -272,7 +272,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                   <WorkflowCategory
                     title="Getting Started (Perfect for First-Time Users)"
                     icon={Star}
-                    iconColor="text-yellow-600"
+                    iconColor="text-muted-foreground"
                     workflows={beginnerWorkflows}
                     onWorkflowSelect={handleWorkflowSelect}
                     isCompact={true}
@@ -288,7 +288,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                   <WorkflowCategory
                     title="Specialty Analysis"
                     icon={Stethoscope}
-                    iconColor="text-blue-600"
+                    iconColor="text-muted-foreground"
                     workflows={specialtyWorkflows}
                     onWorkflowSelect={handleWorkflowSelect}
                     isCompact={true}
@@ -304,7 +304,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                   <WorkflowCategory
                     title="Insurance & Appeals"
                     icon={Shield}
-                    iconColor="text-indigo-600"
+                    iconColor="text-muted-foreground"
                     workflows={insuranceWorkflows}
                     onWorkflowSelect={handleWorkflowSelect}
                     isCompact={true}
@@ -320,7 +320,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                   <WorkflowCategory
                     title="Financial Assistance"
                     icon={DollarSign}
-                    iconColor="text-green-600"
+                    iconColor="text-muted-foreground"
                     workflows={financialWorkflows}
                     onWorkflowSelect={handleWorkflowSelect}
                     isCompact={true}
@@ -336,7 +336,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                   <WorkflowCategory
                     title="Legal & Disputes"
                     icon={FileText}
-                    iconColor="text-purple-600"
+                    iconColor="text-muted-foreground"
                     workflows={legalWorkflows}
                     onWorkflowSelect={handleWorkflowSelect}
                     isCompact={true}
@@ -352,7 +352,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                   <WorkflowCategory
                     title="Emergency Bills"
                     icon={Siren}
-                    iconColor="text-red-600"
+                    iconColor="text-muted-foreground"
                     workflows={emergencyWorkflows}
                     onWorkflowSelect={handleWorkflowSelect}
                     isCompact={true}
@@ -368,19 +368,19 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                   {hospitalInsiderWorkflows.length > 0 && (
                     <>
                       <Separator className="my-4" />
-                      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-4 mb-4">
+                      <div className="bg-card border border-border rounded-2xl p-4 mb-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <Crown className="h-4 w-4 text-purple-600" />
-                          <span className="text-sm font-semibold text-purple-900">Premium Insider Knowledge</span>
+                          <Crown className="h-4 w-4 text-gold" />
+                          <span className="text-sm font-semibold text-foreground">Premium Insider Knowledge</span>
                         </div>
-                        <p className="text-xs text-purple-700">
+                        <p className="text-xs text-muted-foreground">
                           Exclusive industry insights and advanced strategies for maximum savings
                         </p>
                       </div>
                       <WorkflowCategory
                         title="Hospital Insider Secrets"
                         icon={Building2}
-                        iconColor="text-purple-600"
+                        iconColor="text-muted-foreground"
                         workflows={hospitalInsiderWorkflows}
                         onWorkflowSelect={handleWorkflowSelect}
                         isCompact={true}
@@ -396,7 +396,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                       <WorkflowCategory
                         title="Medical Coding Intelligence"
                         icon={Brain}
-                        iconColor="text-indigo-600"
+                        iconColor="text-muted-foreground"
                         workflows={codingIntelligenceWorkflows}
                         onWorkflowSelect={handleWorkflowSelect}
                         isCompact={true}
@@ -412,7 +412,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                       <WorkflowCategory
                         title="Advanced Appeal Systems"
                         icon={Target}
-                        iconColor="text-red-600"
+                        iconColor="text-muted-foreground"
                         workflows={appealSystemWorkflows}
                         onWorkflowSelect={handleWorkflowSelect}
                         isCompact={true}
@@ -428,7 +428,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                       <WorkflowCategory
                         title="Denial Reversal Arsenal"
                         icon={Shield}
-                        iconColor="text-orange-600"
+                        iconColor="text-muted-foreground"
                         workflows={denialReversalWorkflows}
                         onWorkflowSelect={handleWorkflowSelect}
                         isCompact={true}
@@ -444,7 +444,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                       <WorkflowCategory
                         title="Automated Tools"
                         icon={Zap}
-                        iconColor="text-yellow-600"
+                        iconColor="text-muted-foreground"
                         workflows={automatedToolsWorkflows}
                         onWorkflowSelect={handleWorkflowSelect}
                         isCompact={true}
@@ -460,7 +460,7 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
                       <WorkflowCategory
                         title="Premium Intelligence Databases"
                         icon={Database}
-                        iconColor="text-teal-600"
+                        iconColor="text-muted-foreground"
                         workflows={dataIntelligenceWorkflows}
                         onWorkflowSelect={handleWorkflowSelect}
                         isCompact={true}
@@ -475,14 +475,15 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
               {!isSubscribed && (hospitalInsiderWorkflows.length > 0 || codingIntelligenceWorkflows.length > 0) && (
                 <>
                   <Separator className="my-4" />
-                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-6 text-center">
-                    <Crown className="h-8 w-8 text-purple-600 mx-auto mb-3" />
-                    <h3 className="font-bold text-purple-900 mb-2">Unlock Premium Workflows</h3>
-                    <p className="text-sm text-purple-700 mb-4">
+                  <div className="bg-card border border-border rounded-2xl p-6 text-center">
+                    <Crown className="h-8 w-8 text-gold mx-auto mb-3" />
+                    <h3 className="font-bold font-serif text-foreground mb-2">Unlock Premium Workflows</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
                       Access {premiumWorkflows}+ exclusive insider tools and advanced strategies
                     </p>
                     <Button 
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                      className="text-white hover:opacity-90"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                       size="sm"
                       data-testid="upgrade-to-premium-button"
                     >
@@ -497,20 +498,20 @@ export function RunAnotherWorkflow({ onWorkflowSelect }: RunAnotherWorkflowProps
           </ScrollArea>
           
           {/* Footer */}
-          <div className="border-t bg-gray-50/50 px-6 py-3">
-            <div className="flex items-center justify-between text-xs text-gray-600">
+          <div className="border-t border-border bg-secondary px-6 py-3">
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
-                  <Target className="h-3 w-3 text-emerald-600" />
+                  <Target className="h-3 w-3 text-gold" />
                   <span>94% Success Rate</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <DollarSign className="h-3 w-3 text-emerald-600" />
+                  <DollarSign className="h-3 w-3 text-gold" />
                   <span>$50M+ Saved</span>
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                <Shield className="h-3 w-3 text-emerald-600" />
+                <Shield className="h-3 w-3 text-gold" />
                 <span>Private & Secure</span>
               </div>
             </div>

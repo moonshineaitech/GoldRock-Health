@@ -71,7 +71,8 @@ export default {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
+        serif: ["var(--font-serif)", "Fraunces", "Georgia", "serif"],
+        display: ["var(--font-serif)", "Fraunces", "Georgia", "serif"],
         mono: ["var(--font-mono)", "Menlo", "Monaco", "monospace"],
         medical: ["Inter", "system-ui", "sans-serif"],
       },

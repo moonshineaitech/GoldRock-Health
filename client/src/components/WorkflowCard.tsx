@@ -22,7 +22,7 @@ export function WorkflowCard({ workflow, onClick, className = "" }: WorkflowCard
       <Button
         onClick={onClick}
         variant="ghost"
-        className={`w-full h-full p-6 flex flex-col items-center justify-center text-center space-y-3 rounded-2xl border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 ${workflow.bgColor} hover:shadow-md`}
+        className={`w-full h-full p-6 flex flex-col items-center justify-center text-center space-y-3 rounded-2xl border border-border hover:border-gold transition-all duration-200 ${workflow.bgColor} hover:shadow-md`}
         data-testid={`workflow-${workflow.id}`}
       >
         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${workflow.bgColor.replace('bg-', 'bg-opacity-20 bg-')}`}>
@@ -30,7 +30,7 @@ export function WorkflowCard({ workflow, onClick, className = "" }: WorkflowCard
         </div>
         
         <div className="space-y-1">
-          <h3 className="font-semibold text-gray-900 text-sm leading-tight">
+          <h3 className="font-semibold text-foreground text-sm leading-tight">
             {workflow.title}
           </h3>
           <p className={`text-xs ${workflow.color} font-medium`}>
@@ -41,7 +41,8 @@ export function WorkflowCard({ workflow, onClick, className = "" }: WorkflowCard
         {workflow.isPremium && (
           <Badge 
             variant="secondary" 
-            className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-2 py-1"
+            className="absolute -top-2 -right-2 text-white text-xs px-2 py-1"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
           >
             Premium
           </Badge>
@@ -65,15 +66,15 @@ export function WorkflowDetailCard({ workflow, onStart, onClose }: WorkflowDetai
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 max-w-md mx-auto relative"
+      className="bg-card rounded-2xl shadow-sm border border-border p-6 max-w-md mx-auto relative"
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center"
+        className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary hover:bg-muted transition-colors flex items-center justify-center"
         data-testid="close-workflow-detail"
       >
         <span className="sr-only">Close</span>
-        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -106,11 +107,10 @@ export function WorkflowDetailCard({ workflow, onStart, onClose }: WorkflowDetai
         <div className="space-y-2">
           <Button
             onClick={onStart}
-            className={`w-full py-3 rounded-xl font-semibold ${
-              workflow.isPremium 
-                ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white'
-                : `bg-gradient-to-r ${workflow.color.replace('text-', 'from-')} to-blue-600 hover:shadow-lg text-white`
+            className={`w-full py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity ${
+              workflow.isPremium ? 'text-white' : 'bg-primary text-primary-foreground'
             }`}
+            style={workflow.isPremium ? { background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' } : undefined}
             data-testid={`start-workflow-${workflow.id}`}
           >
             {workflow.isPremium ? '✨ Start Premium Workflow' : 'Start Workflow'}

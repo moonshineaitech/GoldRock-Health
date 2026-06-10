@@ -36,7 +36,7 @@ const sessionTypes = [
     title: "Symptom Library",
     description: "Browse information about symptoms",
     icon: Stethoscope,
-    color: "from-blue-500 to-cyan-500",
+    color: "bg-secondary",
     emoji: "🩺"
   },
   {
@@ -44,7 +44,7 @@ const sessionTypes = [
     title: "Research Topics",
     description: "Explore health topics and learn more",
     icon: Brain,
-    color: "from-purple-500 to-indigo-500",
+    color: "bg-secondary",
     emoji: "🧠"
   },
   {
@@ -52,7 +52,7 @@ const sessionTypes = [
     title: "Medication Information",
     description: "Look up medication details",
     icon: Pill,
-    color: "from-emerald-500 to-teal-500",
+    color: "bg-secondary",
     emoji: "💊"
   },
   {
@@ -60,7 +60,7 @@ const sessionTypes = [
     title: "Wellness Resources",
     description: "General health and lifestyle information",
     icon: Heart,
-    color: "from-rose-500 to-pink-500",
+    color: "bg-secondary",
     emoji: "❤️"
   }
 ];
@@ -163,18 +163,18 @@ export default function HealthInsights() {
   if (!disclaimerAccepted) {
     return (
       <MobileLayout title="Health Insights">
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-4 flex items-center justify-center">
-          <Card className="max-w-md mx-auto">
+        <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+          <Card className="max-w-md mx-auto luxury-card border-0">
             <CardContent className="p-6 text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-100 flex items-center justify-center">
                 <AlertTriangle className="w-8 h-8 text-amber-600" />
               </div>
               
-              <h2 className="text-xl font-bold text-gray-900 mb-3">
+              <h2 className="text-xl font-bold font-serif text-foreground mb-3">
                 Important Disclaimer
               </h2>
               
-              <div className="text-left text-sm text-gray-600 space-y-3 mb-6">
+              <div className="text-left text-sm text-muted-foreground space-y-3 mb-6">
                 <p>
                   <strong>This is for educational purposes only.</strong> The information provided is not medical advice and should not replace consultation with a qualified healthcare professional.
                 </p>
@@ -188,7 +188,7 @@ export default function HealthInsights() {
 
               <Button
                 onClick={() => setDisclaimerAccepted(true)}
-                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl h-12"
+                className="w-full bg-primary text-primary-foreground hover:opacity-90 rounded-xl h-12"
                 data-testid="accept-disclaimer-button"
               >
                 I Understand, Continue
@@ -204,14 +204,14 @@ export default function HealthInsights() {
   if (!selectedType) {
     return (
       <MobileLayout title="Health Insights">
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+        <div className="min-h-screen bg-background">
           <div className="p-4 lg:p-8">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                 <Brain className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">Health Information</h1>
-              <p className="text-gray-500 mt-2">
+              <h1 className="text-2xl font-bold font-serif text-foreground">Health Information</h1>
+              <p className="text-muted-foreground mt-2">
                 Browse educational health resources and wellness information
               </p>
             </div>
@@ -225,31 +225,31 @@ export default function HealthInsights() {
                   transition={{ delay: idx * 0.1 }}
                 >
                   <Card 
-                    className="cursor-pointer hover:shadow-lg transition-all border-0 shadow-md"
+                    className="cursor-pointer hover:shadow-md transition-all luxury-card border-0"
                     onClick={() => startSession(type.id)}
                     data-testid={`session-type-${type.id}`}
                   >
                     <CardContent className="p-4 flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${type.color} flex items-center justify-center shadow-md`}>
+                      <div className={`w-14 h-14 rounded-xl ${type.color} border border-border flex items-center justify-center`}>
                         <span className="text-2xl">{type.emoji}</span>
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{type.title}</h3>
-                        <p className="text-sm text-gray-500">{type.description}</p>
+                        <h3 className="font-semibold text-foreground">{type.title}</h3>
+                        <p className="text-sm text-muted-foreground">{type.description}</p>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-gray-300" />
+                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
                     </CardContent>
                   </Card>
                 </motion.div>
               ))}
             </div>
 
-            <div className="mt-8 p-4 bg-blue-50 rounded-xl max-w-md mx-auto">
+            <div className="mt-8 p-4 bg-secondary rounded-xl border border-border max-w-md mx-auto">
               <div className="flex gap-3">
-                <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-blue-700">
+                <Info className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-foreground">
                   <p className="font-medium">Powered by AI</p>
-                  <p className="text-blue-600 mt-1">
+                  <p className="text-muted-foreground mt-1">
                     Our AI provides educational health information to help you have better conversations with your healthcare providers.
                   </p>
                 </div>
@@ -263,8 +263,8 @@ export default function HealthInsights() {
 
   return (
     <MobileLayout title="Health Insights">
-      <div className="flex flex-col h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100 p-4">
+      <div className="flex flex-col h-screen bg-background">
+        <div className="bg-card border-b border-border p-4">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -273,19 +273,19 @@ export default function HealthInsights() {
                 setSelectedType(null);
                 setMessages([]);
               }}
-              className="text-gray-500"
+              className="text-muted-foreground"
             >
               ← Back
             </Button>
             <div className="flex items-center gap-2">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${sessionTypes.find(s => s.id === selectedType)?.color} flex items-center justify-center`}>
+              <div className={`w-10 h-10 rounded-xl ${sessionTypes.find(s => s.id === selectedType)?.color} border border-border flex items-center justify-center`}>
                 <span className="text-lg">{sessionTypes.find(s => s.id === selectedType)?.emoji}</span>
               </div>
               <div>
-                <h2 className="font-semibold text-gray-900">
+                <h2 className="font-semibold text-foreground">
                   {sessionTypes.find(s => s.id === selectedType)?.title}
                 </h2>
-                <p className="text-xs text-gray-500">AI Health Assistant</p>
+                <p className="text-xs text-muted-foreground">AI Health Assistant</p>
               </div>
             </div>
           </div>
@@ -303,8 +303,8 @@ export default function HealthInsights() {
                 <div
                   className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                     message.role === "user"
-                      ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-br-md"
-                      : "bg-white shadow-md text-gray-800 rounded-bl-md"
+                      ? "bg-primary text-primary-foreground rounded-br-md"
+                      : "bg-card border border-border text-foreground rounded-bl-md"
                   }`}
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -319,10 +319,10 @@ export default function HealthInsights() {
               animate={{ opacity: 1 }}
               className="flex justify-start"
             >
-              <div className="bg-white shadow-md rounded-2xl rounded-bl-md px-4 py-3">
+              <div className="bg-card border border-border rounded-2xl rounded-bl-md px-4 py-3">
                 <div className="flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
-                  <span className="text-sm text-gray-500">Thinking...</span>
+                  <Loader2 className="w-4 h-4 animate-spin text-gold" />
+                  <span className="text-sm text-muted-foreground">Thinking...</span>
                 </div>
               </div>
             </motion.div>
@@ -331,26 +331,26 @@ export default function HealthInsights() {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-4 bg-white/90 backdrop-blur-sm border-t border-gray-100">
+        <div className="p-4 bg-card border-t border-border">
           <div className="flex gap-2">
             <Input
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Describe what you're experiencing..."
-              className="flex-1 rounded-xl border-2 focus:border-purple-500"
+              className="flex-1 rounded-xl border border-border"
               data-testid="health-chat-input"
             />
             <Button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isTyping}
-              className="rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
+              className="rounded-xl bg-primary text-primary-foreground hover:opacity-90"
               data-testid="health-chat-send"
             >
               <Send className="w-4 h-4" />
             </Button>
           </div>
-          <p className="text-xs text-center text-gray-400 mt-2">
+          <p className="text-xs text-center text-muted-foreground mt-2">
             For educational purposes only. Not medical advice.
           </p>
         </div>

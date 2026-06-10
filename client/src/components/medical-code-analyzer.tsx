@@ -306,30 +306,25 @@ This analysis represents significant billing irregularities that require immedia
         />
       )}
 
-      {/* Enhanced Header with Gradient Animation */}
+      {/* Header */}
       <div className="flex items-center space-x-4 mb-8">
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg relative overflow-hidden"
-          whileHover={{ scale: 1.05, rotate: 5 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          className="w-16 h-16 rounded-3xl flex items-center justify-center shadow-sm relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+          whileHover={{ y: -2 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
           <Brain className="h-8 w-8 text-white relative z-10" />
-          <motion.div 
-            className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
-            animate={{ x: [-100, 100] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          />
         </motion.div>
         <div className="flex-1">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-1">
+          <h3 className="text-xl font-bold font-serif text-foreground mb-1">
             Medical Code Analysis
           </h3>
           <div className="flex items-center space-x-3">
-            <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+            <Badge variant="outline" className="bg-secondary text-muted-foreground border-border">
               {totalCodes} codes detected
             </Badge>
-            <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+            <span className="text-sm text-muted-foreground flex items-center">
               <Sparkles className="h-3 w-3 mr-1" />
               AI-powered compliance check
             </span>
@@ -340,13 +335,13 @@ This analysis represents significant billing irregularities that require immedia
       {isAnalyzing ? (
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
-            <Loader2 className="h-5 w-5 animate-spin text-purple-600" />
+            <Loader2 className="h-5 w-5 animate-spin text-gold" />
             <div className="flex-1">
-              <div className="text-sm font-medium text-gray-900 dark:text-white">{currentStage}</div>
+              <div className="text-sm font-medium text-foreground">{currentStage}</div>
               <Progress value={analysisProgress} className="h-2 mt-1" />
             </div>
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             Analyzing {totalCodes} medical codes for billing errors and compliance violations...
           </div>
         </div>
@@ -362,24 +357,20 @@ This analysis represents significant billing irregularities that require immedia
             {/* Enhanced Statistics Cards */}
             <div className="grid grid-cols-2 gap-4">
               <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="luxury-card p-6 relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/10 to-emerald-500/10 rounded-full -translate-y-8 translate-x-8" />
                 <div className="flex items-center space-x-3 relative z-10">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
-                    <Shield className="h-6 w-6 text-white" />
+                  <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-muted-foreground" />
                   </div>
                   <div>
-                    <motion.div 
-                      className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent"
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
+                    <div className="text-3xl font-bold text-foreground">
                       {analysis.riskScore}
-                    </motion.div>
-                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Compliance Score</div>
-                    <div className="text-xs text-green-600 font-medium">
+                    </div>
+                    <div className="text-sm font-medium text-muted-foreground">Compliance Score</div>
+                    <div className="text-xs text-emerald-700 font-medium">
                       {analysis.riskScore >= 80 ? 'Excellent' : analysis.riskScore >= 60 ? 'Good' : 'Needs Review'}
                     </div>
                   </div>
@@ -387,26 +378,22 @@ This analysis represents significant billing irregularities that require immedia
               </motion.div>
               
               <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="luxury-card p-6 relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/10 to-red-500/10 rounded-full -translate-y-8 translate-x-8" />
                 <div className="flex items-center space-x-3 relative z-10">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center">
-                    <AlertTriangle className="h-6 w-6 text-white" />
+                  <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center">
+                    <AlertTriangle className="h-6 w-6 text-muted-foreground" />
                   </div>
                   <div>
-                    <motion.div 
-                      className={`text-3xl font-bold ${analysis.complianceIssues > 0 ? 'bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent' : 'text-gray-400'}`}
-                      animate={analysis.complianceIssues > 0 ? { scale: [1, 1.1, 1] } : {}}
-                      transition={{ duration: 1, repeat: Infinity }}
-                    >
+                    <div className={`text-3xl font-bold ${analysis.complianceIssues > 0 ? 'text-foreground' : 'text-muted-foreground'}`}>
                       {analysis.complianceIssues}
-                    </motion.div>
-                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Issues Found</div>
+                    </div>
+                    <div className="text-sm font-medium text-muted-foreground">Issues Found</div>
                     <div className={`text-xs font-medium ${
-                      analysis.complianceIssues === 0 ? 'text-green-600' :
-                      analysis.complianceIssues <= 3 ? 'text-yellow-600' : 'text-red-600'
+                      analysis.complianceIssues === 0 ? 'text-emerald-700' :
+                      analysis.complianceIssues <= 3 ? 'text-yellow-600' : 'text-destructive'
                     }`}>
                       {analysis.complianceIssues === 0 ? 'All Clear' :
                        analysis.complianceIssues <= 3 ? 'Minor Issues' : 'Requires Attention'}
@@ -439,15 +426,14 @@ This analysis represents significant billing irregularities that require immedia
             )}
 
             <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               <Button
                 onClick={generateDetailedAnalysisPrompt}
-                className="w-full bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 hover:from-purple-600 hover:via-purple-700 hover:to-indigo-700 text-white shadow-lg shadow-purple-500/25 relative overflow-hidden group"
+                className="w-full bg-primary text-primary-foreground shadow-sm relative overflow-hidden group"
                 size="lg"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                 <Sparkles className="h-5 w-5 mr-2" />
                 <span className="font-semibold">Generate Comprehensive Analysis Report</span>
                 <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -463,22 +449,22 @@ This analysis represents significant billing irregularities that require immedia
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                  className="p-3 border border-border rounded-lg cursor-pointer hover:bg-secondary"
                   onClick={() => setSelectedCode(code)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Badge variant="outline" className="text-xs">{code.type}</Badge>
                       <div>
-                        <div className="font-medium text-sm text-gray-900 dark:text-white">{code.code}</div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400 truncate max-w-48">
+                        <div className="font-medium text-sm text-foreground">{code.code}</div>
+                        <div className="text-xs text-muted-foreground truncate max-w-48">
                           {code.description}
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
                       {code.chargedAmount && (
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        <div className="text-sm font-medium text-foreground">
                           ${code.chargedAmount.toLocaleString()}
                         </div>
                       )}
@@ -500,14 +486,14 @@ This analysis represents significant billing irregularities that require immedia
 
           <TabsContent value="savings" className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
-              <Card className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+              <Card className="p-4 bg-card border border-border">
                 <div className="flex items-center space-x-3">
-                  <DollarSign className="h-8 w-8 text-green-600" />
+                  <DollarSign className="h-8 w-8 text-gold" />
                   <div>
-                    <div className="text-2xl font-bold text-green-700 dark:text-green-400">
+                    <div className="text-2xl font-bold text-foreground">
                       ${analysis.potentialSavings.toLocaleString()}
                     </div>
-                    <div className="text-sm text-green-600 dark:text-green-300">
+                    <div className="text-sm text-muted-foreground">
                       Potential Savings Identified
                     </div>
                   </div>
@@ -516,20 +502,20 @@ This analysis represents significant billing irregularities that require immedia
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">Overcharge Amount:</span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="text-muted-foreground">Overcharge Amount:</span>
+                  <span className="font-medium text-foreground">
                     ${analysis.totalOvercharge.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">Negotiation Potential:</span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="text-muted-foreground">Negotiation Potential:</span>
+                  <span className="font-medium text-foreground">
                     ${(analysis.potentialSavings - analysis.totalOvercharge).toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm font-medium">
-                  <span className="text-gray-900 dark:text-white">Total Potential Recovery:</span>
-                  <span className="text-green-600 dark:text-green-400">
+                  <span className="text-foreground">Total Potential Recovery:</span>
+                  <span className="text-emerald-700">
                     ${analysis.potentialSavings.toLocaleString()}
                   </span>
                 </div>
@@ -553,12 +539,12 @@ This analysis represents significant billing irregularities that require immedia
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-gray-900 rounded-xl p-6 max-w-md w-full max-h-96 overflow-y-auto"
+              className="bg-card border border-border rounded-xl p-6 max-w-md w-full max-h-96 overflow-y-auto"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{selectedCode.code}</h3>
+                  <h3 className="text-lg font-bold text-foreground">{selectedCode.code}</h3>
                   <Badge className={`text-xs ${getRiskLevelColor(selectedCode.riskLevel)}`}>
                     {selectedCode.riskLevel.toUpperCase()} RISK
                   </Badge>
@@ -568,26 +554,26 @@ This analysis represents significant billing irregularities that require immedia
               
               <div className="space-y-3">
                 <div>
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">Description:</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">{selectedCode.description}</div>
+                  <div className="text-sm font-medium text-foreground">Description:</div>
+                  <div className="text-sm text-muted-foreground">{selectedCode.description}</div>
                 </div>
 
                 {selectedCode.chargedAmount && (
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">Charged:</div>
-                      <div className="text-gray-600 dark:text-gray-400">${selectedCode.chargedAmount.toLocaleString()}</div>
+                      <div className="font-medium text-foreground">Charged:</div>
+                      <div className="text-muted-foreground">${selectedCode.chargedAmount.toLocaleString()}</div>
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">Medicare Rate:</div>
-                      <div className="text-gray-600 dark:text-gray-400">${selectedCode.medicareAmount?.toLocaleString()}</div>
+                      <div className="font-medium text-foreground">Medicare Rate:</div>
+                      <div className="text-muted-foreground">${selectedCode.medicareAmount?.toLocaleString()}</div>
                     </div>
                   </div>
                 )}
 
                 {selectedCode.issues.length > 0 && (
                   <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white mb-2">Issues Identified:</div>
+                    <div className="text-sm font-medium text-foreground mb-2">Issues Identified:</div>
                     <div className="space-y-1">
                       {selectedCode.issues.map((issue, index) => (
                         <div key={index} className="text-sm text-orange-600 dark:text-orange-400 flex items-start">
@@ -601,10 +587,10 @@ This analysis represents significant billing irregularities that require immedia
 
                 {selectedCode.recommendations.length > 0 && (
                   <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white mb-2">Recommendations:</div>
+                    <div className="text-sm font-medium text-foreground mb-2">Recommendations:</div>
                     <div className="space-y-1">
                       {selectedCode.recommendations.map((rec, index) => (
-                        <div key={index} className="text-sm text-green-600 dark:text-green-400 flex items-start">
+                        <div key={index} className="text-sm text-emerald-700 flex items-start">
                           <CheckCircle2 className="h-3 w-3 mr-1 mt-0.5 flex-shrink-0" />
                           {rec}
                         </div>

@@ -26,6 +26,7 @@ import {
   Share,
   AlertTriangle,
   CheckCircle,
+  XCircle,
   Shield,
   Scale,
   FileText,
@@ -459,7 +460,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -471,18 +472,18 @@ Include specific success rates, cost savings analysis, clinical evidence require
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Stethoscope className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Specialty Care Intelligence</h3>
-            <Badge className="bg-purple-600 text-white text-xs">
+            <h3 className="text-lg font-bold font-serif text-foreground">Specialty Care Intelligence</h3>
+            <Badge className="bg-gold text-white text-xs">
               <Crown className="h-3 w-3 mr-1" />
               High-Cost Expertise
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">High-cost procedures • Prior auth bypass • Clinical trials</p>
+          <p className="text-sm text-muted-foreground">High-cost procedures • Prior auth bypass • Clinical trials</p>
         </div>
       </div>
 
@@ -497,7 +498,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
         <TabsContent value="search" className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Medical Specialty
               </label>
               <Select value={searchData.specialty} onValueChange={(value) => setSearchData({...searchData, specialty: value})}>
@@ -517,7 +518,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Procedure
               </label>
               <Input
@@ -531,7 +532,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Cost Category
               </label>
               <Select value={searchData.costCategory} onValueChange={(value) => setSearchData({...searchData, costCategory: value})}>
@@ -548,7 +549,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Insurance Type
               </label>
               <Select value={searchData.insuranceType} onValueChange={(value) => setSearchData({...searchData, insuranceType: value})}>
@@ -565,7 +566,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Bill Amount
               </label>
               <Input
@@ -579,7 +580,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Provider Type
             </label>
             <Select value={searchData.providerType} onValueChange={(value) => setSearchData({...searchData, providerType: value})}>
@@ -600,7 +601,7 @@ Include specific success rates, cost savings analysis, clinical evidence require
           <Button 
             onClick={searchSpecialtyIntelligence} 
             disabled={isSearching} 
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+            className="w-full bg-primary text-primary-foreground"
             data-testid="button-search-specialty-intelligence"
           >
             {isSearching ? (
@@ -617,26 +618,26 @@ Include specific success rates, cost savings analysis, clinical evidence require
           </Button>
 
           <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="p-3 bg-purple-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Stethoscope className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-semibold text-purple-800">High-Cost Expert</span>
+                <Stethoscope className="h-4 w-4 text-gold" />
+                <span className="text-sm font-semibold text-foreground">High-Cost Expert</span>
               </div>
-              <div className="text-xs text-purple-700">$100K+ procedure intelligence</div>
+              <div className="text-xs text-muted-foreground">$100K+ procedure intelligence</div>
             </div>
-            <div className="p-3 bg-green-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-semibold text-green-800">79% Success Rate</span>
+                <Target className="h-4 w-4 text-emerald-700" />
+                <span className="text-sm font-semibold text-foreground">79% Success Rate</span>
               </div>
-              <div className="text-xs text-green-700">Specialty care disputes</div>
+              <div className="text-xs text-muted-foreground">Specialty care disputes</div>
             </div>
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Crown className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-800">$125M+ Saved</span>
+                <Crown className="h-4 w-4 text-gold" />
+                <span className="text-sm font-semibold text-foreground">$125M+ Saved</span>
               </div>
-              <div className="text-xs text-blue-700">High-cost procedure advocacy</div>
+              <div className="text-xs text-muted-foreground">High-cost procedure advocacy</div>
             </div>
           </div>
         </TabsContent>
@@ -646,12 +647,12 @@ Include specific success rates, cost savings analysis, clinical evidence require
             {specialtyProcedures.map((specialty, specIndex) => (
               <div key={specIndex} className="space-y-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <Heart className="h-5 w-5 text-purple-600" />
-                  <h3 className="text-lg font-bold text-gray-900">{specialty.specialty}</h3>
+                  <Heart className="h-5 w-5 text-gold" />
+                  <h3 className="text-lg font-bold text-foreground">{specialty.specialty}</h3>
                 </div>
                 
                 {specialty.procedures.map((procedure, procIndex) => (
-                  <Card key={procIndex} className="border-l-4 border-l-purple-500">
+                  <Card key={procIndex} className="border-l-4 border-l-[var(--gold)]">
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
                         <div>
@@ -667,13 +668,13 @@ Include specific success rates, cost savings analysis, clinical evidence require
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                             <AlertTriangle className="h-4 w-4 text-red-600" />
                             Common Overcharges
                           </h4>
                           <div className="space-y-1">
                             {procedure.commonOvercharges.map((charge, index) => (
-                              <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
+                              <div key={index} className="text-xs text-foreground flex items-start gap-2">
                                 <DollarSign className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
                                 <span>{charge}</span>
                               </div>
@@ -682,13 +683,13 @@ Include specific success rates, cost savings analysis, clinical evidence require
                         </div>
 
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                             <Target className="h-4 w-4 text-green-600" />
                             Negotiation Tactics
                           </h4>
                           <div className="space-y-1">
                             {procedure.negotiationTactics.map((tactic, index) => (
-                              <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
+                              <div key={index} className="text-xs text-foreground flex items-start gap-2">
                                 <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
                                 <span>{tactic}</span>
                               </div>
@@ -698,14 +699,14 @@ Include specific success rates, cost savings analysis, clinical evidence require
                       </div>
 
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                          <BookOpen className="h-4 w-4 text-blue-600" />
+                        <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                          <BookOpen className="h-4 w-4 text-muted-foreground" />
                           Clinical Leverage Points
                         </h4>
                         <div className="space-y-1">
                           {procedure.clinicalLeverage.map((leverage, index) => (
-                            <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                              <Lightbulb className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                            <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                              <Lightbulb className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                               <span>{leverage}</span>
                             </div>
                           ))}
@@ -722,12 +723,12 @@ Include specific success rates, cost savings analysis, clinical evidence require
         <TabsContent value="prior-auth" className="space-y-4">
           <div className="space-y-4">
             {priorAuthBypass.map((auth, index) => (
-              <Card key={index} className="border-l-4 border-l-orange-500">
+              <Card key={index} className="border-l-4 border-l-[var(--gold)]">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <Shield className="h-5 w-5 text-orange-600" />
+                        <Shield className="h-5 w-5 text-muted-foreground" />
                         {auth.category}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-4 mt-2">
@@ -740,13 +741,13 @@ Include specific success rates, cost savings analysis, clinical evidence require
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <XCircle className="h-4 w-4 text-red-600" />
                         Common Denials
                       </h4>
                       <div className="space-y-1">
                         {auth.commonDenialReasons.map((reason, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
                             <AlertTriangle className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
                             <span>{reason}</span>
                           </div>
@@ -755,13 +756,13 @@ Include specific success rates, cost savings analysis, clinical evidence require
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <Zap className="h-4 w-4 text-yellow-600" />
                         Bypass Strategies
                       </h4>
                       <div className="space-y-1">
                         {auth.bypassStrategies.map((strategy, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
                             <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
                             <span>{strategy}</span>
                           </div>
@@ -770,14 +771,14 @@ Include specific success rates, cost savings analysis, clinical evidence require
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Scale className="h-4 w-4 text-blue-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Scale className="h-4 w-4 text-muted-foreground" />
                         Legal Framework
                       </h4>
                       <div className="space-y-1">
                         {auth.legalFramework.map((framework, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <FileText className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                            <FileText className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{framework}</span>
                           </div>
                         ))}
@@ -793,12 +794,12 @@ Include specific success rates, cost savings analysis, clinical evidence require
         <TabsContent value="clinical-trials" className="space-y-4">
           <div className="space-y-4">
             {clinicalTrialProtection.map((trial, index) => (
-              <Card key={index} className="border-l-4 border-l-blue-500">
+              <Card key={index} className="border-l-4 border-l-[var(--gold)]">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <Microscope className="h-5 w-5 text-blue-600" />
+                        <Microscope className="h-5 w-5 text-muted-foreground" />
                         {trial.trialType}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-4 mt-2">
@@ -811,13 +812,13 @@ Include specific success rates, cost savings analysis, clinical evidence require
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <AlertTriangle className="h-4 w-4 text-red-600" />
                         Billing Issues
                       </h4>
                       <div className="space-y-1">
                         {trial.commonBillingIssues.map((issue, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
                             <DollarSign className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
                             <span>{issue}</span>
                           </div>
@@ -826,13 +827,13 @@ Include specific success rates, cost savings analysis, clinical evidence require
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <Shield className="h-4 w-4 text-green-600" />
                         Protection Strategies
                       </h4>
                       <div className="space-y-1">
                         {trial.protectionStrategies.map((strategy, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
                             <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
                             <span>{strategy}</span>
                           </div>
@@ -841,14 +842,14 @@ Include specific success rates, cost savings analysis, clinical evidence require
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-blue-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-muted-foreground" />
                         Regulatory Framework
                       </h4>
                       <div className="space-y-1">
                         {trial.regulatoryFramework.map((framework, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <BookOpen className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                            <BookOpen className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{framework}</span>
                           </div>
                         ))}

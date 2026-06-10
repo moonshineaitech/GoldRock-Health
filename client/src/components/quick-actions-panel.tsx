@@ -76,7 +76,7 @@ export function QuickActionsPanel({
       icon: FileEdit,
       label: "Generate Dispute Letter",
       description: "Professional letter ready to send",
-      color: "from-purple-500 to-indigo-500",
+      featured: true,
       onClick: onGenerateDisputeLetter,
       premium: false
     },
@@ -85,7 +85,7 @@ export function QuickActionsPanel({
       icon: Phone,
       label: "Get Call Script",
       description: "What to say when you call",
-      color: "from-emerald-500 to-teal-500",
+      featured: false,
       onClick: onGenerateCallScript,
       premium: false
     },
@@ -94,7 +94,7 @@ export function QuickActionsPanel({
       icon: saved ? Check : Bookmark,
       label: saved ? "Saved!" : "Save to My Bills",
       description: "Track progress and follow up",
-      color: "from-amber-500 to-orange-500",
+      featured: false,
       onClick: handleSave,
       premium: false,
       disabled: saved
@@ -104,7 +104,7 @@ export function QuickActionsPanel({
       icon: copied ? Check : Share2,
       label: copied ? "Copied!" : "Share Analysis",
       description: "Send to family or advocate",
-      color: "from-blue-500 to-cyan-500",
+      featured: false,
       onClick: handleShare,
       premium: false
     }
@@ -115,10 +115,10 @@ export function QuickActionsPanel({
   }
 
   return (
-    <Card className="p-4 rounded-2xl border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+    <Card className="luxury-card p-4 rounded-2xl">
       <div className="flex items-center gap-2 mb-4">
-        <Sparkles className="w-5 h-5 text-emerald-500" />
-        <h3 className="font-semibold text-gray-900">Quick Actions</h3>
+        <Sparkles className="w-5 h-5 text-gold" />
+        <h3 className="font-semibold text-foreground">Quick Actions</h3>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -132,32 +132,35 @@ export function QuickActionsPanel({
             disabled={action.disabled}
             className={`p-4 rounded-xl text-left transition-all hover:scale-[1.02] active:scale-[0.98] ${
               action.disabled 
-                ? "bg-gray-100 cursor-default" 
-                : "bg-white shadow-md hover:shadow-lg"
+                ? "bg-muted cursor-default" 
+                : "bg-card border border-border shadow-sm hover:shadow-md"
             }`}
             data-testid={`quick-action-${action.id}`}
           >
-            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center mb-2`}>
-              <action.icon className="w-5 h-5 text-white" />
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center mb-2 bg-secondary"
+              style={action.featured ? { background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' } : undefined}
+            >
+              <action.icon className={`w-5 h-5 ${action.featured ? 'text-white' : 'text-muted-foreground'}`} />
             </div>
-            <p className="font-medium text-gray-900 text-sm">{action.label}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{action.description}</p>
+            <p className="font-medium text-foreground text-sm">{action.label}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{action.description}</p>
           </motion.button>
         ))}
       </div>
 
       {potentialSavings && potentialSavings > 0 && (
-        <div className="mt-4 p-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100">
+        <div className="mt-4 p-3 rounded-xl bg-secondary border border-border">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Potential Savings</p>
-              <p className="text-2xl font-bold text-emerald-600">
+              <p className="text-sm text-muted-foreground">Potential Savings</p>
+              <p className="text-2xl font-bold text-gold">
                 ${potentialSavings.toLocaleString()}
               </p>
             </div>
             <Button 
               size="sm" 
-              className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg"
+              className="bg-primary text-primary-foreground hover:opacity-90 rounded-lg"
               data-testid="start-saving-button"
             >
               Start Saving

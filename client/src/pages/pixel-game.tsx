@@ -305,7 +305,8 @@ export default function PixelGame() {
           }}
         >
           <motion.div
-            className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center"
+            className="w-16 h-16 rounded-2xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
@@ -321,7 +322,7 @@ export default function PixelGame() {
       <div 
         className="space-y-4 pb-4" 
         style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(180deg, var(--background), var(--card))',
           minHeight: '100vh',
           margin: '-1rem',
           padding: '1rem',
@@ -340,49 +341,43 @@ export default function PixelGame() {
           >
             {/* Pixelated Game Logo */}
             <motion.div
-              className="mx-auto w-32 h-32 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl"
+              className="mx-auto w-32 h-32 rounded-3xl flex items-center justify-center shadow-sm"
               style={{
-                imageRendering: 'pixelated',
-                background: 'conic-gradient(from 0deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #fd79a8, #ff6b6b)'
+                background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))'
               }}
-              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileHover={{ scale: 1.05, y: -2 }}
               transition={{ type: "spring", stiffness: 400 }}
             >
-              <Heart className="h-16 w-16 text-white drop-shadow-lg" />
+              <Heart className="h-16 w-16 text-white" />
             </motion.div>
 
             <div>
-              <h1 className="text-4xl font-black text-white mb-2 drop-shadow-lg"
-                style={{ 
-                  fontFamily: 'monospace',
-                  textShadow: '3px 3px 0px rgba(0,0,0,0.5)'
-                }}>
+              <h1 className="text-4xl font-serif font-black text-foreground mb-2">
                 PIXEL DOCTOR
               </h1>
-              <p className="text-white/90 text-lg font-semibold"
+              <p className="text-muted-foreground text-lg font-semibold"
                 style={{ fontFamily: 'monospace' }}>
                 Full Medical Simulation in Retro Style!
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-4 my-6">
-              <div className="text-center text-white">
-                <div className="w-12 h-12 bg-red-500 rounded-2xl mx-auto mb-2 flex items-center justify-center"
-                  style={{ imageRendering: 'pixelated' }}>
+              <div className="text-center text-foreground">
+                <div className="w-12 h-12 bg-secondary rounded-2xl mx-auto mb-2 flex items-center justify-center text-muted-foreground">
                   <Heart className="h-6 w-6" />
                 </div>
                 <p className="text-sm font-bold">3 LIVES</p>
               </div>
-              <div className="text-center text-white">
-                <div className="w-12 h-12 bg-blue-500 rounded-2xl mx-auto mb-2 flex items-center justify-center"
-                  style={{ imageRendering: 'pixelated' }}>
+              <div className="text-center text-foreground">
+                <div className="w-12 h-12 bg-secondary rounded-2xl mx-auto mb-2 flex items-center justify-center text-muted-foreground">
                   <Timer className="h-6 w-6" />
                 </div>
                 <p className="text-sm font-bold">2 MINUTES</p>
               </div>
-              <div className="text-center text-white">
-                <div className="w-12 h-12 bg-yellow-500 rounded-2xl mx-auto mb-2 flex items-center justify-center"
-                  style={{ imageRendering: 'pixelated' }}>
+              <div className="text-center text-foreground">
+                <div
+                  className="w-12 h-12 rounded-2xl mx-auto mb-2 flex items-center justify-center text-white"
+                  style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                   <Trophy className="h-6 w-6" />
                 </div>
                 <p className="text-sm font-bold">AI POWERED</p>
@@ -401,12 +396,12 @@ export default function PixelGame() {
                 return (
                   <motion.div
                     key={feature.label}
-                    className={`bg-${feature.color}-500/20 border border-${feature.color}-400 rounded-xl p-3 text-white`}
-                    initial={{ opacity: 0, y: 20 }}
+                    className="bg-card border border-border rounded-xl p-3 text-foreground"
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
+                    transition={{ delay: 0.3 + index * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <IconComponent className="h-6 w-6 mx-auto mb-1" />
+                    <IconComponent className="h-6 w-6 mx-auto mb-1 text-muted-foreground" />
                     <p className="text-xs font-bold">{feature.label}</p>
                   </motion.div>
                 );
@@ -415,10 +410,9 @@ export default function PixelGame() {
 
             <MobileButton
               onClick={startGame}
-              className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-black text-xl py-4 shadow-2xl"
+              className="w-full bg-primary text-primary-foreground font-black text-xl py-4 shadow-sm"
               style={{ 
-                fontFamily: 'monospace',
-                textShadow: '2px 2px 0px rgba(0,0,0,0.5)'
+                fontFamily: 'monospace'
               }}
               data-testid="start-game"
             >
@@ -433,12 +427,12 @@ export default function PixelGame() {
               className="mt-4"
             >
               <Link href="/patient-diagnostics">
-                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 text-center hover:bg-white/20 transition-colors cursor-pointer">
+                <div className="bg-card border border-border rounded-xl p-4 text-center hover:bg-secondary transition-colors cursor-pointer shadow-sm">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <Brain className="h-5 w-5 text-purple-300" />
-                    <span className="text-white font-bold text-sm">Want Serious Training?</span>
+                    <Brain className="h-5 w-5 text-gold" />
+                    <span className="text-foreground font-bold text-sm">Want Serious Training?</span>
                   </div>
-                  <p className="text-white/70 text-xs">
+                  <p className="text-muted-foreground text-xs">
                     Try our AI Diagnostics Training Hub for step-by-step case studies with scoring and feedback.
                   </p>
                 </div>
@@ -456,36 +450,36 @@ export default function PixelGame() {
           >
             {/* Enhanced Game HUD */}
             <div className="grid grid-cols-5 gap-2">
-              <div className="bg-black/50 rounded-xl p-2 text-center">
-                <div className="text-white font-bold text-xs" style={{ fontFamily: 'monospace' }}>SCORE</div>
-                <div className="text-yellow-400 font-black text-sm" style={{ fontFamily: 'monospace' }}>
+              <div className="bg-card border border-border rounded-xl p-2 text-center">
+                <div className="text-muted-foreground font-bold text-xs" style={{ fontFamily: 'monospace' }}>SCORE</div>
+                <div className="text-gold font-black text-sm" style={{ fontFamily: 'monospace' }}>
                   {gameState.score}
                 </div>
               </div>
-              <div className="bg-black/50 rounded-xl p-2 text-center">
-                <div className="text-white font-bold text-xs" style={{ fontFamily: 'monospace' }}>LEVEL</div>
-                <div className="text-blue-400 font-black text-sm" style={{ fontFamily: 'monospace' }}>
+              <div className="bg-card border border-border rounded-xl p-2 text-center">
+                <div className="text-muted-foreground font-bold text-xs" style={{ fontFamily: 'monospace' }}>LEVEL</div>
+                <div className="text-foreground font-black text-sm" style={{ fontFamily: 'monospace' }}>
                   {gameState.level}
                 </div>
               </div>
-              <div className="bg-black/50 rounded-xl p-2 text-center">
-                <div className="text-white font-bold text-xs" style={{ fontFamily: 'monospace' }}>LIVES</div>
+              <div className="bg-card border border-border rounded-xl p-2 text-center">
+                <div className="text-muted-foreground font-bold text-xs" style={{ fontFamily: 'monospace' }}>LIVES</div>
                 <div className="flex justify-center space-x-1">
                   {Array.from({ length: gameState.lives }).map((_, i) => (
                     <Heart key={i} className="h-3 w-3 text-red-500 fill-current" />
                   ))}
                 </div>
               </div>
-              <div className="bg-black/50 rounded-xl p-2 text-center">
-                <div className="text-white font-bold text-xs" style={{ fontFamily: 'monospace' }}>TIME</div>
-                <div className={`font-black text-sm ${gameState.timeLeft <= 10 ? 'text-red-400' : 'text-green-400'}`} 
+              <div className="bg-card border border-border rounded-xl p-2 text-center">
+                <div className="text-muted-foreground font-bold text-xs" style={{ fontFamily: 'monospace' }}>TIME</div>
+                <div className={`font-black text-sm ${gameState.timeLeft <= 10 ? 'text-red-500' : 'text-emerald-600'}`} 
                   style={{ fontFamily: 'monospace' }}>
                   {gameState.timeLeft}
                 </div>
               </div>
-              <div className="bg-black/50 rounded-xl p-2 text-center">
-                <div className="text-white font-bold text-xs" style={{ fontFamily: 'monospace' }}>STREAK</div>
-                <div className="text-orange-400 font-black text-sm" style={{ fontFamily: 'monospace' }}>
+              <div className="bg-card border border-border rounded-xl p-2 text-center">
+                <div className="text-muted-foreground font-bold text-xs" style={{ fontFamily: 'monospace' }}>STREAK</div>
+                <div className="text-gold font-black text-sm" style={{ fontFamily: 'monospace' }}>
                   {gameState.streakCount}
                 </div>
               </div>
@@ -495,17 +489,16 @@ export default function PixelGame() {
             {(gameState.multiplier > 1 || gameState.achievements.length > 0) && (
               <div className="flex justify-center space-x-2">
                 {gameState.multiplier > 1 && (
-                  <motion.div 
-                    className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1 rounded-full text-xs font-black"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 0.5, repeat: Infinity }}
+                  <div 
+                    className="text-white px-3 py-1 rounded-full text-xs font-black"
+                    style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                   >
                     {gameState.multiplier}x MULTIPLIER
-                  </motion.div>
+                  </div>
                 )}
                 {gameState.achievements.length > 0 && (
-                  <div className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-black">
-                    <Award className="h-3 w-3 inline mr-1" />
+                  <div className="bg-secondary text-foreground px-3 py-1 rounded-full text-xs font-black">
+                    <Award className="h-3 w-3 inline mr-1 text-gold" />
                     {gameState.achievements.length} ACHIEVEMENTS
                   </div>
                 )}
@@ -513,7 +506,7 @@ export default function PixelGame() {
             )}
 
             {/* Panel Navigation */}
-            <div className="grid grid-cols-5 gap-1 bg-black/30 rounded-2xl p-2">
+            <div className="grid grid-cols-5 gap-1 bg-card border border-border rounded-2xl p-2">
               {[
                 { id: 'patient', icon: User, label: 'Patient' },
                 { id: 'chat', icon: MessageCircle, label: 'Chat' },
@@ -528,8 +521,8 @@ export default function PixelGame() {
                     onClick={() => setActivePanel(panel.id as any)}
                     className={`py-2 px-1 rounded-xl transition-all text-xs font-bold ${
                       activePanel === panel.id
-                        ? 'bg-white text-gray-900 shadow-lg'
-                        : 'text-white/80 hover:bg-white/20'
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'text-muted-foreground hover:bg-secondary'
                     }`}
                     style={{ fontFamily: 'monospace' }}
                   >
@@ -550,28 +543,28 @@ export default function PixelGame() {
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <MobileCard className="bg-gradient-to-br from-blue-100 to-purple-100 border-2 border-blue-300">
+                  <MobileCard className="bg-card border border-border">
                     <div className="text-center">
-                      <h3 className="text-xl font-black text-gray-900 mb-2" style={{ fontFamily: 'monospace' }}>
+                      <h3 className="text-xl font-black text-foreground mb-2" style={{ fontFamily: 'monospace' }}>
                         PATIENT: {gameState.currentCase.name}
                       </h3>
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="bg-white/60 rounded-lg p-2">
+                      <div className="grid grid-cols-2 gap-2 text-sm text-foreground">
+                        <div className="bg-secondary rounded-lg p-2">
                           <span className="font-bold">AGE:</span> {gameState.currentCase.age}
                         </div>
-                        <div className="bg-white/60 rounded-lg p-2">
+                        <div className="bg-secondary rounded-lg p-2">
                           <span className="font-bold">GENDER:</span> {gameState.currentCase.gender}
                         </div>
                       </div>
-                      <div className="mt-3 bg-white/80 rounded-lg p-3">
-                        <p className="font-bold text-sm mb-1">CHIEF COMPLAINT:</p>
-                        <p className="text-gray-800">{gameState.currentCase.chiefComplaint}</p>
+                      <div className="mt-3 bg-secondary rounded-lg p-3">
+                        <p className="font-bold text-sm mb-1 text-foreground">CHIEF COMPLAINT:</p>
+                        <p className="text-muted-foreground">{gameState.currentCase.chiefComplaint}</p>
                       </div>
-                      <div className="mt-3 bg-white/80 rounded-lg p-3">
-                        <p className="font-bold text-sm mb-2">AVAILABLE SYMPTOMS:</p>
+                      <div className="mt-3 bg-secondary rounded-lg p-3">
+                        <p className="font-bold text-sm mb-2 text-foreground">AVAILABLE SYMPTOMS:</p>
                         <div className="grid grid-cols-2 gap-1">
                           {(gameState.currentCase.symptoms || []).slice(0, 6).map((symptom, index) => (
-                            <div key={index} className="text-xs bg-blue-100 rounded p-1">
+                            <div key={index} className="text-xs bg-muted text-foreground rounded p-1">
                               {symptom}
                             </div>
                           ))}
@@ -610,7 +603,7 @@ export default function PixelGame() {
                 >
                   <MobileCard>
                     <div className="space-y-3">
-                      <h4 className="font-bold text-center">Physical Examination Systems</h4>
+                      <h4 className="font-bold text-center text-foreground">Physical Examination Systems</h4>
                       <div className="grid grid-cols-2 gap-2">
                         {[
                           { name: 'Cardiovascular', icon: Heart, color: 'red' },
@@ -627,22 +620,22 @@ export default function PixelGame() {
                                 completePhysicalExam(system.name.toLowerCase());
                                 setShowPhysicalExam(true);
                               }}
-                              className={`p-3 rounded-lg border-2 transition-all ${
+                              className={`p-3 rounded-lg border transition-all ${
                                 isCompleted 
-                                  ? `bg-${system.color}-100 border-${system.color}-500 text-${system.color}-700`
-                                  : `bg-gray-50 border-gray-300 hover:border-${system.color}-400`
+                                  ? `bg-secondary border-gold text-foreground`
+                                  : `bg-card border-border text-muted-foreground hover:border-gold`
                               }`}
                             >
                               <IconComponent className="h-6 w-6 mx-auto mb-1" />
                               <div className="text-xs font-bold">{system.name}</div>
-                              {isCompleted && <Check className="h-4 w-4 mx-auto mt-1" />}
+                              {isCompleted && <Check className="h-4 w-4 mx-auto mt-1 text-gold" />}
                             </button>
                           );
                         })}
                       </div>
                       
                       <div className="mt-4">
-                        <h5 className="font-bold text-sm mb-2">Order Diagnostic Tests:</h5>
+                        <h5 className="font-bold text-sm mb-2 text-foreground">Order Diagnostic Tests:</h5>
                         <div className="space-y-2">
                           {['Blood Work', 'Chest X-ray', 'ECG', 'Urinalysis'].map((test, index) => {
                             const isOrdered = gameState.orderedTests.includes(test);
@@ -651,10 +644,10 @@ export default function PixelGame() {
                                 key={test}
                                 onClick={() => orderDiagnosticTest(test)}
                                 disabled={isOrdered}
-                                className={`w-full p-2 rounded-lg text-sm font-bold transition-all ${
+                                className={`w-full p-2 rounded-lg text-sm font-bold transition-all border ${
                                   isOrdered
-                                    ? 'bg-green-100 text-green-700 border border-green-300'
-                                    : 'bg-blue-50 text-blue-700 border border-blue-300 hover:bg-blue-100'
+                                    ? 'bg-secondary text-foreground border-gold'
+                                    : 'bg-card text-muted-foreground border-border hover:bg-secondary'
                                 }`}
                               >
                                 <TestTube className="h-4 w-4 inline mr-2" />
@@ -681,28 +674,28 @@ export default function PixelGame() {
                   <MobileCard>
                     <div className="space-y-3">
                       <div className="text-center">
-                        <h4 className="font-bold mb-3">Clinical Analysis</h4>
+                        <h4 className="font-bold mb-3 text-foreground">Clinical Analysis</h4>
                         <div className="grid grid-cols-2 gap-3">
                           <button
                             onClick={() => setShowDifferentials(true)}
-                            className="p-3 bg-purple-100 rounded-lg border border-purple-300"
+                            className="p-3 bg-secondary rounded-lg border border-border text-foreground hover:border-gold transition-colors"
                           >
-                            <Brain className="h-6 w-6 mx-auto mb-1 text-purple-600" />
+                            <Brain className="h-6 w-6 mx-auto mb-1 text-muted-foreground" />
                             <div className="text-xs font-bold">Differential Dx</div>
                           </button>
                           <button
                             onClick={() => setShowClinicalReasoning(true)}
-                            className="p-3 bg-indigo-100 rounded-lg border border-indigo-300"
+                            className="p-3 bg-secondary rounded-lg border border-border text-foreground hover:border-gold transition-colors"
                           >
-                            <Lightbulb className="h-6 w-6 mx-auto mb-1 text-indigo-600" />
+                            <Lightbulb className="h-6 w-6 mx-auto mb-1 text-muted-foreground" />
                             <div className="text-xs font-bold">Clinical Reasoning</div>
                           </button>
                         </div>
                       </div>
                       
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <h5 className="font-bold text-sm mb-2">Your Progress:</h5>
-                        <div className="space-y-1 text-xs">
+                      <div className="bg-secondary rounded-lg p-3">
+                        <h5 className="font-bold text-sm mb-2 text-foreground">Your Progress:</h5>
+                        <div className="space-y-1 text-xs text-muted-foreground">
                           <div>Questions Asked: {gameState.questionsAsked.length}</div>
                           <div>Tests Ordered: {gameState.orderedTests.length}</div>
                           <div>Exams Completed: {gameState.completedExams.length}</div>
@@ -722,8 +715,8 @@ export default function PixelGame() {
                   exit={{ opacity: 0, x: 50 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <MobileCard className="bg-gradient-to-br from-yellow-100 to-orange-100 border-2 border-yellow-300">
-                    <h4 className="font-black text-gray-900 mb-3 text-center" style={{ fontFamily: 'monospace' }}>
+                  <MobileCard className="bg-card border border-border">
+                    <h4 className="font-black text-foreground mb-3 text-center" style={{ fontFamily: 'monospace' }}>
                       SUBMIT DIAGNOSIS
                     </h4>
                     <input
@@ -731,22 +724,22 @@ export default function PixelGame() {
                       value={gameState.guessedDiagnosis}
                       onChange={(e) => setGameState(prev => ({ ...prev, guessedDiagnosis: e.target.value }))}
                       placeholder="Enter your diagnosis..."
-                      className="w-full p-3 border-2 border-gray-300 rounded-lg font-bold text-center mb-3"
+                      className="w-full p-3 border border-border bg-background text-foreground rounded-lg font-bold text-center mb-3"
                       style={{ fontFamily: 'monospace' }}
                       data-testid="diagnosis-input"
                     />
                     
-                    <div className="bg-blue-50 rounded-lg p-3 mb-3">
-                      <h5 className="font-bold text-sm mb-2">AI-Powered Matching</h5>
-                      <p className="text-xs text-gray-600">
+                    <div className="bg-secondary rounded-lg p-3 mb-3">
+                      <h5 className="font-bold text-sm mb-2 text-foreground">AI-Powered Matching</h5>
+                      <p className="text-xs text-muted-foreground">
                         Our AI will check if your diagnosis is medically equivalent to the correct answer, 
                         not just exact text matching.
                       </p>
                     </div>
 
-                    <div className="bg-yellow-50 rounded-lg p-3 mb-3">
-                      <h5 className="font-bold text-sm mb-2">Penalty System</h5>
-                      <p className="text-xs text-gray-600">
+                    <div className="bg-secondary rounded-lg p-3 mb-3">
+                      <h5 className="font-bold text-sm mb-2 text-foreground">Penalty System</h5>
+                      <p className="text-xs text-muted-foreground">
                         Wrong diagnosis = -5 seconds (no life lost). You only lose a life if time runs out!
                       </p>
                     </div>
@@ -754,7 +747,7 @@ export default function PixelGame() {
                     <MobileButton
                       onClick={submitDiagnosis}
                       disabled={!gameState.guessedDiagnosis.trim()}
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black"
+                      className="w-full bg-primary text-primary-foreground font-black"
                       style={{ fontFamily: 'monospace' }}
                       data-testid="submit-diagnosis"
                     >
@@ -769,7 +762,7 @@ export default function PixelGame() {
             <div className="flex justify-center">
               <button
                 onClick={() => setIsTimerPaused(!isTimerPaused)}
-                className="bg-black/50 text-white px-4 py-2 rounded-lg font-bold"
+                className="bg-card border border-border text-foreground px-4 py-2 rounded-lg font-bold"
                 style={{ fontFamily: 'monospace' }}
               >
                 {isTimerPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
@@ -790,10 +783,10 @@ export default function PixelGame() {
               <X className="h-12 w-12 text-white" />
             </div>
             <div>
-              <h2 className="text-3xl font-black text-white mb-2" style={{ fontFamily: 'monospace' }}>
+              <h2 className="text-3xl font-black font-serif text-foreground mb-2">
                 GAME OVER
               </h2>
-              <div className="space-y-1 text-white/90" style={{ fontFamily: 'monospace' }}>
+              <div className="space-y-1 text-muted-foreground" style={{ fontFamily: 'monospace' }}>
                 <p>Final Score: {gameState.score}</p>
                 <p>Level Reached: {gameState.level}</p>
                 <p>Total Points: {gameState.totalPoints}</p>
@@ -804,7 +797,7 @@ export default function PixelGame() {
             <div className="space-y-3">
               <MobileButton
                 onClick={startGame}
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-black"
+                className="w-full bg-primary text-primary-foreground font-black"
                 style={{ fontFamily: 'monospace' }}
                 data-testid="play-again"
               >

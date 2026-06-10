@@ -165,11 +165,14 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+          <div
+            className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+          >
             <SettingsIcon className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Settings</h1>
-          <p className="text-gray-600 dark:text-gray-400">Manage your account and preferences</p>
+          <h1 className="text-2xl font-serif font-semibold text-foreground mb-2">Settings</h1>
+          <p className="text-muted-foreground">Manage your account and preferences</p>
         </motion.div>
 
         {adminCheck?.isAdmin && (
@@ -178,18 +181,21 @@ export default function Settings() {
             animate={{ opacity: 1, y: 0 }}
           >
             <Link href="/admin">
-              <MobileCard className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white cursor-pointer hover:opacity-95 transition-opacity">
+              <MobileCard className="cursor-pointer hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between py-2" data-testid="link-admin-dashboard">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center">
+                    <div
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                    >
                       <Shield className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold">Admin Dashboard</h3>
-                      <p className="text-sm text-white/80">Manage users and platform</p>
+                      <h3 className="font-bold text-foreground">Admin Dashboard</h3>
+                      <p className="text-sm text-muted-foreground">Manage users and platform</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-white/80" />
+                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
                 </div>
               </MobileCard>
             </Link>
@@ -201,14 +207,17 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             Profile
           </h2>
           <MobileCard>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center">
+                  <div
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                  >
                     {user?.profileImageUrl ? (
                       <img src={user.profileImageUrl} alt="Profile" className="w-12 h-12 rounded-2xl" />
                     ) : (
@@ -216,12 +225,12 @@ export default function Settings() {
                     )}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <p className="font-semibold text-foreground">
                       {user?.firstName || user?.lastName 
                         ? `${user?.firstName || ''} ${user?.lastName || ''}`.trim()
                         : 'Set your name'}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email || 'No email'}</p>
+                    <p className="text-sm text-muted-foreground">{user?.email || 'No email'}</p>
                   </div>
                 </div>
                 <Button
@@ -234,20 +243,29 @@ export default function Settings() {
                 </Button>
               </div>
 
-              <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+              <div className="pt-2 border-t border-border">
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-gray-600 dark:text-gray-300">Subscription</span>
-                  <span className={`px-2 py-1 rounded-full text-sm font-medium ${
-                    user?.subscriptionStatus === 'active'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-gray-100 text-gray-600'
-                  }`}>
+                  <span className="text-muted-foreground">Subscription</span>
+                  <span
+                    className={`px-2 py-1 rounded-full text-sm font-medium ${
+                      user?.subscriptionStatus === 'active'
+                        ? 'text-white'
+                        : 'bg-secondary text-muted-foreground'
+                    }`}
+                    style={user?.subscriptionStatus === 'active'
+                      ? { background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }
+                      : undefined}
+                  >
                     {user?.subscriptionStatus === 'active' ? 'Premium' : 'Free Plan'}
                   </span>
                 </div>
                 {user?.subscriptionStatus !== 'active' && (
                   <Link href="/premium">
-                    <Button className="w-full mt-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600" data-testid="button-upgrade-premium">
+                    <Button
+                      className="w-full mt-2 text-white hover:opacity-95"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                      data-testid="button-upgrade-premium"
+                    >
                       <Crown className="h-4 w-4 mr-2" />
                       Upgrade to Premium
                     </Button>
@@ -263,19 +281,19 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             Notifications
           </h2>
           <MobileCard>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <Bell className="h-4 w-4 text-blue-600" />
+                  <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                    <Bell className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Push Notifications</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Get alerts for analysis updates</p>
+                    <p className="font-medium text-foreground">Push Notifications</p>
+                    <p className="text-sm text-muted-foreground">Get alerts for analysis updates</p>
                   </div>
                 </div>
                 <Switch
@@ -287,12 +305,12 @@ export default function Settings() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
-                    <Bell className="h-4 w-4 text-green-600" />
+                  <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                    <Bell className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Bill Reminders</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Reminders for upcoming bills</p>
+                    <p className="font-medium text-foreground">Bill Reminders</p>
+                    <p className="text-sm text-muted-foreground">Reminders for upcoming bills</p>
                   </div>
                 </div>
                 <Switch
@@ -304,12 +322,12 @@ export default function Settings() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center">
-                    <FileText className="h-4 w-4 text-purple-600" />
+                  <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Weekly Digest</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Summary of your savings</p>
+                    <p className="font-medium text-foreground">Weekly Digest</p>
+                    <p className="text-sm text-muted-foreground">Summary of your savings</p>
                   </div>
                 </div>
                 <Switch
@@ -321,12 +339,12 @@ export default function Settings() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-orange-100 rounded-xl flex items-center justify-center">
-                    <Bell className="h-4 w-4 text-orange-600" />
+                  <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                    <Bell className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Marketing Emails</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Tips and offers</p>
+                    <p className="font-medium text-foreground">Marketing Emails</p>
+                    <p className="text-sm text-muted-foreground">Tips and offers</p>
                   </div>
                 </div>
                 <Switch
@@ -344,23 +362,23 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.22 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             Appearance
           </h2>
           <MobileCard>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                  <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
                     {resolvedTheme === 'dark' ? (
-                      <Moon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                      <Moon className="h-4 w-4 text-gold" />
                     ) : (
-                      <Sun className="h-4 w-4 text-amber-600" />
+                      <Sun className="h-4 w-4 text-gold" />
                     )}
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Theme</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Choose your preferred appearance</p>
+                    <p className="font-medium text-foreground">Theme</p>
+                    <p className="text-sm text-muted-foreground">Choose your preferred appearance</p>
                   </div>
                 </div>
               </div>
@@ -369,37 +387,40 @@ export default function Settings() {
                   onClick={() => setTheme('light')}
                   className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
                     theme === 'light'
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      ? 'bg-secondary'
+                      : 'border-border hover:shadow-sm'
                   }`}
+                  style={theme === 'light' ? { borderColor: 'var(--gold)' } : undefined}
                   data-testid="button-theme-light"
                 >
-                  <Sun className={`h-5 w-5 ${theme === 'light' ? 'text-emerald-600' : 'text-gray-500 dark:text-gray-400'}`} />
-                  <span className={`text-sm font-medium ${theme === 'light' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>Light</span>
+                  <Sun className={`h-5 w-5 ${theme === 'light' ? 'text-gold' : 'text-muted-foreground'}`} />
+                  <span className={`text-sm font-medium ${theme === 'light' ? 'text-gold' : 'text-muted-foreground'}`}>Light</span>
                 </button>
                 <button
                   onClick={() => setTheme('dark')}
                   className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
                     theme === 'dark'
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      ? 'bg-secondary'
+                      : 'border-border hover:shadow-sm'
                   }`}
+                  style={theme === 'dark' ? { borderColor: 'var(--gold)' } : undefined}
                   data-testid="button-theme-dark"
                 >
-                  <Moon className={`h-5 w-5 ${theme === 'dark' ? 'text-emerald-600' : 'text-gray-500 dark:text-gray-400'}`} />
-                  <span className={`text-sm font-medium ${theme === 'dark' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>Dark</span>
+                  <Moon className={`h-5 w-5 ${theme === 'dark' ? 'text-gold' : 'text-muted-foreground'}`} />
+                  <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gold' : 'text-muted-foreground'}`}>Dark</span>
                 </button>
                 <button
                   onClick={() => setTheme('system')}
                   className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
                     theme === 'system'
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      ? 'bg-secondary'
+                      : 'border-border hover:shadow-sm'
                   }`}
+                  style={theme === 'system' ? { borderColor: 'var(--gold)' } : undefined}
                   data-testid="button-theme-system"
                 >
-                  <Monitor className={`h-5 w-5 ${theme === 'system' ? 'text-emerald-600' : 'text-gray-500 dark:text-gray-400'}`} />
-                  <span className={`text-sm font-medium ${theme === 'system' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>System</span>
+                  <Monitor className={`h-5 w-5 ${theme === 'system' ? 'text-gold' : 'text-muted-foreground'}`} />
+                  <span className={`text-sm font-medium ${theme === 'system' ? 'text-gold' : 'text-muted-foreground'}`}>System</span>
                 </button>
               </div>
             </div>
@@ -411,7 +432,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             App Status
           </h2>
           <MobileCard>
@@ -427,8 +448,8 @@ export default function Settings() {
                   )}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">Connection Status</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="font-medium text-foreground">Connection Status</p>
+                  <p className="text-sm text-muted-foreground">
                     {isOnline ? 'Online - Data syncing' : 'Offline - Changes pending'}
                   </p>
                 </div>
@@ -447,56 +468,56 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             Privacy & Legal
           </h2>
           <MobileCard>
-            <div className="divide-y divide-gray-100 dark:divide-gray-700">
+            <div className="divide-y divide-border">
               <Link href="/data-security">
-                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between py-3 hover:bg-secondary transition-colors cursor-pointer">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
-                      <Shield className="h-4 w-4 text-indigo-600" />
+                    <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                      <Shield className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div>
-                      <span className="font-medium text-gray-900 dark:text-white">Data Security</span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Manage your health data &amp; privacy</p>
+                      <span className="font-medium text-foreground">Data Security</span>
+                      <p className="text-xs text-muted-foreground">Manage your health data &amp; privacy</p>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </div>
               </Link>
               <Link href="/privacy-policy">
-                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" data-testid="link-privacy-policy">
+                <div className="flex items-center justify-between py-3 hover:bg-secondary transition-colors cursor-pointer" data-testid="link-privacy-policy">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                      <Shield className="h-4 w-4 text-gray-600" />
+                    <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                      <Shield className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <span className="font-medium text-gray-900 dark:text-white">Privacy Policy</span>
+                    <span className="font-medium text-foreground">Privacy Policy</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </div>
               </Link>
               <Link href="/terms-of-service">
-                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" data-testid="link-terms-of-service">
+                <div className="flex items-center justify-between py-3 hover:bg-secondary transition-colors cursor-pointer" data-testid="link-terms-of-service">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                      <FileText className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                    <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <span className="font-medium text-gray-900 dark:text-white">Terms of Service</span>
+                    <span className="font-medium text-foreground">Terms of Service</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </div>
               </Link>
               <Link href="/support">
-                <div className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" data-testid="link-support">
+                <div className="flex items-center justify-between py-3 hover:bg-secondary transition-colors cursor-pointer" data-testid="link-support">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                      <HelpCircle className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                    <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <span className="font-medium text-gray-900 dark:text-white">Help & Support</span>
+                    <span className="font-medium text-foreground">Help & Support</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </div>
               </Link>
             </div>
@@ -508,7 +529,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             Medical Disclaimer
           </h2>
           <MobileCard className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
@@ -531,7 +552,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             Data Management
           </h2>
           <MobileCard>
@@ -554,7 +575,7 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
         >
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3 px-1">
             Danger Zone
           </h2>
           <AccountDeletion userEmail={user?.email || undefined} />
@@ -566,14 +587,14 @@ export default function Settings() {
           transition={{ delay: 0.5 }}
         >
           <a href="/api/logout" className="block">
-            <MobileCard className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <MobileCard className="hover:bg-secondary transition-colors cursor-pointer">
               <div className="flex items-center space-x-3 py-1">
-                <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center">
-                  <LogOut className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                <div className="w-10 h-10 bg-secondary rounded-2xl flex items-center justify-center">
+                  <LogOut className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 dark:text-white">Log Out</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Sign out of your account</p>
+                  <h3 className="font-bold text-foreground">Log Out</h3>
+                  <p className="text-sm text-muted-foreground">Sign out of your account</p>
                 </div>
               </div>
             </MobileCard>

@@ -349,7 +349,7 @@ function CrisisAssessmentTool() {
       <MobileCard className="p-6" data-testid="crisis-assessment-card">
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xl font-bold text-gray-800" data-testid="text-assessment-title">
+            <h3 className="text-xl font-bold text-foreground" data-testid="text-assessment-title">
               Crisis Assessment
             </h3>
             <Badge variant="outline" data-testid="badge-step-counter">
@@ -360,7 +360,7 @@ function CrisisAssessmentTool() {
         </div>
 
         <div className="space-y-6">
-          <h4 className="text-lg font-semibold text-gray-800" data-testid="text-question">
+          <h4 className="text-lg font-semibold text-foreground" data-testid="text-question">
             {currentQuestion.question}
           </h4>
 
@@ -427,12 +427,12 @@ function CrisisAssessmentTool() {
             {urgencyLevel === 'urgent' && <Clock className="w-8 h-8 text-orange-600" />}
             {urgencyLevel === 'planning' && <Target className="w-8 h-8 text-green-600" />}
           </div>
-          <h3 className="text-xl font-bold text-gray-800 mb-2" data-testid="text-urgency-level">
+          <h3 className="text-xl font-bold text-foreground mb-2" data-testid="text-urgency-level">
             {urgencyLevel === 'immediate' && 'Immediate Crisis - Act Today'}
             {urgencyLevel === 'urgent' && 'Urgent Situation - Act This Week'}
             {urgencyLevel === 'planning' && 'Planning Mode - Proactive Steps'}
           </h3>
-          <p className="text-gray-600" data-testid="text-urgency-description">
+          <p className="text-muted-foreground" data-testid="text-urgency-description">
             {urgencyLevel === 'immediate' && 'You need to take immediate action to protect yourself from collections and secure financial assistance.'}
             {urgencyLevel === 'urgent' && 'You should act quickly to prevent your situation from becoming a crisis.'}
             {urgencyLevel === 'planning' && 'You have time to carefully plan and explore all your options.'}
@@ -440,7 +440,7 @@ function CrisisAssessmentTool() {
         </div>
 
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-gray-800" data-testid="text-action-plan-title">
+          <h4 className="text-lg font-semibold text-foreground" data-testid="text-action-plan-title">
             Your Personalized Action Plan
           </h4>
           
@@ -454,10 +454,10 @@ function CrisisAssessmentTool() {
                     data-testid={`checkbox-action-${action.id}`}
                   />
                   <div className="flex-1">
-                    <h5 className="font-semibold text-gray-800" data-testid={`text-action-title-${action.id}`}>
+                    <h5 className="font-semibold text-foreground" data-testid={`text-action-title-${action.id}`}>
                       {action.title}
                     </h5>
-                    <p className="text-sm text-gray-600 mt-1" data-testid={`text-action-description-${action.id}`}>
+                    <p className="text-sm text-muted-foreground mt-1" data-testid={`text-action-description-${action.id}`}>
                       {action.description}
                     </p>
                     <div className="flex items-center space-x-4 mt-2">
@@ -468,7 +468,7 @@ function CrisisAssessmentTool() {
                       >
                         {action.priority.toUpperCase()}
                       </Badge>
-                      <span className="text-xs text-gray-500" data-testid={`text-timeframe-${action.id}`}>
+                      <span className="text-xs text-muted-foreground" data-testid={`text-timeframe-${action.id}`}>
                         {action.timeframe}
                       </span>
                     </div>
@@ -478,7 +478,7 @@ function CrisisAssessmentTool() {
               
               {action.resources.length > 0 && (
                 <div className="ml-6">
-                  <p className="text-xs font-medium text-gray-600 mb-1">Resources:</p>
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Resources:</p>
                   <div className="flex flex-wrap gap-1">
                     {action.resources.map((resource, idx) => (
                       <Badge key={idx} variant="outline" className="text-xs" data-testid={`badge-resource-${action.id}-${idx}`}>
@@ -814,7 +814,7 @@ function EmergencyResources() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6" data-testid="text-emergency-resources-title">
+      <h2 className="text-2xl font-bold text-foreground font-serif mb-6" data-testid="text-emergency-resources-title">
         Emergency Resources
       </h2>
       
@@ -828,18 +828,18 @@ function EmergencyResources() {
             <div className="flex items-center space-x-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 category.urgency === 'immediate' ? 'bg-red-100' :
-                category.urgency === 'urgent' ? 'bg-orange-100' : 'bg-blue-100'
+                category.urgency === 'urgent' ? 'bg-orange-100' : 'bg-secondary'
               }`}>
                 <category.icon className={`w-5 h-5 ${
                   category.urgency === 'immediate' ? 'text-red-600' :
-                  category.urgency === 'urgent' ? 'text-orange-600' : 'text-blue-600'
+                  category.urgency === 'urgent' ? 'text-orange-600' : 'text-muted-foreground'
                 }`} />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800" data-testid={`text-category-title-${key}`}>
+                <h3 className="font-semibold text-foreground" data-testid={`text-category-title-${key}`}>
                   {category.title}
                 </h3>
-                <p className="text-sm text-gray-600" data-testid={`text-category-description-${key}`}>
+                <p className="text-sm text-muted-foreground" data-testid={`text-category-description-${key}`}>
                   {category.description}
                 </p>
               </div>
@@ -857,21 +857,21 @@ function EmergencyResources() {
                 data-testid={`content-category-${key}`}
               >
                 {category.resources.map((resource: any, idx: number) => (
-                  <div key={idx} className="border-l-4 border-gray-200 pl-4 space-y-3" data-testid={`resource-${key}-${idx}`}>
-                    <h4 className="font-semibold text-gray-800" data-testid={`text-resource-title-${key}-${idx}`}>
+                  <div key={idx} className="border-l-4 border-border pl-4 space-y-3" data-testid={`resource-${key}-${idx}`}>
+                    <h4 className="font-semibold text-foreground" data-testid={`text-resource-title-${key}-${idx}`}>
                       {resource.title}
                     </h4>
-                    <p className="text-sm text-gray-600" data-testid={`text-resource-description-${key}-${idx}`}>
+                    <p className="text-sm text-muted-foreground" data-testid={`text-resource-description-${key}-${idx}`}>
                       {resource.description}
                     </p>
 
                     {/* Actions */}
                     {resource.actions && resource.actions.length > 0 && (
                       <div>
-                        <h5 className="font-medium text-gray-700 mb-2">Action Steps:</h5>
+                        <h5 className="font-medium text-foreground mb-2">Action Steps:</h5>
                         <ul className="space-y-1">
                           {resource.actions.map((action: string, actionIdx: number) => (
-                            <li key={actionIdx} className="text-sm text-gray-600 flex items-start" data-testid={`text-action-${key}-${idx}-${actionIdx}`}>
+                            <li key={actionIdx} className="text-sm text-muted-foreground flex items-start" data-testid={`text-action-${key}-${idx}-${actionIdx}`}>
                               <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                               {action}
                             </li>
@@ -883,27 +883,27 @@ function EmergencyResources() {
                     {/* Contacts */}
                     {resource.contacts && resource.contacts.length > 0 && (
                       <div>
-                        <h5 className="font-medium text-gray-700 mb-2">Emergency Contacts:</h5>
+                        <h5 className="font-medium text-foreground mb-2">Emergency Contacts:</h5>
                         <div className="space-y-2">
                           {resource.contacts.map((contact: Contact | string, contactIdx: number) => (
-                            <div key={contactIdx} className="bg-gray-50 rounded-lg p-3" data-testid={`contact-${key}-${idx}-${contactIdx}`}>
+                            <div key={contactIdx} className="bg-secondary rounded-lg p-3" data-testid={`contact-${key}-${idx}-${contactIdx}`}>
                               <div className="flex items-center justify-between">
                                 <div className="flex-1">
-                                  <h6 className="font-medium text-gray-800" data-testid={`text-contact-name-${key}-${idx}-${contactIdx}`}>
+                                  <h6 className="font-medium text-foreground" data-testid={`text-contact-name-${key}-${idx}-${contactIdx}`}>
                                     {typeof contact === 'object' ? contact.name : contact}
                                   </h6>
                                   {typeof contact === 'object' && contact.phone && (
-                                    <p className="text-sm text-gray-600" data-testid={`text-contact-phone-${key}-${idx}-${contactIdx}`}>
+                                    <p className="text-sm text-muted-foreground" data-testid={`text-contact-phone-${key}-${idx}-${contactIdx}`}>
                                       📞 {contact.phone}
                                     </p>
                                   )}
                                   {typeof contact === 'object' && contact.description && (
-                                    <p className="text-xs text-gray-500" data-testid={`text-contact-description-${key}-${idx}-${contactIdx}`}>
+                                    <p className="text-xs text-muted-foreground" data-testid={`text-contact-description-${key}-${idx}-${contactIdx}`}>
                                       {contact.description}
                                     </p>
                                   )}
                                   {typeof contact === 'object' && contact.available && (
-                                    <p className="text-xs text-gray-500" data-testid={`text-contact-available-${key}-${idx}-${contactIdx}`}>
+                                    <p className="text-xs text-muted-foreground" data-testid={`text-contact-available-${key}-${idx}-${contactIdx}`}>
                                       Available: {contact.available}
                                     </p>
                                   )}
@@ -913,7 +913,7 @@ function EmergencyResources() {
                                     <Button
                                       size="sm"
                                       onClick={() => handleCall(contact.phone)}
-                                      className="bg-green-600 hover:bg-green-700"
+                                      className="bg-primary text-primary-foreground"
                                       data-testid={`button-call-${key}-${idx}-${contactIdx}`}
                                     >
                                       <Phone className="w-3 h-3" />
@@ -941,14 +941,14 @@ function EmergencyResources() {
                     {/* Scripts */}
                     {resource.scripts && resource.scripts.length > 0 && (
                       <div>
-                        <h5 className="font-medium text-gray-700 mb-2">Call Scripts:</h5>
+                        <h5 className="font-medium text-foreground mb-2">Call Scripts:</h5>
                         <div className="space-y-3">
                           {resource.scripts.map((script: Script, scriptIdx: number) => (
-                            <div key={scriptIdx} className="bg-blue-50 rounded-lg p-3" data-testid={`script-${key}-${idx}-${scriptIdx}`}>
-                              <h6 className="font-medium text-blue-800 mb-2" data-testid={`text-script-scenario-${key}-${idx}-${scriptIdx}`}>
+                            <div key={scriptIdx} className="bg-secondary rounded-lg p-3" data-testid={`script-${key}-${idx}-${scriptIdx}`}>
+                              <h6 className="font-medium text-foreground mb-2" data-testid={`text-script-scenario-${key}-${idx}-${scriptIdx}`}>
                                 {script.scenario}:
                               </h6>
-                              <p className="text-sm text-blue-700 italic" data-testid={`text-script-content-${key}-${idx}-${scriptIdx}`}>
+                              <p className="text-sm text-muted-foreground italic" data-testid={`text-script-content-${key}-${idx}-${scriptIdx}`}>
                                 "{script.script}"
                               </p>
                               <Button
@@ -970,11 +970,11 @@ function EmergencyResources() {
                     {/* Rights */}
                     {resource.rights && resource.rights.length > 0 && (
                       <div>
-                        <h5 className="font-medium text-gray-700 mb-2">Your Rights:</h5>
+                        <h5 className="font-medium text-foreground mb-2">Your Rights:</h5>
                         <ul className="space-y-1">
                           {resource.rights.map((right: string, rightIdx: number) => (
-                            <li key={rightIdx} className="text-sm text-gray-600 flex items-start" data-testid={`text-right-${key}-${idx}-${rightIdx}`}>
-                              <Shield className="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <li key={rightIdx} className="text-sm text-muted-foreground flex items-start" data-testid={`text-right-${key}-${idx}-${rightIdx}`}>
+                              <Shield className="w-4 h-4 text-gold mr-2 mt-0.5 flex-shrink-0" />
                               {right}
                             </li>
                           ))}
@@ -1122,13 +1122,13 @@ function SupportNetwork() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800" data-testid="text-support-network-title">
+      <h2 className="text-2xl font-bold text-foreground font-serif" data-testid="text-support-network-title">
         Support Network
       </h2>
 
       {/* Local Resource Finder */}
       <MobileCard className="p-6" data-testid="card-local-resources">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4" data-testid="text-local-finder-title">
+        <h3 className="text-lg font-semibold text-foreground mb-4" data-testid="text-local-finder-title">
           Find Local Resources
         </h3>
         <div className="space-y-4">
@@ -1155,23 +1155,23 @@ function SupportNetwork() {
 
           {localResources.length > 0 && (
             <div className="space-y-3">
-              <h4 className="font-medium text-gray-700" data-testid="text-local-results-title">
+              <h4 className="font-medium text-foreground" data-testid="text-local-results-title">
                 Local Resources in {zipCode}:
               </h4>
               {localResources.map((resource, idx) => (
                 <div key={idx} className="border rounded-lg p-3" data-testid={`local-resource-${idx}`}>
                   <div className="flex items-center justify-between mb-2">
-                    <h5 className="font-semibold text-gray-800" data-testid={`text-local-name-${idx}`}>
+                    <h5 className="font-semibold text-foreground" data-testid={`text-local-name-${idx}`}>
                       {resource.name}
                     </h5>
                     <Badge variant="outline" data-testid={`badge-local-type-${idx}`}>
                       {resource.type}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-600 mb-2" data-testid={`text-local-phone-${idx}`}>
+                  <p className="text-sm text-muted-foreground mb-2" data-testid={`text-local-phone-${idx}`}>
                     📞 {resource.phone}
                   </p>
-                  <p className="text-sm text-gray-600 mb-2" data-testid={`text-local-address-${idx}`}>
+                  <p className="text-sm text-muted-foreground mb-2" data-testid={`text-local-address-${idx}`}>
                     📍 {resource.address}
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -1193,29 +1193,29 @@ function SupportNetwork() {
         {supportTypes.map((type, typeIdx) => (
           <MobileCard key={typeIdx} className="p-4" data-testid={`card-support-type-${typeIdx}`}>
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <type.icon className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
+                <type.icon className="w-5 h-5 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-800" data-testid={`text-support-title-${typeIdx}`}>
+              <h3 className="text-lg font-semibold text-foreground" data-testid={`text-support-title-${typeIdx}`}>
                 {type.title}
               </h3>
             </div>
             
             <div className="space-y-3">
               {type.resources.map((resource, resourceIdx) => (
-                <div key={resourceIdx} className="bg-gray-50 rounded-lg p-3" data-testid={`support-resource-${typeIdx}-${resourceIdx}`}>
+                <div key={resourceIdx} className="bg-secondary rounded-lg p-3" data-testid={`support-resource-${typeIdx}-${resourceIdx}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-800" data-testid={`text-support-name-${typeIdx}-${resourceIdx}`}>
+                      <h4 className="font-medium text-foreground" data-testid={`text-support-name-${typeIdx}-${resourceIdx}`}>
                         {resource.name}
                       </h4>
-                      <p className="text-sm text-gray-600" data-testid={`text-support-phone-${typeIdx}-${resourceIdx}`}>
+                      <p className="text-sm text-muted-foreground" data-testid={`text-support-phone-${typeIdx}-${resourceIdx}`}>
                         📞 {resource.phone}
                       </p>
-                      <p className="text-xs text-gray-500" data-testid={`text-support-description-${typeIdx}-${resourceIdx}`}>
+                      <p className="text-xs text-muted-foreground" data-testid={`text-support-description-${typeIdx}-${resourceIdx}`}>
                         {resource.description}
                       </p>
-                      <p className="text-xs text-gray-500" data-testid={`text-support-available-${typeIdx}-${resourceIdx}`}>
+                      <p className="text-xs text-muted-foreground" data-testid={`text-support-available-${typeIdx}-${resourceIdx}`}>
                         Available: {resource.available}
                       </p>
                     </div>
@@ -1224,7 +1224,7 @@ function SupportNetwork() {
                         <Button
                           size="sm"
                           onClick={() => window.location.href = `tel:${resource.phone}`}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-primary text-primary-foreground"
                           data-testid={`button-call-support-${typeIdx}-${resourceIdx}`}
                         >
                           <Phone className="w-3 h-3" />
@@ -1403,7 +1403,7 @@ function EducationalContent() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800" data-testid="text-educational-title">
+      <h2 className="text-2xl font-bold text-foreground font-serif" data-testid="text-educational-title">
         Emergency Education
       </h2>
 
@@ -1425,15 +1425,15 @@ function EducationalContent() {
       <div className="space-y-4">
         {educationalSections[activeSection as keyof typeof educationalSections].content.map((item, idx) => (
           <MobileCard key={idx} className="p-6" data-testid={`card-education-${activeSection}-${idx}`}>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2" data-testid={`text-education-title-${activeSection}-${idx}`}>
+            <h3 className="text-lg font-semibold text-foreground mb-2" data-testid={`text-education-title-${activeSection}-${idx}`}>
               {item.title}
             </h3>
-            <p className="text-gray-600 mb-4" data-testid={`text-education-description-${activeSection}-${idx}`}>
+            <p className="text-muted-foreground mb-4" data-testid={`text-education-description-${activeSection}-${idx}`}>
               {item.description}
             </p>
             <ul className="space-y-2">
               {item.points.map((point, pointIdx) => (
-                <li key={pointIdx} className="flex items-start text-sm text-gray-600" data-testid={`text-education-point-${activeSection}-${idx}-${pointIdx}`}>
+                <li key={pointIdx} className="flex items-start text-sm text-muted-foreground" data-testid={`text-education-point-${activeSection}-${idx}-${pointIdx}`}>
                   <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                   {point}
                 </li>
@@ -1455,13 +1455,13 @@ export default function EmergencyHelp() {
     <MobileLayout title="Emergency Financial Help" showBackButton={true} data-testid="layout-emergency-help">
       <div className="space-y-6">
         {/* Crisis Alert Banner */}
-        <MobileCard className="p-6 bg-gradient-to-r from-red-50 to-orange-50 border-red-200" data-testid="card-crisis-banner">
+        <MobileCard className="p-6 bg-red-50 border border-red-200" data-testid="card-crisis-banner">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
               <LifeBuoy className="w-6 h-6 text-red-600" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-red-800" data-testid="text-crisis-title">
+              <h1 className="text-xl font-bold text-red-800 font-serif" data-testid="text-crisis-title">
                 Emergency Medical Debt Crisis Help
               </h1>
               <p className="text-red-700" data-testid="text-crisis-subtitle">
@@ -1470,7 +1470,7 @@ export default function EmergencyHelp() {
             </div>
           </div>
           
-          <div className="bg-white rounded-lg p-4 border border-red-200">
+          <div className="bg-card rounded-lg p-4 border border-red-200">
             <h2 className="font-semibold text-red-800 mb-2" data-testid="text-crisis-help-title">
               🚨 Need Immediate Help?
             </h2>
@@ -1486,7 +1486,7 @@ export default function EmergencyHelp() {
               <div className="grid grid-cols-2 gap-2">
                 <a 
                   href="tel:988" 
-                  className="flex items-center justify-center bg-gray-600 text-white rounded-lg py-2 px-3 text-sm font-semibold"
+                  className="flex items-center justify-center bg-foreground text-background rounded-lg py-2 px-3 text-sm font-semibold"
                   data-testid="button-call-988"
                 >
                   <Heart className="w-3 h-3 mr-1" />
@@ -1494,7 +1494,7 @@ export default function EmergencyHelp() {
                 </a>
                 <a 
                   href="sms:741741" 
-                  className="flex items-center justify-center bg-blue-600 text-white rounded-lg py-2 px-3 text-sm font-semibold"
+                  className="flex items-center justify-center bg-foreground text-background rounded-lg py-2 px-3 text-sm font-semibold"
                   data-testid="button-text-crisis"
                 >
                   <MessageCircle className="w-3 h-3 mr-1" />
@@ -1532,39 +1532,39 @@ export default function EmergencyHelp() {
         </Tabs>
 
         {/* Emergency Action Summary */}
-        <MobileCard className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200" data-testid="card-action-summary">
-          <h2 className="text-lg font-bold text-blue-800 mb-4" data-testid="text-summary-title">
+        <MobileCard className="p-6 bg-card border border-border" data-testid="card-action-summary">
+          <h2 className="text-lg font-bold text-foreground font-serif mb-4" data-testid="text-summary-title">
             🎯 Quick Action Summary
           </h2>
           <div className="space-y-3 text-sm">
             <div className="flex items-center space-x-2" data-testid="summary-item-1">
-              <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0" />
-              <span className="text-blue-700">
+              <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
+              <span className="text-muted-foreground">
                 <strong>Step 1:</strong> Take the crisis assessment to get your personalized action plan
               </span>
             </div>
             <div className="flex items-center space-x-2" data-testid="summary-item-2">
-              <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0" />
-              <span className="text-blue-700">
+              <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
+              <span className="text-muted-foreground">
                 <strong>Step 2:</strong> Contact emergency resources immediately if in crisis
               </span>
             </div>
             <div className="flex items-center space-x-2" data-testid="summary-item-3">
-              <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0" />
-              <span className="text-blue-700">
+              <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
+              <span className="text-muted-foreground">
                 <strong>Step 3:</strong> Apply for hospital charity care and financial assistance
               </span>
             </div>
             <div className="flex items-center space-x-2" data-testid="summary-item-4">
-              <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0" />
-              <span className="text-blue-700">
+              <CheckCircle className="w-4 h-4 text-gold flex-shrink-0" />
+              <span className="text-muted-foreground">
                 <strong>Step 4:</strong> Build your support network and learn your rights
               </span>
             </div>
           </div>
           
-          <div className="mt-4 pt-4 border-t border-blue-200">
-            <p className="text-xs text-blue-600 text-center" data-testid="text-remember-message">
+          <div className="mt-4 pt-4 border-t border-border">
+            <p className="text-xs text-muted-foreground text-center" data-testid="text-remember-message">
               Remember: You have rights and options. Medical debt is often negotiable or forgivable. Don't face this alone.
             </p>
           </div>

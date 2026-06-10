@@ -39,26 +39,26 @@ function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label className="text-gray-600 dark:text-gray-400 text-sm">Name</Label>
-          <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" />
+          <Label className="text-muted-foreground text-sm">Name</Label>
+          <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="bg-background border-border" />
         </div>
         <div>
-          <Label className="text-gray-600 dark:text-gray-400 text-sm">Email</Label>
-          <Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" />
+          <Label className="text-muted-foreground text-sm">Email</Label>
+          <Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required className="bg-background border-border" />
         </div>
       </div>
       <div>
-        <Label className="text-gray-600 dark:text-gray-400 text-sm">Firm</Label>
-        <Input value={form.firm} onChange={e => setForm({ ...form, firm: e.target.value })} className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" />
+        <Label className="text-muted-foreground text-sm">Firm</Label>
+        <Input value={form.firm} onChange={e => setForm({ ...form, firm: e.target.value })} className="bg-background border-border" />
       </div>
       <div>
-        <Label className="text-gray-600 dark:text-gray-400 text-sm">Message</Label>
-        <Textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="I'd like to learn more about the investment opportunity..." rows={3} className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600" />
+        <Label className="text-muted-foreground text-sm">Message</Label>
+        <Textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} placeholder="I'd like to learn more about the investment opportunity..." rows={3} className="bg-background border-border" />
       </div>
-      <Button type="submit" disabled={sending} className="w-full bg-purple-600 hover:bg-purple-700 text-white h-12 text-base font-semibold">
+      <Button type="submit" disabled={sending} className="w-full bg-primary text-primary-foreground hover:opacity-90 h-12 text-base font-semibold">
         <Send className="w-4 h-4 mr-2" />{sending ? "Sending..." : "Request Data Room Access"}
       </Button>
-      <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Or email: CONTACT@GOLDROCK.ai</p>
+      <p className="text-xs text-muted-foreground text-center">Or email: CONTACT@GOLDROCK.ai</p>
     </form>
   );
 }
@@ -159,10 +159,10 @@ const milestones = [
 ];
 
 const marketSegments = [
-  { label: "Patients", desc: "B2C subscriptions, bill analysis, dispute tools", icon: Heart, color: "from-purple-500 to-purple-600" },
-  { label: "Employers", desc: "Employee benefit, $3-$6/emp/mo tiers", icon: Building2, color: "from-violet-500 to-violet-600" },
-  { label: "Insurers", desc: "White-label member services, reduces disputes", icon: Shield, color: "from-indigo-500 to-indigo-600" },
-  { label: "Providers", desc: "Patient financial clarity, reduces bad debt", icon: Users, color: "from-fuchsia-500 to-fuchsia-600" },
+  { label: "Patients", desc: "B2C subscriptions, bill analysis, dispute tools", icon: Heart },
+  { label: "Employers", desc: "Employee benefit, $3-$6/emp/mo tiers", icon: Building2 },
+  { label: "Insurers", desc: "White-label member services, reduces disputes", icon: Shield },
+  { label: "Providers", desc: "Patient financial clarity, reduces bad debt", icon: Users },
 ];
 
 function AnimatedGrid() {
@@ -176,21 +176,17 @@ function AnimatedGrid() {
         </defs>
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
-      <motion.div
+      <div
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse at 30% 50%, rgba(168,85,247,0.3) 0%, transparent 60%)",
+          background: "radial-gradient(ellipse at 30% 50%, rgba(198,160,90,0.25) 0%, transparent 60%)",
         }}
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
+      <div
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse at 70% 30%, rgba(139,92,246,0.2) 0%, transparent 50%)",
+          background: "radial-gradient(ellipse at 70% 30%, rgba(198,160,90,0.14) 0%, transparent 50%)",
         }}
-        animate={{ opacity: [0.5, 0.2, 0.5] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
     </div>
   );
@@ -201,15 +197,11 @@ function FloatingBadge({ text, delay, x, y }: { text: string; delay: number; x: 
     <motion.div
       className="absolute hidden md:block"
       style={{ left: x, top: y }}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
-      transition={{
-        opacity: { delay, duration: 0.5 },
-        scale: { delay, duration: 0.5 },
-        y: { delay: delay + 0.5, duration: 3, repeat: Infinity, ease: "easeInOut" },
-      }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 text-white text-sm font-medium shadow-lg">
+      <div className="bg-white/10 border border-white/20 rounded-full px-4 py-2 text-white text-sm font-medium shadow-lg">
         {text}
       </div>
     </motion.div>
@@ -221,10 +213,10 @@ function DonutChart() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const segments = [
-    { percent: 40, color: "#9333ea", label: "Product & Engineering" },
-    { percent: 30, color: "#7c3aed", label: "Go-to-Market" },
-    { percent: 15, color: "#a855f7", label: "Operations & Compliance" },
-    { percent: 15, color: "#c084fc", label: "General & Administrative" },
+    { percent: 40, color: "#8a6a2f", label: "Product & Engineering" },
+    { percent: 30, color: "#a9863f", label: "Go-to-Market" },
+    { percent: 15, color: "#c19a5b", label: "Operations & Compliance" },
+    { percent: 15, color: "#d8bd8a", label: "General & Administrative" },
   ];
 
   const radius = 80;
@@ -260,8 +252,8 @@ function DonutChart() {
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Allocation</p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">100%</p>
+            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Allocation</p>
+            <p className="text-2xl font-bold text-foreground">100%</p>
           </div>
         </div>
       </div>
@@ -276,8 +268,8 @@ function DonutChart() {
           >
             <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: seg.color }} />
             <div>
-              <p className="text-xs font-medium text-gray-900 dark:text-white">{seg.label}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{seg.percent}%</p>
+              <p className="text-xs font-medium text-foreground">{seg.label}</p>
+              <p className="text-xs text-muted-foreground">{seg.percent}%</p>
             </div>
           </motion.div>
         ))}
@@ -289,14 +281,15 @@ function DonutChart() {
 function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="mb-10"
     >
       <p className="text-sm font-semibold text-purple-600 dark:text-purple-400 tracking-widest uppercase mb-2">{eyebrow}</p>
-      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{title}</h2>
-      {subtitle && <p className="text-base text-gray-500 dark:text-gray-400 mt-2 max-w-2xl">{subtitle}</p>}
+      <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground tracking-tight">{title}</h2>
+      {subtitle && <p className="text-base text-muted-foreground mt-2 max-w-2xl">{subtitle}</p>}
     </motion.div>
   );
 }
@@ -313,13 +306,13 @@ export default function ForVCs() {
 
       <MobileHeader title="For Investors" />
 
-      <div className="min-h-screen bg-white dark:bg-gray-950">
+      <div className="min-h-screen bg-background">
 
         {/* Hero Section */}
         <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center overflow-hidden">
           <div className="absolute inset-0">
             <img src={vcHero} alt="Investors discussing healthcare technology opportunities" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-950/90 via-purple-900/85 to-indigo-950/90" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, hsla(28,22%,7%,0.92), hsla(28,16%,10%,0.86))" }} />
           </div>
           <AnimatedGrid />
 
@@ -332,13 +325,13 @@ export default function ForVCs() {
               <ArrowLeft className="w-4 h-4 mr-1" /> Enterprise Solutions
             </Link>
 
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
               <Badge className="bg-purple-500/20 text-purple-200 border-purple-400/30 mb-6 text-xs px-3 py-1">
                 For Investors
               </Badge>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-[1.05] tracking-tight max-w-4xl">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-extrabold text-white mb-6 leading-[1.05] tracking-tight max-w-4xl">
                 Healthcare billing is a{" "}
-                <span className="bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent">
+                <span className="text-gold">
                   multi-trillion-dollar market
                 </span>
                 <br />with no intelligence layer.
@@ -353,7 +346,7 @@ export default function ForVCs() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <a href="mailto:CONTACT@GOLDROCK.ai">
-                  <Button size="lg" className="bg-white text-purple-900 hover:bg-white/90 h-13 px-8 text-base font-semibold shadow-xl shadow-purple-950/30">
+                  <Button size="lg" className="text-white hover:opacity-95 h-13 px-8 text-base font-semibold shadow-xl" style={{ background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))" }}>
                     <Mail className="mr-2 h-5 w-5" /> Request Data Room
                   </Button>
                 </a>
@@ -366,7 +359,7 @@ export default function ForVCs() {
             </motion.div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white dark:from-gray-950 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
         </section>
 
         {/* Investment Thesis */}
@@ -376,18 +369,18 @@ export default function ForVCs() {
             {investmentThesis.map((thesis, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.08 }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <Card className="h-full bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 hover:border-purple-300 dark:hover:border-purple-700 transition-all duration-300 hover:shadow-lg hover:shadow-purple-100 dark:hover:shadow-purple-950/30 group">
+                <Card className="h-full luxury-card transition-all duration-300 hover:shadow-md group">
                   <CardContent className="p-6">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-100 to-violet-100 dark:from-purple-900/40 dark:to-violet-900/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <thesis.icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
+                      <thesis.icon className="w-6 h-6 text-muted-foreground" />
                     </div>
-                    <h3 className="font-bold text-gray-900 dark:text-white text-base mb-2">{thesis.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{thesis.description}</p>
+                    <h3 className="font-bold text-foreground text-base mb-2">{thesis.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{thesis.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -396,7 +389,7 @@ export default function ForVCs() {
         </section>
 
         {/* Market Opportunity */}
-        <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900/50 dark:to-gray-950 py-20">
+        <section className="bg-card py-20">
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <SectionHeading
               eyebrow="Market Opportunity"
@@ -408,23 +401,22 @@ export default function ForVCs() {
                 {marketSegments.map((seg, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ delay: i * 0.12 }}
+                    transition={{ delay: i * 0.12, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <div className="relative group">
-                      <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-violet-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-                      <div className="relative bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800 h-full">
-                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${seg.color} flex items-center justify-center mb-4 shadow-lg`}>
-                          <seg.icon className="w-7 h-7 text-white" />
+                      <div className="relative bg-background rounded-2xl p-6 border border-border h-full transition-shadow group-hover:shadow-md">
+                        <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center mb-4">
+                          <seg.icon className="w-7 h-7 text-muted-foreground" />
                         </div>
-                        <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{seg.label}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{seg.desc}</p>
-                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                        <h4 className="text-lg font-bold text-foreground mb-2">{seg.label}</h4>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{seg.desc}</p>
+                        <div className="mt-4 pt-4 border-t border-border">
                           <div className="flex items-center gap-1.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
-                            <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">Active channel</span>
+                            <div className="w-1.5 h-1.5 rounded-full bg-gold" />
+                            <span className="text-xs text-muted-foreground font-medium">Active channel</span>
                           </div>
                         </div>
                       </div>
@@ -440,9 +432,9 @@ export default function ForVCs() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
               >
-                <div className="inline-flex items-center gap-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-full px-6 py-3">
-                  <Globe className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  <span className="text-sm font-medium text-purple-800 dark:text-purple-300">
+                <div className="inline-flex items-center gap-3 bg-secondary border border-border rounded-full px-6 py-3">
+                  <Globe className="w-5 h-5 text-gold" />
+                  <span className="text-sm font-medium text-foreground">
                     Coverage across all 50 states — state-specific regulations built in
                   </span>
                 </div>
@@ -462,18 +454,18 @@ export default function ForVCs() {
             {whyNow.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -16 : 16 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex items-start gap-5 p-6 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-100 dark:border-gray-800 hover:border-purple-200 dark:hover:border-purple-800 transition-colors h-full">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-purple-200 dark:shadow-purple-950/50">
+                <div className="flex items-start gap-5 p-6 rounded-2xl bg-secondary border border-border transition-colors h-full">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))" }}>
                     <span className="text-sm font-bold text-white">{i + 1}</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 dark:text-white text-base mb-1.5">{item.title}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
+                    <h4 className="font-bold text-foreground text-base mb-1.5">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -482,7 +474,7 @@ export default function ForVCs() {
         </section>
 
         {/* Product Screenshot */}
-        <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900/50 dark:to-gray-950 py-20 overflow-hidden">
+        <section className="bg-card py-20 overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <SectionHeading
               eyebrow="Product"
@@ -491,21 +483,21 @@ export default function ForVCs() {
             />
             <div className="relative">
               <motion.div
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.7 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="relative mx-auto max-w-4xl"
               >
-                <div className="rounded-xl overflow-hidden shadow-2xl shadow-purple-200/50 dark:shadow-purple-950/50 border border-gray-200 dark:border-gray-700">
-                  <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 flex items-center gap-2 border-b border-gray-200 dark:border-gray-700">
+                <div className="rounded-xl overflow-hidden shadow-2xl border border-border">
+                  <div className="bg-secondary px-4 py-3 flex items-center gap-2 border-b border-border">
                     <div className="flex gap-1.5">
                       <div className="w-3 h-3 rounded-full bg-red-400" />
                       <div className="w-3 h-3 rounded-full bg-yellow-400" />
                       <div className="w-3 h-3 rounded-full bg-green-400" />
                     </div>
                     <div className="flex-1 mx-4">
-                      <div className="bg-white dark:bg-gray-700 rounded-md px-3 py-1 text-xs text-gray-400 dark:text-gray-500 font-mono">
+                      <div className="bg-background border border-border rounded-md px-3 py-1 text-xs text-muted-foreground font-mono">
                         goldrock.ai/dashboard
                       </div>
                     </div>
@@ -515,43 +507,43 @@ export default function ForVCs() {
 
                 <motion.div
                   className="absolute -right-4 md:right-4 top-20 md:top-16"
-                  initial={{ opacity: 0, x: 30 }}
+                  initial={{ opacity: 0, x: 24 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.5 }}
+                  transition={{ delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-xl p-4 shadow-xl max-w-[200px]">
-                    <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 mb-2" />
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">AI Bill Grader</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Fairness scoring, coding accuracy, overcharge detection</p>
+                  <div className="bg-card border border-border rounded-xl p-4 shadow-xl max-w-[200px]">
+                    <Sparkles className="w-5 h-5 text-gold mb-2" />
+                    <p className="text-xs font-bold text-foreground">AI Bill Grader</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">Fairness scoring, coding accuracy, overcharge detection</p>
                   </div>
                 </motion.div>
 
                 <motion.div
                   className="absolute -left-4 md:left-4 bottom-16 md:bottom-20"
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: -24 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.7 }}
+                  transition={{ delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-xl p-4 shadow-xl max-w-[200px]">
-                    <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400 mb-2" />
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">34+ Defense Scenarios</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Collections defense playbooks covering every situation</p>
+                  <div className="bg-card border border-border rounded-xl p-4 shadow-xl max-w-[200px]">
+                    <Shield className="w-5 h-5 text-gold mb-2" />
+                    <p className="text-xs font-bold text-foreground">34+ Defense Scenarios</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">Collections defense playbooks covering every situation</p>
                   </div>
                 </motion.div>
 
                 <motion.div
                   className="absolute right-8 md:right-20 bottom-4 md:bottom-8"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.9 }}
+                  transition={{ delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/50 dark:border-gray-700/50 rounded-xl p-4 shadow-xl max-w-[200px]">
-                    <Code className="w-5 h-5 text-purple-600 dark:text-purple-400 mb-2" />
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">Partner API</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">HMAC auth, rate limiting, production-ready</p>
+                  <div className="bg-card border border-border rounded-xl p-4 shadow-xl max-w-[200px]">
+                    <Code className="w-5 h-5 text-gold mb-2" />
+                    <p className="text-xs font-bold text-foreground">Partner API</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">HMAC auth, rate limiting, production-ready</p>
                   </div>
                 </motion.div>
               </motion.div>
@@ -560,15 +552,15 @@ export default function ForVCs() {
                 {productHighlights.map((product, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 15 }}
+                    initial={{ opacity: 0, y: 12 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-30px" }}
-                    transition={{ delay: i * 0.08 }}
+                    transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 h-full hover:shadow-md transition-shadow">
+                    <Card className="luxury-card h-full hover:shadow-md transition-shadow">
                       <CardContent className="p-5">
-                        <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1.5">{product.title}</h4>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{product.description}</p>
+                        <h4 className="font-bold text-foreground text-sm mb-1.5">{product.title}</h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{product.description}</p>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -577,7 +569,7 @@ export default function ForVCs() {
 
               <div className="mt-8 text-center">
                 <Link href="/">
-                  <Button variant="outline" className="border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-purple-400 dark:hover:border-purple-600">
+                  <Button variant="outline" className="border-border text-foreground hover:bg-secondary">
                     Try the Product <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
@@ -594,21 +586,21 @@ export default function ForVCs() {
             subtitle="Shipped features — not vanity metrics"
           />
           <div className="relative">
-            <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 dark:from-purple-800 dark:via-purple-600 dark:to-purple-800" />
+            <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-border" />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-4">
               {milestones.map((m, i) => (
                 <motion.div
                   key={i}
                   className="flex flex-col items-center text-center relative"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: i * 0.12 }}
+                  transition={{ delay: i * 0.12, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center mb-3 shadow-lg shadow-purple-200 dark:shadow-purple-950/50 relative z-10">
-                    <m.icon className="w-7 h-7 text-white" />
+                  <div className="w-16 h-16 rounded-2xl bg-secondary border border-border flex items-center justify-center mb-3 relative z-10">
+                    <m.icon className="w-7 h-7 text-muted-foreground" />
                   </div>
-                  <p className="text-xs font-semibold text-gray-900 dark:text-white leading-tight">{m.label}</p>
+                  <p className="text-xs font-semibold text-foreground leading-tight">{m.label}</p>
                 </motion.div>
               ))}
             </div>
@@ -616,7 +608,7 @@ export default function ForVCs() {
         </section>
 
         {/* Use of Funds with Donut Chart */}
-        <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900/50 dark:to-gray-950 py-20">
+        <section className="bg-card py-20">
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <SectionHeading eyebrow="Capital Allocation" title="Use of funds" />
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -625,17 +617,17 @@ export default function ForVCs() {
                 {useOfFunds.map((item, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 16 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-30px" }}
-                    transition={{ delay: i * 0.1 }}
-                    className="p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800"
+                    transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="p-5 rounded-xl bg-background border border-border"
                   >
                     <div className="flex items-center gap-3 mb-1">
-                      <span className="text-2xl font-extrabold text-purple-600 dark:text-purple-400">{item.allocation}</span>
-                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">{item.category}</h4>
+                      <span className="text-2xl font-extrabold text-gold">{item.allocation}</span>
+                      <h4 className="font-bold text-foreground text-sm">{item.category}</h4>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                   </motion.div>
                 ))}
               </div>
@@ -652,27 +644,33 @@ export default function ForVCs() {
           />
           <div className="grid md:grid-cols-4 gap-5">
             {[
-              { label: "Generic EAPs", tag: "Not an EAP", problem: "Broad, unfocused wellness programs with low engagement and no billing expertise", icon: X, accent: "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900" },
-              { label: "Billing Services", tag: "Not a billing service", problem: "Expensive professional advocates charging percentage fees with slow turnaround", icon: X, accent: "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900" },
-              { label: "Simple Chatbots", tag: "Not a chatbot", problem: "Shallow AI wrappers without domain depth, state-specific knowledge, or action capabilities", icon: X, accent: "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900" },
-              { label: "GoldRock", tag: "The intelligence layer", problem: "AI-powered, state-specific, comprehensive platform. Analyzes bills, generates disputes, defends against collections, and serves every stakeholder.", icon: CheckCircle, accent: "bg-purple-50 dark:bg-purple-950/20 border-purple-300 dark:border-purple-800" },
+              { label: "Generic EAPs", tag: "Not an EAP", problem: "Broad, unfocused wellness programs with low engagement and no billing expertise", icon: X },
+              { label: "Billing Services", tag: "Not a billing service", problem: "Expensive professional advocates charging percentage fees with slow turnaround", icon: X },
+              { label: "Simple Chatbots", tag: "Not a chatbot", problem: "Shallow AI wrappers without domain depth, state-specific knowledge, or action capabilities", icon: X },
+              { label: "GoldRock", tag: "The intelligence layer", problem: "AI-powered, state-specific, comprehensive platform. Analyzes bills, generates disputes, defends against collections, and serves every stakeholder.", icon: CheckCircle },
             ].map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className={`rounded-2xl p-5 border h-full ${item.accent} ${i === 3 ? "ring-2 ring-purple-400 dark:ring-purple-600" : ""}`}>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 ${i === 3 ? "bg-purple-600" : "bg-red-100 dark:bg-red-900/30"}`}>
-                    <item.icon className={`w-5 h-5 ${i === 3 ? "text-white" : "text-red-500 dark:text-red-400"}`} />
+                <div
+                  className={`rounded-2xl p-5 border border-border h-full ${i === 3 ? "bg-card" : "bg-secondary"}`}
+                  style={i === 3 ? { borderColor: "var(--gold)" } : undefined}
+                >
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 ${i === 3 ? "" : "bg-card border border-border"}`}
+                    style={i === 3 ? { background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))" } : undefined}
+                  >
+                    <item.icon className={`w-5 h-5 ${i === 3 ? "text-white" : "text-muted-foreground"}`} />
                   </div>
-                  <Badge className={`mb-2 text-[10px] ${i === 3 ? "bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-700" : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800"}`}>
+                  <Badge className={`mb-2 text-[10px] bg-secondary border-border ${i === 3 ? "text-gold" : "text-muted-foreground"}`}>
                     {item.tag}
                   </Badge>
-                  <h4 className="font-bold text-gray-900 dark:text-white text-sm mt-2 mb-1.5">{item.label}</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{item.problem}</p>
+                  <h4 className="font-bold text-foreground text-sm mt-2 mb-1.5">{item.label}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.problem}</p>
                 </div>
               </motion.div>
             ))}
@@ -680,7 +678,7 @@ export default function ForVCs() {
         </section>
 
         {/* B2B Distribution */}
-        <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900/50 dark:to-gray-950 py-20">
+        <section className="bg-card py-20">
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <SectionHeading
               eyebrow="Distribution"
@@ -710,22 +708,22 @@ export default function ForVCs() {
               ].map((ch, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: i * 0.1 }}
+                  transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Link href={ch.href}>
-                    <Card className="h-full bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 hover:shadow-xl hover:shadow-purple-100 dark:hover:shadow-purple-950/30 transition-all duration-300 cursor-pointer group hover:border-purple-300 dark:hover:border-purple-700">
+                    <Card className="h-full bg-background border-border hover:shadow-md transition-all duration-300 cursor-pointer group">
                       <CardContent className="p-6">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-purple-200 dark:shadow-purple-950/50">
-                          <ch.icon className="w-6 h-6 text-white" />
+                        <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                          <ch.icon className="w-6 h-6 text-muted-foreground" />
                         </div>
                         <div className="flex items-center gap-2 mb-2">
-                          <h4 className="font-bold text-gray-900 dark:text-white">{ch.title}</h4>
-                          <ArrowRight className="w-4 h-4 text-gray-400 dark:text-gray-500 ml-auto group-hover:translate-x-1 transition-transform" />
+                          <h4 className="font-bold text-foreground">{ch.title}</h4>
+                          <ArrowRight className="w-4 h-4 text-muted-foreground ml-auto group-hover:translate-x-1 transition-transform" />
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{ch.desc}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{ch.desc}</p>
                       </CardContent>
                     </Card>
                   </Link>
@@ -751,18 +749,18 @@ export default function ForVCs() {
             ].map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-30px" }}
-                transition={{ delay: i * 0.08 }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex items-start gap-4 p-6 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-100 dark:border-gray-800 hover:border-purple-200 dark:hover:border-purple-800 transition-colors h-full">
-                  <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <div className="flex items-start gap-4 p-6 rounded-2xl bg-secondary border border-border transition-colors h-full">
+                  <div className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1">{item.title}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.desc}</p>
+                    <h4 className="font-bold text-foreground text-sm mb-1">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -772,7 +770,7 @@ export default function ForVCs() {
 
         {/* CTA Banner + Contact Form */}
         <section className="relative overflow-hidden">
-          <div className="bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 py-16 px-4 md:px-8">
+          <div className="py-16 px-4 md:px-8 relative" style={{ background: "linear-gradient(135deg, hsl(28,18%,9%), hsl(28,14%,13%))" }}>
             <div className="absolute inset-0 opacity-10">
               <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -785,12 +783,13 @@ export default function ForVCs() {
             </div>
             <div className="relative z-10 max-w-3xl mx-auto text-center">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
                 <p className="text-purple-300 text-sm font-semibold tracking-widest uppercase mb-4">The Opportunity</p>
-                <h2 className="text-3xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4">
+                <h2 className="text-3xl md:text-5xl font-serif font-extrabold text-white leading-tight tracking-tight mb-4">
                   The intelligence layer healthcare billing has been waiting for.
                 </h2>
                 <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto">
@@ -802,18 +801,19 @@ export default function ForVCs() {
 
           <div className="max-w-2xl mx-auto px-4 md:px-8 -mt-0 pb-24">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-2xl shadow-purple-200/30 dark:shadow-purple-950/50 -mt-10 relative z-10">
+              <Card className="bg-card border-border shadow-2xl -mt-10 relative z-10">
                 <CardContent className="p-8 md:p-10">
                   <div className="text-center mb-8">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-200 dark:shadow-purple-950/50">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg" style={{ background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))" }}>
                       <Briefcase className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Request Data Room Access</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                    <h3 className="text-xl font-bold text-foreground mb-2">Request Data Room Access</h3>
+                    <p className="text-sm text-muted-foreground max-w-md mx-auto">
                       Get access to our financial model, product roadmap, and customer data. We'll set up a founder meeting within 48 hours.
                     </p>
                   </div>

@@ -44,7 +44,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
   if (!medicalCase) {
     return (
       <MobileCard className="p-4 text-center">
-        <p className="text-gray-500">Loading medical case...</p>
+        <p className="text-muted-foreground">Loading medical case...</p>
       </MobileCard>
     );
   }
@@ -197,27 +197,30 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
   return (
     <div className="w-full flex flex-col mb-4">
       {/* Chat Header */}
-      <MobileCard className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white mb-4">
+      <MobileCard className="bg-card border border-border p-4 mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+            >
               <Stethoscope className="text-white h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-semibold">Patient Interview</h3>
-              <p className="text-indigo-100 text-sm">{medicalCase.name} • {medicalCase.specialty} Case</p>
+              <h3 className="font-serif font-semibold text-foreground">Patient Interview</h3>
+              <p className="text-muted-foreground text-sm">{medicalCase.name} • {medicalCase.specialty} Case</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <span className="bg-emerald-500 w-2 h-2 rounded-full"></span>
-            <span className="text-indigo-100 text-sm">Patient Ready</span>
+            <span className="bg-emerald-600 w-2 h-2 rounded-full"></span>
+            <span className="text-muted-foreground text-sm">Patient Ready</span>
           </div>
         </div>
       </MobileCard>
 
       {/* Chat Messages */}
       <MobileCard 
-        className="flex-1 p-6 space-y-6 bg-gradient-to-b from-gray-50 to-white overflow-y-auto min-h-[350px] max-h-[450px] mb-4"
+        className="flex-1 p-6 space-y-6 bg-card overflow-y-auto min-h-[350px] max-h-[450px] mb-4"
         style={{
           WebkitOverflowScrolling: 'touch',
           touchAction: 'pan-y'
@@ -226,53 +229,53 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
         {messages.length === 0 && (
           <div className="text-center py-12">
             <div className="mb-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Stethoscope className="h-8 w-8 text-indigo-500" />
+              <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                <Stethoscope className="h-8 w-8 text-muted-foreground" />
               </div>
             </div>
-            <p className="text-gray-500 text-lg font-medium">Ready to begin the interview</p>
-            <p className="text-gray-400 text-sm mt-2">Ask your first question to start the patient interaction</p>
+            <p className="text-foreground text-lg font-medium">Ready to begin the interview</p>
+            <p className="text-muted-foreground text-sm mt-2">Ask your first question to start the patient interaction</p>
           </div>
         )}
 
         {messages.map((message, index) => (
           <div key={index} className={`flex ${message.type === 'doctor' ? 'justify-end' : message.type === 'system' ? 'justify-center' : 'justify-start'}`}>
             {message.type === 'system' ? (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 max-w-md text-center">
-                <p className="text-emerald-700 text-sm font-medium whitespace-pre-line">
+              <div className="bg-secondary border border-border rounded-xl px-4 py-3 max-w-md text-center">
+                <p className="text-foreground text-sm font-medium whitespace-pre-line">
                   {message.content}
                 </p>
               </div>
             ) : (
-              <div className={`rounded-3xl px-5 py-4 max-w-[85%] shadow-lg ${
+              <div className={`rounded-3xl px-5 py-4 max-w-[85%] shadow-sm ${
                 message.type === 'doctor' 
-                  ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-br-lg ml-8'
-                  : 'bg-white border-2 border-gray-100 text-gray-800 rounded-bl-lg mr-8 shadow-md'
+                  ? 'bg-primary text-primary-foreground rounded-br-lg ml-8'
+                  : 'bg-card border border-border text-foreground rounded-bl-lg mr-8'
               }`}>
-                <p className={`text-base leading-relaxed ${message.type === 'doctor' ? 'text-white' : 'text-gray-800'}`}>
+                <p className={`text-base leading-relaxed ${message.type === 'doctor' ? 'text-primary-foreground' : 'text-foreground'}`}>
                   {message.content}
                 </p>
                 <div className={`flex items-center justify-between mt-3 ${message.type === 'doctor' ? 'justify-end' : 'justify-between'}`}>
                   {message.type === 'doctor' && message.inputMethod && (
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 opacity-80">
                       {message.inputMethod === 'voice' ? (
-                        <Mic className="text-indigo-200 h-3 w-3" />
+                        <Mic className="text-primary-foreground h-3 w-3" />
                       ) : (
-                        <List className="text-indigo-200 h-3 w-3" />
+                        <List className="text-primary-foreground h-3 w-3" />
                       )}
-                      <span className="text-indigo-200 text-xs capitalize">{message.inputMethod}</span>
+                      <span className="text-primary-foreground text-xs capitalize">{message.inputMethod}</span>
                     </div>
                   )}
                   {message.type === 'patient' && (
                     <>
                       <div className="flex items-center space-x-1">
-                        <Volume2 className="text-slate-400 h-3 w-3" />
-                        <span className="text-slate-400 text-xs">ElevenLabs AI</span>
+                        <Volume2 className="text-muted-foreground h-3 w-3" />
+                        <span className="text-muted-foreground text-xs">ElevenLabs AI</span>
                       </div>
                       {message.audioUrl && (
                         <button 
                           onClick={() => playAudio(message.audioUrl!)}
-                          className="text-indigo-600 hover:text-indigo-700 text-xs"
+                          className="text-gold hover:opacity-80 text-xs"
                         >
                           <RotateCcw className="h-3 w-3" />
                         </button>
@@ -298,7 +301,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <Button 
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
+                className="w-full bg-card border border-border text-foreground hover:bg-secondary py-4 rounded-2xl font-medium shadow-sm transition-all duration-300 flex items-center justify-center space-x-2"
                 onClick={() => setShowPhysicalExam(true)}
                 data-testid="button-physical-exam"
               >
@@ -318,7 +321,8 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <Button 
-                className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
+                className="w-full text-white py-4 rounded-2xl font-medium shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center space-x-2"
+                style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                 onClick={() => setShowTestOrdering(true)}
                 data-testid="button-order-tests"
               >
@@ -343,7 +347,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             <Button
               variant="outline"
               onClick={() => setShowQuickQuestions(!showQuickQuestions)}
-              className="w-full flex items-center justify-between py-3 px-4 rounded-2xl border-2 border-gray-200 bg-white hover:bg-gray-50 transition-all duration-200 hover:scale-105"
+              className="w-full flex items-center justify-between py-3 px-4 rounded-2xl border border-border bg-card hover:bg-secondary transition-all duration-200 hover:scale-105"
               data-testid="button-quick-questions-toggle"
             >
               <div className="flex items-center space-x-2">
@@ -351,15 +355,15 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
                   animate={{ rotate: showQuickQuestions ? 180 : 0 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
-                  <List className="h-5 w-5 text-indigo-500" />
+                  <List className="h-5 w-5 text-gold" />
                 </motion.div>
-                <span className="font-medium text-gray-700">Quick Questions</span>
+                <span className="font-medium text-foreground">Quick Questions</span>
               </div>
               <motion.div
                 animate={{ rotate: showQuickQuestions ? 180 : 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                <ChevronDown className="h-5 w-5 text-gray-400" />
+                <ChevronDown className="h-5 w-5 text-muted-foreground" />
               </motion.div>
             </Button>
           </motion.div>
@@ -378,7 +382,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
                 }}
                 className="overflow-hidden"
               >
-                <div className="mt-3 space-y-2 bg-gradient-to-br from-gray-50 to-indigo-50 rounded-2xl p-4 border-2 border-gray-100">
+                <div className="mt-3 space-y-2 bg-secondary rounded-2xl p-4 border border-border">
                   {quickQuestions.map((question, index) => (
                     <motion.div
                       key={index}
@@ -399,7 +403,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
                         <Button
                           variant="ghost"
                           onClick={() => handleQuickQuestion(question)}
-                          className="w-full text-left justify-start py-3 px-4 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 text-gray-700 font-normal border border-transparent hover:border-indigo-200"
+                          className="w-full text-left justify-start py-3 px-4 rounded-xl hover:bg-card hover:shadow-sm transition-all duration-200 text-foreground font-normal border border-transparent hover:border-border"
                           data-testid={`quick-question-${index}`}
                         >
                           {question}
@@ -429,7 +433,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
               value={currentQuestion}
               onChange={(e) => setCurrentQuestion(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full pr-14 py-5 text-base rounded-2xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-0 focus:shadow-lg transition-all duration-300"
+              className="w-full pr-14 py-5 text-base rounded-2xl border border-border bg-secondary focus:bg-card focus:border-gold focus:ring-0 focus:shadow-sm transition-all duration-300"
               disabled={askQuestionMutation.isPending}
             />
             <motion.div
@@ -439,7 +443,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
             >
               <Button 
                 size="icon"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-md transition-all duration-200"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary hover:opacity-90 text-primary-foreground rounded-xl shadow-sm transition-all duration-200"
                 onClick={handleSendMessage}
                 disabled={!currentQuestion.trim() || askQuestionMutation.isPending}
               >
@@ -462,10 +466,10 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
                 <Button 
-                  className={`w-full py-4 rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 ${
+                  className={`w-full py-4 rounded-2xl font-medium shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center space-x-2 ${
                     isListening 
-                      ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' 
-                      : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white'
+                      ? 'bg-destructive text-destructive-foreground' 
+                      : 'bg-card border border-border text-foreground hover:bg-secondary'
                   }`}
                   onClick={handleVoiceToggle}
                   data-testid="button-voice"
@@ -488,7 +492,7 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <Button 
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
+                className="w-full py-4 rounded-2xl bg-primary text-primary-foreground hover:opacity-90 font-medium shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center space-x-2"
                 onClick={() => {/* TODO: Add diagnosis modal */}}
                 data-testid="button-diagnose"
               >
@@ -506,17 +510,17 @@ export function ChatInterface({ medicalCase, onQuestionAsked, onTimeUpdate }: Ch
 
         {/* Voice Recording Indicator */}
         {isListening && (
-          <div className="mt-4 flex items-center justify-center space-x-3 bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl py-4 px-6">
-            <div className="w-4 h-4 bg-emerald-500 rounded-full animate-pulse shadow-lg"></div>
-            <span className="text-emerald-700 font-medium text-base">🎤 Recording... Speak your question</span>
+          <div className="mt-4 flex items-center justify-center space-x-3 bg-secondary border border-border rounded-2xl py-4 px-6">
+            <div className="w-4 h-4 bg-destructive rounded-full animate-pulse"></div>
+            <span className="text-foreground font-medium text-base">🎤 Recording... Speak your question</span>
           </div>
         )}
 
         {/* Loading State */}
         {askQuestionMutation.isPending && (
-          <div className="mt-4 flex items-center justify-center space-x-3 bg-gradient-to-r from-indigo-50 to-blue-50 border-2 border-indigo-200 rounded-2xl py-4 px-6">
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-600"></div>
-            <span className="text-indigo-700 font-medium text-base">✨ Processing your question...</span>
+          <div className="mt-4 flex items-center justify-center space-x-3 bg-secondary border border-border rounded-2xl py-4 px-6">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gold"></div>
+            <span className="text-foreground font-medium text-base">✨ Processing your question...</span>
           </div>
         )}
 

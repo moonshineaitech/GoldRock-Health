@@ -128,25 +128,25 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
   
   const variants = {
     default: {
-      bg: "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600",
-      text: "text-white",
-      icon: "text-white",
-      shadow: "shadow-2xl shadow-emerald-500/50",
-      glow: "hover:shadow-emerald-500/70"
+      bg: "bg-primary",
+      text: "text-primary-foreground",
+      icon: "text-primary-foreground",
+      shadow: "shadow-sm",
+      glow: "hover:shadow-md"
     },
     premium: {
-      bg: "bg-gradient-to-br from-purple-600 via-pink-600 to-amber-500",
+      bg: "bg-gold",
       text: "text-white",
       icon: "text-white",
-      shadow: "shadow-2xl shadow-purple-500/50",
-      glow: "hover:shadow-purple-500/70"
+      shadow: "shadow-sm",
+      glow: "hover:shadow-md"
     },
     action: {
-      bg: "bg-gradient-to-br from-teal-500 via-emerald-500 to-green-500",
-      text: "text-white",
-      icon: "text-white",
-      shadow: "shadow-2xl shadow-teal-500/50",
-      glow: "hover:shadow-teal-500/70"
+      bg: "bg-primary",
+      text: "text-primary-foreground",
+      icon: "text-primary-foreground",
+      shadow: "shadow-sm",
+      glow: "hover:shadow-md"
     }
   };
 
@@ -208,7 +208,7 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
                 y: [0, (Math.random() - 0.5) * 40]
               }}
               transition={{ duration: 0.8, delay: i * 0.1 }}
-              className="absolute w-1.5 h-1.5 bg-white rounded-full pointer-events-none"
+              className="absolute w-1.5 h-1.5 bg-card rounded-full pointer-events-none"
               style={{
                 left: '50%',
                 top: '50%',
@@ -234,28 +234,28 @@ const FloatingHelpSidebar = ({ workflow, isVisible, onClose }: {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className="fixed right-4 top-24 bottom-24 w-80 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden z-40 hidden lg:flex flex-col"
+      className="fixed right-4 top-24 bottom-24 w-80 bg-card rounded-3xl shadow-lg border border-border overflow-hidden z-40 hidden lg:flex flex-col"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 border-b border-emerald-100">
+      <div className="bg-secondary p-6 border-b border-border">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            {workflow?.icon && <workflow.icon className="h-6 w-6 text-emerald-600" />}
+            {workflow?.icon && <workflow.icon className="h-6 w-6 text-muted-foreground" />}
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Quick Guide</h3>
-              <p className="text-xs text-gray-600">{workflow?.title || "General Tips"}</p>
+              <h3 className="text-lg font-bold text-foreground">Quick Guide</h3>
+              <p className="text-xs text-muted-foreground">{workflow?.title || "General Tips"}</p>
             </div>
           </div>
           <Button
             onClick={onClose}
             variant="ghost"
             size="sm"
-            className="w-8 h-8 p-0 rounded-xl hover:bg-emerald-100"
+            className="w-8 h-8 p-0 rounded-xl hover:bg-secondary"
           >
-            <XCircle className="h-4 w-4 text-gray-500" />
+            <XCircle className="h-4 w-4 text-muted-foreground" />
           </Button>
         </div>
-        <Badge className="bg-emerald-600 text-white text-xs">
+        <Badge className="bg-primary text-primary-foreground text-xs">
           <Target className="h-3 w-3 mr-1" />
           {workflow?.savingsPotential || "$2K-$35K Savings"}
         </Badge>
@@ -265,25 +265,25 @@ const FloatingHelpSidebar = ({ workflow, isVisible, onClose }: {
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {/* Best Practices */}
         <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-emerald-600" />
+          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-muted-foreground" />
             Best Practices
           </h4>
-          <ul className="space-y-2 text-sm text-gray-700">
+          <ul className="space-y-2 text-sm text-foreground">
             <li className="flex items-start gap-2">
-              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="h-4 w-4 text-emerald-700 mt-0.5 flex-shrink-0" />
               <span>Upload clear, full-page bill images for best results</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="h-4 w-4 text-emerald-700 mt-0.5 flex-shrink-0" />
               <span>Provide exact amounts and dates from your bill</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="h-4 w-4 text-emerald-700 mt-0.5 flex-shrink-0" />
               <span>Mention specific charges that seem excessive</span>
             </li>
             <li className="flex items-start gap-2">
-              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="h-4 w-4 text-emerald-700 mt-0.5 flex-shrink-0" />
               <span>Request itemized bill if you haven't received one</span>
             </li>
           </ul>
@@ -291,18 +291,18 @@ const FloatingHelpSidebar = ({ workflow, isVisible, onClose }: {
 
         {/* Example Questions */}
         <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <MessageCircle className="h-4 w-4 text-emerald-600" />
+          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <MessageCircle className="h-4 w-4 text-muted-foreground" />
             Example Questions
           </h4>
           <div className="space-y-2">
-            <div className="bg-emerald-50 rounded-xl p-3 text-sm text-gray-700">
+            <div className="bg-secondary rounded-xl p-3 text-sm text-foreground">
               "My ER bill shows a Level 5 charge for $2,800. Is this correct for a minor injury?"
             </div>
-            <div className="bg-purple-50 rounded-xl p-3 text-sm text-gray-700">
+            <div className="bg-secondary rounded-xl p-3 text-sm text-foreground">
               "I see duplicate charges for the same medication on different dates. Can you help?"
             </div>
-            <div className="bg-amber-50 rounded-xl p-3 text-sm text-gray-700">
+            <div className="bg-secondary rounded-xl p-3 text-sm text-foreground">
               "How do I request an itemized bill from the hospital billing department?"
             </div>
           </div>
@@ -310,37 +310,37 @@ const FloatingHelpSidebar = ({ workflow, isVisible, onClose }: {
 
         {/* Success Stories */}
         <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <Star className="h-4 w-4 text-amber-500" />
+          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <Star className="h-4 w-4 text-gold" />
             Success Stories
           </h4>
           <div className="space-y-2">
-            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-3 border border-emerald-200">
-              <p className="text-xs font-semibold text-emerald-800 mb-1">$34,000 → $11,900</p>
-              <p className="text-xs text-gray-700">Surgery bill reduced 65% through error detection</p>
+            <div className="bg-secondary rounded-xl p-3 border border-border">
+              <p className="text-xs font-semibold text-gold mb-1">$34,000 → $11,900</p>
+              <p className="text-xs text-foreground">Surgery bill reduced 65% through error detection</p>
             </div>
-            <div className="bg-gradient-to-r from-teal-50 to-green-50 rounded-xl p-3 border border-teal-200">
-              <p className="text-xs font-semibold text-teal-800 mb-1">$12,500 → $0</p>
-              <p className="text-xs text-gray-700">ER bill eliminated via charity care qualification</p>
+            <div className="bg-secondary rounded-xl p-3 border border-border">
+              <p className="text-xs font-semibold text-gold mb-1">$12,500 → $0</p>
+              <p className="text-xs text-foreground">ER bill eliminated via charity care qualification</p>
             </div>
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-3 border border-purple-200">
-              <p className="text-xs font-semibold text-purple-800 mb-1">$8,200 → $2,400</p>
-              <p className="text-xs text-gray-700">Duplicate charges removed, 71% savings</p>
+            <div className="bg-secondary rounded-xl p-3 border border-border">
+              <p className="text-xs font-semibold text-gold mb-1">$8,200 → $2,400</p>
+              <p className="text-xs text-foreground">Duplicate charges removed, 71% savings</p>
             </div>
           </div>
         </div>
 
         {/* Strategic Timing */}
         <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-orange-600" />
+          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-muted-foreground" />
             Strategic Timing
           </h4>
-          <div className="bg-orange-50 rounded-xl p-3 border border-orange-200 text-sm text-gray-700 space-y-2">
+          <div className="bg-secondary rounded-xl p-3 border border-border text-sm text-foreground space-y-2">
             <p><strong>Best:</strong> Days 30-60 after bill (peak pressure)</p>
             <p><strong>Great:</strong> Last week of month (quotas)</p>
             <p><strong>Excellent:</strong> Q4 Oct-Dec (fiscal year-end)</p>
-            <p className="text-xs text-orange-700 mt-2">💡 Hospitals have internal collection targets</p>
+            <p className="text-xs text-muted-foreground mt-2">💡 Hospitals have internal collection targets</p>
           </div>
         </div>
       </div>
@@ -359,7 +359,7 @@ const SavingsProgressVisualization = ({ intakeState, estimatedSavings }: {
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-r from-emerald-50 via-teal-50 to-green-50 rounded-2xl p-4 border border-emerald-200 mb-4"
+      className="luxury-card rounded-2xl p-4 mb-4"
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -367,31 +367,32 @@ const SavingsProgressVisualization = ({ intakeState, estimatedSavings }: {
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
-            <Target className="h-5 w-5 text-emerald-600" />
+            <Target className="h-5 w-5 text-gold" />
           </motion.div>
-          <span className="text-sm font-semibold text-gray-900">Savings Analysis Progress</span>
+          <span className="text-sm font-semibold text-foreground">Savings Analysis Progress</span>
         </div>
-        <Badge className="bg-emerald-600 text-white">
+        <Badge className="bg-primary text-primary-foreground">
           {Math.round(completionPercentage)}%
         </Badge>
       </div>
       
-      <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden mb-3">
+      <div className="relative h-3 bg-secondary rounded-full overflow-hidden mb-3">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${completionPercentage}%` }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 rounded-full"
+          className="absolute h-full rounded-full"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
         />
       </div>
 
       <div className="flex items-center justify-between text-xs">
-        <span className="text-gray-600">Estimated potential:</span>
+        <span className="text-muted-foreground">Estimated potential:</span>
         <motion.span
           initial={{ scale: 1 }}
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="text-lg font-bold text-emerald-600"
+          className="text-lg font-bold text-gold"
         >
           ${estimatedSavings.toLocaleString()}+
         </motion.span>
@@ -505,25 +506,25 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
       {/* Compact iOS Header */}
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-2">
-          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Brain className="h-6 w-6 text-white" />
           </div>
           <div className="text-left">
-            <h1 className="text-2xl font-bold text-gray-900">Bill AI</h1>
-            <Badge className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 text-xs">
+            <h1 className="text-2xl font-serif font-bold text-foreground">Bill AI</h1>
+            <Badge className="bg-secondary text-foreground text-xs">
               <Shield className="h-3 w-3 mr-1" />
               Private & Secure
             </Badge>
           </div>
         </div>
-        <p className="text-sm text-gray-600 max-w-sm mx-auto">
+        <p className="text-sm text-muted-foreground max-w-sm mx-auto">
           Save $2K-$35K+ on medical bills with AI-powered analysis
         </p>
       </div>
 
       {/* iOS-Style Segmented Control */}
-      <div className="sticky top-0 z-30 bg-gradient-to-b from-white via-white to-transparent pb-2">
-        <div className="bg-gray-100/80 backdrop-blur-xl rounded-full p-1 flex gap-1">
+      <div className="sticky top-0 z-30 bg-background pb-2">
+        <div className="bg-secondary rounded-full p-1 flex gap-1">
           {[
             { id: 'spotlight', label: '⭐️ Spotlight', icon: Sparkles },
             { id: 'browse', label: '📚 Browse', icon: List },
@@ -534,8 +535,8 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex-1 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
                 activeTab === tab.id
-                  ? 'bg-white text-emerald-600 shadow-md'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
               data-testid={`tab-${tab.id}`}
             >
@@ -557,7 +558,7 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
           >
             {/* Hero Carousel - Swipeable Featured Workflows */}
             <div className="relative">
-              <h3 className="text-sm font-semibold text-gray-900 mb-2 px-1">Featured Tools</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-2 px-1">Featured Tools</h3>
               <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-2">
                 {featuredWorkflows.map((workflow, idx) => (
                   <motion.div
@@ -569,20 +570,19 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                   >
                     <button
                       onClick={() => onWorkflowSelect(workflow)}
-                      className="w-full h-40 rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 p-4 flex flex-col justify-between relative overflow-hidden shadow-lg active:scale-95 transition-transform"
+                      className="w-full h-40 rounded-3xl luxury-card p-4 flex flex-col justify-between relative overflow-hidden active:scale-95 transition-transform"
                       data-testid={`hero-workflow-${workflow.id}`}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
                       <div className="flex justify-between items-start relative z-10">
-                        <Badge className="bg-white/20 backdrop-blur-sm text-white border-white/30">
+                        <Badge className="bg-secondary text-foreground border border-border">
                           {workflow.successRate} Success
                         </Badge>
-                        <workflow.icon className="h-8 w-8 text-white/90" />
+                        <workflow.icon className="h-8 w-8 text-gold" />
                       </div>
                       <div className="relative z-10">
-                        <h4 className="text-lg font-bold text-white mb-1">{workflow.title}</h4>
-                        <p className="text-sm text-emerald-50 mb-2">{workflow.subtitle}</p>
-                        <div className="flex items-center justify-between text-xs text-white/90">
+                        <h4 className="text-lg font-serif font-bold text-foreground mb-1">{workflow.title}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">{workflow.subtitle}</p>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
                           <span>💰 {workflow.savingsPotential}</span>
                           <span>⏱️ {workflow.estimatedTime}</span>
                         </div>
@@ -595,37 +595,37 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
 
             {/* Quick Actions */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-2 px-1">Quick Actions</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-2 px-1">Quick Actions</h3>
               <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={onStartChat}
-                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white border-2 border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all active:scale-95"
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-card border border-border hover:border-gold hover:bg-secondary transition-all active:scale-95"
                   data-testid="quick-action-chat"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                    <MessageCircle className="h-6 w-6 text-white" />
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
+                    <MessageCircle className="h-6 w-6 text-muted-foreground" />
                   </div>
-                  <span className="text-xs font-medium text-gray-700">Chat</span>
+                  <span className="text-xs font-medium text-foreground">Chat</span>
                 </button>
                 <button
                   onClick={() => onWorkflowSelect(coreWorkflows[0])}
-                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white border-2 border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all active:scale-95"
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-card border border-border hover:border-gold hover:bg-secondary transition-all active:scale-95"
                   data-testid="quick-action-upload"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-green-500 flex items-center justify-center">
-                    <Upload className="h-6 w-6 text-white" />
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
+                    <Upload className="h-6 w-6 text-muted-foreground" />
                   </div>
-                  <span className="text-xs font-medium text-gray-700">Upload</span>
+                  <span className="text-xs font-medium text-foreground">Upload</span>
                 </button>
                 <button
                   onClick={() => onWorkflowSelect(coreWorkflows[1])}
-                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white border-2 border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all active:scale-95"
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-card border border-border hover:border-gold hover:bg-secondary transition-all active:scale-95"
                   data-testid="quick-action-analyze"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                    <Target className="h-6 w-6 text-white" />
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
+                    <Target className="h-6 w-6 text-muted-foreground" />
                   </div>
-                  <span className="text-xs font-medium text-gray-700">Analyze</span>
+                  <span className="text-xs font-medium text-foreground">Analyze</span>
                 </button>
               </div>
             </div>
@@ -633,9 +633,9 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             {/* Getting Started Section */}
             {beginnerWorkflows.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2 px-1">Getting Started</h3>
-                <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-2xl p-3 mb-3">
-                  <p className="text-xs text-yellow-800">🎓 New user? These tools help you learn step-by-step</p>
+                <h3 className="text-sm font-semibold text-foreground mb-2 px-1">Getting Started</h3>
+                <div className="bg-secondary border border-border rounded-2xl p-3 mb-3">
+                  <p className="text-xs text-muted-foreground">🎓 New user? These tools help you learn step-by-step</p>
                 </div>
                 <div className="space-y-2">
                   {beginnerWorkflows.slice(0, 3).map((workflow) => (
@@ -643,17 +643,17 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                       key={workflow.id}
                       onClick={() => onWorkflowSelect(workflow)}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full flex items-center gap-3 p-3 rounded-2xl bg-white border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
+                      className="w-full flex items-center gap-3 p-3 rounded-2xl bg-card border border-border hover:border-gold hover:shadow-md transition-all"
                       data-testid={`beginner-workflow-${workflow.id}`}
                     >
                       <div className={`w-10 h-10 rounded-full ${workflow.bgColor} flex items-center justify-center flex-shrink-0`}>
                         <workflow.icon className={`h-5 w-5 ${workflow.color}`} />
                       </div>
                       <div className="flex-1 text-left">
-                        <div className="text-sm font-semibold text-gray-900">{workflow.title}</div>
-                        <div className="text-xs text-gray-600">{workflow.subtitle}</div>
+                        <div className="text-sm font-semibold text-foreground">{workflow.title}</div>
+                        <div className="text-xs text-muted-foreground">{workflow.subtitle}</div>
                       </div>
-                      <Badge className="text-xs bg-gray-100 text-gray-700">{workflow.successRate}</Badge>
+                      <Badge className="text-xs bg-secondary text-foreground">{workflow.successRate}</Badge>
                     </motion.button>
                   ))}
                 </div>
@@ -680,25 +680,25 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
                 placeholder="Search workflows..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-full border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm"
+                className="w-full pl-10 pr-4 py-3 rounded-full border border-border bg-card focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
                 data-testid="workflow-search"
               />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             </div>
 
             {/* Search Results Message */}
             {searchQuery && (
-              <div className="text-sm text-gray-600 px-1">
+              <div className="text-sm text-muted-foreground px-1">
                 Found {filteredCoreWorkflows.length + filteredSpecialtyWorkflows.length + filteredFinancialWorkflows.length + filteredLegalWorkflows.length + filteredInsuranceWorkflows.length} workflows matching "{searchQuery}"
               </div>
             )}
 
             {/* No Results Message */}
             {searchQuery && filteredCoreWorkflows.length === 0 && filteredSpecialtyWorkflows.length === 0 && filteredFinancialWorkflows.length === 0 && filteredLegalWorkflows.length === 0 && filteredInsuranceWorkflows.length === 0 && (
-              <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
-                <Search className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                <div className="text-gray-600 font-medium mb-1">No workflows found</div>
-                <div className="text-sm text-gray-500">Try a different search term</div>
+              <div className="bg-card rounded-2xl border border-border p-8 text-center">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <div className="text-muted-foreground font-medium mb-1">No workflows found</div>
+                <div className="text-sm text-muted-foreground">Try a different search term</div>
               </div>
             )}
 
@@ -706,43 +706,43 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             <div className="space-y-2">
               {/* Core Workflows */}
               {filteredCoreWorkflows.length > 0 && (
-                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                <div className="bg-card rounded-2xl border border-border overflow-hidden">
                   <button
                     onClick={() => toggleCategory('core')}
-                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-between p-4 hover:bg-secondary transition-colors"
                     data-testid="category-core"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                        <Sparkles className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                        <Sparkles className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div className="text-left">
-                        <div className="font-semibold text-gray-900">Essential Tools</div>
-                        <div className="text-xs text-gray-600">{filteredCoreWorkflows.length} workflows</div>
+                        <div className="font-semibold text-foreground">Essential Tools</div>
+                        <div className="text-xs text-muted-foreground">{filteredCoreWorkflows.length} workflows</div>
                       </div>
                     </div>
-                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('core') ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedCategories.includes('core') ? 'rotate-180' : ''}`} />
                   </button>
                   {expandedCategories.includes('core') && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="border-t border-gray-100"
+                      className="border-t border-border"
                     >
                       {filteredCoreWorkflows.map((workflow) => (
                         <button
                           key={workflow.id}
                           onClick={() => onWorkflowSelect(workflow)}
-                          className="w-full flex items-center gap-3 p-4 hover:bg-emerald-50/50 transition-colors border-b border-gray-100 last:border-0"
+                          className="w-full flex items-center gap-3 p-4 hover:bg-secondary transition-colors border-b border-border last:border-0"
                           data-testid={`browse-workflow-${workflow.id}`}
                         >
                           <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
                             <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
                           </div>
                           <div className="flex-1 text-left">
-                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
-                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                            <div className="text-sm font-medium text-foreground">{workflow.title}</div>
+                            <div className="text-xs text-muted-foreground">{workflow.savingsPotential}</div>
                           </div>
                           <Badge className="text-xs">{workflow.successRate}</Badge>
                         </button>
@@ -754,42 +754,42 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
 
               {/* Specialty Analysis */}
               {filteredSpecialtyWorkflows.length > 0 && (
-                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                <div className="bg-card rounded-2xl border border-border overflow-hidden">
                   <button
                     onClick={() => toggleCategory('specialty')}
-                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-between p-4 hover:bg-secondary transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <AlertTriangle className="h-5 w-5 text-emerald-600" />
+                      <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                        <AlertTriangle className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div className="text-left">
-                        <div className="font-semibold text-gray-900">Specialty Analysis</div>
-                        <div className="text-xs text-gray-600">{filteredSpecialtyWorkflows.length} workflows</div>
+                        <div className="font-semibold text-foreground">Specialty Analysis</div>
+                        <div className="text-xs text-muted-foreground">{filteredSpecialtyWorkflows.length} workflows</div>
                       </div>
                     </div>
-                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('specialty') ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedCategories.includes('specialty') ? 'rotate-180' : ''}`} />
                   </button>
                   {expandedCategories.includes('specialty') && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
-                      className="border-t border-gray-100"
+                      className="border-t border-border"
                     >
                       {filteredSpecialtyWorkflows.map((workflow) => (
                         <button
                           key={workflow.id}
                           onClick={() => onWorkflowSelect(workflow)}
-                          className="w-full flex items-center gap-3 p-4 hover:bg-emerald-50/50 transition-colors border-b border-gray-100 last:border-0"
+                          className="w-full flex items-center gap-3 p-4 hover:bg-secondary transition-colors border-b border-border last:border-0"
                         >
                           <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
                             <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
                           </div>
                           <div className="flex-1 text-left">
-                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
-                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                            <div className="text-sm font-medium text-foreground">{workflow.title}</div>
+                            <div className="text-xs text-muted-foreground">{workflow.savingsPotential}</div>
                           </div>
-                          {workflow.isPremium && <Crown className="h-4 w-4 text-purple-600" />}
+                          {workflow.isPremium && <Crown className="h-4 w-4 text-muted-foreground" />}
                         </button>
                       ))}
                     </motion.div>
@@ -799,40 +799,40 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
 
               {/* Financial Assistance */}
               {filteredFinancialWorkflows.length > 0 && (
-                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                <div className="bg-card rounded-2xl border border-border overflow-hidden">
                   <button
                     onClick={() => toggleCategory('financial')}
-                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-between p-4 hover:bg-secondary transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                        <DollarSign className="h-5 w-5 text-green-600" />
+                      <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                        <DollarSign className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div className="text-left">
-                        <div className="font-semibold text-gray-900">Financial Assistance</div>
-                        <div className="text-xs text-gray-600">{filteredFinancialWorkflows.length} workflows</div>
+                        <div className="font-semibold text-foreground">Financial Assistance</div>
+                        <div className="text-xs text-muted-foreground">{filteredFinancialWorkflows.length} workflows</div>
                       </div>
                     </div>
-                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('financial') ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedCategories.includes('financial') ? 'rotate-180' : ''}`} />
                   </button>
                   {expandedCategories.includes('financial') && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
-                      className="border-t border-gray-100"
+                      className="border-t border-border"
                     >
                       {filteredFinancialWorkflows.map((workflow) => (
                         <button
                           key={workflow.id}
                           onClick={() => onWorkflowSelect(workflow)}
-                          className="w-full flex items-center gap-3 p-4 hover:bg-green-50/50 transition-colors border-b border-gray-100 last:border-0"
+                          className="w-full flex items-center gap-3 p-4 hover:bg-secondary transition-colors border-b border-border last:border-0"
                         >
                           <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
                             <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
                           </div>
                           <div className="flex-1 text-left">
-                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
-                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                            <div className="text-sm font-medium text-foreground">{workflow.title}</div>
+                            <div className="text-xs text-muted-foreground">{workflow.savingsPotential}</div>
                           </div>
                         </button>
                       ))}
@@ -843,40 +843,40 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
 
               {/* Legal & Disputes */}
               {filteredLegalWorkflows.length > 0 && (
-                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                <div className="bg-card rounded-2xl border border-border overflow-hidden">
                   <button
                     onClick={() => toggleCategory('legal')}
-                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-between p-4 hover:bg-secondary transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                        <FileText className="h-5 w-5 text-purple-600" />
+                      <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                        <FileText className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div className="text-left">
-                        <div className="font-semibold text-gray-900">Legal & Disputes</div>
-                        <div className="text-xs text-gray-600">{filteredLegalWorkflows.length} workflows</div>
+                        <div className="font-semibold text-foreground">Legal & Disputes</div>
+                        <div className="text-xs text-muted-foreground">{filteredLegalWorkflows.length} workflows</div>
                       </div>
                     </div>
-                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('legal') ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedCategories.includes('legal') ? 'rotate-180' : ''}`} />
                   </button>
                   {expandedCategories.includes('legal') && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
-                      className="border-t border-gray-100"
+                      className="border-t border-border"
                     >
                       {filteredLegalWorkflows.map((workflow) => (
                         <button
                           key={workflow.id}
                           onClick={() => onWorkflowSelect(workflow)}
-                          className="w-full flex items-center gap-3 p-4 hover:bg-purple-50/50 transition-colors border-b border-gray-100 last:border-0"
+                          className="w-full flex items-center gap-3 p-4 hover:bg-secondary transition-colors border-b border-border last:border-0"
                         >
                           <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
                             <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
                           </div>
                           <div className="flex-1 text-left">
-                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
-                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                            <div className="text-sm font-medium text-foreground">{workflow.title}</div>
+                            <div className="text-xs text-muted-foreground">{workflow.savingsPotential}</div>
                           </div>
                         </button>
                       ))}
@@ -903,40 +903,40 @@ const WorkflowSelectionPanel = ({ onWorkflowSelect, onStartChat }: {
             <div className="space-y-2">
               {/* Insurance Appeals */}
               {filteredInsuranceWorkflows.length > 0 && (
-                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                <div className="bg-card rounded-2xl border border-border overflow-hidden">
                   <button
                     onClick={() => toggleCategory('insurance')}
-                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-between p-4 hover:bg-secondary transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <Shield className="h-5 w-5 text-indigo-600" />
+                      <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div className="text-left">
-                        <div className="font-semibold text-gray-900">Insurance Appeals</div>
-                        <div className="text-xs text-gray-600">{filteredInsuranceWorkflows.length} workflows</div>
+                        <div className="font-semibold text-foreground">Insurance Appeals</div>
+                        <div className="text-xs text-muted-foreground">{filteredInsuranceWorkflows.length} workflows</div>
                       </div>
                     </div>
-                    <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${expandedCategories.includes('insurance') ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${expandedCategories.includes('insurance') ? 'rotate-180' : ''}`} />
                   </button>
                   {expandedCategories.includes('insurance') && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
-                      className="border-t border-gray-100"
+                      className="border-t border-border"
                     >
                       {filteredInsuranceWorkflows.map((workflow) => (
                         <button
                           key={workflow.id}
                           onClick={() => onWorkflowSelect(workflow)}
-                          className="w-full flex items-center gap-3 p-4 hover:bg-indigo-50/50 transition-colors border-b border-gray-100 last:border-0"
+                          className="w-full flex items-center gap-3 p-4 hover:bg-secondary transition-colors border-b border-border last:border-0"
                         >
                           <div className={`w-8 h-8 rounded-full ${workflow.bgColor} flex items-center justify-center`}>
                             <workflow.icon className={`h-4 w-4 ${workflow.color}`} />
                           </div>
                           <div className="flex-1 text-left">
-                            <div className="text-sm font-medium text-gray-900">{workflow.title}</div>
-                            <div className="text-xs text-gray-600">{workflow.savingsPotential}</div>
+                            <div className="text-sm font-medium text-foreground">{workflow.title}</div>
+                            <div className="text-xs text-muted-foreground">{workflow.savingsPotential}</div>
                           </div>
                         </button>
                       ))}
@@ -981,25 +981,25 @@ const WorkflowCard = ({ workflow, onClick }: {
         <Button
           onClick={handleClick}
           variant="outline"
-          className={`!bg-white h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-8 xl:p-10 2xl:p-12 flex-col space-y-2 lg:space-y-4 xl:space-y-6 text-left justify-start rounded-2xl lg:rounded-3xl border-gray-200 hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
-            isHovered ? 'border-emerald-300 bg-emerald-50/50' : ''
+          className={`!bg-card h-auto min-h-[5rem] lg:min-h-[8rem] xl:min-h-[10rem] 2xl:min-h-[12rem] p-4 lg:p-8 xl:p-10 2xl:p-12 flex-col space-y-2 lg:space-y-4 xl:space-y-6 text-left justify-start rounded-2xl lg:rounded-3xl border-border hover:shadow-lg transition-all duration-200 relative overflow-hidden ${
+            isHovered ? 'border-gold bg-secondary' : ''
           }`}
           data-testid={`workflow-${workflow.id}`}
         >
           <workflow.icon className={`h-5 w-5 lg:h-8 lg:w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 ${workflow.color} ${isHovered ? 'scale-110' : ''} transition-transform`} />
           <div className="text-center w-full flex-1 space-y-1 lg:space-y-2">
             <div className="flex items-start justify-center gap-2">
-              <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-gray-900 leading-normal whitespace-normal break-words text-center">{workflow.title}</div>
+              <div className="text-xs lg:text-base xl:text-lg 2xl:text-xl font-semibold text-foreground leading-normal whitespace-normal break-words text-center">{workflow.title}</div>
               {workflow.isPremium && !isSubscribed && (
-                <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-gold flex-shrink-0 mt-0.5" />
               )}
             </div>
-            <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-normal whitespace-normal break-words">{workflow.subtitle}</div>
+            <div className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-muted-foreground leading-normal whitespace-normal break-words">{workflow.subtitle}</div>
             {isHovered && (
               <motion.div 
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }}
-                className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-emerald-600 font-medium"
+                className="text-xs lg:text-sm xl:text-base 2xl:text-lg text-muted-foreground font-medium"
               >
                 {workflow.savingsPotential}
               </motion.div>
@@ -1013,13 +1013,13 @@ const WorkflowCard = ({ workflow, onClick }: {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60  z-50 flex items-center justify-center p-4"
           onClick={() => setShowPreview(false)}
         >
           <motion.div
             initial={{ y: 20 }}
             animate={{ y: 0 }}
-            className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl"
+            className="bg-card rounded-3xl p-6 max-w-md w-full shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
             <div className="text-center space-y-4">
@@ -1027,17 +1027,17 @@ const WorkflowCard = ({ workflow, onClick }: {
                 <workflow.icon className={`h-8 w-8 ${workflow.color}`} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">{workflow.title}</h3>
-                <p className="text-sm text-gray-600">{workflow.description}</p>
+                <h3 className="text-lg font-bold text-foreground mb-1">{workflow.title}</h3>
+                <p className="text-sm text-muted-foreground">{workflow.description}</p>
               </div>
-              <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-4 border border-orange-200">
+              <div className="bg-secondary rounded-2xl p-4 border border-border">
                 <div className="flex items-center gap-2 mb-2">
-                  <Crown className="h-4 w-4 text-orange-600" />
-                  <span className="text-sm font-semibold text-orange-800">Premium Feature</span>
+                  <Crown className="h-4 w-4 text-gold" />
+                  <span className="text-sm font-semibold text-foreground">Premium Feature</span>
                 </div>
-                <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
+                <p className="text-xs text-muted-foreground mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
                 <Link href="/premium#plans">
-                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-100 to-amber-100 hover:from-orange-200 hover:to-amber-200 text-orange-800" onClick={() => setShowPreview(false)}>
+                  <Button size="sm" className="w-full bg-primary text-primary-foreground hover:opacity-90" onClick={() => setShowPreview(false)}>
                     <Crown className="h-4 w-4 mr-2" />
                     Upgrade to Premium
                   </Button>
@@ -1065,7 +1065,7 @@ const WorkflowCategory = ({ title, icon: Icon, iconColor, workflows, onWorkflowS
 }) => {
   return (
     <div className="space-y-2 lg:space-y-6 xl:space-y-8">
-      <h4 className={`text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-900 flex items-center gap-2 lg:gap-4`}>
+      <h4 className={`text-sm lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-foreground flex items-center gap-2 lg:gap-4`}>
         <Icon className={`h-4 w-4 lg:h-6 lg:w-6 xl:h-7 xl:w-7 ${iconColor}`} />
         {title}
       </h4>
@@ -1104,7 +1104,7 @@ const WorkflowListItem = ({ workflow, onClick }: {
         <Button
           onClick={handleClick}
           variant="ghost"
-          className="w-full h-auto p-4 lg:p-6 xl:p-8 justify-start text-left hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 rounded-2xl lg:rounded-3xl transition-all duration-200 border border-transparent hover:border-emerald-200/50"
+          className="w-full h-auto p-4 lg:p-6 xl:p-8 justify-start text-left hover:bg-secondary rounded-2xl lg:rounded-3xl transition-all duration-200 border border-transparent hover:border-border"
           data-testid={`workflow-list-${workflow.id}`}
         >
           <div className="flex items-center gap-4 lg:gap-6 xl:gap-8 w-full">
@@ -1117,10 +1117,10 @@ const WorkflowListItem = ({ workflow, onClick }: {
             <div className="flex-1 min-w-0 pr-3">
               <div className="space-y-1 mb-2 lg:mb-3">
                 <div className="flex items-center justify-between gap-3 lg:gap-4">
-                  <div className="text-sm lg:text-base xl:text-lg font-medium text-gray-900 leading-normal flex-1 min-w-0 pr-2 whitespace-normal break-words">
+                  <div className="text-sm lg:text-base xl:text-lg font-medium text-foreground leading-normal flex-1 min-w-0 pr-2 whitespace-normal break-words">
                     {workflow.title}
                     {workflow.isPremium && !isSubscribed && (
-                      <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-orange-500 inline-block ml-2 flex-shrink-0" />
+                      <Crown className="h-3 w-3 lg:h-4 lg:w-4 xl:h-5 xl:w-5 text-gold inline-block ml-2 flex-shrink-0" />
                     )}
                   </div>
                   <Badge variant="secondary" className="text-xs lg:text-sm px-2 py-0.5 lg:px-2.5 lg:py-1 font-semibold flex-shrink-0">
@@ -1128,13 +1128,13 @@ const WorkflowListItem = ({ workflow, onClick }: {
                   </Badge>
                 </div>
               </div>
-              <div className="text-xs lg:text-sm xl:text-base text-gray-500 mb-2 lg:mb-3 leading-normal whitespace-normal break-words">{workflow.subtitle}</div>
+              <div className="text-xs lg:text-sm xl:text-base text-muted-foreground mb-2 lg:mb-3 leading-normal whitespace-normal break-words">{workflow.subtitle}</div>
               <div className="flex items-center gap-4 lg:gap-6 text-xs lg:text-sm xl:text-base flex-wrap">
-                <div className="text-emerald-600 font-medium whitespace-nowrap">{workflow.savingsPotential}</div>
-                <div className="text-gray-400 whitespace-nowrap">{workflow.estimatedTime}</div>
+                <div className="text-muted-foreground font-medium whitespace-nowrap">{workflow.savingsPotential}</div>
+                <div className="text-muted-foreground whitespace-nowrap">{workflow.estimatedTime}</div>
               </div>
             </div>
-            <ChevronDown className="h-4 w-4 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-gray-400 rotate-[-90deg] transition-transform group-hover:rotate-[-45deg]" />
+            <ChevronDown className="h-4 w-4 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-muted-foreground rotate-[-90deg] transition-transform group-hover:rotate-[-45deg]" />
           </div>
         </Button>
       </motion.div>
@@ -1144,13 +1144,13 @@ const WorkflowListItem = ({ workflow, onClick }: {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60  z-50 flex items-center justify-center p-4"
           onClick={() => setShowQuickPreview(false)}
         >
           <motion.div
             initial={{ y: 20 }}
             animate={{ y: 0 }}
-            className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl"
+            className="bg-card rounded-3xl p-6 max-w-md w-full shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
             <div className="text-center space-y-4">
@@ -1158,17 +1158,17 @@ const WorkflowListItem = ({ workflow, onClick }: {
                 <workflow.icon className={`h-8 w-8 ${workflow.color}`} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">{workflow.title}</h3>
-                <p className="text-sm text-gray-600">{workflow.description}</p>
+                <h3 className="text-lg font-bold text-foreground mb-1">{workflow.title}</h3>
+                <p className="text-sm text-muted-foreground">{workflow.description}</p>
               </div>
-              <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-4 border border-orange-200">
+              <div className="bg-secondary rounded-2xl p-4 border border-border">
                 <div className="flex items-center gap-2 mb-2">
-                  <Crown className="h-4 w-4 text-orange-600" />
-                  <span className="text-sm font-semibold text-orange-800">Premium Feature</span>
+                  <Crown className="h-4 w-4 text-gold" />
+                  <span className="text-sm font-semibold text-foreground">Premium Feature</span>
                 </div>
-                <p className="text-xs text-orange-700 mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
+                <p className="text-xs text-muted-foreground mb-3">Unlock advanced analysis with {workflow.savingsPotential} potential savings</p>
                 <Link href="/premium#plans">
-                  <Button size="sm" className="w-full bg-gradient-to-r from-orange-100 to-amber-100 hover:from-orange-200 hover:to-amber-200 text-orange-800" onClick={() => setShowQuickPreview(false)}>
+                  <Button size="sm" className="w-full bg-primary text-primary-foreground hover:opacity-90" onClick={() => setShowQuickPreview(false)}>
                     <Crown className="h-4 w-4 mr-2" />
                     Upgrade Now
                   </Button>
@@ -1721,10 +1721,10 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         "No Surprises Act patient rights balance billing protection",
         "Medical debt relief options payment plans financial hardship programs"
       ]} />
-      <div className="flex flex-col h-full bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      <div className="flex flex-col h-full bg-background">
         
         {/* Enhanced Header with Navigation */}
-        <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200/30">
+        <div className="sticky top-0 z-40 bg-card  border-b border-border">
           <div className="flex items-center justify-between p-4 lg:px-8 lg:py-6">
             <div className="flex items-center space-x-2">
               <Button
@@ -1736,7 +1736,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
               >
                 <List className="h-4 w-4" />
               </Button>
-              <div className="text-lg lg:text-2xl font-semibold text-gray-900">
+              <div className="text-lg lg:text-2xl font-semibold text-foreground">
                 {selectedWorkflow ? selectedWorkflow.title : "Bill AI"}
               </div>
             </div>
@@ -1746,7 +1746,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-9 h-9 p-0 rounded-xl text-orange-600 hover:bg-orange-50"
+                  className="w-9 h-9 p-0 rounded-xl text-muted-foreground hover:bg-secondary"
                   data-testid="header-blitz-demo"
                 >
                   <Zap className="h-4 w-4" />
@@ -1767,7 +1767,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
         {/* Workflow Selection Panel */}
         {showWorkflowSelection && !selectedWorkflow && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-4 lg:px-8 lg:py-6">
               <WorkflowSelectionPanel 
                 onWorkflowSelect={(workflow) => {
@@ -1796,7 +1796,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
         {/* Savings Calculator Panel */}
         {showSavingsCalculator && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <SavingsCalculator 
                 billAmount={intakeState.amount}
@@ -1810,7 +1810,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
         {/* Enhanced Progress Tracker */}
         {showEnhancedTracker && conversationStarted && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <EnhancedProgressTracker 
                 intakeState={intakeState}
@@ -1833,7 +1833,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
         {/* Premium Insight Databases */}
         {showHospitalBillsDatabase && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <HospitalBillsIntelligenceDatabase onSendMessage={sendMessage} />
             </div>
@@ -1841,7 +1841,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         )}
 
         {showInsuranceClaimsDatabase && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <InsuranceClaimsDatabase onSendMessage={sendMessage} />
             </div>
@@ -1849,7 +1849,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         )}
 
         {showInsuranceDenialsIntelligence && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <InsuranceDenialsIntelligence onSendMessage={sendMessage} />
             </div>
@@ -1857,7 +1857,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         )}
 
         {showEmergencyCareBillingDatabase && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <EmergencyCareBillingDatabase onSendMessage={sendMessage} />
             </div>
@@ -1865,7 +1865,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         )}
 
         {showSpecialtyCareIntelligence && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <SpecialtyCareIntelligence onSendMessage={sendMessage} />
             </div>
@@ -1873,7 +1873,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         )}
 
         {showPharmaceuticalDeviceDatabase && (
-          <div className="bg-white/90 backdrop-blur-sm border-b border-gray-100/50">
+          <div className="bg-card  border-b border-border">
             <div className="p-3">
               <PharmaceuticalDeviceDatabase onSendMessage={sendMessage} />
             </div>
@@ -1881,11 +1881,8 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         )}
 
         {/* Ultra-Premium iOS Chat Interface */}
-        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50/30 via-teal-50/20 to-white px-4 pt-6 lg:px-8 lg:py-8 relative">
-          {/* Animated Premium Background Pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(16,185,129,0.08),rgba(255,255,255,0))] pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(20,184,166,0.06),rgba(255,255,255,0))] pointer-events-none" />
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-200/30 to-transparent" />
+        <div className="flex-1 overflow-y-auto bg-background px-4 pt-6 lg:px-8 lg:py-8 relative" style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}>
+          <div className="absolute top-0 left-0 w-full h-px bg-border" />
           
           <div className="space-y-4 lg:space-y-6 pb-4 lg:pb-8 lg:max-w-4xl lg:mx-auto relative z-10">
             
@@ -1905,16 +1902,12 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
                 className="mx-auto max-w-2xl"
               >
-                <div className="relative bg-white/70 backdrop-blur-2xl border border-emerald-200/50 rounded-[32px] p-8 lg:p-12 shadow-2xl shadow-emerald-500/10 overflow-hidden">
-                  {/* Glassmorphic Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-teal-50/50 to-green-50/60 pointer-events-none" />
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl" />
-                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-teal-400/10 rounded-full blur-3xl" />
-                  
+                <div className="relative luxury-card rounded-[32px] p-8 lg:p-12 overflow-hidden">
                   <div className="relative z-10 text-center space-y-6">
                     {/* Animated Icon */}
                     <motion.div 
-                      className="w-20 h-20 lg:w-28 lg:h-28 bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 rounded-[24px] flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/30"
+                      className="w-20 h-20 lg:w-28 lg:h-28 rounded-[24px] flex items-center justify-center mx-auto shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                       animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                     >
@@ -1923,50 +1916,50 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                     
                     {/* Heading */}
                     <div>
-                      <h3 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-3 lg:mb-4 leading-tight">
+                      <h3 className="text-2xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4 leading-tight">
                         Ready to Save on Your<br />Medical Bills?
                       </h3>
-                      <p className="text-base lg:text-xl text-gray-700 mb-6 lg:mb-8 max-w-lg mx-auto leading-relaxed">
-                        Our AI has helped patients save over <span className="font-bold text-emerald-600">$50M</span> in billing errors
+                      <p className="text-base lg:text-xl text-foreground mb-6 lg:mb-8 max-w-lg mx-auto leading-relaxed">
+                        Our AI has helped patients save over <span className="font-bold text-gold">$50M</span> in billing errors
                       </p>
                     </div>
                     
                     {/* Stats Grid */}
                     <div className="grid grid-cols-3 gap-4 lg:gap-6 max-w-xl mx-auto">
                       <motion.div 
-                        className="bg-white/90 backdrop-blur-sm border border-emerald-200/50 rounded-2xl p-4 shadow-lg"
+                        className="bg-card border border-border rounded-2xl p-4 shadow-sm"
                         whileHover={{ scale: 1.05, y: -2 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
-                        <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-2">
-                          <Target className="h-5 w-5 text-emerald-600" />
+                        <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center mx-auto mb-2">
+                          <Target className="h-5 w-5 text-muted-foreground" />
                         </div>
-                        <div className="text-2xl lg:text-3xl font-bold text-emerald-600 mb-1">94%</div>
-                        <div className="text-xs text-gray-600">Success</div>
+                        <div className="text-2xl lg:text-3xl font-bold text-foreground mb-1">94%</div>
+                        <div className="text-xs text-muted-foreground">Success</div>
                       </motion.div>
                       
                       <motion.div 
-                        className="bg-white/90 backdrop-blur-sm border border-teal-200/50 rounded-2xl p-4 shadow-lg"
+                        className="bg-card border border-border rounded-2xl p-4 shadow-sm"
                         whileHover={{ scale: 1.05, y: -2 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
-                        <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-2">
-                          <DollarSign className="h-5 w-5 text-teal-600" />
+                        <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center mx-auto mb-2">
+                          <DollarSign className="h-5 w-5 text-gold" />
                         </div>
-                        <div className="text-2xl lg:text-3xl font-bold text-teal-600 mb-1">$12K</div>
-                        <div className="text-xs text-gray-600">Avg Save</div>
+                        <div className="text-2xl lg:text-3xl font-bold text-gold mb-1">$12K</div>
+                        <div className="text-xs text-muted-foreground">Avg Save</div>
                       </motion.div>
                       
                       <motion.div 
-                        className="bg-white/90 backdrop-blur-sm border border-green-200/50 rounded-2xl p-4 shadow-lg"
+                        className="bg-card border border-border rounded-2xl p-4 shadow-sm"
                         whileHover={{ scale: 1.05, y: -2 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
-                        <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
-                          <Shield className="h-5 w-5 text-green-600" />
+                        <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center mx-auto mb-2">
+                          <Shield className="h-5 w-5 text-muted-foreground" />
                         </div>
-                        <div className="text-lg lg:text-xl font-bold text-green-600 mb-1">Secure</div>
-                        <div className="text-xs text-gray-600">Private</div>
+                        <div className="text-lg lg:text-xl font-bold text-foreground mb-1">Secure</div>
+                        <div className="text-xs text-muted-foreground">Private</div>
                       </motion.div>
                     </div>
                   </div>
@@ -1986,7 +1979,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   <Button
                     onClick={() => fileInputRef.current?.click()}
                     variant="outline"
-                    className="h-11 px-6 rounded-[20px] bg-gradient-to-br from-white/90 to-emerald-50/80 backdrop-blur-xl border border-emerald-200/60 text-emerald-700 hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-300 shadow-lg hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-300 font-semibold"
+                    className="h-11 px-6 rounded-[20px] bg-card border border-border text-foreground hover:bg-secondary hover:border-gold shadow-sm hover:shadow-md transition-all duration-300 font-semibold"
                     data-testid="quick-upload-button"
                   >
                     <Camera className="h-5 w-5 mr-2.5" strokeWidth={2.5} />
@@ -2014,40 +2007,26 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 <motion.div 
                   className={`max-w-[85%] lg:max-w-[75%] group relative ${
                     message.role === "user" 
-                      ? "bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 rounded-[26px] rounded-br-lg shadow-xl shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/40" 
-                      : "bg-white/95 backdrop-blur-2xl border border-emerald-100/50 rounded-[26px] rounded-bl-lg shadow-xl shadow-gray-900/8 hover:shadow-2xl hover:shadow-gray-900/12"
+                      ? "bg-primary text-primary-foreground rounded-[26px] rounded-br-lg shadow-sm hover:shadow-md" 
+                      : "bg-card border border-border rounded-[26px] rounded-bl-lg shadow-sm hover:shadow-md"
                   } px-5 lg:px-6 py-4 lg:py-5 relative overflow-hidden transition-shadow duration-300`}
                   whileHover={{ scale: 1.01 }}
                   transition={{ type: "spring", stiffness: 500 }}
                 >
-                  {/* Ultra-Refined Glass Effect Layer */}
-                  <div className={`absolute inset-0 ${
-                    message.role === "user"
-                      ? "bg-gradient-to-br from-white/20 via-white/5 to-transparent"
-                      : "bg-gradient-to-br from-emerald-50/60 via-white/40 to-transparent"
-                  } pointer-events-none`} />
-                  
-                  {/* Subtle Border Glow */}
-                  <div className={`absolute inset-0 rounded-[26px] ${
-                    message.role === "user" 
-                      ? "rounded-br-lg ring-1 ring-inset ring-white/20" 
-                      : "rounded-bl-lg ring-1 ring-inset ring-emerald-100/30"
-                  } pointer-events-none`} />
-                  
                   {/* Content */}
                   <div className="relative z-10">
                   {message.role === "assistant" && (
                     <div className="flex items-center space-x-2.5 mb-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-xl flex items-center justify-center shadow-md">
-                        <Bot className="h-4 w-4 text-emerald-700" strokeWidth={2.5} />
+                      <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                        <Bot className="h-4 w-4 text-muted-foreground" strokeWidth={2.5} />
                       </div>
-                      <span className="text-sm font-bold text-emerald-700 tracking-tight">Bill Expert</span>
+                      <span className="text-sm font-bold text-foreground tracking-tight">Bill Expert</span>
                     </div>
                   )}
                   <p className={`text-[15px] leading-relaxed whitespace-pre-wrap ${
                     message.role === "user" 
-                      ? "text-white font-semibold" 
-                      : "text-gray-900"
+                      ? "text-primary-foreground font-semibold" 
+                      : "text-foreground"
                   }`}>
                     {message.content}
                   </p>
@@ -2062,7 +2041,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                         }}
                         variant="ghost"
                         size="sm"
-                        className="h-8 px-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/50 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 text-xs"
+                        className="h-8 px-3 rounded-xl bg-secondary border border-border text-foreground hover:border-gold text-xs"
                         data-testid="customize-response-button"
                       >
                         <Settings className="h-3 w-3 mr-1.5" />
@@ -2073,7 +2052,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   
                   {/* Run Another Workflow Button (for all AI responses) */}
                   {message.role === "assistant" && (
-                    <div className="mt-4 pt-3 border-t border-gray-100/50">
+                    <div className="mt-4 pt-3 border-t border-border">
                       <div className="flex justify-center">
                         <RunAnotherWorkflow
                           onWorkflowSelect={(workflow) => {
@@ -2086,13 +2065,13 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   
                   {/* Premium Tools Button (only for AI responses and subscribed users) */}
                   {message.role === "assistant" && isSubscribed && (
-                    <div className="mt-4 pt-3 border-t border-gray-100">
+                    <div className="mt-4 pt-3 border-t border-border">
                       <div className="flex gap-2">
                         <Button
                           onClick={() => setShowPremiumAutomationModal(true)}
                           variant="ghost"
                           size="sm"
-                          className="h-8 px-3 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200/50 text-purple-700 hover:from-purple-100 hover:to-indigo-100 text-xs"
+                          className="h-8 px-3 rounded-xl bg-secondary border border-border text-foreground hover:border-gold text-xs"
                           data-testid="premium-automation-button"
                         >
                           <Zap className="h-3 w-3 mr-1.5" />
@@ -2102,7 +2081,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                           onClick={() => setShowPremiumTemplatesModal(true)}
                           variant="ghost"
                           size="sm"
-                          className="h-8 px-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/50 text-emerald-700 hover:from-emerald-100 hover:to-teal-100 text-xs"
+                          className="h-8 px-3 rounded-xl bg-secondary border border-border text-foreground hover:border-gold text-xs"
                           data-testid="premium-templates-button"
                         >
                           <FileText className="h-3 w-3 mr-1.5" />
@@ -2114,8 +2093,8 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   
                   <div className={`text-xs mt-3 flex items-center justify-between ${
                     message.role === "user" 
-                      ? "text-emerald-100/80" 
-                      : "text-gray-500"
+                      ? "text-primary-foreground" 
+                      : "text-muted-foreground"
                   }`}>
                     <Button
                       onClick={() => {
@@ -2126,8 +2105,8 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       size="sm"
                       className={`w-7 h-7 p-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                         message.role === "user"
-                          ? "text-emerald-100/60 hover:text-emerald-100 hover:bg-emerald-400/20"
-                          : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                          ? "text-primary-foreground hover:text-primary-foreground hover:bg-white/20"
+                          : "text-muted-foreground hover:text-muted-foreground hover:bg-secondary"
                       }`}
                       data-testid={`copy-message-${message.id}`}
                     >
@@ -2138,7 +2117,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       <span>{message.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                       {message.role === "user" && (
                         <div className="ml-1.5 w-4 h-4 flex items-center justify-center">
-                          <CheckCircle className="w-3 h-3 text-emerald-100/60" />
+                          <CheckCircle className="w-3 h-3 text-primary-foreground" />
                         </div>
                       )}
                     </div>
@@ -2157,42 +2136,39 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 transition={{ type: "spring", stiffness: 300, damping: 24 }}
                 className="flex justify-start mb-4"
               >
-                <div className="bg-white/90 backdrop-blur-2xl border border-emerald-100/40 text-gray-900 rounded-[28px] rounded-bl-md shadow-2xl shadow-gray-900/10 px-6 py-5 max-w-[85%] relative overflow-hidden">
-                  {/* Glass effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/40 via-white/50 to-transparent pointer-events-none" />
-                  
+                <div className="bg-card border border-border text-foreground rounded-[28px] rounded-bl-md shadow-sm px-6 py-5 max-w-[85%] relative overflow-hidden">
                   <div className="relative z-10">
                     <div className="flex items-center space-x-3 mb-3">
                       <motion.div 
-                        className="w-8 h-8 bg-gradient-to-br from-emerald-400 via-teal-400 to-green-400 rounded-xl flex items-center justify-center shadow-lg"
+                        className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                       >
-                        <Bot className="h-5 w-5 text-white" strokeWidth={2.5} />
+                        <Bot className="h-5 w-5 text-muted-foreground" strokeWidth={2.5} />
                       </motion.div>
-                      <span className="text-sm font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                      <span className="text-sm font-bold text-foreground">
                         Bill Expert
                       </span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="flex space-x-1.5">
                         <motion.div
-                          className="w-2.5 h-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full shadow-lg"
+                          className="w-2.5 h-2.5 bg-muted-foreground rounded-full"
                           animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
                           transition={{ duration: 1.2, repeat: Infinity, delay: 0 }}
                         />
                         <motion.div
-                          className="w-2.5 h-2.5 bg-gradient-to-r from-teal-500 to-green-500 rounded-full shadow-lg"
+                          className="w-2.5 h-2.5 bg-muted-foreground rounded-full"
                           animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
                           transition={{ duration: 1.2, repeat: Infinity, delay: 0.3 }}
                         />
                         <motion.div
-                          className="w-2.5 h-2.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full shadow-lg"
+                          className="w-2.5 h-2.5 bg-muted-foreground rounded-full"
                           animate={{ y: [-3, 3, -3], scale: [1, 1.2, 1] }}
                           transition={{ duration: 1.2, repeat: Infinity, delay: 0.6 }}
                         />
                       </div>
-                      <span className="text-sm font-medium text-gray-700">Analyzing medical bill...</span>
+                      <span className="text-sm font-medium text-foreground">Analyzing medical bill...</span>
                     </div>
                   </div>
                 </div>
@@ -2203,7 +2179,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         </div>
 
         {/* Ultra-Modern iOS Input Composer */}
-        <div className="sticky bottom-0 bg-gradient-to-b from-transparent via-white/80 to-white/95 backdrop-blur-2xl border-t border-emerald-100/30 p-4 lg:p-6 safe-area-inset-bottom">
+        <div className="sticky bottom-0 bg-card border-t border-border p-4 lg:p-6 safe-area-inset-bottom">
           {/* Premium Pro Tip Card */}
           {localMessages.length === 0 && !conversationStarted && (
             <motion.div
@@ -2212,15 +2188,12 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
               className="mb-4"
             >
-              <div className="relative bg-gradient-to-br from-emerald-50/90 via-teal-50/80 to-green-50/70 backdrop-blur-xl border border-emerald-200/50 rounded-3xl p-4 lg:p-5 shadow-lg shadow-emerald-500/10 overflow-hidden">
-                {/* Animated Background Elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl animate-pulse" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-teal-400/10 rounded-full blur-2xl animate-pulse delay-700" />
-                
+              <div className="relative luxury-card rounded-3xl p-4 lg:p-5 overflow-hidden">
                 <div className="relative z-10 flex items-center gap-3 lg:gap-4">
                   {/* Animated Bulb Icon */}
                   <motion.div 
-                    className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30 flex-shrink-0"
+                    className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                   >
@@ -2229,11 +2202,11 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs lg:text-sm font-bold text-emerald-700 tracking-tight">Pro Tip</span>
-                      <div className="h-1 w-1 rounded-full bg-emerald-400" />
-                      <span className="text-xs text-emerald-600">Upload for instant analysis</span>
+                      <span className="text-xs lg:text-sm font-bold text-gold tracking-tight">Pro Tip</span>
+                      <div className="h-1 w-1 rounded-full bg-gold" />
+                      <span className="text-xs text-muted-foreground">Upload for instant analysis</span>
                     </div>
-                    <p className="text-sm lg:text-base text-gray-700 font-medium leading-snug">
+                    <p className="text-sm lg:text-base text-foreground font-medium leading-snug">
                       Upload bill images for instant AI analysis
                     </p>
                   </div>
@@ -2242,7 +2215,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                   <Button
                     onClick={() => setShowOptionalIntakePopup(true)}
                     size="sm"
-                    className="h-12 lg:h-14 px-5 lg:px-6 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 hover:from-emerald-600 hover:via-teal-600 hover:to-green-700 text-white shadow-xl shadow-emerald-500/40 hover:shadow-2xl hover:shadow-emerald-500/50 border-0 font-semibold text-sm lg:text-base transition-all duration-300 flex-shrink-0"
+                    className="h-12 lg:h-14 px-5 lg:px-6 rounded-2xl bg-primary text-primary-foreground hover:opacity-90 shadow-sm border-0 font-semibold text-sm lg:text-base transition-all duration-300 flex-shrink-0"
                     data-testid="quick-capture-button"
                   >
                     <Camera className="h-4 w-4 lg:h-5 lg:w-5 mr-2" strokeWidth={2.5} />
@@ -2326,11 +2299,11 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 variant="ghost"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-12 h-12 lg:w-14 lg:h-14 p-0 rounded-[18px] bg-white/90 backdrop-blur-sm hover:bg-gray-50 border border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200"
+                className="w-12 h-12 lg:w-14 lg:h-14 p-0 rounded-[18px] bg-card  hover:bg-secondary border border-border shadow-sm hover:shadow-md transition-all duration-200"
                 data-testid="attach-file-button"
                 disabled={uploadingFiles}
               >
-                <Paperclip className="h-5 w-5 lg:h-6 lg:w-6 text-gray-600" strokeWidth={2} />
+                <Paperclip className="h-5 w-5 lg:h-6 lg:w-6 text-muted-foreground" strokeWidth={2} />
               </Button>
             </motion.div>
             
@@ -2340,26 +2313,23 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowOptionalIntakePopup(true)}
-                className="w-12 h-12 lg:w-14 lg:h-14 p-0 rounded-[18px] bg-gradient-to-br from-emerald-100 to-teal-100 hover:from-emerald-200 hover:to-teal-200 border border-emerald-200/50 shadow-sm hover:shadow-md transition-all duration-200"
+                className="w-12 h-12 lg:w-14 lg:h-14 p-0 rounded-[18px] bg-secondary hover:bg-secondary border border-border hover:border-gold shadow-sm hover:shadow-md transition-all duration-200"
                 data-testid="quick-info-button"
                 title="Quick Info Capture"
               >
-                <Brain className="h-5 w-5 lg:h-6 lg:w-6 text-emerald-600" strokeWidth={2.5} />
+                <Brain className="h-5 w-5 lg:h-6 lg:w-6 text-muted-foreground" strokeWidth={2.5} />
               </Button>
             </motion.div>
             
             {/* Premium Message Input Container */}
             <div className="flex-1 relative">
-              <div className="relative bg-white/90 backdrop-blur-xl border border-emerald-200/50 rounded-[24px] shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-                {/* Glassmorphic gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/30 via-transparent to-teal-50/30 pointer-events-none" />
-                
+              <div className="relative bg-card border border-border rounded-[24px] shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                 <Input
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Tell me about your bill..."
-                  className="relative z-10 h-12 lg:h-14 pr-14 lg:pr-16 pl-5 lg:pl-6 rounded-[24px] border-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-emerald-500/40 placeholder:text-gray-500 text-gray-900 text-base lg:text-lg font-medium"
+                  className="relative z-10 h-12 lg:h-14 pr-14 lg:pr-16 pl-5 lg:pl-6 rounded-[24px] border-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-ring placeholder:text-muted-foreground text-foreground text-base lg:text-lg font-medium"
                   disabled={isTyping}
                   data-testid="message-input"
                 />
@@ -2374,7 +2344,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                     onClick={() => sendMessage()}
                     disabled={!inputMessage.trim() || isTyping}
                     size="sm"
-                    className="w-9 h-9 lg:w-10 lg:h-10 p-0 rounded-[16px] bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600 hover:from-emerald-600 hover:via-teal-600 hover:to-green-700 shadow-lg hover:shadow-xl shadow-emerald-500/40 hover:shadow-emerald-500/60 border-0 transition-all duration-300 disabled:opacity-50 disabled:shadow-none"
+                    className="w-9 h-9 lg:w-10 lg:h-10 p-0 rounded-[16px] bg-primary hover:opacity-90 shadow-sm hover:shadow-md border-0 transition-all duration-300 disabled:opacity-50 disabled:shadow-none"
                     data-testid="send-message-button"
                   >
                     {isTyping ? (
@@ -2391,7 +2361,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
         {/* AI Disclaimer */}
         <div className="px-4 pb-2">
-          <p className="text-xs text-gray-500 text-center">
+          <p className="text-xs text-muted-foreground text-center">
             This is generative AI. For medical advice, please consult your healthcare provider.
           </p>
         </div>
@@ -2399,7 +2369,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         {/* Drag and Drop Area */}
         {dragActive && (
           <div 
-            className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-black/60  z-50 flex items-center justify-center"
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
@@ -2408,22 +2378,22 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl border-2 border-dashed border-emerald-300"
+              className="bg-card rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl border-2 border-dashed border-gold"
             >
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-2xl flex items-center justify-center mx-auto">
-                  <Upload className="h-8 w-8 text-emerald-700" />
+                <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto">
+                  <Upload className="h-8 w-8 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Drop Medical Bills Here</h3>
-                  <p className="text-sm text-gray-600">Drop up to 5 medical bill images for instant AI analysis</p>
-                  <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                    <p className="text-xs text-emerald-800 text-center">
+                  <h3 className="text-lg font-bold text-foreground mb-2">Drop Medical Bills Here</h3>
+                  <p className="text-sm text-muted-foreground">Drop up to 5 medical bill images for instant AI analysis</p>
+                  <div className="mt-4 p-3 bg-secondary border border-border rounded-lg">
+                    <p className="text-xs text-muted-foreground text-center">
                       <strong>Data Processing Notice:</strong> Your uploaded images will be processed by AI systems (including OpenAI) for analysis. Data is retained for 30 days maximum.
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
                   <span>JPG</span>
                   <Circle className="h-1 w-1 fill-gray-400" />
                   <span>PNG</span>
@@ -2439,27 +2409,27 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
 
         {/* Upload Progress Overlay */}
         {uploadingFiles && (
-          <div className="fixed inset-0 bg-emerald-100/80 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/60  z-50 flex items-center justify-center">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl"
+              className="bg-card rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl"
             >
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-200 rounded-2xl flex items-center justify-center mx-auto">
-                  <Loader2 className="h-8 w-8 text-emerald-700 animate-spin" />
+                <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto">
+                  <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Processing Medical Bills</h3>
-                  <p className="text-sm text-gray-600">AI is extracting text and analyzing your bills...</p>
+                  <h3 className="text-lg font-bold text-foreground mb-2">Processing Medical Bills</h3>
+                  <p className="text-sm text-muted-foreground">AI is extracting text and analyzing your bills...</p>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-secondary rounded-full h-2">
                   <div 
-                    className="bg-gradient-to-r from-emerald-200 to-teal-300 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${uploadProgress.total > 0 ? (uploadProgress.current / uploadProgress.total) * 100 : 0}%` }}
+                    className="h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${uploadProgress.total > 0 ? (uploadProgress.current / uploadProgress.total) * 100 : 0}%`, background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                   />
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   {uploadProgress.total > 0 ? `${uploadProgress.current} of ${uploadProgress.total} files processed` : 'Starting upload...'}
                 </p>
               </div>
@@ -2483,7 +2453,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
           <SheetContent side="bottom" className="h-[80vh] overflow-y-auto">
             <SheetHeader>
               <SheetTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-purple-600" />
+                <Zap className="h-5 w-5 text-muted-foreground" />
                 Premium Automation Engine
               </SheetTitle>
               <SheetDescription>
@@ -2501,7 +2471,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
           <SheetContent side="bottom" className="h-[80vh] overflow-y-auto">
             <SheetHeader>
               <SheetTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-emerald-600" />
+                <FileText className="h-5 w-5 text-muted-foreground" />
                 Premium Templates Library
               </SheetTitle>
               <SheetDescription>
@@ -2537,7 +2507,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowTipsModal(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 bg-black/60  z-50 flex items-center justify-center p-4"
               data-testid="tips-modal-overlay"
             >
               <motion.div
@@ -2546,18 +2516,18 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 exit={{ scale: 0.95, y: 30, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-white via-emerald-50/50 to-teal-50/50 backdrop-blur-3xl rounded-[32px] shadow-2xl border border-white/60"
+                className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden bg-card rounded-[32px] shadow-2xl border border-border"
                 data-testid="tips-modal-content"
               >
-                {/* Premium gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5 pointer-events-none" />
+                {/* Subtle overlay */}
+                <div className="absolute inset-0 pointer-events-none" />
                 
                 {/* Animated particles */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   {[...Array(8)].map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-1 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"
+                      className="absolute w-1 h-1 bg-gold rounded-full"
                       animate={{
                         x: [Math.random() * 400, Math.random() * 400],
                         y: [Math.random() * 400, Math.random() * 400],
@@ -2577,21 +2547,21 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                 </div>
 
                 {/* Header */}
-                <div className="relative z-10 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 p-8">
+                <div className="relative z-10 p-8" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring", delay: 0.2 }}
-                        className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-xl rounded-3xl mb-4 shadow-lg"
+                        className="inline-flex items-center justify-center w-16 h-16 bg-white/20  rounded-3xl mb-4 shadow-lg"
                       >
                         <Sparkles className="w-8 h-8 text-white" />
                       </motion.div>
-                      <h2 className="text-4xl font-black text-white mb-2 leading-tight">
+                      <h2 className="text-4xl font-serif font-black text-white mb-2 leading-tight">
                         Pro Tips
                       </h2>
-                      <p className="text-emerald-100 text-lg font-medium">
+                      <p className="text-white text-lg font-medium">
                         Expert strategies to maximize your savings
                       </p>
                     </div>
@@ -2599,7 +2569,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       whileHover={{ scale: 1.1, rotate: 90 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={() => setShowTipsModal(false)}
-                      className="w-12 h-12 flex items-center justify-center bg-white/20 backdrop-blur-xl rounded-2xl hover:bg-white/30 transition-colors"
+                      className="w-12 h-12 flex items-center justify-center bg-white/20  rounded-2xl hover:bg-white/30 transition-colors"
                       data-testid="button-close-tips"
                     >
                       <XCircle className="w-6 h-6 text-white" />
@@ -2615,20 +2585,20 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       initial={{ x: -50, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.1 }}
-                      className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-3xl p-6 shadow-lg"
+                      className="bg-secondary border border-border rounded-3xl p-6 shadow-sm"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                           <Target className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          <h3 className="text-xl font-bold text-foreground mb-2">
                             Request Itemized Bills First
                           </h3>
-                          <p className="text-gray-700 text-base leading-relaxed">
+                          <p className="text-foreground text-base leading-relaxed">
                             Always request an itemized bill before negotiating. Hospitals charge{" "}
-                            <strong className="text-amber-700">200-500% markups</strong> on medications and{" "}
-                            <strong className="text-amber-700">300-800% on supplies</strong>. An itemized bill reveals these overcharges.
+                            <strong className="text-gold">200-500% markups</strong> on medications and{" "}
+                            <strong className="text-gold">300-800% on supplies</strong>. An itemized bill reveals these overcharges.
                           </p>
                         </div>
                       </div>
@@ -2641,7 +2611,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       transition={{ delay: 0.2 }}
                       className="space-y-4"
                     >
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                      <h3 className="text-2xl font-serif font-bold text-foreground">
                         Quick Actions
                       </h3>
                       
@@ -2649,26 +2619,22 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                         {
                           icon: FileText,
                           title: "Use the 'Request Itemized Bill' button",
-                          description: "Automatically generates a professional, legally-compliant request letter",
-                          color: "from-emerald-500 to-teal-600"
+                          description: "Automatically generates a professional, legally-compliant request letter"
                         },
                         {
                           icon: CheckCircle,
                           title: "Check for duplicate charges",
-                          description: "Look for repeated line items with identical dates and amounts",
-                          color: "from-teal-500 to-green-600"
+                          description: "Look for repeated line items with identical dates and amounts"
                         },
                         {
                           icon: AlertTriangle,
                           title: "Question 'miscellaneous' fees",
-                          description: "These vague charges often hide billing errors and can be disputed",
-                          color: "from-purple-500 to-pink-600"
+                          description: "These vague charges often hide billing errors and can be disputed"
                         },
                         {
                           icon: DollarSign,
                           title: "Negotiate before paying",
-                          description: "Hospitals often accept 30-50% less, especially for uninsured patients",
-                          color: "from-emerald-500 to-green-600"
+                          description: "Hospitals often accept 30-50% less, especially for uninsured patients"
                         }
                       ].map((tip, index) => (
                         <motion.div
@@ -2677,17 +2643,17 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.3 + index * 0.1 }}
                           whileHover={{ scale: 1.02, x: 8 }}
-                          className="bg-white/80 backdrop-blur-xl border-2 border-gray-100 rounded-2xl p-5 hover:shadow-xl hover:border-emerald-200 transition-all cursor-pointer group"
+                          className="bg-card border border-border rounded-2xl p-5 hover:shadow-md hover:border-gold transition-all cursor-pointer group"
                         >
                           <div className="flex items-start gap-4">
-                            <div className={`w-12 h-12 bg-gradient-to-br ${tip.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform`}>
+                            <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                               <tip.icon className="w-6 h-6 text-white" />
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-lg font-bold text-gray-900 mb-1">
+                              <h4 className="text-lg font-bold text-foreground mb-1">
                                 {tip.title}
                               </h4>
-                              <p className="text-gray-600 text-sm leading-relaxed">
+                              <p className="text-muted-foreground text-sm leading-relaxed">
                                 {tip.description}
                               </p>
                             </div>
@@ -2701,14 +2667,15 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       initial={{ y: 50, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.7 }}
-                      className="bg-gradient-to-br from-emerald-600 via-teal-600 to-green-600 rounded-3xl p-6 shadow-2xl"
+                      className="rounded-3xl p-6 shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-2xl font-black text-white mb-2">
+                          <h3 className="text-2xl font-serif font-black text-white mb-2">
                             Ready to Save?
                           </h3>
-                          <p className="text-emerald-100 font-medium">
+                          <p className="text-white font-medium">
                             Use the buttons below to get started
                           </p>
                         </div>
@@ -2730,8 +2697,8 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
         {/* Floating Green Chatbot Quick Actions Button */}
         <>
           <motion.button
-            className="fixed right-4 z-40 w-14 h-14 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full shadow-2xl flex items-center justify-center"
-            style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom))' }}
+            className="fixed right-4 z-40 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center"
+            style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom))', background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.05 }}
             onClick={() => setShowFloatingQuickActions(!showFloatingQuickActions)}
@@ -2750,7 +2717,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
               <>
                 {/* Backdrop */}
                 <motion.div
-                  className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
+                  className="fixed inset-0 bg-black/20  z-30"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -2773,8 +2740,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       onClick: () => {
                         fileInputRef.current?.click();
                         setShowFloatingQuickActions(false);
-                      },
-                      gradient: "from-emerald-500 to-teal-600"
+                      }
                     },
                     {
                       icon: FileText,
@@ -2784,8 +2750,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                         const workflow = BILL_AI_WORKFLOWS.find(w => w.id === 'get-itemized-bill');
                         if (workflow) initializeWorkflowConversation(workflow);
                         setShowFloatingQuickActions(false);
-                      },
-                      gradient: "from-teal-500 to-green-600"
+                      }
                     },
                     {
                       icon: Shield,
@@ -2794,8 +2759,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       onClick: () => {
                         sendMessage("Please analyze my bill for common errors, overcharges, and potential savings opportunities.");
                         setShowFloatingQuickActions(false);
-                      },
-                      gradient: "from-green-500 to-emerald-600"
+                      }
                     },
                     {
                       icon: Crown,
@@ -2803,8 +2767,7 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       desc: "Advanced features",
                       onClick: () => {
                         window.location.href = '/premium';
-                      },
-                      gradient: "from-purple-500 to-pink-600"
+                      }
                     }
                   ].map((action, index) => {
                     const IconComponent = action.icon;
@@ -2818,17 +2781,17 @@ Please provide a comprehensive medical bill analysis with specific savings oppor
                       >
                         <motion.button
                           onClick={action.onClick}
-                          className="bg-white/95 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-white/30 flex items-center space-x-3 min-w-56"
+                          className="bg-card  rounded-2xl p-4 shadow-lg border border-border flex items-center space-x-3 min-w-56"
                           whileTap={{ scale: 0.95 }}
                           whileHover={{ scale: 1.02 }}
                           data-testid={`quick-action-${action.title.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className={`w-10 h-10 bg-gradient-to-br ${action.gradient} rounded-xl flex items-center justify-center shadow-md`}>
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                             <IconComponent className="h-5 w-5 text-white" />
                           </div>
                           <div className="flex-1 text-left">
-                            <div className="font-semibold text-sm text-gray-900">{action.title}</div>
-                            <div className="text-xs text-gray-600">{action.desc}</div>
+                            <div className="font-semibold text-sm text-foreground">{action.title}</div>
+                            <div className="text-xs text-muted-foreground">{action.desc}</div>
                           </div>
                         </motion.button>
                       </motion.div>

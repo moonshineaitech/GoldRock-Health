@@ -207,7 +207,7 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -218,43 +218,43 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
         />
       )}
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <FileText className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">AI Dispute Letter Generator</h3>
-            <Badge className="bg-emerald-600 text-white text-xs">
+            <h3 className="text-lg font-serif font-bold text-foreground">AI Dispute Letter Generator</h3>
+            <Badge className="bg-secondary text-muted-foreground text-xs">
               AI-Powered
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Professional dispute letters customized to your specific bill</p>
+          <p className="text-sm text-muted-foreground">Professional dispute letters customized to your specific bill</p>
         </div>
       </div>
       
       {/* Template Selection */}
       {!selectedTemplate && (
         <div className="mb-6">
-          <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-blue-600" />
+          <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-gold" />
             Choose Your Strategy
           </h4>
           <div className="grid grid-cols-1 gap-3">
             {disputeTemplates.map((template) => (
               <Card
                 key={template.id}
-                className={`p-4 cursor-pointer transition-all border hover:shadow-md hover:border-blue-300
-                  ${selectedTemplate === template.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}
+                className={`p-4 cursor-pointer transition-all border hover:shadow-md
+                  ${selectedTemplate === template.id ? 'border-gold bg-secondary' : 'border-border'}
                 `}
                 onClick={() => setSelectedTemplate(template.id)}
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-                    <template.icon className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center shadow-sm">
+                    <template.icon className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h5 className="font-semibold text-gray-900">{template.name}</h5>
+                      <h5 className="font-semibold text-foreground">{template.name}</h5>
                       <Badge variant="outline" className={`text-xs ${
                         template.difficulty === 'Easy' ? 'border-green-300 text-green-700' :
                         template.difficulty === 'Intermediate' ? 'border-yellow-300 text-yellow-700' :
@@ -264,24 +264,24 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
                         {template.difficulty}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600 mb-3">{template.description}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
                     <div className="grid grid-cols-3 gap-3 text-xs">
                       <div>
-                        <span className="text-gray-500">Approach:</span>
-                        <div className="font-semibold text-emerald-600">{template.approach}</div>
+                        <span className="text-muted-foreground">Approach:</span>
+                        <div className="font-semibold text-foreground">{template.approach}</div>
                       </div>
                       <div>
-                        <span className="text-gray-500">Difficulty:</span>
-                        <div className="font-semibold text-blue-600">{template.difficulty}</div>
+                        <span className="text-muted-foreground">Difficulty:</span>
+                        <div className="font-semibold text-foreground">{template.difficulty}</div>
                       </div>
                       <div>
-                        <span className="text-gray-500">Timeline:</span>
-                        <div className="font-semibold text-gray-700">{template.timeframe}</div>
+                        <span className="text-muted-foreground">Timeline:</span>
+                        <div className="font-semibold text-foreground">{template.timeframe}</div>
                       </div>
                     </div>
                     <div className="mt-2">
-                      <span className="text-xs text-gray-500">Best for: </span>
-                      <span className="text-xs text-gray-700 font-medium">{template.bestFor}</span>
+                      <span className="text-xs text-muted-foreground">Best for: </span>
+                      <span className="text-xs text-foreground font-medium">{template.bestFor}</span>
                     </div>
                   </div>
                 </div>
@@ -294,22 +294,22 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
       {/* Form Fields - Only show when template is selected */}
       {selectedTemplate && (
         <div className="space-y-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-4">
+          <div className="bg-secondary border border-border rounded-2xl p-4 mb-4">
             <div className="flex items-center gap-2 mb-2">
               {(() => {
                 const selectedTemplateData = disputeTemplates.find(t => t.id === selectedTemplate);
                 const IconComponent = selectedTemplateData?.icon;
                 return (
                   <>
-                    {IconComponent && <IconComponent className="h-4 w-4 text-blue-600" />}
-                    <span className="text-sm font-semibold text-blue-800">
+                    {IconComponent && <IconComponent className="h-4 w-4 text-gold" />}
+                    <span className="text-sm font-semibold text-foreground">
                       {selectedTemplateData?.name} Strategy
                     </span>
                   </>
                 );
               })()}
             </div>
-            <p className="text-xs text-blue-700 leading-relaxed">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               {disputeTemplates.find(t => t.id === selectedTemplate)?.approach} approach for {disputeTemplates.find(t => t.id === selectedTemplate)?.bestFor}. Expected response time: {disputeTemplates.find(t => t.id === selectedTemplate)?.timeframe}.
             </p>
           </div>
@@ -319,13 +319,13 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
               placeholder="Patient Name *"
               value={formData.patientName}
               onChange={(e) => setFormData(prev => ({ ...prev, patientName: e.target.value }))}
-              className="rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
+              className="rounded-2xl border-border"
             />
             <Input
               placeholder="Account Number *"
               value={formData.accountNumber}
               onChange={(e) => setFormData(prev => ({ ...prev, accountNumber: e.target.value }))}
-              className="rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
+              className="rounded-2xl border-border"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -333,40 +333,40 @@ The letter should demonstrate knowledge of medical billing regulations, use prop
               placeholder="Hospital Name *"
               value={formData.hospitalName}
               onChange={(e) => setFormData(prev => ({ ...prev, hospitalName: e.target.value }))}
-              className="rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
+              className="rounded-2xl border-border"
             />
             <Input
               placeholder="Bill Amount"
               value={formData.billAmount}
               onChange={(e) => setFormData(prev => ({ ...prev, billAmount: e.target.value }))}
-              className="rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
+              className="rounded-2xl border-border"
             />
           </div>
           <Textarea
             placeholder="Dispute Reason (e.g., duplicate charges, services not received)"
             value={formData.disputeReason}
             onChange={(e) => setFormData(prev => ({ ...prev, disputeReason: e.target.value }))}
-            className="h-20 rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
+            className="h-20 rounded-2xl border-border"
           />
           <Textarea
             placeholder="Specific Charges to Dispute (list line items, codes, dates)"
             value={formData.specificCharges}
             onChange={(e) => setFormData(prev => ({ ...prev, specificCharges: e.target.value }))}
-            className="h-20 rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
+            className="h-20 rounded-2xl border-border"
           />
         
           <div className="flex gap-3 pt-4">
             <Button
               onClick={() => setSelectedTemplate('')}
               variant="outline"
-              className="h-12 px-6 rounded-2xl border-gray-200"
+              className="h-12 px-6 rounded-2xl border-border"
             >
               ← Back to Templates
             </Button>
             <Button
               onClick={generateLetter}
               disabled={isGenerating}
-              className="flex-1 h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl font-semibold shadow-lg"
+              className="flex-1 h-12 bg-primary text-primary-foreground rounded-2xl font-semibold shadow-lg"
             >
               {isGenerating ? (
                 <>
@@ -479,7 +479,7 @@ The script should read like a complete playbook that guides the caller through e
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -490,18 +490,18 @@ The script should read like a complete playbook that guides the caller through e
         />
       )}
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Phone className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-gray-900">Negotiation Script Generator</h3>
-          <p className="text-sm text-gray-600">One-click customized phone scripts</p>
+          <h3 className="text-lg font-serif font-bold text-foreground">Negotiation Script Generator</h3>
+          <p className="text-sm text-muted-foreground">One-click customized phone scripts</p>
         </div>
       </div>
 
       <div className="space-y-4">
         <div>
-          <p className="text-sm font-medium text-gray-700 mb-3">Choose Template:</p>
+          <p className="text-sm font-medium text-foreground mb-3">Choose Template:</p>
           <div className="grid grid-cols-2 gap-3">
             {templates.map((template) => {
               const IconComponent = template.icon;
@@ -510,18 +510,18 @@ The script should read like a complete playbook that guides the caller through e
                   key={template.id}
                   className={`p-3 cursor-pointer transition-all ${
                     selectedTemplate === template.id 
-                      ? 'border-emerald-500 bg-emerald-50' 
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-gold bg-secondary' 
+                      : 'border-border hover:border-border'
                   }`}
                   onClick={() => setSelectedTemplate(template.id)}
                 >
                   <div className="flex items-center space-x-2">
-                    <div className={`w-8 h-8 bg-gradient-to-br from-${template.color}-500 to-${template.color}-600 rounded-lg flex items-center justify-center`}>
-                      <IconComponent className="h-4 w-4 text-white" />
+                    <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
+                      <IconComponent className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{template.title}</p>
-                      <p className="text-xs text-gray-600">{template.desc}</p>
+                      <p className="text-sm font-medium text-foreground">{template.title}</p>
+                      <p className="text-xs text-muted-foreground">{template.desc}</p>
                     </div>
                   </div>
                 </Card>
@@ -558,7 +558,7 @@ The script should read like a complete playbook that guides the caller through e
 
         <Button
           onClick={generateScript}
-          className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+          className="w-full bg-primary text-primary-foreground"
         >
           <Phone className="h-4 w-4 mr-2" />
           Generate Custom Script
@@ -691,7 +691,7 @@ Your analysis should read like a professional billing consultant's comprehensive
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -702,12 +702,12 @@ Your analysis should read like a professional billing consultant's comprehensive
         />
       )}
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <CheckSquare className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-gray-900">Error Detection Checklist</h3>
-          <p className="text-sm text-gray-600">AI-guided billing error identification</p>
+          <h3 className="text-lg font-serif font-bold text-foreground">Error Detection Checklist</h3>
+          <p className="text-sm text-muted-foreground">AI-guided billing error identification</p>
         </div>
       </div>
 
@@ -716,14 +716,14 @@ Your analysis should read like a professional billing consultant's comprehensive
           <div
             key={error.id}
             className={`flex items-start space-x-3 p-3 rounded-xl cursor-pointer transition-all ${
-              checkedItems.includes(error.id) ? 'bg-orange-50 border-orange-200' : 'bg-gray-50 hover:bg-gray-100'
+              checkedItems.includes(error.id) ? 'bg-secondary border-gold' : 'bg-secondary hover:bg-secondary'
             } border`}
             onClick={() => toggleCheck(error.id)}
           >
             <div className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5 ${
               checkedItems.includes(error.id) 
-                ? 'bg-orange-500 border-orange-500' 
-                : 'border-gray-300'
+                ? 'bg-primary border-primary' 
+                : 'border-border'
             }`}>
               {checkedItems.includes(error.id) && (
                 <CheckSquare className="h-3 w-3 text-white" />
@@ -731,17 +731,17 @@ Your analysis should read like a professional billing consultant's comprehensive
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <p className="font-medium text-gray-900 text-sm">{error.title}</p>
+                <p className="font-medium text-foreground text-sm">{error.title}</p>
                 <div className="flex items-center space-x-2">
                   {error.common && (
-                    <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-lg font-medium">
+                    <span className="px-2 py-1 bg-secondary text-muted-foreground text-xs rounded-lg font-medium">
                       Common
                     </span>
                   )}
-                  <span className="text-xs font-medium text-emerald-600">{error.savings}</span>
+                  <span className="text-xs font-medium text-foreground">{error.savings}</span>
                 </div>
               </div>
-              <p className="text-xs text-gray-600 mt-1">{error.desc}</p>
+              <p className="text-xs text-muted-foreground mt-1">{error.desc}</p>
             </div>
           </div>
         ))}
@@ -755,17 +755,17 @@ Your analysis should read like a professional billing consultant's comprehensive
       />
 
       <div className="flex items-center justify-between mb-4">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-muted-foreground">
           {checkedItems.length} error{checkedItems.length !== 1 ? 's' : ''} selected
         </div>
-        <div className="text-sm font-medium text-emerald-600">
+        <div className="text-sm font-medium text-gold">
           Potential Savings: $2K-$50K+
         </div>
       </div>
 
       <Button
         onClick={analyzeFindings}
-        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
+        className="w-full bg-primary text-primary-foreground"
       >
         <Bot className="h-4 w-4 mr-2" />
         Analyze Selected Errors with AI
@@ -866,7 +866,7 @@ Your guidance should read like a comprehensive legal consultation that provides 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -877,24 +877,24 @@ Your guidance should read like a comprehensive legal consultation that provides 
         />
       )}
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Shield className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-gray-900">Billing Rights Advisor</h3>
-          <p className="text-sm text-gray-600">Real-time legal protection guidance</p>
+          <h3 className="text-lg font-serif font-bold text-foreground">Billing Rights Advisor</h3>
+          <p className="text-sm text-muted-foreground">Real-time legal protection guidance</p>
         </div>
       </div>
 
       <div className="space-y-3 mb-6">
-        <p className="text-sm font-medium text-gray-700">Select your situation:</p>
+        <p className="text-sm font-medium text-foreground">Select your situation:</p>
         {situations.map((situationItem) => (
           <div
             key={situationItem.id}
             className={`p-3 rounded-xl cursor-pointer transition-all border ${
               situation === situationItem.title
-                ? 'border-purple-500 bg-purple-50'
-                : 'border-gray-200 hover:border-gray-300 bg-gray-50'
+                ? 'border-gold bg-secondary'
+                : 'border-border hover:border-border bg-secondary'
             }`}
             onClick={() => {
               setSituation(situationItem.title);
@@ -903,14 +903,14 @@ Your guidance should read like a comprehensive legal consultation that provides 
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900 text-sm">{situationItem.title}</p>
-                <p className="text-xs text-gray-600">{situationItem.desc}</p>
+                <p className="font-medium text-foreground text-sm">{situationItem.title}</p>
+                <p className="text-xs text-muted-foreground">{situationItem.desc}</p>
               </div>
               <span className={`px-2 py-1 text-xs rounded-lg font-medium ${
                 situationItem.urgency === 'Critical' ? 'bg-red-100 text-red-700' :
                 situationItem.urgency === 'High' ? 'bg-red-100 text-red-700' :
                 situationItem.urgency === 'Medium' ? 'bg-orange-100 text-orange-700' :
-                'bg-blue-100 text-blue-700'
+                'bg-secondary text-muted-foreground'
               }`}>
                 {situationItem.urgency}
               </span>
@@ -920,20 +920,20 @@ Your guidance should read like a comprehensive legal consultation that provides 
       </div>
 
       {situation && (
-        <div className="mb-4 p-4 bg-purple-50 rounded-xl border border-purple-200">
+        <div className="mb-4 p-4 bg-secondary rounded-xl border border-border">
           <div className="flex items-center space-x-2 mb-2">
-            <Shield className="h-4 w-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700">Selected Situation</span>
+            <Shield className="h-4 w-4 text-gold" />
+            <span className="text-sm font-medium text-foreground">Selected Situation</span>
           </div>
-          <p className="text-sm text-purple-700">{situation}</p>
-          <p className="text-xs text-purple-600">Urgency Level: {urgency}</p>
+          <p className="text-sm text-foreground">{situation}</p>
+          <p className="text-xs text-muted-foreground">Urgency Level: {urgency}</p>
         </div>
       )}
 
       <Button
         onClick={getRightsAdvice}
         disabled={!situation}
-        className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
+        className="w-full bg-primary text-primary-foreground"
       >
         <Shield className="h-4 w-4 mr-2" />
         Get Legal Protection Advice
@@ -1020,7 +1020,7 @@ The appeal package should demonstrate sophisticated understanding of insurance o
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -1031,12 +1031,12 @@ The appeal package should demonstrate sophisticated understanding of insurance o
         />
       )}
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <FileEdit className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-gray-900">Insurance Appeal Generator</h3>
-          <p className="text-sm text-gray-600">Automatic claim appeal workflows</p>
+          <h3 className="text-lg font-serif font-bold text-foreground">Insurance Appeal Generator</h3>
+          <p className="text-sm text-muted-foreground">Automatic claim appeal workflows</p>
         </div>
       </div>
 
@@ -1055,9 +1055,9 @@ The appeal package should demonstrate sophisticated understanding of insurance o
         </div>
 
         <div>
-          <p className="text-sm font-medium text-gray-700 mb-2">Denial Reason *</p>
+          <p className="text-sm font-medium text-foreground mb-2">Denial Reason *</p>
           <select
-            className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+            className="w-full p-2 border border-border rounded-lg text-sm"
             value={appealData.denialReason}
             onChange={(e) => setAppealData(prev => ({ ...prev, denialReason: e.target.value }))}
           >
@@ -1103,18 +1103,18 @@ The appeal package should demonstrate sophisticated understanding of insurance o
           className="h-24"
         />
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+        <div className="bg-secondary border border-border rounded-xl p-4">
           <div className="flex items-center space-x-2 mb-2">
-            <FileEdit className="h-4 w-4 text-indigo-600" />
-            <span className="text-sm font-medium text-indigo-700">Appeal Pathways</span>
+            <FileEdit className="h-4 w-4 text-gold" />
+            <span className="text-sm font-medium text-foreground">Appeal Pathways</span>
           </div>
-          <p className="text-sm text-indigo-700">Covers internal and external appeal pathways</p>
-          <p className="text-xs text-indigo-600">Includes required medical documentation framework</p>
+          <p className="text-sm text-foreground">Covers internal and external appeal pathways</p>
+          <p className="text-xs text-muted-foreground">Includes required medical documentation framework</p>
         </div>
 
         <Button
           onClick={generateAppeal}
-          className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white"
+          className="w-full bg-primary text-primary-foreground"
         >
           <FileEdit className="h-4 w-4 mr-2" />
           Generate Complete Appeal Package
@@ -1226,7 +1226,7 @@ This appeal must be designed to compel ${selectedCompanyData?.name} to overturn 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -1238,21 +1238,21 @@ This appeal must be designed to compel ${selectedCompanyData?.name} to overturn 
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <CheckCircle className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Advanced Appeal Generator</h3>
-            <Badge className="bg-emerald-600 text-white text-xs">AI-Powered</Badge>
+            <h3 className="text-lg font-serif font-bold text-foreground">Advanced Appeal Generator</h3>
+            <Badge className="bg-secondary text-muted-foreground text-xs">AI-Powered</Badge>
           </div>
-          <p className="text-sm text-gray-600">AI-powered insurance appeal system</p>
+          <p className="text-sm text-muted-foreground">AI-powered insurance appeal system</p>
         </div>
       </div>
 
       <div className="space-y-4">
         <div>
-          <label className="text-sm font-medium text-gray-700 mb-2 block">Insurance Company</label>
+          <label className="text-sm font-medium text-foreground mb-2 block">Insurance Company</label>
           <Select value={appealData.insuranceCompany} onValueChange={(value) => setAppealData(prev => ({ ...prev, insuranceCompany: value }))}>
             <SelectTrigger>
               <SelectValue placeholder="Select insurance company" />
@@ -1262,7 +1262,7 @@ This appeal must be designed to compel ${selectedCompanyData?.name} to overturn 
                 <SelectItem key={company.id} value={company.id}>
                   <div className="flex flex-col">
                     <span>{company.name}</span>
-                    <span className="text-xs text-gray-500">Strategy: {company.strategy}</span>
+                    <span className="text-xs text-muted-foreground">Strategy: {company.strategy}</span>
                   </div>
                 </SelectItem>
               ))}
@@ -1300,7 +1300,7 @@ This appeal must be designed to compel ${selectedCompanyData?.name} to overturn 
         <Button
           onClick={generateAppeal}
           disabled={isGenerating}
-          className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white"
+          className="w-full bg-primary text-primary-foreground"
         >
           {isGenerating ? (
             <>
@@ -1401,7 +1401,7 @@ This documentation must meet insurance company medical director standards and fo
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -1413,15 +1413,15 @@ This documentation must meet insurance company medical director standards and fo
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Stethoscope className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Medical Necessity Builder</h3>
-            <Badge className="bg-blue-600 text-white text-xs">AI-Powered</Badge>
+            <h3 className="text-lg font-serif font-bold text-foreground">Medical Necessity Builder</h3>
+            <Badge className="bg-secondary text-muted-foreground text-xs">AI-Powered</Badge>
           </div>
-          <p className="text-sm text-gray-600">AI-assisted clinical justification builder</p>
+          <p className="text-sm text-muted-foreground">AI-assisted clinical justification builder</p>
         </div>
       </div>
 
@@ -1468,7 +1468,7 @@ This documentation must meet insurance company medical director standards and fo
         <Button
           onClick={buildDocumentation}
           disabled={isBuilding}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+          className="w-full bg-primary text-primary-foreground"
         >
           {isBuilding ? (
             <>

@@ -144,7 +144,7 @@ Format this as a professional business report with clear section headers, specif
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="luxury-card rounded-2xl p-6 relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -156,24 +156,24 @@ Format this as a professional business report with clear section headers, specif
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Crown className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Executive Bill Analysis Report</h3>
-            <Badge className="bg-purple-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground font-serif">Executive Bill Analysis Report</h3>
+            <Badge className="bg-secondary text-foreground text-xs">
               C-Suite Grade
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Professional analysis for executives • Board-ready documentation</p>
+          <p className="text-sm text-muted-foreground">Professional analysis for executives • Board-ready documentation</p>
         </div>
       </div>
 
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Total Bill Amount *
             </label>
             <Input
@@ -185,7 +185,7 @@ Format this as a professional business report with clear section headers, specif
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Hospital System *
             </label>
             <Input
@@ -199,7 +199,7 @@ Format this as a professional business report with clear section headers, specif
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Primary Service Type
             </label>
             <Select value={analysisData.serviceType} onValueChange={(value) => setAnalysisData({...analysisData, serviceType: value})}>
@@ -218,7 +218,7 @@ Format this as a professional business report with clear section headers, specif
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Insurance Type
             </label>
             <Select value={analysisData.insuranceType} onValueChange={(value) => setAnalysisData({...analysisData, insuranceType: value})}>
@@ -238,7 +238,7 @@ Format this as a professional business report with clear section headers, specif
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Patient Age
             </label>
             <Input
@@ -250,7 +250,7 @@ Format this as a professional business report with clear section headers, specif
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Income Level
             </label>
             <Select value={analysisData.incomeLevel} onValueChange={(value) => setAnalysisData({...analysisData, incomeLevel: value})}>
@@ -267,7 +267,7 @@ Format this as a professional business report with clear section headers, specif
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Region Code
             </label>
             <Input
@@ -282,7 +282,7 @@ Format this as a professional business report with clear section headers, specif
         <Button 
           onClick={generateExecutiveReport} 
           disabled={isGenerating} 
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+          className="w-full bg-primary text-primary-foreground hover:opacity-90"
           data-testid="button-generate-executive-report"
         >
           {isGenerating ? (
@@ -299,12 +299,12 @@ Format this as a professional business report with clear section headers, specif
         </Button>
       </div>
 
-      <div className="mt-6 p-4 bg-purple-50 rounded-lg">
+      <div className="mt-6 p-4 bg-secondary rounded-lg">
         <div className="flex items-center gap-2 mb-2">
-          <Award className="h-4 w-4 text-purple-600" />
-          <span className="text-sm font-semibold text-purple-800">Executive Report Features</span>
+          <Award className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm font-semibold text-foreground">Executive Report Features</span>
         </div>
-        <div className="text-xs text-purple-700 space-y-1">
+        <div className="text-xs text-muted-foreground space-y-1">
           <div>• Regulatory compliance assessment with specific citations</div>
           <div>• Financial impact analysis with industry benchmarking</div>
           <div>• Strategic recommendations for C-suite decision makers</div>
@@ -410,7 +410,7 @@ Include specific calculations, percentage returns, probability assessments, and 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="luxury-card rounded-2xl p-6 relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -422,24 +422,24 @@ Include specific calculations, percentage returns, probability assessments, and 
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <TrendingUp className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Advanced Financial Modeling</h3>
-            <Badge className="bg-emerald-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground font-serif">Advanced Financial Modeling</h3>
+            <Badge className="bg-secondary text-foreground text-xs">
               Wall Street Grade
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Institutional-grade financial analysis • ROI optimization • Predictive modeling</p>
+          <p className="text-sm text-muted-foreground">Institutional-grade financial analysis • ROI optimization • Predictive modeling</p>
         </div>
       </div>
 
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Current Medical Bill *
             </label>
             <Input
@@ -451,7 +451,7 @@ Include specific calculations, percentage returns, probability assessments, and 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Monthly Income *
             </label>
             <Input
@@ -466,7 +466,7 @@ Include specific calculations, percentage returns, probability assessments, and 
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Credit Score
             </label>
             <Select value={modelingData.creditScore} onValueChange={(value) => setModelingData({...modelingData, creditScore: value})}>
@@ -483,7 +483,7 @@ Include specific calculations, percentage returns, probability assessments, and 
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Existing Debt
             </label>
             <Input
@@ -495,7 +495,7 @@ Include specific calculations, percentage returns, probability assessments, and 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Liquid Assets
             </label>
             <Input
@@ -509,7 +509,7 @@ Include specific calculations, percentage returns, probability assessments, and 
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Planning Time Horizon
           </label>
           <Select value={modelingData.timeHorizon} onValueChange={(value) => setModelingData({...modelingData, timeHorizon: value})}>
@@ -529,7 +529,7 @@ Include specific calculations, percentage returns, probability assessments, and 
         <Button 
           onClick={runFinancialModeling} 
           disabled={isAnalyzing} 
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+          className="w-full bg-primary text-primary-foreground hover:opacity-90"
           data-testid="button-run-financial-modeling"
         >
           {isAnalyzing ? (
@@ -547,19 +547,19 @@ Include specific calculations, percentage returns, probability assessments, and 
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <div className="p-3 bg-emerald-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-2">
-            <Calculator className="h-4 w-4 text-emerald-600" />
-            <span className="text-sm font-semibold text-emerald-800">ROI Analysis</span>
+            <Calculator className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-semibold text-foreground">ROI Analysis</span>
           </div>
-          <div className="text-xs text-emerald-700">Monte Carlo simulations with probability-weighted outcomes</div>
+          <div className="text-xs text-muted-foreground">Monte Carlo simulations with probability-weighted outcomes</div>
         </div>
-        <div className="p-3 bg-blue-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-2">
-            <CreditCard className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-semibold text-blue-800">Credit Impact</span>
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-semibold text-foreground">Credit Impact</span>
           </div>
-          <div className="text-xs text-blue-700">Credit score modeling and recovery projections</div>
+          <div className="text-xs text-muted-foreground">Credit score modeling and recovery projections</div>
         </div>
       </div>
     </motion.div>
@@ -676,7 +676,7 @@ Include specific data points, success rates, financial metrics, and insider inte
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="luxury-card rounded-2xl p-6 relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -688,24 +688,24 @@ Include specific data points, success rates, financial metrics, and insider inte
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Database className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Industry Data Intelligence</h3>
-            <Badge className="bg-blue-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground font-serif">Industry Data Intelligence</h3>
+            <Badge className="bg-secondary text-foreground text-xs">
               Proprietary Data
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Market intelligence • Competitive analysis • Insider insights</p>
+          <p className="text-sm text-muted-foreground">Market intelligence • Competitive analysis • Insider insights</p>
         </div>
       </div>
 
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Hospital System *
             </label>
             <Input
@@ -716,7 +716,7 @@ Include specific data points, success rates, financial metrics, and insider inte
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Provider NPI (Optional)
             </label>
             <Input
@@ -730,7 +730,7 @@ Include specific data points, success rates, financial metrics, and insider inte
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Service Area *
             </label>
             <Input
@@ -741,7 +741,7 @@ Include specific data points, success rates, financial metrics, and insider inte
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Insurance Plan
             </label>
             <Input
@@ -754,7 +754,7 @@ Include specific data points, success rates, financial metrics, and insider inte
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Procedure Codes (CPT)
           </label>
           <Textarea
@@ -766,7 +766,7 @@ Include specific data points, success rates, financial metrics, and insider inte
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Benchmark Analysis Type
           </label>
           <Select value={intelligenceData.benchmarkType} onValueChange={(value) => setIntelligenceData({...intelligenceData, benchmarkType: value})}>
@@ -786,7 +786,7 @@ Include specific data points, success rates, financial metrics, and insider inte
         <Button 
           onClick={runIntelligenceAnalysis} 
           disabled={isAnalyzing} 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          className="w-full bg-primary text-primary-foreground hover:opacity-90"
           data-testid="button-run-intelligence-analysis"
         >
           {isAnalyzing ? (
@@ -804,26 +804,26 @@ Include specific data points, success rates, financial metrics, and insider inte
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
-        <div className="p-3 bg-blue-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Building2 className="h-3 w-3 text-blue-600" />
-            <span className="text-xs font-semibold text-blue-800">Hospital Intel</span>
+            <Building2 className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Hospital Intel</span>
           </div>
-          <div className="text-xs text-blue-700">Financial performance & vulnerabilities</div>
+          <div className="text-xs text-muted-foreground">Financial performance & vulnerabilities</div>
         </div>
-        <div className="p-3 bg-green-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Network className="h-3 w-3 text-green-600" />
-            <span className="text-xs font-semibold text-green-800">Market Data</span>
+            <Network className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Market Data</span>
           </div>
-          <div className="text-xs text-green-700">Regional pricing & competition</div>
+          <div className="text-xs text-muted-foreground">Regional pricing & competition</div>
         </div>
-        <div className="p-3 bg-orange-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Gavel className="h-3 w-3 text-orange-600" />
-            <span className="text-xs font-semibold text-orange-800">Legal Intel</span>
+            <Gavel className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Legal Intel</span>
           </div>
-          <div className="text-xs text-orange-700">Precedents & enforcement</div>
+          <div className="text-xs text-muted-foreground">Precedents & enforcement</div>
         </div>
       </div>
     </motion.div>
@@ -933,7 +933,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="luxury-card rounded-2xl p-6 relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -950,19 +950,19 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Tax Deduction Maximizer</h3>
-            <Badge className="bg-green-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground font-serif">Tax Deduction Maximizer</h3>
+            <Badge className="bg-secondary text-foreground text-xs">
               CPA Grade
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Professional tax optimization • Medical expense strategies • Multi-year planning</p>
+          <p className="text-sm text-muted-foreground">Professional tax optimization • Medical expense strategies • Multi-year planning</p>
         </div>
       </div>
 
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Total Medical Expenses *
             </label>
             <Input
@@ -974,7 +974,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Adjusted Gross Income *
             </label>
             <Input
@@ -989,7 +989,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Filing Status
             </label>
             <Select value={taxData.filingStatus} onValueChange={(value) => setTaxData({...taxData, filingStatus: value})}>
@@ -1006,7 +1006,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               State of Residence
             </label>
             <Input
@@ -1020,7 +1020,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Business Medical Expenses
             </label>
             <Input
@@ -1032,7 +1032,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Medical Travel Expenses
             </label>
             <Input
@@ -1048,7 +1048,7 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
         <Button 
           onClick={calculateTaxOptimization} 
           disabled={isCalculating} 
-          className="w-full bg-green-600 hover:bg-green-700 text-white"
+          className="w-full bg-primary text-primary-foreground hover:opacity-90"
           data-testid="button-calculate-tax-optimization"
         >
           {isCalculating ? (
@@ -1066,19 +1066,19 @@ Include specific dollar amounts for tax savings, detailed calculations showing b
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <div className="p-3 bg-green-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-2">
-            <DollarSign className="h-4 w-4 text-green-600" />
-            <span className="text-sm font-semibold text-green-800">Federal Savings</span>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-semibold text-foreground">Federal Savings</span>
           </div>
-          <div className="text-xs text-green-700">Itemized deduction optimization & AGI threshold analysis</div>
+          <div className="text-xs text-muted-foreground">Itemized deduction optimization & AGI threshold analysis</div>
         </div>
-        <div className="p-3 bg-blue-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-semibold text-blue-800">Multi-Year Strategy</span>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-semibold text-foreground">Multi-Year Strategy</span>
           </div>
-          <div className="text-xs text-blue-700">Medical expense timing & bunching strategies</div>
+          <div className="text-xs text-muted-foreground">Medical expense timing & bunching strategies</div>
         </div>
       </div>
     </motion.div>
@@ -1124,18 +1124,18 @@ export function SuperiorAnalysisTools({ onSendMessage }: SuperiorAnalysisToolsPr
     <div className="space-y-6">
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-600 via-blue-600 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Sparkles className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Superior Analysis Tools</h2>
-            <Badge className="bg-gradient-to-r from-purple-600 to-emerald-600 text-white text-xs">
+            <h2 className="text-xl font-bold text-foreground font-serif">Superior Analysis Tools</h2>
+            <Badge className="bg-secondary text-foreground text-xs">
               <Crown className="h-3 w-3 mr-1" />
               Professional Grade
             </Badge>
           </div>
         </div>
-        <p className="text-sm text-gray-600 max-w-2xl mx-auto">
+        <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
           Institutional-grade analysis tools that rival expensive consulting firms. Professional reporting, advanced modeling, and proprietary intelligence.
         </p>
       </div>
@@ -1148,8 +1148,8 @@ export function SuperiorAnalysisTools({ onSendMessage }: SuperiorAnalysisToolsPr
             onClick={() => setActiveTab(tool.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tool.id
-                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'bg-secondary text-muted-foreground hover:bg-muted'
             }`}
             data-testid={`tab-${tool.id}`}
           >

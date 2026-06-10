@@ -223,7 +223,6 @@ function MetricCard({
   change, 
   trend, 
   subtitle, 
-  gradient,
   delay = 0 
 }: {
   icon: any;
@@ -232,7 +231,6 @@ function MetricCard({
   change?: string;
   trend?: "up" | "down" | "neutral";
   subtitle?: string;
-  gradient: string;
   delay?: number;
 }) {
   const ref = useRef(null);
@@ -249,57 +247,21 @@ function MetricCard({
       className="relative group"
     >
       <motion.div
-        className={`h-full bg-gradient-to-br ${gradient} rounded-3xl p-6 border border-white/20 backdrop-blur-sm relative overflow-hidden`}
-        whileHover={{ scale: 1.02 }}
+        className="luxury-card h-full rounded-3xl p-6 relative overflow-hidden"
+        whileHover={{ scale: 1.01 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
-        {/* Background Glow Effect */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-        />
-
-        {/* Animated Background Particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-white/20 rounded-full"
-              style={{
-                left: `${20 + i * 30}%`,
-                top: `${20 + i * 25}%`,
-              }}
-              animate={{
-                y: [-10, 10, -10],
-                x: [-5, 5, -5],
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: 3 + i,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: i * 0.5,
-              }}
-            />
-          ))}
-        </div>
-
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-4">
-            <motion.div
-              className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center"
-              whileHover={{ rotate: 360 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Icon className="text-white h-7 w-7" />
-            </motion.div>
+            <div className="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center">
+              <Icon className="text-muted-foreground h-7 w-7" />
+            </div>
             {change && (
               <motion.div
                 className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium
-                  ${trend === 'up' ? 'bg-emerald-500/20 text-emerald-100' : 
-                    trend === 'down' ? 'bg-red-500/20 text-red-100' : 
-                    'bg-gray-500/20 text-gray-100'}`}
+                  ${trend === 'up' ? 'bg-emerald-50 text-emerald-700' : 
+                    trend === 'down' ? 'bg-red-50 text-red-700' : 
+                    'bg-secondary text-muted-foreground'}`}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: delay + 0.3 }}
@@ -312,7 +274,7 @@ function MetricCard({
           </div>
 
           <motion.h3
-            className="text-white/90 text-sm font-medium mb-2"
+            className="text-muted-foreground text-sm font-medium mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: delay + 0.4 }}
@@ -321,7 +283,7 @@ function MetricCard({
           </motion.h3>
 
           <motion.div
-            className="text-3xl font-bold text-white mb-1"
+            className="text-3xl font-bold text-foreground mb-1"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: delay + 0.5 }}
@@ -335,7 +297,7 @@ function MetricCard({
 
           {subtitle && (
             <motion.p
-              className="text-white/70 text-sm"
+              className="text-muted-foreground text-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: delay + 0.6 }}
@@ -488,16 +450,16 @@ function AchievementBadge({ title, description, icon: Icon, unlocked, progress }
 }) {
   return (
     <motion.div
-      whileHover={{ scale: 1.05, y: -2 }}
+      whileHover={{ y: -2 }}
       className={`relative p-4 rounded-2xl border ${
         unlocked 
-          ? 'bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200' 
-          : 'bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200'
+          ? 'bg-card border-border' 
+          : 'bg-secondary border-border'
       }`}
     >
       {unlocked && (
         <motion.div
-          className="absolute -top-2 -right-2 w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center"
+          className="absolute -top-2 -right-2 w-6 h-6 bg-emerald-600 rounded-full flex items-center justify-center"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 500, delay: 0.2 }}
@@ -506,30 +468,29 @@ function AchievementBadge({ title, description, icon: Icon, unlocked, progress }
         </motion.div>
       )}
       
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
-        unlocked 
-          ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-white' 
-          : 'bg-gray-300 text-gray-500'
-      }`}>
-        <Icon className="h-6 w-6" />
+      <div
+        className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${unlocked ? '' : 'bg-secondary'}`}
+        style={unlocked ? { background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' } : undefined}
+      >
+        <Icon className={`h-6 w-6 ${unlocked ? 'text-white' : 'text-muted-foreground'}`} />
       </div>
       
-      <h4 className={`font-semibold mb-1 ${unlocked ? 'text-amber-800' : 'text-gray-600'}`}>
+      <h4 className={`font-semibold mb-1 ${unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
         {title}
       </h4>
-      <p className={`text-sm ${unlocked ? 'text-amber-600' : 'text-gray-500'}`}>
+      <p className="text-sm text-muted-foreground">
         {description}
       </p>
       
       {!unlocked && progress !== undefined && (
         <div className="mt-3">
-          <div className="flex justify-between text-xs text-gray-500 mb-1">
+          <div className="flex justify-between text-xs text-muted-foreground mb-1">
             <span>Progress</span>
             <span>{progress}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-background rounded-full h-2">
             <motion.div
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full"
+              className="bg-gold h-2 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 1.5, delay: 0.5 }}
@@ -553,18 +514,18 @@ export default function AnalyticsDashboard() {
       <MobileLayout title="Analytics Dashboard">
         <div className="space-y-6">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Advanced Analytics Dashboard</h1>
-            <p className="text-gray-600 mb-6">Track your bill reduction success with comprehensive analytics, progress insights, and professional reporting tools.</p>
+            <h1 className="font-serif text-2xl font-bold text-foreground mb-2">Advanced Analytics Dashboard</h1>
+            <p className="text-muted-foreground mb-6">Track your bill reduction success with comprehensive analytics, progress insights, and professional reporting tools.</p>
           </div>
           
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-3xl p-6">
+          <div className="luxury-card rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                 <BarChart3 className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-amber-900">Premium Analytics</h3>
-                <p className="text-amber-700 text-sm">Unlock comprehensive insights</p>
+                <h3 className="font-bold text-foreground">Premium Analytics</h3>
+                <p className="text-muted-foreground text-sm">Unlock comprehensive insights</p>
               </div>
             </div>
             
@@ -580,14 +541,14 @@ export default function AnalyticsDashboard() {
                 "ROI calculations & seasonal trend analysis"
               ].map((feature, index) => (
                 <div key={index} className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                  <span className="text-sm text-gray-700">{feature}</span>
+                  <CheckCircle2 className="h-4 w-4 text-gold" />
+                  <span className="text-sm text-muted-foreground">{feature}</span>
                 </div>
               ))}
             </div>
             
             <Button 
-              className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold"
+              className="w-full bg-primary text-primary-foreground hover:opacity-90 font-semibold"
               data-testid="premium-analytics-paywall"
             >
               Unlock Advanced Analytics
@@ -635,15 +596,15 @@ export default function AnalyticsDashboard() {
 
   return (
     <MobileLayout title="Analytics Dashboard">
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-background">
         {/* Header */}
         <motion.div 
-          className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 text-white relative overflow-hidden"
-          initial={{ opacity: 0, y: -50 }}
+          className="text-foreground relative overflow-hidden border-b border-border"
+          style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}
+          initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="absolute inset-0 bg-black/20" />
           <div className="relative z-10 p-6">
             <motion.div
               className="flex items-center justify-between mb-6"
@@ -652,10 +613,10 @@ export default function AnalyticsDashboard() {
               animate="visible"
             >
               <motion.div variants={itemVariants}>
-                <h1 className="text-2xl font-bold mb-2" data-testid="text-dashboard-title">
+                <h1 className="font-serif text-2xl font-bold mb-2" data-testid="text-dashboard-title">
                   Analytics Dashboard
                 </h1>
-                <p className="text-indigo-100">
+                <p className="text-muted-foreground">
                   Comprehensive bill reduction analytics & insights
                 </p>
               </motion.div>
@@ -666,7 +627,7 @@ export default function AnalyticsDashboard() {
               >
                 <Button 
                   size="sm" 
-                  className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border-white/30"
+                  className="bg-card border border-border text-foreground hover:bg-secondary"
                   data-testid="button-export-report"
                 >
                   <Download className="h-4 w-4 mr-2" />
@@ -674,7 +635,7 @@ export default function AnalyticsDashboard() {
                 </Button>
                 <Button 
                   size="sm" 
-                  className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border-white/30"
+                  className="bg-card border border-border text-foreground hover:bg-secondary"
                   data-testid="button-share-dashboard"
                 >
                   <Share2 className="h-4 w-4 mr-2" />
@@ -697,7 +658,6 @@ export default function AnalyticsDashboard() {
                 change="+23.5%"
                 trend="up"
                 subtitle="This year"
-                gradient="from-emerald-500 to-teal-600"
                 delay={0.1}
               />
               <MetricCard
@@ -707,7 +667,6 @@ export default function AnalyticsDashboard() {
                 change="+5.2%"
                 trend="up"
                 subtitle="Last 30 days"
-                gradient="from-blue-500 to-indigo-600"
                 delay={0.2}
               />
               <MetricCard
@@ -715,7 +674,6 @@ export default function AnalyticsDashboard() {
                 title="Bills Processed"
                 value={mockAnalyticsData.totalBills}
                 subtitle="Total count"
-                gradient="from-purple-500 to-pink-600"
                 delay={0.3}
               />
               <MetricCard
@@ -725,51 +683,40 @@ export default function AnalyticsDashboard() {
                 change="-3.2 days"
                 trend="up"
                 subtitle="Time to success"
-                gradient="from-amber-500 to-orange-600"
                 delay={0.4}
               />
             </motion.div>
 
             {/* Progress toward goal */}
             <motion.div
-              className="bg-white/20 backdrop-blur-sm rounded-2xl p-4"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              className="bg-secondary border border-border rounded-2xl p-4"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-semibold text-lg">Annual Savings Goal</h3>
-                  <p className="text-white/70 text-sm">
+                  <h3 className="font-semibold text-lg text-foreground">Annual Savings Goal</h3>
+                  <p className="text-muted-foreground text-sm">
                     ${mockAnalyticsData.totalSavings.toLocaleString()} of ${mockAnalyticsData.currentGoal.toLocaleString()}
                   </p>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold">{mockAnalyticsData.goalProgress}%</div>
-                  <div className="flex items-center text-emerald-200 text-sm">
+                  <div className="text-2xl font-bold text-foreground">{mockAnalyticsData.goalProgress}%</div>
+                  <div className="flex items-center text-emerald-700 text-sm">
                     <TrendingUp className="h-3 w-3 mr-1" />
                     On track
                   </div>
                 </div>
               </div>
-              <div className="w-full bg-white/20 rounded-full h-3">
+              <div className="w-full bg-background rounded-full h-3">
                 <motion.div
-                  className="bg-gradient-to-r from-emerald-400 to-teal-400 h-3 rounded-full relative overflow-hidden"
+                  className="h-3 rounded-full relative overflow-hidden"
+                  style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${mockAnalyticsData.goalProgress}%` }}
-                  transition={{ duration: 2, delay: 1 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
-                    animate={{ x: ["-100%", "200%"] }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      repeatDelay: 3,
-                    }}
-                  />
-                </motion.div>
+                  transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                />
               </div>
             </motion.div>
           </div>
@@ -805,23 +752,23 @@ export default function AnalyticsDashboard() {
 
           {/* Tabbed Content */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-6 gap-1 bg-white/60 backdrop-blur-sm p-1 rounded-2xl">
-              <TabsTrigger value="overview" className="rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-sm" data-testid="tab-overview">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-6 gap-1 bg-secondary p-1 rounded-2xl">
+              <TabsTrigger value="overview" className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm" data-testid="tab-overview">
                 Overview
               </TabsTrigger>
-              <TabsTrigger value="trends" className="rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-sm" data-testid="tab-trends">
+              <TabsTrigger value="trends" className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm" data-testid="tab-trends">
                 Trends
               </TabsTrigger>
-              <TabsTrigger value="strategies" className="rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-sm" data-testid="tab-strategies">
+              <TabsTrigger value="strategies" className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm" data-testid="tab-strategies">
                 Strategies
               </TabsTrigger>
-              <TabsTrigger value="providers" className="rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-sm" data-testid="tab-providers">
+              <TabsTrigger value="providers" className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm" data-testid="tab-providers">
                 Providers
               </TabsTrigger>
-              <TabsTrigger value="achievements" className="rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-sm" data-testid="tab-achievements">
+              <TabsTrigger value="achievements" className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm" data-testid="tab-achievements">
                 Achievements
               </TabsTrigger>
-              <TabsTrigger value="reports" className="rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-sm" data-testid="tab-reports">
+              <TabsTrigger value="reports" className="rounded-xl data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm" data-testid="tab-reports">
                 Reports
               </TabsTrigger>
             </TabsList>
@@ -839,7 +786,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <LineChart className="h-5 w-5 text-emerald-600" />
+                        <LineChart className="h-5 w-5 text-gold" />
                         <span>Savings Timeline</span>
                       </CardTitle>
                     </CardHeader>
@@ -854,7 +801,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <PieChart className="h-5 w-5 text-blue-600" />
+                        <PieChart className="h-5 w-5 text-gold" />
                         <span>Bill Categories</span>
                       </CardTitle>
                     </CardHeader>
@@ -865,7 +812,7 @@ export default function AnalyticsDashboard() {
                           {mockAnalyticsData.billCategories.map((category, index) => (
                             <motion.div
                               key={category.category}
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
+                              className="flex items-center justify-between p-3 bg-secondary rounded-xl"
                               variants={itemVariants}
                               transition={{ delay: 0.1 * index }}
                             >
@@ -874,13 +821,13 @@ export default function AnalyticsDashboard() {
                                   className="w-4 h-4 rounded-full"
                                   style={{ backgroundColor: COLORS[index] }}
                                 />
-                                <span className="font-medium">{category.category}</span>
+                                <span className="font-medium text-foreground">{category.category}</span>
                               </div>
                               <div className="text-right">
-                                <div className="font-bold text-gray-900">
+                                <div className="font-bold text-foreground">
                                   ${category.amount.toLocaleString()}
                                 </div>
-                                <div className="text-sm text-gray-500">
+                                <div className="text-sm text-muted-foreground">
                                   {category.bills} bills
                                 </div>
                               </div>
@@ -893,13 +840,13 @@ export default function AnalyticsDashboard() {
                 </MobileCard>
 
                 {/* Coaching Progress - NEW */}
-                <MobileCard className="p-6 bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 border-2 border-emerald-200">
+                <MobileCard className="p-6 bg-card border border-border">
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <Users className="h-5 w-5 text-emerald-600" />
+                        <Users className="h-5 w-5 text-gold" />
                         <span>Premium 1:1 Coaching Progress</span>
-                        <Badge className="ml-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
+                        <Badge className="ml-2 text-white border-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                           Active
                         </Badge>
                       </CardTitle>
@@ -907,14 +854,14 @@ export default function AnalyticsDashboard() {
                     <CardContent className="px-0 pb-0">
                       <div className="space-y-4">
                         {/* Active Coaching Session */}
-                        <div className="bg-white p-4 rounded-xl border-2 border-emerald-200">
+                        <div className="bg-secondary p-4 rounded-xl border border-border">
                           <div className="flex items-center justify-between mb-3">
                             <div>
-                              <h4 className="font-bold text-gray-900" data-testid="text-coaching-case-name">Current Case: Hospital ABC</h4>
-                              <p className="text-sm text-gray-600" data-testid="text-coaching-bill-amount">Bill Amount: $25,000</p>
+                              <h4 className="font-bold text-foreground" data-testid="text-coaching-case-name">Current Case: Hospital ABC</h4>
+                              <p className="text-sm text-muted-foreground" data-testid="text-coaching-bill-amount">Bill Amount: $25,000</p>
                             </div>
                             <div className="text-right">
-                              <div className="text-2xl font-bold text-emerald-600" data-testid="text-coaching-estimated-savings">$8,750</div>
+                              <div className="text-2xl font-bold text-emerald-700" data-testid="text-coaching-estimated-savings">$8,750</div>
                               <p className="text-xs text-emerald-700">Est. Savings</p>
                             </div>
                           </div>
@@ -922,12 +869,12 @@ export default function AnalyticsDashboard() {
                           {/* Journey Progress */}
                           <div className="mb-4">
                             <div className="flex items-center justify-between text-sm mb-2">
-                              <span className="font-medium text-gray-700" data-testid="text-coaching-step-count">Step 3 of 6</span>
-                              <span className="text-emerald-600 font-medium" data-testid="text-coaching-completion-percent">50% Complete</span>
+                              <span className="font-medium text-foreground" data-testid="text-coaching-step-count">Step 3 of 6</span>
+                              <span className="text-gold font-medium" data-testid="text-coaching-completion-percent">50% Complete</span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-3" data-testid="progress-coaching-journey">
+                            <div className="w-full bg-background rounded-full h-3" data-testid="progress-coaching-journey">
                               <motion.div
-                                className="bg-gradient-to-r from-emerald-500 to-teal-500 h-3 rounded-full"
+                                className="bg-gold h-3 rounded-full"
                                 initial={{ width: 0 }}
                                 animate={{ width: "50%" }}
                                 transition={{ duration: 1.5, delay: 0.3 }}
@@ -948,26 +895,26 @@ export default function AnalyticsDashboard() {
                               <div 
                                 key={item.step}
                                 className={`flex items-center space-x-3 p-2 rounded-lg transition-all ${
-                                  item.status === 'completed' ? 'bg-green-50 border border-green-200' :
-                                  item.status === 'in-progress' ? 'bg-blue-50 border-2 border-blue-400' :
-                                  'bg-gray-50'
+                                  item.status === 'completed' ? 'bg-secondary border border-border' :
+                                  item.status === 'in-progress' ? 'bg-secondary border-2 border-[color:var(--gold)]' :
+                                  'bg-secondary'
                                 }`}
                                 data-testid={`step-coaching-${item.step.toLowerCase().replace(/\s+/g, '-')}-${item.status}`}
                               >
                                 <item.icon className={`h-4 w-4 ${
-                                  item.status === 'completed' ? 'text-green-600' :
-                                  item.status === 'in-progress' ? 'text-blue-600' :
-                                  'text-gray-400'
+                                  item.status === 'completed' ? 'text-emerald-600' :
+                                  item.status === 'in-progress' ? 'text-gold' :
+                                  'text-muted-foreground'
                                 }`} />
                                 <span className={`text-sm flex-1 ${
-                                  item.status === 'completed' ? 'text-green-900 font-medium' :
-                                  item.status === 'in-progress' ? 'text-blue-900 font-bold' :
-                                  'text-gray-600'
+                                  item.status === 'completed' ? 'text-foreground font-medium' :
+                                  item.status === 'in-progress' ? 'text-foreground font-bold' :
+                                  'text-muted-foreground'
                                 }`}>
                                   {item.step}
                                 </span>
                                 {item.status === 'in-progress' && (
-                                  <Badge className="bg-blue-500 text-white" data-testid="badge-current-step">Current</Badge>
+                                  <Badge className="bg-primary text-primary-foreground" data-testid="badge-current-step">Current</Badge>
                                 )}
                               </div>
                             ))}
@@ -975,27 +922,27 @@ export default function AnalyticsDashboard() {
 
                           {/* Coaching Stats */}
                           <div className="grid grid-cols-3 gap-3 mb-4">
-                            <div className="text-center bg-gradient-to-br from-purple-50 to-indigo-50 p-3 rounded-xl">
-                              <Clock className="h-5 w-5 text-purple-600 mx-auto mb-1" />
-                              <div className="text-sm font-bold text-gray-900" data-testid="text-coaching-time-invested">2.5 hrs</div>
-                              <div className="text-xs text-gray-600">Time Invested</div>
+                            <div className="text-center bg-card border border-border p-3 rounded-xl">
+                              <Clock className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
+                              <div className="text-sm font-bold text-foreground" data-testid="text-coaching-time-invested">2.5 hrs</div>
+                              <div className="text-xs text-muted-foreground">Time Invested</div>
                             </div>
-                            <div className="text-center bg-gradient-to-br from-emerald-50 to-teal-50 p-3 rounded-xl">
-                              <Target className="h-5 w-5 text-emerald-600 mx-auto mb-1" />
-                              <div className="text-sm font-bold text-gray-900" data-testid="text-coaching-success-rate">85%</div>
-                              <div className="text-xs text-gray-600">Success Rate</div>
+                            <div className="text-center bg-card border border-border p-3 rounded-xl">
+                              <Target className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
+                              <div className="text-sm font-bold text-foreground" data-testid="text-coaching-success-rate">85%</div>
+                              <div className="text-xs text-muted-foreground">Success Rate</div>
                             </div>
-                            <div className="text-center bg-gradient-to-br from-amber-50 to-orange-50 p-3 rounded-xl">
-                              <Star className="h-5 w-5 text-amber-600 mx-auto mb-1" />
-                              <div className="text-sm font-bold text-gray-900" data-testid="text-coaching-level">Expert</div>
-                              <div className="text-xs text-gray-600">Coach Level</div>
+                            <div className="text-center bg-card border border-border p-3 rounded-xl">
+                              <Star className="h-5 w-5 text-gold mx-auto mb-1" />
+                              <div className="text-sm font-bold text-foreground" data-testid="text-coaching-level">Expert</div>
+                              <div className="text-xs text-muted-foreground">Coach Level</div>
                             </div>
                           </div>
 
                           {/* Action Buttons */}
                           <div className="grid grid-cols-2 gap-3">
                             <Button 
-                              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
+                              className="bg-primary text-primary-foreground hover:opacity-90"
                               data-testid="button-resume-coaching"
                             >
                               <PlayCircle className="h-4 w-4 mr-2" />
@@ -1003,7 +950,7 @@ export default function AnalyticsDashboard() {
                             </Button>
                             <Button 
                               variant="outline"
-                              className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                              className="border-border text-foreground hover:bg-secondary"
                               data-testid="button-view-templates"
                             >
                               <FileText className="h-4 w-4 mr-2" />
@@ -1013,7 +960,7 @@ export default function AnalyticsDashboard() {
                         </div>
 
                         {/* Coaching Impact Summary */}
-                        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4 rounded-xl text-white">
+                        <div className="p-4 rounded-xl text-white" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center space-x-2">
                               <Trophy className="h-5 w-5" />
@@ -1024,11 +971,11 @@ export default function AnalyticsDashboard() {
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <div className="text-2xl font-bold" data-testid="text-coaching-total-savings">$43,650</div>
-                              <div className="text-emerald-100 text-sm">Total Savings with Coaching</div>
+                              <div className="text-white/80 text-sm">Total Savings with Coaching</div>
                             </div>
                             <div>
                               <div className="text-2xl font-bold" data-testid="text-coaching-bills-negotiated">23 Bills</div>
-                              <div className="text-emerald-100 text-sm">Successfully Negotiated</div>
+                              <div className="text-white/80 text-sm">Successfully Negotiated</div>
                             </div>
                           </div>
                         </div>
@@ -1042,7 +989,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <Clock className="h-5 w-5 text-purple-600" />
+                        <Clock className="h-5 w-5 text-gold" />
                         <span>Recent Activity</span>
                       </CardTitle>
                     </CardHeader>
@@ -1055,20 +1002,20 @@ export default function AnalyticsDashboard() {
                       ].map((activity, index) => (
                         <motion.div
                           key={index}
-                          className="flex items-center justify-between p-4 bg-gradient-to-r from-white to-gray-50 rounded-xl border border-gray-100"
+                          className="flex items-center justify-between p-4 bg-secondary rounded-xl border border-border"
                           variants={itemVariants}
                           transition={{ delay: 0.1 * index }}
                         >
                           <div className="flex-1">
-                            <div className="font-medium text-gray-900">
+                            <div className="font-medium text-foreground">
                               {activity.action}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-muted-foreground">
                               {activity.time}
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="font-bold text-emerald-600">
+                            <div className="font-bold text-emerald-700">
                               {activity.amount}
                             </div>
                             <Badge 
@@ -1102,7 +1049,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <TrendingUp className="h-5 w-5 text-emerald-600" />
+                        <TrendingUp className="h-5 w-5 text-gold" />
                         <span>Monthly Performance vs Goals</span>
                       </CardTitle>
                     </CardHeader>
@@ -1154,24 +1101,24 @@ export default function AnalyticsDashboard() {
                         <CardTitle className="text-lg">Seasonal Trends</CardTitle>
                       </CardHeader>
                       <CardContent className="px-0 pb-0 space-y-4">
-                        <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
-                          <h4 className="font-semibold text-blue-900 mb-2">Q1 Peak Season</h4>
-                          <p className="text-blue-700 text-sm">
+                        <div className="p-4 bg-secondary rounded-xl border border-border">
+                          <h4 className="font-semibold text-foreground mb-2">Q1 Peak Season</h4>
+                          <p className="text-muted-foreground text-sm">
                             Higher success rates in Jan-Mar due to insurance deductible resets
                           </p>
                           <div className="mt-2 flex justify-between items-center">
-                            <span className="text-blue-600 text-sm">Success Rate</span>
-                            <span className="font-bold text-blue-900">94.2%</span>
+                            <span className="text-muted-foreground text-sm">Success Rate</span>
+                            <span className="font-bold text-emerald-700">94.2%</span>
                           </div>
                         </div>
-                        <div className="p-4 bg-amber-50 rounded-xl border border-amber-200">
-                          <h4 className="font-semibold text-amber-900 mb-2">Summer Challenges</h4>
-                          <p className="text-amber-700 text-sm">
+                        <div className="p-4 bg-secondary rounded-xl border border-border">
+                          <h4 className="font-semibold text-foreground mb-2">Summer Challenges</h4>
+                          <p className="text-muted-foreground text-sm">
                             Reduced effectiveness during summer months
                           </p>
                           <div className="mt-2 flex justify-between items-center">
-                            <span className="text-amber-600 text-sm">Success Rate</span>
-                            <span className="font-bold text-amber-900">78.5%</span>
+                            <span className="text-muted-foreground text-sm">Success Rate</span>
+                            <span className="font-bold text-amber-700">78.5%</span>
                           </div>
                         </div>
                       </CardContent>
@@ -1185,30 +1132,30 @@ export default function AnalyticsDashboard() {
                       </CardHeader>
                       <CardContent className="px-0 pb-0 space-y-4">
                         <div className="flex items-start space-x-3">
-                          <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mt-1">
-                            <TrendingUp className="h-4 w-4 text-emerald-600" />
+                          <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center mt-1">
+                            <TrendingUp className="h-4 w-4 text-muted-foreground" />
                           </div>
                           <div>
-                            <h4 className="font-medium text-gray-900">Improvement Trend</h4>
-                            <p className="text-gray-600 text-sm">Success rate improved 15% over last 6 months</p>
+                            <h4 className="font-medium text-foreground">Improvement Trend</h4>
+                            <p className="text-muted-foreground text-sm">Success rate improved 15% over last 6 months</p>
                           </div>
                         </div>
                         <div className="flex items-start space-x-3">
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
-                            <Target className="h-4 w-4 text-blue-600" />
+                          <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center mt-1">
+                            <Target className="h-4 w-4 text-muted-foreground" />
                           </div>
                           <div>
-                            <h4 className="font-medium text-gray-900">Optimal Timing</h4>
-                            <p className="text-gray-600 text-sm">Best results achieved within 14-21 days of bill receipt</p>
+                            <h4 className="font-medium text-foreground">Optimal Timing</h4>
+                            <p className="text-muted-foreground text-sm">Best results achieved within 14-21 days of bill receipt</p>
                           </div>
                         </div>
                         <div className="flex items-start space-x-3">
-                          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mt-1">
-                            <Zap className="h-4 w-4 text-purple-600" />
+                          <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center mt-1">
+                            <Zap className="h-4 w-4 text-muted-foreground" />
                           </div>
                           <div>
-                            <h4 className="font-medium text-gray-900">Strategy Evolution</h4>
-                            <p className="text-gray-600 text-sm">AI analysis increased average savings by 28%</p>
+                            <h4 className="font-medium text-foreground">Strategy Evolution</h4>
+                            <p className="text-muted-foreground text-sm">AI analysis increased average savings by 28%</p>
                           </div>
                         </div>
                       </CardContent>
@@ -1231,7 +1178,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <BarChart3 className="h-5 w-5 text-blue-600" />
+                        <BarChart3 className="h-5 w-5 text-gold" />
                         <span>Strategy Effectiveness</span>
                       </CardTitle>
                     </CardHeader>
@@ -1251,12 +1198,12 @@ export default function AnalyticsDashboard() {
                       {mockAnalyticsData.strategies.map((strategy, index) => (
                         <motion.div
                           key={strategy.name}
-                          className="p-4 bg-gradient-to-r from-white to-gray-50 rounded-xl border border-gray-100"
+                          className="p-4 bg-secondary rounded-xl border border-border"
                           variants={itemVariants}
                           transition={{ delay: 0.1 * index }}
                         >
                           <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-semibold text-gray-900">{strategy.name}</h4>
+                            <h4 className="font-semibold text-foreground">{strategy.name}</h4>
                             <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-200">
                               {Math.round((strategy.success / strategy.used) * 100)}% Success
                             </Badge>
@@ -1264,25 +1211,25 @@ export default function AnalyticsDashboard() {
                           
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
-                              <div className="text-gray-500">Times Used</div>
-                              <div className="font-bold text-gray-900">{strategy.used}</div>
+                              <div className="text-muted-foreground">Times Used</div>
+                              <div className="font-bold text-foreground">{strategy.used}</div>
                             </div>
                             <div>
-                              <div className="text-gray-500">Successes</div>
-                              <div className="font-bold text-emerald-600">{strategy.success}</div>
+                              <div className="text-muted-foreground">Successes</div>
+                              <div className="font-bold text-emerald-700">{strategy.success}</div>
                             </div>
                             <div>
-                              <div className="text-gray-500">Avg Saving</div>
-                              <div className="font-bold text-blue-600">${strategy.avgSaving}</div>
+                              <div className="text-muted-foreground">Avg Saving</div>
+                              <div className="font-bold text-foreground">${strategy.avgSaving}</div>
                             </div>
                           </div>
                           
                           <div className="mt-3">
-                            <div className="flex justify-between text-xs text-gray-500 mb-1">
+                            <div className="flex justify-between text-xs text-muted-foreground mb-1">
                               <span>Success Rate</span>
                               <span>{Math.round((strategy.success / strategy.used) * 100)}%</span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="w-full bg-background rounded-full h-2">
                               <motion.div
                                 className="h-2 rounded-full"
                                 style={{ backgroundColor: strategy.color }}
@@ -1303,47 +1250,47 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <Target className="h-5 w-5 text-emerald-600" />
+                        <Target className="h-5 w-5 text-gold" />
                         <span>Optimization Recommendations</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="px-0 pb-0 space-y-4">
-                      <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                      <div className="p-4 bg-secondary rounded-xl border border-border">
                         <div className="flex items-start space-x-3">
-                          <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mt-1">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center mt-1" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                             <TrendingUp className="h-4 w-4 text-white" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-emerald-900 mb-2">Focus on AI Analysis</h4>
-                            <p className="text-emerald-700 text-sm">
+                            <h4 className="font-semibold text-foreground mb-2">Focus on AI Analysis</h4>
+                            <p className="text-muted-foreground text-sm">
                               Your highest success strategy. Consider using AI analysis for all bills over $1,000.
                             </p>
                           </div>
                         </div>
                       </div>
                       
-                      <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                      <div className="p-4 bg-secondary rounded-xl border border-border">
                         <div className="flex items-start space-x-3">
-                          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mt-1">
-                            <Clock className="h-4 w-4 text-white" />
+                          <div className="w-8 h-8 bg-card border border-border rounded-full flex items-center justify-center mt-1">
+                            <Clock className="h-4 w-4 text-muted-foreground" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-blue-900 mb-2">Improve Timing Strategy</h4>
-                            <p className="text-blue-700 text-sm">
+                            <h4 className="font-semibold text-foreground mb-2">Improve Timing Strategy</h4>
+                            <p className="text-muted-foreground text-sm">
                               While frequently used, timing strategy has room for improvement. Review optimal timing guides.
                             </p>
                           </div>
                         </div>
                       </div>
                       
-                      <div className="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                      <div className="p-4 bg-secondary rounded-xl border border-border">
                         <div className="flex items-start space-x-3">
-                          <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center mt-1">
-                            <Zap className="h-4 w-4 text-white" />
+                          <div className="w-8 h-8 bg-card border border-border rounded-full flex items-center justify-center mt-1">
+                            <Zap className="h-4 w-4 text-muted-foreground" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-amber-900 mb-2">Leverage Insurance Appeals</h4>
-                            <p className="text-amber-700 text-sm">
+                            <h4 className="font-semibold text-foreground mb-2">Leverage Insurance Appeals</h4>
+                            <p className="text-muted-foreground text-sm">
                               Highest average savings but underutilized. Consider insurance appeals for complex cases.
                             </p>
                           </div>
@@ -1367,7 +1314,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <Building2 className="h-5 w-5 text-blue-600" />
+                        <Building2 className="h-5 w-5 text-gold" />
                         <span>Provider Performance Analysis</span>
                       </CardTitle>
                     </CardHeader>
@@ -1375,12 +1322,12 @@ export default function AnalyticsDashboard() {
                       {mockAnalyticsData.providers.map((provider, index) => (
                         <motion.div
                           key={provider.name}
-                          className="p-4 bg-gradient-to-r from-white to-gray-50 rounded-xl border border-gray-100"
+                          className="p-4 bg-secondary rounded-xl border border-border"
                           variants={itemVariants}
                           transition={{ delay: 0.1 * index }}
                         >
                           <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-semibold text-gray-900">{provider.name}</h4>
+                            <h4 className="font-semibold text-foreground">{provider.name}</h4>
                             <div className="flex items-center space-x-2">
                               <Badge 
                                 variant={provider.difficulty < 5 ? 'default' : provider.difficulty < 7 ? 'secondary' : 'destructive'}
@@ -1397,33 +1344,33 @@ export default function AnalyticsDashboard() {
                           
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                             <div>
-                              <div className="text-gray-500">Bills Processed</div>
-                              <div className="font-bold text-gray-900">{provider.bills}</div>
+                              <div className="text-muted-foreground">Bills Processed</div>
+                              <div className="font-bold text-foreground">{provider.bills}</div>
                             </div>
                             <div>
-                              <div className="text-gray-500">Success Rate</div>
-                              <div className="font-bold text-emerald-600">
+                              <div className="text-muted-foreground">Success Rate</div>
+                              <div className="font-bold text-emerald-700">
                                 {Math.round((provider.success / provider.bills) * 100)}%
                               </div>
                             </div>
                             <div>
-                              <div className="text-gray-500">Avg Savings</div>
-                              <div className="font-bold text-blue-600">${provider.avgSaving}</div>
+                              <div className="text-muted-foreground">Avg Savings</div>
+                              <div className="font-bold text-foreground">${provider.avgSaving}</div>
                             </div>
                             <div>
-                              <div className="text-gray-500">Total Saved</div>
-                              <div className="font-bold text-purple-600">
+                              <div className="text-muted-foreground">Total Saved</div>
+                              <div className="font-bold text-gold">
                                 ${(provider.avgSaving * provider.success).toLocaleString()}
                               </div>
                             </div>
                           </div>
                           
                           <div className="mt-3">
-                            <div className="flex justify-between text-xs text-gray-500 mb-1">
+                            <div className="flex justify-between text-xs text-muted-foreground mb-1">
                               <span>Negotiation Success</span>
                               <span>{Math.round((provider.success / provider.bills) * 100)}%</span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="w-full bg-background rounded-full h-2">
                               <motion.div
                                 className={`h-2 rounded-full ${
                                   provider.difficulty < 5 ? 'bg-emerald-500' :
@@ -1438,9 +1385,9 @@ export default function AnalyticsDashboard() {
                           </div>
 
                           {/* Provider-specific tips */}
-                          <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                            <h5 className="text-xs font-semibold text-blue-900 mb-1">Optimization Tip</h5>
-                            <p className="text-xs text-blue-700">
+                          <div className="mt-3 p-3 bg-card rounded-lg border border-border">
+                            <h5 className="text-xs font-semibold text-foreground mb-1">Optimization Tip</h5>
+                            <p className="text-xs text-muted-foreground">
                               {provider.difficulty < 5 ? 
                                 "This provider is typically cooperative. Use standard negotiation approach." :
                                 provider.difficulty < 7 ? 
@@ -1519,39 +1466,39 @@ export default function AnalyticsDashboard() {
                 {/* Achievement Overview */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <motion.div variants={itemVariants} className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                       <Trophy className="h-8 w-8 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-foreground">
                       <AnimatedCounter target={12} />
                     </div>
-                    <div className="text-sm text-gray-600">Achievements</div>
+                    <div className="text-sm text-muted-foreground">Achievements</div>
                   </motion.div>
                   
                   <motion.div variants={itemVariants} className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                      <Flame className="h-8 w-8 text-white" />
+                    <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-3">
+                      <Flame className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-foreground">
                       <AnimatedCounter target={mockAnalyticsData.streak} />
                     </div>
-                    <div className="text-sm text-gray-600">Day Streak</div>
+                    <div className="text-sm text-muted-foreground">Day Streak</div>
                   </motion.div>
                   
                   <motion.div variants={itemVariants} className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                      <Star className="h-8 w-8 text-white" />
+                    <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-3">
+                      <Star className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">2,340</div>
-                    <div className="text-sm text-gray-600">XP Points</div>
+                    <div className="text-2xl font-bold text-foreground">2,340</div>
+                    <div className="text-sm text-muted-foreground">XP Points</div>
                   </motion.div>
                   
                   <motion.div variants={itemVariants} className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                      <Growth className="h-8 w-8 text-white" />
+                    <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-3">
+                      <Growth className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">Level 8</div>
-                    <div className="text-sm text-gray-600">Negotiator</div>
+                    <div className="text-2xl font-bold text-foreground">Level 8</div>
+                    <div className="text-sm text-muted-foreground">Negotiator</div>
                   </motion.div>
                 </div>
 
@@ -1560,7 +1507,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <Award className="h-5 w-5 text-amber-600" />
+                        <Award className="h-5 w-5 text-gold" />
                         <span>Your Achievements</span>
                       </CardTitle>
                     </CardHeader>
@@ -1587,40 +1534,40 @@ export default function AnalyticsDashboard() {
                       <CardTitle>Next Milestones</CardTitle>
                     </CardHeader>
                     <CardContent className="px-0 pb-0 space-y-4">
-                      <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200">
+                      <div className="p-4 bg-secondary rounded-xl border border-border">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-emerald-900">Savings Champion</h4>
-                          <span className="text-sm text-emerald-600">87% Complete</span>
+                          <h4 className="font-semibold text-foreground">Savings Champion</h4>
+                          <span className="text-sm text-muted-foreground">87% Complete</span>
                         </div>
-                        <p className="text-emerald-700 text-sm mb-3">Reach $50,000 in total savings</p>
-                        <div className="w-full bg-emerald-200 rounded-full h-2">
+                        <p className="text-muted-foreground text-sm mb-3">Reach $50,000 in total savings</p>
+                        <div className="w-full bg-background rounded-full h-2">
                           <motion.div
-                            className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full"
+                            className="bg-gold h-2 rounded-full"
                             initial={{ width: 0 }}
                             animate={{ width: "87%" }}
                             transition={{ duration: 2, delay: 0.5 }}
                           />
                         </div>
-                        <div className="text-xs text-emerald-600 mt-1">
+                        <div className="text-xs text-muted-foreground mt-1">
                           $6,350 remaining to unlock
                         </div>
                       </div>
                       
-                      <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+                      <div className="p-4 bg-secondary rounded-xl border border-border">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-purple-900">Master Negotiator</h4>
-                          <span className="text-sm text-purple-600">72% Complete</span>
+                          <h4 className="font-semibold text-foreground">Master Negotiator</h4>
+                          <span className="text-sm text-muted-foreground">72% Complete</span>
                         </div>
-                        <p className="text-purple-700 text-sm mb-3">Achieve 90%+ success rate</p>
-                        <div className="w-full bg-purple-200 rounded-full h-2">
+                        <p className="text-muted-foreground text-sm mb-3">Achieve 90%+ success rate</p>
+                        <div className="w-full bg-background rounded-full h-2">
                           <motion.div
-                            className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full"
+                            className="bg-gold h-2 rounded-full"
                             initial={{ width: 0 }}
                             animate={{ width: "72%" }}
                             transition={{ duration: 2, delay: 0.7 }}
                           />
                         </div>
-                        <div className="text-xs text-purple-600 mt-1">
+                        <div className="text-xs text-muted-foreground mt-1">
                           Need 3+ successful negotiations
                         </div>
                       </div>
@@ -1643,7 +1590,7 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <FileText className="h-5 w-5 text-blue-600" />
+                        <FileText className="h-5 w-5 text-gold" />
                         <span>Generate Reports</span>
                       </CardTitle>
                     </CardHeader>
@@ -1689,24 +1636,24 @@ export default function AnalyticsDashboard() {
                         ].map((report, index) => (
                           <motion.div
                             key={report.title}
-                            className={`p-4 bg-gradient-to-br from-${report.color}-50 to-${report.color}-100 rounded-xl border border-${report.color}-200 hover:shadow-lg transition-all duration-300 cursor-pointer group`}
+                            className="p-4 luxury-card rounded-xl hover:shadow-md transition-all duration-300 cursor-pointer group"
                             variants={itemVariants}
                             transition={{ delay: 0.1 * index }}
                             whileHover={{ scale: 1.02, y: -2 }}
                             data-testid={`report-${report.title.toLowerCase().replace(/\s+/g, '-')}`}
                           >
-                            <div className={`w-12 h-12 bg-gradient-to-br from-${report.color}-400 to-${report.color}-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-                              <report.icon className="h-6 w-6 text-white" />
+                            <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                              <report.icon className="h-6 w-6 text-muted-foreground" />
                             </div>
-                            <h4 className={`font-semibold text-${report.color}-900 mb-2`}>
+                            <h4 className="font-semibold text-foreground mb-2">
                               {report.title}
                             </h4>
-                            <p className={`text-${report.color}-700 text-sm`}>
+                            <p className="text-muted-foreground text-sm">
                               {report.description}
                             </p>
                             <Button 
                               size="sm" 
-                              className={`mt-3 w-full bg-${report.color}-500 hover:bg-${report.color}-600 text-white`}
+                              className="mt-3 w-full bg-primary hover:opacity-90 text-primary-foreground"
                             >
                               <Download className="h-4 w-4 mr-2" />
                               Download
@@ -1723,31 +1670,31 @@ export default function AnalyticsDashboard() {
                   <motion.div variants={itemVariants}>
                     <CardHeader className="px-0 pt-0">
                       <CardTitle className="flex items-center space-x-2">
-                        <Share2 className="h-5 w-5 text-green-600" />
+                        <Share2 className="h-5 w-5 text-gold" />
                         <span>Share Your Success</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="px-0 pb-0">
-                      <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white mb-4">
+                      <div className="rounded-2xl p-6 text-white mb-4" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                         <div className="text-center">
                           <div className="text-4xl font-bold mb-2">
                             ${mockAnalyticsData.totalSavings.toLocaleString()}
                           </div>
-                          <div className="text-emerald-100 mb-4">
+                          <div className="text-white/80 mb-4">
                             Total Savings This Year
                           </div>
                           <div className="grid grid-cols-3 gap-4 text-center">
                             <div>
                               <div className="text-2xl font-bold">{mockAnalyticsData.totalBills}</div>
-                              <div className="text-emerald-200 text-sm">Bills Processed</div>
+                              <div className="text-white/70 text-sm">Bills Processed</div>
                             </div>
                             <div>
                               <div className="text-2xl font-bold">{mockAnalyticsData.successRate}%</div>
-                              <div className="text-emerald-200 text-sm">Success Rate</div>
+                              <div className="text-white/70 text-sm">Success Rate</div>
                             </div>
                             <div>
                               <div className="text-2xl font-bold">{mockAnalyticsData.streak}</div>
-                              <div className="text-emerald-200 text-sm">Day Streak</div>
+                              <div className="text-white/70 text-sm">Day Streak</div>
                             </div>
                           </div>
                         </div>
@@ -1755,7 +1702,7 @@ export default function AnalyticsDashboard() {
                       
                       <div className="grid grid-cols-2 gap-4">
                         <Button 
-                          className="bg-blue-500 hover:bg-blue-600 text-white"
+                          className="bg-primary hover:opacity-90 text-primary-foreground"
                           data-testid="button-share-social"
                         >
                           <Share2 className="h-4 w-4 mr-2" />

@@ -199,9 +199,9 @@ export function MedicalImageViewer({
   const selectedFindingData = findings.find(f => f.id === selectedFinding);
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900" data-testid="medical-image-viewer">
+    <div className="flex flex-col h-screen bg-background" data-testid="medical-image-viewer">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-sm">
+      <div className="flex items-center justify-between p-4 bg-card border-b border-border shadow-sm">
         <div className="flex items-center space-x-4">
           <Badge variant="outline" className="text-xs font-medium">
             {image.imageType.toUpperCase()}
@@ -209,7 +209,7 @@ export function MedicalImageViewer({
           <Badge variant="outline" className="text-xs">
             {image.modality}
           </Badge>
-          <span className="text-sm text-gray-600 dark:text-gray-400">
+          <span className="text-sm text-muted-foreground">
             {image.bodyRegion}
           </span>
         </div>
@@ -221,7 +221,7 @@ export function MedicalImageViewer({
               {formatTime(timeElapsed)}
             </span>
             {timeLimit && (
-              <span className="text-gray-400">/ {formatTime(timeLimit * 60)}</span>
+              <span className="text-muted-foreground">/ {formatTime(timeLimit * 60)}</span>
             )}
           </div>
           
@@ -244,7 +244,7 @@ export function MedicalImageViewer({
         {/* Image Viewer */}
         <div className="flex-1 flex flex-col">
           {/* Toolbar */}
-          <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 border-b">
+          <div className="flex items-center justify-between p-3 bg-card border-b border-border">
             <div className="flex items-center space-x-2">
               <Button
                 variant={isAnnotating ? "default" : "outline"}
@@ -316,7 +316,7 @@ export function MedicalImageViewer({
                   animate={{ opacity: 1, scale: 1 }}
                   className={`absolute border-2 cursor-pointer ${
                     selectedFinding === finding.id 
-                      ? 'border-blue-500 bg-blue-500/20' 
+                      ? 'border-gold bg-yellow-400/10' 
                       : 'border-yellow-400 bg-yellow-400/20'
                   }`}
                   style={{
@@ -340,7 +340,7 @@ export function MedicalImageViewer({
               {/* Current Annotation */}
               {currentAnnotation && (
                 <div
-                  className="absolute border-2 border-dashed border-blue-500 bg-blue-500/20"
+                  className="absolute border-2 border-dashed border-gold bg-yellow-400/10"
                   style={{
                     left: `${currentAnnotation.x}%`,
                     top: `${currentAnnotation.y}%`,
@@ -375,12 +375,12 @@ export function MedicalImageViewer({
         </div>
 
         {/* Sidebar */}
-        <div className="w-80 bg-white dark:bg-gray-800 border-l overflow-y-auto">
+        <div className="w-80 bg-card border-l border-border overflow-y-auto">
           <div className="p-4 space-y-4">
             {/* Image Info */}
             <Card className="p-3">
               <h3 className="font-medium text-sm mb-2">{image.title}</h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-xs text-muted-foreground mb-2">
                 {image.description}
               </p>
               <div className="flex items-center justify-between text-xs">
@@ -390,7 +390,7 @@ export function MedicalImageViewer({
                     <div
                       key={i}
                       className={`w-2 h-2 rounded-full mr-1 ${
-                        i <= image.difficulty ? 'bg-orange-400' : 'bg-gray-200'
+                        i <= image.difficulty ? 'bg-orange-400' : 'bg-muted'
                       }`}
                     />
                   ))}
@@ -407,8 +407,8 @@ export function MedicalImageViewer({
                     key={finding.id}
                     className={`p-2 rounded border cursor-pointer transition-colors ${
                       selectedFinding === finding.id
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-gold bg-secondary'
+                        : 'border-border hover:border-gold'
                     }`}
                     onClick={() => setSelectedFinding(finding.id)}
                     data-testid={`finding-item-${finding.id}`}
@@ -428,7 +428,7 @@ export function MedicalImageViewer({
                         <XCircle className="w-3 h-3" />
                       </Button>
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       {finding.userDescription || "No description"}
                     </p>
                     <div className="flex items-center justify-between mt-1">
@@ -438,7 +438,7 @@ export function MedicalImageViewer({
                           <div
                             key={i}
                             className={`w-1.5 h-1.5 rounded-full mr-0.5 ${
-                              i <= finding.confidence ? 'bg-blue-400' : 'bg-gray-200'
+                              i <= finding.confidence ? 'bg-gold' : 'bg-muted'
                             }`}
                           />
                         ))}
@@ -485,8 +485,8 @@ export function MedicalImageViewer({
                           )}
                           className={`w-6 h-6 rounded-full transition-colors ${
                             i <= selectedFindingData.confidence
-                              ? 'bg-blue-500 text-white'
-                              : 'bg-gray-200 hover:bg-gray-300'
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-secondary hover:bg-muted'
                           }`}
                           data-testid={`button-confidence-${i}`}
                         >

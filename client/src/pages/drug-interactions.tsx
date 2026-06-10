@@ -186,7 +186,7 @@ export default function DrugInteractions() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-violet-50 to-indigo-50 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <SEOHead 
         title="Drug Interaction Checker - AI-Powered Medication Safety"
         description="Free AI drug interaction checker. Check prescription drug interactions, medication side effects, pill identification, and get detailed drug information. Powered by advanced pharmaceutical AI."
@@ -204,20 +204,20 @@ export default function DrugInteractions() {
         "Lisinopril interactions, metformin drug interactions, statin interactions",
         "Medication guide for elderly patients and those with kidney or liver disease"
       ]} />
-      <div className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-4 pt-12 pb-6">
+      <div className="bg-card border-b border-border px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">
           <Link href="/clinical-command-center">
-            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-secondary mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
               <ArrowLeft className="h-4 w-4 mr-1" /> Back
             </Button>
           </Link>
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center">
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Pill className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold" data-testid="heading-drug-interactions">AI Medication Assistant</h1>
-              <p className="text-white/80 text-xs">Check interactions & look up any medication</p>
+              <h1 className="text-xl font-bold font-serif text-foreground" data-testid="heading-drug-interactions">AI Medication Assistant</h1>
+              <p className="text-muted-foreground text-xs">Check interactions & look up any medication</p>
             </div>
           </div>
         </div>
@@ -249,7 +249,7 @@ export default function DrugInteractions() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Pill className="h-5 w-5 text-purple-600" />
+                  <Pill className="h-5 w-5 text-muted-foreground" />
                   Your Medications
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -266,7 +266,7 @@ export default function DrugInteractions() {
                     className="flex-1"
                     data-testid="input-medication"
                   />
-                  <Button onClick={addMed} className="bg-purple-600 hover:bg-purple-700" data-testid="button-add-med">
+                  <Button onClick={addMed} className="bg-primary text-primary-foreground hover:opacity-90" data-testid="button-add-med">
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
@@ -278,11 +278,11 @@ export default function DrugInteractions() {
                         key={i}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="flex items-center gap-1.5 bg-purple-100 text-purple-800 rounded-full px-3 py-1.5"
+                        className="flex items-center gap-1.5 bg-secondary text-foreground rounded-full px-3 py-1.5"
                       >
                         <Pill className="h-3 w-3" />
                         <span className="text-sm font-medium">{med}</span>
-                        <button onClick={() => removeMed(i)} className="text-purple-600 hover:text-purple-800 ml-1" data-testid={`button-remove-med-${i}`}>
+                        <button onClick={() => removeMed(i)} className="text-muted-foreground hover:text-foreground ml-1" data-testid={`button-remove-med-${i}`}>
                           <Trash2 className="h-3 w-3" />
                         </button>
                       </motion.div>
@@ -292,13 +292,13 @@ export default function DrugInteractions() {
 
                 {medications.length === 0 && (
                   <div className="pt-2">
-                    <p className="text-xs text-gray-500 mb-2">Quick add common medications:</p>
+                    <p className="text-xs text-muted-foreground mb-2">Quick add common medications:</p>
                     <div className="flex flex-wrap gap-1.5">
                       {COMMON_MEDS.slice(0, 8).map((med) => (
                         <button
                           key={med}
                           onClick={() => quickAdd(med)}
-                          className="text-xs bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 rounded-full px-2.5 py-1 transition-colors"
+                          className="text-xs bg-secondary hover:bg-muted text-muted-foreground hover:text-foreground rounded-full px-2.5 py-1 transition-colors"
                           data-testid={`button-quick-add-${med.toLowerCase()}`}
                         >
                           + {med}
@@ -311,7 +311,7 @@ export default function DrugInteractions() {
                 <Button
                   onClick={handleCheck}
                   disabled={medications.length < 2 || checkMutation.isPending}
-                  className="w-full bg-gradient-to-r from-purple-600 to-violet-600"
+                  className="w-full bg-primary text-primary-foreground"
                   data-testid="button-check-interactions"
                 >
                   {checkMutation.isPending ? (
@@ -334,18 +334,18 @@ export default function DrugInteractions() {
                     <Card>
                       <CardHeader className="pb-2">
                         <CardTitle className="text-base flex items-center gap-2">
-                          <FlaskConical className="h-4 w-4 text-purple-600" /> Medications Analyzed
+                          <FlaskConical className="h-4 w-4 text-muted-foreground" /> Medications Analyzed
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="pt-0">
                         <div className="space-y-2">
                           {result.medicationSummary.map((med, i) => (
                             <div key={i} className="flex items-start gap-2 text-sm">
-                              <Pill className="h-4 w-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <Pill className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                               <div>
                                 <span className="font-medium">{med.name}</span>
-                                <span className="text-gray-500"> - {med.drugClass}</span>
-                                <p className="text-xs text-gray-500">{med.primaryUse}</p>
+                                <span className="text-muted-foreground"> - {med.drugClass}</span>
+                                <p className="text-xs text-muted-foreground">{med.primaryUse}</p>
                               </div>
                             </div>
                           ))}
@@ -404,17 +404,17 @@ export default function DrugInteractions() {
                                 </Badge>
                               </div>
                               
-                              <p className="text-sm text-gray-700">{interaction.description}</p>
+                              <p className="text-sm text-foreground">{interaction.description}</p>
                               
                               <Accordion type="single" collapsible className="w-full">
                                 {interaction.mechanism && (
                                   <AccordionItem value="mechanism" className="border-0">
-                                    <AccordionTrigger className="py-2 text-xs font-semibold text-gray-600 hover:no-underline">
+                                    <AccordionTrigger className="py-2 text-xs font-semibold text-muted-foreground hover:no-underline">
                                       <div className="flex items-center gap-1.5">
                                         <Beaker className="h-3.5 w-3.5" /> Why This Happens
                                       </div>
                                     </AccordionTrigger>
-                                    <AccordionContent className="text-sm text-gray-700 bg-white/60 rounded-lg p-3">
+                                    <AccordionContent className="text-sm text-foreground bg-secondary rounded-lg p-3">
                                       {interaction.mechanism}
                                     </AccordionContent>
                                   </AccordionItem>
@@ -422,12 +422,12 @@ export default function DrugInteractions() {
                                 
                                 {interaction.clinicalEffects && (
                                   <AccordionItem value="effects" className="border-0">
-                                    <AccordionTrigger className="py-2 text-xs font-semibold text-gray-600 hover:no-underline">
+                                    <AccordionTrigger className="py-2 text-xs font-semibold text-muted-foreground hover:no-underline">
                                       <div className="flex items-center gap-1.5">
                                         <Activity className="h-3.5 w-3.5" /> What You Might Experience
                                       </div>
                                     </AccordionTrigger>
-                                    <AccordionContent className="text-sm text-gray-700 bg-white/60 rounded-lg p-3">
+                                    <AccordionContent className="text-sm text-foreground bg-secondary rounded-lg p-3">
                                       {interaction.clinicalEffects}
                                     </AccordionContent>
                                   </AccordionItem>
@@ -435,12 +435,12 @@ export default function DrugInteractions() {
                                 
                                 {interaction.management && (
                                   <AccordionItem value="management" className="border-0">
-                                    <AccordionTrigger className="py-2 text-xs font-semibold text-gray-600 hover:no-underline">
+                                    <AccordionTrigger className="py-2 text-xs font-semibold text-muted-foreground hover:no-underline">
                                       <div className="flex items-center gap-1.5">
                                         <Stethoscope className="h-3.5 w-3.5" /> What To Do
                                       </div>
                                     </AccordionTrigger>
-                                    <AccordionContent className="text-sm text-gray-700 bg-white/60 rounded-lg p-3">
+                                    <AccordionContent className="text-sm text-foreground bg-secondary rounded-lg p-3">
                                       {interaction.management}
                                     </AccordionContent>
                                   </AccordionItem>
@@ -448,12 +448,12 @@ export default function DrugInteractions() {
 
                                 {interaction.monitoring && (
                                   <AccordionItem value="monitoring" className="border-0">
-                                    <AccordionTrigger className="py-2 text-xs font-semibold text-gray-600 hover:no-underline">
+                                    <AccordionTrigger className="py-2 text-xs font-semibold text-muted-foreground hover:no-underline">
                                       <div className="flex items-center gap-1.5">
                                         <Clock className="h-3.5 w-3.5" /> Monitoring Needed
                                       </div>
                                     </AccordionTrigger>
-                                    <AccordionContent className="text-sm text-gray-700 bg-white/60 rounded-lg p-3">
+                                    <AccordionContent className="text-sm text-foreground bg-secondary rounded-lg p-3">
                                       {interaction.monitoring}
                                     </AccordionContent>
                                   </AccordionItem>
@@ -461,12 +461,12 @@ export default function DrugInteractions() {
 
                                 {interaction.alternatives && (
                                   <AccordionItem value="alternatives" className="border-0">
-                                    <AccordionTrigger className="py-2 text-xs font-semibold text-gray-600 hover:no-underline">
+                                    <AccordionTrigger className="py-2 text-xs font-semibold text-muted-foreground hover:no-underline">
                                       <div className="flex items-center gap-1.5">
                                         <Pill className="h-3.5 w-3.5" /> Possible Alternatives
                                       </div>
                                     </AccordionTrigger>
-                                    <AccordionContent className="text-sm text-gray-700 bg-white/60 rounded-lg p-3">
+                                    <AccordionContent className="text-sm text-foreground bg-secondary rounded-lg p-3">
                                       {interaction.alternatives}
                                     </AccordionContent>
                                   </AccordionItem>
@@ -480,13 +480,13 @@ export default function DrugInteractions() {
                   )}
 
                   {result.polypharmacyConcerns && (
-                    <Card className="border-blue-200 bg-blue-50">
+                    <Card className="border-border bg-secondary">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
-                          <FileWarning className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                          <FileWarning className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
                           <div>
-                            <h4 className="font-semibold text-blue-800 mb-1">Polypharmacy Consideration</h4>
-                            <p className="text-sm text-blue-700">{result.polypharmacyConcerns}</p>
+                            <h4 className="font-semibold text-foreground mb-1">Polypharmacy Consideration</h4>
+                            <p className="text-sm text-muted-foreground">{result.polypharmacyConcerns}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -497,13 +497,13 @@ export default function DrugInteractions() {
                     <Card>
                       <CardHeader className="pb-2">
                         <CardTitle className="text-base flex items-center gap-2">
-                          <Shield className="h-4 w-4 text-blue-600" /> Safety Tips
+                          <Shield className="h-4 w-4 text-muted-foreground" /> Safety Tips
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-1.5">
                           {result.safetyNotes.map((note, i) => (
-                            <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                            <li key={i} className="text-sm text-foreground flex items-start gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                               {note}
                             </li>
@@ -525,7 +525,7 @@ export default function DrugInteractions() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <BookOpen className="h-5 w-5 text-purple-600" />
+                  <BookOpen className="h-5 w-5 text-muted-foreground" />
                   Medication Lookup
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -542,20 +542,20 @@ export default function DrugInteractions() {
                     className="flex-1"
                     data-testid="input-single-drug"
                   />
-                  <Button onClick={handleLookup} disabled={lookupMutation.isPending} className="bg-purple-600 hover:bg-purple-700" data-testid="button-lookup-drug">
+                  <Button onClick={handleLookup} disabled={lookupMutation.isPending} className="bg-primary text-primary-foreground hover:opacity-90" data-testid="button-lookup-drug">
                     {lookupMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
                   </Button>
                 </div>
 
                 {!drugInfo && !lookupMutation.isPending && (
                   <div className="pt-2">
-                    <p className="text-xs text-gray-500 mb-2">Try searching for:</p>
+                    <p className="text-xs text-muted-foreground mb-2">Try searching for:</p>
                     <div className="flex flex-wrap gap-1.5">
                       {COMMON_MEDS.slice(0, 6).map((med) => (
                         <button
                           key={med}
                           onClick={() => { setSingleDrug(med); lookupMutation.mutate(med); }}
-                          className="text-xs bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 rounded-full px-2.5 py-1 transition-colors"
+                          className="text-xs bg-secondary hover:bg-muted text-muted-foreground hover:text-foreground rounded-full px-2.5 py-1 transition-colors"
                         >
                           {med}
                         </button>
@@ -573,12 +573,12 @@ export default function DrugInteractions() {
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-4"
                 >
-                  <Card className="border-purple-200">
-                    <CardHeader className="pb-3 bg-gradient-to-r from-purple-50 to-violet-50">
+                  <Card className="border-border">
+                    <CardHeader className="pb-3 bg-secondary">
                       <div className="flex items-start justify-between">
                         <div>
-                          <CardTitle className="text-xl text-purple-800">{drugInfo.genericName}</CardTitle>
-                          <CardDescription className="text-purple-600 font-medium">{drugInfo.drugClass}</CardDescription>
+                          <CardTitle className="text-xl text-foreground">{drugInfo.genericName}</CardTitle>
+                          <CardDescription className="text-muted-foreground font-medium">{drugInfo.drugClass}</CardDescription>
                         </div>
                         {drugInfo.deaSchedule && (
                           <Badge variant="outline" className="border-red-300 text-red-700">
@@ -615,10 +615,10 @@ export default function DrugInteractions() {
                       <AccordionItem value="mechanism" className="border rounded-lg px-4">
                         <AccordionTrigger className="text-sm font-semibold hover:no-underline">
                           <div className="flex items-center gap-2">
-                            <Brain className="h-4 w-4 text-purple-600" /> How It Works
+                            <Brain className="h-4 w-4 text-muted-foreground" /> How It Works
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent className="text-sm text-gray-700">
+                        <AccordionContent className="text-sm text-foreground">
                           {drugInfo.mechanismOfAction}
                         </AccordionContent>
                       </AccordionItem>
@@ -646,7 +646,7 @@ export default function DrugInteractions() {
                       <AccordionItem value="dosing" className="border rounded-lg px-4">
                         <AccordionTrigger className="text-sm font-semibold hover:no-underline">
                           <div className="flex items-center gap-2">
-                            <Pill className="h-4 w-4 text-blue-500" /> Dosing Information
+                            <Pill className="h-4 w-4 text-muted-foreground" /> Dosing Information
                           </div>
                         </AccordionTrigger>
                         <AccordionContent>
@@ -712,12 +712,12 @@ export default function DrugInteractions() {
                               </div>
                             )}
                             <div className="grid grid-cols-2 gap-3 mt-3">
-                              <div className="bg-pink-50 p-2 rounded">
-                                <p className="font-semibold text-pink-700 text-xs">Pregnancy</p>
+                              <div className="bg-secondary p-2 rounded">
+                                <p className="font-semibold text-muted-foreground text-xs">Pregnancy</p>
                                 <p className="text-xs">{drugInfo.precautions.pregnancy}</p>
                               </div>
-                              <div className="bg-blue-50 p-2 rounded">
-                                <p className="font-semibold text-blue-700 text-xs">Breastfeeding</p>
+                              <div className="bg-secondary p-2 rounded">
+                                <p className="font-semibold text-muted-foreground text-xs">Breastfeeding</p>
                                 <p className="text-xs">{drugInfo.precautions.breastfeeding}</p>
                               </div>
                             </div>
@@ -728,7 +728,7 @@ export default function DrugInteractions() {
                       <AccordionItem value="interactions" className="border rounded-lg px-4">
                         <AccordionTrigger className="text-sm font-semibold hover:no-underline">
                           <div className="flex items-center gap-2">
-                            <Beaker className="h-4 w-4 text-purple-500" /> Drug Interactions
+                            <Beaker className="h-4 w-4 text-muted-foreground" /> Drug Interactions
                           </div>
                         </AccordionTrigger>
                         <AccordionContent>
@@ -766,11 +766,11 @@ export default function DrugInteractions() {
                               </li>
                             ))}
                             <li className="flex items-start gap-2">
-                              <Clock className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                              <Clock className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                               <span><strong>Missed Dose:</strong> {drugInfo.missedDose}</span>
                             </li>
                             <li className="flex items-start gap-2">
-                              <Info className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <Info className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                               <span><strong>Storage:</strong> {drugInfo.storage}</span>
                             </li>
                           </ul>
@@ -780,7 +780,7 @@ export default function DrugInteractions() {
                       <AccordionItem value="monitoring" className="border rounded-lg px-4">
                         <AccordionTrigger className="text-sm font-semibold hover:no-underline">
                           <div className="flex items-center gap-2">
-                            <Activity className="h-4 w-4 text-blue-500" /> Monitoring Required
+                            <Activity className="h-4 w-4 text-muted-foreground" /> Monitoring Required
                           </div>
                         </AccordionTrigger>
                         <AccordionContent>
@@ -811,8 +811,8 @@ export default function DrugInteractions() {
                     </Accordion>
                   </ScrollArea>
 
-                  <Card className="border-gray-200 bg-gray-50">
-                    <CardContent className="p-3 text-xs text-gray-600">
+                  <Card className="border-border bg-secondary">
+                    <CardContent className="p-3 text-xs text-muted-foreground">
                       <strong>Disclaimer:</strong> {drugInfo.disclaimer}
                     </CardContent>
                   </Card>

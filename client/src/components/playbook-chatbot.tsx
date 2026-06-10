@@ -65,13 +65,13 @@ function formatMessageContent(content: string): JSX.Element {
   lines.forEach((line, index) => {
     if (line.startsWith('## ')) {
       elements.push(
-        <h2 key={index} className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2">
+        <h2 key={index} className="text-lg font-bold text-foreground mt-4 mb-2">
           {line.replace('## ', '')}
         </h2>
       );
     } else if (line.startsWith('### ')) {
       elements.push(
-        <h3 key={index} className="text-md font-semibold text-gray-800 dark:text-gray-200 mt-3 mb-1">
+        <h3 key={index} className="text-md font-semibold text-foreground mt-3 mb-1">
           {line.replace('### ', '')}
         </h3>
       );
@@ -80,11 +80,11 @@ function formatMessageContent(content: string): JSX.Element {
       const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       elements.push(
         <div key={index} className="flex items-start gap-2 ml-2 my-1">
-          <span className="bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+          <span className="text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             {line.match(/^(\d+)\./)?.[1]}
           </span>
           <span 
-            className="text-gray-700 dark:text-gray-300"
+            className="text-foreground"
             dangerouslySetInnerHTML={{ __html: formattedText }}
           />
         </div>
@@ -94,9 +94,9 @@ function formatMessageContent(content: string): JSX.Element {
       const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       elements.push(
         <div key={index} className="flex items-start gap-2 ml-4 my-1">
-          <span className="text-emerald-500 mt-1">•</span>
+          <span className="text-gold mt-1">•</span>
           <span 
-            className="text-gray-700 dark:text-gray-300"
+            className="text-foreground"
             dangerouslySetInnerHTML={{ __html: formattedText }}
           />
         </div>
@@ -106,7 +106,7 @@ function formatMessageContent(content: string): JSX.Element {
       elements.push(
         <p 
           key={index} 
-          className="text-gray-700 dark:text-gray-300 my-1"
+          className="text-foreground my-1"
           dangerouslySetInnerHTML={{ __html: formattedText }}
         />
       );
@@ -114,7 +114,7 @@ function formatMessageContent(content: string): JSX.Element {
       elements.push(<div key={index} className="h-2" />);
     } else {
       elements.push(
-        <p key={index} className="text-gray-700 dark:text-gray-300 my-1">
+        <p key={index} className="text-foreground my-1">
           {line}
         </p>
       );
@@ -205,12 +205,12 @@ export function PlaybookChatbot() {
   };
 
   return (
-    <Card className="bg-white dark:bg-gray-800 border-2 border-emerald-200 dark:border-emerald-700">
-      <CardHeader className="bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-t-lg py-4">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <Bot className="h-6 w-6" />
+    <Card className="bg-card border border-border">
+      <CardHeader className="bg-card border-b border-border rounded-t-lg py-4">
+        <CardTitle className="flex items-center gap-2 text-lg font-serif text-foreground">
+          <Bot className="h-6 w-6 text-gold" />
           Pre-Collections Bill Defense AI
-          <Badge className="bg-white/20 text-white ml-2">Live Help</Badge>
+          <Badge className="bg-secondary text-muted-foreground ml-2">Live Help</Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
@@ -223,34 +223,33 @@ export function PlaybookChatbot() {
                 message.role === "user" ? "flex-row-reverse" : ""
               }`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                message.role === "user" 
-                  ? "bg-blue-500" 
-                  : "bg-gradient-to-r from-emerald-500 to-green-600"
-              }`}>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-secondary"
+                style={message.role === "user" ? undefined : { background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+              >
                 {message.role === "user" ? (
-                  <User className="h-4 w-4 text-white" />
+                  <User className="h-4 w-4 text-muted-foreground" />
                 ) : (
                   <Bot className="h-4 w-4 text-white" />
                 )}
               </div>
               <div className={`max-w-[80%] rounded-lg p-3 relative group ${
                 message.role === "user"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-100 dark:bg-gray-700"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary"
               }`}>
                 {message.role === "assistant" ? (
                   <>
                     {formatMessageContent(message.content)}
                     <button
                       onClick={() => copyMessage(message.content, index)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-muted"
                       title="Copy message"
                     >
                       {copiedIndex === index ? (
-                        <Check className="h-4 w-4 text-green-500" />
+                        <Check className="h-4 w-4 text-emerald-600" />
                       ) : (
-                        <Copy className="h-4 w-4 text-gray-500" />
+                        <Copy className="h-4 w-4 text-muted-foreground" />
                       )}
                     </button>
                   </>
@@ -263,17 +262,17 @@ export function PlaybookChatbot() {
           
           {isLoading && (
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                 <Bot className="h-4 w-4 text-white" />
               </div>
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+              <div className="bg-secondary rounded-lg p-3">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    <span className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                   </div>
-                  <span className="text-sm text-gray-500">Analyzing your situation...</span>
+                  <span className="text-sm text-muted-foreground">Analyzing your situation...</span>
                 </div>
               </div>
             </div>
@@ -285,7 +284,7 @@ export function PlaybookChatbot() {
         {/* Suggested Questions */}
         {messages.length <= 1 && (
           <div className="px-4 pb-4">
-            <p className="text-xs text-gray-500 mb-2">Quick questions:</p>
+            <p className="text-xs text-muted-foreground mb-2">Quick questions:</p>
             <div className="grid grid-cols-2 gap-2">
               {suggestedQuestions.map((question, index) => {
                 const IconComponent = question.icon;
@@ -293,13 +292,13 @@ export function PlaybookChatbot() {
                   <button
                     key={index}
                     onClick={() => handleSuggestedQuestion(question.text)}
-                    className="flex items-start gap-2 p-2 text-left text-xs bg-gray-50 dark:bg-gray-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg transition-colors border border-gray-200 dark:border-gray-600"
+                    className="flex items-start gap-2 p-2 text-left text-xs bg-card hover:bg-secondary rounded-lg transition-colors border border-border"
                     disabled={isLoading}
                   >
-                    <div className="p-1 bg-gradient-to-r from-emerald-500 to-green-600 rounded flex-shrink-0">
-                      <IconComponent className="h-3 w-3 text-white" />
+                    <div className="p-1 bg-secondary rounded flex-shrink-0">
+                      <IconComponent className="h-3 w-3 text-muted-foreground" />
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300 line-clamp-2">{question.text}</span>
+                    <span className="text-foreground line-clamp-2">{question.text}</span>
                   </button>
                 );
               })}
@@ -308,7 +307,7 @@ export function PlaybookChatbot() {
         )}
 
         {/* Input Area */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-t border-border">
           <div className="flex gap-2">
             <Textarea
               value={input}
@@ -326,7 +325,7 @@ export function PlaybookChatbot() {
             <Button
               onClick={() => sendMessage()}
               disabled={!input.trim() || isLoading}
-              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-4"
+              className="bg-primary text-primary-foreground px-4"
             >
               {isLoading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -335,8 +334,8 @@ export function PlaybookChatbot() {
               )}
             </Button>
           </div>
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            For complex cases, email <a href="mailto:CONTACT@GOLDROCK.ai" className="text-emerald-600 hover:underline">CONTACT@GOLDROCK.ai</a>
+          <p className="text-xs text-muted-foreground mt-2 text-center">
+            For complex cases, email <a href="mailto:CONTACT@GOLDROCK.ai" className="text-gold hover:underline">CONTACT@GOLDROCK.ai</a>
           </p>
         </div>
       </CardContent>

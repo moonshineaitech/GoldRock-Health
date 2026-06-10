@@ -53,9 +53,9 @@ function CreateApiKeyForm({ onClose }: { onClose: () => void }) {
         </div>
 
         <div>
-          <Label className="text-xs text-gray-500">API Key</Label>
-          <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-2">
-            <code className="text-xs font-mono text-gray-800 flex-1 break-all">{createdKey.apiKey}</code>
+          <Label className="text-xs text-muted-foreground">API Key</Label>
+          <div className="flex items-center gap-2 bg-secondary rounded-lg p-2">
+            <code className="text-xs font-mono text-foreground flex-1 break-all">{createdKey.apiKey}</code>
             <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => { navigator.clipboard.writeText(createdKey.apiKey); toast({ title: "Copied API Key" }); }}>
               <Copy className="w-3 h-3" />
             </Button>
@@ -63,7 +63,7 @@ function CreateApiKeyForm({ onClose }: { onClose: () => void }) {
         </div>
 
         <div>
-          <Label className="text-xs text-gray-500">API Secret (shown once only)</Label>
+          <Label className="text-xs text-muted-foreground">API Secret (shown once only)</Label>
           <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg p-2">
             <code className="text-xs font-mono text-red-800 flex-1 break-all">{createdKey.apiSecret}</code>
             <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => { navigator.clipboard.writeText(createdKey.apiSecret); toast({ title: "Copied API Secret" }); }}>
@@ -74,9 +74,9 @@ function CreateApiKeyForm({ onClose }: { onClose: () => void }) {
 
         {createdKey.webhookSecret && (
           <div>
-            <Label className="text-xs text-gray-500">Webhook Secret</Label>
-            <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-2">
-              <code className="text-xs font-mono text-gray-800 flex-1 break-all">{createdKey.webhookSecret}</code>
+            <Label className="text-xs text-muted-foreground">Webhook Secret</Label>
+            <div className="flex items-center gap-2 bg-secondary rounded-lg p-2">
+              <code className="text-xs font-mono text-foreground flex-1 break-all">{createdKey.webhookSecret}</code>
               <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => { navigator.clipboard.writeText(createdKey.webhookSecret); toast({ title: "Copied Webhook Secret" }); }}>
                 <Copy className="w-3 h-3" />
               </Button>
@@ -109,14 +109,14 @@ function CreateApiKeyForm({ onClose }: { onClose: () => void }) {
       <div>
         <Label>Webhook URL (optional)</Label>
         <Input placeholder="https://your-app.com/webhook" value={form.webhookUrl} onChange={(e) => setForm({ ...form, webhookUrl: e.target.value })} />
-        <p className="text-[10px] text-gray-400 mt-1">We'll sign webhook payloads with HMAC-SHA256 for verification</p>
+        <p className="text-[10px] text-muted-foreground mt-1">We'll sign webhook payloads with HMAC-SHA256 for verification</p>
       </div>
       <div>
         <Label>IP Whitelist (optional, comma-separated)</Label>
         <Input placeholder="e.g., 203.0.113.5, 198.51.100.0" value={form.allowedIps} onChange={(e) => setForm({ ...form, allowedIps: e.target.value })} />
-        <p className="text-[10px] text-gray-400 mt-1">Restrict API access to specific IP addresses</p>
+        <p className="text-[10px] text-muted-foreground mt-1">Restrict API access to specific IP addresses</p>
       </div>
-      <Button className="w-full bg-slate-800 hover:bg-slate-900" onClick={() => create.mutate(form)} disabled={create.isPending || !form.partnerName}>
+      <Button className="w-full bg-primary text-primary-foreground hover:opacity-90" onClick={() => create.mutate(form)} disabled={create.isPending || !form.partnerName}>
         {create.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Key className="w-4 h-4 mr-2" />}
         Generate Secure API Key
       </Button>
@@ -162,8 +162,8 @@ function ApiKeyCard({ apiKey }: { apiKey: any }) {
             <h3 className="text-sm font-bold text-amber-800">New Key Created - Save Now</h3>
           </div>
           <div>
-            <Label className="text-xs text-gray-500">New API Key</Label>
-            <div className="flex items-center gap-2 bg-white rounded p-2">
+            <Label className="text-xs text-muted-foreground">New API Key</Label>
+            <div className="flex items-center gap-2 bg-card rounded p-2">
               <code className="text-xs font-mono flex-1 break-all">{rotatedKey.apiKey}</code>
               <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => { navigator.clipboard.writeText(rotatedKey.apiKey); toast({ title: "Copied" }); }}>
                 <Copy className="w-3 h-3" />
@@ -171,7 +171,7 @@ function ApiKeyCard({ apiKey }: { apiKey: any }) {
             </div>
           </div>
           <div>
-            <Label className="text-xs text-gray-500">New API Secret (shown once only)</Label>
+            <Label className="text-xs text-muted-foreground">New API Secret (shown once only)</Label>
             <div className="flex items-center gap-2 bg-white border border-red-200 rounded p-2">
               <code className="text-xs font-mono text-red-800 flex-1 break-all">{rotatedKey.apiSecret}</code>
               <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => { navigator.clipboard.writeText(rotatedKey.apiSecret); toast({ title: "Copied" }); }}>
@@ -186,49 +186,49 @@ function ApiKeyCard({ apiKey }: { apiKey: any }) {
   }
 
   return (
-    <Card className="border-gray-200">
+    <Card className="border-border">
       <CardContent className="py-4">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">{apiKey.partnerName}</h3>
-            <Badge className={apiKey.isActive ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-700"}>
+            <h3 className="text-sm font-semibold text-foreground">{apiKey.partnerName}</h3>
+            <Badge className={apiKey.isActive ? "bg-emerald-100 text-emerald-700" : "bg-secondary text-foreground"}>
               {apiKey.isActive ? "Active" : "Inactive"}
             </Badge>
           </div>
           <Badge variant="outline" className="capitalize">{apiKey.tier}</Badge>
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-2 mb-3 flex items-center gap-2">
-          <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
-          <code className="text-xs text-gray-600 flex-1 font-mono">{showKey ? apiKey.apiKey : `${apiKey.apiKey.substring(0, 8)}${"•".repeat(30)}`}</code>
+        <div className="bg-secondary rounded-lg p-2 mb-3 flex items-center gap-2">
+          <Lock className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+          <code className="text-xs text-muted-foreground flex-1 font-mono">{showKey ? apiKey.apiKey : `${apiKey.apiKey.substring(0, 8)}${"•".repeat(30)}`}</code>
           <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => setShowKey(!showKey)}>
             {showKey ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
           </Button>
         </div>
 
         <div className="grid grid-cols-3 gap-2 text-center mb-3">
-          <div className="bg-blue-50 rounded p-1.5">
-            <p className="text-[10px] text-gray-500">Total Requests</p>
-            <p className="text-xs font-bold text-blue-700">{(apiKey.usageCount || 0).toLocaleString()}</p>
+          <div className="bg-secondary rounded p-1.5">
+            <p className="text-[10px] text-muted-foreground">Total Requests</p>
+            <p className="text-xs font-bold text-foreground">{(apiKey.usageCount || 0).toLocaleString()}</p>
           </div>
-          <div className="bg-emerald-50 rounded p-1.5">
-            <p className="text-[10px] text-gray-500">This Month</p>
-            <p className="text-xs font-bold text-emerald-700">{(apiKey.monthlyUsageCount || 0).toLocaleString()}</p>
+          <div className="bg-secondary rounded p-1.5">
+            <p className="text-[10px] text-muted-foreground">This Month</p>
+            <p className="text-xs font-bold text-foreground">{(apiKey.monthlyUsageCount || 0).toLocaleString()}</p>
           </div>
-          <div className="bg-gray-50 rounded p-1.5">
-            <p className="text-[10px] text-gray-500">Rate Limit</p>
+          <div className="bg-secondary rounded p-1.5">
+            <p className="text-[10px] text-muted-foreground">Rate Limit</p>
             <p className="text-xs font-bold">{apiKey.rateLimitPerMinute}/min</p>
           </div>
         </div>
 
         {apiKey.monthlyRequestQuota && (
           <div className="mb-3">
-            <div className="flex justify-between text-[10px] text-gray-500 mb-1">
+            <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
               <span>Monthly quota</span>
               <span>{(apiKey.monthlyUsageCount || 0).toLocaleString()} / {apiKey.monthlyRequestQuota.toLocaleString()}</span>
             </div>
-            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: `${Math.min(100, ((apiKey.monthlyUsageCount || 0) / apiKey.monthlyRequestQuota) * 100)}%` }} />
+            <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+              <div className="h-full bg-gold rounded-full transition-all" style={{ width: `${Math.min(100, ((apiKey.monthlyUsageCount || 0) / apiKey.monthlyRequestQuota) * 100)}%` }} />
             </div>
           </div>
         )}
@@ -282,7 +282,7 @@ const PRICING_TIERS = [
     perRequest: "$0.00",
     features: ["Bill analysis", "Price comparison", "Basic templates", "Community support"],
     bestFor: "Testing & prototyping",
-    color: "border-gray-200",
+    color: "border-border",
   },
   {
     tier: "Professional",
@@ -292,7 +292,7 @@ const PRICING_TIERS = [
     perRequest: "$0.005",
     features: ["Everything in Basic", "Custom templates", "Webhook notifications", "IP whitelisting", "Usage analytics", "Priority email support", "99.9% SLA"],
     bestFor: "Growing platforms & apps",
-    color: "border-blue-300",
+    color: "border-gold",
     popular: true,
   },
   {
@@ -303,7 +303,7 @@ const PRICING_TIERS = [
     perRequest: "Volume discount",
     features: ["Everything in Professional", "Dedicated infrastructure", "Custom SLA", "White-label option", "Dedicated account manager", "Custom integrations", "On-premise option"],
     bestFor: "Insurance companies & large platforms",
-    color: "border-purple-300",
+    color: "border-border",
   },
 ];
 
@@ -320,15 +320,15 @@ export default function PartnerApi() {
   return (
     <MobileLayout title="Partner API">
       <div className="space-y-6 pb-20">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white">
-          <Code2 className="w-8 h-8 mb-2 text-slate-300" />
-          <h2 className="text-xl font-bold mb-1">Developer API</h2>
-          <p className="text-slate-300 text-sm mb-3">Embed GoldRock Health's AI-powered bill analysis engine into your applications. Built for insurance companies, benefits platforms, patient advocacy organizations, and healthtech startups.</p>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="luxury-card rounded-2xl p-6">
+          <Code2 className="w-8 h-8 mb-2 text-gold" />
+          <h2 className="text-xl font-bold font-serif text-foreground mb-1">Developer API</h2>
+          <p className="text-muted-foreground text-sm mb-3">Embed GoldRock Health's AI-powered bill analysis engine into your applications. Built for insurance companies, benefits platforms, patient advocacy organizations, and healthtech startups.</p>
           <div className="flex flex-wrap gap-2">
-            <Badge className="bg-slate-700 text-slate-200 text-[10px]"><ShieldCheck className="w-3 h-3 mr-1" />SHA-256 Hashed Secrets</Badge>
-            <Badge className="bg-slate-700 text-slate-200 text-[10px]"><Server className="w-3 h-3 mr-1" />TLS 1.3 Encrypted</Badge>
-            <Badge className="bg-slate-700 text-slate-200 text-[10px]"><Activity className="w-3 h-3 mr-1" />Real-time Rate Limiting</Badge>
+            <Badge className="bg-secondary text-muted-foreground text-[10px]"><ShieldCheck className="w-3 h-3 mr-1" />SHA-256 Hashed Secrets</Badge>
+            <Badge className="bg-secondary text-muted-foreground text-[10px]"><Server className="w-3 h-3 mr-1" />TLS 1.3 Encrypted</Badge>
+            <Badge className="bg-secondary text-muted-foreground text-[10px]"><Activity className="w-3 h-3 mr-1" />Real-time Rate Limiting</Badge>
           </div>
         </motion.div>
 
@@ -341,10 +341,10 @@ export default function PartnerApi() {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
-            <Card className="bg-emerald-50 border-emerald-200">
+            <Card className="bg-card border-border">
               <CardContent className="py-4">
-                <h3 className="text-sm font-bold text-emerald-800 mb-2 flex items-center gap-2"><TrendingUp className="w-4 h-4" />What the API Does for Partners</h3>
-                <p className="text-xs text-emerald-700 mb-3">Our API lets other companies offer medical bill reduction to their users without building the technology themselves. Instead of spending 12-18 months and $500K+ building an analysis engine, they call our API and get results in milliseconds.</p>
+                <h3 className="text-sm font-bold font-serif text-foreground mb-2 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-gold" />What the API Does for Partners</h3>
+                <p className="text-xs text-muted-foreground mb-3">Our API lets other companies offer medical bill reduction to their users without building the technology themselves. Instead of spending 12-18 months and $500K+ building an analysis engine, they call our API and get results in milliseconds.</p>
                 <div className="space-y-2">
                   {[
                     { label: "Insurance Companies", desc: "Help policyholders understand their bills and reduce disputes", icon: Shield },
@@ -352,11 +352,11 @@ export default function PartnerApi() {
                     { label: "Patient Advocacy Orgs", desc: "Scale their dispute resolution with AI-powered analysis", icon: FileText },
                     { label: "Healthtech Startups", desc: "Build bill reduction features without hiring a medical billing team", icon: Zap },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-2 bg-white rounded-lg p-2">
-                      <item.icon className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                    <div key={i} className="flex items-start gap-2 bg-secondary rounded-lg p-2">
+                      <item.icon className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-xs font-medium text-gray-800">{item.label}</p>
-                        <p className="text-[10px] text-gray-500">{item.desc}</p>
+                        <p className="text-xs font-medium text-foreground">{item.label}</p>
+                        <p className="text-[10px] text-muted-foreground">{item.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -366,26 +366,26 @@ export default function PartnerApi() {
 
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: Zap, label: "Bill Analysis", desc: "AI grading, savings estimates, issue detection", color: "text-amber-600", bg: "bg-amber-50", cost: "$0.15/call" },
-                { icon: Database, label: "Price Comparison", desc: "Regional price data for any CPT code", color: "text-blue-600", bg: "bg-blue-50", cost: "$0.02/call" },
-                { icon: FileText, label: "Template Generation", desc: "Dispute letters, appeal letters, hardship apps", color: "text-purple-600", bg: "bg-purple-50", cost: "$0.08/call" },
-                { icon: Shield, label: "Legal Rights", desc: "State-specific patient protections database", color: "text-emerald-600", bg: "bg-emerald-50", cost: "$0.01/call" },
+                { icon: Zap, label: "Bill Analysis", desc: "AI grading, savings estimates, issue detection", color: "text-muted-foreground", bg: "bg-secondary", cost: "$0.15/call" },
+                { icon: Database, label: "Price Comparison", desc: "Regional price data for any CPT code", color: "text-muted-foreground", bg: "bg-secondary", cost: "$0.02/call" },
+                { icon: FileText, label: "Template Generation", desc: "Dispute letters, appeal letters, hardship apps", color: "text-muted-foreground", bg: "bg-secondary", cost: "$0.08/call" },
+                { icon: Shield, label: "Legal Rights", desc: "State-specific patient protections database", color: "text-muted-foreground", bg: "bg-secondary", cost: "$0.01/call" },
               ].map((e, i) => (
-                <Card key={i} className={`${e.bg} border-none`}>
+                <Card key={i} className={`${e.bg} border border-border`}>
                   <CardContent className="py-3">
                     <e.icon className={`w-5 h-5 ${e.color} mb-1`} />
                     <p className="text-sm font-medium">{e.label}</p>
-                    <p className="text-[10px] text-gray-500 mb-1">{e.desc}</p>
+                    <p className="text-[10px] text-muted-foreground mb-1">{e.desc}</p>
                     <Badge variant="outline" className="text-[9px]">{e.cost}</Badge>
                   </CardContent>
                 </Card>
               ))}
             </div>
 
-            <Card className="border-blue-200 bg-blue-50">
+            <Card className="border-border bg-card">
               <CardContent className="py-4">
-                <h3 className="text-sm font-bold text-blue-800 mb-2 flex items-center gap-2"><ShieldCheck className="w-4 h-4" />Security Architecture</h3>
-                <div className="space-y-2 text-xs text-blue-700">
+                <h3 className="text-sm font-bold font-serif text-foreground mb-2 flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-gold" />Security Architecture</h3>
+                <div className="space-y-2 text-xs text-muted-foreground">
                   <div className="flex items-start gap-2">
                     <Lock className="w-3 h-3 mt-0.5 flex-shrink-0" />
                     <div><span className="font-medium">Hashed Secrets:</span> API secrets are SHA-256 hashed before storage. We never store or log plaintext secrets. Shown once at creation, then irretrievable.</div>
@@ -414,7 +414,7 @@ export default function PartnerApi() {
           <TabsContent value="keys" className="space-y-4">
             <Dialog open={createOpen} onOpenChange={setCreateOpen}>
               <DialogTrigger asChild>
-                <Button className="w-full bg-slate-800 hover:bg-slate-900">
+                <Button className="w-full bg-primary text-primary-foreground hover:opacity-90">
                   <Plus className="w-4 h-4 mr-2" />Create New API Key
                 </Button>
               </DialogTrigger>
@@ -426,15 +426,15 @@ export default function PartnerApi() {
 
             {isLoading ? (
               <div className="flex justify-center py-8">
-                <Loader2 className="w-8 h-8 animate-spin text-slate-600" />
+                <Loader2 className="w-8 h-8 animate-spin text-gold" />
               </div>
             ) : apiKeys.length === 0 ? (
-              <Card className="bg-gray-50 border-dashed">
+              <Card className="bg-secondary border-dashed">
                 <CardContent className="py-8 text-center">
-                  <Key className="w-10 h-10 mx-auto text-gray-300 mb-2" />
-                  <h3 className="font-semibold text-gray-700 mb-1">No API keys yet</h3>
-                  <p className="text-sm text-gray-500 mb-2">Create your first API key to start integrating</p>
-                  <p className="text-[10px] text-gray-400">Keys are secured with SHA-256 hashing. Secrets shown once at creation.</p>
+                  <Key className="w-10 h-10 mx-auto text-muted-foreground mb-2" />
+                  <h3 className="font-semibold text-foreground mb-1">No API keys yet</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Create your first API key to start integrating</p>
+                  <p className="text-[10px] text-muted-foreground">Keys are secured with SHA-256 hashing. Secrets shown once at creation.</p>
                 </CardContent>
               </Card>
             ) : (
@@ -443,10 +443,10 @@ export default function PartnerApi() {
               </div>
             )}
 
-            <Card className="bg-gray-50">
+            <Card className="bg-secondary">
               <CardContent className="py-3">
-                <h4 className="text-xs font-medium text-gray-700 mb-2">Key Management Best Practices</h4>
-                <ul className="space-y-1 text-[10px] text-gray-500">
+                <h4 className="text-xs font-medium text-foreground mb-2">Key Management Best Practices</h4>
+                <ul className="space-y-1 text-[10px] text-muted-foreground">
                   <li className="flex items-start gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-500 mt-0.5 flex-shrink-0" />Store API secrets in environment variables, never in code</li>
                   <li className="flex items-start gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-500 mt-0.5 flex-shrink-0" />Use IP whitelisting in production to prevent unauthorized access</li>
                   <li className="flex items-start gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-500 mt-0.5 flex-shrink-0" />Rotate keys every 90 days as a security best practice</li>
@@ -457,31 +457,31 @@ export default function PartnerApi() {
           </TabsContent>
 
           <TabsContent value="pricing" className="space-y-4">
-            <Card className="bg-gradient-to-r from-emerald-50 to-blue-50 border-emerald-200">
+            <Card className="bg-card border-border">
               <CardContent className="py-4">
-                <DollarSign className="w-6 h-6 text-emerald-600 mb-2" />
-                <h3 className="text-sm font-bold text-gray-800 mb-1">Revenue Model: Pay-Per-Analysis + Subscription</h3>
-                <p className="text-xs text-gray-600">Partners pay a base subscription for capacity, plus per-request fees for premium endpoints. Our AI costs ~$0.003/request to run, while we charge $0.02-$0.15 per call - that's 5x-50x margin on every request.</p>
+                <DollarSign className="w-6 h-6 text-gold mb-2" />
+                <h3 className="text-sm font-bold font-serif text-foreground mb-1">Revenue Model: Pay-Per-Analysis + Subscription</h3>
+                <p className="text-xs text-muted-foreground">Partners pay a base subscription for capacity, plus per-request fees for premium endpoints. Our AI costs ~$0.003/request to run, while we charge $0.02-$0.15 per call - that's 5x-50x margin on every request.</p>
               </CardContent>
             </Card>
 
             {PRICING_TIERS.map((t) => (
-              <Card key={t.tier} className={`${t.color} ${t.popular ? 'ring-2 ring-blue-400' : ''}`}>
+              <Card key={t.tier} className={`${t.color} ${t.popular ? 'shadow-md' : ''}`}>
                 <CardContent className="py-4">
-                  {t.popular && <Badge className="bg-blue-600 text-white text-[10px] mb-2">Most Popular</Badge>}
+                  {t.popular && <Badge className="text-white text-[10px] mb-2" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>Most Popular</Badge>}
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <h3 className="font-bold text-gray-800">{t.tier}</h3>
-                      <p className="text-[10px] text-gray-500">{t.bestFor}</p>
+                      <h3 className="font-bold text-foreground">{t.tier}</h3>
+                      <p className="text-[10px] text-muted-foreground">{t.bestFor}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-blue-600">{t.monthlyPrice}</p>
-                      <p className="text-[10px] text-gray-400">/month</p>
+                      <p className="text-lg font-bold text-foreground">{t.monthlyPrice}</p>
+                      <p className="text-[10px] text-muted-foreground">/month</p>
                     </div>
                   </div>
-                  <p className="text-[10px] text-gray-500 mb-2">{t.limits}</p>
+                  <p className="text-[10px] text-muted-foreground mb-2">{t.limits}</p>
                   {t.perRequest !== "Volume discount" && (
-                    <p className="text-[10px] text-gray-500 mb-2">+ {t.perRequest} per request over quota</p>
+                    <p className="text-[10px] text-muted-foreground mb-2">+ {t.perRequest} per request over quota</p>
                   )}
                   <div className="flex flex-wrap gap-1">
                     {t.features.map((f, i) => (
@@ -494,8 +494,8 @@ export default function PartnerApi() {
 
             <Card className="bg-amber-50 border-amber-200">
               <CardContent className="py-4">
-                <h4 className="text-sm font-bold text-amber-800 mb-2 flex items-center gap-2"><TrendingUp className="w-4 h-4" />Margin Analysis</h4>
-                <div className="space-y-2 text-xs text-amber-700">
+                <h4 className="text-sm font-bold font-serif text-foreground mb-2 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-gold" />Margin Analysis</h4>
+                <div className="space-y-2 text-xs text-muted-foreground">
                   <div className="flex justify-between items-center">
                     <span>Bill Analysis (our cost)</span>
                     <span className="font-mono">~$0.003</span>
@@ -504,7 +504,7 @@ export default function PartnerApi() {
                     <span>Bill Analysis (we charge)</span>
                     <span className="font-mono font-bold">$0.15</span>
                   </div>
-                  <div className="border-t border-amber-300 pt-1 flex justify-between items-center">
+                  <div className="border-t border-border pt-1 flex justify-between items-center">
                     <span className="font-bold">Gross Margin</span>
                     <span className="font-mono font-bold text-emerald-700">98%</span>
                   </div>
@@ -515,7 +515,7 @@ export default function PartnerApi() {
 
             <Card>
               <CardContent className="py-4">
-                <h4 className="text-sm font-bold text-gray-800 mb-2">Per-Request Pricing by Endpoint</h4>
+                <h4 className="text-sm font-bold text-foreground mb-2">Per-Request Pricing by Endpoint</h4>
                 <div className="space-y-1.5">
                   {[
                     { endpoint: "Bill Analysis", cost: "$0.15", ourCost: "$0.003", margin: "98%" },
@@ -527,9 +527,9 @@ export default function PartnerApi() {
                     { endpoint: "CPT Code Lookup", cost: "$0.01", ourCost: "$0.0001", margin: "99%" },
                   ].map((e, i) => (
                     <div key={i} className="flex items-center gap-2 text-xs">
-                      <span className="flex-1 text-gray-700">{e.endpoint}</span>
-                      <span className="font-mono text-blue-600 w-14 text-right">{e.cost}</span>
-                      <span className="font-mono text-gray-400 w-16 text-right text-[10px]">(cost: {e.ourCost})</span>
+                      <span className="flex-1 text-foreground">{e.endpoint}</span>
+                      <span className="font-mono text-foreground w-14 text-right">{e.cost}</span>
+                      <span className="font-mono text-muted-foreground w-16 text-right text-[10px]">(cost: {e.ourCost})</span>
                       <Badge className="bg-emerald-100 text-emerald-700 text-[9px] w-10 justify-center">{e.margin}</Badge>
                     </div>
                   ))}
@@ -544,9 +544,9 @@ export default function PartnerApi() {
                 <CardTitle className="text-sm flex items-center gap-2"><Terminal className="w-4 h-4" />Authentication</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <p className="text-xs text-gray-600">All requests require Bearer token authentication. Include your API key in the Authorization header:</p>
+                <p className="text-xs text-muted-foreground">All requests require Bearer token authentication. Include your API key in the Authorization header:</p>
                 <pre className="bg-slate-900 text-slate-200 rounded-lg p-3 text-[10px] overflow-x-auto font-mono">{`Authorization: Bearer grh_your_api_key_here`}</pre>
-                <p className="text-xs text-gray-500">Rate limit headers are returned with every response:</p>
+                <p className="text-xs text-muted-foreground">Rate limit headers are returned with every response:</p>
                 <pre className="bg-slate-900 text-slate-200 rounded-lg p-3 text-[10px] overflow-x-auto font-mono">{`X-RateLimit-Limit: 300
 X-RateLimit-Remaining: 299
 X-Request-Cost: $0.15`}</pre>
@@ -559,15 +559,15 @@ X-Request-Cost: $0.15`}</pre>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
-                  <p className="text-xs font-medium text-gray-700 mb-1">1. Analyze a Medical Bill</p>
+                  <p className="text-xs font-medium text-foreground mb-1">1. Analyze a Medical Bill</p>
                   <pre className="bg-slate-900 text-slate-200 rounded-lg p-3 text-[10px] overflow-x-auto font-mono whitespace-pre-wrap">{CODE_EXAMPLES.analyze}</pre>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-700 mb-1">2. Compare Procedure Prices</p>
+                  <p className="text-xs font-medium text-foreground mb-1">2. Compare Procedure Prices</p>
                   <pre className="bg-slate-900 text-slate-200 rounded-lg p-3 text-[10px] overflow-x-auto font-mono whitespace-pre-wrap">{CODE_EXAMPLES.compare}</pre>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-700 mb-1">3. Generate a Dispute Letter</p>
+                  <p className="text-xs font-medium text-foreground mb-1">3. Generate a Dispute Letter</p>
                   <pre className="bg-slate-900 text-slate-200 rounded-lg p-3 text-[10px] overflow-x-auto font-mono whitespace-pre-wrap">{CODE_EXAMPLES.template}</pre>
                 </div>
               </CardContent>
@@ -589,19 +589,19 @@ X-Request-Cost: $0.15`}</pre>
                   { method: "POST", path: "/v1/authenticate", desc: "Validate API key", cost: "Free" },
                 ].map((e, i) => (
                   <div key={i} className="flex items-center gap-2 py-1.5 border-b last:border-0">
-                    <Badge className={`text-[10px] w-12 justify-center ${e.method === 'POST' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{e.method}</Badge>
-                    <code className="text-xs font-mono text-gray-700 flex-1">{e.path}</code>
-                    <span className="text-[10px] text-gray-400 hidden sm:inline">{e.desc}</span>
+                    <Badge className="text-[10px] w-12 justify-center bg-secondary text-foreground">{e.method}</Badge>
+                    <code className="text-xs font-mono text-foreground flex-1">{e.path}</code>
+                    <span className="text-[10px] text-muted-foreground hidden sm:inline">{e.desc}</span>
                     <Badge variant="outline" className="text-[9px]">{e.cost}</Badge>
                   </div>
                 ))}
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-50 border-slate-200">
+            <Card className="bg-card border-border">
               <CardContent className="py-4">
-                <h4 className="text-sm font-medium text-slate-800 mb-2 flex items-center gap-2"><Shield className="w-4 h-4" />Webhook Verification</h4>
-                <p className="text-xs text-slate-600 mb-2">Webhook payloads include an HMAC-SHA256 signature for verification:</p>
+                <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2"><Shield className="w-4 h-4 text-gold" />Webhook Verification</h4>
+                <p className="text-xs text-muted-foreground mb-2">Webhook payloads include an HMAC-SHA256 signature for verification:</p>
                 <pre className="bg-slate-900 text-slate-200 rounded-lg p-3 text-[10px] overflow-x-auto font-mono whitespace-pre-wrap">{`// Verify webhook signature
 const crypto = require('crypto');
 const signature = req.headers['x-goldrock-signature'];
@@ -615,13 +615,13 @@ const verified = signature === expected;`}</pre>
           </TabsContent>
         </Tabs>
 
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-card border-border">
           <CardContent className="py-4">
             <div className="flex items-center gap-3">
-              <Globe className="w-6 h-6 text-blue-500" />
+              <Globe className="w-6 h-6 text-gold" />
               <div className="flex-1">
-                <h4 className="text-sm font-medium text-blue-800">Need help integrating?</h4>
-                <p className="text-xs text-blue-600">CONTACT@GOLDROCK.ai</p>
+                <h4 className="text-sm font-medium text-foreground">Need help integrating?</h4>
+                <p className="text-xs text-muted-foreground">CONTACT@GOLDROCK.ai</p>
               </div>
             </div>
           </CardContent>

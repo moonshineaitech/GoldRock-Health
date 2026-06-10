@@ -63,7 +63,7 @@ export function ClinicalReasoningPanel({
       }}
     >
       <div 
-        className="bg-white rounded-2xl max-w-4xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
+        className="bg-card border border-border rounded-2xl max-w-4xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
         style={{
           WebkitOverflowScrolling: 'touch',
           touchAction: 'pan-y'
@@ -72,13 +72,13 @@ export function ClinicalReasoningPanel({
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
-              <Lightbulb className="h-6 w-6 text-indigo-600" />
-              <h2 className="text-2xl font-bold text-slate-800">Clinical Reasoning</h2>
+              <Lightbulb className="h-6 w-6 text-gold" />
+              <h2 className="text-2xl font-bold font-serif text-foreground">Clinical Reasoning</h2>
             </div>
             <Button 
               variant="outline" 
               onClick={onClose}
-              className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm"
+              className="sticky top-0 z-10 bg-card border border-border shadow-sm"
               style={{ minHeight: '44px', minWidth: '44px' }}
             >
               Close
@@ -87,18 +87,18 @@ export function ClinicalReasoningPanel({
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-              <span className="ml-3 text-slate-600">Analyzing clinical reasoning...</span>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: 'var(--gold)' }}></div>
+              <span className="ml-3 text-muted-foreground">Analyzing clinical reasoning...</span>
             </div>
           ) : reasoning ? (
             <div className="space-y-6">
               {/* Chief Complaint */}
-              <Card className="border-l-4 border-l-indigo-500">
+              <Card className="border-l-4" style={{ borderLeftColor: 'var(--gold-deep)' }}>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-slate-800">Chief Complaint</CardTitle>
+                  <CardTitle className="text-lg text-foreground">Chief Complaint</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-slate-700 font-medium">{reasoning.chiefComplaint}</p>
+                  <p className="text-foreground font-medium">{reasoning.chiefComplaint}</p>
                 </CardContent>
               </Card>
 
@@ -106,8 +106,8 @@ export function ClinicalReasoningPanel({
                 {/* Key Findings */}
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg text-slate-800 flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-600" />
+                    <CardTitle className="text-lg text-foreground flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
                       Key Findings
                     </CardTitle>
                   </CardHeader>
@@ -115,12 +115,12 @@ export function ClinicalReasoningPanel({
                     <div className="space-y-2">
                       {reasoning.keyFindings.map((finding, index) => (
                         <div key={index} className="flex items-start gap-2">
-                          <span className="text-green-500 mt-1">•</span>
-                          <span className="text-slate-700">{finding}</span>
+                          <span className="text-green-500 dark:text-green-400 mt-1">•</span>
+                          <span className="text-foreground">{finding}</span>
                         </div>
                       ))}
                       {reasoning.keyFindings.length === 0 && (
-                        <p className="text-slate-500 italic">No key findings identified yet</p>
+                        <p className="text-muted-foreground italic">No key findings identified yet</p>
                       )}
                     </div>
                   </CardContent>
@@ -129,8 +129,8 @@ export function ClinicalReasoningPanel({
                 {/* Red Flags */}
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg text-slate-800 flex items-center gap-2">
-                      <AlertTriangle className="h-5 w-5 text-red-600" />
+                    <CardTitle className="text-lg text-foreground flex items-center gap-2">
+                      <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
                       Red Flags
                     </CardTitle>
                   </CardHeader>
@@ -138,12 +138,12 @@ export function ClinicalReasoningPanel({
                     <div className="space-y-2">
                       {reasoning.redFlags.map((flag, index) => (
                         <div key={index} className="flex items-start gap-2">
-                          <span className="text-red-500 mt-1">⚠</span>
-                          <span className="text-slate-700">{flag}</span>
+                          <span className="text-red-500 dark:text-red-400 mt-1">⚠</span>
+                          <span className="text-foreground">{flag}</span>
                         </div>
                       ))}
                       {reasoning.redFlags.length === 0 && (
-                        <p className="text-slate-500 italic">No red flags identified</p>
+                        <p className="text-muted-foreground italic">No red flags identified</p>
                       )}
                     </div>
                   </CardContent>
@@ -153,8 +153,8 @@ export function ClinicalReasoningPanel({
               {/* Recommended Workup */}
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-slate-800 flex items-center gap-2">
-                    <BookOpen className="h-5 w-5 text-blue-600" />
+                  <CardTitle className="text-lg text-foreground flex items-center gap-2">
+                    <BookOpen className="h-5 w-5 text-muted-foreground" />
                     Recommended Workup
                   </CardTitle>
                 </CardHeader>
@@ -167,36 +167,36 @@ export function ClinicalReasoningPanel({
                     ))}
                   </div>
                   {reasoning.recommendedWorkup.length === 0 && (
-                    <p className="text-slate-500 italic">Continue gathering information to generate workup recommendations</p>
+                    <p className="text-muted-foreground italic">Continue gathering information to generate workup recommendations</p>
                   )}
                 </CardContent>
               </Card>
 
               {/* Clinical Pearls */}
-              <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200">
+              <Card className="bg-card border border-border">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-slate-800 flex items-center gap-2">
-                    <Lightbulb className="h-5 w-5 text-yellow-600" />
+                  <CardTitle className="text-lg text-foreground flex items-center gap-2">
+                    <Lightbulb className="h-5 w-5 text-gold" />
                     Clinical Pearls
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {reasoning.clinicalPearls.map((pearl, index) => (
-                      <div key={index} className="p-3 bg-white rounded-lg border border-yellow-200">
-                        <p className="text-slate-700 font-medium">{pearl}</p>
+                      <div key={index} className="p-3 bg-secondary rounded-lg border border-border">
+                        <p className="text-foreground font-medium">{pearl}</p>
                       </div>
                     ))}
                     {reasoning.clinicalPearls.length === 0 && (
-                      <p className="text-slate-500 italic">Clinical pearls will appear as you progress through the case</p>
+                      <p className="text-muted-foreground italic">Clinical pearls will appear as you progress through the case</p>
                     )}
                   </div>
                 </CardContent>
               </Card>
 
               {/* Progress Indicator */}
-              <div className="bg-indigo-50 rounded-lg p-4">
-                <h4 className="font-semibold text-indigo-800 mb-2">Your Progress</h4>
+              <div className="bg-secondary rounded-lg p-4">
+                <h4 className="font-semibold text-foreground mb-2">Your Progress</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="outline">
                     Questions Asked: {questionsAsked.length}

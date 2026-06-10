@@ -90,9 +90,9 @@ const SITUATIONS = [
     title: "I just got a bill",
     description: "Received a medical bill and want to check it for errors",
     icon: FileText,
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-    borderColor: "border-blue-200"
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
+    borderColor: "border-border"
   },
   {
     id: "collections" as Situation,
@@ -117,9 +117,9 @@ const SITUATIONS = [
     title: "I don't understand my bill",
     description: "Need help making sense of the charges",
     icon: FileSearch,
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
-    borderColor: "border-purple-200"
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
+    borderColor: "border-border"
   }
 ];
 
@@ -146,24 +146,25 @@ function StepIndicator({ currentStep, totalSteps }: { currentStep: number; total
           return (
             <div key={i} className="flex flex-col items-center flex-1">
               <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
-                isComplete ? "bg-emerald-500 text-white" :
-                isActive ? "bg-blue-600 text-white ring-4 ring-blue-100" :
-                "bg-gray-100 text-gray-400"
+                isComplete ? "bg-primary text-primary-foreground" :
+                isActive ? "bg-primary text-primary-foreground ring-4 ring-secondary" :
+                "bg-secondary text-muted-foreground"
               }`}>
                 {isComplete ? <CheckCircle className="h-5 w-5" /> : stepNum}
               </div>
               <span className={`text-xs mt-1.5 text-center hidden sm:block ${
-                isActive ? "text-blue-600 font-semibold" :
-                isComplete ? "text-emerald-600 font-medium" :
-                "text-gray-400"
+                isActive ? "text-foreground font-semibold" :
+                isComplete ? "text-muted-foreground font-medium" :
+                "text-muted-foreground"
               }`}>{label}</span>
             </div>
           );
         })}
       </div>
-      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+      <div className="h-2 bg-secondary rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full"
+          className="h-full rounded-full"
+          style={{ background: 'linear-gradient(90deg, var(--gold-soft), var(--gold-deep))' }}
           initial={{ width: "0%" }}
           animate={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
           transition={{ duration: 0.5, ease: "easeOut" }}
@@ -409,11 +410,11 @@ Generate a formal, professional dispute letter that references specific issues, 
       className="space-y-6"
     >
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-          <Heart className="h-8 w-8 text-white" />
+        <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+          <Heart className="h-8 w-8 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">What's going on with your bill?</h2>
-        <p className="text-gray-500 dark:text-gray-400">Select your situation so we can help you the right way.</p>
+        <h2 className="text-2xl font-serif font-bold text-foreground dark:text-white mb-2">What's going on with your bill?</h2>
+        <p className="text-muted-foreground dark:text-muted-foreground">Select your situation so we can help you the right way.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -423,30 +424,30 @@ Generate a formal, professional dispute letter that references specific issues, 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => { setSituation(s.id); setStep(2); }}
-            className={`p-5 rounded-2xl border-2 text-left transition-all ${
+            className={`p-5 rounded-2xl border text-left transition-all ${
               situation === s.id
-                ? `${s.borderColor} ${s.bgColor} shadow-md`
-                : "border-gray-100 hover:border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700"
+                ? "border-primary bg-secondary shadow-sm"
+                : "border-border hover:bg-secondary bg-card"
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className={`w-12 h-12 rounded-xl ${s.bgColor} flex items-center justify-center flex-shrink-0`}>
-                <s.icon className={`h-6 w-6 ${s.color}`} />
+              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
+                <s.icon className="h-6 w-6 text-muted-foreground" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{s.title}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{s.description}</p>
+                <h3 className="font-semibold text-foreground dark:text-white mb-1">{s.title}</h3>
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground">{s.description}</p>
               </div>
             </div>
           </motion.button>
         ))}
       </div>
 
-      <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800 mt-6">
-        <Lock className="h-5 w-5 text-blue-500 flex-shrink-0" />
-        <p className="text-sm text-blue-700 dark:text-blue-300">
+      <div className="flex items-center gap-3 p-4 bg-secondary rounded-xl border border-border mt-6">
+        <Lock className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+        <p className="text-sm text-muted-foreground">
           Your information is encrypted (AES-256) and only used to help reduce your bill. Auto-deleted after 30 days.{" "}
-          <a href="/data-security" className="underline font-medium hover:text-blue-900 dark:hover:text-blue-100">Learn more about how we protect your data</a>.
+          <a href="/data-security" className="underline font-medium text-foreground">Learn more about how we protect your data</a>.
         </p>
       </div>
     </motion.div>
@@ -460,11 +461,11 @@ Generate a formal, professional dispute letter that references specific issues, 
       className="space-y-6"
     >
       <div className="text-center mb-6">
-        <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-          <FileText className="h-7 w-7 text-white" />
+        <div className="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-sm">
+          <FileText className="h-7 w-7 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Request Your Itemized Bill</h2>
-        <p className="text-gray-500 dark:text-gray-400">
+        <h2 className="text-2xl font-serif font-bold text-foreground dark:text-white mb-2">Request Your Itemized Bill</h2>
+        <p className="text-muted-foreground dark:text-muted-foreground">
           An itemized bill is the single most important document for finding savings. Hospitals must provide one by law.
         </p>
       </div>
@@ -477,7 +478,7 @@ Generate a formal, professional dispute letter that references specific issues, 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
             <User className="h-4 w-4" /> Patient Name
           </label>
           <Input
@@ -488,7 +489,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
             <Building2 className="h-4 w-4" /> Hospital / Provider
           </label>
           <Input
@@ -499,7 +500,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
             <ClipboardList className="h-4 w-4" /> Account Number
           </label>
           <Input
@@ -510,7 +511,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
             <Calendar className="h-4 w-4" /> Service Date
           </label>
           <Input
@@ -521,7 +522,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
             <MapPin className="h-4 w-4" /> Your State
           </label>
           <Select value={patientState} onValueChange={setPatientState}>
@@ -536,7 +537,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           </Select>
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+          <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
             <Mail className="h-4 w-4" /> Your Address (optional)
           </label>
           <Input
@@ -551,7 +552,7 @@ Generate a formal, professional dispute letter that references specific issues, 
       <Button
         onClick={handleGenerateLetter}
         disabled={generatingLetter || !patientName || !providerName}
-        className="w-full py-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-base shadow-lg"
+        className="w-full py-6 rounded-xl font-semibold text-base shadow-sm"
       >
         {generatingLetter ? (
           <><Loader2 className="h-5 w-5 mr-2 animate-spin" /> Generating Your Letter...</>
@@ -567,17 +568,17 @@ Generate a formal, professional dispute letter that references specific issues, 
           className="space-y-3"
         >
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Your Letter</h3>
+            <h3 className="text-lg font-semibold text-foreground dark:text-white">Your Letter</h3>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={() => copyToClipboard(generatedLetter)} className="rounded-lg">
                 <Copy className="h-4 w-4 mr-1" /> Copy
               </Button>
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 font-mono leading-relaxed max-h-96 overflow-y-auto">
+          <div className="bg-white dark:bg-card border border-border dark:border-border rounded-xl p-5 whitespace-pre-wrap text-sm text-foreground dark:text-muted-foreground font-mono leading-relaxed max-h-96 overflow-y-auto">
             {generatedLetter}
           </div>
-          <p className="text-xs text-gray-400 text-center">
+          <p className="text-xs text-muted-foreground text-center">
             Print this letter and mail it, or email it to the hospital's billing department.
           </p>
         </motion.div>
@@ -593,7 +594,7 @@ Generate a formal, professional dispute letter that references specific issues, 
               setStep(3);
             }
           }}
-          className="flex-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white"
+          className="flex-1 rounded-xl"
         >
           {generatedLetter ? "Continue to Bill Analysis" : "Skip — I already have my itemized bill"}
           <ArrowRight className="h-4 w-4 ml-2" />
@@ -610,18 +611,18 @@ Generate a formal, professional dispute letter that references specific issues, 
       className="space-y-6"
     >
       <div className="text-center mb-6">
-        <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-          <Upload className="h-7 w-7 text-white" />
+        <div className="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-sm">
+          <Upload className="h-7 w-7 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Enter Your Bill Details</h2>
-        <p className="text-gray-500 dark:text-gray-400">Upload bill images or enter the details manually. The more info you provide, the better the analysis.</p>
+        <h2 className="text-2xl font-serif font-bold text-foreground dark:text-white mb-2">Enter Your Bill Details</h2>
+        <p className="text-muted-foreground dark:text-muted-foreground">Upload bill images or enter the details manually. The more info you provide, the better the analysis.</p>
       </div>
 
-      <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+      <div className="flex gap-2 p-1 bg-secondary dark:bg-card rounded-xl">
         <button
           onClick={() => setUploadMode("manual")}
           className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
-            uploadMode === "manual" ? "bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white" : "text-gray-500"
+            uploadMode === "manual" ? "bg-white dark:bg-card shadow-sm text-foreground dark:text-white" : "text-muted-foreground"
           }`}
         >
           Enter Details
@@ -629,7 +630,7 @@ Generate a formal, professional dispute letter that references specific issues, 
         <button
           onClick={() => setUploadMode("upload")}
           className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
-            uploadMode === "upload" ? "bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white" : "text-gray-500"
+            uploadMode === "upload" ? "bg-white dark:bg-card shadow-sm text-foreground dark:text-white" : "text-muted-foreground"
           }`}
         >
           Upload Bill Images
@@ -640,13 +641,13 @@ Generate a formal, professional dispute letter that references specific issues, 
         <div className="space-y-4">
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-2xl p-8 text-center cursor-pointer hover:border-emerald-300 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all"
+            className="border-2 border-dashed border-border dark:border-border rounded-2xl p-8 text-center cursor-pointer hover:border-primary hover:bg-secondary transition-all"
           >
-            <ImageIcon className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+            <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+            <p className="text-sm font-medium text-muted-foreground dark:text-muted-foreground mb-1">
               Click to upload bill images or PDFs
             </p>
-            <p className="text-xs text-gray-400">JPG, PNG, WebP, or PDF — up to 10MB each</p>
+            <p className="text-xs text-muted-foreground">JPG, PNG, WebP, or PDF — up to 10MB each</p>
             <input
               ref={fileInputRef}
               type="file"
@@ -663,11 +664,11 @@ Generate a formal, professional dispute letter that references specific issues, 
                 <div key={i} className="flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/20 rounded-xl px-4 py-3">
                   <div className="flex items-center gap-3">
                     <CheckCircle className="h-5 w-5 text-emerald-500" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300 truncate max-w-[200px]">{f.name}</span>
+                    <span className="text-sm text-foreground dark:text-muted-foreground truncate max-w-[200px]">{f.name}</span>
                   </div>
                   <button
                     onClick={() => setUploadedFiles(prev => prev.filter((_, j) => j !== i))}
-                    className="text-gray-400 hover:text-red-500 text-xs"
+                    className="text-muted-foreground hover:text-red-500 text-xs"
                   >
                     Remove
                   </button>
@@ -677,7 +678,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           )}
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Total Bill Amount (if known)</label>
+            <label className="text-sm font-medium text-foreground dark:text-muted-foreground">Total Bill Amount (if known)</label>
             <Input
               type="number"
               value={billAmount}
@@ -691,7 +692,7 @@ Generate a formal, professional dispute letter that references specific issues, 
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
                 <DollarSign className="h-4 w-4" /> Total Bill Amount
               </label>
               <Input
@@ -703,7 +704,7 @@ Generate a formal, professional dispute letter that references specific issues, 
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Type of Care</label>
+              <label className="text-sm font-medium text-foreground dark:text-muted-foreground">Type of Care</label>
               <Select value={serviceType} onValueChange={setServiceType}>
                 <SelectTrigger className="rounded-xl">
                   <SelectValue placeholder="Select type" />
@@ -729,7 +730,7 @@ Generate a formal, professional dispute letter that references specific issues, 
 
           {!providerName && (
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground dark:text-muted-foreground flex items-center gap-2">
                 <Building2 className="h-4 w-4" /> Provider / Hospital Name
               </label>
               <Input
@@ -742,7 +743,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           )}
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-foreground dark:text-muted-foreground">
               Bill Details (charges, codes, or anything you can share)
             </label>
             <Textarea
@@ -762,7 +763,7 @@ Generate a formal, professional dispute letter that references specific issues, 
         <Button
           onClick={handleAnalyze}
           disabled={analyzing || (!billAmount && uploadedFiles.length === 0 && !billDescription)}
-          className="flex-1 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-6 text-base shadow-lg"
+          className="flex-1 rounded-xl font-semibold py-6 text-base shadow-sm"
         >
           {analyzing ? (
             <><Loader2 className="h-5 w-5 mr-2 animate-spin" /> {analysisStage || "Analyzing..."}</>
@@ -792,16 +793,16 @@ Generate a formal, professional dispute letter that references specific issues, 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
-            className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg"
+            className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm"
           >
             <CheckCircle className="h-8 w-8 text-white" />
           </motion.div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Analysis Complete</h2>
-          <p className="text-gray-500 dark:text-gray-400">Here's what we found on your bill.</p>
+          <h2 className="text-2xl font-serif font-bold text-foreground dark:text-white mb-2">Analysis Complete</h2>
+          <p className="text-muted-foreground dark:text-muted-foreground">Here's what we found on your bill.</p>
         </div>
 
         <div className="grid grid-cols-3 gap-3">
-          <Card className="border-0 shadow-md bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900/30 dark:to-green-900/30">
+          <Card className="border border-border shadow-sm bg-card">
             <CardContent className="p-4 text-center">
               <DollarSign className="h-6 w-6 text-emerald-600 mx-auto mb-1" />
               <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
@@ -810,25 +811,25 @@ Generate a formal, professional dispute letter that references specific issues, 
               <div className="text-xs text-emerald-600 dark:text-emerald-400">Potential Savings</div>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-md bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30">
+          <Card className="border border-border shadow-sm bg-card">
             <CardContent className="p-4 text-center">
               <AlertTriangle className="h-6 w-6 text-red-500 mx-auto mb-1" />
               <div className="text-2xl font-bold text-red-700 dark:text-red-400">{issueCount}</div>
               <div className="text-xs text-red-600 dark:text-red-400">Issues Found</div>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30">
+          <Card className="border border-border shadow-sm bg-card">
             <CardContent className="p-4 text-center">
-              <Target className="h-6 w-6 text-blue-500 mx-auto mb-1" />
-              <div className="text-2xl font-bold text-blue-700 dark:text-blue-400">{confidence}%</div>
-              <div className="text-xs text-blue-600 dark:text-blue-400">Confidence</div>
+              <Target className="h-6 w-6 text-muted-foreground mx-auto mb-1" />
+              <div className="text-2xl font-bold text-foreground">{confidence}%</div>
+              <div className="text-xs text-muted-foreground">Confidence</div>
             </CardContent>
           </Card>
         </div>
 
         {analysisResult.issues && analysisResult.issues.length > 0 && (
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground dark:text-white flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-red-500" />
               Issues Detected
             </h3>
@@ -842,24 +843,24 @@ Generate a formal, professional dispute letter that references specific issues, 
                 <Card className={`border-l-4 ${
                   issue.riskLevel === "high" ? "border-l-red-500" :
                   issue.riskLevel === "medium" ? "border-l-amber-500" :
-                  "border-l-blue-500"
+                  "border-l-border"
                 }`}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{issue.title}</h4>
+                      <h4 className="font-semibold text-foreground dark:text-white text-sm">{issue.title}</h4>
                       <Badge className={`text-xs ${
                         issue.riskLevel === "high" ? "bg-red-100 text-red-700" :
                         issue.riskLevel === "medium" ? "bg-amber-100 text-amber-700" :
-                        "bg-blue-100 text-blue-700"
+                        "bg-secondary text-muted-foreground"
                       }`}>
                         ${issue.potentialSavings?.toLocaleString() || "0"}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{issue.description}</p>
+                    <p className="text-sm text-muted-foreground dark:text-muted-foreground mb-3">{issue.description}</p>
                     {issue.actionRequired && (
-                      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">What to do:</p>
-                        <p className="text-sm text-gray-700 dark:text-gray-300">{issue.actionRequired}</p>
+                      <div className="bg-secondary dark:bg-card rounded-lg p-3">
+                        <p className="text-xs font-medium text-muted-foreground dark:text-muted-foreground mb-1">What to do:</p>
+                        <p className="text-sm text-foreground dark:text-muted-foreground">{issue.actionRequired}</p>
                       </div>
                     )}
                   </CardContent>
@@ -872,16 +873,16 @@ Generate a formal, professional dispute letter that references specific issues, 
         {analysisResult.negotiationStrategy && (
           <Card className="border-0 shadow-md">
             <CardContent className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-foreground dark:text-white mb-3 flex items-center gap-2">
                 <Phone className="h-5 w-5 text-emerald-500" />
                 Negotiation Strategy
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{analysisResult.negotiationStrategy.approach}</p>
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground mb-3">{analysisResult.negotiationStrategy.approach}</p>
               {analysisResult.negotiationStrategy.talkingPoints?.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Key Talking Points:</p>
+                  <p className="text-xs font-medium text-muted-foreground dark:text-muted-foreground">Key Talking Points:</p>
                   {analysisResult.negotiationStrategy.talkingPoints.map((point, i) => (
-                    <div key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <div key={i} className="flex items-start gap-2 text-sm text-foreground dark:text-muted-foreground">
                       <Zap className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                       <span>{point}</span>
                     </div>
@@ -900,18 +901,18 @@ Generate a formal, professional dispute letter that references specific issues, 
         )}
 
         {analysisResult.financialAssistance?.eligible && (
-          <Card className="border-0 shadow-md bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20">
+          <Card className="border border-border shadow-sm bg-card">
             <CardContent className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                <Heart className="h-5 w-5 text-purple-500" />
+              <h3 className="text-lg font-semibold text-foreground dark:text-white mb-2 flex items-center gap-2">
+                <Heart className="h-5 w-5 text-muted-foreground" />
                 Financial Assistance Available
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground mb-2">
                 Estimated discount: {analysisResult.financialAssistance.estimatedDiscount}
               </p>
               {analysisResult.financialAssistance.programs?.map((prog, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                  <CheckCircle className="h-4 w-4 text-purple-500" />
+                <div key={i} className="flex items-center gap-2 text-sm text-foreground dark:text-muted-foreground">
+                  <CheckCircle className="h-4 w-4 text-emerald-600" />
                   <span>{prog}</span>
                 </div>
               ))}
@@ -922,13 +923,13 @@ Generate a formal, professional dispute letter that references specific issues, 
         {analysisResult.recommendations && analysisResult.recommendations.length > 0 && (
           <Card className="border-0 shadow-md">
             <CardContent className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-foreground dark:text-white mb-3 flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-amber-500" />
                 Recommendations
               </h3>
               <div className="space-y-2">
                 {analysisResult.recommendations.map((rec, i) => (
-                  <div key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <div key={i} className="flex items-start gap-3 text-sm text-foreground dark:text-muted-foreground">
                     <span className="w-6 h-6 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0">
                       {i + 1}
                     </span>
@@ -946,7 +947,7 @@ Generate a formal, professional dispute letter that references specific issues, 
           </Button>
           <Button
             onClick={() => setStep(5)}
-            className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-5 shadow-lg"
+            className="flex-1 rounded-xl font-semibold py-5 shadow-sm"
           >
             Get My Action Plan <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
@@ -963,11 +964,11 @@ Generate a formal, professional dispute letter that references specific issues, 
       className="space-y-6"
     >
       <div className="text-center mb-4">
-        <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-          <Target className="h-7 w-7 text-white" />
+        <div className="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-sm">
+          <Target className="h-7 w-7 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Your Action Plan</h2>
-        <p className="text-gray-500 dark:text-gray-400">Here's exactly what to do next to reduce your bill.</p>
+        <h2 className="text-2xl font-serif font-bold text-foreground dark:text-white mb-2">Your Action Plan</h2>
+        <p className="text-muted-foreground dark:text-muted-foreground">Here's exactly what to do next to reduce your bill.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -975,13 +976,13 @@ Generate a formal, professional dispute letter that references specific issues, 
           variant="outline"
           onClick={handleGenerateDisputeLetter}
           disabled={generatingDispute}
-          className="py-6 rounded-xl border-2 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+          className="py-6 rounded-xl border-2 hover:bg-secondary"
         >
           <div className="text-center">
             {generatingDispute ? (
-              <Loader2 className="h-6 w-6 text-blue-500 mx-auto mb-2 animate-spin" />
+              <Loader2 className="h-6 w-6 text-muted-foreground mx-auto mb-2 animate-spin" />
             ) : (
-              <Mail className="h-6 w-6 text-blue-500 mx-auto mb-2" />
+              <Mail className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
             )}
             <span className="text-sm font-medium">Generate Dispute Letter</span>
           </div>
@@ -993,10 +994,10 @@ Generate a formal, professional dispute letter that references specific issues, 
             if (script) copyToClipboard(script);
             else toast({ title: "No talking points available" });
           }}
-          className="py-6 rounded-xl border-2 hover:border-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+          className="py-6 rounded-xl border-2 hover:bg-secondary"
         >
           <div className="text-center">
-            <Phone className="h-6 w-6 text-emerald-500 mx-auto mb-2" />
+            <Phone className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
             <span className="text-sm font-medium">Copy Phone Script</span>
           </div>
         </Button>
@@ -1006,10 +1007,10 @@ Generate a formal, professional dispute letter that references specific issues, 
             const summary = `Bill Analysis Summary\n\nProvider: ${providerName}\nBill Amount: $${billAmount}\nPotential Savings: $${analysisResult?.potentialSavings?.toLocaleString() || "0"}\nIssues Found: ${analysisResult?.issues?.length || 0}\n\nIssues:\n${analysisResult?.issues?.map(i => `- ${i.title}: $${i.potentialSavings}`).join("\n") || "None"}\n\nRecommendations:\n${analysisResult?.recommendations?.map((r, i) => `${i + 1}. ${r}`).join("\n") || "None"}`;
             copyToClipboard(summary);
           }}
-          className="py-6 rounded-xl border-2 hover:border-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+          className="py-6 rounded-xl border-2 hover:bg-secondary"
         >
           <div className="text-center">
-            <Download className="h-6 w-6 text-purple-500 mx-auto mb-2" />
+            <Download className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
             <span className="text-sm font-medium">Copy Full Summary</span>
           </div>
         </Button>
@@ -1022,27 +1023,27 @@ Generate a formal, professional dispute letter that references specific issues, 
           className="space-y-3"
         >
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Your Dispute Letter</h3>
+            <h3 className="text-lg font-semibold text-foreground dark:text-white">Your Dispute Letter</h3>
             <Button variant="outline" size="sm" onClick={() => copyToClipboard(disputeLetter)} className="rounded-lg">
               <Copy className="h-4 w-4 mr-1" /> Copy
             </Button>
           </div>
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-h-80 overflow-y-auto">
+          <div className="bg-white dark:bg-card border border-border dark:border-border rounded-xl p-5 whitespace-pre-wrap text-sm text-foreground dark:text-muted-foreground leading-relaxed max-h-80 overflow-y-auto">
             {disputeLetter}
           </div>
         </motion.div>
       )}
 
       {analysisResult?.insiderTactics && analysisResult.insiderTactics.length > 0 && (
-        <Card className="border-0 shadow-md bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+        <Card className="border border-border shadow-sm bg-card">
           <CardContent className="p-5">
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+            <h3 className="text-base font-semibold text-foreground dark:text-white mb-3 flex items-center gap-2">
               <Zap className="h-5 w-5 text-amber-500" />
               Insider Tactics
             </h3>
             <div className="space-y-2">
               {analysisResult.insiderTactics.map((tactic, i) => (
-                <div key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <div key={i} className="flex items-start gap-2 text-sm text-foreground dark:text-muted-foreground">
                   <Sparkles className="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" />
                   <span>{tactic}</span>
                 </div>
@@ -1054,8 +1055,8 @@ Generate a formal, professional dispute letter that references specific issues, 
 
       <Card className="border-0 shadow-md">
         <CardContent className="p-5">
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-            <Brain className="h-5 w-5 text-blue-500" />
+          <h3 className="text-base font-semibold text-foreground dark:text-white mb-3 flex items-center gap-2">
+            <Brain className="h-5 w-5 text-muted-foreground" />
             Ask Follow-Up Questions
           </h3>
           <div className="space-y-3">
@@ -1070,7 +1071,7 @@ Generate a formal, professional dispute letter that references specific issues, 
                   <button
                     key={i}
                     onClick={() => { setChatInput(q); }}
-                    className="text-left text-sm p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+                    className="text-left text-sm p-3 rounded-xl bg-secondary dark:bg-card hover:bg-muted border border-border dark:border-border text-foreground dark:text-muted-foreground transition-colors"
                   >
                     {q}
                   </button>
@@ -1084,8 +1085,8 @@ Generate a formal, professional dispute letter that references specific issues, 
                   <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
                       msg.role === "user"
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary dark:bg-card text-foreground dark:text-muted-foreground"
                     }`}>
                       {msg.content.split("\n\n").map((para, j) => (
                         <p key={j} className={j > 0 ? "mt-3" : ""}>{para}</p>
@@ -1095,8 +1096,8 @@ Generate a formal, professional dispute letter that references specific issues, 
                 ))}
                 {chatLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3">
-                      <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                    <div className="bg-secondary dark:bg-card rounded-2xl px-4 py-3">
+                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                     </div>
                   </div>
                 )}
@@ -1114,7 +1115,7 @@ Generate a formal, professional dispute letter that references specific issues, 
               <Button
                 onClick={handleSendChat}
                 disabled={chatLoading || !chatInput.trim()}
-                className="rounded-xl bg-blue-600 hover:bg-blue-700"
+                className="rounded-xl"
                 size="icon"
               >
                 <Send className="h-4 w-4" />
@@ -1152,15 +1153,15 @@ Generate a formal, professional dispute letter that references specific issues, 
 
   return (
     <MobileLayout title="Bill Advocate" showBackButton>
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
+      <div className="min-h-screen bg-background">
         <div className="max-w-2xl mx-auto px-4 py-6 pb-32">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-emerald-500 rounded-xl flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Shield className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">Bill Advocate</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">AI-powered medical bill reduction</p>
+              <h1 className="text-xl font-serif font-bold text-foreground dark:text-white">Bill Advocate</h1>
+              <p className="text-xs text-muted-foreground dark:text-muted-foreground">AI-powered medical bill reduction</p>
             </div>
             <Badge className="ml-auto bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
               <Sparkles className="h-3 w-3 mr-1" /> Real AI

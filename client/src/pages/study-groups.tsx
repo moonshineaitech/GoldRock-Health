@@ -125,9 +125,9 @@ export default function StudyGroupsPage() {
 
   const getRoleIcon = (role: string) => {
     switch (role) {
-      case "admin": return <Crown className="w-4 h-4 text-yellow-500" />;
-      case "moderator": return <Shield className="w-4 h-4 text-blue-500" />;
-      default: return <User className="w-4 h-4 text-gray-500" />;
+      case "admin": return <Crown className="w-4 h-4 text-gold" />;
+      case "moderator": return <Shield className="w-4 h-4 text-muted-foreground" />;
+      default: return <User className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -137,15 +137,15 @@ export default function StudyGroupsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900" data-testid="study-groups-page">
+    <div className="min-h-screen bg-background" data-testid="study-groups-page">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm">
+      <div className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <Users className="w-6 h-6 text-blue-600" />
-                <h1 className="text-xl font-bold">Study Groups</h1>
+                <Users className="w-6 h-6 text-gold" />
+                <h1 className="text-xl font-bold font-serif">Study Groups</h1>
               </div>
               <Badge variant="outline" className="text-xs">
                 Collaborative Learning
@@ -257,7 +257,7 @@ export default function StudyGroupsPage() {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
                   placeholder="Search groups..."
                   value={searchTerm}
@@ -290,9 +290,9 @@ export default function StudyGroupsPage() {
             {[...Array(6)].map((_, i) => (
               <Card key={i} className="p-6">
                 <div className="animate-pulse">
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mb-4" />
-                  <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded" />
+                  <div className="h-4 bg-muted rounded mb-2" />
+                  <div className="h-3 bg-muted rounded w-2/3 mb-4" />
+                  <div className="h-16 bg-muted rounded" />
                 </div>
               </Card>
             ))}
@@ -324,32 +324,32 @@ export default function StudyGroupsPage() {
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                         <Users className="w-4 h-4" />
                         <span>{group.currentMembers}/{group.maxMembers}</span>
                       </div>
                     </div>
 
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
                       {group.description}
                     </p>
 
                     {/* Group Stats */}
                     <div className="grid grid-cols-2 gap-4 mb-4 text-xs">
                       <div className="flex items-center space-x-1">
-                        <Trophy className="w-3 h-3 text-yellow-500" />
+                        <Trophy className="w-3 h-3 text-muted-foreground" />
                         <span>Active Challenges</span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <Calendar className="w-3 h-3 text-blue-500" />
+                        <Calendar className="w-3 h-3 text-muted-foreground" />
                         <span>Weekly Sessions</span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <Target className="w-3 h-3 text-green-500" />
+                        <Target className="w-3 h-3 text-muted-foreground" />
                         <span>Team Goals</span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <Zap className="w-3 h-3 text-purple-500" />
+                        <Zap className="w-3 h-3 text-muted-foreground" />
                         <span>Study Streaks</span>
                       </div>
                     </div>
@@ -393,11 +393,11 @@ export default function StudyGroupsPage() {
 
         {filteredGroups.length === 0 && !groupsLoading && (
           <Card className="p-12 text-center">
-            <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">
               No study groups found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-muted-foreground mb-4">
               Be the first to create a study group for your specialty
             </p>
             <Button onClick={() => setShowCreateDialog(true)}>

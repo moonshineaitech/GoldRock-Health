@@ -143,13 +143,13 @@ export function ComprehensivePhysicalExamModal({
     );
 
     return (
-      <Card className={`${hasAbnormalFindings ? 'border-orange-200 bg-orange-50' : 'border-green-200 bg-green-50'}`}>
+      <Card className={`${hasAbnormalFindings ? 'border-orange-200 bg-orange-50 dark:border-orange-900 dark:bg-orange-950' : 'border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950'}`}>
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold text-slate-800 flex items-center gap-2">
+          <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
             <Icon className={`h-5 w-5 ${color}`} />
             {title}
             {hasAbnormalFindings && (
-              <Badge variant="outline" className="text-orange-700 border-orange-300">
+              <Badge variant="outline" className="text-orange-700 border-orange-300 dark:text-orange-400 dark:border-orange-700">
                 Abnormal Findings
               </Badge>
             )}
@@ -158,17 +158,17 @@ export function ComprehensivePhysicalExamModal({
         <CardContent>
           <div className="grid gap-3">
             {Object.keys(safeFindings).length === 0 ? (
-              <div className="text-center py-4 text-slate-500">
+              <div className="text-center py-4 text-muted-foreground">
                 <Icon className={`h-8 w-8 mx-auto mb-2 ${color}`} />
                 <p>Loading examination findings...</p>
               </div>
             ) : (
               Object.entries(safeFindings).map(([key, value]) => (
                 <div key={key}>
-                  <h5 className="font-medium text-slate-700 mb-1 capitalize">
+                  <h5 className="font-medium text-foreground mb-1 capitalize">
                     {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
                   </h5>
-                  <p className="text-sm text-slate-600 bg-white p-2 rounded border">
+                  <p className="text-sm text-muted-foreground bg-card p-2 rounded border">
                     {value || 'No findings recorded'}
                   </p>
                 </div>
@@ -187,23 +187,23 @@ export function ComprehensivePhysicalExamModal({
       <DialogContent className="sm:max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <Stethoscope className="h-6 w-6 text-indigo-600" />
+            <Stethoscope className="h-6 w-6 text-gold" />
             <span>Comprehensive Physical Examination</span>
           </DialogTitle>
         </DialogHeader>
         
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-            <span className="ml-3 text-slate-600">Loading physical examination findings...</span>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
+            <span className="ml-3 text-muted-foreground">Loading physical examination findings...</span>
           </div>
         ) : (
           <div className="space-y-6">
             {/* Patient Information */}
             {patientInfo && (
-              <Card className="border-indigo-200 bg-indigo-50">
+              <Card className="border-border bg-card">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold text-indigo-800 flex items-center gap-2">
+                  <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
                     <User className="h-5 w-5" />
                     Patient Information
                   </CardTitle>
@@ -211,20 +211,20 @@ export function ComprehensivePhysicalExamModal({
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
-                      <h5 className="font-medium text-slate-700">Name</h5>
-                      <p className="text-slate-600">{patientInfo.name}</p>
+                      <h5 className="font-medium text-foreground">Name</h5>
+                      <p className="text-muted-foreground">{patientInfo.name}</p>
                     </div>
                     <div>
-                      <h5 className="font-medium text-slate-700">Age</h5>
-                      <p className="text-slate-600">{patientInfo.age} years</p>
+                      <h5 className="font-medium text-foreground">Age</h5>
+                      <p className="text-muted-foreground">{patientInfo.age} years</p>
                     </div>
                     <div>
-                      <h5 className="font-medium text-slate-700">Gender</h5>
-                      <p className="text-slate-600">{patientInfo.gender}</p>
+                      <h5 className="font-medium text-foreground">Gender</h5>
+                      <p className="text-muted-foreground">{patientInfo.gender}</p>
                     </div>
                     <div>
-                      <h5 className="font-medium text-slate-700">Chief Complaint</h5>
-                      <p className="text-slate-600 text-sm">{patientInfo.chiefComplaint}</p>
+                      <h5 className="font-medium text-foreground">Chief Complaint</h5>
+                      <p className="text-muted-foreground text-sm">{patientInfo.chiefComplaint}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -259,35 +259,35 @@ export function ComprehensivePhysicalExamModal({
                 <TabsContent value="vitals" className="mt-6">
                   <div className="grid gap-6">
                     {/* Vital Signs */}
-                    <Card className="border-blue-200 bg-blue-50">
+                    <Card className="border-border bg-card">
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-lg font-semibold text-blue-800 flex items-center gap-2">
+                        <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
                           <Thermometer className="h-5 w-5" />
                           Vital Signs
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                          <div className="bg-white p-3 rounded-lg border">
-                            <h5 className="font-medium text-slate-700">Blood Pressure</h5>
-                            <p className="text-lg font-semibold text-slate-800">{physicalExam.vitals.bloodPressure} mmHg</p>
+                          <div className="bg-card p-3 rounded-lg border">
+                            <h5 className="font-medium text-foreground">Blood Pressure</h5>
+                            <p className="text-lg font-semibold text-foreground">{physicalExam.vitals.bloodPressure} mmHg</p>
                           </div>
-                          <div className="bg-white p-3 rounded-lg border">
-                            <h5 className="font-medium text-slate-700">Heart Rate</h5>
-                            <p className="text-lg font-semibold text-slate-800">{physicalExam.vitals.heartRate} bpm</p>
+                          <div className="bg-card p-3 rounded-lg border">
+                            <h5 className="font-medium text-foreground">Heart Rate</h5>
+                            <p className="text-lg font-semibold text-foreground">{physicalExam.vitals.heartRate} bpm</p>
                           </div>
-                          <div className="bg-white p-3 rounded-lg border">
-                            <h5 className="font-medium text-slate-700">Respiratory Rate</h5>
-                            <p className="text-lg font-semibold text-slate-800">{physicalExam.vitals.respiratoryRate} /min</p>
+                          <div className="bg-card p-3 rounded-lg border">
+                            <h5 className="font-medium text-foreground">Respiratory Rate</h5>
+                            <p className="text-lg font-semibold text-foreground">{physicalExam.vitals.respiratoryRate} /min</p>
                           </div>
-                          <div className="bg-white p-3 rounded-lg border">
-                            <h5 className="font-medium text-slate-700">Temperature</h5>
-                            <p className="text-lg font-semibold text-slate-800">{physicalExam.vitals.temperature}</p>
+                          <div className="bg-card p-3 rounded-lg border">
+                            <h5 className="font-medium text-foreground">Temperature</h5>
+                            <p className="text-lg font-semibold text-foreground">{physicalExam.vitals.temperature}</p>
                           </div>
                           {physicalExam.vitals.oxygenSaturation && (
-                            <div className="bg-white p-3 rounded-lg border">
-                              <h5 className="font-medium text-slate-700">Oxygen Saturation</h5>
-                              <p className="text-lg font-semibold text-slate-800">{physicalExam.vitals.oxygenSaturation}</p>
+                            <div className="bg-card p-3 rounded-lg border">
+                              <h5 className="font-medium text-foreground">Oxygen Saturation</h5>
+                              <p className="text-lg font-semibold text-foreground">{physicalExam.vitals.oxygenSaturation}</p>
                             </div>
                           )}
                         </div>
@@ -295,34 +295,34 @@ export function ComprehensivePhysicalExamModal({
                     </Card>
 
                     {/* General Appearance */}
-                    {renderSystemFindings("General Appearance", physicalExam.general, User, "text-slate-600")}
+                    {renderSystemFindings("General Appearance", physicalExam.general, User, "text-muted-foreground")}
                   </div>
                 </TabsContent>
                 
                 <TabsContent value="systems1" className="mt-6">
                   <div className="grid gap-6">
-                    {renderSystemFindings("Cardiovascular System", physicalExam.cardiovascular, Heart, "text-red-600")}
-                    {renderSystemFindings("Pulmonary System", physicalExam.pulmonary, Zap, "text-blue-600")}
+                    {renderSystemFindings("Cardiovascular System", physicalExam.cardiovascular, Heart, "text-muted-foreground")}
+                    {renderSystemFindings("Pulmonary System", physicalExam.pulmonary, Zap, "text-muted-foreground")}
                   </div>
                 </TabsContent>
                 
                 <TabsContent value="systems2" className="mt-6">
                   <div className="grid gap-6">
-                    {renderSystemFindings("Abdominal Examination", physicalExam.abdominal, Activity, "text-green-600")}
-                    {renderSystemFindings("Musculoskeletal System", physicalExam.musculoskeletal, FileText, "text-purple-600")}
+                    {renderSystemFindings("Abdominal Examination", physicalExam.abdominal, Activity, "text-muted-foreground")}
+                    {renderSystemFindings("Musculoskeletal System", physicalExam.musculoskeletal, FileText, "text-muted-foreground")}
                   </div>
                 </TabsContent>
                 
                 <TabsContent value="neuro" className="mt-6">
                   <div className="grid gap-6">
-                    {renderSystemFindings("Neurological Examination", physicalExam.neurological, Brain, "text-purple-600")}
+                    {renderSystemFindings("Neurological Examination", physicalExam.neurological, Brain, "text-muted-foreground")}
                   </div>
                 </TabsContent>
                 
                 <TabsContent value="other" className="mt-6">
                   <div className="grid gap-6">
-                    {renderSystemFindings("HEENT (Head, Eyes, Ears, Nose, Throat)", physicalExam.heent, Eye, "text-indigo-600")}
-                    {renderSystemFindings("Skin Examination", physicalExam.skin, User, "text-orange-600")}
+                    {renderSystemFindings("HEENT (Head, Eyes, Ears, Nose, Throat)", physicalExam.heent, Eye, "text-muted-foreground")}
+                    {renderSystemFindings("Skin Examination", physicalExam.skin, User, "text-muted-foreground")}
                   </div>
                 </TabsContent>
               </Tabs>

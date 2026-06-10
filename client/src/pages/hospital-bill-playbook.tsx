@@ -3149,7 +3149,7 @@ export default function PreCollectionsGuide() {
         canonicalPath="/hospital-bill-playbook"
       />
       
-      <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-background">
         <MobileHeader title="Hospital Bill Playbook" />
         
         <main className="container mx-auto px-4 py-8 pb-24 md:pb-8 pt-20">
@@ -3161,21 +3161,21 @@ export default function PreCollectionsGuide() {
             {/* Header with back button */}
             <div className="mb-8">
               <Link href="/">
-                <Button variant="ghost" className="mb-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                <Button variant="ghost" className="mb-4 text-muted-foreground hover:text-gray-900 dark:hover:text-white">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to Home
                 </Button>
               </Link>
               
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl">
+                <div className="p-3 rounded-xl" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                   <Receipt className="h-8 w-8 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                  <h1 className="text-3xl md:text-4xl font-bold font-serif text-foreground mb-2">
                     Hospital Bill Playbook
                   </h1>
-                  <p className="text-lg text-gray-600 dark:text-gray-400">
+                  <p className="text-lg text-muted-foreground">
                     Act NOW before your bill goes to collections. Reduce hospital bills by 40-70% with insider strategies and step-by-step guides.
                   </p>
                 </div>
@@ -3186,28 +3186,28 @@ export default function PreCollectionsGuide() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 mb-8 text-white"
+              className="luxury-card rounded-2xl p-6 mb-8"
             >
               <div className="flex items-start gap-4">
-                <Clock className="h-8 w-8 flex-shrink-0" />
+                <Clock className="h-8 w-8 flex-shrink-0 text-amber-600 dark:text-amber-500" />
                 <div>
-                  <h2 className="text-xl font-bold mb-2">Why Act NOW Matters</h2>
-                  <p className="text-amber-100 mb-4">
+                  <h2 className="text-xl font-bold font-serif text-foreground mb-2">Why Act NOW Matters</h2>
+                  <p className="text-muted-foreground mb-4">
                     Once a bill goes to collections, your leverage drops dramatically. Collectors buy debt for pennies on the dollar but want you to pay full price.
-                    <strong className="text-white"> Acting in the first 30-60 days gives you maximum negotiating power.</strong>
+                    <strong className="text-foreground"> Acting in the first 30-60 days gives you maximum negotiating power.</strong>
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                    <div className="bg-white/20 rounded-lg p-3 text-center">
-                      <p className="text-2xl font-bold">40-70%</p>
-                      <p className="text-sm text-amber-100">Typical Reduction Possible</p>
+                    <div className="bg-secondary rounded-lg p-3 text-center">
+                      <p className="text-2xl font-bold text-foreground">40-70%</p>
+                      <p className="text-sm text-muted-foreground">Typical Reduction Possible</p>
                     </div>
-                    <div className="bg-white/20 rounded-lg p-3 text-center">
-                      <p className="text-2xl font-bold">30 Days</p>
-                      <p className="text-sm text-amber-100">Best Window to Act</p>
+                    <div className="bg-secondary rounded-lg p-3 text-center">
+                      <p className="text-2xl font-bold text-foreground">30 Days</p>
+                      <p className="text-sm text-muted-foreground">Best Window to Act</p>
                     </div>
-                    <div className="bg-white/20 rounded-lg p-3 text-center">
-                      <p className="text-2xl font-bold">60-80%</p>
-                      <p className="text-sm text-amber-100">Bills Have Errors</p>
+                    <div className="bg-secondary rounded-lg p-3 text-center">
+                      <p className="text-2xl font-bold text-foreground">60-80%</p>
+                      <p className="text-sm text-muted-foreground">Bills Have Errors</p>
                     </div>
                   </div>
                 </div>
@@ -3221,46 +3221,46 @@ export default function PreCollectionsGuide() {
               transition={{ delay: 0.05 }}
               className="md:hidden mb-6"
             >
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-lg">
-                <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-amber-500" />
+              <div className="bg-card rounded-xl border border-border p-4 shadow-sm">
+                <p className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-gold" />
                   Quick Actions - Start Here
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-emerald-200 dark:border-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-border hover:bg-secondary"
                     onClick={() => setShowChatbot(true)}
                   >
-                    <MessageSquare className="h-5 w-5 text-emerald-600" />
+                    <MessageSquare className="h-5 w-5 text-muted-foreground" />
                     <span>AI Help</span>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-purple-200 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-border hover:bg-secondary"
                     onClick={() => document.getElementById('insider-secrets')?.scrollIntoView({ behavior: 'smooth' })}
                   >
-                    <Lightbulb className="h-5 w-5 text-purple-600" />
+                    <Lightbulb className="h-5 w-5 text-muted-foreground" />
                     <span>Secrets</span>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-border hover:bg-secondary"
                     onClick={() => document.getElementById('bill-scenarios')?.scrollIntoView({ behavior: 'smooth' })}
                   >
-                    <Receipt className="h-5 w-5 text-blue-600" />
+                    <Receipt className="h-5 w-5 text-muted-foreground" />
                     <span>My Bill Type</span>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
-                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-amber-200 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                    className="flex flex-col items-center gap-1 h-auto py-3 text-xs border-border hover:bg-secondary"
                     onClick={() => document.getElementById('first-steps')?.scrollIntoView({ behavior: 'smooth' })}
                   >
-                    <FileText className="h-5 w-5 text-amber-600" />
+                    <FileText className="h-5 w-5 text-muted-foreground" />
                     <span>First Steps</span>
                   </Button>
                 </div>
@@ -3276,7 +3276,7 @@ export default function PreCollectionsGuide() {
             >
               <Button
                 onClick={() => setShowChatbot(!showChatbot)}
-                className="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white py-6 text-lg"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary py-6 text-lg"
               >
                 <MessageSquare className="h-6 w-6 mr-3" />
                 {showChatbot ? "Hide AI Bill Negotiation Assistant" : "Get AI Help with Your Specific Bill"}
@@ -3303,35 +3303,35 @@ export default function PreCollectionsGuide() {
               transition={{ delay: 0.15 }}
               className="mb-10"
             >
-              <Card className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-blue-200 dark:border-blue-700">
+              <Card className="luxury-card">
                 <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-3 text-blue-800 dark:text-blue-300">
-                    <Target className="h-6 w-6" />
+                  <CardTitle className="flex items-center gap-3 font-serif text-foreground">
+                    <Target className="h-6 w-6 text-gold" />
                     Your First 3 Steps (Do These TODAY)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid md:grid-cols-3 gap-4">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
+                    <div className="bg-card rounded-lg p-4 border border-border">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Request Itemized Bill</h3>
+                        <div className="w-7 h-7 bg-foreground rounded-full flex items-center justify-center text-background font-bold text-sm">1</div>
+                        <h3 className="font-semibold text-foreground text-sm">Request Itemized Bill</h3>
                       </div>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">Call billing and say: "I need an itemized bill with CPT codes for all charges." This reveals errors.</p>
+                      <p className="text-xs text-muted-foreground">Call billing and say: "I need an itemized bill with CPT codes for all charges." This reveals errors.</p>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
+                    <div className="bg-card rounded-lg p-4 border border-border">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Ask About Financial Assistance</h3>
+                        <div className="w-7 h-7 bg-foreground rounded-full flex items-center justify-center text-background font-bold text-sm">2</div>
+                        <h3 className="font-semibold text-foreground text-sm">Ask About Financial Assistance</h3>
                       </div>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">Say: "Do you have a financial assistance or charity care application?" Apply even if you think you won't qualify.</p>
+                      <p className="text-xs text-muted-foreground">Say: "Do you have a financial assistance or charity care application?" Apply even if you think you won't qualify.</p>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
+                    <div className="bg-card rounded-lg p-4 border border-border">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Ask About Discounts</h3>
+                        <div className="w-7 h-7 bg-foreground rounded-full flex items-center justify-center text-background font-bold text-sm">3</div>
+                        <h3 className="font-semibold text-foreground text-sm">Ask About Discounts</h3>
                       </div>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">Say: "What is your prompt-pay or cash-pay discount if I pay today/this month?" Get it in writing before paying.</p>
+                      <p className="text-xs text-muted-foreground">Say: "What is your prompt-pay or cash-pay discount if I pay today/this month?" Get it in writing before paying.</p>
                     </div>
                   </div>
                   <div className="mt-4 p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg border border-amber-200 dark:border-amber-700">
@@ -3353,25 +3353,25 @@ export default function PreCollectionsGuide() {
               className="mb-10"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
-                  <Lightbulb className="h-6 w-6 text-white" />
+                <div className="p-2 bg-secondary rounded-lg">
+                  <Lightbulb className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{insiderSecrets.length} Insider Secrets Hospitals Don't Want You to Know</h2>
+                <h2 className="text-2xl font-bold font-serif text-foreground">{insiderSecrets.length} Insider Secrets Hospitals Don't Want You to Know</h2>
               </div>
 
               <div className="grid gap-4">
                 {insiderSecrets.map((secret, index) => (
                   <Card 
                     key={index}
-                    className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-700 cursor-pointer hover:shadow-lg transition-shadow"
+                    className="luxury-card cursor-pointer hover:shadow-sm transition-shadow"
                     onClick={() => toggleSecret(index)}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <Badge className="bg-purple-500 text-white text-xs">Secret #{index + 1}</Badge>
-                            <h3 className="font-bold text-gray-900 dark:text-white">{secret.title}</h3>
+                            <Badge className="bg-secondary text-muted-foreground text-xs">Secret #{index + 1}</Badge>
+                            <h3 className="font-bold text-foreground">{secret.title}</h3>
                           </div>
                           {expandedSecrets.has(index) && (
                             <motion.div
@@ -3379,19 +3379,19 @@ export default function PreCollectionsGuide() {
                               animate={{ opacity: 1, height: "auto" }}
                               className="mt-3"
                             >
-                              <p className="text-gray-700 dark:text-gray-300 mb-3">{secret.secret}</p>
-                              <div className="bg-green-100 dark:bg-green-900/30 rounded-lg p-3 border border-green-200 dark:border-green-700">
-                                <p className="text-sm text-green-800 dark:text-green-300">
-                                  <strong>ACTION:</strong> {secret.actionable}
+                              <p className="text-muted-foreground mb-3">{secret.secret}</p>
+                              <div className="bg-secondary rounded-lg p-3 border border-border">
+                                <p className="text-sm text-foreground">
+                                  <strong className="text-gold">ACTION:</strong> {secret.actionable}
                                 </p>
                               </div>
                             </motion.div>
                           )}
                         </div>
                         {expandedSecrets.has(index) ? (
-                          <ChevronUp className="h-5 w-5 text-purple-500 flex-shrink-0" />
+                          <ChevronUp className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                         ) : (
-                          <ChevronDown className="h-5 w-5 text-purple-500 flex-shrink-0" />
+                          <ChevronDown className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                         )}
                       </div>
                     </CardContent>
@@ -3409,12 +3409,12 @@ export default function PreCollectionsGuide() {
               className="mb-10"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg">
-                  <Target className="h-6 w-6 text-white" />
+                <div className="p-2 bg-secondary rounded-lg">
+                  <Target className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Choose Your Bill Type for Specific Guidance</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Tap any bill type for step-by-step scripts, templates, and insider tactics</p>
+                  <h2 className="text-2xl font-bold font-serif text-foreground">Choose Your Bill Type for Specific Guidance</h2>
+                  <p className="text-sm text-muted-foreground">Tap any bill type for step-by-step scripts, templates, and insider tactics</p>
                 </div>
               </div>
 
@@ -3425,32 +3425,31 @@ export default function PreCollectionsGuide() {
                   return (
                     <Card
                       key={scenario.id}
-                      className={`cursor-pointer transition-all hover:shadow-lg ${
+                      className={`cursor-pointer transition-all hover:shadow-sm ${
                         selectedScenario === scenario.id 
-                          ? 'ring-2 ring-emerald-500 bg-emerald-50 dark:bg-emerald-900/20' 
+                          ? 'ring-2 ring-[var(--gold)] bg-card' 
                           : isFeatured
-                            ? 'bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border-emerald-200 dark:border-emerald-700'
-                            : 'bg-white dark:bg-gray-800'
+                            ? 'bg-card border border-border'
+                            : 'bg-card'
                       }`}
                       onClick={() => setSelectedScenario(selectedScenario === scenario.id ? null : scenario.id)}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
-                          <div className={`p-2 rounded-lg flex-shrink-0 ${
-                            isFeatured 
-                              ? 'bg-gradient-to-r from-emerald-500 to-green-600' 
-                              : 'bg-blue-100 dark:bg-blue-900/30'
-                          }`}>
-                            <IconComponent className={`h-5 w-5 ${isFeatured ? 'text-white' : 'text-blue-600 dark:text-blue-400'}`} />
+                          <div
+                            className="p-2 rounded-lg flex-shrink-0 bg-secondary"
+                            style={isFeatured ? { background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' } : undefined}
+                          >
+                            <IconComponent className={`h-5 w-5 ${isFeatured ? 'text-white' : 'text-muted-foreground'}`} />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{scenario.title}</h3>
+                              <h3 className="font-semibold text-foreground text-sm truncate">{scenario.title}</h3>
                               {isFeatured && (
-                                <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs flex-shrink-0">Enhanced</Badge>
+                                <Badge className="text-white text-xs flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>Enhanced</Badge>
                               )}
                             </div>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">{scenario.situation}</p>
+                            <p className="text-xs text-muted-foreground line-clamp-2">{scenario.situation}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -3466,15 +3465,15 @@ export default function PreCollectionsGuide() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-6"
                 >
-                  <Card className="bg-white dark:bg-gray-800 border-2 border-emerald-200 dark:border-emerald-700">
-                    <CardHeader className="bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-t-lg">
+                  <Card className="bg-card border border-border">
+                    <CardHeader className="text-white rounded-t-lg" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                       <div className="flex items-center gap-3">
                         {(() => {
                           const IconComponent = selectedScenarioData.icon;
                           return <IconComponent className="h-8 w-8" />;
                         })()}
                         <div>
-                          <CardTitle className="text-xl">{selectedScenarioData.title}</CardTitle>
+                          <CardTitle className="text-xl font-serif">{selectedScenarioData.title}</CardTitle>
                           {'featured' in selectedScenarioData && selectedScenarioData.featured && (
                             <Badge className="bg-white/20 text-white mt-1">Comprehensive Enhanced Guide</Badge>
                           )}
@@ -3484,28 +3483,28 @@ export default function PreCollectionsGuide() {
                     <CardContent className="p-6">
                       <div className="space-y-6">
                         {/* Situation */}
-                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border border-blue-200 dark:border-blue-700">
-                          <h4 className="font-bold text-blue-800 dark:text-blue-300 mb-2 flex items-center gap-2">
+                        <div className="bg-secondary rounded-xl p-5 border border-border">
+                          <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
                             <AlertCircle className="h-5 w-5" />
                             Your Situation
                           </h4>
-                          <p className="text-gray-700 dark:text-gray-300">{selectedScenarioData.situation}</p>
+                          <p className="text-muted-foreground">{selectedScenarioData.situation}</p>
                         </div>
 
                         {/* Insider Knowledge */}
                         {selectedScenarioData.insiderKnowledge && (
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-5 border border-purple-200 dark:border-purple-700">
-                            <h4 className="font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
+                            <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                               <Lightbulb className="h-5 w-5" />
                               Insider Knowledge ({selectedScenarioData.insiderKnowledge.length} Key Facts)
                             </h4>
                             <ul className="space-y-3">
                               {selectedScenarioData.insiderKnowledge.map((item: string, i: number) => (
                                 <li key={i} className="flex items-start gap-3">
-                                  <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">
+                                  <div className="w-6 h-6 bg-foreground rounded-full flex items-center justify-center flex-shrink-0 text-background text-xs font-bold">
                                     {i + 1}
                                   </div>
-                                  <p className="text-gray-700 dark:text-gray-300 text-sm">{item}</p>
+                                  <p className="text-muted-foreground text-sm">{item}</p>
                                 </li>
                               ))}
                             </ul>
@@ -3514,7 +3513,7 @@ export default function PreCollectionsGuide() {
 
                         {/* Bill Forensics - for featured scenarios */}
                         {'billForensics' in selectedScenarioData && selectedScenarioData.billForensics && (
-                          <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-5 border border-red-200 dark:border-red-700">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
                             <h4 className="font-bold text-red-800 dark:text-red-300 mb-4 flex items-center gap-2">
                               <AlertTriangle className="h-5 w-5" />
                               {(selectedScenarioData.billForensics as any).title}
@@ -3525,12 +3524,12 @@ export default function PreCollectionsGuide() {
                               <h5 className="font-semibold text-red-700 dark:text-red-400 mb-2 text-sm">CPT Codes to Challenge:</h5>
                               <div className="space-y-2">
                                 {(selectedScenarioData.billForensics as any).redFlags?.map((flag: any, i: number) => (
-                                  <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-red-100 dark:border-red-800">
+                                  <div key={i} className="bg-card rounded-lg p-3 border border-border">
                                     <div className="flex items-center justify-between mb-1">
                                       <Badge variant="destructive" className="font-mono">{flag.code}</Badge>
                                       <span className="text-red-600 dark:text-red-400 font-bold text-sm">{flag.amount}</span>
                                     </div>
-                                    <p className="text-gray-600 dark:text-gray-400 text-xs">{flag.description}</p>
+                                    <p className="text-muted-foreground text-xs">{flag.description}</p>
                                   </div>
                                 ))}
                               </div>
@@ -3543,7 +3542,7 @@ export default function PreCollectionsGuide() {
                                 {(selectedScenarioData.billForensics as any).unbundlingSchemes?.map((scheme: string, i: number) => (
                                   <li key={i} className="flex items-start gap-2">
                                     <XCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
-                                    <span className="text-gray-700 dark:text-gray-300 text-sm">{scheme}</span>
+                                    <span className="text-muted-foreground text-sm">{scheme}</span>
                                   </li>
                                 ))}
                               </ul>
@@ -3556,7 +3555,7 @@ export default function PreCollectionsGuide() {
                                 {(selectedScenarioData.billForensics as any).phantomCharges?.map((charge: string, i: number) => (
                                   <li key={i} className="flex items-start gap-2">
                                     <Ban className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
-                                    <span className="text-gray-700 dark:text-gray-300 text-sm">{charge}</span>
+                                    <span className="text-muted-foreground text-sm">{charge}</span>
                                   </li>
                                 ))}
                               </ul>
@@ -3566,29 +3565,29 @@ export default function PreCollectionsGuide() {
 
                         {/* Timeline */}
                         {'timeline' in selectedScenarioData && selectedScenarioData.timeline && (
-                          <div className="bg-cyan-50 dark:bg-cyan-900/20 rounded-xl p-5 border border-cyan-200 dark:border-cyan-700">
-                            <h4 className="font-bold text-cyan-800 dark:text-cyan-300 mb-4 flex items-center gap-2">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
+                            <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                               <Clock className="h-5 w-5" />
                               {(selectedScenarioData.timeline as any).title}
                             </h4>
                             <div className="space-y-4">
                               {(selectedScenarioData.timeline as any).checkpoints?.map((checkpoint: any, i: number) => (
-                                <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-cyan-100 dark:border-cyan-800">
+                                <div key={i} className="bg-card rounded-lg p-4 border border-border">
                                   <div className="flex items-center gap-2 mb-2">
                                     <Badge className={`text-xs ${
-                                      checkpoint.status === 'critical' ? 'bg-red-500' :
-                                      checkpoint.status === 'important' ? 'bg-amber-500' :
-                                      checkpoint.status === 'strategic' ? 'bg-blue-500' :
-                                      checkpoint.status === 'resolution' ? 'bg-green-500' :
-                                      'bg-purple-500'
+                                      checkpoint.status === 'critical' ? 'bg-red-600' :
+                                      checkpoint.status === 'important' ? 'bg-amber-600' :
+                                      checkpoint.status === 'strategic' ? 'bg-stone-600' :
+                                      checkpoint.status === 'resolution' ? 'bg-emerald-600' :
+                                      'bg-stone-500'
                                     } text-white`}>{checkpoint.status.toUpperCase()}</Badge>
-                                    <span className="font-bold text-gray-900 dark:text-white text-sm">{checkpoint.day}</span>
+                                    <span className="font-bold text-foreground text-sm">{checkpoint.day}</span>
                                   </div>
                                   <ul className="space-y-1">
                                     {checkpoint.actions.map((action: string, j: number) => (
                                       <li key={j} className="flex items-start gap-2">
-                                        <CheckCircle className="h-4 w-4 text-cyan-500 flex-shrink-0 mt-0.5" />
-                                        <span className="text-gray-700 dark:text-gray-300 text-sm">{action}</span>
+                                        <CheckCircle className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+                                        <span className="text-muted-foreground text-sm">{action}</span>
                                       </li>
                                     ))}
                                   </ul>
@@ -3600,7 +3599,7 @@ export default function PreCollectionsGuide() {
 
                         {/* Escalation Path */}
                         {'escalationPath' in selectedScenarioData && selectedScenarioData.escalationPath && (
-                          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-5 border border-amber-200 dark:border-amber-700">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
                             <h4 className="font-bold text-amber-800 dark:text-amber-300 mb-4 flex items-center gap-2">
                               <Gavel className="h-5 w-5" />
                               Escalation Ladder
@@ -3608,12 +3607,12 @@ export default function PreCollectionsGuide() {
                             <div className="space-y-2">
                               {(selectedScenarioData.escalationPath as any[]).map((level: any, i: number) => (
                                 <div key={i} className="flex items-start gap-3">
-                                  <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">
+                                  <div className="w-8 h-8 bg-foreground rounded-full flex items-center justify-center flex-shrink-0 text-background font-bold text-sm">
                                     {level.level}
                                   </div>
                                   <div>
-                                    <p className="font-semibold text-gray-900 dark:text-white text-sm">{level.entity}</p>
-                                    <p className="text-gray-600 dark:text-gray-400 text-xs">{level.action}</p>
+                                    <p className="font-semibold text-foreground text-sm">{level.entity}</p>
+                                    <p className="text-muted-foreground text-xs">{level.action}</p>
                                   </div>
                                 </div>
                               ))}
@@ -3623,22 +3622,22 @@ export default function PreCollectionsGuide() {
 
                         {/* Negotiation Playbooks */}
                         {'negotiationPlaybooks' in selectedScenarioData && selectedScenarioData.negotiationPlaybooks && (
-                          <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-5 border border-indigo-200 dark:border-indigo-700">
-                            <h4 className="font-bold text-indigo-800 dark:text-indigo-300 mb-4 flex items-center gap-2">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
+                            <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                               <MessageSquare className="h-5 w-5" />
                               Negotiation Playbooks & Scripts
                             </h4>
                             <div className="space-y-4">
                               {Object.entries(selectedScenarioData.negotiationPlaybooks as Record<string, any>).map(([key, playbook]: [string, any]) => (
-                                <div key={key} className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-indigo-100 dark:border-indigo-800">
-                                  <h5 className="font-bold text-gray-900 dark:text-white text-sm mb-2">{playbook.title}</h5>
+                                <div key={key} className="bg-card rounded-lg p-4 border border-border">
+                                  <h5 className="font-bold text-foreground text-sm mb-2">{playbook.title}</h5>
                                   {playbook.approach && (
-                                    <p className="text-gray-600 dark:text-gray-400 text-xs mb-3 italic">{playbook.approach}</p>
+                                    <p className="text-muted-foreground text-xs mb-3 italic">{playbook.approach}</p>
                                   )}
                                   {playbook.script && (
-                                    <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700 mb-2">
-                                      <p className="text-xs font-medium text-indigo-800 dark:text-indigo-300 mb-1">SCRIPT:</p>
-                                      <p className="text-sm text-indigo-900 dark:text-indigo-200 italic">"{playbook.script}"</p>
+                                    <div className="bg-card rounded-lg p-3 border border-border mb-2">
+                                      <p className="text-xs font-medium text-gold mb-1">SCRIPT:</p>
+                                      <p className="text-sm text-foreground italic">"{playbook.script}"</p>
                                     </div>
                                   )}
                                   {playbook.escalationScript && (
@@ -3661,31 +3660,31 @@ export default function PreCollectionsGuide() {
 
                         {/* Legal Protections */}
                         {'legalProtections' in selectedScenarioData && selectedScenarioData.legalProtections && (
-                          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-5 border border-purple-200 dark:border-purple-700">
-                            <h4 className="font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
+                            <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                               <Scale className="h-5 w-5" />
                               Legal Protections & Rights
                             </h4>
                             <div className="space-y-4">
                               <div>
-                                <h5 className="font-semibold text-purple-700 dark:text-purple-400 text-sm mb-2">Federal Laws:</h5>
+                                <h5 className="font-semibold text-foreground text-sm mb-2">Federal Laws:</h5>
                                 <div className="space-y-2">
                                   {(selectedScenarioData.legalProtections as any).federal?.map((law: any, i: number) => (
-                                    <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
-                                      <p className="font-bold text-gray-900 dark:text-white text-sm">{law.law}</p>
-                                      <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">{law.protection}</p>
-                                      <p className="text-purple-600 dark:text-purple-400 text-xs mt-1"><strong>Enforce:</strong> {law.enforcement}</p>
+                                    <div key={i} className="bg-card rounded-lg p-3 border border-border">
+                                      <p className="font-bold text-foreground text-sm">{law.law}</p>
+                                      <p className="text-muted-foreground text-xs mt-1">{law.protection}</p>
+                                      <p className="text-muted-foreground text-xs mt-1"><strong>Enforce:</strong> {law.enforcement}</p>
                                     </div>
                                   ))}
                                 </div>
                               </div>
                               <div>
-                                <h5 className="font-semibold text-purple-700 dark:text-purple-400 text-sm mb-2">State Examples:</h5>
+                                <h5 className="font-semibold text-foreground text-sm mb-2">State Examples:</h5>
                                 <div className="grid gap-2">
                                   {(selectedScenarioData.legalProtections as any).stateExamples?.map((state: any, i: number) => (
-                                    <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
-                                      <p className="font-bold text-gray-900 dark:text-white text-sm">{state.state}</p>
-                                      <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">{state.protection}</p>
+                                    <div key={i} className="bg-card rounded-lg p-3 border border-border">
+                                      <p className="font-bold text-foreground text-sm">{state.state}</p>
+                                      <p className="text-muted-foreground text-xs mt-1">{state.protection}</p>
                                     </div>
                                   ))}
                                 </div>
@@ -3696,24 +3695,24 @@ export default function PreCollectionsGuide() {
 
                         {/* Letter Templates */}
                         {'templates' in selectedScenarioData && selectedScenarioData.templates && (
-                          <div className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-5 border border-teal-200 dark:border-teal-700">
-                            <h4 className="font-bold text-teal-800 dark:text-teal-300 mb-4 flex items-center gap-2">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
+                            <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                               <FileText className="h-5 w-5" />
                               Ready-to-Use Letter Templates
                             </h4>
                             <div className="space-y-4">
                               {Object.entries(selectedScenarioData.templates as Record<string, any>).map(([key, template]: [string, any]) => (
-                                <div key={key} className="bg-white dark:bg-gray-800 rounded-lg border border-teal-100 dark:border-teal-800 overflow-hidden">
-                                  <div className="bg-teal-100 dark:bg-teal-900/50 px-4 py-2 border-b border-teal-200 dark:border-teal-700">
-                                    <h5 className="font-bold text-teal-800 dark:text-teal-300 text-sm">{template.title}</h5>
+                                <div key={key} className="bg-card rounded-lg border border-border overflow-hidden">
+                                  <div className="bg-secondary px-4 py-2 border-b border-border">
+                                    <h5 className="font-bold text-foreground text-sm">{template.title}</h5>
                                   </div>
                                   <div className="p-4">
-                                    <pre className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap font-mono bg-gray-50 dark:bg-gray-900 rounded-lg p-3 max-h-48 overflow-y-auto">
+                                    <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono bg-secondary rounded-lg p-3 max-h-48 overflow-y-auto">
                                       {template.content}
                                     </pre>
                                     <Button 
                                       size="sm"
-                                      className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white"
+                                      className="w-full mt-3 bg-primary text-primary-foreground hover:bg-primary"
                                       onClick={() => navigator.clipboard.writeText(template.content)}
                                       data-testid={`copy-template-${key}`}
                                     >
@@ -3728,25 +3727,25 @@ export default function PreCollectionsGuide() {
 
                         {/* Calculators */}
                         {'calculators' in selectedScenarioData && selectedScenarioData.calculators && (
-                          <div className="bg-violet-50 dark:bg-violet-900/20 rounded-xl p-5 border border-violet-200 dark:border-violet-700">
-                            <h4 className="font-bold text-violet-800 dark:text-violet-300 mb-4 flex items-center gap-2">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
+                            <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                               <DollarSign className="h-5 w-5" />
                               Financial Calculators
                             </h4>
                             
                             {(selectedScenarioData.calculators as any).charityCareLikelihood && (
                               <div className="mb-4">
-                                <h5 className="font-semibold text-violet-700 dark:text-violet-400 text-sm mb-2">Charity Care Eligibility (2024 FPL):</h5>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
+                                <h5 className="font-semibold text-foreground text-sm mb-2">Charity Care Eligibility (2024 FPL):</h5>
+                                <p className="text-muted-foreground text-sm mb-3">
                                   {(selectedScenarioData.calculators as any).charityCareLikelihood.description}
                                 </p>
                                 <div className="grid gap-2">
                                   {Object.entries((selectedScenarioData.calculators as any).charityCareLikelihood.fplThresholds2024 || {}).map(([size, amount]) => (
-                                    <div key={size} className="flex justify-between items-center bg-white dark:bg-gray-800 rounded-lg p-2">
-                                      <span className="text-gray-600 dark:text-gray-400 text-sm">Family of {size}:</span>
+                                    <div key={size} className="flex justify-between items-center bg-card rounded-lg p-2">
+                                      <span className="text-muted-foreground text-sm">Family of {size}:</span>
                                       <div className="text-right">
-                                        <span className="font-bold text-gray-900 dark:text-white">${(amount as number).toLocaleString()}</span>
-                                        <span className="text-xs text-violet-600 dark:text-violet-400 block">
+                                        <span className="font-bold text-foreground">${(amount as number).toLocaleString()}</span>
+                                        <span className="text-xs text-muted-foreground block">
                                           200% = ${((amount as number) * 2).toLocaleString()}
                                         </span>
                                       </div>
@@ -3758,13 +3757,13 @@ export default function PreCollectionsGuide() {
 
                             {(selectedScenarioData.calculators as any).negotiationTargets && (
                               <div>
-                                <h5 className="font-semibold text-violet-700 dark:text-violet-400 text-sm mb-2">Negotiation Targets:</h5>
+                                <h5 className="font-semibold text-foreground text-sm mb-2">Negotiation Targets:</h5>
                                 <div className="grid gap-2">
                                   {(selectedScenarioData.calculators as any).negotiationTargets.targets.map((target: any, i: number) => (
-                                    <div key={i} className="flex justify-between items-center bg-white dark:bg-gray-800 rounded-lg p-3 border border-violet-100 dark:border-violet-800">
-                                      <span className="text-gray-700 dark:text-gray-300 text-sm">{target.scenario}</span>
+                                    <div key={i} className="flex justify-between items-center bg-card rounded-lg p-3 border border-border">
+                                      <span className="text-muted-foreground text-sm">{target.scenario}</span>
                                       <div className="text-right">
-                                        <Badge className="bg-green-500 text-white">{target.discount}</Badge>
+                                        <Badge className="bg-emerald-600 text-white">{target.discount}</Badge>
                                       </div>
                                     </div>
                                   ))}
@@ -3776,16 +3775,16 @@ export default function PreCollectionsGuide() {
 
                         {/* Success Stories */}
                         {'successStories' in selectedScenarioData && selectedScenarioData.successStories && (
-                          <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-5 border border-green-200 dark:border-green-700">
+                          <div className="bg-secondary rounded-xl p-5 border border-border">
                             <h4 className="font-bold text-green-800 dark:text-green-300 mb-4 flex items-center gap-2">
                               <CheckCircle className="h-5 w-5" />
                               Success Stories
                             </h4>
                             <div className="space-y-4">
                               {(selectedScenarioData.successStories as any[]).map((story: any, i: number) => (
-                                <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-green-100 dark:border-green-800">
+                                <div key={i} className="bg-card rounded-lg p-4 border border-border">
                                   <h5 className="font-bold text-green-700 dark:text-green-400 text-sm mb-2">{story.title}</h5>
-                                  <p className="text-gray-700 dark:text-gray-300 text-sm mb-2">{story.outcome}</p>
+                                  <p className="text-muted-foreground text-sm mb-2">{story.outcome}</p>
                                   <p className="text-green-600 dark:text-green-400 text-xs"><strong>Key Tactics:</strong> {story.keyTactics}</p>
                                 </div>
                               ))}
@@ -3806,12 +3805,12 @@ export default function PreCollectionsGuide() {
               transition={{ delay: 0.4 }}
               className="text-center py-8"
             >
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-muted-foreground mb-4">
                 Need personalized help with your specific bill?
               </p>
               <a 
                 href="mailto:CONTACT@GOLDROCK.ai"
-                className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold"
+                className="inline-flex items-center gap-2 text-gold hover:opacity-80 font-semibold"
               >
                 <Mail className="h-5 w-5" />
                 CONTACT@GOLDROCK.ai
@@ -3821,7 +3820,7 @@ export default function PreCollectionsGuide() {
         </main>
 
         {/* Sticky Mobile Action Banner */}
-        <div className="md:hidden fixed bottom-16 left-0 right-0 bg-gradient-to-r from-emerald-600 to-green-700 text-white py-3 px-4 shadow-lg z-40">
+        <div className="md:hidden fixed bottom-16 left-0 right-0 bg-primary text-primary-foreground py-3 px-4 shadow-sm z-40">
           <div className="flex items-center justify-between max-w-lg mx-auto">
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5" />
@@ -3830,7 +3829,7 @@ export default function PreCollectionsGuide() {
             <Button 
               size="sm"
               variant="secondary"
-              className="bg-white text-emerald-700 hover:bg-gray-100 font-semibold"
+              className="bg-card text-foreground hover:bg-secondary font-semibold"
               onClick={() => setShowChatbot(true)}
             >
               Get AI Help

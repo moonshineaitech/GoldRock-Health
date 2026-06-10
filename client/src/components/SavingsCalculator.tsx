@@ -54,40 +54,40 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
         value: `$${Math.round(amount * 0.08).toLocaleString()} - $${Math.round(amount * 0.15).toLocaleString()}`,
         description: 'Medical billing errors are common. Conservative estimate: 8-15%',
         icon: CheckCircle2,
-        color: 'text-emerald-600',
-        bgColor: 'bg-emerald-100'
+        color: 'text-muted-foreground',
+        bgColor: 'bg-secondary'
       },
       {
         label: 'Payment Plan Negotiation',
         value: `$${Math.round(amount * 0.12).toLocaleString()} - $${Math.round(amount * 0.25).toLocaleString()}`,
         description: 'Typical negotiated reductions range 12-25% with proper approach',
         icon: Target,
-        color: 'text-blue-600',
-        bgColor: 'bg-blue-100'
+        color: 'text-muted-foreground',
+        bgColor: 'bg-secondary'
       },
       {
         label: 'Insurance Appeals (if applicable)',
         value: `$${Math.round(amount * 0.30).toLocaleString()} - $${Math.round(amount * 0.65).toLocaleString()}`,
         description: 'Professional appeals have 65-78% success rate for valid claims',
         icon: Award,
-        color: 'text-purple-600',
-        bgColor: 'bg-purple-100'
+        color: 'text-muted-foreground',
+        bgColor: 'bg-secondary'
       },
       {
         label: 'Financial Assistance Programs',
         value: `$${Math.round(amount * 0.40).toLocaleString()} - $${Math.round(amount * 0.85).toLocaleString()}`,
         description: 'Hospital charity care: 40-85% reduction based on income qualification',
         icon: PiggyBank,
-        color: 'text-orange-600',
-        bgColor: 'bg-orange-100'
+        color: 'text-muted-foreground',
+        bgColor: 'bg-secondary'
       },
       {
         label: 'Fair Price Analysis',
         value: `$${Math.round(amount * 0.20).toLocaleString()} - $${Math.round(amount * 0.45).toLocaleString()}`,
         description: 'Medicare rates often 20-45% of billed charges for same services',
         icon: Calculator,
-        color: 'text-cyan-600',
-        bgColor: 'bg-cyan-100'
+        color: 'text-muted-foreground',
+        bgColor: 'bg-secondary'
       }
     ];
 
@@ -145,37 +145,38 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
       className="space-y-4"
     >
       {/* Hero Savings Display */}
-      <Card className="p-6 bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 shadow-lg">
+      <Card className="p-6 bg-card border-border shadow-sm">
         <div className="text-center">
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
           >
             <DollarSign className="h-8 w-8 text-white" />
           </motion.div>
           
           <div className="mb-2">
-            <span className="text-sm font-medium text-emerald-700">Estimated Maximum Potential</span>
+            <span className="text-sm font-medium text-muted-foreground">Estimated Maximum Potential</span>
           </div>
           
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="text-4xl font-bold text-emerald-700 mb-2"
+            className="text-4xl font-bold font-serif text-gold mb-2"
           >
             ${animatedValue.toLocaleString()}
           </motion.div>
           
-          <p className="text-sm text-emerald-600">
+          <p className="text-sm text-muted-foreground">
             Based on bill amount of {billAmount || '$0'} (Demo calculation)
           </p>
           
           <div className="mt-4 flex items-center justify-center gap-2">
-            <Info className="h-4 w-4 text-blue-500" />
-            <span className="text-xs text-gray-600">Conservative estimates - Results vary by case</span>
+            <Info className="h-4 w-4 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground">Conservative estimates - Results vary by case</span>
           </div>
         </div>
       </Card>
@@ -184,8 +185,8 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
       {analysisStage === 'calculating' || analysisStage === 'complete' ? (
         <div className="space-y-3">
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp className="h-4 w-4 text-emerald-600" />
-            <span className="text-sm font-semibold text-gray-700">Savings Opportunities Identified</span>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-semibold text-foreground">Savings Opportunities Identified</span>
           </div>
           
           {calculatedSavings.map((metric, index) => {
@@ -204,16 +205,16 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
                         <IconComponent className={`h-4 w-4 ${metric.color}`} />
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900 text-sm">
+                        <div className="font-medium text-foreground text-sm">
                           {metric.label}
                         </div>
-                        <div className="text-xs text-gray-600 mt-0.5">
+                        <div className="text-xs text-muted-foreground mt-0.5">
                           {metric.description}
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className={`font-bold text-lg ${metric.color}`}>
+                      <div className="font-bold text-lg text-foreground">
                         {metric.value}
                       </div>
                       <Badge variant="secondary" className="text-xs">
@@ -237,8 +238,8 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
           className="space-y-3"
         >
           <div className="flex items-center gap-2 mb-3">
-            <Star className="h-4 w-4 text-yellow-500" />
-            <span className="text-sm font-semibold text-gray-700">Success Story Examples</span>
+            <Star className="h-4 w-4 text-gold" />
+            <span className="text-sm font-semibold text-foreground">Success Story Examples</span>
             <Badge variant="secondary" className="text-xs">Demo Cases</Badge>
           </div>
           
@@ -249,11 +250,11 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.6 + (index * 0.1) }}
-                className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
+                className="p-3 bg-secondary border border-border rounded-lg"
               >
                 <div className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
-                  <p className="text-xs text-yellow-800 leading-relaxed">
+                  <CheckCircle2 className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {story}
                   </p>
                 </div>
@@ -261,12 +262,12 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
             ))}
           </div>
           
-          <div className="mt-4 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+          <div className="mt-4 p-3 bg-secondary rounded-lg border border-border">
             <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="h-4 w-4 text-yellow-600" />
-              <span className="text-sm font-semibold text-yellow-700">Important Disclaimer</span>
+              <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-semibold text-foreground">Important Disclaimer</span>
             </div>
-            <p className="text-xs text-yellow-800">
+            <p className="text-xs text-muted-foreground">
               These are estimate ranges for demonstration. Actual results depend on bill complexity, 
               insurance status, provider policies, and individual circumstances. No guarantee of specific savings amounts.
             </p>
@@ -282,7 +283,7 @@ export function SavingsCalculator({ billAmount, provider, isVisible, analysisSta
           transition={{ delay: 1.2 }}
           className="mt-4"
         >
-          <div className="flex justify-between text-xs text-gray-500 mb-2">
+          <div className="flex justify-between text-xs text-muted-foreground mb-2">
             <span>Analysis Progress</span>
             <span>
               {analysisStage === 'analyzing' ? '60%' : '90%'}

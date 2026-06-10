@@ -29,9 +29,6 @@ const caseStudies = [
     location: "Austin, TX",
     category: "Emergency",
     icon: Heart,
-    iconColor: "text-red-400",
-    bgColor: "from-red-500/20 to-pink-500/20",
-    borderColor: "border-red-500/30",
     situation: "Sarah visited the ER with severe abdominal pain. After tests, she was diagnosed with appendicitis and referred to a surgeon. The ER bill alone was $12,400.",
     actions: [
       "Requested itemized bill - found duplicate charges for blood work",
@@ -54,9 +51,6 @@ const caseStudies = [
     location: "Phoenix, AZ",
     category: "Imaging",
     icon: Stethoscope,
-    iconColor: "text-blue-400",
-    bgColor: "from-blue-500/20 to-cyan-500/20",
-    borderColor: "border-blue-500/30",
     situation: "Michael needed a knee MRI before surgery. His hospital quoted $4,500 but his high-deductible plan meant he'd pay the full amount.",
     actions: [
       "Used our price comparison tool to find independent imaging centers",
@@ -79,9 +73,6 @@ const caseStudies = [
     location: "Denver, CO",
     category: "Surgery",
     icon: Building2,
-    iconColor: "text-purple-400",
-    bgColor: "from-purple-500/20 to-indigo-500/20",
-    borderColor: "border-purple-500/30",
     situation: "Jennifer had knee replacement surgery at a for-profit hospital. Even after insurance, she faced a $45,000 bill that exceeded her out-of-pocket maximum.",
     actions: [
       "Verified insurance applied correct in-network rates",
@@ -104,9 +95,6 @@ const caseStudies = [
     location: "Atlanta, GA",
     category: "Maternity",
     icon: Baby,
-    iconColor: "text-pink-400",
-    bgColor: "from-pink-500/20 to-rose-500/20",
-    borderColor: "border-pink-500/30",
     situation: "David and Maria had their first child. Despite having insurance, the combined bills from the hospital, OB/GYN, anesthesiologist, and pediatrician totaled $28,000.",
     actions: [
       "Reviewed all bills for duplicate charges across providers",
@@ -131,42 +119,42 @@ export default function CaseStudies() {
         canonicalPath="/case-studies"
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-[#0a1628] via-[#0d1d35] to-[#0a1628]">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <Badge className="bg-green-500/20 text-green-400 border-green-500/30 mb-4">
+            <Badge className="bg-secondary text-gold border border-border mb-4">
               Real Results
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Patient <span className="text-green-400">Success Stories</span>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">
+              Patient <span className="text-gold">Success Stories</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
               Real patients who used our platform to reduce their medical bills. 
               Names changed for privacy, but the savings are real.
             </p>
 
             <div className="flex justify-center gap-8 flex-wrap">
               <div className="text-center">
-                <div className="text-4xl font-bold text-green-400">
+                <div className="text-4xl font-bold text-gold">
                   ${totalSavings.toLocaleString()}
                 </div>
-                <div className="text-sm text-gray-400">Combined Savings</div>
+                <div className="text-sm text-muted-foreground">Combined Savings</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-cyan-400">
+                <div className="text-4xl font-bold text-foreground">
                   {caseStudies.length}
                 </div>
-                <div className="text-sm text-gray-400">Case Studies</div>
+                <div className="text-sm text-muted-foreground">Case Studies</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-400">
+                <div className="text-4xl font-bold text-foreground">
                   {Math.round(caseStudies.reduce((sum, cs) => sum + cs.savingsPercent, 0) / caseStudies.length)}%
                 </div>
-                <div className="text-sm text-gray-400">Avg. Reduction</div>
+                <div className="text-sm text-muted-foreground">Avg. Reduction</div>
               </div>
             </div>
           </motion.div>
@@ -179,61 +167,61 @@ export default function CaseStudies() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className={`bg-gradient-to-br ${study.bgColor} ${study.borderColor}`}>
+                <Card className="luxury-card">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center`}>
-                          <study.icon className={`h-6 w-6 ${study.iconColor}`} />
+                        <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
+                          <study.icon className="h-6 w-6 text-muted-foreground" />
                         </div>
                         <div>
-                          <Badge className="bg-white/10 text-gray-300 border-white/20 mb-1">
+                          <Badge className="bg-secondary text-muted-foreground border border-border mb-1">
                             {study.category}
                           </Badge>
-                          <CardTitle className="text-white text-xl">{study.title}</CardTitle>
-                          <div className="text-gray-400">{study.patientName} • {study.location}</div>
+                          <CardTitle className="text-foreground font-serif text-xl">{study.title}</CardTitle>
+                          <div className="text-muted-foreground">{study.patientName} • {study.location}</div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-3xl font-bold text-green-400">
+                        <div className="text-3xl font-bold text-gold">
                           ${study.savings.toLocaleString()}
                         </div>
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-muted-foreground">
                           {study.savingsPercent}% savings
                         </div>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="grid md:grid-cols-3 gap-4 bg-white/5 rounded-lg p-4">
+                    <div className="grid md:grid-cols-3 gap-4 bg-secondary rounded-lg p-4">
                       <div className="text-center">
-                        <div className="text-sm text-gray-500 mb-1">Original Bill</div>
-                        <div className="text-xl font-bold text-red-400">
+                        <div className="text-sm text-muted-foreground mb-1">Original Bill</div>
+                        <div className="text-xl font-bold text-foreground">
                           ${study.originalBill.toLocaleString()}
                         </div>
                       </div>
                       <div className="text-center flex items-center justify-center">
-                        <TrendingDown className="h-8 w-8 text-green-400" />
+                        <TrendingDown className="h-8 w-8 text-gold" />
                       </div>
                       <div className="text-center">
-                        <div className="text-sm text-gray-500 mb-1">Final Bill</div>
-                        <div className="text-xl font-bold text-green-400">
+                        <div className="text-sm text-muted-foreground mb-1">Final Bill</div>
+                        <div className="text-xl font-bold text-gold">
                           ${study.finalBill.toLocaleString()}
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="text-white font-semibold mb-2">The Situation</h4>
-                      <p className="text-gray-300 text-sm">{study.situation}</p>
+                      <h4 className="text-foreground font-semibold mb-2">The Situation</h4>
+                      <p className="text-muted-foreground text-sm">{study.situation}</p>
                     </div>
 
                     <div>
-                      <h4 className="text-white font-semibold mb-2">Actions Taken</h4>
+                      <h4 className="text-foreground font-semibold mb-2">Actions Taken</h4>
                       <ul className="space-y-2">
                         {study.actions.map((action, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                            <CheckCircle className="h-4 w-4 text-green-400 flex-shrink-0 mt-0.5" />
+                          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <CheckCircle className="h-4 w-4 text-gold flex-shrink-0 mt-0.5" />
                             {action}
                           </li>
                         ))}
@@ -241,14 +229,14 @@ export default function CaseStudies() {
                     </div>
 
                     <div>
-                      <h4 className="text-white font-semibold mb-2">The Result</h4>
-                      <p className="text-gray-300 text-sm">{study.result}</p>
+                      <h4 className="text-foreground font-semibold mb-2">The Result</h4>
+                      <p className="text-muted-foreground text-sm">{study.result}</p>
                     </div>
 
-                    <div className="bg-white/5 rounded-lg p-4 border-l-4 border-cyan-500">
-                      <Quote className="h-5 w-5 text-cyan-400 mb-2" />
-                      <p className="text-gray-300 italic text-sm">"{study.quote}"</p>
-                      <div className="text-cyan-400 text-sm mt-2">— {study.patientName}</div>
+                    <div className="bg-secondary rounded-lg p-4 border-l-4" style={{ borderLeftColor: 'var(--gold)' }}>
+                      <Quote className="h-5 w-5 text-gold mb-2" />
+                      <p className="text-muted-foreground italic text-sm">"{study.quote}"</p>
+                      <div className="text-gold text-sm mt-2">— {study.patientName}</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -256,24 +244,24 @@ export default function CaseStudies() {
             ))}
           </div>
 
-          <Card className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-500/30 mt-12 max-w-4xl mx-auto">
+          <Card className="luxury-card mt-12 max-w-4xl mx-auto">
             <CardContent className="py-8 text-center">
-              <h3 className="text-2xl font-bold text-white mb-4">
+              <h3 className="text-2xl font-serif font-bold text-foreground mb-4">
                 Start Your Savings Story
               </h3>
-              <p className="text-gray-400 mb-6 max-w-xl mx-auto">
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                 Join thousands of patients who have reduced their medical bills. 
                 Get your free bill analysis today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/bill-grader">
-                  <button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-black font-semibold rounded-lg transition-all flex items-center gap-2" data-testid="button-grade-bill">
+                  <button className="px-6 py-3 bg-primary text-primary-foreground hover:opacity-90 font-semibold rounded-lg transition-all flex items-center gap-2" data-testid="button-grade-bill">
                     <FileText className="h-5 w-5" />
                     Grade My Bill
                   </button>
                 </Link>
                 <Link href="/platform-stats">
-                  <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all" data-testid="button-view-stats">
+                  <button className="px-6 py-3 bg-card border border-border hover:bg-secondary text-foreground font-semibold rounded-lg transition-all" data-testid="button-view-stats">
                     View Platform Stats
                   </button>
                 </Link>

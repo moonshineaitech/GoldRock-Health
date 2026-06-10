@@ -61,13 +61,13 @@ export default function PlatformStats() {
 
       <MobileHeader title="Platform" />
 
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0a1628] pb-24">
+      <div className="min-h-screen bg-background pb-24">
         <div className="container mx-auto px-4 py-6">
           <div className="mb-6">
             <Link href="/">
               <Button 
                 variant="ghost" 
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                className="text-muted-foreground hover:text-foreground"
                 data-testid="button-back"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -81,14 +81,14 @@ export default function PlatformStats() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-10"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-100 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 rounded-full text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-gold rounded-full text-sm font-medium mb-4">
               <Sparkles className="h-4 w-4" />
               Platform Capabilities
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 font-serif">
               What We Offer
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Our AI-powered platform helps you understand and reduce your medical bills with powerful analysis tools.
             </p>
           </motion.div>
@@ -101,17 +101,17 @@ export default function PlatformStats() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 h-full">
+                <Card className="bg-card border-border h-full">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-cyan-100 dark:bg-cyan-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <feature.icon className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
+                      <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+                        <feature.icon className="h-6 w-6 text-muted-foreground" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        <h3 className="text-lg font-semibold text-foreground mb-2">
                           {feature.title}
                         </h3>
-                        <p className="text-gray-600 dark:text-gray-400">
+                        <p className="text-muted-foreground">
                           {feature.description}
                         </p>
                       </div>
@@ -127,50 +127,50 @@ export default function PlatformStats() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <Card className="bg-white dark:bg-white/5 border-gray-200 dark:border-cyan-500/30 mb-10">
+            <Card className="bg-card border-border mb-10">
               <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+                <CardTitle className="text-foreground font-serif flex items-center gap-2">
+                  <Activity className="h-5 w-5 text-gold" />
                   Platform Coverage
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div className="text-center">
-                    <div className="w-14 h-14 bg-cyan-100 dark:bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Heart className="h-7 w-7 text-cyan-600 dark:text-cyan-400" />
+                    <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Heart className="h-7 w-7 text-muted-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-foreground">
                       {platformCapabilities.conditionsCovered}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Medical Conditions</div>
+                    <div className="text-sm text-muted-foreground">Medical Conditions</div>
                   </div>
                   <div className="text-center">
-                    <div className="w-14 h-14 bg-green-100 dark:bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Building2 className="h-7 w-7 text-green-600 dark:text-green-400" />
+                    <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Building2 className="h-7 w-7 text-muted-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-foreground">
                       {platformCapabilities.hospitalPartnerships}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Hospital Partners</div>
+                    <div className="text-sm text-muted-foreground">Hospital Partners</div>
                   </div>
                   <div className="text-center">
-                    <div className="w-14 h-14 bg-purple-100 dark:bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Shield className="h-7 w-7 text-purple-600 dark:text-purple-400" />
+                    <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Shield className="h-7 w-7 text-muted-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-foreground">
                       {platformCapabilities.statesCovered}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">States Covered</div>
+                    <div className="text-sm text-muted-foreground">States Covered</div>
                   </div>
                   <div className="text-center">
-                    <div className="w-14 h-14 bg-amber-100 dark:bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <FileText className="h-7 w-7 text-amber-600 dark:text-amber-400" />
+                    <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                      <FileText className="h-7 w-7 text-muted-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-foreground">
                       {platformCapabilities.cptIcdCodes}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">CPT/ICD Codes</div>
+                    <div className="text-sm text-muted-foreground">CPT/ICD Codes</div>
                   </div>
                 </div>
               </CardContent>
@@ -182,9 +182,9 @@ export default function PlatformStats() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <Card className="bg-white dark:bg-white/5 border-gray-200 dark:border-white/10">
+            <Card className="bg-card border-border">
               <CardContent className="p-8 text-center">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-xl font-bold text-foreground mb-4 font-serif">
                   Ready to Analyze Your Bill?
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
@@ -192,7 +192,7 @@ export default function PlatformStats() {
                 </p>
                 <Link href="/bill-grader">
                   <Button 
-                    className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                    className="bg-primary text-primary-foreground"
                     data-testid="button-cta-analyze"
                   >
                     <FileText className="h-5 w-5 mr-2" />

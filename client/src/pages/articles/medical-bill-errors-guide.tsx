@@ -112,46 +112,47 @@ export default function MedicalBillErrorsGuide() {
         keywords={["medical bill errors", "hospital billing mistakes", "healthcare billing fraud", "duplicate charges", "upcoding", "unbundling"]}
       />
 
-      <div className="min-h-screen bg-[#0a1628]">
+      <div className="min-h-screen bg-background">
         <div className="max-w-4xl mx-auto px-4 py-12">
           <Link href="/articles">
-            <button className="flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors" data-testid="button-back-articles">
+            <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors" data-testid="button-back-articles">
               <ArrowLeft className="w-4 h-4" />
               Back to Articles
             </button>
           </Link>
 
           <motion.article
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <header className="mb-12">
-              <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 mb-4">
+              <Badge className="bg-secondary text-gold border border-border mb-4">
                 Bill Analysis
               </Badge>
-              <h1 className="text-4xl font-bold text-white mb-4">
+              <h1 className="font-serif text-4xl font-bold text-foreground mb-4">
                 The Complete Guide to Finding Errors on Your Medical Bill
               </h1>
-              <p className="text-xl text-gray-400 mb-6">
+              <p className="text-xl text-muted-foreground mb-6">
                 Medical billing errors are extremely common in hospital bills, costing Americans 
                 billions of dollars annually. Learn to identify the 12 most common mistakes 
                 and how to dispute them.
               </p>
-              <div className="flex items-center gap-4 text-sm text-gray-500">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <span>8 min read</span>
                 <span>•</span>
                 <span>Last updated January 2026</span>
               </div>
             </header>
 
-            <div className="prose prose-invert max-w-none">
-              <Card className="bg-red-500/10 border-red-500/30 mb-8">
+            <div className="prose dark:prose-invert max-w-none">
+              <Card className="luxury-card mb-8">
                 <CardContent className="py-6">
                   <div className="flex items-start gap-4">
-                    <AlertTriangle className="w-8 h-8 text-red-400 flex-shrink-0" />
+                    <AlertTriangle className="w-8 h-8 text-destructive flex-shrink-0" />
                     <div>
-                      <h3 className="text-lg font-semibold text-red-400 mb-2">The Problem is Massive</h3>
-                      <p className="text-gray-300">
+                      <h3 className="text-lg font-semibold text-destructive mb-2">The Problem is Massive</h3>
+                      <p className="text-muted-foreground">
                         Medical billing errors are one of the most common issues patients face. 
                         These errors result in significant overcharges across the United States. 
                         Most patients never check their bills, meaning they pay for errors without knowing it.
@@ -161,151 +162,151 @@ export default function MedicalBillErrorsGuide() {
                 </CardContent>
               </Card>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-6">
+              <h2 className="font-serif text-2xl font-bold text-foreground mt-12 mb-6">
                 The 12 Most Common Medical Billing Errors
               </h2>
 
               <div className="space-y-6">
                 {commonErrors.map((error, index) => (
-                  <Card key={error.name} className="bg-white/5 border-white/10">
+                  <Card key={error.name} className="luxury-card">
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-white flex items-center gap-3">
-                          <span className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center text-cyan-400 font-bold text-sm">
+                        <CardTitle className="text-foreground flex items-center gap-3">
+                          <span className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-foreground font-bold text-sm">
                             {index + 1}
                           </span>
                           {error.name}
                         </CardTitle>
-                        <Badge variant="outline" className="text-green-400 border-green-400/30">
+                        <Badge variant="outline" className="text-emerald-700 dark:text-emerald-400 border-border">
                           Potential Savings: {error.savings}
                         </Badge>
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <p className="text-gray-300">{error.description}</p>
-                      <div className="bg-black/20 rounded-lg p-4">
-                        <p className="text-sm text-gray-400">
-                          <strong className="text-cyan-400">Example:</strong> {error.example}
+                      <p className="text-muted-foreground">{error.description}</p>
+                      <div className="bg-muted rounded-lg p-4">
+                        <p className="text-sm text-muted-foreground">
+                          <strong className="text-gold">Example:</strong> {error.example}
                         </p>
                       </div>
-                      <p className="text-sm text-gray-500">{error.frequency}</p>
+                      <p className="text-sm text-muted-foreground">{error.frequency}</p>
                     </CardContent>
                   </Card>
                 ))}
               </div>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-6">
+              <h2 className="font-serif text-2xl font-bold text-foreground mt-12 mb-6">
                 How to Spot These Errors on Your Bill
               </h2>
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <Card className="bg-white/5 border-white/10">
+                <Card className="luxury-card">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <FileText className="w-5 h-5 text-muted-foreground" />
                       Request an Itemized Bill
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300">
+                  <CardContent className="text-muted-foreground">
                     Always request a fully itemized bill showing every charge. 
                     Summary bills hide errors. You have the legal right to an itemized statement.
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10">
+                <Card className="luxury-card">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Search className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <Search className="w-5 h-5 text-muted-foreground" />
                       Compare Against Your Records
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300">
+                  <CardContent className="text-muted-foreground">
                     Keep notes during your hospital stay. Compare your bill against 
                     what you actually received. Check dates, times, and quantities.
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10">
+                <Card className="luxury-card">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Calculator className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <Calculator className="w-5 h-5 text-muted-foreground" />
                       Look Up Fair Prices
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300">
+                  <CardContent className="text-muted-foreground">
                     Use resources like FAIR Health or Medicare's price lookup 
                     to compare your charges against regional averages.
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10">
+                <Card className="luxury-card">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Shield className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <Shield className="w-5 h-5 text-muted-foreground" />
                       Understand Your Insurance
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300">
+                  <CardContent className="text-muted-foreground">
                     Review your EOB (Explanation of Benefits) carefully. 
                     Make sure insurance applied all your benefits correctly.
                   </CardContent>
                 </Card>
               </div>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-6">
+              <h2 className="font-serif text-2xl font-bold text-foreground mt-12 mb-6">
                 What to Do When You Find an Error
               </h2>
 
-              <ol className="space-y-4 text-gray-300">
+              <ol className="space-y-4 text-muted-foreground">
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">1</span>
                   <div>
-                    <strong className="text-white">Document Everything</strong>
-                    <p className="text-gray-400">Keep copies of all bills, EOBs, and correspondence. Note dates and names of everyone you speak with.</p>
+                    <strong className="text-foreground">Document Everything</strong>
+                    <p className="text-muted-foreground">Keep copies of all bills, EOBs, and correspondence. Note dates and names of everyone you speak with.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">2</span>
                   <div>
-                    <strong className="text-white">Contact the Billing Department</strong>
-                    <p className="text-gray-400">Call the hospital or provider's billing department. Explain the error clearly and request a correction.</p>
+                    <strong className="text-foreground">Contact the Billing Department</strong>
+                    <p className="text-muted-foreground">Call the hospital or provider's billing department. Explain the error clearly and request a correction.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">3</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">3</span>
                   <div>
-                    <strong className="text-white">Follow Up in Writing</strong>
-                    <p className="text-gray-400">Send a formal dispute letter via certified mail. This creates a paper trail and shows you're serious.</p>
+                    <strong className="text-foreground">Follow Up in Writing</strong>
+                    <p className="text-muted-foreground">Send a formal dispute letter via certified mail. This creates a paper trail and shows you're serious.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">4</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">4</span>
                   <div>
-                    <strong className="text-white">Escalate if Necessary</strong>
-                    <p className="text-gray-400">If the provider won't correct the error, file complaints with your state insurance commissioner and the hospital's patient advocate.</p>
+                    <strong className="text-foreground">Escalate if Necessary</strong>
+                    <p className="text-muted-foreground">If the provider won't correct the error, file complaints with your state insurance commissioner and the hospital's patient advocate.</p>
                   </div>
                 </li>
               </ol>
             </div>
 
-            <Card className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-500/30 mt-12">
+            <Card className="luxury-card mt-12">
               <CardContent className="py-8 text-center">
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <h3 className="font-serif text-2xl font-bold text-foreground mb-4">
                   Let AI Find Errors For You
                 </h3>
-                <p className="text-gray-400 mb-6 max-w-xl mx-auto">
+                <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                   Our AI-powered Bill Grader analyzes your medical bills in seconds, 
                   identifying potential errors, overcharges, and savings opportunities.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link href="/bill-grader">
-                    <button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-all flex items-center gap-2" data-testid="button-try-bill-grader">
+                    <button className="px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground font-semibold rounded-lg transition-all flex items-center gap-2" data-testid="button-try-bill-grader">
                       <TrendingDown className="w-5 h-5" />
                       Try Bill Grader Free
                     </button>
                   </Link>
                   <Link href="/conditions">
-                    <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all" data-testid="button-fair-prices">
+                    <button className="px-6 py-3 bg-card border border-border hover:bg-secondary text-foreground font-semibold rounded-lg transition-all" data-testid="button-fair-prices">
                       Look Up Fair Prices
                     </button>
                   </Link>

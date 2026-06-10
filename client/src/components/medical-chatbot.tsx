@@ -177,8 +177,8 @@ export function MedicalChatbot() {
     <>
       {/* Floating Chat Button */}
       <motion.button
-        className="fixed right-4 z-40 w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full shadow-lg flex items-center justify-center"
-        style={{ bottom: 'calc(5.5rem + env(safe-area-inset-bottom))' }}
+        className="fixed right-4 z-40 w-14 h-14 rounded-full shadow-md flex items-center justify-center"
+        style={{ bottom: 'calc(5.5rem + env(safe-area-inset-bottom))', background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.05 }}
         onClick={() => setIsOpen(!isOpen)}
@@ -198,7 +198,7 @@ export function MedicalChatbot() {
         {/* Pulse indicator when not open */}
         {!isOpen && (
           <motion.div
-            className="absolute inset-0 bg-emerald-400 rounded-full"
+            className="absolute inset-0 bg-gold rounded-full"
             animate={{ scale: [1, 1.2, 1], opacity: [0.7, 0, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           />
@@ -211,7 +211,7 @@ export function MedicalChatbot() {
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
+              className="fixed inset-0 bg-black/20 z-30"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -227,17 +227,17 @@ export function MedicalChatbot() {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
             >
-              <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
+              <div className="bg-card rounded-3xl shadow-lg border border-border overflow-hidden">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-4">
+                <div className="p-4" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                         <Stethoscope className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold text-sm">Bill Reduction Expert</h3>
-                        <p className="text-emerald-100 text-xs">Ask about health & insurance</p>
+                        <h3 className="text-white font-serif font-semibold text-sm">Bill Reduction Expert</h3>
+                        <p className="text-white/80 text-xs">Ask about health & insurance</p>
                       </div>
                     </div>
                     <button
@@ -254,9 +254,9 @@ export function MedicalChatbot() {
                 <div className="h-80 overflow-y-auto p-4 space-y-3">
                   {messages.length === 0 && (
                     <div className="text-center py-6">
-                      <Stethoscope className="h-12 w-12 text-emerald-500 mx-auto mb-3" />
-                      <h4 className="font-medium text-gray-900 mb-2">How can I help?</h4>
-                      <p className="text-sm text-gray-600 mb-4">Ask me about medical conditions, symptoms, or insurance questions.</p>
+                      <Stethoscope className="h-12 w-12 text-gold mx-auto mb-3" />
+                      <h4 className="font-serif font-medium text-foreground mb-2">How can I help?</h4>
+                      <p className="text-sm text-muted-foreground mb-4">Ask me about medical conditions, symptoms, or insurance questions.</p>
                       
                       {/* Quick Questions */}
                       <div className="space-y-2">
@@ -265,13 +265,13 @@ export function MedicalChatbot() {
                           return (
                             <motion.button
                               key={index}
-                              className="w-full p-3 bg-gray-50 hover:bg-gray-100 rounded-xl flex items-center space-x-3 text-left transition-colors"
+                              className="w-full p-3 bg-secondary hover:bg-muted rounded-xl flex items-center space-x-3 text-left transition-colors"
                               onClick={() => sendMessage(question.text)}
                               whileTap={{ scale: 0.98 }}
                               data-testid={`quick-question-${index}`}
                             >
-                              <IconComponent className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">{question.text}</span>
+                              <IconComponent className="h-4 w-4 text-gold flex-shrink-0" />
+                              <span className="text-sm text-foreground">{question.text}</span>
                             </motion.button>
                           );
                         })}
@@ -289,18 +289,18 @@ export function MedicalChatbot() {
                     >
                       <div className={`flex items-start space-x-2 max-w-[85%] ${message.isBot ? '' : 'flex-row-reverse space-x-reverse'}`}>
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          message.isBot ? 'bg-emerald-100' : 'bg-blue-100'
+                          message.isBot ? 'bg-secondary' : 'bg-secondary'
                         }`}>
                           {message.isBot ? (
-                            <Bot className="h-3 w-3 text-emerald-600" />
+                            <Bot className="h-3 w-3 text-gold" />
                           ) : (
-                            <User className="h-3 w-3 text-blue-600" />
+                            <User className="h-3 w-3 text-muted-foreground" />
                           )}
                         </div>
                         <div className={`px-3 py-2 rounded-2xl ${
                           message.isBot 
-                            ? 'bg-gray-100 text-gray-900' 
-                            : 'bg-blue-500 text-white'
+                            ? 'bg-secondary text-foreground' 
+                            : 'bg-primary text-primary-foreground'
                         }`}>
                           <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                         </div>
@@ -315,13 +315,13 @@ export function MedicalChatbot() {
                       animate={{ opacity: 1, y: 0 }}
                     >
                       <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
-                          <Bot className="h-3 w-3 text-emerald-600" />
+                        <div className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center">
+                          <Bot className="h-3 w-3 text-gold" />
                         </div>
-                        <div className="bg-gray-100 px-3 py-2 rounded-2xl">
+                        <div className="bg-secondary px-3 py-2 rounded-2xl">
                           <div className="flex items-center space-x-1">
-                            <Loader2 className="h-3 w-3 animate-spin text-gray-500" />
-                            <span className="text-sm text-gray-500">Thinking...</span>
+                            <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />
+                            <span className="text-sm text-muted-foreground">Thinking...</span>
                           </div>
                         </div>
                       </div>
@@ -332,7 +332,7 @@ export function MedicalChatbot() {
                 </div>
 
                 {/* Input */}
-                <div className="p-4 border-t border-gray-100">
+                <div className="p-4 border-t border-border">
                   <div className="flex items-center space-x-2 mb-3">
                     <div className="flex-1 relative">
                       <input
@@ -342,7 +342,7 @@ export function MedicalChatbot() {
                         onChange={(e) => setInputText(e.target.value)}
                         onKeyPress={handleKeyPress}
                         placeholder="Ask about symptoms, treatments, or insurance..."
-                        className="w-full px-4 py-2 pr-10 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all text-sm"
+                        className="w-full px-4 py-2 pr-10 bg-secondary text-foreground rounded-xl border border-border focus:ring-2 focus:ring-gold focus:bg-card transition-all text-sm"
                         disabled={isLoading}
                         data-testid="chat-input"
                       />
@@ -352,7 +352,7 @@ export function MedicalChatbot() {
                         <button
                           onClick={isListening ? stopListening : startListening}
                           className={`absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-lg transition-colors ${
-                            isListening ? 'bg-red-100 text-red-600' : 'text-gray-400 hover:text-emerald-600'
+                            isListening ? 'bg-destructive text-destructive-foreground' : 'text-muted-foreground hover:text-gold'
                           }`}
                           data-testid="voice-input"
                         >
@@ -364,20 +364,20 @@ export function MedicalChatbot() {
                     <motion.button
                       onClick={() => sendMessage()}
                       disabled={!inputText.trim() || isLoading}
-                      className="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 rounded-xl flex items-center justify-center transition-colors"
+                      className="w-10 h-10 bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 rounded-xl flex items-center justify-center transition-colors"
                       whileTap={{ scale: 0.9 }}
                       data-testid="send-message"
                     >
                       {isLoading ? (
-                        <Loader2 className="h-4 w-4 text-white animate-spin" />
+                        <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
-                        <Send className="h-4 w-4 text-white" />
+                        <Send className="h-4 w-4" />
                       )}
                     </motion.button>
                   </div>
                   
                   {/* AI Disclaimer */}
-                  <p className="text-xs text-gray-400 text-center leading-tight opacity-75">
+                  <p className="text-xs text-muted-foreground text-center leading-tight opacity-75">
                     AI-generated. Consult your doctor.
                   </p>
                 </div>

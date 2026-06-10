@@ -122,7 +122,7 @@ export default function SymptomChecker() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <SEOHead 
         title="Symptom Checker - AI Health Assessment"
         description="Free AI symptom checker. Analyze your symptoms, understand possible conditions, and know when to see a doctor. Get personalized health guidance based on your symptoms."
@@ -141,20 +141,23 @@ export default function SymptomChecker() {
         "Self-care advice for common symptoms like headache, muscle pain, congestion"
       ]} />
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-4 pt-12 pb-6">
+      <div className="bg-card border-b border-border px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">
           <Link href="/clinical-command-center">
-            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-secondary mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
               <ArrowLeft className="h-4 w-4 mr-1" /> Back
             </Button>
           </Link>
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center">
+            <div
+              className="w-11 h-11 rounded-xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+            >
               <Stethoscope className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold" data-testid="heading-symptom-checker">Symptom Library</h1>
-              <p className="text-white/80 text-xs">Browse symptom information for educational purposes</p>
+              <h1 className="text-xl font-serif font-bold text-foreground" data-testid="heading-symptom-checker">Symptom Library</h1>
+              <p className="text-muted-foreground text-xs">Browse symptom information for educational purposes</p>
             </div>
           </div>
         </div>
@@ -190,7 +193,7 @@ export default function SymptomChecker() {
                     className="flex-1"
                     data-testid="input-symptom"
                   />
-                  <Button onClick={addSymptom} className="bg-emerald-600 hover:bg-emerald-700" data-testid="button-add-symptom">
+                  <Button onClick={addSymptom} className="bg-primary text-primary-foreground hover:opacity-90" data-testid="button-add-symptom">
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
@@ -203,10 +206,10 @@ export default function SymptomChecker() {
                         key={i}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="flex items-center gap-1.5 bg-emerald-100 text-emerald-800 rounded-full px-3 py-1.5"
+                        className="flex items-center gap-1.5 bg-secondary text-foreground rounded-full px-3 py-1.5"
                       >
                         <span className="text-sm font-medium">{s}</span>
-                        <button onClick={() => removeSymptom(i)} className="text-emerald-600 hover:text-emerald-800 ml-1">
+                        <button onClick={() => removeSymptom(i)} className="text-muted-foreground hover:text-foreground ml-1">
                           <Trash2 className="h-3 w-3" />
                         </button>
                       </motion.div>
@@ -217,13 +220,13 @@ export default function SymptomChecker() {
                 {/* Quick Add */}
                 {symptoms.length === 0 && (
                   <div>
-                    <p className="text-xs text-gray-500 mb-2">Quick add:</p>
+                    <p className="text-xs text-muted-foreground mb-2">Quick add:</p>
                     <div className="flex flex-wrap gap-1.5">
                       {QUICK_SYMPTOMS.map((s) => (
                         <button
                           key={s}
                           onClick={() => quickAdd(s)}
-                          className="text-xs bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 rounded-full px-2.5 py-1 transition-colors"
+                          className="text-xs bg-secondary hover:bg-muted text-muted-foreground hover:text-foreground rounded-full px-2.5 py-1 transition-colors"
                         >
                           + {s}
                         </button>
@@ -290,10 +293,10 @@ export default function SymptomChecker() {
                     max="10"
                     value={severity}
                     onChange={(e) => setSeverity(e.target.value)}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                    className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-[var(--gold-deep)]"
                     data-testid="input-severity"
                   />
-                  <div className="flex justify-between text-xs text-gray-400">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>Mild</span>
                     <span>Severe</span>
                   </div>
@@ -313,7 +316,7 @@ export default function SymptomChecker() {
                 <Button
                   onClick={handleAnalyze}
                   disabled={symptoms.length === 0 || analyzeMutation.isPending}
-                  className="w-full bg-gradient-to-r from-emerald-600 to-teal-600"
+                  className="w-full bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="button-analyze"
                 >
                   {analyzeMutation.isPending ? (
@@ -341,8 +344,8 @@ export default function SymptomChecker() {
                   <Badge className={`${getUrgencyStyle(result.urgency).bg} text-white text-base px-4 py-1 mb-2`}>
                     {result.urgency.toUpperCase()}
                   </Badge>
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">{getUrgencyText(result.urgency)}</h3>
-                  <p className="text-sm text-gray-700">{result.summary}</p>
+                  <h3 className="text-lg font-bold text-foreground mb-1">{getUrgencyText(result.urgency)}</h3>
+                  <p className="text-sm text-muted-foreground">{result.summary}</p>
                 </CardContent>
               </Card>
 
@@ -372,21 +375,21 @@ export default function SymptomChecker() {
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base flex items-center gap-2">
-                      <Brain className="h-4 w-4 text-purple-600" /> What this might be
+                      <Brain className="h-4 w-4 text-gold" /> What this might be
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {result.possibleConditions.map((c, i) => (
                       <div key={i} className={`p-3 rounded-lg border ${
-                        c.likelihood === 'high' ? 'bg-purple-50 border-purple-200' :
-                        c.likelihood === 'moderate' ? 'bg-blue-50 border-blue-200' :
-                        'bg-gray-50 border-gray-200'
+                        c.likelihood === 'high' ? 'bg-secondary border-gold' :
+                        c.likelihood === 'moderate' ? 'bg-secondary border-border' :
+                        'bg-muted border-border'
                       }`}>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-semibold text-sm">{c.name}</span>
+                          <span className="font-semibold text-sm text-foreground">{c.name}</span>
                           <Badge variant="outline" className="text-xs">{c.likelihood}</Badge>
                         </div>
-                        <p className="text-xs text-gray-600">{c.description}</p>
+                        <p className="text-xs text-muted-foreground">{c.description}</p>
                       </div>
                     ))}
                   </CardContent>
@@ -404,7 +407,7 @@ export default function SymptomChecker() {
                   <CardContent>
                     <ul className="space-y-1.5">
                       {result.selfCareAdvice.map((a, i) => (
-                        <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                        <li key={i} className="text-sm text-foreground flex items-start gap-2">
                           <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                           {a}
                         </li>
@@ -419,13 +422,13 @@ export default function SymptomChecker() {
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base flex items-center gap-2">
-                      <Stethoscope className="h-4 w-4 text-blue-600" /> Ask your doctor
+                      <Stethoscope className="h-4 w-4 text-muted-foreground" /> Ask your doctor
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-1.5">
                       {result.questions.map((q, i) => (
-                        <li key={i} className="text-sm text-gray-700">{i + 1}. {q}</li>
+                        <li key={i} className="text-sm text-muted-foreground">{i + 1}. {q}</li>
                       ))}
                     </ul>
                   </CardContent>
@@ -433,9 +436,9 @@ export default function SymptomChecker() {
               )}
 
               {/* Disclaimer */}
-              <Card className="bg-gray-50 border-gray-200">
+              <Card className="bg-secondary border-border">
                 <CardContent className="p-3">
-                  <p className="text-xs text-gray-500 text-center">
+                  <p className="text-xs text-muted-foreground text-center">
                     This is educational information only. It is not a diagnosis. Always see a doctor for medical advice.
                   </p>
                 </CardContent>

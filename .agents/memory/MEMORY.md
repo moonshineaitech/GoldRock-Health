@@ -1,0 +1,3 @@
+- [Atelier design system](goldrock-design-system.md) — GoldRock's 2026 editorial light-luxury language; what cascades, what's frozen, what must not be retinted.
+- [Tailwind CSS-var opacity gotcha](tailwind-css-var-opacity.md) — never put Tailwind opacity modifiers on theme tokens (bg-card/90 etc.); hard PostCSS break.
+- [Design subagent timeouts](design-subagent-timeouts.md) — large/gradient-dense single files time out; scope small, sed/replace_all, one tsc at end.

@@ -1122,21 +1122,21 @@ Please generate a comprehensive, professional document based on this premium tem
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'legal': return 'text-blue-600 bg-blue-100';
-      case 'hardship': return 'text-emerald-600 bg-emerald-100';
-      case 'communication': return 'text-purple-600 bg-purple-100';
-      case 'intelligence': return 'text-orange-600 bg-orange-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'legal': return 'text-foreground bg-secondary';
+      case 'hardship': return 'text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950';
+      case 'communication': return 'text-foreground bg-secondary';
+      case 'intelligence': return 'text-orange-700 dark:text-orange-400 bg-orange-100 dark:bg-orange-950';
+      default: return 'text-muted-foreground bg-secondary';
     }
   };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Easy': return 'text-green-600 bg-green-100';
-      case 'Intermediate': return 'text-yellow-600 bg-yellow-100';
-      case 'Advanced': return 'text-orange-600 bg-orange-100';
-      case 'Expert': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'Easy': return 'text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-950';
+      case 'Intermediate': return 'text-yellow-700 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-950';
+      case 'Advanced': return 'text-orange-700 dark:text-orange-400 bg-orange-100 dark:bg-orange-950';
+      case 'Expert': return 'text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-950';
+      default: return 'text-muted-foreground bg-secondary';
     }
   };
 
@@ -1144,7 +1144,7 @@ Please generate a comprehensive, professional document based on this premium tem
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-200 relative overflow-hidden"
+      className="bg-card rounded-2xl shadow-sm border border-border relative overflow-hidden"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -1158,18 +1158,18 @@ Please generate a comprehensive, professional document based on this premium tem
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center space-x-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-amber-500 via-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <BookOpen className="h-6 w-6 text-white" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-lg font-bold text-gray-900">Exclusive Templates Library</h3>
-              <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 text-white text-xs">
+              <h3 className="text-lg font-bold text-foreground font-serif">Exclusive Templates Library</h3>
+              <Badge className="bg-secondary text-foreground text-xs">
                 <Crown className="h-3 w-3 mr-1" />
                 Premium Only
               </Badge>
             </div>
-            <p className="text-sm text-gray-600">Legal-grade templates • Industry intelligence • Professional scripts</p>
+            <p className="text-sm text-muted-foreground">Legal-grade templates • Industry intelligence • Professional scripts</p>
           </div>
         </div>
 
@@ -1177,7 +1177,7 @@ Please generate a comprehensive, professional document based on this premium tem
         <div className="space-y-4 mb-6">
           <div className="flex gap-3">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search templates, tags, or descriptions..."
                 value={searchQuery}
@@ -1215,26 +1215,26 @@ Please generate a comprehensive, professional document based on this premium tem
           <div className="grid grid-cols-4 gap-3">
             <Card className="p-3">
               <div className="text-center">
-                <div className="text-lg font-bold text-blue-600">{templates.filter(t => t.category === 'legal').length}</div>
-                <div className="text-xs text-gray-600">Legal Templates</div>
+                <div className="text-lg font-bold text-foreground">{templates.filter(t => t.category === 'legal').length}</div>
+                <div className="text-xs text-muted-foreground">Legal Templates</div>
               </div>
             </Card>
             <Card className="p-3">
               <div className="text-center">
-                <div className="text-lg font-bold text-emerald-600">{templates.filter(t => t.category === 'hardship').length}</div>
-                <div className="text-xs text-gray-600">Hardship Docs</div>
+                <div className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{templates.filter(t => t.category === 'hardship').length}</div>
+                <div className="text-xs text-muted-foreground">Hardship Docs</div>
               </div>
             </Card>
             <Card className="p-3">
               <div className="text-center">
-                <div className="text-lg font-bold text-purple-600">{templates.filter(t => t.category === 'communication').length}</div>
-                <div className="text-xs text-gray-600">Scripts</div>
+                <div className="text-lg font-bold text-foreground">{templates.filter(t => t.category === 'communication').length}</div>
+                <div className="text-xs text-muted-foreground">Scripts</div>
               </div>
             </Card>
             <Card className="p-3">
               <div className="text-center">
-                <div className="text-lg font-bold text-orange-600">{templates.filter(t => t.category === 'intelligence').length}</div>
-                <div className="text-xs text-gray-600">Intelligence</div>
+                <div className="text-lg font-bold text-orange-700 dark:text-orange-400">{templates.filter(t => t.category === 'intelligence').length}</div>
+                <div className="text-xs text-muted-foreground">Intelligence</div>
               </div>
             </Card>
           </div>
@@ -1252,7 +1252,7 @@ Please generate a comprehensive, professional document based on this premium tem
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-gray-900 text-sm">{template.title}</h4>
+                    <h4 className="font-semibold text-foreground text-sm">{template.title}</h4>
                     <Button
                       size="sm"
                       variant="ghost"
@@ -1262,10 +1262,10 @@ Please generate a comprehensive, professional document based on this premium tem
                       }}
                       className="p-1 h-6 w-6"
                     >
-                      <Star className={`h-3 w-3 ${favorites.includes(template.id) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}`} />
+                      <Star className={`h-3 w-3 ${favorites.includes(template.id) ? 'fill-gold text-gold' : 'text-muted-foreground'}`} />
                     </Button>
                   </div>
-                  <p className="text-xs text-gray-600 mb-2">{template.description}</p>
+                  <p className="text-xs text-muted-foreground mb-2">{template.description}</p>
                   <div className="flex items-center gap-2 mb-2">
                     <Badge className={getCategoryColor(template.category)}>
                       {template.type}
@@ -1279,10 +1279,10 @@ Please generate a comprehensive, professional document based on this premium tem
               
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
-                  <span className="text-emerald-600 font-medium">{template.successRate}</span>
-                  <span className="text-blue-600 font-medium">{template.avgSavings}</span>
+                  <span className="text-emerald-700 dark:text-emerald-400 font-medium">{template.successRate}</span>
+                  <span className="text-foreground font-medium">{template.avgSavings}</span>
                 </div>
-                <div className="text-gray-500">{template.timeToComplete}</div>
+                <div className="text-muted-foreground">{template.timeToComplete}</div>
               </div>
               
               <div className="flex flex-wrap gap-1 mt-2">
@@ -1308,22 +1308,22 @@ Please generate a comprehensive, professional document based on this premium tem
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
               onClick={() => setSelectedTemplate(null)}
             >
               <motion.div
                 initial={{ scale: 0.95, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.95, y: 20 }}
-                className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+                className="bg-card border border-border rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-sm"
                 onClick={e => e.stopPropagation()}
               >
                 <div className="space-y-6">
                   {/* Header */}
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{selectedTemplate.title}</h3>
-                      <p className="text-gray-600 mb-3">{selectedTemplate.description}</p>
+                      <h3 className="text-xl font-bold text-foreground font-serif mb-2">{selectedTemplate.title}</h3>
+                      <p className="text-muted-foreground mb-3">{selectedTemplate.description}</p>
                       <div className="flex items-center gap-2">
                         <Badge className={getCategoryColor(selectedTemplate.category)}>
                           {selectedTemplate.type}
@@ -1331,7 +1331,7 @@ Please generate a comprehensive, professional document based on this premium tem
                         <Badge className={getDifficultyColor(selectedTemplate.difficulty)}>
                           {selectedTemplate.difficulty}
                         </Badge>
-                        <Badge className="bg-gray-100 text-gray-700">
+                        <Badge className="bg-secondary text-foreground">
                           {selectedTemplate.timeToComplete}
                         </Badge>
                       </div>
@@ -1347,28 +1347,28 @@ Please generate a comprehensive, professional document based on this premium tem
 
                   {/* Success Metrics */}
                   <div className="grid grid-cols-3 gap-4">
-                    <div className="text-center p-3 bg-emerald-50 rounded-xl">
-                      <div className="text-lg font-bold text-emerald-600">{selectedTemplate.successRate}</div>
-                      <div className="text-xs text-emerald-700">Success Rate</div>
+                    <div className="text-center p-3 bg-emerald-50 dark:bg-emerald-950 rounded-xl">
+                      <div className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{selectedTemplate.successRate}</div>
+                      <div className="text-xs text-emerald-700 dark:text-emerald-400">Success Rate</div>
                     </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-xl">
-                      <div className="text-lg font-bold text-blue-600">{selectedTemplate.avgSavings}</div>
-                      <div className="text-xs text-blue-700">Avg Savings</div>
+                    <div className="text-center p-3 bg-secondary rounded-xl">
+                      <div className="text-lg font-bold text-gold">{selectedTemplate.avgSavings}</div>
+                      <div className="text-xs text-muted-foreground">Avg Savings</div>
                     </div>
-                    <div className="text-center p-3 bg-purple-50 rounded-xl">
-                      <div className="text-lg font-bold text-purple-600">{selectedTemplate.usageCount}</div>
-                      <div className="text-xs text-purple-700">Times Used</div>
+                    <div className="text-center p-3 bg-secondary rounded-xl">
+                      <div className="text-lg font-bold text-foreground">{selectedTemplate.usageCount}</div>
+                      <div className="text-xs text-muted-foreground">Times Used</div>
                     </div>
                   </div>
 
                   {/* Details */}
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Requirements</h4>
-                      <ul className="text-sm text-gray-600 space-y-1">
+                      <h4 className="font-semibold text-foreground mb-2">Requirements</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
                         {selectedTemplate.requirements.map((req, index) => (
                           <li key={index} className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-emerald-600" />
+                            <CheckCircle className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                             {req}
                           </li>
                         ))}
@@ -1376,11 +1376,11 @@ Please generate a comprehensive, professional document based on this premium tem
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Expected Outcomes</h4>
-                      <ul className="text-sm text-gray-600 space-y-1">
+                      <h4 className="font-semibold text-foreground mb-2">Expected Outcomes</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
                         {selectedTemplate.outcomes.map((outcome, index) => (
                           <li key={index} className="flex items-center gap-2">
-                            <Target className="h-4 w-4 text-blue-600" />
+                            <Target className="h-4 w-4 text-muted-foreground" />
                             {outcome}
                           </li>
                         ))}
@@ -1389,11 +1389,11 @@ Please generate a comprehensive, professional document based on this premium tem
 
                     {selectedTemplate.psychologyPrinciples && (
                       <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Psychology Principles</h4>
-                        <ul className="text-sm text-gray-600 space-y-1">
+                        <h4 className="font-semibold text-foreground mb-2">Psychology Principles</h4>
+                        <ul className="text-sm text-muted-foreground space-y-1">
                           {selectedTemplate.psychologyPrinciples.map((principle, index) => (
                             <li key={index} className="flex items-center gap-2">
-                              <Brain className="h-4 w-4 text-purple-600" />
+                              <Brain className="h-4 w-4 text-muted-foreground" />
                               {principle}
                             </li>
                           ))}
@@ -1415,7 +1415,8 @@ Please generate a comprehensive, professional document based on this premium tem
                   <div className="flex gap-3">
                     <Button 
                       onClick={() => generateDocument(selectedTemplate)}
-                      className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700"
+                      className="flex-1 text-white hover:opacity-90"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                       data-testid={`button-generate-${selectedTemplate.id}`}
                     >
                       <FileText className="h-4 w-4 mr-2" />

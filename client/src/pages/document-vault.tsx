@@ -23,12 +23,12 @@ import {
 import type { BillDocument } from "@shared/schema";
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; icon: any }> = {
-  bill: { label: "Medical Bill", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300", icon: FileText },
-  eob: { label: "EOB", color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300", icon: File },
-  insurance: { label: "Insurance", color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300", icon: Shield },
-  receipt: { label: "Receipt", color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300", icon: Tag },
-  correspondence: { label: "Letter", color: "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300", icon: StickyNote },
-  other: { label: "Other", color: "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300", icon: FolderOpen },
+  bill: { label: "Medical Bill", color: "bg-secondary text-muted-foreground", icon: FileText },
+  eob: { label: "EOB", color: "bg-secondary text-muted-foreground", icon: File },
+  insurance: { label: "Insurance", color: "bg-secondary text-muted-foreground", icon: Shield },
+  receipt: { label: "Receipt", color: "bg-secondary text-muted-foreground", icon: Tag },
+  correspondence: { label: "Letter", color: "bg-secondary text-muted-foreground", icon: StickyNote },
+  other: { label: "Other", color: "bg-secondary text-muted-foreground", icon: FolderOpen },
 };
 
 function formatFileSize(bytes: number): string {
@@ -124,20 +124,20 @@ function UploadDialog({ open, onClose }: { open: boolean; onClose: () => void })
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Upload className="w-5 h-5 text-emerald-600" />
+          <DialogTitle className="flex items-center gap-2 font-serif">
+            <Upload className="w-5 h-5 text-gold" />
             Upload Document
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center hover:border-emerald-400 transition-colors">
+          <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-primary transition-colors">
             {selectedFile ? (
               <div className="flex items-center gap-3">
-                {(() => { const Icon = getFileIcon(selectedFile.type); return <Icon className="w-8 h-8 text-emerald-600" />; })()}
+                {(() => { const Icon = getFileIcon(selectedFile.type); return <Icon className="w-8 h-8 text-gold" />; })()}
                 <div className="flex-1 text-left">
-                  <p className="font-medium text-sm truncate">{selectedFile.name}</p>
-                  <p className="text-xs text-gray-500">{formatFileSize(selectedFile.size)}</p>
+                  <p className="font-medium text-sm truncate text-foreground">{selectedFile.name}</p>
+                  <p className="text-xs text-muted-foreground">{formatFileSize(selectedFile.size)}</p>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setSelectedFile(null)}>
                   <X className="w-4 h-4" />
@@ -145,9 +145,9 @@ function UploadDialog({ open, onClose }: { open: boolean; onClose: () => void })
               </div>
             ) : (
               <label className="cursor-pointer block">
-                <Upload className="w-10 h-10 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Click to select a file</p>
-                <p className="text-xs text-gray-400 mt-1">JPEG, PNG, WebP, or PDF (max 10MB)</p>
+                <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-2" />
+                <p className="text-sm font-medium text-foreground">Click to select a file</p>
+                <p className="text-xs text-muted-foreground mt-1">JPEG, PNG, WebP, or PDF (max 10MB)</p>
                 <input type="file" className="hidden" accept=".jpg,.jpeg,.png,.webp,.pdf" onChange={handleFileSelect} />
               </label>
             )}
@@ -181,15 +181,15 @@ function UploadDialog({ open, onClose }: { open: boolean; onClose: () => void })
           {uploading && (
             <div className="space-y-1">
               <Progress value={uploadProgress} className="h-2" />
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-xs text-muted-foreground text-center">
                 {uploadProgress < 40 ? "Preparing secure upload..." : uploadProgress < 70 ? "Uploading to secure storage..." : "Saving document..."}
               </p>
             </div>
           )}
 
-          <div className="flex items-center gap-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-            <Lock className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-            <p className="text-xs text-emerald-700 dark:text-emerald-300">
+          <div className="flex items-center gap-2 p-3 bg-secondary rounded-lg">
+            <Lock className="w-4 h-4 text-gold flex-shrink-0" />
+            <p className="text-xs text-muted-foreground">
               Your documents are encrypted and stored securely. Only you can access them.
             </p>
           </div>
@@ -197,7 +197,7 @@ function UploadDialog({ open, onClose }: { open: boolean; onClose: () => void })
           <Button
             onClick={handleUpload}
             disabled={!selectedFile || uploading}
-            className="w-full bg-emerald-600 hover:bg-emerald-700"
+            className="w-full"
           >
             {uploading ? (
               <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</>
@@ -221,25 +221,27 @@ function DocumentCard({ doc, onDelete, onPreview }: {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 hover:shadow-md transition-all"
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -2 }}
+      className="luxury-card p-4 transition-shadow hover:shadow-md"
     >
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
-          <FileIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+        <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
+          <FileIcon className="w-5 h-5 text-muted-foreground" />
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <p className="font-medium text-sm truncate">{doc.fileName}</p>
+              <p className="font-medium text-sm truncate text-foreground">{doc.fileName}</p>
               <div className="flex items-center gap-2 mt-1">
                 <Badge variant="secondary" className={`text-[10px] px-1.5 py-0 ${config.color}`}>
                   {config.label}
                 </Badge>
-                <span className="text-[10px] text-gray-400">{formatFileSize(doc.fileSize)}</span>
+                <span className="text-[10px] text-muted-foreground">{formatFileSize(doc.fileSize)}</span>
               </div>
             </div>
 
@@ -252,17 +254,17 @@ function DocumentCard({ doc, onDelete, onPreview }: {
                   <Download className="w-3.5 h-3.5" />
                 </Button>
               </a>
-              <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-red-500 hover:text-red-700" onClick={() => onDelete(doc.id)}>
+              <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive hover:text-destructive" onClick={() => onDelete(doc.id)}>
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
             </div>
           </div>
 
           {doc.notes && (
-            <p className="text-xs text-gray-500 mt-2 line-clamp-2">{doc.notes}</p>
+            <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{doc.notes}</p>
           )}
 
-          <div className="flex items-center gap-1 mt-2 text-[10px] text-gray-400">
+          <div className="flex items-center gap-1 mt-2 text-[10px] text-muted-foreground">
             <Clock className="w-3 h-3" />
             {doc.uploadedAt ? formatDate(doc.uploadedAt) : "Unknown date"}
           </div>
@@ -281,12 +283,12 @@ function PreviewDialog({ doc, open, onClose }: { doc: BillDocument | null; open:
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-2xl max-h-[80vh]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-sm">
-            <Eye className="w-4 h-4" />
+          <DialogTitle className="flex items-center gap-2 text-sm font-serif">
+            <Eye className="w-4 h-4 text-gold" />
             {doc.fileName}
           </DialogTitle>
         </DialogHeader>
-        <div className="overflow-auto max-h-[60vh] rounded-lg bg-gray-50 dark:bg-gray-900">
+        <div className="overflow-auto max-h-[60vh] rounded-lg bg-secondary">
           {isImage ? (
             <img
               src={`/api/documents/${doc.id}/download`}
@@ -295,9 +297,9 @@ function PreviewDialog({ doc, open, onClose }: { doc: BillDocument | null; open:
             />
           ) : (
             <div className="flex flex-col items-center justify-center p-12 text-center">
-              <FileText className="w-16 h-16 text-gray-400 mb-4" />
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">{doc.fileName}</p>
-              <p className="text-xs text-gray-400 mt-1">PDF preview not available in browser</p>
+              <FileText className="w-16 h-16 text-muted-foreground mb-4" />
+              <p className="text-sm font-medium text-foreground">{doc.fileName}</p>
+              <p className="text-xs text-muted-foreground mt-1">PDF preview not available in browser</p>
               <a href={`/api/documents/${doc.id}/download`} target="_blank" rel="noopener noreferrer">
                 <Button className="mt-4" variant="outline" size="sm">
                   <Download className="w-4 h-4 mr-2" /> Open PDF
@@ -369,7 +371,7 @@ export default function DocumentVault() {
     return (
       <MobileLayout title="Document Vault" showBackButton>
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-gold" />
         </div>
       </MobileLayout>
     );
@@ -379,10 +381,10 @@ export default function DocumentVault() {
     return (
       <MobileLayout title="Document Vault" showBackButton>
         <div className="text-center py-16 px-6">
-          <Lock className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-xl font-bold mb-2">Sign In Required</h2>
-          <p className="text-gray-500 mb-6">Sign in to securely upload and manage your medical documents.</p>
-          <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => window.location.href = "/api/login"}>
+          <Lock className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <h2 className="text-xl font-serif font-bold mb-2 text-foreground">Sign In Required</h2>
+          <p className="text-muted-foreground mb-6">Sign in to securely upload and manage your medical documents.</p>
+          <Button onClick={() => window.location.href = "/api/login"}>
             Sign In
           </Button>
         </div>
@@ -393,14 +395,18 @@ export default function DocumentVault() {
   return (
     <MobileLayout title="Document Vault" showBackButton>
       <div className="p-4 space-y-4 max-w-3xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-5 text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="luxury-card p-5">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h1 className="text-xl font-bold flex items-center gap-2">
-                  <Shield className="w-5 h-5" /> Document Vault
+                <h1 className="text-xl font-serif font-bold flex items-center gap-2 text-foreground">
+                  <Shield className="w-5 h-5 text-gold" /> Document Vault
                 </h1>
-                <p className="text-emerald-100 text-sm mt-1">Securely store and manage your medical documents</p>
+                <p className="text-muted-foreground text-sm mt-1">Securely store and manage your medical documents</p>
               </div>
               <Button
                 onClick={() => {
@@ -408,7 +414,6 @@ export default function DocumentVault() {
                     setShowUpload(true);
                   }
                 }}
-                className="bg-white/20 hover:bg-white/30 border-white/30 text-white"
                 variant="outline"
               >
                 <Plus className="w-4 h-4 mr-1" /> Upload
@@ -416,17 +421,17 @@ export default function DocumentVault() {
             </div>
 
             <div className="grid grid-cols-3 gap-3 mt-4">
-              <div className="bg-white/10 rounded-lg p-3 text-center">
-                <p className="text-2xl font-bold">{stats.total}</p>
-                <p className="text-[10px] text-emerald-100">Documents</p>
+              <div className="bg-secondary rounded-lg p-3 text-center">
+                <p className="text-2xl font-bold text-foreground">{stats.total}</p>
+                <p className="text-[10px] text-muted-foreground">Documents</p>
               </div>
-              <div className="bg-white/10 rounded-lg p-3 text-center">
-                <p className="text-2xl font-bold">{formatFileSize(stats.totalSize)}</p>
-                <p className="text-[10px] text-emerald-100">Storage Used</p>
+              <div className="bg-secondary rounded-lg p-3 text-center">
+                <p className="text-2xl font-bold text-foreground">{formatFileSize(stats.totalSize)}</p>
+                <p className="text-[10px] text-muted-foreground">Storage Used</p>
               </div>
-              <div className="bg-white/10 rounded-lg p-3 text-center">
-                <p className="text-2xl font-bold">{stats.categories.length}</p>
-                <p className="text-[10px] text-emerald-100">Categories</p>
+              <div className="bg-secondary rounded-lg p-3 text-center">
+                <p className="text-2xl font-bold text-foreground">{stats.categories.length}</p>
+                <p className="text-[10px] text-muted-foreground">Categories</p>
               </div>
             </div>
           </div>
@@ -434,7 +439,7 @@ export default function DocumentVault() {
 
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="Search documents..."
               value={searchQuery}
@@ -456,9 +461,9 @@ export default function DocumentVault() {
           </Select>
         </div>
 
-        <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <Shield className="w-4 h-4 text-blue-600 flex-shrink-0" />
-          <p className="text-xs text-blue-700 dark:text-blue-300">
+        <div className="flex items-center gap-2 p-3 bg-secondary rounded-lg">
+          <Shield className="w-4 h-4 text-gold flex-shrink-0" />
+          <p className="text-xs text-muted-foreground">
             All documents are encrypted at rest and in transit. Only you can view your files.
           </p>
         </div>
@@ -466,22 +471,22 @@ export default function DocumentVault() {
         {isLoading ? (
           <div className="space-y-3">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-24 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
+              <div key={i} className="h-24 bg-muted rounded-xl animate-pulse" />
             ))}
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
-            <FolderOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">
+            <FolderOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-serif font-semibold text-foreground mb-2">
               {documents.length === 0 ? "No documents yet" : "No matching documents"}
             </h3>
-            <p className="text-sm text-gray-400 mb-6">
+            <p className="text-sm text-muted-foreground mb-6">
               {documents.length === 0
                 ? "Upload your first medical bill, EOB, or insurance document to get started."
                 : "Try adjusting your search or filter."}
             </p>
             {documents.length === 0 && (
-              <Button onClick={() => setShowUpload(true)} className="bg-emerald-600 hover:bg-emerald-700">
+              <Button onClick={() => setShowUpload(true)}>
                 <Upload className="w-4 h-4 mr-2" /> Upload Your First Document
               </Button>
             )}

@@ -56,19 +56,19 @@ function GuideStep({ step, title, description, children, isOpen, onToggle }: Ste
       >
         <div className="flex items-center justify-between p-1">
           <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-sm">{step}</span>
+            <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center shadow-sm">
+              <span className="text-primary-foreground font-bold text-sm">{step}</span>
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-gray-900 text-sm mb-1">{title}</h3>
-              <p className="text-xs text-gray-600">{description}</p>
+              <h3 className="font-bold text-foreground text-sm mb-1">{title}</h3>
+              <p className="text-xs text-muted-foreground">{description}</p>
             </div>
           </div>
           <motion.div
             animate={{ rotate: isOpen ? 90 : 0 }}
             transition={{ duration: 0.2 }}
           >
-            <ChevronRight className="h-5 w-5 text-gray-400" />
+            <ChevronRight className="h-5 w-5 text-muted-foreground" />
           </motion.div>
         </div>
       </motion.button>
@@ -82,7 +82,7 @@ function GuideStep({ step, title, description, children, isOpen, onToggle }: Ste
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="pt-2 pb-3 px-1 border-t border-gray-100">
+            <div className="pt-2 pb-3 px-1 border-t border-border">
               {children}
             </div>
           </motion.div>
@@ -94,12 +94,12 @@ function GuideStep({ step, title, description, children, isOpen, onToggle }: Ste
 
 function PremiumFeature({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-3 mt-3">
+    <div className="bg-secondary border border-border rounded-xl p-3 mt-3">
       <div className="flex items-center space-x-2 mb-2">
-        <Crown className="h-4 w-4 text-orange-600" />
-        <span className="text-sm font-bold text-orange-700">Premium Feature</span>
+        <Crown className="h-4 w-4 text-gold" />
+        <span className="text-sm font-bold text-gold">Premium Feature</span>
       </div>
-      <div className="text-sm text-gray-700">
+      <div className="text-sm text-foreground">
         {children}
       </div>
     </div>
@@ -123,33 +123,33 @@ export default function BillReductionGuide() {
       <div className="space-y-4 pb-4">
         {/* Header Stats */}
         <motion.div 
-          className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-4"
+          className="bg-secondary border border-border rounded-2xl p-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="text-center mb-4">
-            <h1 className="text-xl font-black text-emerald-700 mb-2">Expert Bill Reduction Strategies</h1>
-            <p className="text-sm text-emerald-600">Professional techniques to help you reduce your medical bills</p>
+            <h1 className="text-xl font-serif font-black text-foreground mb-2">Expert Bill Reduction Strategies</h1>
+            <p className="text-sm text-muted-foreground">Professional techniques to help you reduce your medical bills</p>
           </div>
           
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center">
-              <div className="text-2xl font-black text-emerald-700">Common</div>
-              <div className="text-xs text-emerald-600">Billing Errors</div>
+              <div className="text-2xl font-black text-foreground">Common</div>
+              <div className="text-xs text-muted-foreground">Billing Errors</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-black text-emerald-700">Real</div>
-              <div className="text-xs text-emerald-600">Savings Found</div>
+              <div className="text-2xl font-black text-foreground">Real</div>
+              <div className="text-xs text-muted-foreground">Savings Found</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-black text-emerald-700">Proven</div>
-              <div className="text-xs text-emerald-600">Strategies</div>
+              <div className="text-2xl font-black text-foreground">Proven</div>
+              <div className="text-xs text-muted-foreground">Strategies</div>
             </div>
           </div>
         </motion.div>
 
         {/* Tab Navigation */}
-        <div className="flex bg-white rounded-2xl border border-gray-200 shadow-sm overflow-x-auto">
+        <div className="flex bg-card rounded-2xl border border-border shadow-sm overflow-x-auto">
           {[
             { id: 'guide', label: 'Core Guide', icon: FileText },
             { id: 'advanced', label: 'Advanced', icon: Target },
@@ -163,8 +163,8 @@ export default function BillReductionGuide() {
                 key={tab.id}
                 className={`flex-1 py-3 px-2 text-sm font-medium transition-all ${
                   activeTab === tab.id
-                    ? 'text-emerald-700 bg-emerald-50 border-b-2 border-emerald-500'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'text-foreground bg-secondary border-b-2 border-primary'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
                 onClick={() => setActiveTab(tab.id as any)}
                 data-testid={`tab-${tab.id}`}
@@ -196,24 +196,24 @@ export default function BillReductionGuide() {
                 onToggle={() => handleStepToggle(1)}
               >
                 <div className="space-y-3">
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
                     <div className="flex items-center space-x-2 mb-2">
-                      <AlertTriangle className="h-4 w-4 text-red-600" />
-                      <span className="font-bold text-red-700 text-sm">NEVER Pay Immediately - This Kills Your Leverage</span>
+                      <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-bold text-foreground text-sm">NEVER Pay Immediately - This Kills Your Leverage</span>
                     </div>
-                    <p className="text-sm text-red-700 mb-2">
+                    <p className="text-sm text-foreground mb-2">
                       <strong>Industry Secret:</strong> Hospitals expect 95% of patients to dispute their bills. Immediate payment signals you accept their inflated charges.
                     </p>
-                    <div className="text-xs text-red-600 space-y-1">
+                    <div className="text-xs text-muted-foreground space-y-1">
                       <div>• Collections timeline: 90-120 days (120-180 for non-profits)</div>
                       <div>• Revenue cycle managers prefer settlements over collections</div>
                       <div>• Payment reduces your legal standing for disputes</div>
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <h4 className="font-bold text-blue-700 text-sm mb-2">🎯 Optimal Timing Windows (Industry Insider):</h4>
-                    <div className="text-sm text-blue-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🎯 Optimal Timing Windows (Industry Insider):</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Best:</strong> Days 30-60 (revenue cycle pressure peaks)</div>
                       <div><strong>Good:</strong> Fiscal year-end (Q4 for most hospitals)</div>
                       <div><strong>Excellent:</strong> Quarter-end (charity care quota pressure)</div>
@@ -221,23 +221,23 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h4 className="font-bold text-green-700 text-sm mb-2">📋 Strategic Preparation Checklist:</h4>
-                    <div className="space-y-1 text-sm text-green-700">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">📋 Strategic Preparation Checklist:</h4>
+                    <div className="space-y-1 text-sm text-foreground">
                       <div className="flex items-start space-x-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <span><strong>Week 1:</strong> File bill, don't panic or contact hospital</span>
                       </div>
                       <div className="flex items-start space-x-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <span><strong>Week 2-3:</strong> Research hospital's 990 tax filings (charity care data)</span>
                       </div>
                       <div className="flex items-start space-x-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <span><strong>Week 4:</strong> Gather financial docs, prep negotiation strategy</span>
                       </div>
                       <div className="flex items-start space-x-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <span><strong>Week 5-8:</strong> Execute strategy during peak pressure window</span>
                       </div>
                     </div>
@@ -257,19 +257,19 @@ export default function BillReductionGuide() {
                 onToggle={() => handleStepToggle(2)}
               >
                 <div className="space-y-3">
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
                     <div className="flex items-center space-x-2 mb-2">
-                      <Eye className="h-4 w-4 text-yellow-600" />
-                      <span className="font-bold text-yellow-700 text-sm">Industry Secret: Request MORE Than Just the Bill</span>
+                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-bold text-foreground text-sm">Industry Secret: Request MORE Than Just the Bill</span>
                     </div>
-                    <p className="text-sm text-yellow-700">
+                    <p className="text-sm text-foreground">
                       <strong>Pro Tip:</strong> 90% of patients only request itemized bills. Medical records reveal timing discrepancies, phantom services, and billing padding that itemized bills hide.
                     </p>
                   </div>
                   
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <h4 className="font-bold text-blue-700 text-sm mb-2">🎯 Complete Document Request List:</h4>
-                    <div className="text-sm text-blue-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🎯 Complete Document Request List:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Billing Records:</strong></div>
                       <div className="ml-2">• Itemized bill with CPT/ICD-10 codes</div>
                       <div className="ml-2">• Charge description master (CDM) prices</div>
@@ -290,16 +290,16 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h4 className="font-bold text-green-700 text-sm mb-2">📞 Exact Words That Get Results:</h4>
-                    <div className="text-xs text-green-600 bg-white p-2 rounded border">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">📞 Exact Words That Get Results:</h4>
+                    <div className="text-xs text-muted-foreground bg-card p-2 rounded border">
                       "I'm exercising my rights under HIPAA to obtain copies of my complete medical record and billing documentation for account #[NUMBER]. I need the itemized bill showing all CPT and ICD-10 codes, the complete medical record including nursing documentation and physician orders, and your hospital's current chargemaster rates for the services billed. I also request your financial assistance policy. This is for potential legal review regarding billing accuracy."
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                    <h4 className="font-bold text-purple-700 text-sm mb-2">⚡ Cross-Reference Analysis Method:</h4>
-                    <div className="text-sm text-purple-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">⚡ Cross-Reference Analysis Method:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Step 1:</strong> Match bill timestamps to nursing notes</div>
                       <div><strong>Step 2:</strong> Verify medication charges against MAR records</div>
                       <div><strong>Step 3:</strong> Check surgery times against OR logs</div>
@@ -322,12 +322,12 @@ export default function BillReductionGuide() {
                 onToggle={() => handleStepToggle(3)}
               >
                 <div className="space-y-3">
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
                     <div className="flex items-center space-x-2 mb-2">
-                      <Target className="h-4 w-4 text-red-600" />
-                      <span className="font-bold text-red-700 text-sm">🚨 High-Value Error Patterns (Avg $1,300 per error)</span>
+                      <Target className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-bold text-foreground text-sm">🚨 High-Value Error Patterns (Avg $1,300 per error)</span>
                     </div>
-                    <div className="text-sm text-red-700 space-y-1">
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Unbundling Fraud:</strong> Billing components separately vs. package</div>
                       <div><strong>Upcoding:</strong> Higher complexity codes than justified</div>
                       <div><strong>Phantom Billing:</strong> Services never actually provided</div>
@@ -335,9 +335,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <h4 className="font-bold text-blue-700 text-sm mb-2">🕵️ Specific CPT Code Red Flags:</h4>
-                    <div className="text-sm text-blue-700 space-y-2">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🕵️ Specific CPT Code Red Flags:</h4>
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Emergency Room Upcoding:</strong></div>
                       <div className="ml-2 text-xs">• Level 5 (99285) vs Level 3 (99283) - Often inflated by $800-1200</div>
                       <div className="ml-2 text-xs">• Look for: Vital sign abnormalities vs actual clinical picture</div>
@@ -356,9 +356,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h4 className="font-bold text-green-700 text-sm mb-2">⏰ Time-Based Billing Verification:</h4>
-                    <div className="text-sm text-green-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">⏰ Time-Based Billing Verification:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>OR Time Discrepancies:</strong> Check surgical notes vs. billing time</div>
                       <div><strong>Recovery Room:</strong> Bill should match nursing documentation</div>
                       <div><strong>Emergency Dept:</strong> Arrival/discharge times in notes vs. bill</div>
@@ -366,9 +366,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                    <h4 className="font-bold text-purple-700 text-sm mb-2">💰 Revenue Center Analysis:</h4>
-                    <div className="text-sm text-purple-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">💰 Revenue Center Analysis:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>High-Profit Centers (Common Overcharges):</strong></div>
                       <div className="ml-2">• Pharmacy (300-2000% markup)</div>
                       <div className="ml-2">• Medical supplies (200-500% markup)</div>
@@ -391,19 +391,19 @@ export default function BillReductionGuide() {
                 onToggle={() => handleStepToggle(4)}
               >
                 <div className="space-y-3">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
                     <div className="flex items-center space-x-2 mb-2">
-                      <Search className="h-4 w-4 text-blue-600" />
-                      <span className="font-bold text-blue-700 text-sm">🎯 Advanced Pricing Intelligence Strategy</span>
+                      <Search className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-bold text-foreground text-sm">🎯 Advanced Pricing Intelligence Strategy</span>
                     </div>
-                    <p className="text-sm text-blue-700">
+                    <p className="text-sm text-foreground">
                       <strong>Industry Secret:</strong> Hospitals publish 3 different prices - chargemaster (inflated), negotiated (insurance), and cost (lowest). Target the cost-plus percentage for settlement.
                     </p>
                   </div>
                   
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h4 className="font-bold text-green-700 text-sm mb-2">💰 Multi-Source Price Benchmarking:</h4>
-                    <div className="text-sm text-green-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">💰 Multi-Source Price Benchmarking:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Medicare Reimbursement Rates:</strong> Usually 10-30% of chargemaster</div>
                       <div><strong>Same-Hospital Insurance Rates:</strong> Often 40-60% less than uninsured</div>
                       <div><strong>Regional Market Rates:</strong> Compare with competing hospitals</div>
@@ -412,9 +412,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                    <h4 className="font-bold text-yellow-700 text-sm mb-2">🔍 Professional Research Sequence:</h4>
-                    <div className="text-sm text-yellow-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🔍 Professional Research Sequence:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Step 1:</strong> Hospital's chargemaster (legal requirement)</div>
                       <div><strong>Step 2:</strong> Medicare fee schedule lookup</div>
                       <div><strong>Step 3:</strong> Same CPT codes at competing hospitals</div>
@@ -423,9 +423,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                    <h4 className="font-bold text-purple-700 text-sm mb-2">🎯 Leverage Points for Negotiation:</h4>
-                    <div className="text-sm text-purple-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🎯 Leverage Points for Negotiation:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Price Differential Evidence:</strong> "Hospital X charges $2,000 for same procedure"</div>
                       <div><strong>Medicare Rate Comparison:</strong> "Medicare pays $800 for this service"</div>
                       <div><strong>Cost-Plus Analysis:</strong> "Hospital cost reports show 300% markup"</div>
@@ -433,9 +433,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-2">
-                    <h4 className="font-bold text-gray-700 text-sm mb-1">🛠️ Advanced Research Tools:</h4>
-                    <div className="text-xs text-gray-600 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-2">
+                    <h4 className="font-bold text-foreground text-sm mb-1">🛠️ Advanced Research Tools:</h4>
+                    <div className="text-xs text-muted-foreground space-y-1">
                       <div>• CMS Hospital Cost Reports (cost.cms.gov)</div>
                       <div>• Medicare Physician Fee Schedule (cms.gov/PFS)</div>
                       <div>• State Price Transparency Databases</div>
@@ -458,12 +458,12 @@ export default function BillReductionGuide() {
                 onToggle={() => handleStepToggle(5)}
               >
                 <div className="space-y-3">
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
                     <div className="flex items-center space-x-2 mb-2">
-                      <Shield className="h-4 w-4 text-red-600" />
-                      <span className="font-bold text-red-700 text-sm">🏛️ Legal Requirements (Non-Negotiable)</span>
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-bold text-foreground text-sm">🏛️ Legal Requirements (Non-Negotiable)</span>
                     </div>
-                    <div className="text-sm text-red-700 space-y-1">
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Non-Profit Hospitals MUST provide charity care by law</strong></div>
                       <div>• IRS Section 501(r) requirements</div>
                       <div>• Financial assistance policy must be published</div>
@@ -472,9 +472,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h4 className="font-bold text-green-700 text-sm mb-2">💰 Financial Assistance Tiers (Industry Standard):</h4>
-                    <div className="text-sm text-green-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">💰 Financial Assistance Tiers (Industry Standard):</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>100% Free Care:</strong> 0-200% FPL ($25,520-$51,040 individual)</div>
                       <div><strong>90% Discount:</strong> 200-250% FPL ($51,040-$63,800)</div>
                       <div><strong>75% Discount:</strong> 250-300% FPL ($63,800-$76,560)</div>
@@ -483,9 +483,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <h4 className="font-bold text-blue-700 text-sm mb-2">📋 Optimized Document Strategy:</h4>
-                    <div className="text-sm text-blue-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">📋 Optimized Document Strategy:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Income Documentation (Choose Best):</strong></div>
                       <div className="ml-2">• Use lowest recent month if income varies</div>
                       <div className="ml-2">• Gross vs net income (hospitals often accept lower)</div>
@@ -498,9 +498,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                    <h4 className="font-bold text-purple-700 text-sm mb-2">⚖️ Legal Leverage Points:</h4>
-                    <div className="text-sm text-purple-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">⚖️ Legal Leverage Points:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>IRS 501(r) Violations:</strong> If they don't offer assistance</div>
                       <div><strong>Community Benefit Requirements:</strong> Charity care quotas</div>
                       <div><strong>Presumptive Eligibility:</strong> Auto-qualify if on government aid</div>
@@ -508,9 +508,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                    <h4 className="font-bold text-yellow-700 text-sm mb-2">🎯 Application Timing Strategy:</h4>
-                    <div className="text-sm text-yellow-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🎯 Application Timing Strategy:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Best Times:</strong> Q4 fiscal year-end (Sept-Dec for most)</div>
                       <div><strong>Monthly Quotas:</strong> Month-end when quotas need filling</div>
                       <div><strong>Avoid:</strong> Beginning of fiscal year (strict screening)</div>
@@ -532,12 +532,12 @@ export default function BillReductionGuide() {
                 onToggle={() => handleStepToggle(6)}
               >
                 <div className="space-y-3">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
                     <div className="flex items-center space-x-2 mb-2">
-                      <Users className="h-4 w-4 text-blue-600" />
-                      <span className="font-bold text-blue-700 text-sm">🎯 Hospital Authorization Hierarchy (Insider Knowledge)</span>
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-bold text-foreground text-sm">🎯 Hospital Authorization Hierarchy (Insider Knowledge)</span>
                     </div>
-                    <div className="text-sm text-blue-700 space-y-1">
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Customer Service Rep:</strong> 0-10% discount authority</div>
                       <div><strong>Billing Supervisor:</strong> 20-50% discount authority</div>
                       <div><strong>Revenue Cycle Manager:</strong> 60-80% discount authority</div>
@@ -545,9 +545,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h4 className="font-bold text-green-700 text-sm mb-2">💬 Exact Scripts That Trigger Authority Escalation:</h4>
-                    <div className="text-xs text-green-600 bg-white p-2 rounded border space-y-2">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">💬 Exact Scripts That Trigger Authority Escalation:</h4>
+                    <div className="text-xs text-muted-foreground bg-card p-2 rounded border space-y-2">
                       <div><strong>Opening Script:</strong> "I've reviewed my bill and found several billing errors. I'd like to speak with someone who has authority to resolve billing discrepancies above 50% of the balance."</div>
                       
                       <div><strong>Error Leverage:</strong> "I've identified [X] billing errors totaling $[amount]. Medicare pays $[amount] for these same services. I need someone authorized to adjust these discrepancies."</div>
@@ -556,9 +556,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                    <h4 className="font-bold text-purple-700 text-sm mb-2">🎪 Negotiation Psychology Tactics:</h4>
-                    <div className="text-sm text-purple-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🎪 Negotiation Psychology Tactics:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Anchoring:</strong> Start with hospital's own Medicare rates</div>
                       <div><strong>Time Pressure:</strong> "I can pay today if we reach agreement"</div>
                       <div><strong>Authority Respect:</strong> "I appreciate your position, who can approve this?"</div>
@@ -567,9 +567,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                    <h4 className="font-bold text-yellow-700 text-sm mb-2">📞 Call Strategy & Timing:</h4>
-                    <div className="text-sm text-yellow-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">📞 Call Strategy & Timing:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Best Times:</strong> Tuesday-Thursday, 10am-3pm (staff availability)</div>
                       <div><strong>Month-End:</strong> Revenue cycle pressure peaks</div>
                       <div><strong>Quarter-End:</strong> Settlement quotas drive flexibility</div>
@@ -577,9 +577,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                    <h4 className="font-bold text-red-700 text-sm mb-2">⚠️ Settlement Calculation Formula:</h4>
-                    <div className="text-sm text-red-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">⚠️ Settlement Calculation Formula:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Starting Point:</strong> Medicare rate + 10-20%</div>
                       <div><strong>Error Adjustments:</strong> Subtract identified errors</div>
                       <div><strong>Lump Sum Bonus:</strong> Additional 10-30% discount for immediate payment</div>
@@ -601,12 +601,12 @@ export default function BillReductionGuide() {
                 onToggle={() => handleStepToggle(7)}
               >
                 <div className="space-y-3">
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
                     <div className="flex items-center space-x-2 mb-2">
-                      <Scale className="h-4 w-4 text-red-600" />
-                      <span className="font-bold text-red-700 text-sm">⚖️ Federal Legal Protections (Enforceable)</span>
+                      <Scale className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-bold text-foreground text-sm">⚖️ Federal Legal Protections (Enforceable)</span>
                     </div>
-                    <div className="text-sm text-red-700 space-y-1">
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>No Surprises Act (NSA):</strong> Balance billing protection</div>
                       <div><strong>Patient-Provider Dispute Resolution:</strong> Independent arbitration</div>
                       <div><strong>Fair Credit Reporting Act:</strong> Medical debt restrictions</div>
@@ -614,9 +614,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <h4 className="font-bold text-blue-700 text-sm mb-2">🏛️ No Surprises Act - Step by Step:</h4>
-                    <div className="text-sm text-blue-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🏛️ No Surprises Act - Step by Step:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Eligibility:</strong> Out-of-network bills $400+ above estimate</div>
                       <div><strong>Timeline:</strong> File within 120 days of first bill</div>
                       <div><strong>Process:</strong> Independent arbitrator decides "reasonable rate"</div>
@@ -626,9 +626,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <h4 className="font-bold text-green-700 text-sm mb-2">🗂️ State-Specific Legal Options:</h4>
-                    <div className="text-sm text-green-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🗂️ State-Specific Legal Options:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>California:</strong> SB-1276 billing protection + AG complaint process</div>
                       <div><strong>New York:</strong> Comprehensive surprise billing law</div>
                       <div><strong>Texas:</strong> Balance billing mediation program</div>
@@ -637,9 +637,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                    <h4 className="font-bold text-purple-700 text-sm mb-2">📧 Regulatory Pressure Points:</h4>
-                    <div className="text-sm text-purple-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">📧 Regulatory Pressure Points:</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>State Attorney General:</strong> Consumer protection division</div>
                       <div><strong>State Insurance Commissioner:</strong> Provider complaints</div>
                       <div><strong>Hospital Licensing Board:</strong> Compliance violations</div>
@@ -648,9 +648,9 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                    <h4 className="font-bold text-yellow-700 text-sm mb-2">💳 Credit Reporting Protection (2023 Rules):</h4>
-                    <div className="text-sm text-yellow-700 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">💳 Credit Reporting Protection (2023 Rules):</h4>
+                    <div className="text-sm text-foreground space-y-1">
                       <div><strong>Removed from Credit:</strong> Medical debt under $500</div>
                       <div><strong>Extended Waiting Period:</strong> 1 year before reporting</div>
                       <div><strong>Paid Debt Removal:</strong> Must be removed when paid</div>
@@ -676,14 +676,14 @@ export default function BillReductionGuide() {
             >
               <MobileCard>
                 <div className="space-y-4">
-                  <h3 className="font-bold text-gray-900 mb-3">🎯 Advanced Industry Tactics</h3>
+                  <h3 className="font-serif font-bold text-foreground mb-3">🎯 Advanced Industry Tactics</h3>
                   
-                  <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Target className="h-5 w-5 text-red-600" />
-                      <span className="font-bold text-red-700">Revenue Cycle Exploitation</span>
+                      <Target className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Revenue Cycle Exploitation</span>
                     </div>
-                    <div className="text-sm text-red-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Hospital Fiscal Pressure Points:</strong></div>
                       <div className="ml-2">• Q4 fiscal year-end: 40% more charity care approvals</div>
                       <div className="ml-2">• Month-end: Revenue managers need closed accounts</div>
@@ -692,29 +692,29 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Calculator className="h-5 w-5 text-blue-600" />
-                      <span className="font-bold text-blue-700">Settlement Formula Optimization</span>
+                      <Calculator className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Settlement Formula Optimization</span>
                     </div>
-                    <div className="text-sm text-blue-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Professional Settlement Calculation:</strong></div>
                       <div className="ml-2">• Start: Medicare rate × 1.2 (20% markup)</div>
                       <div className="ml-2">• Subtract: Identified billing errors</div>
                       <div className="ml-2">• Apply: Lump sum discount (15-30%)</div>
                       <div className="ml-2">• Final: Usually 15-40% of original bill</div>
-                      <div className="mt-2 p-2 bg-white rounded text-xs">
+                      <div className="mt-2 p-2 bg-card rounded text-xs">
                         <strong>Example:</strong> $50K bill → Medicare $8K → Settlement target $6K-10K
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Building className="h-5 w-5 text-green-600" />
-                      <span className="font-bold text-green-700">Hospital System Vulnerabilities</span>
+                      <Building className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Hospital System Vulnerabilities</span>
                     </div>
-                    <div className="text-sm text-green-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Exploitation Points:</strong></div>
                       <div className="ml-2">• Non-profit status requirements (IRS 501r compliance)</div>
                       <div className="ml-2">• Community benefit mandates (charity care quotas)</div>
@@ -723,12 +723,12 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Users className="h-5 w-5 text-purple-600" />
-                      <span className="font-bold text-purple-700">Staff Psychology & Incentives</span>
+                      <Users className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Staff Psychology & Incentives</span>
                     </div>
-                    <div className="text-sm text-purple-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Billing Department Insider Knowledge:</strong></div>
                       <div className="ml-2">• Customer service reps: Measured on call resolution time</div>
                       <div className="ml-2">• Supervisors: Bonus for settlements over collections</div>
@@ -737,12 +737,12 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Timer className="h-5 w-5 text-yellow-600" />
-                      <span className="font-bold text-yellow-700">Timing Attack Strategies</span>
+                      <Timer className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Timing Attack Strategies</span>
                     </div>
-                    <div className="text-sm text-yellow-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Optimal Contact Windows:</strong></div>
                       <div className="ml-2">• Tuesday-Thursday 10am-3pm: Peak decision-maker availability</div>
                       <div className="ml-2">• Last week of quarter: Settlement quotas create urgency</div>
@@ -765,32 +765,32 @@ export default function BillReductionGuide() {
             >
               <MobileCard>
                 <div className="space-y-4">
-                  <h3 className="font-bold text-gray-900 mb-3">⚖️ Federal & State Legal Rights</h3>
+                  <h3 className="font-serif font-bold text-foreground mb-3">⚖️ Federal & State Legal Rights</h3>
                   
-                  <div className="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Scale className="h-5 w-5 text-red-600" />
-                      <span className="font-bold text-red-700">No Surprises Act (Federal Law)</span>
+                      <Scale className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">No Surprises Act (Federal Law)</span>
                     </div>
-                    <div className="text-sm text-red-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Your Protected Rights:</strong></div>
                       <div className="ml-2">• No balance billing for emergency services</div>
                       <div className="ml-2">• Independent dispute resolution for bills $400+ over estimate</div>
                       <div className="ml-2">• Good faith estimates required for scheduled services</div>
                       <div className="ml-2">• 120-day filing window for disputes</div>
                       <div className="ml-2">• Provider cannot collect during dispute process</div>
-                      <div className="mt-2 p-2 bg-white rounded text-xs">
+                      <div className="mt-2 p-2 bg-card rounded text-xs">
                         <strong>Filing Portal:</strong> cms.gov/nosurprises or call 1-800-985-3059
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Shield className="h-5 w-5 text-blue-600" />
-                      <span className="font-bold text-blue-700">State-Specific Protections</span>
+                      <Shield className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">State-Specific Protections</span>
                     </div>
-                    <div className="text-sm text-blue-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>California (SB-1276):</strong></div>
                       <div className="ml-2 text-xs">• No collections until charity care application reviewed</div>
                       <div className="ml-2 text-xs">• Attorney General enforcement hotline</div>
@@ -809,29 +809,29 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-green-50 to-teal-50 border border-green-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <CreditCard className="h-5 w-5 text-green-600" />
-                      <span className="font-bold text-green-700">Credit Reporting Protections (2023)</span>
+                      <CreditCard className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Credit Reporting Protections (2023)</span>
                     </div>
-                    <div className="text-sm text-green-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>New Federal Rules:</strong></div>
                       <div className="ml-2">• Medical debt under $500 cannot be reported</div>
                       <div className="ml-2">• 1-year waiting period before reporting (up from 180 days)</div>
                       <div className="ml-2">• Paid medical debt must be removed immediately</div>
                       <div className="ml-2">• Dispute process enhanced for medical debt</div>
-                      <div className="mt-2 p-2 bg-white rounded text-xs">
+                      <div className="mt-2 p-2 bg-card rounded text-xs">
                         <strong>Dispute Contacts:</strong> Equifax, Experian, TransUnion dispute portals
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <FileX className="h-5 w-5 text-purple-600" />
-                      <span className="font-bold text-purple-700">Collection Agency Limitations</span>
+                      <FileX className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Collection Agency Limitations</span>
                     </div>
-                    <div className="text-sm text-purple-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>Fair Debt Collection Practices Act:</strong></div>
                       <div className="ml-2">• Cannot call before 8am or after 9pm</div>
                       <div className="ml-2">• Cannot contact you at work if prohibited</div>
@@ -841,19 +841,19 @@ export default function BillReductionGuide() {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-xl p-4">
+                  <div className="bg-secondary border border-border rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Building className="h-5 w-5 text-orange-600" />
-                      <span className="font-bold text-orange-700">Non-Profit Hospital Legal Requirements</span>
+                      <Building className="h-5 w-5 text-muted-foreground" />
+                      <span className="font-bold text-foreground">Non-Profit Hospital Legal Requirements</span>
                     </div>
-                    <div className="text-sm text-orange-700 space-y-2">
+                    <div className="text-sm text-foreground space-y-2">
                       <div><strong>IRS Section 501(r) Mandates:</strong></div>
                       <div className="ml-2">• Financial assistance policy must be publicly available</div>
                       <div className="ml-2">• Plain language summary required</div>
                       <div className="ml-2">• Charity care application process mandated</div>
                       <div className="ml-2">• No collections before assistance determination</div>
                       <div className="ml-2">• Community health needs assessment requirements</div>
-                      <div className="mt-2 p-2 bg-white rounded text-xs">
+                      <div className="mt-2 p-2 bg-card rounded text-xs">
                         <strong>Violation Reporting:</strong> IRS.gov/form8976 for non-compliance
                       </div>
                     </div>
@@ -873,32 +873,32 @@ export default function BillReductionGuide() {
             >
               <MobileCard>
                 <div className="space-y-4">
-                  <h3 className="font-bold text-gray-900 mb-3">🛠️ Professional Analysis Tools</h3>
+                  <h3 className="font-serif font-bold text-foreground mb-3">🛠️ Professional Analysis Tools</h3>
                   
                   <div className="space-y-3">
-                    <div className="p-3 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <h4 className="font-semibold text-sm text-blue-900">Settlement Calculator</h4>
-                          <p className="text-xs text-blue-700">Calculate optimal settlement offers</p>
+                          <h4 className="font-semibold text-sm text-foreground">Settlement Calculator</h4>
+                          <p className="text-xs text-foreground">Calculate optimal settlement offers</p>
                         </div>
-                        <Calculator className="h-5 w-5 text-blue-600" />
+                        <Calculator className="h-5 w-5 text-muted-foreground" />
                       </div>
-                      <div className="text-xs text-blue-600 bg-white p-2 rounded">
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded">
                         <strong>Basic Formula:</strong> (Medicare Rate × 1.2) - Errors - Lump Sum Discount<br/>
                         <strong>Target Range:</strong> 15-40% of original bill
                       </div>
                     </div>
                     
-                    <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <h4 className="font-semibold text-sm text-green-900">Error Detection Engine</h4>
-                          <p className="text-xs text-green-700">47-point professional checklist</p>
+                          <h4 className="font-semibold text-sm text-foreground">Error Detection Engine</h4>
+                          <p className="text-xs text-foreground">47-point professional checklist</p>
                         </div>
-                        <Eye className="h-5 w-5 text-green-600" />
+                        <Eye className="h-5 w-5 text-muted-foreground" />
                       </div>
-                      <div className="text-xs text-green-600 space-y-1">
+                      <div className="text-xs text-muted-foreground space-y-1">
                         <div>• Unbundling pattern detection</div>
                         <div>• CPT code cross-reference validation</div>
                         <div>• Time-based billing verification</div>
@@ -906,30 +906,30 @@ export default function BillReductionGuide() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <h4 className="font-semibold text-sm text-purple-900">Charity Care Eligibility Calculator</h4>
-                          <p className="text-xs text-purple-700">Federal Poverty Level analysis</p>
+                          <h4 className="font-semibold text-sm text-foreground">Charity Care Eligibility Calculator</h4>
+                          <p className="text-xs text-foreground">Federal Poverty Level analysis</p>
                         </div>
-                        <Percent className="h-5 w-5 text-purple-600" />
+                        <Percent className="h-5 w-5 text-muted-foreground" />
                       </div>
-                      <div className="text-xs text-purple-600 bg-white p-2 rounded">
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded">
                         <strong>2024 Guidelines:</strong><br/>
                         Individual: $14,580 (100% FPL)<br/>
                         Family of 4: $30,000 (100% FPL)
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <h4 className="font-semibold text-sm text-red-900">Medicare Rate Lookup</h4>
-                          <p className="text-xs text-red-700">Real reimbursement rates by CPT code</p>
+                          <h4 className="font-semibold text-sm text-foreground">Medicare Rate Lookup</h4>
+                          <p className="text-xs text-foreground">Real reimbursement rates by CPT code</p>
                         </div>
-                        <Search className="h-5 w-5 text-red-600" />
+                        <Search className="h-5 w-5 text-muted-foreground" />
                       </div>
-                      <div className="text-xs text-red-600 space-y-1">
+                      <div className="text-xs text-muted-foreground space-y-1">
                         <div>• Physician Fee Schedule lookup</div>
                         <div>• Hospital DRG payment rates</div>
                         <div>• Geographic adjustment factors</div>
@@ -937,15 +937,15 @@ export default function BillReductionGuide() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <h4 className="font-semibold text-sm text-yellow-900">Hospital Financial Analysis</h4>
-                          <p className="text-xs text-yellow-700">990 tax form & cost report analysis</p>
+                          <h4 className="font-semibold text-sm text-foreground">Hospital Financial Analysis</h4>
+                          <p className="text-xs text-foreground">990 tax form & cost report analysis</p>
                         </div>
-                        <Building className="h-5 w-5 text-yellow-600" />
+                        <Building className="h-5 w-5 text-muted-foreground" />
                       </div>
-                      <div className="text-xs text-yellow-600 space-y-1">
+                      <div className="text-xs text-muted-foreground space-y-1">
                         <div>• Charity care spending ratios</div>
                         <div>• Executive compensation analysis</div>
                         <div>• Profit margin calculations</div>
@@ -953,15 +953,15 @@ export default function BillReductionGuide() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gradient-to-r from-gray-50 to-slate-50 border border-gray-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <h4 className="font-semibold text-sm text-gray-900">Legal Filing Assistant</h4>
-                          <p className="text-xs text-gray-700">PPDR & state complaint automation</p>
+                          <h4 className="font-semibold text-sm text-foreground">Legal Filing Assistant</h4>
+                          <p className="text-xs text-foreground">PPDR & state complaint automation</p>
                         </div>
-                        <Scale className="h-5 w-5 text-gray-600" />
+                        <Scale className="h-5 w-5 text-muted-foreground" />
                       </div>
-                      <div className="text-xs text-gray-600 space-y-1">
+                      <div className="text-xs text-muted-foreground space-y-1">
                         <div>• No Surprises Act filing forms</div>
                         <div>• State attorney general complaints</div>
                         <div>• Credit bureau dispute letters</div>
@@ -971,7 +971,7 @@ export default function BillReductionGuide() {
                   </div>
                   
                   <MobileButton 
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600"
+                    className="w-full bg-primary text-primary-foreground"
                     onClick={() => window.location.href = '/premium'}
                   >
                     <Zap className="h-4 w-4 mr-2" />
@@ -992,12 +992,12 @@ export default function BillReductionGuide() {
             >
               <MobileCard>
                 <div className="space-y-4">
-                  <h3 className="font-bold text-gray-900 mb-3">📝 Professional Legal Templates</h3>
+                  <h3 className="font-serif font-bold text-foreground mb-3">📝 Professional Legal Templates</h3>
                   
                   <div className="space-y-3">
-                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-sm text-green-800">Billing Error Dispute Letter</h4>
+                        <h4 className="font-semibold text-sm text-foreground">Billing Error Dispute Letter</h4>
                         <button 
                           onClick={() => copyToClipboard(`[Date]
 
@@ -1019,21 +1019,21 @@ Please provide a corrected bill within 30 days. I am prepared to resolve this ac
 Sincerely,
 [Name]
 [Contact Information]`)}
-                          className="p-1 hover:bg-green-200 rounded"
+                          className="p-1 hover:bg-secondary rounded"
                           data-testid="copy-error-dispute"
                         >
-                          <Copy className="h-4 w-4 text-green-600" />
+                          <Copy className="h-4 w-4 text-muted-foreground" />
                         </button>
                       </div>
-                      <p className="text-xs text-green-700 mb-2">Professional template with specific legal language</p>
-                      <div className="text-xs text-green-600 bg-white p-2 rounded border max-h-20 overflow-y-auto">
+                      <p className="text-xs text-foreground mb-2">Professional template with specific legal language</p>
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded border max-h-20 overflow-y-auto">
                         "I am writing to formally dispute charges on account #[ACCOUNT]. After reviewing my itemized bill against medical records, I have identified discrepancies including duplicate charges, services not rendered, and unbundled procedures..."
                       </div>
                     </div>
                     
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-sm text-blue-800">Charity Care Appeal Letter</h4>
+                        <h4 className="font-semibold text-sm text-foreground">Charity Care Appeal Letter</h4>
                         <button 
                           onClick={() => copyToClipboard(`[Date]
 
@@ -1059,21 +1059,21 @@ If initially denied, I request a detailed explanation and appeal process informa
 Sincerely,
 [Name]
 [Contact Information]`)}
-                          className="p-1 hover:bg-blue-200 rounded"
+                          className="p-1 hover:bg-secondary rounded"
                           data-testid="copy-charity-appeal"
                         >
-                          <Copy className="h-4 w-4 text-blue-600" />
+                          <Copy className="h-4 w-4 text-muted-foreground" />
                         </button>
                       </div>
-                      <p className="text-xs text-blue-700 mb-2">IRS 501(r) compliant charity care application</p>
-                      <div className="text-xs text-blue-600 bg-white p-2 rounded border max-h-20 overflow-y-auto">
+                      <p className="text-xs text-foreground mb-2">IRS 501(r) compliant charity care application</p>
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded border max-h-20 overflow-y-auto">
                         "I am requesting financial assistance under your charity care program pursuant to IRS Section 501(r). My household income qualifies me for discounted care under your published policy..."
                       </div>
                     </div>
                     
-                    <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-sm text-purple-800">Settlement Offer Letter</h4>
+                        <h4 className="font-semibold text-sm text-foreground">Settlement Offer Letter</h4>
                         <button 
                           onClick={() => copyToClipboard(`[Date]
 
@@ -1100,21 +1100,21 @@ This offer is valid for 30 days. Please contact me at [PHONE] to accept or negot
 Sincerely,
 [Name]
 [Contact Information]`)}
-                          className="p-1 hover:bg-purple-200 rounded"
+                          className="p-1 hover:bg-secondary rounded"
                           data-testid="copy-settlement-offer"
                         >
-                          <Copy className="h-4 w-4 text-purple-600" />
+                          <Copy className="h-4 w-4 text-muted-foreground" />
                         </button>
                       </div>
-                      <p className="text-xs text-purple-700 mb-2">Professional settlement with market rate analysis</p>
-                      <div className="text-xs text-purple-600 bg-white p-2 rounded border max-h-20 overflow-y-auto">
+                      <p className="text-xs text-foreground mb-2">Professional settlement with market rate analysis</p>
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded border max-h-20 overflow-y-auto">
                         "I am proposing a settlement based on fair market pricing analysis. Medicare pays $[AMOUNT] for these services. I am prepared to settle for $[AMOUNT], representing [X]% of original balance..."
                       </div>
                     </div>
                     
-                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-sm text-red-800">No Surprises Act Complaint</h4>
+                        <h4 className="font-semibold text-sm text-foreground">No Surprises Act Complaint</h4>
                         <button 
                           onClick={() => copyToClipboard(`[Date]
 
@@ -1149,21 +1149,21 @@ Respectfully,
 [Contact Information]
 [Date of Service]
 [Insurance Information]`)}
-                          className="p-1 hover:bg-red-200 rounded"
+                          className="p-1 hover:bg-secondary rounded"
                           data-testid="copy-nsa-complaint"
                         >
-                          <Copy className="h-4 w-4 text-red-600" />
+                          <Copy className="h-4 w-4 text-muted-foreground" />
                         </button>
                       </div>
-                      <p className="text-xs text-red-700 mb-2">Federal balance billing protection filing</p>
-                      <div className="text-xs text-red-600 bg-white p-2 rounded border max-h-20 overflow-y-auto">
+                      <p className="text-xs text-foreground mb-2">Federal balance billing protection filing</p>
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded border max-h-20 overflow-y-auto">
                         "Filing complaint under No Surprises Act for balance billing violation. Bill exceeds estimate by $[AMOUNT], violating federal protections. Requesting independent dispute resolution..."
                       </div>
                     </div>
 
-                    <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-sm text-yellow-800">Credit Report Dispute</h4>
+                        <h4 className="font-semibold text-sm text-foreground">Credit Report Dispute</h4>
                         <button 
                           onClick={() => copyToClipboard(`[Date]
 
@@ -1195,21 +1195,21 @@ Sincerely,
 [Name]
 [SSN: XXX-XX-####]
 [Address]`)}
-                          className="p-1 hover:bg-yellow-200 rounded"
+                          className="p-1 hover:bg-secondary rounded"
                           data-testid="copy-credit-dispute"
                         >
-                          <Copy className="h-4 w-4 text-yellow-600" />
+                          <Copy className="h-4 w-4 text-muted-foreground" />
                         </button>
                       </div>
-                      <p className="text-xs text-yellow-700 mb-2">2023 federal rules compliant credit dispute</p>
-                      <div className="text-xs text-yellow-600 bg-white p-2 rounded border max-h-20 overflow-y-auto">
+                      <p className="text-xs text-foreground mb-2">2023 federal rules compliant credit dispute</p>
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded border max-h-20 overflow-y-auto">
                         "Disputing medical debt under new federal rules. Medical debt under $500 cannot be reported. Requesting immediate removal per Fair Credit Reporting Act..."
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <div className="p-3 bg-secondary border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-sm text-gray-800">IRS 501(r) Violation Report</h4>
+                        <h4 className="font-semibold text-sm text-foreground">IRS 501(r) Violation Report</h4>
                         <button 
                           onClick={() => copyToClipboard(`[Date]
 
@@ -1240,22 +1240,22 @@ Attached: Bills, correspondence, and documentation supporting this complaint.
 Respectfully,
 [Name]
 [Contact Information]`)}
-                          className="p-1 hover:bg-gray-200 rounded"
+                          className="p-1 hover:bg-secondary rounded"
                           data-testid="copy-irs-violation"
                         >
-                          <Copy className="h-4 w-4 text-gray-600" />
+                          <Copy className="h-4 w-4 text-muted-foreground" />
                         </button>
                       </div>
-                      <p className="text-xs text-gray-700 mb-2">Report non-profit hospital tax violations</p>
-                      <div className="text-xs text-gray-600 bg-white p-2 rounded border max-h-20 overflow-y-auto">
+                      <p className="text-xs text-foreground mb-2">Report non-profit hospital tax violations</p>
+                      <div className="text-xs text-muted-foreground bg-card p-2 rounded border max-h-20 overflow-y-auto">
                         "Reporting violations of IRS Section 501(r) by tax-exempt hospital. Failed to provide financial assistance and initiated collections before determination. Requesting investigation..."
                       </div>
                     </div>
                   </div>
                   
-                  <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-lg p-3">
-                    <h4 className="font-bold text-emerald-700 text-sm mb-2">🏆 Professional Success Statistics:</h4>
-                    <div className="text-xs text-emerald-600 space-y-1">
+                  <div className="bg-secondary border border-border rounded-lg p-3">
+                    <h4 className="font-bold text-foreground text-sm mb-2">🏆 Professional Success Statistics:</h4>
+                    <div className="text-xs text-muted-foreground space-y-1">
                       <div>• Error dispute letters: 78% success rate, avg $2,400 reduction</div>
                       <div>• Charity care appeals: 85% approval with proper documentation</div>
                       <div>• Settlement offers: 92% acceptance rate at 25-40% of original</div>
@@ -1265,7 +1265,7 @@ Respectfully,
                   </div>
                   
                   <MobileButton 
-                    className="w-full bg-gradient-to-r from-emerald-600 to-green-600"
+                    className="w-full bg-primary text-primary-foreground"
                     onClick={() => window.location.href = '/premium'}
                   >
                     <BookOpen className="h-4 w-4 mr-2" />
@@ -1279,18 +1279,19 @@ Respectfully,
 
         {/* Bottom CTA */}
         <motion.div
-          className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-4 text-white text-center"
+          className="rounded-2xl p-4 text-white text-center shadow-sm"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
           <Heart className="h-8 w-8 mx-auto mb-2" />
-          <h3 className="font-bold text-lg mb-1">Ready to Start Saving?</h3>
-          <p className="text-emerald-100 text-sm mb-3">
+          <h3 className="font-serif font-bold text-lg mb-1">Ready to Start Saving?</h3>
+          <p className="text-white opacity-90 text-sm mb-3">
             Join others who've successfully reduced their medical bills
           </p>
           <MobileButton 
-            className="bg-white text-emerald-600 hover:bg-gray-50 font-bold"
+            className="bg-card text-foreground hover:opacity-90 font-bold"
             onClick={() => window.location.href = '/bill-ai'}
           >
             Analyze My Bill Now

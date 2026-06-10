@@ -420,7 +420,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -437,13 +437,13 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Insurance Denials Intelligence</h3>
+            <h3 className="text-lg font-bold font-serif text-foreground">Insurance Denials Intelligence</h3>
             <Badge className="bg-red-600 text-white text-xs">
               <Crown className="h-3 w-3 mr-1" />
               Expert Reversal Tactics
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Denial patterns • Reversal strategies • Medical director intel</p>
+          <p className="text-sm text-muted-foreground">Denial patterns • Reversal strategies • Medical director intel</p>
         </div>
       </div>
 
@@ -458,7 +458,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
         <TabsContent value="search" className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Denial Code
               </label>
               <Input
@@ -469,7 +469,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Insurance Company
               </label>
               <Input
@@ -483,7 +483,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Treatment Type
               </label>
               <Input
@@ -494,7 +494,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Medical Specialty
               </label>
               <Select value={searchData.specialty} onValueChange={(value) => setSearchData({...searchData, specialty: value})}>
@@ -514,7 +514,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Denial Amount
               </label>
               <Input
@@ -530,7 +530,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
           <Button 
             onClick={searchDenialIntelligence} 
             disabled={isSearching} 
-            className="w-full bg-red-600 hover:bg-red-700 text-white"
+            className="w-full bg-primary text-primary-foreground hover:opacity-90"
             data-testid="button-search-denial-intelligence"
           >
             {isSearching ? (
@@ -547,26 +547,26 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
           </Button>
 
           <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="p-3 bg-red-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <XCircle className="h-4 w-4 text-red-600" />
-                <span className="text-sm font-semibold text-red-800">1000+ Denial Codes</span>
+                <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                <span className="text-sm font-semibold text-foreground">1000+ Denial Codes</span>
               </div>
-              <div className="text-xs text-red-700">Comprehensive reversal intelligence</div>
+              <div className="text-xs text-muted-foreground">Comprehensive reversal intelligence</div>
             </div>
-            <div className="p-3 bg-green-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-semibold text-green-800">78% Reversal Rate</span>
+                <Target className="h-4 w-4 text-green-600 dark:text-green-400" />
+                <span className="text-sm font-semibold text-foreground">78% Reversal Rate</span>
               </div>
-              <div className="text-xs text-green-700">Intelligence-driven appeals</div>
+              <div className="text-xs text-muted-foreground">Intelligence-driven appeals</div>
             </div>
-            <div className="p-3 bg-purple-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Crown className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-semibold text-purple-800">$75M+ Reversed</span>
+                <Crown className="h-4 w-4 text-gold" />
+                <span className="text-sm font-semibold text-foreground">$75M+ Reversed</span>
               </div>
-              <div className="text-xs text-purple-700">Proven denial reversals</div>
+              <div className="text-xs text-muted-foreground">Proven denial reversals</div>
             </div>
           </div>
         </TabsContent>
@@ -587,7 +587,7 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                         {denial.description}
                       </CardDescription>
                       <div className="flex items-center gap-4 mt-2">
-                        <Badge variant="outline" className="text-green-600">{denial.reversalRate} Reversal Rate</Badge>
+                        <Badge variant="outline" className="text-green-600 dark:text-green-400">{denial.reversalRate} Reversal Rate</Badge>
                         <Badge variant="outline">{denial.avgTimeToReversal}</Badge>
                       </div>
                     </div>
@@ -595,14 +595,14 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Target className="h-4 w-4 text-blue-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Target className="h-4 w-4 text-muted-foreground" />
                       Key Reversal Strategies
                     </h4>
                     <div className="space-y-1">
                       {denial.keyStrategies.map((strategy, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <Crosshair className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                          <Crosshair className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{strategy}</span>
                         </div>
                       ))}
@@ -610,14 +610,14 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Award className="h-4 w-4 text-green-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Award className="h-4 w-4 text-green-600 dark:text-green-400" />
                       Winning Arguments
                     </h4>
                     <div className="space-y-1">
                       {denial.winningArguments.map((argument, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                          <CheckCircle className="h-3 w-3 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" />
                           <span>{argument}</span>
                         </div>
                       ))}
@@ -625,16 +625,16 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Building2 className="h-4 w-4 text-purple-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Building2 className="h-4 w-4 text-muted-foreground" />
                       Company-Specific Approaches
                     </h4>
                     <div className="space-y-1">
                       {Object.entries(denial.companyVariations).map(([company, approach], index) => (
                         <div key={index} className="text-xs">
-                          <span className="font-medium text-purple-700">{company}:</span>
+                          <span className="font-medium text-foreground">{company}:</span>
                           <br />
-                          <span className="text-gray-600">{approach}</span>
+                          <span className="text-muted-foreground">{approach}</span>
                         </div>
                       ))}
                     </div>
@@ -653,11 +653,11 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <Stethoscope className="h-5 w-5 text-orange-600" />
+                        <Stethoscope className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                         {specialty.specialty}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-4 mt-2">
-                        <Badge variant="outline" className="text-green-600">{specialty.successRate} Success Rate</Badge>
+                        <Badge variant="outline" className="text-green-600 dark:text-green-400">{specialty.successRate} Success Rate</Badge>
                         <Badge variant="outline">{specialty.avgSavings} Avg Savings</Badge>
                       </CardDescription>
                     </div>
@@ -666,14 +666,14 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <XCircle className="h-4 w-4 text-red-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
                         Common Denials
                       </h4>
                       <div className="space-y-1">
                         {specialty.commonDenials.map((denial, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <AlertTriangle className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <AlertTriangle className="h-3 w-3 text-red-500 dark:text-red-400 mt-0.5 flex-shrink-0" />
                             <span>{denial}</span>
                           </div>
                         ))}
@@ -681,14 +681,14 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Zap className="h-4 w-4 text-yellow-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Zap className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
                         Reversal Tactics
                       </h4>
                       <div className="space-y-1">
                         {specialty.reversalTactics.map((tactic, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <Lightbulb className="h-3 w-3 text-yellow-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <Lightbulb className="h-3 w-3 text-yellow-500 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
                             <span>{tactic}</span>
                           </div>
                         ))}
@@ -696,12 +696,12 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <h4 className="text-sm font-semibold text-blue-800 mb-1 flex items-center gap-2">
+                  <div className="bg-secondary p-3 rounded-lg">
+                    <h4 className="text-sm font-semibold text-foreground mb-1 flex items-center gap-2">
                       <Key className="h-4 w-4" />
                       Key Leverage Point
                     </h4>
-                    <div className="text-xs text-blue-700">{specialty.keyLeverage}</div>
+                    <div className="text-xs text-muted-foreground">{specialty.keyLeverage}</div>
                   </div>
                 </CardContent>
               </Card>
@@ -712,16 +712,16 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
         <TabsContent value="peer-calls" className="space-y-4">
           <div className="space-y-4">
             {peerToPeerIntelligence.map((intel, index) => (
-              <Card key={index} className="border-l-4 border-l-blue-500">
+              <Card key={index} className="border-l-4 border-l-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <MessageSquare className="h-5 w-5 text-blue-600" />
+                        <MessageSquare className="h-5 w-5 text-muted-foreground" />
                         {intel.company}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-4 mt-2">
-                        <Badge variant="outline" className="text-green-600">{intel.successRate} Success Rate</Badge>
+                        <Badge variant="outline" className="text-green-600 dark:text-green-400">{intel.successRate} Success Rate</Badge>
                         <Badge variant="outline">{intel.avgCallDuration}</Badge>
                         <Badge variant="outline">{intel.bestTimes}</Badge>
                       </CardDescription>
@@ -729,24 +729,24 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <h4 className="text-sm font-semibold text-blue-800 mb-1 flex items-center gap-2">
+                  <div className="bg-secondary p-3 rounded-lg">
+                    <h4 className="text-sm font-semibold text-foreground mb-1 flex items-center gap-2">
                       <Eye className="h-4 w-4" />
                       Medical Director Profile
                     </h4>
-                    <div className="text-xs text-blue-700">{intel.medicalDirectorProfile}</div>
+                    <div className="text-xs text-muted-foreground">{intel.medicalDirectorProfile}</div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Target className="h-4 w-4 text-green-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Target className="h-4 w-4 text-green-600 dark:text-green-400" />
                         Effective Approaches
                       </h4>
                       <div className="space-y-1">
                         {intel.effectiveApproaches.map((approach, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <CheckCircle className="h-3 w-3 text-green-500 dark:text-green-400 mt-0.5 flex-shrink-0" />
                             <span>{approach}</span>
                           </div>
                         ))}
@@ -754,14 +754,14 @@ Include specific reversal rates, timeline expectations, contact strategies, docu
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <BookOpen className="h-4 w-4 text-purple-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <BookOpen className="h-4 w-4 text-muted-foreground" />
                         Preparation Tips
                       </h4>
                       <div className="space-y-1">
                         {intel.preparationTips.map((tip, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <Star className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-muted-foreground flex items-start gap-2">
+                            <Star className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{tip}</span>
                           </div>
                         ))}

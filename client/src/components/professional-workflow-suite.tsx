@@ -190,11 +190,11 @@ export function ProfessionalWorkflowSuite({
 
   const getComplexityColor = (complexity: string) => {
     switch (complexity) {
-      case 'basic': return 'text-green-600 bg-green-100';
-      case 'intermediate': return 'text-blue-600 bg-blue-100';
-      case 'advanced': return 'text-orange-600 bg-orange-100';
-      case 'expert': return 'text-purple-600 bg-purple-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'basic': return 'text-muted-foreground bg-secondary';
+      case 'intermediate': return 'text-muted-foreground bg-secondary';
+      case 'advanced': return 'text-foreground bg-secondary';
+      case 'expert': return 'text-gold bg-secondary';
+      default: return 'text-muted-foreground bg-secondary';
     }
   };
 
@@ -324,27 +324,22 @@ Please execute this comprehensive ${workflow.title} strategy with the systematic
       {/* Enhanced Header */}
       <div className="flex items-center space-x-4 mb-8">
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-600 rounded-3xl flex items-center justify-center shadow-lg relative overflow-hidden"
-          whileHover={{ scale: 1.05, rotate: -3 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          className="w-16 h-16 rounded-3xl flex items-center justify-center shadow-sm relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+          whileHover={{ y: -2 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
           <Award className="h-8 w-8 text-white relative z-10" />
-          <motion.div 
-            className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
-            animate={{ x: [-100, 100] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          />
         </motion.div>
         <div className="flex-1">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-1">
+          <h3 className="text-xl font-serif font-bold text-foreground mb-1">
             Professional Workflow Suite
           </h3>
           <div className="flex items-center space-x-3 text-sm">
-            <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-200">
+            <Badge variant="outline" className="bg-secondary text-gold border-border">
               Expert-level strategies
             </Badge>
-            <span className="text-gray-600 dark:text-gray-400 flex items-center">
+            <span className="text-muted-foreground flex items-center">
               <TrendingUp className="h-3 w-3 mr-1" />
               90%+ success rates
             </span>
@@ -360,8 +355,8 @@ Please execute this comprehensive ${workflow.title} strategy with the systematic
         >
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="text-lg font-bold text-gray-900 dark:text-white">{selectedWorkflow.title}</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{selectedWorkflow.description}</p>
+              <h4 className="text-lg font-serif font-bold text-foreground">{selectedWorkflow.title}</h4>
+              <p className="text-sm text-muted-foreground">{selectedWorkflow.description}</p>
             </div>
             <Button variant="ghost" onClick={() => setSelectedWorkflow(null)}>
               ← Back
@@ -372,68 +367,64 @@ Please execute this comprehensive ${workflow.title} strategy with the systematic
             {/* Enhanced Statistics Cards */}
             <div className="grid grid-cols-3 gap-4">
               <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="luxury-card p-4 text-center relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-indigo-400/10 to-purple-500/10 rounded-full -translate-y-4 translate-x-4" />
                 <div className="relative z-10">
-                  <motion.div 
-                    className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
+                  <div className="text-2xl font-bold text-gold">
                     {selectedWorkflow.successRate}%
-                  </motion.div>
-                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400">Success Rate</div>
+                  </div>
+                  <div className="text-xs font-medium text-muted-foreground">Success Rate</div>
                 </div>
               </motion.div>
               
               <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="luxury-card p-4 text-center relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-400/10 to-emerald-500/10 rounded-full -translate-y-4 translate-x-4" />
                 <div className="relative z-10">
-                  <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                  <div className="text-2xl font-bold text-foreground">
                     {selectedWorkflow.savingsPotential}
                   </div>
-                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400">Savings Range</div>
+                  <div className="text-xs font-medium text-muted-foreground">Savings Range</div>
                 </div>
               </motion.div>
               
               <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="luxury-card p-4 text-center relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/10 to-cyan-500/10 rounded-full -translate-y-4 translate-x-4" />
                 <div className="relative z-10">
-                  <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                  <div className="text-2xl font-bold text-foreground">
                     {selectedWorkflow.estimatedTime}
                   </div>
-                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400">Est. Time</div>
+                  <div className="text-xs font-medium text-muted-foreground">Est. Time</div>
                 </div>
               </motion.div>
             </div>
 
             <div>
-              <h5 className="font-medium text-gray-900 dark:text-white mb-2">Workflow Steps:</h5>
+              <h5 className="font-medium text-foreground mb-2">Workflow Steps:</h5>
               <div className="space-y-2">
                 {selectedWorkflow.steps.map((step, index) => (
                   <div
                     key={index}
                     className={`flex items-center space-x-3 p-3 rounded-lg ${
-                      index <= activeStep ? 'bg-indigo-50 dark:bg-indigo-900/20' : 'bg-gray-50 dark:bg-gray-800'
+                      index <= activeStep ? 'bg-secondary' : 'bg-muted'
                     }`}
                   >
                     {index < activeStep ? (
-                      <CheckCircle2 className="h-5 w-5 text-indigo-600" />
+                      <CheckCircle2 className="h-5 w-5 text-gold" />
                     ) : index === activeStep ? (
-                      <Clock className="h-5 w-5 text-blue-600" />
+                      <Clock className="h-5 w-5 text-muted-foreground" />
                     ) : (
-                      <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                      <div className="w-5 h-5 rounded-full border-2 border-border" />
                     )}
                     <span className={`text-sm ${
-                      index <= activeStep ? 'text-indigo-900 dark:text-indigo-100 font-medium' : 'text-gray-600 dark:text-gray-400'
+                      index <= activeStep ? 'text-foreground font-medium' : 'text-muted-foreground'
                     }`}>
                       {step}
                     </span>
@@ -446,7 +437,7 @@ Please execute this comprehensive ${workflow.title} strategy with the systematic
               <Button
                 onClick={completeWorkflow}
                 disabled={isGenerating}
-                className="flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white"
+                className="flex-1 bg-primary text-primary-foreground hover:bg-primary"
               >
                 {isGenerating ? (
                   <>
@@ -491,28 +482,27 @@ Please execute this comprehensive ${workflow.title} strategy with the systematic
                       >
                         <div className="flex items-start space-x-4">
                           <motion.div 
-                            className="w-12 h-12 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-md relative overflow-hidden"
-                            whileHover={{ rotate: 10, scale: 1.1 }}
-                            transition={{ type: "spring", stiffness: 400 }}
+                            className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center shadow-sm relative overflow-hidden"
+                            whileHover={{ y: -2 }}
+                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                           >
-                            <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
-                            <IconComponent className="h-6 w-6 text-white relative z-10" />
+                            <IconComponent className="h-6 w-6 text-muted-foreground relative z-10" />
                           </motion.div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-medium text-gray-900 dark:text-white">{workflow.title}</h4>
+                              <h4 className="font-medium text-foreground">{workflow.title}</h4>
                               <div className="flex items-center space-x-2">
                                 <Badge className={`text-xs ${getComplexityColor(workflow.complexity)}`}>
                                   {workflow.complexity}
                                 </Badge>
-                                <span className="text-sm font-medium text-green-600 dark:text-green-400">
+                                <span className="text-sm font-medium text-gold">
                                   {workflow.successRate}%
                                 </span>
                               </div>
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{workflow.description}</p>
+                            <p className="text-sm text-muted-foreground mb-3">{workflow.description}</p>
                             <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
+                              <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                                 <span className="flex items-center">
                                   <Clock className="h-3 w-3 mr-1" />
                                   {workflow.estimatedTime}
@@ -522,7 +512,7 @@ Please execute this comprehensive ${workflow.title} strategy with the systematic
                                   {workflow.savingsPotential}
                                 </span>
                               </div>
-                              <span className="text-xs text-blue-600 dark:text-blue-400">
+                              <span className="text-xs text-gold">
                                 Click to start →
                               </span>
                             </div>

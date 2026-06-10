@@ -67,9 +67,9 @@ export function AICaseGenerator({ onCaseGenerated }: AICaseGeneratorProps) {
   ];
 
   const difficultyLevels = [
-    { level: 1, name: "Foundation", description: "Common conditions, straightforward presentations", color: "bg-green-100 text-green-800" },
-    { level: 2, name: "Clinical", description: "Moderate complexity, clinical reasoning required", color: "bg-yellow-100 text-yellow-800" },
-    { level: 3, name: "Expert", description: "Complex cases, rare conditions, multiple comorbidities", color: "bg-red-100 text-red-800" }
+    { level: 1, name: "Foundation", description: "Common conditions, straightforward presentations", color: "bg-secondary text-muted-foreground" },
+    { level: 2, name: "Clinical", description: "Moderate complexity, clinical reasoning required", color: "bg-secondary text-foreground" },
+    { level: 3, name: "Expert", description: "Complex cases, rare conditions, multiple comorbidities", color: "bg-secondary text-gold" }
   ];
 
   const ageRanges = ["Any", "18-30", "31-65", "65+"];
@@ -213,7 +213,7 @@ export function AICaseGenerator({ onCaseGenerated }: AICaseGeneratorProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button 
-          className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
+          className="bg-primary text-primary-foreground"
           data-testid="button-ai-generator"
         >
           <Sparkles className="h-4 w-4 mr-2" />
@@ -222,10 +222,10 @@ export function AICaseGenerator({ onCaseGenerated }: AICaseGeneratorProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
-            <Brain className="h-6 w-6 text-purple-600" />
+          <DialogTitle className="flex items-center space-x-2 font-serif">
+            <Brain className="h-6 w-6 text-gold" />
             <span>AI-Powered Case Generator</span>
-            <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+            <Badge variant="secondary" className="bg-secondary text-muted-foreground">
               GPT-4 Powered
             </Badge>
           </DialogTitle>
@@ -342,7 +342,7 @@ export function AICaseGenerator({ onCaseGenerated }: AICaseGeneratorProps) {
                 <Button 
                   onClick={generateSingleCase} 
                   disabled={generating || !specialty}
-                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                  className="w-full bg-primary text-primary-foreground"
                   data-testid="button-generate-single"
                 >
                   {generating ? (
@@ -417,7 +417,7 @@ export function AICaseGenerator({ onCaseGenerated }: AICaseGeneratorProps) {
                   <Button 
                     onClick={() => generateMultipleCases(5)} 
                     disabled={generatingMultiple || !specialty}
-                    className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                    className="flex-1 bg-primary text-primary-foreground"
                     data-testid="button-generate-5"
                   >
                     {generatingMultiple ? (
@@ -437,28 +437,28 @@ export function AICaseGenerator({ onCaseGenerated }: AICaseGeneratorProps) {
         {generatedCases.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600" />
+              <CardTitle className="flex items-center gap-2 font-serif">
+                <CheckCircle className="h-5 w-5 text-emerald-700" />
                 Recently Generated Cases ({generatedCases.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3 max-h-64 overflow-y-auto">
                 {generatedCases.map((medicalCase) => (
-                  <div key={medicalCase.id} className="border rounded-lg p-3 bg-green-50">
+                  <div key={medicalCase.id} className="border border-border rounded-lg p-3 bg-secondary">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-green-800">{medicalCase.name}</h4>
+                          <h4 className="font-semibold text-foreground">{medicalCase.name}</h4>
                           {getDifficultyBadge(medicalCase.difficulty)}
                           <Badge variant="outline" className="text-xs">
                             {medicalCase.specialty}
                           </Badge>
                         </div>
-                        <p className="text-sm text-green-700 mb-1">{medicalCase.chiefComplaint}</p>
-                        <p className="text-xs text-green-600">Diagnosis: {medicalCase.correctDiagnosis}</p>
+                        <p className="text-sm text-muted-foreground mb-1">{medicalCase.chiefComplaint}</p>
+                        <p className="text-xs text-muted-foreground">Diagnosis: {medicalCase.correctDiagnosis}</p>
                       </div>
-                      <div className="flex items-center gap-1 text-green-600">
+                      <div className="flex items-center gap-1 text-muted-foreground">
                         <Clock className="h-3 w-3" />
                         <span className="text-xs">{medicalCase.estimatedDuration}m</span>
                       </div>

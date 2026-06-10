@@ -636,40 +636,40 @@ function SavingsCalculatorSection() {
       transition={{ duration: 0.5 }}
       className="mb-6"
     >
-      <MobileCard className="bg-gradient-to-r from-green-50/80 to-emerald-100/80 border-green-200 hover:shadow-xl transition-all">
+      <MobileCard className="bg-card border border-border hover:shadow-md transition-all">
         <div className="space-y-4">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-              <Calculator className="h-5 w-5 text-green-600" />
+            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+              <Calculator className="h-5 w-5 text-muted-foreground" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-base">Bill Reduction Calculator</h3>
-              <p className="text-sm text-gray-700">Estimate your potential savings with our proven strategies</p>
+              <h3 className="font-bold text-foreground text-base">Bill Reduction Calculator</h3>
+              <p className="text-sm text-muted-foreground">Estimate your potential savings with our proven strategies</p>
             </div>
           </div>
           
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Your Bill Amount</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Your Bill Amount</label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
                   type="number"
                   value={billAmount}
                   onChange={(e) => setBillAmount(e.target.value)}
                   placeholder="Enter bill amount"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
                   data-testid="bill-amount-input"
                 />
               </div>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Primary Strategy</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Primary Strategy</label>
               <select
                 value={strategy}
                 onChange={(e) => setStrategy(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
                 data-testid="strategy-select"
               >
                 <option value="error-detection">Billing Error Detection (25% avg)</option>
@@ -682,7 +682,7 @@ function SavingsCalculatorSection() {
             
             <MobileButton 
               onClick={calculateSavings}
-              className="w-full bg-green-600 hover:bg-green-700"
+              className="w-full bg-primary text-primary-foreground hover:opacity-90"
               data-testid="calculate-savings-btn"
             >
               <Calculator className="h-4 w-4 mr-2" />
@@ -693,14 +693,14 @@ function SavingsCalculatorSection() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-4 bg-green-100 rounded-lg border border-green-200"
+                className="p-4 bg-secondary rounded-lg border border-border"
               >
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-900">
+                  <div className="text-2xl font-bold text-gold">
                     ${estimatedSavings.toLocaleString()}
                   </div>
-                  <div className="text-sm text-green-700">Estimated Savings</div>
-                  <div className="text-xs text-green-600 mt-1">
+                  <div className="text-sm text-muted-foreground">Estimated Savings</div>
+                  <div className="text-xs text-muted-foreground mt-1">
                     Based on our users' average results
                   </div>
                 </div>
@@ -718,11 +718,11 @@ function PremiumGate() {
   return (
     <MobileCard className="text-center py-8">
       <div className="mb-4">
-        <Crown className="h-12 w-12 text-amber-500 mx-auto mb-3" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Premium Feature</h2>
-        <p className="text-gray-600 mb-4">Access detailed bill best practices with premium subscription</p>
+        <Crown className="h-12 w-12 text-gold mx-auto mb-3" />
+        <h2 className="text-xl font-bold font-serif text-foreground mb-2">Premium Feature</h2>
+        <p className="text-muted-foreground mb-4">Access detailed bill best practices with premium subscription</p>
         <Link href="/premium">
-          <MobileButton className="bg-amber-500 hover:bg-amber-600">
+          <MobileButton className="bg-gold text-white hover:opacity-90">
             <Crown className="h-4 w-4 mr-2" />
             Upgrade to Premium
           </MobileButton>
@@ -748,20 +748,20 @@ function ComprehensiveSection({ guide, colorScheme, expandedSection, setExpanded
       transition={{ duration: 0.5 }}
       className="mb-6"
     >
-      <MobileCard className={`bg-gradient-to-r from-${colorScheme}-50/80 to-${colorScheme}-100/80 border-${colorScheme}-200 hover:shadow-xl transition-all`}>
+      <MobileCard className="bg-card border border-border hover:shadow-md transition-all">
         <div 
           className="cursor-pointer"
           onClick={() => setExpandedSection(isExpanded ? null : guide.title)}
         >
           <div className="flex items-center space-x-3 mb-4">
-            <div className={`w-10 h-10 bg-${colorScheme}-100 rounded-xl flex items-center justify-center`}>
-              <IconComponent className={`h-5 w-5 text-${colorScheme}-600`} />
+            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+              <IconComponent className="h-5 w-5 text-muted-foreground" />
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-gray-900 text-base">{guide.title}</h3>
-              <p className="text-sm text-gray-700">{guide.description}</p>
+              <h3 className="font-bold text-foreground text-base">{guide.title}</h3>
+              <p className="text-sm text-muted-foreground">{guide.description}</p>
             </div>
-            <ChevronDown className={`h-5 w-5 text-${colorScheme}-600 transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`h-5 w-5 text-muted-foreground transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
           </div>
         </div>
         
@@ -769,16 +769,16 @@ function ComprehensiveSection({ guide, colorScheme, expandedSection, setExpanded
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            className="border-t border-gray-200 pt-4 mt-4 space-y-6"
+            className="border-t border-border pt-4 mt-4 space-y-6"
           >
             {guide.sections.map((section: any, index: number) => (
               <div key={index}>
-                <h4 className="font-semibold text-gray-900 text-sm mb-3">{section.title}</h4>
+                <h4 className="font-semibold text-foreground text-sm mb-3">{section.title}</h4>
                 <div className="space-y-2">
                   {section.content.map((item: string, itemIndex: number) => (
                     <div key={itemIndex} className="flex items-start space-x-2">
-                      <CheckCircle className={`h-4 w-4 text-${colorScheme}-600 mt-0.5 flex-shrink-0`} />
-                      <span className="text-xs text-gray-700">{item}</span>
+                      <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <span className="text-xs text-muted-foreground">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -824,26 +824,26 @@ function EscalationScriptsSection({ scripts, expandedScript, setExpandedScript }
       transition={{ duration: 0.5 }}
       className="mb-6"
     >
-      <MobileCard className="bg-gradient-to-r from-orange-50/80 to-red-100/80 border-orange-200 hover:shadow-xl transition-all">
+      <MobileCard className="bg-card border border-border hover:shadow-md transition-all">
         <div 
           className="cursor-pointer"
           onClick={() => setExpandedScript(isExpanded ? null : scripts.title)}
         >
           <div className="flex items-center space-x-3 mb-4">
-            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
-              <IconComponent className="h-5 w-5 text-orange-600" />
+            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+              <IconComponent className="h-5 w-5 text-muted-foreground" />
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-bold text-gray-900 text-base">{scripts.title}</h3>
+                <h3 className="font-bold text-foreground text-base">{scripts.title}</h3>
                 <motion.div
                   animate={{ rotate: isExpanded ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ChevronDown className="h-5 w-5 text-orange-600" />
+                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
                 </motion.div>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed">{scripts.description}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{scripts.description}</p>
             </div>
           </div>
         </div>
@@ -854,23 +854,23 @@ function EscalationScriptsSection({ scripts, expandedScript, setExpandedScript }
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="border-t border-gray-200 pt-6 mt-4"
+            className="border-t border-border pt-6 mt-4"
           >
             <div className="space-y-6">
               {scripts.scripts.map((script: any, scriptIndex: number) => (
                 <div key={scriptIndex} className="space-y-3">
-                  <h4 className="font-semibold text-gray-900 text-sm flex items-center">
-                    <div className="w-6 h-6 bg-orange-200 text-orange-800 rounded-full text-xs font-bold flex items-center justify-center mr-2">
+                  <h4 className="font-semibold text-foreground text-sm flex items-center">
+                    <div className="w-6 h-6 bg-secondary text-foreground rounded-full text-xs font-bold flex items-center justify-center mr-2">
                       {scriptIndex + 1}
                     </div>
                     {script.scenario}
                   </h4>
-                  <div className="ml-8 p-4 bg-white/70 rounded-lg border border-orange-100">
+                  <div className="ml-8 p-4 bg-secondary rounded-lg border border-border">
                     <div className="flex items-start space-x-2 mb-2">
-                      <MessageCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-xs font-medium text-orange-800">Word-for-word script:</span>
+                      <MessageCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <span className="text-xs font-medium text-foreground">Word-for-word script:</span>
                     </div>
-                    <p className="text-xs text-gray-700 leading-relaxed font-mono bg-gray-50 p-3 rounded border">
+                    <p className="text-xs text-muted-foreground leading-relaxed font-mono bg-background p-3 rounded border">
                       {script.script}
                     </p>
                     <div className="flex space-x-2 mt-3">
@@ -908,7 +908,7 @@ function EnhancedLetterTemplatesSection({ templates, expandedTemplate, setExpand
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
+      <h2 className="text-xl font-semibold font-serif text-foreground text-center mb-4">
         Professional Letter Templates
       </h2>
       
@@ -923,22 +923,22 @@ function EnhancedLetterTemplatesSection({ templates, expandedTemplate, setExpand
             transition={{ delay: index * 0.1, duration: 0.4 }}
             className="mb-4"
           >
-            <MobileCard className="bg-gradient-to-r from-purple-50/80 to-indigo-100/80 border-purple-200 hover:shadow-xl transition-all">
+            <MobileCard className="bg-card border border-border hover:shadow-md transition-all">
               <div 
                 className="cursor-pointer"
                 onClick={() => setExpandedTemplate(isExpanded ? null : template.title)}
                 data-testid={`template-${index}`}
               >
                 <div className="flex items-start space-x-3 mb-3">
-                  <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <FileText className="h-5 w-5 text-purple-600" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0">
+                    <FileText className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-bold text-gray-900 text-sm">{template.title}</h3>
-                      <ChevronDown className={`h-5 w-5 text-purple-600 transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      <h3 className="font-bold text-foreground text-sm">{template.title}</h3>
+                      <ChevronDown className={`h-5 w-5 text-muted-foreground transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                     </div>
-                    <p className="text-xs text-gray-700">{template.description}</p>
+                    <p className="text-xs text-muted-foreground">{template.description}</p>
                   </div>
                 </div>
               </div>
@@ -949,10 +949,10 @@ function EnhancedLetterTemplatesSection({ templates, expandedTemplate, setExpand
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="border-t border-gray-200 pt-4 mt-4"
+                  className="border-t border-border pt-4 mt-4"
                 >
-                  <div className="bg-white rounded-lg p-4 border border-purple-100">
-                    <pre className="text-xs text-gray-800 whitespace-pre-wrap font-mono leading-relaxed">
+                  <div className="bg-secondary rounded-lg p-4 border border-border">
+                    <pre className="text-xs text-foreground whitespace-pre-wrap font-mono leading-relaxed">
                       {template.template}
                     </pre>
                   </div>
@@ -985,34 +985,34 @@ function QuickReferenceSection() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
+      <h2 className="text-xl font-semibold font-serif text-foreground text-center mb-4">
         Quick Reference Tools
       </h2>
       
-      <MobileCard className="bg-gradient-to-r from-indigo-50/80 to-blue-100/80 border-indigo-200">
+      <MobileCard className="bg-card border border-border">
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
-              <ClipboardList className="h-5 w-5 text-indigo-600" />
+            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+              <ClipboardList className="h-5 w-5 text-muted-foreground" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-base">Essential Contacts</h3>
-              <p className="text-sm text-gray-700">Key phone numbers and contacts for bill disputes</p>
+              <h3 className="font-bold text-foreground text-base">Essential Contacts</h3>
+              <p className="text-sm text-muted-foreground">Key phone numbers and contacts for bill disputes</p>
             </div>
           </div>
           
           <div className="grid grid-cols-1 gap-3 text-xs">
-            <div className="bg-white/60 p-3 rounded-lg">
-              <span className="font-semibold text-gray-800">Hospital Billing:</span>
-              <span className="text-gray-700 ml-2">Ask for "Patient Financial Counselor"</span>
+            <div className="bg-secondary p-3 rounded-lg">
+              <span className="font-semibold text-foreground">Hospital Billing:</span>
+              <span className="text-muted-foreground ml-2">Ask for "Patient Financial Counselor"</span>
             </div>
-            <div className="bg-white/60 p-3 rounded-lg">
-              <span className="font-semibold text-gray-800">Insurance Appeals:</span>
-              <span className="text-gray-700 ml-2">Member Services → Appeals Department</span>
+            <div className="bg-secondary p-3 rounded-lg">
+              <span className="font-semibold text-foreground">Insurance Appeals:</span>
+              <span className="text-muted-foreground ml-2">Member Services → Appeals Department</span>
             </div>
-            <div className="bg-white/60 p-3 rounded-lg">
-              <span className="font-semibold text-gray-800">State Insurance Commission:</span>
-              <span className="text-gray-700 ml-2">File complaints for denied claims</span>
+            <div className="bg-secondary p-3 rounded-lg">
+              <span className="font-semibold text-foreground">State Insurance Commission:</span>
+              <span className="text-muted-foreground ml-2">File complaints for denied claims</span>
             </div>
           </div>
         </div>
@@ -1029,25 +1029,25 @@ function AdditionalResourcesSection() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
+      <h2 className="text-xl font-semibold font-serif text-foreground text-center mb-4">
         Additional Resources
       </h2>
       
       <div className="grid grid-cols-2 gap-3">
-        <MobileCard className="bg-gradient-to-br from-emerald-50 to-green-100 border-emerald-200 text-center">
-          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-            <Scale className="h-4 w-4 text-emerald-600" />
+        <MobileCard className="bg-card border border-border text-center">
+          <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center mx-auto mb-2">
+            <Scale className="h-4 w-4 text-muted-foreground" />
           </div>
-          <h3 className="font-semibold text-gray-900 text-xs mb-1">Legal Aid</h3>
-          <p className="text-xs text-gray-600">Free legal help for medical debt</p>
+          <h3 className="font-semibold text-foreground text-xs mb-1">Legal Aid</h3>
+          <p className="text-xs text-muted-foreground">Free legal help for medical debt</p>
         </MobileCard>
         
-        <MobileCard className="bg-gradient-to-br from-blue-50 to-indigo-100 border-blue-200 text-center">
-          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-            <BookOpen className="h-4 w-4 text-blue-600" />
+        <MobileCard className="bg-card border border-border text-center">
+          <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center mx-auto mb-2">
+            <BookOpen className="h-4 w-4 text-muted-foreground" />
           </div>
-          <h3 className="font-semibold text-gray-900 text-xs mb-1">Patient Rights</h3>
-          <p className="text-xs text-gray-600">Know your healthcare rights</p>
+          <h3 className="font-semibold text-foreground text-xs mb-1">Patient Rights</h3>
+          <p className="text-xs text-muted-foreground">Know your healthcare rights</p>
         </MobileCard>
       </div>
     </motion.div>
@@ -1067,7 +1067,7 @@ function DetailedCaseStudiesSection({ caseStudies, expandedCase, setExpandedCase
       transition={{ duration: 0.5 }}
       className="mb-6"
     >
-      <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
+      <h2 className="text-xl font-semibold font-serif text-foreground text-center mb-4">
         Real Success Stories
       </h2>
       
@@ -1082,28 +1082,28 @@ function DetailedCaseStudiesSection({ caseStudies, expandedCase, setExpandedCase
             transition={{ delay: index * 0.1, duration: 0.4 }}
             className="mb-4"
           >
-            <MobileCard className="bg-gradient-to-r from-blue-50/80 to-indigo-100/80 border-blue-200 hover:shadow-xl transition-all">
+            <MobileCard className="bg-card border border-border hover:shadow-md transition-all">
               <div 
                 className="cursor-pointer"
                 onClick={() => setExpandedCase(isExpanded ? null : caseStudy.title)}
                 data-testid={`case-study-${index}`}
               >
                 <div className="flex items-start space-x-3 mb-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Award className="h-5 w-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Award className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-bold text-gray-900 text-sm">{caseStudy.title}</h3>
+                      <h3 className="font-bold text-foreground text-sm">{caseStudy.title}</h3>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-green-700">{caseStudy.savings}</div>
-                        <div className="text-xs text-gray-600">saved</div>
+                        <div className="text-lg font-bold text-gold">{caseStudy.savings}</div>
+                        <div className="text-xs text-muted-foreground">saved</div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-4 text-xs text-gray-600">
+                    <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                       <span>Strategy: {caseStudy.strategy}</span>
                       <span>Timeline: {caseStudy.timeline}</span>
-                      <span className="font-semibold text-green-600">{caseStudy.savingsPercentage} reduction</span>
+                      <span className="font-semibold text-foreground">{caseStudy.savingsPercentage} reduction</span>
                     </div>
                   </div>
                 </div>
@@ -1115,44 +1115,44 @@ function DetailedCaseStudiesSection({ caseStudies, expandedCase, setExpandedCase
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="border-t border-gray-200 pt-4 mt-4 space-y-4"
+                  className="border-t border-border pt-4 mt-4 space-y-4"
                 >
                   <div>
-                    <h4 className="font-semibold text-gray-900 text-sm mb-2">Patient Profile:</h4>
-                    <p className="text-xs text-gray-700 bg-white/50 p-2 rounded">{caseStudy.patientProfile}</p>
+                    <h4 className="font-semibold text-foreground text-sm mb-2">Patient Profile:</h4>
+                    <p className="text-xs text-muted-foreground bg-secondary p-2 rounded">{caseStudy.patientProfile}</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-900 text-sm mb-2">Key Tactics Used:</h4>
+                    <h4 className="font-semibold text-foreground text-sm mb-2">Key Tactics Used:</h4>
                     <div className="space-y-1">
                       {caseStudy.keyTactics.map((tactic: string, tacticIndex: number) => (
                         <div key={tacticIndex} className="flex items-start space-x-2">
-                          <CheckCircle className="h-3 w-3 text-blue-600 mt-1 flex-shrink-0" />
-                          <span className="text-xs text-gray-700">{tactic}</span>
+                          <CheckCircle className="h-3 w-3 text-muted-foreground mt-1 flex-shrink-0" />
+                          <span className="text-xs text-muted-foreground">{tactic}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-900 text-sm mb-2">Timeline Breakdown:</h4>
+                    <h4 className="font-semibold text-foreground text-sm mb-2">Timeline Breakdown:</h4>
                     <div className="space-y-1">
                       {caseStudy.timeline_breakdown.map((phase: string, phaseIndex: number) => (
                         <div key={phaseIndex} className="flex items-start space-x-2">
-                          <Clock className="h-3 w-3 text-indigo-600 mt-1 flex-shrink-0" />
-                          <span className="text-xs text-gray-700">{phase}</span>
+                          <Clock className="h-3 w-3 text-muted-foreground mt-1 flex-shrink-0" />
+                          <span className="text-xs text-muted-foreground">{phase}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-gray-900 text-sm mb-2">Key Lessons:</h4>
+                    <h4 className="font-semibold text-foreground text-sm mb-2">Key Lessons:</h4>
                     <div className="space-y-1">
                       {caseStudy.lessons_learned.map((lesson: string, lessonIndex: number) => (
                         <div key={lessonIndex} className="flex items-start space-x-2">
-                          <Lightbulb className="h-3 w-3 text-amber-600 mt-1 flex-shrink-0" />
-                          <span className="text-xs text-gray-700">{lesson}</span>
+                          <Lightbulb className="h-3 w-3 text-gold mt-1 flex-shrink-0" />
+                          <span className="text-xs text-muted-foreground">{lesson}</span>
                         </div>
                       ))}
                     </div>
@@ -1197,7 +1197,7 @@ export default function BillBestPractices() {
     return (
       <MobileLayout title="Bill Best Practices" showBottomNav={true}>
         <div className="flex items-center justify-center py-20">
-          <div className="animate-spin w-8 h-8 border-4 border-red-600 border-t-transparent rounded-full"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
         </div>
       </MobileLayout>
     );
@@ -1222,7 +1222,8 @@ export default function BillBestPractices() {
           transition={{ duration: 0.6 }}
         >
           <motion.div 
-            className="w-16 h-16 bg-gradient-to-br from-red-400 via-orange-500 to-amber-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-orange-500/25"
+            className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, duration: 0.4 }}
@@ -1231,7 +1232,7 @@ export default function BillBestPractices() {
           </motion.div>
           
           <motion.h1 
-            className="text-2xl font-bold text-gray-900 mb-2"
+            className="text-2xl font-bold font-serif text-foreground mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.4 }}
@@ -1240,7 +1241,7 @@ export default function BillBestPractices() {
           </motion.h1>
           
           <motion.p 
-            className="text-sm text-gray-600 max-w-sm mx-auto"
+            className="text-sm text-muted-foreground max-w-sm mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.4 }}
@@ -1330,12 +1331,12 @@ export default function BillBestPractices() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
+          <h2 className="text-xl font-semibold font-serif text-foreground text-center mb-4">
             Take Action Now
           </h2>
           
           <Link href="/bill-ai">
-            <MobileButton className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700" size="lg">
+            <MobileButton className="w-full bg-gold text-white hover:opacity-90" size="lg">
               <FileCheck className="h-5 w-5 mr-2" />
               Analyze Your Bill
               <ArrowRight className="h-4 w-4 ml-2" />
@@ -1343,7 +1344,7 @@ export default function BillBestPractices() {
           </Link>
           
           <Link href="/industry-insights">
-            <MobileButton className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700" size="lg">
+            <MobileButton className="w-full bg-secondary text-foreground border border-border hover:opacity-90" size="lg">
               <BookOpen className="h-5 w-5 mr-2" />
               Industry Insights
               <ArrowRight className="h-4 w-4 ml-2" />

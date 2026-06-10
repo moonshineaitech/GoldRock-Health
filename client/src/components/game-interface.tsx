@@ -33,19 +33,19 @@ export function GameInterface({ medicalCase }: GameInterfaceProps) {
       title="Patient Interview"
     >
       {/* Case Info Header */}
-      <MobileCard className="p-4 mb-4 bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+      <MobileCard className="p-4 mb-4 bg-card border-border">
         <div className="text-center">
-          <h2 className="text-lg font-semibold text-indigo-900">{medicalCase.name}</h2>
-          <p className="text-indigo-600 text-sm">{medicalCase.specialty} Case</p>
+          <h2 className="text-lg font-serif font-semibold text-foreground">{medicalCase.name}</h2>
+          <p className="text-muted-foreground text-sm">{medicalCase.specialty} Case</p>
         </div>
       </MobileCard>
 
       {/* iOS-Style Segmented Control with Animation */}
       <MobileCard className="p-2 mb-4">
-        <div className="relative flex bg-gray-100 rounded-2xl p-1">
+        <div className="relative flex bg-secondary rounded-2xl p-1">
           {/* Animated Background */}
           <motion.div
-            className="absolute top-1 bottom-1 bg-white rounded-xl shadow-sm"
+            className="absolute top-1 bottom-1 bg-card rounded-xl shadow-sm"
             initial={false}
             animate={{
               left: activePanel === 'chat' ? '4px' : '50%',
@@ -63,8 +63,8 @@ export function GameInterface({ medicalCase }: GameInterfaceProps) {
             onClick={() => setActivePanel('chat')}
             className={`relative z-10 flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-medium transition-colors duration-200 ${
               activePanel === 'chat'
-                ? 'text-indigo-600'
-                : 'text-gray-600 hover:text-gray-800'
+                ? 'text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
             data-testid="tab-chat"
           >
@@ -81,8 +81,8 @@ export function GameInterface({ medicalCase }: GameInterfaceProps) {
             onClick={() => setActivePanel('patient')}
             className={`relative z-10 flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-medium transition-colors duration-200 ${
               activePanel === 'patient'
-                ? 'text-indigo-600'
-                : 'text-gray-600 hover:text-gray-800'
+                ? 'text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
             data-testid="tab-patient"
           >
@@ -157,7 +157,7 @@ export function GameInterface({ medicalCase }: GameInterfaceProps) {
             }}
           >
             <MobileCard className="p-4 mt-4">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Advanced Learning Tools</h3>
+              <h3 className="text-lg font-serif font-medium text-foreground mb-4">Advanced Learning Tools</h3>
               <div className="grid grid-cols-1 gap-3">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
@@ -166,7 +166,7 @@ export function GameInterface({ medicalCase }: GameInterfaceProps) {
                 >
                   <Button
                     onClick={() => setShowDifferentials(true)}
-                    className="flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-700 py-3 hover:scale-105 transition-transform duration-200"
+                    className="flex items-center justify-center gap-2 w-full bg-primary text-primary-foreground hover:opacity-90 py-3 hover:scale-105 transition-transform duration-200"
                     data-testid="button-differential-diagnosis"
                   >
                     <Brain className="h-4 w-4" />

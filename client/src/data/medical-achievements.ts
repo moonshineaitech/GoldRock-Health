@@ -415,19 +415,19 @@ export const achievementCategories = [
     id: "performance",
     name: "Performance",
     icon: Target,
-    color: "text-blue-600"
+    color: "text-muted-foreground"
   },
   {
     id: "ai-mastery",
     name: "AI Mastery",
     icon: Brain,
-    color: "text-purple-600"
+    color: "text-muted-foreground"
   },
   {
     id: "community",
     name: "Community",
     icon: Users,
-    color: "text-indigo-600"
+    color: "text-muted-foreground"
   },
   {
     id: "milestones",

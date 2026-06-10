@@ -106,7 +106,7 @@ function NewDenialForm({ onClose }: { onClose: () => void }) {
           <Input type="date" value={form.appealDeadline} onChange={(e) => setForm({ ...form, appealDeadline: e.target.value })} />
         </div>
       </div>
-      <Button className="w-full bg-purple-600 hover:bg-purple-700" onClick={() => createDenial.mutate(form)} disabled={createDenial.isPending || !form.insuranceCompany || !form.denialReason}>
+      <Button className="w-full bg-primary text-primary-foreground" onClick={() => createDenial.mutate(form)} disabled={createDenial.isPending || !form.insuranceCompany || !form.denialReason}>
         {createDenial.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Sparkles className="w-4 h-4 mr-2" />}
         Generate Appeal Letter with AI
       </Button>
@@ -121,40 +121,40 @@ function DenialCard({ denial }: { denial: any }) {
   const statusConfig: Record<string, { label: string; color: string }> = {
     denied: { label: "Denied", color: "bg-red-100 text-red-700" },
     appealing: { label: "Appeal Filed", color: "bg-amber-100 text-amber-700" },
-    appeal_submitted: { label: "Under Review", color: "bg-blue-100 text-blue-700" },
+    appeal_submitted: { label: "Under Review", color: "bg-secondary text-foreground" },
     won: { label: "Appeal Won", color: "bg-emerald-100 text-emerald-700" },
-    lost: { label: "Appeal Lost", color: "bg-gray-100 text-gray-700" },
-    escalated: { label: "Escalated", color: "bg-purple-100 text-purple-700" },
+    lost: { label: "Appeal Lost", color: "bg-secondary text-foreground" },
+    escalated: { label: "Escalated", color: "bg-secondary text-foreground" },
   };
 
   const config = statusConfig[denial.status] || statusConfig.denied;
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl border border-gray-200 p-4">
+      className="bg-card rounded-xl border border-border p-4">
       <div className="flex items-start justify-between mb-2">
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">{denial.insuranceCompany}</h3>
-          <p className="text-xs text-gray-500">{denial.procedureDescription || `Code: ${denial.denialCode}`}</p>
+          <h3 className="text-sm font-semibold text-foreground">{denial.insuranceCompany}</h3>
+          <p className="text-xs text-muted-foreground">{denial.procedureDescription || `Code: ${denial.denialCode}`}</p>
         </div>
         <Badge className={config.color}>{config.label}</Badge>
       </div>
 
-      <p className="text-xs text-gray-600 bg-red-50 rounded-lg p-2 mb-3">
+      <p className="text-xs text-muted-foreground bg-red-50 rounded-lg p-2 mb-3">
         <AlertTriangle className="w-3 h-3 inline mr-1 text-red-500" />
         Denial reason: {denial.denialReason}
       </p>
 
       <div className="grid grid-cols-2 gap-2 mb-3">
         {denial.claimAmount && (
-          <div className="text-center p-2 bg-gray-50 rounded-lg">
-            <p className="text-[10px] text-gray-500">Claim Amount</p>
+          <div className="text-center p-2 bg-secondary rounded-lg">
+            <p className="text-[10px] text-muted-foreground">Claim Amount</p>
             <p className="text-sm font-bold">${parseFloat(denial.claimAmount).toLocaleString()}</p>
           </div>
         )}
         {daysUntilDeadline !== null && (
           <div className={`text-center p-2 rounded-lg ${daysUntilDeadline <= 7 ? 'bg-red-50' : 'bg-amber-50'}`}>
-            <p className="text-[10px] text-gray-500">Appeal Deadline</p>
+            <p className="text-[10px] text-muted-foreground">Appeal Deadline</p>
             <p className={`text-sm font-bold ${daysUntilDeadline <= 7 ? 'text-red-600' : 'text-amber-600'}`}>
               {daysUntilDeadline > 0 ? `${daysUntilDeadline} days` : 'Expired'}
             </p>
@@ -168,7 +168,7 @@ function DenialCard({ denial }: { denial: any }) {
             <Eye className="w-3 h-3 mr-1" />{showLetter ? "Hide" : "View"} Appeal Letter
           </Button>
           {showLetter && (
-            <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} className="bg-gray-50 rounded-lg p-3 text-xs text-gray-700 whitespace-pre-wrap max-h-60 overflow-y-auto border">
+            <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} className="bg-secondary rounded-lg p-3 text-xs text-foreground whitespace-pre-wrap max-h-60 overflow-y-auto border">
               {denial.generatedAppealLetter}
             </motion.div>
           )}
@@ -214,41 +214,41 @@ export default function DenialAppeals() {
   return (
     <MobileLayout title="Denial Appeals">
       <div className="space-y-6 pb-20">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-6 text-white">
-          <Gavel className="w-8 h-8 mb-2 text-purple-200" />
-          <h2 className="text-xl font-bold mb-1">Fight Insurance Denials</h2>
-          <p className="text-purple-200 text-sm">~15% of claims are denied. Most people don't appeal. Our AI generates compelling appeal letters that win.</p>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-2xl p-6 border border-border" style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}>
+          <Gavel className="w-8 h-8 mb-2 text-gold" />
+          <h2 className="text-xl font-bold mb-1 font-serif text-foreground">Fight Insurance Denials</h2>
+          <p className="text-muted-foreground text-sm">~15% of claims are denied. Most people don't appeal. Our AI generates compelling appeal letters that win.</p>
         </motion.div>
 
         <div className="grid grid-cols-4 gap-2">
-          <div className="bg-blue-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500">Total</p>
-            <p className="text-xl font-bold text-blue-600">{stats.total}</p>
+          <div className="bg-secondary border border-border rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground">Total</p>
+            <p className="text-xl font-bold text-foreground">{stats.total}</p>
           </div>
-          <div className="bg-amber-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500">Active</p>
-            <p className="text-xl font-bold text-amber-600">{stats.active}</p>
+          <div className="bg-secondary border border-border rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground">Active</p>
+            <p className="text-xl font-bold text-foreground">{stats.active}</p>
           </div>
-          <div className="bg-emerald-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500">Won</p>
-            <p className="text-xl font-bold text-emerald-600">{stats.won}</p>
+          <div className="bg-secondary border border-border rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground">Won</p>
+            <p className="text-xl font-bold text-emerald-700">{stats.won}</p>
           </div>
-          <div className="bg-purple-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500">Recovered</p>
-            <p className="text-xl font-bold text-purple-600">${stats.recovered.toLocaleString()}</p>
+          <div className="bg-secondary border border-border rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground">Recovered</p>
+            <p className="text-xl font-bold text-gold">${stats.recovered.toLocaleString()}</p>
           </div>
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="w-full bg-purple-600 hover:bg-purple-700">
+            <Button className="w-full bg-primary text-primary-foreground">
               <Plus className="w-4 h-4 mr-2" />File a New Appeal
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-lg">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2"><Brain className="w-5 h-5 text-purple-600" />AI Appeal Letter Generator</DialogTitle>
+              <DialogTitle className="flex items-center gap-2"><Brain className="w-5 h-5 text-gold" />AI Appeal Letter Generator</DialogTitle>
             </DialogHeader>
             <NewDenialForm onClose={() => setDialogOpen(false)} />
           </DialogContent>
@@ -256,14 +256,14 @@ export default function DenialAppeals() {
 
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-gold" />
           </div>
         ) : denials.length === 0 ? (
-          <Card className="bg-gray-50 border-dashed">
+          <Card className="bg-secondary border border-dashed border-border">
             <CardContent className="py-12 text-center">
-              <Gavel className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-              <h3 className="font-semibold text-gray-700 mb-1">No denial appeals yet</h3>
-              <p className="text-sm text-gray-500 mb-4">Got a denied insurance claim? Our AI will generate a compelling appeal letter for you.</p>
+              <Gavel className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+              <h3 className="font-semibold text-foreground mb-1">No denial appeals yet</h3>
+              <p className="text-sm text-muted-foreground mb-4">Got a denied insurance claim? Our AI will generate a compelling appeal letter for you.</p>
             </CardContent>
           </Card>
         ) : (
@@ -274,7 +274,7 @@ export default function DenialAppeals() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2"><Scale className="w-5 h-5 text-blue-500" />Appeal Tips</CardTitle>
+            <CardTitle className="text-base flex items-center gap-2"><Scale className="w-5 h-5 text-gold" />Appeal Tips</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {[
@@ -285,8 +285,8 @@ export default function DenialAppeals() {
               "Keep records of every call and interaction",
               "File a complaint with your state insurance commissioner",
             ].map((tip, i) => (
-              <div key={i} className="flex items-start gap-2 text-xs text-gray-600">
-                <CheckCircle2 className="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />{tip}
+              <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                <CheckCircle2 className="w-3 h-3 text-gold mt-0.5 flex-shrink-0" />{tip}
               </div>
             ))}
           </CardContent>

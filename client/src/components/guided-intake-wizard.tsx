@@ -128,7 +128,7 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
         return (
           <div className="space-y-4">
             <label className="block">
-              <div className="border-2 border-dashed border-emerald-300 rounded-2xl p-8 text-center cursor-pointer hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
+              <div className="border-2 border-dashed border-border rounded-2xl p-8 text-center cursor-pointer hover:border-[var(--gold)] hover:bg-secondary transition-all">
                 <input
                   type="file"
                   accept="image/*"
@@ -137,19 +137,19 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
                   className="hidden"
                   data-testid="intake-file-input"
                 />
-                <Upload className="w-12 h-12 mx-auto text-emerald-500 mb-3" />
-                <p className="text-gray-700 font-medium">Tap to upload bill photos</p>
-                <p className="text-sm text-gray-500 mt-1">Up to 5 images</p>
+                <Upload className="w-12 h-12 mx-auto text-gold mb-3" />
+                <p className="text-foreground font-medium">Tap to upload bill photos</p>
+                <p className="text-sm text-muted-foreground mt-1">Up to 5 images</p>
               </div>
             </label>
             {selectedFiles.length > 0 && (
-              <div className="bg-emerald-50 rounded-xl p-3">
-                <p className="text-emerald-700 font-medium">
+              <div className="bg-secondary rounded-xl p-3">
+                <p className="text-foreground font-medium">
                   ✓ {selectedFiles.length} file{selectedFiles.length > 1 ? 's' : ''} selected
                 </p>
               </div>
             )}
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-muted-foreground">
               No bill handy? No problem, you can skip this
             </p>
           </div>
@@ -159,17 +159,17 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
         return (
           <div className="space-y-4">
             <div className="relative">
-              <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 type="number"
                 placeholder="Enter amount"
                 value={intakeData.totalAmount || ""}
                 onChange={(e) => setIntakeData({ ...intakeData, totalAmount: e.target.value })}
-                className="pl-12 h-14 text-xl rounded-xl border-2 focus:border-emerald-500"
+                className="pl-12 h-14 text-xl rounded-xl border-2 focus:border-[var(--gold)]"
                 data-testid="intake-amount-input"
               />
             </div>
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-muted-foreground">
               Your total patient responsibility amount
             </p>
           </div>
@@ -183,10 +183,10 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
               placeholder="e.g., Memorial Hospital"
               value={intakeData.providerName || ""}
               onChange={(e) => setIntakeData({ ...intakeData, providerName: e.target.value })}
-              className="h-14 text-lg rounded-xl border-2 focus:border-emerald-500"
+              className="h-14 text-lg rounded-xl border-2 focus:border-[var(--gold)]"
               data-testid="intake-provider-input"
             />
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-muted-foreground">
               The name on your bill
             </p>
           </div>
@@ -200,10 +200,10 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
               placeholder="e.g., Blue Cross Blue Shield"
               value={intakeData.insuranceCompany || ""}
               onChange={(e) => setIntakeData({ ...intakeData, insuranceCompany: e.target.value })}
-              className="h-14 text-lg rounded-xl border-2 focus:border-emerald-500"
+              className="h-14 text-lg rounded-xl border-2 focus:border-[var(--gold)]"
               data-testid="intake-insurance-input"
             />
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-muted-foreground">
               Or "self-pay" if uninsured
             </p>
           </div>
@@ -216,10 +216,10 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
               type="date"
               value={intakeData.serviceDate || ""}
               onChange={(e) => setIntakeData({ ...intakeData, serviceDate: e.target.value })}
-              className="h-14 text-lg rounded-xl border-2 focus:border-emerald-500"
+              className="h-14 text-lg rounded-xl border-2 focus:border-[var(--gold)]"
               data-testid="intake-date-input"
             />
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-muted-foreground">
               Approximate date is fine
             </p>
           </div>
@@ -233,10 +233,10 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
               placeholder="e.g., 99213, 36415"
               value={intakeData.cptCodes || ""}
               onChange={(e) => setIntakeData({ ...intakeData, cptCodes: e.target.value })}
-              className="h-14 text-lg rounded-xl border-2 focus:border-emerald-500"
+              className="h-14 text-lg rounded-xl border-2 focus:border-[var(--gold)]"
               data-testid="intake-codes-input"
             />
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-muted-foreground">
               These are usually on itemized bills. Skip if unsure.
             </p>
           </div>
@@ -248,18 +248,18 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
     <div className="max-w-md mx-auto p-4">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-500">Step {currentStep + 1} of {steps.length}</span>
+          <span className="text-sm text-muted-foreground">Step {currentStep + 1} of {steps.length}</span>
           <Button
             variant="ghost"
             size="sm"
             onClick={onSkip}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-muted-foreground hover:text-foreground"
             data-testid="intake-skip-button"
           >
             Skip to chat
           </Button>
         </div>
-        <Progress value={progress} className="h-2 bg-gray-100" />
+        <Progress value={progress} className="h-2 bg-secondary" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -270,13 +270,13 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.2 }}
         >
-          <Card className="p-6 rounded-2xl border-0 shadow-lg bg-white">
+          <Card className="p-6 rounded-2xl border border-border shadow-sm bg-card">
             <div className="text-center mb-6">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gold flex items-center justify-center shadow-sm">
                 <span className="text-3xl">{step.emoji}</span>
               </div>
-              <h2 className="text-xl font-bold text-gray-900">{step.title}</h2>
-              <p className="text-gray-500 mt-1">{step.subtitle}</p>
+              <h2 className="text-xl font-bold text-foreground">{step.title}</h2>
+              <p className="text-muted-foreground mt-1">{step.subtitle}</p>
             </div>
 
             <div className="min-h-[160px]">
@@ -298,7 +298,7 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
               <Button
                 onClick={handleNext}
                 disabled={!canProceed()}
-                className="flex-1 h-12 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-lg"
+                className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground hover:opacity-90 shadow-sm"
                 data-testid="intake-next-button"
               >
                 {currentStep === steps.length - 1 ? (
@@ -324,10 +324,10 @@ export function GuidedIntakeWizard({ onComplete, onSkip }: GuidedIntakeWizardPro
             key={s.id}
             className={`w-2 h-2 rounded-full transition-all ${
               idx === currentStep
-                ? "bg-emerald-500 w-6"
+                ? "bg-gold w-6"
                 : idx < currentStep
-                ? "bg-emerald-300"
-                : "bg-gray-200"
+                ? "bg-[var(--gold-soft)]"
+                : "bg-secondary"
             }`}
           />
         ))}

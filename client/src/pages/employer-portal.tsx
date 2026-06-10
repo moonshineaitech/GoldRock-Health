@@ -90,7 +90,7 @@ function CreateOrgForm({ onClose }: { onClose: () => void }) {
           <Input placeholder="(555) 123-4567" value={form.contactPhone} onChange={(e) => setForm({ ...form, contactPhone: e.target.value })} />
         </div>
       </div>
-      <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => create.mutate(form)} disabled={create.isPending || !form.name}>
+      <Button className="w-full bg-primary text-primary-foreground" onClick={() => create.mutate(form)} disabled={create.isPending || !form.name}>
         {create.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Building2 className="w-4 h-4 mr-2" />}
         Create Organization
       </Button>
@@ -117,9 +117,9 @@ function InviteMemberForm({ orgId, onClose }: { orgId: string; onClose: () => vo
       <div>
         <Label>Employee Email Addresses</Label>
         <Textarea placeholder="Enter email addresses, one per line" value={emails} onChange={(e) => setEmails(e.target.value)} rows={4} />
-        <p className="text-xs text-gray-500 mt-1">Each employee will receive an invitation to join GoldRock Health through your company plan</p>
+        <p className="text-xs text-muted-foreground mt-1">Each employee will receive an invitation to join GoldRock Health through your company plan</p>
       </div>
-      <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => invite.mutate({ emails: emails.split('\n').map(e => e.trim()).filter(Boolean) })} disabled={invite.isPending || !emails.trim()}>
+      <Button className="w-full bg-primary text-primary-foreground" onClick={() => invite.mutate({ emails: emails.split('\n').map(e => e.trim()).filter(Boolean) })} disabled={invite.isPending || !emails.trim()}>
         {invite.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Mail className="w-4 h-4 mr-2" />}
         Send Invitations
       </Button>
@@ -145,41 +145,41 @@ function OrgDashboard({ org }: { org: any }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-gray-900">{org.name}</h3>
-          <p className="text-xs text-gray-500">{org.industry} · {org.size} employees</p>
+          <h3 className="text-lg font-bold text-foreground">{org.name}</h3>
+          <p className="text-xs text-muted-foreground">{org.industry} · {org.size} employees</p>
         </div>
-        <Badge className={org.isActive ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-700"}>
+        <Badge className={org.isActive ? "bg-emerald-100 text-emerald-700" : "bg-secondary text-foreground"}>
           {org.isActive ? "Active" : "Inactive"}
         </Badge>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-secondary border border-border">
           <CardContent className="py-3 text-center">
-            <Users className="w-5 h-5 mx-auto text-blue-600 mb-1" />
-            <p className="text-2xl font-bold text-blue-700">{activeMembers}</p>
-            <p className="text-xs text-blue-600">Active Members</p>
+            <Users className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
+            <p className="text-2xl font-bold text-foreground">{activeMembers}</p>
+            <p className="text-xs text-muted-foreground">Active Members</p>
           </CardContent>
         </Card>
-        <Card className="bg-emerald-50 border-emerald-200">
+        <Card className="bg-secondary border border-border">
           <CardContent className="py-3 text-center">
-            <DollarSign className="w-5 h-5 mx-auto text-emerald-600 mb-1" />
-            <p className="text-2xl font-bold text-emerald-700">${(usage?.totalSavingsGenerated || 0).toLocaleString()}</p>
-            <p className="text-xs text-emerald-600">Total Savings</p>
+            <DollarSign className="w-5 h-5 mx-auto text-gold mb-1" />
+            <p className="text-2xl font-bold text-gold">${(usage?.totalSavingsGenerated || 0).toLocaleString()}</p>
+            <p className="text-xs text-muted-foreground">Total Savings</p>
           </CardContent>
         </Card>
-        <Card className="bg-purple-50 border-purple-200">
+        <Card className="bg-secondary border border-border">
           <CardContent className="py-3 text-center">
-            <BarChart3 className="w-5 h-5 mx-auto text-purple-600 mb-1" />
-            <p className="text-2xl font-bold text-purple-700">{usage?.billsAnalyzed || 0}</p>
-            <p className="text-xs text-purple-600">Bills Analyzed</p>
+            <BarChart3 className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
+            <p className="text-2xl font-bold text-foreground">{usage?.billsAnalyzed || 0}</p>
+            <p className="text-xs text-muted-foreground">Bills Analyzed</p>
           </CardContent>
         </Card>
-        <Card className="bg-amber-50 border-amber-200">
+        <Card className="bg-secondary border border-border">
           <CardContent className="py-3 text-center">
-            <Target className="w-5 h-5 mx-auto text-amber-600 mb-1" />
-            <p className="text-2xl font-bold text-amber-700">${(usage?.averageSavingsPerUser || 0).toLocaleString()}</p>
-            <p className="text-xs text-amber-600">Avg per Employee</p>
+            <Target className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
+            <p className="text-2xl font-bold text-foreground">${(usage?.averageSavingsPerUser || 0).toLocaleString()}</p>
+            <p className="text-xs text-muted-foreground">Avg per Employee</p>
           </CardContent>
         </Card>
       </div>
@@ -189,7 +189,7 @@ function OrgDashboard({ org }: { org: any }) {
           <CardTitle className="text-sm">Team Members ({members.length})</CardTitle>
           <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700"><UserPlus className="w-3 h-3 mr-1" />Invite</Button>
+              <Button size="sm" className="bg-primary text-primary-foreground"><UserPlus className="w-3 h-3 mr-1" />Invite</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader><DialogTitle>Invite Employees</DialogTitle></DialogHeader>
@@ -199,14 +199,14 @@ function OrgDashboard({ org }: { org: any }) {
         </CardHeader>
         <CardContent>
           {members.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center py-4">No members yet. Invite your team to get started.</p>
+            <p className="text-sm text-muted-foreground text-center py-4">No members yet. Invite your team to get started.</p>
           ) : (
             <div className="space-y-2 max-h-60 overflow-y-auto">
               {members.map((m: any) => (
                 <div key={m.id} className="flex items-center justify-between py-2 border-b last:border-0">
                   <div>
                     <p className="text-sm font-medium">{m.email}</p>
-                    <p className="text-xs text-gray-500">{m.role}</p>
+                    <p className="text-xs text-muted-foreground">{m.role}</p>
                   </div>
                   <Badge className={m.status === "active" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}>
                     {m.status === "active" ? "Active" : "Invited"}
@@ -221,14 +221,14 @@ function OrgDashboard({ org }: { org: any }) {
       {usage?.topStrategies?.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm flex items-center gap-2"><Award className="w-4 h-4 text-amber-500" />Top Strategies</CardTitle>
+            <CardTitle className="text-sm flex items-center gap-2"><Award className="w-4 h-4 text-gold" />Top Strategies</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {usage.topStrategies.map((s: any, i: number) => (
               <div key={i} className="flex items-center justify-between">
                 <span className="text-sm">{s.strategy}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500">{s.count} uses</span>
+                  <span className="text-xs text-muted-foreground">{s.count} uses</span>
                   <Badge className="bg-emerald-100 text-emerald-700">${s.savings.toLocaleString()}</Badge>
                 </div>
               </div>
@@ -255,25 +255,25 @@ export default function EmployerPortal() {
   return (
     <MobileLayout title="Employer Benefits">
       <div className="space-y-6 pb-20">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 text-white">
-          <Briefcase className="w-8 h-8 mb-2 text-blue-200" />
-          <h2 className="text-xl font-bold mb-1">Employee Benefits Portal</h2>
-          <p className="text-blue-200 text-sm">Offer GoldRock Health as an employee benefit. Help your team save on medical bills while reducing healthcare costs.</p>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-2xl p-6 border border-border" style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}>
+          <Briefcase className="w-8 h-8 mb-2 text-gold" />
+          <h2 className="text-xl font-bold mb-1 font-serif text-foreground">Employee Benefits Portal</h2>
+          <p className="text-muted-foreground text-sm">Offer GoldRock Health as an employee benefit. Help your team save on medical bills while reducing healthcare costs.</p>
         </motion.div>
 
         {!currentOrg ? (
           <>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { icon: DollarSign, label: "Avg $2,800 saved per employee/year", color: "text-emerald-600", bg: "bg-emerald-50" },
-                { icon: Heart, label: "Reduces employee financial stress", color: "text-pink-600", bg: "bg-pink-50" },
-                { icon: TrendingUp, label: "Lower healthcare utilization costs", color: "text-blue-600", bg: "bg-blue-50" },
+                { icon: DollarSign, label: "Avg $2,800 saved per employee/year", color: "text-gold", bg: "bg-secondary" },
+                { icon: Heart, label: "Reduces employee financial stress", color: "text-muted-foreground", bg: "bg-secondary" },
+                { icon: TrendingUp, label: "Lower healthcare utilization costs", color: "text-muted-foreground", bg: "bg-secondary" },
               ].map((v, i) => (
-                <Card key={i} className={`${v.bg} border-none`}>
+                <Card key={i} className={`${v.bg} border border-border`}>
                   <CardContent className="py-3 text-center">
                     <v.icon className={`w-6 h-6 mx-auto ${v.color} mb-1`} />
-                    <p className="text-[10px] text-gray-600">{v.label}</p>
+                    <p className="text-[10px] text-muted-foreground">{v.label}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -291,10 +291,10 @@ export default function EmployerPortal() {
                   { step: 4, title: "Track ROI", desc: "See aggregate savings and engagement analytics" },
                 ].map((s) => (
                   <div key={s.step} className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-bold flex-shrink-0">{s.step}</div>
+                    <div className="w-7 h-7 rounded-full bg-secondary text-foreground flex items-center justify-center text-sm font-bold flex-shrink-0">{s.step}</div>
                     <div>
                       <p className="text-sm font-medium">{s.title}</p>
-                      <p className="text-xs text-gray-500">{s.desc}</p>
+                      <p className="text-xs text-muted-foreground">{s.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -311,17 +311,17 @@ export default function EmployerPortal() {
                   { name: "Professional", price: "$8", per: "employee/mo", features: ["Up to 500 employees", "Everything in Starter", "Usage analytics dashboard", "Priority support", "Custom branding"] },
                   { name: "Enterprise", price: "Custom", per: "", features: ["Unlimited employees", "Everything in Professional", "API access", "Dedicated success manager", "HRIS integration"] },
                 ].map((plan) => (
-                  <div key={plan.name} className="border rounded-xl p-4">
+                  <div key={plan.name} className="border border-border rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-semibold">{plan.name}</h4>
                       <div className="text-right">
-                        <span className="text-lg font-bold text-blue-600">{plan.price}</span>
-                        {plan.per && <span className="text-xs text-gray-500">/{plan.per}</span>}
+                        <span className="text-lg font-bold text-gold">{plan.price}</span>
+                        {plan.per && <span className="text-xs text-muted-foreground">/{plan.per}</span>}
                       </div>
                     </div>
                     <div className="space-y-1">
                       {plan.features.map((f, i) => (
-                        <div key={i} className="flex items-center gap-1.5 text-xs text-gray-600">
+                        <div key={i} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                           <CheckCircle2 className="w-3 h-3 text-emerald-500" />{f}
                         </div>
                       ))}
@@ -333,7 +333,7 @@ export default function EmployerPortal() {
 
             <Dialog open={createOpen} onOpenChange={setCreateOpen}>
               <DialogTrigger asChild>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-base">
+                <Button className="w-full bg-primary text-primary-foreground h-12 text-base">
                   <Building2 className="w-5 h-5 mr-2" />Set Up Your Organization
                 </Button>
               </DialogTrigger>
@@ -347,13 +347,13 @@ export default function EmployerPortal() {
           <OrgDashboard org={currentOrg} />
         )}
 
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-secondary border border-border">
           <CardContent className="py-4">
             <div className="flex items-center gap-3">
-              <Globe className="w-6 h-6 text-blue-500" />
+              <Globe className="w-6 h-6 text-gold" />
               <div className="flex-1">
-                <h4 className="text-sm font-medium text-blue-800">Questions about employer plans?</h4>
-                <p className="text-xs text-blue-600">CONTACT@GOLDROCK.ai</p>
+                <h4 className="text-sm font-medium text-foreground">Questions about employer plans?</h4>
+                <p className="text-xs text-muted-foreground">CONTACT@GOLDROCK.ai</p>
               </div>
             </div>
           </CardContent>

@@ -77,10 +77,10 @@ const iconMap: Record<string, any> = {
 };
 
 const difficultyColors: Record<string, string> = {
-  'Beginner': 'bg-green-100 text-green-700',
+  'Beginner': 'bg-emerald-100 text-emerald-700',
   'Intermediate': 'bg-amber-100 text-amber-700',
   'Advanced': 'bg-red-100 text-red-700',
-  'Expert': 'bg-purple-100 text-purple-700'
+  'Expert': 'bg-secondary text-foreground'
 };
 
 const effectivenessColors: Record<string, { bg: string; text: string; icon: any }> = {
@@ -246,7 +246,7 @@ export default function NegotiationSimulator() {
     return (
       <MobileLayout title="Loading..." showBackButton>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 className="w-8 h-8 animate-spin text-cyan-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
         </div>
       </MobileLayout>
     );
@@ -256,13 +256,13 @@ export default function NegotiationSimulator() {
     return (
       <MobileLayout title="Negotiation Simulator" showBackButton>
         <div className="text-center py-12">
-          <Brain className="w-16 h-16 mx-auto mb-4 text-cyan-600" />
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Practice Makes Perfect</h2>
-          <p className="text-slate-600 mb-6 max-w-md mx-auto">
+          <Brain className="w-16 h-16 mx-auto mb-4 text-gold" />
+          <h2 className="font-serif text-2xl font-bold text-foreground mb-2">Practice Makes Perfect</h2>
+          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
             Sign in to access the interactive negotiation simulator and practice your skills before facing real billing departments.
           </p>
           <Link href="/auth">
-            <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white">
+            <Button className="bg-primary text-primary-foreground hover:opacity-90">
               Sign In to Start Training
             </Button>
           </Link>
@@ -284,18 +284,19 @@ export default function NegotiationSimulator() {
       
       <div className="space-y-6 pb-8">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-100 to-blue-100 rounded-full mb-4">
-            <Brain className="w-5 h-5 text-cyan-600" />
-            <span className="text-sm font-medium text-cyan-700">Interactive Training Mode</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary rounded-full mb-4">
+            <Brain className="w-5 h-5 text-gold" />
+            <span className="text-sm font-medium text-muted-foreground">Interactive Training Mode</span>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">
+          <h1 className="font-serif text-2xl font-bold text-foreground mb-2">
             Debt Negotiation Simulator
           </h1>
-          <p className="text-slate-600 max-w-lg mx-auto">
+          <p className="text-muted-foreground max-w-lg mx-auto">
             Practice negotiating with AI-powered billing representatives before you tackle your real bills. Get real-time coaching on your tactics.
           </p>
         </motion.div>
@@ -310,15 +311,15 @@ export default function NegotiationSimulator() {
               className="space-y-4"
             >
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-800">Choose Your Scenario</h2>
-                <Badge variant="outline" className="text-cyan-600 border-cyan-200">
+                <h2 className="font-serif text-lg font-semibold text-foreground">Choose Your Scenario</h2>
+                <Badge variant="outline" className="text-muted-foreground border-border">
                   6 Scenarios
                 </Badge>
               </div>
               
               {scenariosLoading ? (
                 <div className="flex items-center justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-cyan-600" />
+                  <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
                 </div>
               ) : (
                 <div className="grid gap-4">
@@ -327,32 +328,32 @@ export default function NegotiationSimulator() {
                     return (
                       <motion.div
                         key={scenario.id}
-                        whileHover={{ scale: 1.01 }}
+                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.99 }}
                       >
                         <MobileCard
-                          className="cursor-pointer hover:shadow-lg transition-all border-2 hover:border-cyan-200"
+                          className="cursor-pointer hover:shadow-md transition-all border border-border"
                           onClick={() => startSimulation(scenario)}
                         >
                           <div className="flex items-start gap-4">
-                            <div className="p-3 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-xl">
-                              <IconComponent className="w-6 h-6 text-cyan-600" />
+                            <div className="p-3 bg-secondary rounded-xl">
+                              <IconComponent className="w-6 h-6 text-muted-foreground" />
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-slate-900">{scenario.title}</h3>
-                                <Badge className={difficultyColors[scenario.difficulty] || 'bg-slate-100 text-slate-700'}>
+                                <h3 className="font-semibold text-foreground">{scenario.title}</h3>
+                                <Badge className={difficultyColors[scenario.difficulty] || 'bg-secondary text-foreground'}>
                                   {scenario.difficulty}
                                 </Badge>
                               </div>
-                              <p className="text-sm text-slate-600 mb-3">{scenario.description}</p>
+                              <p className="text-sm text-muted-foreground mb-3">{scenario.description}</p>
                               
                               <div className="flex items-center gap-4 text-sm">
-                                <div className="flex items-center gap-1 text-green-600">
+                                <div className="flex items-center gap-1 text-emerald-700">
                                   <DollarSign className="w-4 h-4" />
                                   <span className="font-medium">{scenario.averageSavings} savings</span>
                                 </div>
-                                <div className="flex items-center gap-1 text-slate-500">
+                                <div className="flex items-center gap-1 text-muted-foreground">
                                   <Target className="w-4 h-4" />
                                   <span>${scenario.defaultBillAmount.toLocaleString()} bill</span>
                                 </div>
@@ -360,18 +361,18 @@ export default function NegotiationSimulator() {
                               
                               <div className="mt-3 flex flex-wrap gap-1">
                                 {scenario.keyTactics.slice(0, 2).map((tactic, i) => (
-                                  <Badge key={i} variant="outline" className="text-xs bg-slate-50">
+                                  <Badge key={i} variant="outline" className="text-xs bg-secondary">
                                     {tactic}
                                   </Badge>
                                 ))}
                                 {scenario.keyTactics.length > 2 && (
-                                  <Badge variant="outline" className="text-xs bg-slate-50">
+                                  <Badge variant="outline" className="text-xs bg-secondary">
                                     +{scenario.keyTactics.length - 2} more
                                   </Badge>
                                 )}
                               </div>
                             </div>
-                            <ChevronRight className="w-5 h-5 text-slate-400 mt-2" />
+                            <ChevronRight className="w-5 h-5 text-muted-foreground mt-2" />
                           </div>
                         </MobileCard>
                       </motion.div>
@@ -394,12 +395,12 @@ export default function NegotiationSimulator() {
                     variant="ghost"
                     size="sm"
                     onClick={resetSimulation}
-                    className="text-slate-600"
+                    className="text-muted-foreground"
                   >
                     <X className="w-4 h-4 mr-1" />
                     Exit
                   </Button>
-                  <Badge className="bg-cyan-100 text-cyan-700">
+                  <Badge className="bg-secondary text-foreground">
                     {selectedScenario?.title}
                   </Badge>
                 </div>
@@ -415,22 +416,22 @@ export default function NegotiationSimulator() {
 
               <div className="grid grid-cols-3 gap-3">
                 <MobileCard className="text-center py-3">
-                  <div className="text-xs text-slate-500 mb-1">Current Bill</div>
-                  <div className="text-lg font-bold text-slate-900">
+                  <div className="text-xs text-muted-foreground mb-1">Current Bill</div>
+                  <div className="text-lg font-bold text-foreground">
                     ${currentOffer.toLocaleString()}
                   </div>
                 </MobileCard>
-                <MobileCard className="text-center py-3 bg-green-50 border-green-100">
-                  <div className="text-xs text-green-600 mb-1">You Saved</div>
-                  <div className="text-lg font-bold text-green-700">
+                <MobileCard className="text-center py-3 bg-emerald-50 border-emerald-100">
+                  <div className="text-xs text-emerald-700 mb-1">You Saved</div>
+                  <div className="text-lg font-bold text-emerald-700">
                     ${totalSaved.toLocaleString()}
                   </div>
                 </MobileCard>
                 <MobileCard className="text-center py-3">
-                  <div className="text-xs text-slate-500 mb-1">Score</div>
+                  <div className="text-xs text-muted-foreground mb-1">Score</div>
                   <div className="flex items-center justify-center gap-1">
-                    <Star className="w-4 h-4 text-amber-500" />
-                    <span className="text-lg font-bold text-slate-900">{overallScore || '--'}</span>
+                    <Star className="w-4 h-4 text-gold" />
+                    <span className="text-lg font-bold text-foreground">{overallScore || '--'}</span>
                   </div>
                 </MobileCard>
               </div>
@@ -441,12 +442,12 @@ export default function NegotiationSimulator() {
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                 >
-                  <MobileCard className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-100">
+                  <MobileCard className="bg-secondary border-border">
                     <div className="flex items-start gap-2">
-                      <Lightbulb className="w-5 h-5 text-amber-600 mt-0.5" />
+                      <Lightbulb className="w-5 h-5 text-gold mt-0.5" />
                       <div>
-                        <h4 className="font-medium text-amber-800 mb-2">Recommended Tactics</h4>
-                        <ul className="text-sm text-amber-700 space-y-1">
+                        <h4 className="font-medium text-foreground mb-2">Recommended Tactics</h4>
+                        <ul className="text-sm text-muted-foreground space-y-1">
                           {selectedScenario.keyTactics.map((tactic, i) => (
                             <li key={i} className="flex items-center gap-2">
                               <CheckCircle className="w-3 h-3" />
@@ -473,23 +474,23 @@ export default function NegotiationSimulator() {
                         <div className={`flex items-center gap-2 mb-1 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                           <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
                             msg.role === 'user' 
-                              ? 'bg-cyan-100' 
-                              : 'bg-slate-100'
+                              ? 'bg-secondary' 
+                              : 'bg-secondary'
                           }`}>
                             {msg.role === 'user' 
-                              ? <User className="w-3 h-3 text-cyan-600" />
-                              : <Headphones className="w-3 h-3 text-slate-600" />
+                              ? <User className="w-3 h-3 text-foreground" />
+                              : <Headphones className="w-3 h-3 text-muted-foreground" />
                             }
                           </div>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-xs text-muted-foreground">
                             {msg.role === 'user' ? 'You' : 'Billing Rep'}
                           </span>
                         </div>
                         
                         <div className={`rounded-2xl px-4 py-3 ${
                           msg.role === 'user'
-                            ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white'
-                            : 'bg-slate-100 text-slate-800'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-secondary text-foreground'
                         }`}>
                           <p className="text-sm">{msg.content}</p>
                         </div>
@@ -516,9 +517,9 @@ export default function NegotiationSimulator() {
                             </div>
                             
                             {msg.coaching_tip && (
-                              <div className="flex items-start gap-2 p-2 bg-blue-50 rounded-lg">
-                                <Sparkles className="w-4 h-4 text-blue-600 mt-0.5" />
-                                <p className="text-xs text-blue-700">{msg.coaching_tip}</p>
+                              <div className="flex items-start gap-2 p-2 bg-secondary rounded-lg">
+                                <Sparkles className="w-4 h-4 text-gold mt-0.5" />
+                                <p className="text-xs text-muted-foreground">{msg.coaching_tip}</p>
                               </div>
                             )}
                             
@@ -539,8 +540,8 @@ export default function NegotiationSimulator() {
                   
                   {simulatorMutation.isPending && (
                     <div className="flex justify-start">
-                      <div className="bg-slate-100 rounded-2xl px-4 py-3">
-                        <div className="flex items-center gap-2 text-slate-600">
+                      <div className="bg-secondary rounded-2xl px-4 py-3">
+                        <div className="flex items-center gap-2 text-muted-foreground">
                           <Loader2 className="w-4 h-4 animate-spin" />
                           <span className="text-sm">Billing rep is responding...</span>
                         </div>
@@ -567,7 +568,7 @@ export default function NegotiationSimulator() {
                   <Button
                     onClick={sendMessage}
                     disabled={!inputMessage.trim() || simulatorMutation.isPending}
-                    className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-4"
+                    className="bg-primary text-primary-foreground hover:opacity-90 px-4"
                   >
                     <Send className="w-4 h-4" />
                   </Button>
@@ -595,10 +596,10 @@ export default function NegotiationSimulator() {
                 </Button>
               </div>
 
-              <MobileCard className="bg-gradient-to-r from-slate-50 to-slate-100">
+              <MobileCard className="bg-secondary">
                 <div className="flex items-center gap-3">
-                  <Info className="w-5 h-5 text-slate-500" />
-                  <p className="text-sm text-slate-600">
+                  <Info className="w-5 h-5 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">
                     This is a training simulation. The AI billing rep responds realistically to help you practice. 
                     Use the tactics shown above to negotiate effectively.
                   </p>

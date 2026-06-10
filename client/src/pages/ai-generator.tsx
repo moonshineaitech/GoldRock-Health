@@ -55,7 +55,8 @@ export default function AIGenerator() {
         className="text-center mb-6"
       >
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-purple-500/25"
+          className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-sm"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ 
@@ -69,7 +70,7 @@ export default function AIGenerator() {
         </motion.div>
         
         <motion.h1 
-          className="text-2xl font-bold text-gray-900 mb-3"
+          className="text-2xl font-serif font-bold text-foreground mb-3"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
@@ -78,7 +79,7 @@ export default function AIGenerator() {
         </motion.h1>
         
         <motion.p 
-          className="text-base text-gray-600 max-w-sm mx-auto leading-relaxed"
+          className="text-base text-muted-foreground max-w-sm mx-auto leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
@@ -93,14 +94,14 @@ export default function AIGenerator() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9, duration: 0.6 }}
       >
-        <MobileCard className="mb-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+        <MobileCard className="mb-6 bg-card border-border">
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="h-5 w-5 text-purple-600" />
-              <h3 className="font-semibold text-purple-900">Generate New Case</h3>
-              <Sparkles className="h-5 w-5 text-purple-600" />
+              <Sparkles className="h-5 w-5 text-gold" />
+              <h3 className="font-semibold text-foreground">Generate New Case</h3>
+              <Sparkles className="h-5 w-5 text-gold" />
             </div>
-            <p className="text-sm text-purple-700 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               AI will create a unique medical case with realistic patient history, symptoms, and diagnostic challenges.
             </p>
             <AICaseGenerator onCaseGenerated={handleCaseGenerated} />
@@ -114,7 +115,7 @@ export default function AIGenerator() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.1, duration: 0.6 }}
       >
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">AI Capabilities</h2>
+        <h2 className="text-lg font-serif font-semibold text-foreground mb-4">AI Capabilities</h2>
         <div className="grid grid-cols-2 gap-4 mb-6">
           {[
             { icon: Users, title: "Diverse Cases", desc: "All age groups & demographics", color: "blue", delay: 1.2 },
@@ -137,14 +138,14 @@ export default function AIGenerator() {
               >
                 <MobileCard className="h-full text-center">
                   <motion.div 
-                    className={`w-10 h-10 bg-${feature.color}-100 rounded-2xl flex items-center justify-center mx-auto mb-3`}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="w-10 h-10 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-3"
+                    whileHover={{ scale: 1.05, y: -2 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <IconComponent className={`h-5 w-5 text-${feature.color}-600`} />
+                    <IconComponent className="h-5 w-5 text-muted-foreground" />
                   </motion.div>
-                  <h3 className="font-semibold text-gray-900 mb-1 text-sm">{feature.title}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{feature.desc}</p>
+                  <h3 className="font-semibold text-foreground mb-1 text-sm">{feature.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{feature.desc}</p>
                 </MobileCard>
               </motion.div>
             );
@@ -158,7 +159,7 @@ export default function AIGenerator() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.6, duration: 0.6 }}
       >
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent AI Cases</h2>
+        <h2 className="text-lg font-serif font-semibold text-foreground mb-4">Recent AI Cases</h2>
         <div className="space-y-3">
           {recentCases.map((case_, index) => (
             <motion.div
@@ -172,13 +173,13 @@ export default function AIGenerator() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <div className={`w-2 h-2 rounded-full ${
-                        case_.status === 'completed' ? 'bg-green-500' :
-                        case_.status === 'in-progress' ? 'bg-yellow-500' :
-                        'bg-blue-500'
+                        case_.status === 'completed' ? 'bg-emerald-600' :
+                        case_.status === 'in-progress' ? 'bg-amber-500' :
+                        'bg-gold'
                       }`} />
-                      <h3 className="font-medium text-gray-900 text-sm">{case_.title}</h3>
+                      <h3 className="font-medium text-foreground text-sm">{case_.title}</h3>
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <BookOpen className="h-3 w-3" />
                         {case_.specialty}
@@ -206,10 +207,10 @@ export default function AIGenerator() {
         transition={{ delay: 2.0, duration: 0.6 }}
         className="mt-6"
       >
-        <MobileCard className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <MobileCard className="bg-card border-border">
           <div className="text-center">
-            <h3 className="font-semibold text-blue-900 mb-2">💡 Pro Tip</h3>
-            <p className="text-sm text-blue-700 leading-relaxed">
+            <h3 className="font-semibold text-foreground mb-2">💡 Pro Tip</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               AI-generated cases are perfect for practicing diagnostic reasoning. Each case is unique and designed to challenge your clinical thinking skills.
             </p>
           </div>

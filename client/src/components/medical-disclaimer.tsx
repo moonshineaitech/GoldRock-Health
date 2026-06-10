@@ -27,7 +27,7 @@ export function MedicalDisclaimer() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60"
         data-testid="medical-disclaimer-overlay"
       >
         <motion.div
@@ -35,27 +35,24 @@ export function MedicalDisclaimer() {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0, y: 10 }}
           transition={{ type: "spring", stiffness: 350, damping: 25 }}
-          className="backdrop-blur-xl bg-white/95 rounded-2xl shadow-2xl max-w-sm w-full border border-white/40 overflow-hidden"
+          className="bg-card rounded-2xl shadow-2xl max-w-sm w-full border border-border overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/40" />
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 pointer-events-none" />
-          
           <div className="relative z-10 p-6">
             <div className="flex flex-col items-center text-center mb-5">
               <motion.div 
-                className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mb-3 shadow-lg relative overflow-hidden"
-                whileHover={{ scale: 1.05, rotate: 5 }}
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-sm relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
                 <AlertTriangle className="h-7 w-7 text-white relative z-10" strokeWidth={2.5} />
               </motion.div>
-              <h2 className="text-lg font-black text-gray-900 mb-1">Before You Start</h2>
-              <p className="text-sm text-gray-600 font-medium">Please review and accept our terms</p>
+              <h2 className="text-lg font-black font-serif text-foreground mb-1">Before You Start</h2>
+              <p className="text-sm text-muted-foreground font-medium">Please review and accept our terms</p>
             </div>
 
-            <div className="bg-gray-50/80 backdrop-blur-sm rounded-xl p-4 mb-4 border border-gray-200/50">
-              <p className="text-sm text-gray-700 leading-relaxed text-center font-medium">
+            <div className="bg-secondary rounded-xl p-4 mb-4 border border-border">
+              <p className="text-sm text-foreground leading-relaxed text-center font-medium">
                 This app is for <strong>educational purposes</strong> and <strong>bill analysis only</strong>. 
                 Not medical advice. Always consult healthcare professionals.
               </p>
@@ -64,7 +61,7 @@ export function MedicalDisclaimer() {
             <div className="space-y-2 mb-4">
               <Link href="/privacy-policy">
                 <motion.button
-                  className="w-full flex items-center justify-between gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800 py-2.5 px-3 rounded-lg hover:bg-blue-50 transition-colors border border-blue-200/50"
+                  className="w-full flex items-center justify-between gap-2 text-sm font-semibold text-foreground hover:text-foreground py-2.5 px-3 rounded-lg hover:bg-secondary transition-colors border border-border"
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => setIsVisible(false)}
@@ -80,7 +77,7 @@ export function MedicalDisclaimer() {
               
               <Link href="/terms-of-service">
                 <motion.button
-                  className="w-full flex items-center justify-between gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800 py-2.5 px-3 rounded-lg hover:bg-blue-50 transition-colors border border-blue-200/50"
+                  className="w-full flex items-center justify-between gap-2 text-sm font-semibold text-foreground hover:text-foreground py-2.5 px-3 rounded-lg hover:bg-secondary transition-colors border border-border"
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => setIsVisible(false)}
@@ -96,7 +93,7 @@ export function MedicalDisclaimer() {
 
               <Link href="/important-disclaimer">
                 <motion.button
-                  className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-emerald-50 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-gold hover:text-gold py-2 rounded-lg hover:bg-secondary transition-colors"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setIsVisible(false)}
@@ -108,12 +105,12 @@ export function MedicalDisclaimer() {
               </Link>
             </div>
 
-            <p className="text-sm text-gray-700 font-semibold text-center mb-4">
+            <p className="text-sm text-foreground font-semibold text-center mb-4">
               By clicking "I Agree", you accept our Terms of Service and Privacy Policy
             </p>
 
             <MobileButton
-              className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg"
+              className="w-full bg-primary text-primary-foreground shadow-sm"
               onClick={handleAccept}
               data-testid="accept-medical-disclaimer"
             >
@@ -121,7 +118,7 @@ export function MedicalDisclaimer() {
               I Agree
             </MobileButton>
 
-            <p className="text-xs text-gray-500 text-center mt-3">
+            <p className="text-xs text-muted-foreground text-center mt-3">
               © 2026 Eldest AI LLC dba GoldRock AI
             </p>
           </div>

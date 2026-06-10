@@ -598,23 +598,23 @@ What aspect of your medical billing situation requires immediate attention?`;
         {/* Compact Stats Bar */}
         {userBills.length > 0 && (
           <motion.div 
-            className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 mx-4 rounded-2xl mb-4"
+            className="luxury-card p-4 mx-4 mb-4"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="text-xl font-bold text-gray-900">{userBills.length}</div>
-                <div className="text-sm text-gray-600">Bills</div>
+                <div className="text-xl font-bold text-foreground">{userBills.length}</div>
+                <div className="text-sm text-muted-foreground">Bills</div>
               </div>
               <div>
-                <div className="text-xl font-bold text-emerald-600">{formatCurrency(getEstimatedSavings())}</div>
-                <div className="text-sm text-gray-600">Savings</div>
+                <div className="text-xl font-bold text-gold">{formatCurrency(getEstimatedSavings())}</div>
+                <div className="text-sm text-muted-foreground">Savings</div>
               </div>
               <div>
-                <div className="text-xl font-bold text-purple-600">85%</div>
-                <div className="text-sm text-gray-600">Success</div>
+                <div className="text-xl font-bold text-foreground">85%</div>
+                <div className="text-sm text-muted-foreground">Success</div>
               </div>
             </div>
           </motion.div>
@@ -631,19 +631,20 @@ What aspect of your medical billing situation requires immediate attention?`;
                 transition={{ duration: 0.6 }}
               >
                 <motion.div 
-                  className="w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-emerald-500/25"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                  className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-sm"
+                  style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Sparkles className="text-white h-8 w-8" />
                 </motion.div>
                 
-                <h2 className="text-xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+                <h2 className="text-xl font-serif font-medium text-foreground mb-3">
                   Identify Potential Billing Errors
                 </h2>
                 
-                <p className="text-sm text-gray-600 mb-6 px-6 leading-relaxed">
+                <p className="text-sm text-muted-foreground mb-6 px-6 leading-relaxed">
                   I find billing errors and overcharges that cost you thousands. Let's reduce your medical costs together.
                 </p>
                 
@@ -659,16 +660,16 @@ What aspect of your medical billing situation requires immediate attention?`;
                         transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
                       >
                         <Card 
-                          className="p-3 cursor-pointer hover:shadow-lg transition-all duration-300 bg-white/90 border-gray-200 h-28 hover:border-emerald-300"
+                          className="p-3 cursor-pointer hover:shadow-md transition-all duration-300 bg-card border-border h-28 hover:border-gold"
                           onClick={action.action}
                           data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
                         >
                           <div className="flex flex-col items-center text-center space-y-1.5">
-                            <div className={`w-7 h-7 bg-${action.color}-100 rounded-xl flex items-center justify-center shadow-sm`}>
-                              <IconComponent className={`h-3.5 w-3.5 text-${action.color}-600`} />
+                            <div className="w-7 h-7 bg-secondary rounded-xl flex items-center justify-center">
+                              <IconComponent className="h-3.5 w-3.5 text-muted-foreground" />
                             </div>
-                            <div className="font-medium text-gray-900 text-xs leading-tight">{action.label}</div>
-                            <div className="text-xs text-gray-600 leading-tight px-1">{action.desc}</div>
+                            <div className="font-medium text-foreground text-xs leading-tight">{action.label}</div>
+                            <div className="text-xs text-muted-foreground leading-tight px-1">{action.desc}</div>
                           </div>
                         </Card>
                       </motion.div>
@@ -676,8 +677,8 @@ What aspect of your medical billing situation requires immediate attention?`;
                   })}
                 </div>
                 
-                <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-xl py-3 px-4">
-                  <Shield className="h-4 w-4 text-emerald-600" />
+                <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground bg-secondary rounded-xl py-3 px-4">
+                  <Shield className="h-4 w-4 text-gold" />
                   <span className="font-medium">Secure • Private • Enterprise-grade</span>
                 </div>
               </motion.div>
@@ -694,16 +695,19 @@ What aspect of your medical billing situation requires immediate attention?`;
                 <div
                   className={`max-w-[85%] p-4 rounded-3xl ${
                     message.role === "user"
-                      ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg"
-                      : "bg-white border border-gray-200 shadow-sm"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-card border border-border shadow-sm"
                   }`}
                 >
                   {message.role === "assistant" && (
                     <div className="flex items-center mb-3">
-                      <div className="w-7 h-7 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center mr-3 shadow-sm">
+                      <div
+                        className="w-7 h-7 rounded-xl flex items-center justify-center mr-3 shadow-sm"
+                        style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                      >
                         <Bot className="text-white h-4 w-4" />
                       </div>
-                      <span className="text-sm font-semibold text-gray-700">Medical Bill AI</span>
+                      <span className="text-sm font-semibold text-foreground">Medical Bill AI</span>
                     </div>
                   )}
                   
@@ -715,7 +719,7 @@ What aspect of your medical billing situation requires immediate attention?`;
                         <CheckCircle className="mr-2 h-4 w-4" />
                         <span className="font-medium">Bill uploaded successfully!</span>
                       </div>
-                      <p className="text-emerald-600 text-sm mt-1">
+                      <p className="text-emerald-700 text-sm mt-1">
                         Analyzing for potential savings opportunities...
                       </p>
                     </div>
@@ -728,7 +732,7 @@ What aspect of your medical billing situation requires immediate attention?`;
                           key={index}
                           size="sm"
                           variant="outline"
-                          className="text-sm h-8 px-3 rounded-xl bg-white/50 hover:bg-white/80 border-gray-300 text-black font-semibold"
+                          className="text-sm h-8 px-3 rounded-xl bg-card hover:bg-secondary border-border text-foreground font-semibold"
                           data-testid={`button-${button.action}-${index}`}
                         >
                           {button.text}
@@ -746,18 +750,21 @@ What aspect of your medical billing situation requires immediate attention?`;
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <div className="max-w-[85%] p-4 rounded-3xl bg-white border border-gray-200 shadow-sm">
+                <div className="max-w-[85%] p-4 rounded-3xl bg-card border border-border shadow-sm">
                   <div className="flex items-center mb-3">
-                    <div className="w-7 h-7 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center mr-3 shadow-sm">
+                    <div
+                      className="w-7 h-7 rounded-xl flex items-center justify-center mr-3 shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                    >
                       <Bot className="text-white h-4 w-4" />
                     </div>
-                    <span className="text-sm font-semibold text-gray-700">Medical Bill AI</span>
+                    <span className="text-sm font-semibold text-foreground">Medical Bill AI</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce delay-100"></div>
-                    <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce delay-200"></div>
-                    <span className="text-sm text-gray-500 ml-2">Analyzing your request...</span>
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce delay-100"></div>
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce delay-200"></div>
+                    <span className="text-sm text-muted-foreground ml-2">Analyzing your request...</span>
                   </div>
                 </div>
               </motion.div>
@@ -768,7 +775,7 @@ What aspect of your medical billing situation requires immediate attention?`;
         </div>
 
         {/* Compact Input Area */}
-        <div className="bg-white/95 backdrop-blur-sm border-t border-gray-200 p-4">
+        <div className="bg-card border-t border-border p-4">
           <div className="flex items-center space-x-3">
             <div className="flex-1 relative">
               <Input
@@ -776,20 +783,20 @@ What aspect of your medical billing situation requires immediate attention?`;
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask how to find thousands in overcharges, request itemized bills, or dispute charges..."
-                className="pr-12 h-12 bg-gray-50 border-gray-200 rounded-2xl text-base"
+                className="pr-12 h-12 bg-secondary border-border rounded-2xl text-base"
                 disabled={isTyping}
                 data-testid="input-message"
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 hover:bg-gray-200 rounded-xl transition-colors flex items-center justify-center"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 hover:bg-secondary rounded-xl transition-colors flex items-center justify-center"
                 disabled={uploadingFile}
                 data-testid="button-attach-file"
               >
                 {uploadingFile ? (
-                  <div className="animate-spin w-4 h-4 border border-emerald-600 border-t-transparent rounded-full"></div>
+                  <div className="animate-spin w-4 h-4 border border-gold border-t-transparent rounded-full"></div>
                 ) : (
-                  <Paperclip className="text-gray-500 h-4 w-4" />
+                  <Paperclip className="text-muted-foreground h-4 w-4" />
                 )}
               </button>
             </div>
@@ -797,19 +804,19 @@ What aspect of your medical billing situation requires immediate attention?`;
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isTyping}
-              className="h-12 w-12 p-0 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-2xl shadow-lg"
+              className="h-12 w-12 p-0 bg-primary text-primary-foreground hover:opacity-90 rounded-2xl shadow-sm"
               data-testid="button-send-message"
             >
               {isTyping ? (
-                <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
+                <div className="animate-spin w-5 h-5 border-2 border-current border-t-transparent rounded-full"></div>
               ) : (
-                <Send className="h-5 w-5 text-white" />
+                <Send className="h-5 w-5" />
               )}
             </Button>
           </div>
           
           {/* Compact Disclaimer */}
-          <div className="flex items-center justify-center mt-3 text-sm text-gray-600 bg-amber-50 rounded-xl py-2 px-3">
+          <div className="flex items-center justify-center mt-3 text-sm text-amber-700 bg-amber-50 rounded-xl py-2 px-3">
             <AlertTriangle className="h-4 w-4 mr-2 text-amber-600" />
             <span className="font-medium">This is Generative AI - consult a professional</span>
           </div>

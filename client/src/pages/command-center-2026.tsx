@@ -26,16 +26,15 @@ interface QuickAction {
   label: string;
   icon: any;
   panel: ActivePanel;
-  gradient: string;
   description: string;
 }
 
 const quickActions: QuickAction[] = [
-  { id: "analyze", label: "Analyze Bill", icon: Brain, panel: "analyze", gradient: "from-purple-500 to-indigo-600", description: "AI scans every line item" },
-  { id: "dispute", label: "Dispute Tools", icon: Scale, panel: "dispute", gradient: "from-blue-500 to-cyan-600", description: "Letters, scripts & strategies" },
-  { id: "vault", label: "Document Vault", icon: FolderOpen, panel: "vault", gradient: "from-emerald-500 to-teal-600", description: "Secure encrypted storage" },
-  { id: "wellness", label: "Health Tools", icon: Activity, panel: "wellness", gradient: "from-rose-500 to-pink-600", description: "Labs, meds & vitals" },
-  { id: "chat", label: "AI Advisor", icon: MessageCircle, panel: "chat", gradient: "from-amber-500 to-orange-600", description: "Ask anything about your bill" },
+  { id: "analyze", label: "Analyze Bill", icon: Brain, panel: "analyze", description: "AI scans every line item" },
+  { id: "dispute", label: "Dispute Tools", icon: Scale, panel: "dispute", description: "Letters, scripts & strategies" },
+  { id: "vault", label: "Document Vault", icon: FolderOpen, panel: "vault", description: "Secure encrypted storage" },
+  { id: "wellness", label: "Health Tools", icon: Activity, panel: "wellness", description: "Labs, meds & vitals" },
+  { id: "chat", label: "AI Advisor", icon: MessageCircle, panel: "chat", description: "Ask anything about your bill" },
 ];
 
 export default function CommandCenter2026() {
@@ -132,7 +131,7 @@ export default function CommandCenter2026() {
   const firstName = user?.firstName || user?.email?.split("@")[0] || "there";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950">
+    <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-6 pb-28">
 
         <motion.div
@@ -142,24 +141,24 @@ export default function CommandCenter2026() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+              <h1 className="text-2xl font-serif font-black text-foreground dark:text-white tracking-tight">
                 Hi, {firstName}
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground mt-0.5">
                 Your healthcare command center
               </p>
             </div>
             <div className="flex items-center gap-2">
               {isSubscribed && (
-                <Badge className="bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 text-xs">
+                <Badge className="text-white border-0 text-xs" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                   <Crown className="h-3 w-3 mr-1" /> Premium
                 </Badge>
               )}
               <button
                 onClick={() => navigate("/settings")}
-                className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center"
+                className="w-9 h-9 rounded-full bg-secondary dark:bg-card flex items-center justify-center"
               >
-                <span className="text-sm font-bold text-gray-600 dark:text-gray-300">
+                <span className="text-sm font-bold text-muted-foreground dark:text-muted-foreground">
                   {firstName.charAt(0).toUpperCase()}
                 </span>
               </button>
@@ -181,26 +180,26 @@ export default function CommandCenter2026() {
                   label="Active Bills"
                   value={activeBills}
                   icon={FileText}
-                  color="text-blue-600"
-                  bg="bg-blue-50 dark:bg-blue-950/50"
+                  color="text-muted-foreground"
+                  bg="bg-secondary"
                 />
                 <StatsCard
                   label="Resolved"
                   value={resolvedBills}
                   icon={CheckCircle}
-                  color="text-emerald-600"
-                  bg="bg-emerald-50 dark:bg-emerald-950/50"
+                  color="text-emerald-700 dark:text-emerald-500"
+                  bg="bg-secondary"
                 />
                 <StatsCard
                   label="Potential Savings"
                   value={`$${totalSavings.toLocaleString()}`}
                   icon={TrendingUp}
-                  color="text-amber-600"
-                  bg="bg-amber-50 dark:bg-amber-950/50"
+                  color="text-gold"
+                  bg="bg-secondary"
                 />
               </div>
 
-              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+              <h2 className="text-sm font-semibold text-muted-foreground dark:text-muted-foreground uppercase tracking-wider mb-3">
                 What do you need?
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
@@ -213,39 +212,39 @@ export default function CommandCenter2026() {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setActivePanel(action.panel)}
-                    className="group relative overflow-hidden rounded-2xl p-4 text-left bg-white dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-shadow"
+                    className="group relative overflow-hidden rounded-2xl p-4 text-left bg-white dark:bg-card border border-border dark:border-border shadow-sm hover:shadow-lg transition-shadow"
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center flex-shrink-0 shadow-md`}>
-                        <action.icon className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
+                        <action.icon className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-gray-900 dark:text-white text-sm">
+                        <h3 className="font-bold text-foreground dark:text-white text-sm">
                           {action.label}
                         </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-0.5">
                           {action.description}
                         </p>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-gray-300 dark:text-gray-600 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors mt-1" />
+                      <ChevronRight className="h-4 w-4 text-muted-foreground dark:text-muted-foreground group-hover:text-muted-foreground dark:group-hover:text-muted-foreground transition-colors mt-1" />
                     </div>
                   </motion.button>
                 ))}
               </div>
 
-              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+              <h2 className="text-sm font-semibold text-muted-foreground dark:text-muted-foreground uppercase tracking-wider mb-3">
                 Quick Links
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-8">
                 {[
-                  { label: "Bill Advocate", path: "/bill-advocate", icon: Shield, color: "text-emerald-600" },
-                  { label: "Collections Help", path: "/collections-defense-guide", icon: AlertTriangle, color: "text-red-500" },
-                  { label: "Know Your Rights", path: "/rights-hub", icon: Scale, color: "text-blue-600" },
-                  { label: "Insurance Appeals", path: "/denial-appeals", icon: FileEdit, color: "text-purple-600" },
-                  { label: "Price Comparison", path: "/price-comparison", icon: DollarSign, color: "text-amber-600" },
-                  { label: "Savings Dashboard", path: "/savings", icon: TrendingUp, color: "text-teal-600" },
-                  { label: "Bill Tracker", path: "/bill-tracker", icon: Eye, color: "text-indigo-600" },
-                  { label: "Data Security", path: "/data-security", icon: Lock, color: "text-gray-600" },
+                  { label: "Bill Advocate", path: "/bill-advocate", icon: Shield, color: "text-muted-foreground" },
+                  { label: "Collections Help", path: "/collections-defense-guide", icon: AlertTriangle, color: "text-muted-foreground" },
+                  { label: "Know Your Rights", path: "/rights-hub", icon: Scale, color: "text-muted-foreground" },
+                  { label: "Insurance Appeals", path: "/denial-appeals", icon: FileEdit, color: "text-muted-foreground" },
+                  { label: "Price Comparison", path: "/price-comparison", icon: DollarSign, color: "text-muted-foreground" },
+                  { label: "Savings Dashboard", path: "/savings", icon: TrendingUp, color: "text-muted-foreground" },
+                  { label: "Bill Tracker", path: "/bill-tracker", icon: Eye, color: "text-muted-foreground" },
+                  { label: "Data Security", path: "/data-security", icon: Lock, color: "text-muted-foreground" },
                 ].map((link, i) => (
                   <motion.button
                     key={link.path}
@@ -254,17 +253,17 @@ export default function CommandCenter2026() {
                     transition={{ delay: 0.3 + i * 0.04 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => navigate(link.path)}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-white dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+                    className="flex items-center gap-2 p-3 rounded-xl bg-white dark:bg-card border border-border dark:border-border hover:border-border dark:hover:border-border transition-colors"
                   >
                     <link.icon className={`h-4 w-4 ${link.color} flex-shrink-0`} />
-                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">{link.label}</span>
+                    <span className="text-xs font-medium text-foreground dark:text-muted-foreground truncate">{link.label}</span>
                   </motion.button>
                 ))}
               </div>
 
               {bills && bills.length > 0 && (
                 <>
-                  <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                  <h2 className="text-sm font-semibold text-muted-foreground dark:text-muted-foreground uppercase tracking-wider mb-3">
                     Recent Bills
                   </h2>
                   <div className="space-y-2 mb-6">
@@ -274,27 +273,25 @@ export default function CommandCenter2026() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.4 + i * 0.08 }}
-                        className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/50"
+                        className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-card border border-border dark:border-border"
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                            bill.status === "resolved" ? "bg-emerald-100 dark:bg-emerald-900/30" : "bg-blue-100 dark:bg-blue-900/30"
-                          }`}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-secondary">
                             {bill.status === "resolved" ? (
-                              <CheckCircle className="h-4 w-4 text-emerald-600" />
+                              <CheckCircle className="h-4 w-4 text-emerald-700 dark:text-emerald-500" />
                             ) : (
-                              <FileText className="h-4 w-4 text-blue-600" />
+                              <FileText className="h-4 w-4 text-muted-foreground" />
                             )}
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-gray-900 dark:text-white">{bill.provider || bill.description || "Medical Bill"}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-sm font-medium text-foreground dark:text-white">{bill.provider || bill.description || "Medical Bill"}</p>
+                            <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                               {bill.status === "resolved" ? "Resolved" : "In Progress"}
                               {bill.potentialSavings ? ` · $${bill.potentialSavings.toLocaleString()} potential savings` : ""}
                             </p>
                           </div>
                         </div>
-                        <span className="text-sm font-bold text-gray-900 dark:text-white">
+                        <span className="text-sm font-bold text-foreground dark:text-white">
                           ${(bill.amount || bill.totalAmount || 0).toLocaleString()}
                         </span>
                       </motion.div>
@@ -303,19 +300,19 @@ export default function CommandCenter2026() {
                 </>
               )}
 
-              <div className="rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 p-5 text-white">
+              <div className="rounded-2xl bg-card border border-border p-5">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-                    <ShieldCheck className="h-5 w-5" />
+                  <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm">Your data is protected</h3>
-                    <p className="text-xs text-emerald-100 mt-1">
+                    <h3 className="font-bold text-sm text-foreground dark:text-white">Your data is protected</h3>
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-1">
                       AES-256 encryption, personal info stripped before AI processing, 30-day auto-deletion. You control your data.
                     </p>
                     <button
                       onClick={() => navigate("/data-security")}
-                      className="text-xs font-semibold underline text-white mt-2 inline-block"
+                      className="text-xs font-semibold underline text-gold mt-2 inline-block"
                     >
                       View Data Security Details
                     </button>
@@ -328,25 +325,25 @@ export default function CommandCenter2026() {
           {activePanel === "analyze" && (
             <PanelWrapper title="Analyze a Bill" onBack={() => setActivePanel("home")}>
               <div className="space-y-4">
-                <div className="rounded-2xl bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 p-4">
+                <div className="rounded-2xl bg-card border border-border p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Brain className="h-5 w-5 text-purple-600" />
-                    <h3 className="font-bold text-sm text-purple-900 dark:text-purple-200">Paste your bill details</h3>
+                    <Brain className="h-5 w-5 text-gold" />
+                    <h3 className="font-bold text-sm text-foreground dark:text-white">Paste your bill details</h3>
                   </div>
-                  <p className="text-xs text-purple-700 dark:text-purple-300 mb-3">
+                  <p className="text-xs text-muted-foreground mb-3">
                     Include line items, charges, codes, and amounts. Personal info is automatically stripped before AI processing.
                   </p>
                   <Textarea
                     placeholder="Paste bill text here... Include provider name, dates, procedure codes (CPT/HCPCS), descriptions, and charge amounts."
                     value={billText}
                     onChange={(e) => setBillText(e.target.value)}
-                    className="min-h-[160px] rounded-xl bg-white dark:bg-gray-800 border-purple-200 dark:border-purple-700 text-sm"
+                    className="min-h-[160px] rounded-xl bg-white dark:bg-card border-border text-sm"
                   />
                   <div className="flex gap-2 mt-3">
                     <Button
                       onClick={analyzeBill}
                       disabled={isAnalyzing || !billText.trim()}
-                      className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-xl"
+                      className="flex-1 bg-primary text-primary-foreground rounded-xl"
                     >
                       {isAnalyzing ? (
                         <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Analyzing...</>
@@ -370,7 +367,7 @@ export default function CommandCenter2026() {
                     animate={{ opacity: 1, y: 0 }}
                     className="space-y-3"
                   >
-                    <h3 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
+                    <h3 className="font-bold text-sm text-foreground dark:text-white flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-emerald-500" /> Analysis Results
                     </h3>
 
@@ -394,11 +391,11 @@ export default function CommandCenter2026() {
                     )}
 
                     {analysisResult.recommendations && (
-                      <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
-                        <h4 className="text-sm font-bold text-blue-800 dark:text-blue-200 mb-1">Recommendations</h4>
+                      <div className="p-3 rounded-xl bg-secondary dark:bg-card border border-border">
+                        <h4 className="text-sm font-bold text-foreground dark:text-white mb-1">Recommendations</h4>
                         <ul className="space-y-1">
                           {(Array.isArray(analysisResult.recommendations) ? analysisResult.recommendations : [analysisResult.recommendations]).map((rec: any, idx: number) => (
-                            <li key={idx} className="text-xs text-blue-700 dark:text-blue-300 flex items-start gap-1.5">
+                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1.5">
                               <ChevronRight className="h-3 w-3 mt-0.5 flex-shrink-0" />
                               <span>{typeof rec === "string" ? rec : rec.text || rec.description}</span>
                             </li>
@@ -408,8 +405,8 @@ export default function CommandCenter2026() {
                     )}
 
                     {analysisResult.summary && (
-                      <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
-                        <p className="text-sm text-gray-700 dark:text-gray-300">{analysisResult.summary}</p>
+                      <div className="p-3 rounded-xl bg-secondary dark:bg-card border border-border dark:border-border">
+                        <p className="text-sm text-foreground dark:text-muted-foreground">{analysisResult.summary}</p>
                       </div>
                     )}
 
@@ -438,7 +435,7 @@ export default function CommandCenter2026() {
           {activePanel === "dispute" && (
             <PanelWrapper title="Dispute Tools" onBack={() => setActivePanel("home")}>
               <div className="space-y-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                   Select a dispute approach and generate a professional letter.
                 </p>
 
@@ -457,15 +454,15 @@ export default function CommandCenter2026() {
                       onClick={() => setDisputeType(type.id)}
                       className={`p-3 rounded-xl text-left border transition-all ${
                         disputeType === type.id
-                          ? "border-blue-500 bg-blue-50 dark:bg-blue-950/40 dark:border-blue-400 ring-1 ring-blue-500"
-                          : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 hover:border-gray-300"
+                          ? "border-[var(--gold-deep)] bg-secondary ring-1 ring-[var(--gold-deep)]"
+                          : "border-border dark:border-border bg-white dark:bg-card hover:border-border"
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <type.icon className={`h-4 w-4 ${disputeType === type.id ? "text-blue-600" : "text-gray-400"}`} />
+                        <type.icon className={`h-4 w-4 ${disputeType === type.id ? "text-gold" : "text-muted-foreground"}`} />
                         <div>
-                          <p className="text-sm font-semibold text-gray-900 dark:text-white">{type.label}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{type.desc}</p>
+                          <p className="text-sm font-semibold text-foreground dark:text-white">{type.label}</p>
+                          <p className="text-xs text-muted-foreground dark:text-muted-foreground">{type.desc}</p>
                         </div>
                       </div>
                     </motion.button>
@@ -475,7 +472,7 @@ export default function CommandCenter2026() {
                 <Button
                   onClick={generateDispute}
                   disabled={!disputeType || isGeneratingDispute}
-                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 rounded-xl"
+                  className="w-full bg-primary text-primary-foreground rounded-xl"
                 >
                   {isGeneratingDispute ? (
                     <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generating...</>
@@ -488,10 +485,10 @@ export default function CommandCenter2026() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4"
+                    className="rounded-xl bg-white dark:bg-card border border-border dark:border-border p-4"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-bold text-gray-900 dark:text-white">Generated Letter</h4>
+                      <h4 className="text-sm font-bold text-foreground dark:text-white">Generated Letter</h4>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -501,7 +498,7 @@ export default function CommandCenter2026() {
                         Copy
                       </Button>
                     </div>
-                    <pre className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap font-sans leading-relaxed max-h-64 overflow-y-auto">
+                    <pre className="text-xs text-foreground dark:text-muted-foreground whitespace-pre-wrap font-sans leading-relaxed max-h-64 overflow-y-auto">
                       {generatedLetter}
                     </pre>
                   </motion.div>
@@ -522,36 +519,36 @@ export default function CommandCenter2026() {
           {activePanel === "vault" && (
             <PanelWrapper title="Document Vault" onBack={() => setActivePanel("home")}>
               <div className="space-y-4">
-                <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 p-4">
+                <div className="rounded-2xl bg-card border border-border p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Lock className="h-5 w-5 text-emerald-600" />
-                    <h3 className="font-bold text-sm text-emerald-900 dark:text-emerald-200">Encrypted Storage</h3>
+                    <Lock className="h-5 w-5 text-gold" />
+                    <h3 className="font-bold text-sm text-foreground dark:text-white">Encrypted Storage</h3>
                   </div>
-                  <p className="text-xs text-emerald-700 dark:text-emerald-300">
+                  <p className="text-xs text-muted-foreground">
                     AES-256 encryption at rest. Your documents are never shared or used for AI training. Auto-deleted after 30 days unless you choose to keep them.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { label: "Bills", count: documents?.filter((d: any) => d.category === "bill").length || 0, icon: FileText, color: "blue" },
-                    { label: "EOBs", count: documents?.filter((d: any) => d.category === "eob").length || 0, icon: BookOpen, color: "purple" },
-                    { label: "Insurance", count: documents?.filter((d: any) => d.category === "insurance").length || 0, icon: Shield, color: "emerald" },
-                    { label: "Receipts", count: documents?.filter((d: any) => d.category === "receipt").length || 0, icon: DollarSign, color: "amber" },
+                    { label: "Bills", count: documents?.filter((d: any) => d.category === "bill").length || 0, icon: FileText },
+                    { label: "EOBs", count: documents?.filter((d: any) => d.category === "eob").length || 0, icon: BookOpen },
+                    { label: "Insurance", count: documents?.filter((d: any) => d.category === "insurance").length || 0, icon: Shield },
+                    { label: "Receipts", count: documents?.filter((d: any) => d.category === "receipt").length || 0, icon: DollarSign },
                   ].map((cat) => (
-                    <div key={cat.label} className={`p-3 rounded-xl bg-${cat.color}-50 dark:bg-${cat.color}-950/30 border border-${cat.color}-200 dark:border-${cat.color}-800`}>
+                    <div key={cat.label} className="p-3 rounded-xl bg-secondary border border-border">
                       <div className="flex items-center gap-2">
-                        <cat.icon className={`h-4 w-4 text-${cat.color}-600`} />
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">{cat.label}</span>
+                        <cat.icon className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm font-medium text-foreground dark:text-white">{cat.label}</span>
                       </div>
-                      <p className={`text-2xl font-black text-${cat.color}-600 mt-1`}>{cat.count}</p>
+                      <p className="text-2xl font-black text-foreground dark:text-white mt-1">{cat.count}</p>
                     </div>
                   ))}
                 </div>
 
                 <Button
                   onClick={() => navigate("/document-vault")}
-                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 rounded-xl"
+                  className="w-full bg-primary text-primary-foreground rounded-xl"
                 >
                   <FolderOpen className="h-4 w-4 mr-2" /> Open Full Vault
                 </Button>
@@ -563,12 +560,12 @@ export default function CommandCenter2026() {
             <PanelWrapper title="Health & Wellness Tools" onBack={() => setActivePanel("home")}>
               <div className="space-y-3">
                 {[
-                  { label: "Lab Analyzer", desc: "Understand blood work & lab results", icon: Beaker, path: "/lab-analyzer", gradient: "from-blue-500 to-indigo-600" },
-                  { label: "Drug Information", desc: "Medication lookup & interactions", icon: Pill, path: "/drug-interactions", gradient: "from-rose-500 to-pink-600" },
-                  { label: "Symptom Library", desc: "Educational symptom reference", icon: BookOpen, path: "/symptom-checker", gradient: "from-purple-500 to-violet-600" },
-                  { label: "Health Journal", desc: "Track blood pressure, weight & vitals", icon: Activity, path: "/health-metrics", gradient: "from-emerald-500 to-teal-600" },
-                  { label: "Drug Prices", desc: "Compare medication costs", icon: DollarSign, path: "/drug-prices", gradient: "from-amber-500 to-orange-600" },
-                  { label: "Medical Conditions", desc: "Condition reference library", icon: Heart, path: "/conditions", gradient: "from-red-500 to-rose-600" },
+                  { label: "Lab Analyzer", desc: "Understand blood work & lab results", icon: Beaker, path: "/lab-analyzer" },
+                  { label: "Drug Information", desc: "Medication lookup & interactions", icon: Pill, path: "/drug-interactions" },
+                  { label: "Symptom Library", desc: "Educational symptom reference", icon: BookOpen, path: "/symptom-checker" },
+                  { label: "Health Journal", desc: "Track blood pressure, weight & vitals", icon: Activity, path: "/health-metrics" },
+                  { label: "Drug Prices", desc: "Compare medication costs", icon: DollarSign, path: "/drug-prices" },
+                  { label: "Medical Conditions", desc: "Condition reference library", icon: Heart, path: "/conditions" },
                 ].map((tool, i) => (
                   <motion.button
                     key={tool.path}
@@ -577,16 +574,16 @@ export default function CommandCenter2026() {
                     transition={{ delay: i * 0.05 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => navigate(tool.path)}
-                    className="w-full flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow text-left"
+                    className="w-full flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-card border border-border dark:border-border hover:shadow-md transition-shadow text-left"
                   >
-                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center flex-shrink-0 shadow-md`}>
-                      <tool.icon className="h-5 w-5 text-white" />
+                    <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
+                      <tool.icon className="h-5 w-5 text-muted-foreground" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-sm font-bold text-gray-900 dark:text-white">{tool.label}</h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{tool.desc}</p>
+                      <h3 className="text-sm font-bold text-foreground dark:text-white">{tool.label}</h3>
+                      <p className="text-xs text-muted-foreground dark:text-muted-foreground">{tool.desc}</p>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-gray-300 dark:text-gray-600" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground dark:text-muted-foreground" />
                   </motion.button>
                 ))}
               </div>
@@ -596,23 +593,23 @@ export default function CommandCenter2026() {
           {activePanel === "chat" && (
             <PanelWrapper title="AI Bill Advisor" onBack={() => setActivePanel("home")}>
               <div className="space-y-3">
-                <div className="rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-3">
-                  <p className="text-xs text-amber-700 dark:text-amber-300">
+                <div className="rounded-xl bg-card border border-border p-3">
+                  <p className="text-xs text-muted-foreground">
                     Ask questions about your medical bills, insurance coverage, billing codes, or negotiation strategies. Your personal information is never shared with AI providers.
                   </p>
                 </div>
 
-                <div className="rounded-xl bg-white dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 p-3 min-h-[280px] max-h-[400px] overflow-y-auto">
+                <div className="rounded-xl bg-white dark:bg-card border border-border dark:border-border p-3 min-h-[280px] max-h-[400px] overflow-y-auto">
                   {chatHistory.length === 0 && (
                     <div className="text-center py-8">
-                      <MessageCircle className="h-10 w-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Ask me anything about your medical bills</p>
+                      <MessageCircle className="h-10 w-10 text-muted-foreground dark:text-muted-foreground mx-auto mb-3" />
+                      <p className="text-sm text-muted-foreground dark:text-muted-foreground">Ask me anything about your medical bills</p>
                       <div className="flex flex-wrap gap-2 justify-center mt-4">
                         {["What's upcoding?", "How to request itemized bill?", "Can I negotiate ER bills?", "What's the No Surprises Act?"].map((q) => (
                           <button
                             key={q}
                             onClick={() => { setChatMessage(q); }}
-                            className="text-xs px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                            className="text-xs px-3 py-1.5 rounded-full bg-secondary dark:bg-card text-muted-foreground dark:text-muted-foreground hover:bg-secondary dark:hover:bg-secondary transition-colors"
                           >
                             {q}
                           </button>
@@ -629,8 +626,8 @@ export default function CommandCenter2026() {
                       <div
                         className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${
                           msg.role === "user"
-                            ? "bg-blue-500 text-white rounded-br-md"
-                            : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-md"
+                            ? "bg-primary text-primary-foreground rounded-br-md"
+                            : "bg-secondary dark:bg-card text-foreground dark:text-muted-foreground rounded-bl-md"
                         }`}
                       >
                         {msg.content}
@@ -639,11 +636,11 @@ export default function CommandCenter2026() {
                   ))}
                   {isChatting && (
                     <div className="flex justify-start mb-3">
-                      <div className="bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-2xl rounded-bl-md">
+                      <div className="bg-secondary dark:bg-card px-4 py-2 rounded-2xl rounded-bl-md">
                         <div className="flex gap-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                          <div className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                          <div className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                          <div className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                         </div>
                       </div>
                     </div>
@@ -662,7 +659,7 @@ export default function CommandCenter2026() {
                   <Button
                     onClick={sendChatMessage}
                     disabled={isChatting || !chatMessage.trim()}
-                    className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                    className="rounded-xl bg-primary text-primary-foreground"
                   >
                     <Send className="h-4 w-4" />
                   </Button>
@@ -687,12 +684,12 @@ function PanelWrapper({ title, onBack, children }: { title: string; onBack: () =
     >
       <button
         onClick={onBack}
-        className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-4 transition-colors"
+        className="flex items-center gap-1 text-sm text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground mb-4 transition-colors"
       >
         <ChevronRight className="h-4 w-4 rotate-180" />
         <span>Back</span>
       </button>
-      <h2 className="text-xl font-black text-gray-900 dark:text-white mb-4">{title}</h2>
+      <h2 className="text-xl font-serif font-black text-foreground dark:text-white mb-4">{title}</h2>
       {children}
     </motion.div>
   );
@@ -700,10 +697,10 @@ function PanelWrapper({ title, onBack, children }: { title: string; onBack: () =
 
 function StatsCard({ label, value, icon: Icon, color, bg }: { label: string; value: string | number; icon: any; color: string; bg: string }) {
   return (
-    <div className={`p-3 rounded-xl ${bg} border border-gray-100 dark:border-gray-700/50`}>
+    <div className={`p-3 rounded-xl ${bg} border border-border dark:border-border`}>
       <Icon className={`h-4 w-4 ${color} mb-1`} />
-      <p className="text-lg font-black text-gray-900 dark:text-white">{value}</p>
-      <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="text-lg font-black text-foreground dark:text-white">{value}</p>
+      <p className="text-xs text-muted-foreground dark:text-muted-foreground">{label}</p>
     </div>
   );
 }

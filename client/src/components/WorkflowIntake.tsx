@@ -182,7 +182,7 @@ export function WorkflowIntake({ workflow, onComplete, onBack }: WorkflowIntakeP
               onCheckedChange={(checked) => handleFieldChange(field.id, checked)}
               data-testid={`checkbox-${field.id}`}
             />
-            <Label htmlFor={field.id} className="text-sm text-gray-600">
+            <Label htmlFor={field.id} className="text-sm text-muted-foreground">
               {field.description || field.label}
             </Label>
           </div>
@@ -190,9 +190,9 @@ export function WorkflowIntake({ workflow, onComplete, onBack }: WorkflowIntakeP
       
       case 'file':
         return (
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-            <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-            <p className="text-sm text-gray-600 mb-2">{field.description || 'Upload file'}</p>
+          <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-muted-foreground transition-colors">
+            <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-sm text-muted-foreground mb-2">{field.description || 'Upload file'}</p>
             <Input
               id={field.id}
               type="file"
@@ -214,7 +214,7 @@ export function WorkflowIntake({ workflow, onComplete, onBack }: WorkflowIntakeP
               Choose File
             </Button>
             {value && (
-              <p className="text-xs text-green-600 mt-2">
+              <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-2">
                 File selected: {value.name || value}
               </p>
             )}
@@ -227,20 +227,20 @@ export function WorkflowIntake({ workflow, onComplete, onBack }: WorkflowIntakeP
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+    <div className="max-w-md mx-auto bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-border" style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}>
         <div className="flex items-center space-x-3">
           <button
             onClick={handleBack}
-            className="w-8 h-8 rounded-full bg-white shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-card border border-border shadow-sm hover:shadow-md transition-shadow flex items-center justify-center"
             data-testid="back-button"
           >
-            <ArrowLeft className="w-4 h-4 text-gray-600" />
+            <ArrowLeft className="w-4 h-4 text-muted-foreground" />
           </button>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900">{workflow.title}</h3>
-            <p className="text-sm text-gray-600">Step {currentStep + 1} of {fieldSteps.length}</p>
+            <h3 className="font-serif font-bold text-foreground">{workflow.title}</h3>
+            <p className="text-sm text-muted-foreground">Step {currentStep + 1} of {fieldSteps.length}</p>
           </div>
         </div>
         <div className="mt-4">
@@ -261,13 +261,13 @@ export function WorkflowIntake({ workflow, onComplete, onBack }: WorkflowIntakeP
           >
             {currentFields.map((field) => (
               <div key={field.id} className="space-y-2">
-                <Label htmlFor={field.id} className="text-sm font-medium text-gray-700">
+                <Label htmlFor={field.id} className="text-sm font-medium text-foreground">
                   {field.label}
-                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                  {field.required && <span className="text-destructive ml-1">*</span>}
                 </Label>
                 {renderField(field)}
                 {field.description && field.type !== 'checkbox' && (
-                  <p className="text-xs text-gray-500">{field.description}</p>
+                  <p className="text-xs text-muted-foreground">{field.description}</p>
                 )}
               </div>
             ))}
@@ -276,16 +276,16 @@ export function WorkflowIntake({ workflow, onComplete, onBack }: WorkflowIntakeP
       </div>
 
       {/* Footer */}
-      <div className="p-6 bg-gray-50 border-t border-gray-200">
+      <div className="p-6 bg-secondary border-t border-border">
         <Button
           onClick={handleNext}
           disabled={isProcessing}
-          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 rounded-xl font-semibold"
+          className="w-full bg-primary text-primary-foreground hover:bg-primary py-3 rounded-xl font-semibold"
           data-testid="next-button"
         >
           {isProcessing ? (
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
               <span>Processing...</span>
             </div>
           ) : isLastStep ? (

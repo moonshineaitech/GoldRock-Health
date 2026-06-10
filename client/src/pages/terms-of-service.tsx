@@ -11,12 +11,12 @@ export default function TermsOfService() {
             <strong>Updated:</strong> March 1, 2026
           </div>
 
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl border border-blue-200 dark:border-blue-800 mb-8">
-            <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-3 text-lg">Quick Summary</h3>
-            <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+          <div className="bg-secondary p-5 rounded-xl border border-border mb-8">
+            <h3 className="font-bold text-foreground mb-3 text-lg">Quick Summary</h3>
+            <p className="text-sm text-muted-foreground mb-3">
               We've summarized some points below for your convenience. By using our Services, you're agreeing to ALL the Terms that follow this summary, not just these highlights.
             </p>
-            <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-2">
+            <ul className="text-sm text-muted-foreground space-y-2">
               <li><strong>What GoldRock AI Is:</strong>
                 <ul className="ml-4 mt-1 space-y-1">
                   <li>• AI-powered medical bill analysis and reduction platform</li>
@@ -219,7 +219,7 @@ export default function TermsOfService() {
           <p className="mb-4">
             Our Privacy Policy describes how we handle the information you provide to us when you use the Services. For an explanation of our privacy 
             practices, please visit our Privacy Policy at{" "}
-            <Link href="/privacy-policy" className="text-blue-600 hover:underline">
+            <Link href="/privacy-policy" className="text-gold hover:underline">
               https://www.goldrockhealth.com/privacy-policy
             </Link>.
           </p>
@@ -366,23 +366,23 @@ export default function TermsOfService() {
 
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">10. Disclaimers</h2>
           
-          <div className="bg-yellow-50 p-5 rounded-xl border border-yellow-200 mb-4">
-            <h3 className="font-bold text-yellow-900 mb-3">IMPORTANT DISCLAIMERS</h3>
-            <p className="text-sm text-yellow-800 mb-3">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-5 rounded-xl border border-yellow-200 dark:border-yellow-800 mb-4">
+            <h3 className="font-bold text-yellow-900 dark:text-yellow-100 mb-3">IMPORTANT DISCLAIMERS</h3>
+            <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
               <strong>NOT MEDICAL ADVICE:</strong> The Services are for informational and educational purposes only. Nothing provided by the Services 
               constitutes medical advice, diagnosis, or treatment. Always seek the advice of qualified health providers with any questions regarding 
               medical conditions. Never disregard professional medical advice or delay seeking it because of information from our Services.
             </p>
-            <p className="text-sm text-yellow-800 mb-3">
+            <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
               <strong>NOT LEGAL ADVICE:</strong> The dispute templates, negotiation strategies, and legal information provided are for informational 
               purposes only and do not constitute legal advice. We are not a law firm and do not provide legal representation. Consult with a qualified 
               attorney for legal matters.
             </p>
-            <p className="text-sm text-yellow-800 mb-3">
+            <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
               <strong>NOT FINANCIAL ADVICE:</strong> Information about medical bill costs, payment plans, and financial assistance is general information 
               only and does not constitute financial advice. Consult with qualified financial advisors for financial decisions.
             </p>
-            <p className="text-sm text-yellow-800">
+            <p className="text-sm text-yellow-800 dark:text-yellow-200">
               <strong>NO GUARANTEES:</strong> We do not guarantee specific savings, outcomes, or results from using our Services. Actual results depend 
               on many factors outside our control.
             </p>

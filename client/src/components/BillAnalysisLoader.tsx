@@ -23,8 +23,8 @@ const analysisStages = [
     icon: FileText,
     title: "Scanning Documents",
     description: "Reading your medical bill pages with AI vision technology",
-    color: "text-blue-500",
-    bgColor: "bg-blue-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 2800,
     details: "Processing OCR and extracting text from images"
   },
@@ -32,8 +32,8 @@ const analysisStages = [
     icon: Search,
     title: "Error Detection Analysis",
     description: "AI scanning for duplicate charges, upcoding, and unbundling violations",
-    color: "text-orange-500",
-    bgColor: "bg-orange-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 3500,
     details: "Checking 47 common billing error patterns"
   },
@@ -41,8 +41,8 @@ const analysisStages = [
     icon: Calculator,
     title: "Price Benchmarking",
     description: "Comparing your charges against Medicare rates and fair market pricing",
-    color: "text-purple-500",
-    bgColor: "bg-purple-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 3200,
     details: "Analyzing pricing vs. 15,000+ hospital databases"
   },
@@ -50,8 +50,8 @@ const analysisStages = [
     icon: Shield,
     title: "Insurance Verification",
     description: "Checking coverage requirements and prior authorization issues",
-    color: "text-cyan-500",
-    bgColor: "bg-cyan-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 2900,
     details: "Cross-referencing insurance policies and benefits"
   },
@@ -59,8 +59,8 @@ const analysisStages = [
     icon: DollarSign,
     title: "Savings Calculation",
     description: "Identifying negotiation opportunities and financial assistance programs",
-    color: "text-green-500",
-    bgColor: "bg-green-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 3800,
     details: "Calculating your potential savings opportunities"
   },
@@ -68,8 +68,8 @@ const analysisStages = [
     icon: AlertTriangle,
     title: "Compliance Audit",
     description: "Checking billing transparency laws and regulatory violations",
-    color: "text-red-500",
-    bgColor: "bg-red-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 2600,
     details: "Verifying adherence to federal billing requirements"
   },
@@ -77,8 +77,8 @@ const analysisStages = [
     icon: CheckCircle2,
     title: "Strategy Generation",
     description: "AI creating personalized dispute letters and negotiation scripts",
-    color: "text-emerald-500",
-    bgColor: "bg-emerald-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 4200,
     details: "Generating custom action plan for maximum savings"
   },
@@ -86,8 +86,8 @@ const analysisStages = [
     icon: Brain,
     title: "Expert Analysis Complete",
     description: "Comprehensive bill assessment with actionable recommendations",
-    color: "text-indigo-500",
-    bgColor: "bg-indigo-100",
+    color: "text-gold",
+    bgColor: "bg-secondary",
     duration: 2000,
     details: "Ready to save you thousands on medical bills"
   }
@@ -172,7 +172,7 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 luxury-card bg-gradient-to-br from-emerald-50 via-teal-50 to-blue-50 flex items-center justify-center p-6 relative overflow-hidden"
+      className="fixed inset-0 z-50 bg-background flex items-center justify-center p-6 relative overflow-hidden"
     >
       <div className="w-full max-w-sm mx-auto text-center">
         {/* Header */}
@@ -182,13 +182,13 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
           transition={{ duration: 3, repeat: Infinity }}
         >
           <motion.div 
-            className="w-24 h-24 bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-2xl relative overflow-hidden"
+            className="w-24 h-24 medical-gradient rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-sm relative overflow-hidden"
             animate={{ 
               rotate: [0, 360],
               boxShadow: [
-                "0 20px 40px rgba(16, 185, 129, 0.2)",
-                "0 25px 50px rgba(16, 185, 129, 0.3)",
-                "0 20px 40px rgba(16, 185, 129, 0.2)"
+                "0 20px 40px rgba(176, 141, 87, 0.18)",
+                "0 25px 50px rgba(176, 141, 87, 0.26)",
+                "0 20px 40px rgba(176, 141, 87, 0.18)"
               ]
             }}
             transition={{ 
@@ -196,19 +196,13 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
               boxShadow: { duration: 2, repeat: Infinity }
             }}
           >
-            <div className="absolute inset-0 bg-white/20 animate-glass-reflection" />
             <Brain className="h-12 w-12 text-white relative z-10" />
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0"
-              animate={{ x: [-100, 100] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            />
           </motion.div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent mb-3">
+          <h1 className="text-3xl font-bold luxury-text-gradient mb-3">
             AI Bill Analysis
           </h1>
           <motion.p 
-            className="text-gray-700 text-base font-medium"
+            className="text-foreground text-base font-medium"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
@@ -226,7 +220,7 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
             className="mb-8"
           >
             <motion.div 
-              className={`w-24 h-24 ${currentStageData.bgColor} rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-2xl relative overflow-hidden`}
+              className={`w-24 h-24 ${currentStageData.bgColor} rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-sm relative overflow-hidden`}
               animate={{ 
                 rotate: [0, 360],
                 scale: [1, 1.08, 1],
@@ -242,23 +236,17 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
                 boxShadow: { duration: 2.5, repeat: Infinity }
               }}
             >
-              <div className="absolute inset-0 bg-white/15 animate-glass-reflection" />
               <IconComponent className={`h-12 w-12 ${currentStageData.color} relative z-10`} />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
-                animate={{ x: [-100, 100] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              />
             </motion.div>
             
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
+            <h2 className="text-2xl font-bold text-foreground mb-3">
               {currentStageData.title}
             </h2>
-            <p className="text-gray-700 text-base leading-relaxed mb-3 font-medium">
+            <p className="text-foreground text-base leading-relaxed mb-3 font-medium">
               {currentStageData.description}
             </p>
             <motion.p 
-              className="text-sm text-gray-600 italic"
+              className="text-sm text-muted-foreground italic"
               animate={{ opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
@@ -269,13 +257,13 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
 
         {/* Progress Bar */}
         <div className="mb-8">
-          <div className="flex justify-between text-xs text-gray-500 mb-2">
+          <div className="flex justify-between text-xs text-muted-foreground mb-2">
             <span>Stage {currentStage + 1} of {analysisStages.length}</span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-secondary rounded-full h-2">
             <motion.div
-              className="bg-gradient-to-r from-emerald-500 to-teal-600 h-2 rounded-full"
+              className="bg-gold h-2 rounded-full"
               style={{ width: `${progress}%` }}
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
@@ -286,13 +274,13 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
 
         {/* Rotating Facts */}
         <motion.div 
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-emerald-100"
+          className="bg-card rounded-2xl p-4 shadow-sm border border-border"
           animate={{ y: [0, -5, 0] }}
           transition={{ duration: 3, repeat: Infinity }}
         >
           <div className="flex items-center justify-center mb-2">
-            <TrendingUp className="h-4 w-4 text-emerald-600 mr-2" />
-            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">
+            <TrendingUp className="h-4 w-4 text-gold mr-2" />
+            <span className="text-xs font-semibold text-gold uppercase tracking-wide">
               Did You Know?
             </span>
           </div>
@@ -302,7 +290,7 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="text-sm text-gray-700 leading-relaxed"
+              className="text-sm text-foreground leading-relaxed"
             >
               {savingsFacts[currentFact]}
             </motion.p>
@@ -314,7 +302,7 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
           {[DollarSign, Shield, CheckCircle2, Zap].map((Icon, index) => (
             <motion.div
               key={index}
-              className={`absolute w-8 h-8 text-emerald-300/20`}
+              className={`absolute w-8 h-8 text-amber-300/25`}
               style={{
                 left: `${20 + (index * 20)}%`,
                 top: `${30 + (index * 15)}%`,
@@ -338,7 +326,7 @@ export function BillAnalysisLoader({ fileCount, isVisible }: BillAnalysisLoaderP
 
         {/* Bottom Text */}
         <motion.p 
-          className="text-xs text-gray-500 mt-6"
+          className="text-xs text-muted-foreground mt-6"
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 2, repeat: Infinity }}
         >

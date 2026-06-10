@@ -18,11 +18,11 @@ import { Link } from "wouter";
 
 const TYPE_CONFIG: Record<string, { icon: any; color: string; bg: string }> = {
   deadline: { icon: Clock, color: "text-red-600", bg: "bg-red-50" },
-  savings: { icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
-  update: { icon: FileText, color: "text-blue-600", bg: "bg-blue-50" },
-  alert: { icon: AlertTriangle, color: "text-amber-600", bg: "bg-amber-50" },
-  program: { icon: Shield, color: "text-purple-600", bg: "bg-purple-50" },
-  milestone: { icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50" },
+  savings: { icon: DollarSign, color: "text-emerald-700", bg: "bg-emerald-50" },
+  update: { icon: FileText, color: "text-muted-foreground", bg: "bg-secondary" },
+  alert: { icon: AlertTriangle, color: "text-amber-700", bg: "bg-amber-50" },
+  program: { icon: Shield, color: "text-muted-foreground", bg: "bg-secondary" },
+  milestone: { icon: CheckCircle2, color: "text-emerald-700", bg: "bg-emerald-50" },
 };
 
 function NotificationCard({ notification, onRead, onDismiss }: { notification: any; onRead: (id: string) => void; onDismiss: (id: string) => void }) {
@@ -32,8 +32,9 @@ function NotificationCard({ notification, onRead, onDismiss }: { notification: a
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
-      className={`rounded-xl border p-4 transition-all ${notification.read ? 'bg-white border-gray-100' : 'bg-white border-blue-200 shadow-sm'}`}
+      initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className={`rounded-xl border p-4 transition-all ${notification.read ? 'bg-card border-border' : 'bg-card border-gold shadow-sm'}`}
     >
       <div className="flex items-start gap-3">
         <div className={`w-10 h-10 rounded-full ${config.bg} flex items-center justify-center flex-shrink-0`}>
@@ -42,26 +43,26 @@ function NotificationCard({ notification, onRead, onDismiss }: { notification: a
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <h3 className={`text-sm font-medium ${notification.read ? 'text-gray-700' : 'text-gray-900'}`}>{notification.title}</h3>
-              <p className="text-xs text-gray-500 mt-0.5">{notification.message}</p>
+              <h3 className={`text-sm font-medium ${notification.read ? 'text-muted-foreground' : 'text-foreground'}`}>{notification.title}</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">{notification.message}</p>
             </div>
-            {!notification.read && <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0 mt-1.5" />}
+            {!notification.read && <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0 mt-1.5" />}
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-[10px] text-gray-400">{timeAgo}</span>
+            <span className="text-[10px] text-muted-foreground">{timeAgo}</span>
             {notification.priority === "urgent" && <Badge className="bg-red-100 text-red-700 text-[10px]">Urgent</Badge>}
             <div className="flex-1" />
             {!notification.read && (
-              <Button size="sm" variant="ghost" className="h-6 text-xs text-gray-400 hover:text-blue-600" onClick={() => onRead(notification.id)}>
+              <Button size="sm" variant="ghost" className="h-6 text-xs text-muted-foreground hover:text-gold" onClick={() => onRead(notification.id)}>
                 <Eye className="w-3 h-3 mr-1" />Read
               </Button>
             )}
             {notification.actionUrl && (
               <Link href={notification.actionUrl}>
-                <Button size="sm" variant="ghost" className="h-6 text-xs text-blue-600"><ExternalLink className="w-3 h-3 mr-1" />View</Button>
+                <Button size="sm" variant="ghost" className="h-6 text-xs text-gold"><ExternalLink className="w-3 h-3 mr-1" />View</Button>
               </Link>
             )}
-            <Button size="sm" variant="ghost" className="h-6 text-xs text-gray-400 hover:text-red-600" onClick={() => onDismiss(notification.id)}>
+            <Button size="sm" variant="ghost" className="h-6 text-xs text-muted-foreground hover:text-destructive" onClick={() => onDismiss(notification.id)}>
               <Trash2 className="w-3 h-3" />
             </Button>
           </div>
@@ -122,8 +123,8 @@ export default function NotificationsCenter() {
       <div className="space-y-4 pb-20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">{notifications.length} notifications</span>
+            <Bell className="w-5 h-5 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">{notifications.length} notifications</span>
           </div>
           {unreadCount > 0 && (
             <Button size="sm" variant="outline" onClick={() => markAllRead.mutate()} disabled={markAllRead.isPending}>
@@ -143,16 +144,16 @@ export default function NotificationsCenter() {
 
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-gold" />
           </div>
         ) : filtered.length === 0 ? (
-          <Card className="bg-gray-50 border-dashed">
+          <Card className="bg-secondary border-dashed border-border">
             <CardContent className="py-12 text-center">
-              <Inbox className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-              <h3 className="font-semibold text-gray-700 mb-1">
+              <Inbox className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+              <h3 className="font-serif font-semibold text-foreground mb-1">
                 {tab === "unread" ? "All caught up!" : "No notifications yet"}
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {tab === "unread" ? "You've read all your notifications" : "We'll notify you about bill deadlines, savings opportunities, and more"}
               </p>
             </CardContent>
@@ -167,16 +168,16 @@ export default function NotificationsCenter() {
           </div>
         )}
 
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-secondary border-border">
           <CardContent className="py-4">
             <div className="flex items-center gap-3">
-              <Settings className="w-6 h-6 text-blue-500" />
+              <Settings className="w-6 h-6 text-gold" />
               <div className="flex-1">
-                <h4 className="text-sm font-medium text-blue-800">Notification Preferences</h4>
-                <p className="text-xs text-blue-600">Control what notifications you receive</p>
+                <h4 className="text-sm font-medium text-foreground">Notification Preferences</h4>
+                <p className="text-xs text-muted-foreground">Control what notifications you receive</p>
               </div>
               <Link href="/settings">
-                <Button size="sm" variant="outline" className="border-blue-300">Settings</Button>
+                <Button size="sm" variant="outline" className="border-border">Settings</Button>
               </Link>
             </div>
           </CardContent>

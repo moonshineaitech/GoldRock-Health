@@ -233,10 +233,10 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
   return (
     <div className="space-y-6">
       {/* File Upload */}
-      <Card>
+      <Card className="luxury-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Camera className="h-5 w-5 text-blue-600" />
+            <Camera className="h-5 w-5 text-gold" />
             Upload Your Medical Bill
           </CardTitle>
           <CardDescription>
@@ -245,7 +245,7 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
         </CardHeader>
         <CardContent>
           <div 
-            className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer hover:border-blue-400 transition-colors"
+            className="border-2 border-dashed border-border rounded-2xl p-8 text-center cursor-pointer hover:border-gold transition-colors"
             onClick={() => fileInputRef.current?.click()}
           >
             {uploading ? (
@@ -254,17 +254,17 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center mx-auto">
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                   >
-                    <Brain className="h-6 w-6 text-blue-600" />
+                    <Brain className="h-6 w-6 text-gold" />
                   </motion.div>
                 </div>
                 <div>
-                  <div className="text-lg font-medium text-gray-900">Analyzing Your Bill...</div>
-                  <div className="text-sm text-gray-600">Checking for overcharges and billing errors</div>
+                  <div className="text-lg font-medium text-foreground">Analyzing Your Bill...</div>
+                  <div className="text-sm text-muted-foreground">Checking for overcharges and billing errors</div>
                   <Progress value={65} className="mt-3" />
                 </div>
               </motion.div>
@@ -274,16 +274,19 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto">
-                  <Upload className="h-8 w-8 text-blue-600" />
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto"
+                  style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                >
+                  <Upload className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-medium text-gray-900">Upload Medical Bill</div>
-                  <div className="text-sm text-gray-600 mt-1">PDF, JPG, PNG up to 10MB</div>
+                  <div className="text-lg font-medium text-foreground">Upload Medical Bill</div>
+                  <div className="text-sm text-muted-foreground mt-1">PDF, JPG, PNG up to 10MB</div>
                 </div>
                 <Button 
                   size="sm" 
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="upload-bill-button"
                 >
                   Choose File
@@ -306,15 +309,15 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
 
       <div className="flex items-center gap-4">
         <Separator className="flex-1" />
-        <span className="text-sm text-gray-500">OR</span>
+        <span className="text-sm text-muted-foreground">OR</span>
         <Separator className="flex-1" />
       </div>
 
       {/* Manual Entry */}
-      <Card>
+      <Card className="luxury-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-green-600" />
+            <FileText className="h-5 w-5 text-gold" />
             Manual Bill Entry
           </CardTitle>
           <CardDescription>
@@ -372,7 +375,7 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
             <div className="space-y-2">
               <Label htmlFor="serviceType">Type of Care</Label>
               <select
-                className="w-full h-10 px-3 rounded-md border border-gray-300 text-sm"
+                className="w-full h-10 px-3 rounded-md border border-border bg-background text-foreground text-sm"
                 value={billData.serviceType}
                 onChange={(e) => setBillData(prev => ({ ...prev, serviceType: e.target.value }))}
                 data-testid="select-service-type"
@@ -396,7 +399,7 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
               className="min-h-[80px]"
               data-testid="input-bill-description"
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               💡 Pro tip: Include line items, CPT codes, or any charges that seem high
             </p>
           </div>
@@ -404,7 +407,7 @@ const BillUploadZone = ({ onBillAnalyzed }: { onBillAnalyzed: (data: BillAnalysi
           <Button 
             onClick={handleManualAnalysis}
             disabled={uploading || !billData.totalAmount}
-            className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50"
+            className="w-full bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
             data-testid="button-analyze-manual"
           >
             {uploading ? (
@@ -441,7 +444,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
       case 'high': return 'text-red-600 bg-red-50 border-red-200';
       case 'medium': return 'text-orange-600 bg-orange-50 border-orange-200';
       case 'low': return 'text-green-600 bg-green-50 border-green-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      default: return 'text-muted-foreground bg-secondary border-border';
     }
   };
 
@@ -471,10 +474,10 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
       transition={{ duration: 0.6 }}
     >
       {/* Analysis Summary */}
-      <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <Card className="luxury-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl">
-            <Shield className="h-6 w-6 text-blue-600" />
+            <Shield className="h-6 w-6 text-gold" />
             Analysis Complete
           </CardTitle>
         </CardHeader>
@@ -482,33 +485,33 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-3">
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">
+                <div className="text-3xl font-bold text-gold">
                   {formatCurrency(analysis.potentialSavings)}
                 </div>
-                <div className="text-sm text-gray-600">Potential Savings</div>
+                <div className="text-sm text-muted-foreground">Potential Savings</div>
               </div>
               
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">
+                <div className="text-2xl font-bold text-foreground">
                   {analysis.issues.length}
                 </div>
-                <div className="text-sm text-gray-600">Issues Found</div>
+                <div className="text-sm text-muted-foreground">Issues Found</div>
               </div>
             </div>
             
             <div className="space-y-3">
               <div className="text-center">
-                <div className={`text-2xl font-bold ${analysis.riskScore > 70 ? 'text-red-600' : analysis.riskScore > 40 ? 'text-orange-600' : 'text-green-600'}`}>
+                <div className={`text-2xl font-bold ${analysis.riskScore > 70 ? 'text-red-600' : analysis.riskScore > 40 ? 'text-orange-600' : 'text-emerald-700'}`}>
                   {analysis.riskScore}/100
                 </div>
-                <div className="text-sm text-gray-600">Risk Score</div>
+                <div className="text-sm text-muted-foreground">Risk Score</div>
               </div>
               
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">
+                <div className="text-2xl font-bold text-foreground">
                   {analysis.analysisConfidence}%
                 </div>
-                <div className="text-sm text-gray-600">Confidence</div>
+                <div className="text-sm text-muted-foreground">Confidence</div>
               </div>
             </div>
           </div>
@@ -567,7 +570,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <PieChart className="h-5 w-5 text-indigo-600" />
+            <PieChart className="h-5 w-5 text-muted-foreground" />
             Bill Breakdown
           </CardTitle>
         </CardHeader>
@@ -587,7 +590,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-emerald-600" />
+            <Target className="h-5 w-5 text-muted-foreground" />
             Recommended Actions
           </CardTitle>
         </CardHeader>
@@ -595,8 +598,8 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
           <div className="space-y-3">
             {analysis.recommendations.map((rec, index) => (
               <div key={index} className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-sm font-medium text-emerald-600">{index + 1}</span>
+                <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-sm font-medium text-foreground">{index + 1}</span>
                 </div>
                 <span className="text-sm">{rec}</span>
               </div>
@@ -607,10 +610,10 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
 
       {/* Negotiation Strategy - AI Powered */}
       {analysis.negotiationStrategy && (
-        <Card className="border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50">
+        <Card className="luxury-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-amber-600" />
+              <Sparkles className="h-5 w-5 text-gold" />
               AI Negotiation Strategy
             </CardTitle>
             <CardDescription>
@@ -620,10 +623,10 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
           <CardContent className="space-y-4">
             <div>
               <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                <Target className="h-4 w-4 text-amber-600" />
+                <Target className="h-4 w-4 text-gold" />
                 Recommended Approach
               </h4>
-              <p className="text-sm text-gray-700">{analysis.negotiationStrategy.approach}</p>
+              <p className="text-sm text-muted-foreground">{analysis.negotiationStrategy.approach}</p>
             </div>
             
             <div>
@@ -631,19 +634,19 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
               <ul className="space-y-1.5">
                 {analysis.negotiationStrategy.talkingPoints.map((point, index) => (
                   <li key={index} className="flex items-start gap-2 text-sm">
-                    <MessageCircle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <MessageCircle className="h-4 w-4 text-gold flex-shrink-0 mt-0.5" />
                     <span>{point}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-amber-100 p-3 rounded-lg">
+            <div className="p-3 rounded-lg border border-border" style={{ background: 'hsla(40, 62%, 62%, 0.14)' }}>
               <div className="flex items-center gap-2 mb-1">
-                <TrendingDown className="h-5 w-5 text-amber-700" />
-                <span className="font-bold text-amber-900">Target Reduction: {analysis.negotiationStrategy.targetReduction}</span>
+                <TrendingDown className="h-5 w-5 text-gold" />
+                <span className="font-bold text-foreground">Target Reduction: {analysis.negotiationStrategy.targetReduction}</span>
               </div>
-              <p className="text-xs text-amber-800">Based on industry benchmarks and Medicare rates</p>
+              <p className="text-xs text-muted-foreground">Based on industry benchmarks and Medicare rates</p>
             </div>
 
             {analysis.negotiationStrategy.fallbackOptions && analysis.negotiationStrategy.fallbackOptions.length > 0 && (
@@ -651,8 +654,8 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
                 <h4 className="font-semibold text-sm mb-2">Fallback Options:</h4>
                 <div className="space-y-1.5">
                   {analysis.negotiationStrategy.fallbackOptions.map((option, index) => (
-                    <div key={index} className="flex items-start gap-2 text-sm bg-white p-2 rounded border border-amber-200">
-                      <ArrowRight className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div key={index} className="flex items-start gap-2 text-sm bg-card p-2 rounded border border-border">
+                      <ArrowRight className="h-4 w-4 text-gold flex-shrink-0 mt-0.5" />
                       <span>{option}</span>
                     </div>
                   ))}
@@ -665,29 +668,29 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
 
       {/* Financial Assistance - AI Powered */}
       {analysis.financialAssistance && (
-        <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+        <Card className="luxury-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-green-600" />
+              <DollarSign className="h-5 w-5 text-muted-foreground" />
               Financial Assistance Programs
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className={`p-3 rounded-lg ${analysis.financialAssistance.eligible ? 'bg-green-100' : 'bg-gray-100'}`}>
+            <div className={`p-3 rounded-lg ${analysis.financialAssistance.eligible ? 'bg-emerald-50' : 'bg-secondary'}`}>
               <div className="flex items-center gap-2 mb-1">
                 {analysis.financialAssistance.eligible ? (
                   <>
-                    <CheckCircle className="h-5 w-5 text-green-600" />
-                    <span className="font-bold text-green-900">Likely Eligible for Assistance</span>
+                    <CheckCircle className="h-5 w-5 text-emerald-700" />
+                    <span className="font-bold text-emerald-800">Likely Eligible for Assistance</span>
                   </>
                 ) : (
                   <>
-                    <Info className="h-5 w-5 text-gray-600" />
-                    <span className="font-bold text-gray-900">Check Eligibility</span>
+                    <Info className="h-5 w-5 text-muted-foreground" />
+                    <span className="font-bold text-foreground">Check Eligibility</span>
                   </>
                 )}
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 Estimated discount: {analysis.financialAssistance.estimatedDiscount}
               </p>
             </div>
@@ -697,8 +700,8 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
                 <h4 className="font-semibold text-sm mb-2">Available Programs:</h4>
                 <div className="space-y-2">
                   {analysis.financialAssistance.programs.map((program, index) => (
-                    <div key={index} className="flex items-start gap-2 text-sm bg-white p-3 rounded border border-green-200">
-                      <Heart className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div key={index} className="flex items-start gap-2 text-sm bg-card p-3 rounded border border-border">
+                      <Heart className="h-4 w-4 text-gold flex-shrink-0 mt-0.5" />
                       <span>{program}</span>
                     </div>
                   ))}
@@ -718,10 +721,10 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
 
       {/* Insider Tactics - AI Powered */}
       {analysis.insiderTactics && analysis.insiderTactics.length > 0 && (
-        <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-indigo-50">
+        <Card className="luxury-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Brain className="h-5 w-5 text-purple-600" />
+              <Brain className="h-5 w-5 text-muted-foreground" />
               Insider Tactics
             </CardTitle>
             <CardDescription>
@@ -735,11 +738,11 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
                   key={index}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-start gap-3 bg-white p-3 rounded-lg border border-purple-200"
+                  transition={{ delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-start gap-3 bg-card p-3 rounded-lg border border-border"
                 >
-                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Eye className="h-4 w-4 text-purple-600" />
+                  <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Eye className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <span className="text-sm">{tactic}</span>
                 </motion.div>
@@ -751,39 +754,43 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
 
       {/* Premium Upgrade CTA */}
       {!isSubscribed && (
-        <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+        <Card className="luxury-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Crown className="h-5 w-5 text-purple-600" />
+              <Crown className="h-5 w-5 text-gold" />
               Unlock Advanced Analysis
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 Get professional-level bill analysis with detailed dispute letters, 
                 medical code verification, and 24/7 expert support.
               </p>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-gold" />
                   <span>Professional dispute letters</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-gold" />
                   <span>Medical code verification</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-gold" />
                   <span>Insurance appeal assistance</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-gold" />
                   <span>24/7 expert support</span>
                 </div>
               </div>
               <Link href="/premium">
-                <Button className="w-full bg-purple-600 hover:bg-purple-700" data-testid="button-upgrade-premium">
+                <Button
+                  className="w-full text-white hover:opacity-90"
+                  style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                  data-testid="button-upgrade-premium"
+                >
                   <Crown className="h-4 w-4 mr-2" />
                   Upgrade to Premium
                 </Button>
@@ -804,7 +811,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
             onClick={() => setSelectedIssue(null)}
           >
             <motion.div
-              className="bg-white rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto"
+              className="bg-card text-foreground border border-border rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
@@ -813,27 +820,27 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="text-lg font-bold">{selectedIssue.title}</h3>
+                    <h3 className="text-lg font-serif font-bold">{selectedIssue.title}</h3>
                     <Badge className={getRiskColor(selectedIssue.riskLevel)}>
                       {selectedIssue.riskLevel.toUpperCase()} RISK
                     </Badge>
                   </div>
                   <button 
                     onClick={() => setSelectedIssue(null)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-muted-foreground hover:text-foreground"
                     data-testid="button-close-issue-detail"
                   >
                     ×
                   </button>
                 </div>
                 
-                <p className="text-gray-700">{selectedIssue.description}</p>
+                <p className="text-muted-foreground">{selectedIssue.description}</p>
                 
-                <div className="bg-green-50 p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">
+                <div className="p-3 rounded-lg border border-border" style={{ background: 'hsla(40, 62%, 62%, 0.14)' }}>
+                  <div className="text-2xl font-bold text-gold">
                     {formatCurrency(selectedIssue.potentialSavings)}
                   </div>
-                  <div className="text-sm text-green-700">Potential Savings</div>
+                  <div className="text-sm text-muted-foreground">Potential Savings</div>
                 </div>
 
                 <div>
@@ -841,7 +848,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
                   <ul className="space-y-1 text-sm">
                     {selectedIssue.evidence.map((item, index) => (
                       <li key={index} className="flex items-start gap-2">
-                        <span className="text-blue-600">•</span>
+                        <span className="text-gold">•</span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -853,7 +860,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
                   <ol className="space-y-2 text-sm">
                     {selectedIssue.nextSteps.map((step, index) => (
                       <li key={index} className="flex items-start gap-2">
-                        <span className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center text-xs font-medium text-blue-600 flex-shrink-0 mt-0.5">
+                        <span className="w-5 h-5 bg-secondary rounded-full flex items-center justify-center text-xs font-medium text-foreground flex-shrink-0 mt-0.5">
                           {index + 1}
                         </span>
                         <span>{step}</span>
@@ -909,31 +916,32 @@ export default function QuickAnalyzer() {
             {/* Header */}
             <div className="text-center space-y-4 py-6">
               <motion.div 
-                className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-2xl flex items-center justify-center mx-auto"
+                className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto"
+                style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
-                <Radar className="h-8 w-8 text-blue-600" />
+                <Radar className="h-8 w-8 text-white" />
               </motion.div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Quick Bill Analyzer</h1>
-                <p className="text-gray-600 mt-1">
+                <h1 className="text-2xl font-serif font-bold text-foreground">Quick Bill Analyzer</h1>
+                <p className="text-muted-foreground mt-1">
                   Free analysis to find overcharges and billing errors
                 </p>
               </div>
               
               <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto text-center">
                 <div>
-                  <div className="text-lg font-bold text-blue-600">80%</div>
-                  <div className="text-xs text-gray-500">Bills Have Errors</div>
+                  <div className="text-lg font-bold text-foreground">80%</div>
+                  <div className="text-xs text-muted-foreground">Bills Have Errors</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-green-600">$2K+</div>
-                  <div className="text-xs text-gray-500">Avg Savings</div>
+                  <div className="text-lg font-bold text-gold">$2K+</div>
+                  <div className="text-xs text-muted-foreground">Avg Savings</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-purple-600">Free</div>
-                  <div className="text-xs text-gray-500">Analysis</div>
+                  <div className="text-lg font-bold text-foreground">Free</div>
+                  <div className="text-xs text-muted-foreground">Analysis</div>
                 </div>
               </div>
             </div>
@@ -962,17 +970,17 @@ export default function QuickAnalyzer() {
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <Card className="bg-blue-50 border-blue-200">
+                  <Card className="bg-secondary border-border">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-lg">
-                        <Brain className="h-5 w-5 text-blue-600" />
+                        <Brain className="h-5 w-5 text-muted-foreground" />
                         How Bill Analysis Works
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4 text-sm">
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-2">Common Billing Errors We Find:</h4>
-                        <ul className="space-y-1 text-gray-700">
+                        <h4 className="font-medium text-foreground mb-2">Common Billing Errors We Find:</h4>
+                        <ul className="space-y-1 text-muted-foreground">
                           <li className="flex items-start gap-2">
                             <span className="text-red-500">•</span>
                             <span><strong>Duplicate Charges:</strong> Same service billed multiple times</span>
@@ -982,33 +990,33 @@ export default function QuickAnalyzer() {
                             <span><strong>Upcoding:</strong> Billing for more expensive procedures than provided</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <span className="text-blue-500">•</span>
+                            <span className="text-gold">•</span>
                             <span><strong>Supply Overcharges:</strong> 300-800% markups on basic supplies</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <span className="text-purple-500">•</span>
+                            <span className="text-muted-foreground">•</span>
                             <span><strong>Unbundling:</strong> Separate charges for bundled procedures</span>
                           </li>
                         </ul>
                       </div>
                       
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-2">What You'll Get:</h4>
-                        <ul className="space-y-1 text-gray-700">
+                        <h4 className="font-medium text-foreground mb-2">What You'll Get:</h4>
+                        <ul className="space-y-1 text-muted-foreground">
                           <li className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <CheckCircle className="h-4 w-4 text-gold" />
                             <span>Line-by-line error detection</span>
                           </li>
                           <li className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <CheckCircle className="h-4 w-4 text-gold" />
                             <span>Potential savings estimates</span>
                           </li>
                           <li className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <CheckCircle className="h-4 w-4 text-gold" />
                             <span>Actionable next steps</span>
                           </li>
                           <li className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <CheckCircle className="h-4 w-4 text-gold" />
                             <span>Contact scripts for providers</span>
                           </li>
                         </ul>

@@ -75,43 +75,43 @@ export default function AiUsageAgreement() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950 p-4">
+    <div className="min-h-screen bg-background p-4">
       <div className="max-w-4xl mx-auto py-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-2xl flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Shield className="h-6 w-6 text-white" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold font-serif text-foreground">
               Terms of Service
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Welcome to GoldRock AI. Please review these terms before getting started — they cover how we handle your medical billing data.
           </p>
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-950/50 rounded-full text-xs text-indigo-700 dark:text-indigo-300 font-medium">
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-secondary rounded-full text-xs text-muted-foreground font-medium">
             Version {AI_TERMS_VERSION} · Updated for 2026 iOS App Store Health Data Guidelines
           </div>
         </div>
 
-        <Card className="shadow-xl border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm">
+        <Card className="border border-border bg-card shadow-sm">
           <CardHeader className="text-center pb-6">
             <CardTitle className="flex items-center justify-center gap-2 text-2xl">
-              <Brain className="h-6 w-6 text-indigo-600" />
+              <Brain className="h-6 w-6 text-gold" />
               Service Agreement
             </CardTitle>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Last updated: January 2026 · Version {AI_TERMS_VERSION}
             </p>
           </CardHeader>
 
           <CardContent>
             <ScrollArea className="h-96 pr-4" data-testid="agreement-content">
-              <div className="space-y-6 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              <div className="space-y-6 text-sm text-foreground leading-relaxed">
 
                 {/* Service Overview */}
                 <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700 dark:text-indigo-400">
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 font-serif text-foreground">
                     <Brain className="h-5 w-5" />
                     What We Do
                   </h3>
@@ -133,14 +133,14 @@ export default function AiUsageAgreement() {
 
                 {/* Healthcare Billing Data */}
                 <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-emerald-700 dark:text-emerald-400">
+                  <h3 className="flex items-center gap-2 font-serif font-semibold text-lg mb-3 text-foreground">
                     <Shield className="h-5 w-5" />
                     Healthcare Billing Data
                   </h3>
 
-                  <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4 mb-4">
-                    <p className="font-medium text-emerald-800 dark:text-emerald-300 mb-2">Sensitive data, handled carefully</p>
-                    <p className="text-emerald-700 dark:text-emerald-400 text-sm">
+                  <div className="bg-secondary border border-border rounded-lg p-4 mb-4">
+                    <p className="font-medium text-foreground mb-2">Sensitive data, handled carefully</p>
+                    <p className="text-muted-foreground text-sm">
                       Medical billing records and insurance documents are classified as sensitive health-related financial data.
                       We process this information only to help you reduce your bill. We never use it to make decisions about your health,
                       and we never sell or share it with advertisers or marketers.
@@ -160,7 +160,7 @@ export default function AiUsageAgreement() {
 
                 {/* Data & Privacy */}
                 <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700 dark:text-indigo-400">
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 font-serif text-foreground">
                     <FileText className="h-5 w-5" />
                     Your Data & Privacy
                   </h3>
@@ -174,12 +174,12 @@ export default function AiUsageAgreement() {
                     <strong>How long we keep it:</strong> Bill analyses, uploaded documents, and chat messages are automatically
                     deleted after 30 days. Your account data remains until you delete your account.
                     You can delete specific data or all your health data at any time from your{" "}
-                    <Link href="/data-security" className="text-indigo-600 hover:underline">Data Security settings</Link>.
+                    <Link href="/data-security" className="text-gold hover:underline">Data Security settings</Link>.
                   </p>
 
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-4 space-y-2">
-                    <p className="font-medium text-gray-800 dark:text-gray-200 text-sm">Security standards</p>
-                    <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                  <div className="bg-secondary rounded-lg p-4 mb-4 space-y-2">
+                    <p className="font-medium text-foreground text-sm">Security standards</p>
+                    <ul className="text-xs text-muted-foreground space-y-1">
                       <li>• AES-256 encryption for all data stored at rest</li>
                       <li>• TLS 1.3 encryption for all data in transit</li>
                       <li>• Data stored exclusively on US-based servers</li>
@@ -192,7 +192,7 @@ export default function AiUsageAgreement() {
 
                 {/* AI Processing */}
                 <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700 dark:text-indigo-400">
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 font-serif text-foreground">
                     <Database className="h-5 w-5" />
                     AI Processing Disclosure
                   </h3>
@@ -202,23 +202,23 @@ export default function AiUsageAgreement() {
                   </p>
 
                   <div className="space-y-3 mb-4">
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-                      <p className="font-medium text-gray-800 dark:text-gray-200 text-sm mb-1">OpenAI</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <div className="border border-border rounded-lg p-3">
+                      <p className="font-medium text-foreground text-sm mb-1">OpenAI</p>
+                      <p className="text-xs text-muted-foreground">
                         Processes bill text and images for analysis. Operates under a Data Processing Agreement
                         that prohibits using your data for model training. Data is deleted from their systems after processing.
                       </p>
                     </div>
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-                      <p className="font-medium text-gray-800 dark:text-gray-200 text-sm mb-1">Google (Gemini)</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <div className="border border-border rounded-lg p-3">
+                      <p className="font-medium text-foreground text-sm mb-1">Google (Gemini)</p>
+                      <p className="text-xs text-muted-foreground">
                         Used for certain AI features as a fallback provider. Same contractual data protection
                         requirements apply — no training on your data, deletion after processing.
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-500 dark:text-gray-500">
+                  <p className="text-xs text-muted-foreground">
                     Neither provider has access to your account identity. Bill content is sent without personally identifiable
                     account information where technically possible.
                   </p>
@@ -228,14 +228,14 @@ export default function AiUsageAgreement() {
 
                 {/* Legal disclaimers */}
                 <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700 dark:text-indigo-400">
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 font-serif text-foreground">
                     <AlertTriangle className="h-5 w-5" />
                     Important Disclaimers
                   </h3>
 
-                  <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
-                    <p className="font-medium text-blue-800 dark:text-blue-300 mb-2">Not Medical Advice</p>
-                    <p className="text-blue-700 dark:text-blue-400 text-sm">
+                  <div className="bg-secondary border border-border rounded-lg p-4 mb-4">
+                    <p className="font-medium text-foreground mb-2">Not Medical Advice</p>
+                    <p className="text-muted-foreground text-sm">
                       GoldRock AI helps with bill analysis and cost reduction, not medical advice or clinical decisions.
                       Always consult qualified healthcare professionals for any medical questions.
                     </p>
@@ -259,7 +259,7 @@ export default function AiUsageAgreement() {
 
                 {/* Your Rights */}
                 <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700 dark:text-indigo-400">
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 font-serif text-foreground">
                     <Lock className="h-5 w-5" />
                     Your Rights
                   </h3>
@@ -274,7 +274,7 @@ export default function AiUsageAgreement() {
 
                   <p className="mb-3">
                     Manage your data from your{" "}
-                    <Link href="/data-security" className="text-indigo-600 hover:underline inline-flex items-center gap-1">
+                    <Link href="/data-security" className="text-gold hover:underline inline-flex items-center gap-1">
                       Data Security settings <ExternalLink className="w-3 h-3" />
                     </Link>{" "}
                     or contact us at CONTACT@GOLDROCK.ai.
@@ -285,7 +285,7 @@ export default function AiUsageAgreement() {
 
                 {/* Updates */}
                 <section>
-                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 text-indigo-700 dark:text-indigo-400">
+                  <h3 className="flex items-center gap-2 font-semibold text-lg mb-3 font-serif text-foreground">
                     <FileText className="h-5 w-5" />
                     Updates to These Terms
                   </h3>
@@ -298,14 +298,14 @@ export default function AiUsageAgreement() {
 
                 <Separator />
 
-                <section className="text-xs text-gray-500 dark:text-gray-500">
-                  <p>Questions? Contact us at <span className="text-gray-600 dark:text-gray-400">CONTACT@GOLDROCK.ai</span></p>
+                <section className="text-xs text-muted-foreground">
+                  <p>Questions? Contact us at <span className="text-muted-foreground">CONTACT@GOLDROCK.ai</span></p>
                 </section>
               </div>
             </ScrollArea>
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4">
-              <div className="space-y-4 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+              <div className="space-y-4 bg-secondary border border-border rounded-lg p-4">
                 <div className="flex items-start space-x-3">
                   <Checkbox
                     id="acceptAiTerms"
@@ -357,7 +357,7 @@ export default function AiUsageAgreement() {
               <div className="flex gap-3 pt-4">
                 <Button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                  className="flex-1 bg-primary text-primary-foreground hover:opacity-90"
                   disabled={acceptTermsMutation.isPending}
                   data-testid="button-accept-agreement"
                 >
@@ -376,12 +376,12 @@ export default function AiUsageAgreement() {
           </CardContent>
         </Card>
 
-        <div className="text-center mt-6 text-xs text-gray-500 dark:text-gray-400 space-x-3">
-          <a href="/privacy-policy" className="text-indigo-600 hover:underline">Privacy Policy</a>
+        <div className="text-center mt-6 text-xs text-muted-foreground space-x-3">
+          <a href="/privacy-policy" className="text-gold hover:underline">Privacy Policy</a>
           <span>·</span>
-          <a href="/terms-of-service" className="text-indigo-600 hover:underline">Terms of Service</a>
+          <a href="/terms-of-service" className="text-gold hover:underline">Terms of Service</a>
           <span>·</span>
-          <Link href="/data-security" className="text-indigo-600 hover:underline">Data Security</Link>
+          <Link href="/data-security" className="text-gold hover:underline">Data Security</Link>
         </div>
       </div>
     </div>

@@ -287,22 +287,22 @@ export function BlitzDemo() {
     return (
       <div className="space-y-4">
         {/* Summary Header */}
-        <MobileCard className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-2 border-emerald-300">
+        <MobileCard>
           <div className="text-center space-y-3">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", stiffness: 200 }}
-              className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto shadow-xl"
+              className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto shadow-sm"
             >
-              <CheckCircle className="h-8 w-8 text-white" />
+              <CheckCircle className="h-8 w-8 text-foreground" />
             </motion.div>
             
             <div>
-              <h3 className="text-2xl font-black text-gray-900 mb-1">
+              <h3 className="text-2xl font-black font-serif text-foreground mb-1">
                 AI Analysis Complete
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 {billDetails.provider} • {billDetails.amount}
               </p>
             </div>
@@ -312,7 +312,8 @@ export function BlitzDemo() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 rounded-2xl p-6 shadow-xl"
+              className="rounded-2xl p-6 shadow-sm"
+              style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
             >
               <p className="text-white/90 text-xs font-bold mb-1">Potential Savings Identified</p>
               <p className="text-5xl font-black text-white mb-1">
@@ -331,28 +332,28 @@ export function BlitzDemo() {
           {/* Section 1: Overcharges */}
           <MobileCard className="!p-0 overflow-hidden">
             <AccordionItem value="overcharges" className="border-0">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-red-50/50">
+              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-secondary">
                 <div className="flex items-center gap-3 text-left">
-                  <Receipt className="h-5 w-5 text-red-600 flex-shrink-0" />
+                  <Receipt className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <div>
-                    <div className="font-black text-gray-900">Overcharges Detected</div>
-                    <div className="text-xs text-gray-600 font-normal">{analysisResults.errorCount} billing errors found</div>
+                    <div className="font-black text-foreground">Overcharges Detected</div>
+                    <div className="text-xs text-muted-foreground font-normal">{analysisResults.errorCount} billing errors found</div>
                   </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-6 pb-4">
                 <div className="space-y-3">
                   {analysisResults.overcharges.map((item: any, idx: number) => (
-                    <div key={idx} className="border-l-4 border-red-600 bg-gradient-to-r from-red-50 to-orange-50 p-4 rounded-lg">
+                    <div key={idx} className="border-l-4 border-destructive bg-secondary p-4 rounded-lg">
                       <div className="flex justify-between items-start mb-2">
-                        <div className="font-bold text-gray-900 text-sm">{item.item}</div>
+                        <div className="font-bold text-foreground text-sm">{item.item}</div>
                         <div className="text-right">
-                          <div className="text-xs text-gray-600 line-through">{item.charged}</div>
-                          <div className="text-lg font-black text-emerald-600">{item.fair}</div>
+                          <div className="text-xs text-muted-foreground line-through">{item.charged}</div>
+                          <div className="text-lg font-black text-emerald-700">{item.fair}</div>
                           <div className="text-xs text-red-600 font-bold">{item.overcharge}</div>
                         </div>
                       </div>
-                      <div className="text-xs text-gray-800 bg-white p-3 rounded border border-red-200">
+                      <div className="text-xs text-foreground bg-card p-3 rounded border border-border">
                         <strong>Why:</strong> {item.reason}
                       </div>
                     </div>
@@ -365,25 +366,25 @@ export function BlitzDemo() {
           {/* Section 2: Top Tactics */}
           <MobileCard className="!p-0 overflow-hidden">
             <AccordionItem value="tactics" className="border-0">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-blue-50/50">
+              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-secondary">
                 <div className="flex items-center gap-3 text-left">
-                  <Target className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                  <Target className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <div>
-                    <div className="font-black text-gray-900">Top 3 Negotiation Tactics</div>
-                    <div className="text-xs text-gray-600 font-normal">With legal citations</div>
+                    <div className="font-black text-foreground">Top 3 Negotiation Tactics</div>
+                    <div className="text-xs text-muted-foreground font-normal">With legal citations</div>
                   </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-6 pb-4">
                 <div className="space-y-3">
                   {analysisResults.topTactics.map((tactic: any, idx: number) => (
-                    <div key={idx} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border-2 border-blue-200">
+                    <div key={idx} className="bg-secondary p-4 rounded-lg border border-border">
                       <div className="flex items-start justify-between mb-2">
-                        <div className="font-bold text-gray-900 text-sm">{idx + 1}. {tactic.title}</div>
-                        <div className="text-emerald-600 font-black text-lg">${tactic.impact}</div>
+                        <div className="font-bold text-foreground text-sm">{idx + 1}. {tactic.title}</div>
+                        <div className="text-emerald-700 font-black text-lg">${tactic.impact}</div>
                       </div>
-                      <p className="text-xs text-gray-700 mb-2">{tactic.strategy}</p>
-                      <div className="bg-blue-100 p-2 rounded text-xs text-blue-900">
+                      <p className="text-xs text-muted-foreground mb-2">{tactic.strategy}</p>
+                      <div className="bg-card p-2 rounded text-xs text-foreground border border-border">
                         <strong>Legal:</strong> {tactic.citation}
                       </div>
                     </div>
@@ -396,26 +397,26 @@ export function BlitzDemo() {
           {/* Section 3: Industry Secrets */}
           <MobileCard className="!p-0 overflow-hidden">
             <AccordionItem value="secrets" className="border-0">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-orange-50/50">
+              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-secondary">
                 <div className="flex items-center gap-3 text-left">
-                  <ShieldAlert className="h-5 w-5 text-orange-600 flex-shrink-0" />
+                  <ShieldAlert className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <div>
-                    <div className="font-black text-gray-900">Industry Insider Secrets</div>
-                    <div className="text-xs text-orange-600 font-bold">🔥 EXCLUSIVE</div>
+                    <div className="font-black text-foreground">Industry Insider Secrets</div>
+                    <div className="text-xs text-gold font-bold">🔥 EXCLUSIVE</div>
                   </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-6 pb-4">
                 <div className="space-y-3">
                   {analysisResults.industrySecrets.map((secret: any, idx: number) => (
-                    <div key={idx} className="bg-white p-4 rounded-lg border-2 border-orange-200">
-                      <div className="font-bold text-gray-900 text-sm mb-2">{secret.title}</div>
+                    <div key={idx} className="bg-card p-4 rounded-lg border border-border">
+                      <div className="font-bold text-foreground text-sm mb-2">{secret.title}</div>
                       <div className="space-y-2 text-xs">
-                        <p className="text-gray-700">
-                          <strong className="text-orange-700">Secret:</strong> {secret.secret}
+                        <p className="text-muted-foreground">
+                          <strong className="text-foreground">Secret:</strong> {secret.secret}
                         </p>
-                        <p className="text-gray-700 bg-orange-50 p-2 rounded border border-orange-200">
-                          <strong className="text-orange-700">Leverage:</strong> {secret.leverage}
+                        <p className="text-muted-foreground bg-secondary p-2 rounded border border-border">
+                          <strong className="text-foreground">Leverage:</strong> {secret.leverage}
                         </p>
                       </div>
                     </div>
@@ -428,18 +429,18 @@ export function BlitzDemo() {
           {/* Section 4: Dispute Letter */}
           <MobileCard className="!p-0 overflow-hidden">
             <AccordionItem value="letter" className="border-0">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-purple-50/50">
+              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-secondary">
                 <div className="flex items-center gap-3 text-left">
-                  <FileCheck className="h-5 w-5 text-purple-600 flex-shrink-0" />
+                  <FileCheck className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <div>
-                    <div className="font-black text-gray-900">Dispute Letter Template</div>
-                    <div className="text-xs text-purple-600 font-bold">⚖️ Legal citations included</div>
+                    <div className="font-black text-foreground">Dispute Letter Template</div>
+                    <div className="text-xs text-muted-foreground font-bold">⚖️ Legal citations included</div>
                   </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-6 pb-4">
-                <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-200 max-h-64 overflow-y-auto">
-                  <pre className="text-xs whitespace-pre-wrap font-mono text-gray-800">
+                <div className="bg-secondary p-4 rounded-lg border border-border max-h-64 overflow-y-auto">
+                  <pre className="text-xs whitespace-pre-wrap font-mono text-foreground">
 {analysisResults.disputeLetterPreview}
                   </pre>
                 </div>
@@ -453,12 +454,12 @@ export function BlitzDemo() {
           {/* Section 5: Success Story */}
           <MobileCard className="!p-0 overflow-hidden">
             <AccordionItem value="case-study" className="border-0">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-teal-50/50">
+              <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-secondary">
                 <div className="flex items-center gap-3 text-left">
-                  <BadgeCheck className="h-5 w-5 text-teal-600 flex-shrink-0" />
+                  <BadgeCheck className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <div>
-                    <div className="font-black text-gray-900">Real Success Story</div>
-                    <div className="text-xs text-teal-600 font-bold">{analysisResults.caseStudy.title}</div>
+                    <div className="font-black text-foreground">Real Success Story</div>
+                    <div className="text-xs text-muted-foreground font-bold">{analysisResults.caseStudy.title}</div>
                   </div>
                 </div>
               </AccordionTrigger>
@@ -466,21 +467,21 @@ export function BlitzDemo() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 justify-center">
                     <div className="text-center">
-                      <div className="text-xs text-gray-600">Original</div>
+                      <div className="text-xs text-muted-foreground">Original</div>
                       <div className="text-2xl font-black text-red-600 line-through">{analysisResults.caseStudy.original}</div>
                     </div>
-                    <ArrowRight className="h-6 w-6 text-gray-400" />
+                    <ArrowRight className="h-6 w-6 text-muted-foreground" />
                     <div className="text-center">
-                      <div className="text-xs text-gray-600">Final</div>
-                      <div className="text-2xl font-black text-emerald-600">{analysisResults.caseStudy.final}</div>
+                      <div className="text-xs text-muted-foreground">Final</div>
+                      <div className="text-2xl font-black text-emerald-700">{analysisResults.caseStudy.final}</div>
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <div className="font-bold text-gray-900 text-sm">Timeline:</div>
+                    <div className="font-bold text-foreground text-sm">Timeline:</div>
                     {analysisResults.caseStudy.timeline.map((item: any, idx: number) => (
-                      <div key={idx} className="flex gap-2 text-xs bg-teal-50 p-2 rounded border border-teal-200">
-                        <CheckCircle className="h-4 w-4 text-teal-600 flex-shrink-0" />
+                      <div key={idx} className="flex gap-2 text-xs text-foreground bg-secondary p-2 rounded border border-border">
+                        <CheckCircle className="h-4 w-4 text-emerald-700 flex-shrink-0" />
                         <div>
                           <strong>{item.week}:</strong> {item.action}
                         </div>
@@ -489,9 +490,9 @@ export function BlitzDemo() {
                   </div>
                   
                   <div className="space-y-2">
-                    <div className="font-bold text-gray-900 text-sm">Key Lessons:</div>
+                    <div className="font-bold text-foreground text-sm">Key Lessons:</div>
                     {analysisResults.caseStudy.lessons.map((lesson: string, idx: number) => (
-                      <div key={idx} className="text-xs text-gray-700 bg-white p-2 rounded border border-teal-200">
+                      <div key={idx} className="text-xs text-muted-foreground bg-card p-2 rounded border border-border">
                         • {lesson}
                       </div>
                     ))}
@@ -504,11 +505,11 @@ export function BlitzDemo() {
         </Accordion>
 
         {/* CTA */}
-        <MobileCard className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white text-center">
-          <h3 className="text-xl font-black mb-2">
+        <MobileCard className="text-primary-foreground text-center" style={{ background: 'var(--primary)' }}>
+          <h3 className="text-xl font-black font-serif mb-2">
             Ready to Save on Your Bills?
           </h3>
-          <p className="text-blue-100 text-sm mb-4">
+          <p className="text-primary-foreground opacity-90 text-sm mb-4">
             Sign up free to analyze your actual bills with AI + access complete template library
           </p>
           <button
@@ -516,7 +517,7 @@ export function BlitzDemo() {
               setCurrentStep(0);
               setAnalysisResults(null);
             }}
-            className="w-full text-xs text-white/80 hover:text-white font-medium mt-3"
+            className="w-full text-xs text-primary-foreground opacity-80 hover:opacity-100 font-medium mt-3"
             data-testid="button-try-another"
           >
             Try Another Analysis
@@ -529,19 +530,20 @@ export function BlitzDemo() {
   // ANALYZING VIEW
   if (currentStep === 1 && isAnalyzing) {
     return (
-      <MobileCard className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 border-2 border-indigo-300">
+      <MobileCard>
         <div className="space-y-4 text-center py-6">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 mx-auto border-4 border-indigo-200 border-t-indigo-600 rounded-full"
+            className="w-16 h-16 mx-auto border-4 border-border rounded-full"
+            style={{ borderTopColor: 'var(--gold)' }}
           />
           
           <div>
-            <h3 className="text-xl font-black text-gray-900 mb-2">
+            <h3 className="text-xl font-black font-serif text-foreground mb-2">
               AI Analysis In Progress
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Analyzing {billDetails.amount} bill from {billDetails.provider}
             </p>
           </div>
@@ -557,20 +559,20 @@ export function BlitzDemo() {
                   key={index}
                   initial={{ opacity: 0.4 }}
                   animate={{ opacity: isActive ? 1 : isCompleted ? 0.7 : 0.4 }}
-                  className={`flex items-center space-x-3 p-3 rounded-xl ${
-                    isActive ? 'bg-indigo-100 border-2 border-indigo-400' : 'bg-white/60'
+                  className={`flex items-center space-x-3 p-3 rounded-xl border ${
+                    isActive ? 'bg-secondary border-border' : 'bg-card border-transparent'
                   }`}
                 >
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                    isActive ? 'bg-indigo-600' : isCompleted ? 'bg-emerald-500' : 'bg-gray-300'
+                    isActive ? 'bg-gold' : isCompleted ? 'bg-emerald-600' : 'bg-secondary'
                   }`}>
                     {isCompleted ? (
                       <CheckCircle className="h-5 w-5 text-white" />
                     ) : (
-                      <Icon className="h-5 w-5 text-white" />
+                      <Icon className={`h-5 w-5 ${isActive ? 'text-white' : 'text-muted-foreground'}`} />
                     )}
                   </div>
-                  <p className="text-sm font-semibold text-gray-700">{step.text}</p>
+                  <p className="text-sm font-semibold text-foreground">{step.text}</p>
                 </motion.div>
               );
             })}
@@ -582,24 +584,27 @@ export function BlitzDemo() {
 
   // INPUT FORM VIEW
   return (
-    <MobileCard className="bg-gradient-to-br from-purple-50 via-white to-indigo-50 border-2 border-purple-300">
+    <MobileCard>
       <div className="space-y-4">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-3">
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-sm mb-3"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+          >
             <Brain className="h-8 w-8 text-white" />
           </div>
 
-          <h3 className="text-2xl font-black bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 bg-clip-text text-transparent mb-2">
+          <h3 className="text-2xl font-black font-serif text-foreground mb-2">
             Try Real AI Bill Analysis
           </h3>
-          <p className="text-gray-700 text-sm mb-4">
+          <p className="text-muted-foreground text-sm mb-4">
             Enter your bill details or use sample data to see comprehensive analysis with industry secrets
           </p>
 
           <MobileButton
             onClick={loadSampleBill}
             variant="secondary"
-            className="w-full text-sm py-3 mb-4 border-2 border-purple-300"
+            className="w-full text-sm py-3 mb-4 border border-border"
             data-testid="button-load-sample"
           >
             <FileText className="h-4 w-4 mr-2" />
@@ -610,7 +615,7 @@ export function BlitzDemo() {
         {/* Input Fields */}
         <div className="space-y-3">
           <div>
-            <label className="text-sm font-bold text-gray-700 mb-1.5 block">Bill Amount *</label>
+            <label className="text-sm font-bold text-foreground mb-1.5 block">Bill Amount *</label>
             <Input
               type="text"
               placeholder="$12,450"
@@ -622,7 +627,7 @@ export function BlitzDemo() {
           </div>
 
           <div>
-            <label className="text-sm font-bold text-gray-700 mb-1.5 block">Provider/Hospital *</label>
+            <label className="text-sm font-bold text-foreground mb-1.5 block">Provider/Hospital *</label>
             <Input
               type="text"
               placeholder="Metro General Hospital"
@@ -635,7 +640,7 @@ export function BlitzDemo() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-sm font-bold text-gray-700 mb-1.5 block">Service Date</label>
+              <label className="text-sm font-bold text-foreground mb-1.5 block">Service Date</label>
               <Input
                 type="text"
                 placeholder="Jan 15, 2025"
@@ -645,7 +650,7 @@ export function BlitzDemo() {
               />
             </div>
             <div>
-              <label className="text-sm font-bold text-gray-700 mb-1.5 block">Service Type</label>
+              <label className="text-sm font-bold text-foreground mb-1.5 block">Service Type</label>
               <Input
                 type="text"
                 placeholder="Emergency Room"
@@ -657,7 +662,7 @@ export function BlitzDemo() {
           </div>
 
           <div>
-            <label className="text-sm font-bold text-gray-700 mb-1.5 block">Specific Concerns (Optional)</label>
+            <label className="text-sm font-bold text-foreground mb-1.5 block">Specific Concerns (Optional)</label>
             <Textarea
               placeholder="E.g., Duplicate charges, excessive fees..."
               value={billDetails.specificConcerns}
@@ -672,7 +677,7 @@ export function BlitzDemo() {
         <MobileButton
           onClick={runAnalysis}
           disabled={isAnalyzing || !billDetails.amount || !billDetails.provider}
-          className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-xl text-base py-4"
+          className="w-full text-base py-4"
           data-testid="button-analyze"
         >
           {isAnalyzing ? (
@@ -689,7 +694,7 @@ export function BlitzDemo() {
           )}
         </MobileButton>
         
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-muted-foreground text-center">
           {isSampleData() 
             ? "✓ Using sample data • Works without login" 
             : "⚠️ Sign up to analyze custom bills with AI + upload photos"}

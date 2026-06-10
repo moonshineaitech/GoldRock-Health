@@ -137,11 +137,11 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
     const isOrdering = orderingTest === test.name;
 
     return (
-      <Card key={test.name} className={`${isOrdered ? 'bg-green-50 border-green-200' : 'hover:shadow-md'} transition-all duration-200`}>
+      <Card key={test.name} className={`${isOrdered ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-900' : 'hover:shadow-md'} transition-all duration-200`}>
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start">
             <div className="flex-1">
-              <CardTitle className="text-base font-semibold text-slate-800 flex items-center gap-2">
+              <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
                 <Icon className="h-4 w-4" />
                 {test.name}
               </CardTitle>
@@ -175,11 +175,11 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-600 mb-2">
+          <p className="text-sm text-muted-foreground mb-2">
             <span className="font-medium">Indication:</span> {test.indication}
           </p>
           {test.normalRange && (
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               <span className="font-medium">Normal Range:</span> {test.normalRange}
             </p>
           )}
@@ -191,8 +191,8 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
   const renderTestResults = () => {
     if (testResults.length === 0) {
       return (
-        <div className="text-center py-8 text-slate-500">
-          <TestTubeDiagonal className="h-12 w-12 mx-auto mb-3 text-slate-400" />
+        <div className="text-center py-8 text-muted-foreground">
+          <TestTubeDiagonal className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
           <p>No test results available yet. Order some tests to see results!</p>
         </div>
       );
@@ -201,13 +201,13 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
     return (
       <div className="space-y-4">
         {testResults.map((result, index) => (
-          <Card key={index} className={`${result.abnormal ? 'border-red-200 bg-red-50' : 'border-green-200 bg-green-50'}`}>
+          <Card key={index} className={`${result.abnormal ? 'border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950' : 'border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950'}`}>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-slate-800 flex items-center gap-2">
+              <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
                 {result.abnormal ? (
-                  <AlertCircle className="h-5 w-5 text-red-600" />
+                  <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
                 ) : (
-                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
                 )}
                 {result.name}
                 <Badge variant={result.abnormal ? "destructive" : "secondary"}>
@@ -219,26 +219,26 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
               <div className="space-y-3">
                 {result.result && (
                   <div>
-                    <h5 className="font-medium text-slate-700 mb-1">Result</h5>
-                    <p className="text-sm text-slate-600">{result.result}</p>
+                    <h5 className="font-medium text-foreground mb-1">Result</h5>
+                    <p className="text-sm text-muted-foreground">{result.result}</p>
                   </div>
                 )}
                 {result.findings && (
                   <div>
-                    <h5 className="font-medium text-slate-700 mb-1">Findings</h5>
-                    <p className="text-sm text-slate-600">{result.findings}</p>
+                    <h5 className="font-medium text-foreground mb-1">Findings</h5>
+                    <p className="text-sm text-muted-foreground">{result.findings}</p>
                   </div>
                 )}
                 {result.impression && (
                   <div>
-                    <h5 className="font-medium text-slate-700 mb-1">Impression</h5>
-                    <p className="text-sm text-slate-600">{result.impression}</p>
+                    <h5 className="font-medium text-foreground mb-1">Impression</h5>
+                    <p className="text-sm text-muted-foreground">{result.impression}</p>
                   </div>
                 )}
                 {result.interpretation && (
                   <div>
-                    <h5 className="font-medium text-slate-700 mb-1">Interpretation</h5>
-                    <p className="text-sm text-slate-600">{result.interpretation}</p>
+                    <h5 className="font-medium text-foreground mb-1">Interpretation</h5>
+                    <p className="text-sm text-muted-foreground">{result.interpretation}</p>
                   </div>
                 )}
               </div>
@@ -263,7 +263,7 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
       >
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <TestTubeDiagonal className="h-6 w-6 text-indigo-600" />
+            <TestTubeDiagonal className="h-6 w-6 text-gold" />
             <span>Diagnostic Test Ordering</span>
           </DialogTitle>
         </DialogHeader>
@@ -282,8 +282,8 @@ export function TestOrderingModal({ caseId, isVisible, onClose }: TestOrderingMo
           <TabsContent value="order-tests">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-                <span className="ml-3 text-slate-600">Loading available tests...</span>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
+                <span className="ml-3 text-muted-foreground">Loading available tests...</span>
               </div>
             ) : (
               <Tabs defaultValue="laboratory" orientation="horizontal">

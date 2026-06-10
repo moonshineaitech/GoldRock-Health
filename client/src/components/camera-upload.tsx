@@ -54,29 +54,29 @@ export function CameraUpload({ onPhotoSelected, onCancel, multiple = false }: Ca
       <div className="grid grid-cols-2 gap-3">
         <Button
           variant="outline"
-          className="h-32 flex-col space-y-2 hover:border-blue-500 hover:bg-blue-50 transition-all"
+          className="h-32 flex-col space-y-2 hover:border-[var(--gold-deep)] hover:bg-secondary transition-all"
           onClick={handleCameraCapture}
           disabled={isUploading}
           data-testid="button-camera-capture"
         >
-          <Camera className="h-8 w-8 text-blue-600" />
+          <Camera className="h-8 w-8 text-gold" />
           <div className="text-center">
             <div className="font-semibold">Take Photo</div>
-            <div className="text-xs text-gray-500">Use camera</div>
+            <div className="text-xs text-muted-foreground">Use camera</div>
           </div>
         </Button>
 
         <Button
           variant="outline"
-          className="h-32 flex-col space-y-2 hover:border-emerald-500 hover:bg-emerald-50 transition-all"
+          className="h-32 flex-col space-y-2 hover:border-border hover:bg-secondary transition-all"
           onClick={handleLibraryPick}
           disabled={isUploading}
           data-testid="button-library-pick"
         >
-          <ImageIcon className="h-8 w-8 text-emerald-600" />
+          <ImageIcon className="h-8 w-8 text-muted-foreground" />
           <div className="text-center">
             <div className="font-semibold">Choose Photo</div>
-            <div className="text-xs text-gray-500">From library</div>
+            <div className="text-xs text-muted-foreground">From library</div>
           </div>
         </Button>
       </div>
@@ -90,7 +90,7 @@ export function CameraUpload({ onPhotoSelected, onCancel, multiple = false }: Ca
             exit={{ opacity: 0, scale: 0.9 }}
             className="relative"
           >
-            <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+            <div className="aspect-video bg-secondary rounded-lg overflow-hidden">
               <img 
                 src={selectedPhoto} 
                 alt="Selected bill" 
@@ -103,7 +103,7 @@ export function CameraUpload({ onPhotoSelected, onCancel, multiple = false }: Ca
               <Button
                 size="sm"
                 variant="secondary"
-                className="bg-white/90 backdrop-blur-sm"
+                className="bg-card border border-border shadow-sm"
                 onClick={() => {
                   setSelectedPhoto(null);
                   onCancel?.();
@@ -113,7 +113,7 @@ export function CameraUpload({ onPhotoSelected, onCancel, multiple = false }: Ca
                 <X className="h-4 w-4" />
               </Button>
               
-              <div className="bg-emerald-500/90 backdrop-blur-sm text-white rounded-md px-3 py-1 flex items-center space-x-1">
+              <div className="bg-emerald-600 text-white rounded-md px-3 py-1 flex items-center space-x-1">
                 <Check className="h-4 w-4" />
                 <span className="text-sm font-medium">Selected</span>
               </div>
@@ -124,17 +124,17 @@ export function CameraUpload({ onPhotoSelected, onCancel, multiple = false }: Ca
 
       {/* Camera Status */}
       {!cameraAvailable && (
-        <div className="text-sm text-amber-600 bg-amber-50 p-3 rounded-lg flex items-start space-x-2">
+        <div className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950 p-3 rounded-lg flex items-start space-x-2">
           <Upload className="h-4 w-4 mt-0.5 flex-shrink-0" />
           <div>
             <div className="font-medium">Camera not available</div>
-            <div className="text-xs text-amber-700">Using file picker instead. On iOS, you'll have full camera access.</div>
+            <div className="text-xs text-amber-700 dark:text-amber-300">Using file picker instead. On iOS, you'll have full camera access.</div>
           </div>
         </div>
       )}
 
       {/* iOS Features Notice */}
-      <div className="text-xs text-gray-500 text-center">
+      <div className="text-xs text-muted-foreground text-center">
         📱 <span className="font-medium">iOS App Features:</span> Document scanning, edge detection, and multi-page capture
       </div>
     </div>

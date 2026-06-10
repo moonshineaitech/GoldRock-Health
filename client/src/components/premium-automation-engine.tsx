@@ -151,10 +151,10 @@ export function PremiumAutomationEngine({ onSendMessage }: AutomationEngineProps
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'text-emerald-600 bg-emerald-100';
-      case 'paused': return 'text-yellow-600 bg-yellow-100';
-      case 'completed': return 'text-blue-600 bg-blue-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'active': return 'text-emerald-700 bg-emerald-50';
+      case 'paused': return 'text-amber-700 bg-amber-50';
+      case 'completed': return 'text-muted-foreground bg-secondary';
+      default: return 'text-muted-foreground bg-secondary';
     }
   };
 
@@ -172,7 +172,7 @@ export function PremiumAutomationEngine({ onSendMessage }: AutomationEngineProps
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-200 relative overflow-hidden"
+      className="bg-card rounded-2xl shadow-sm border border-border relative overflow-hidden"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -186,18 +186,18 @@ export function PremiumAutomationEngine({ onSendMessage }: AutomationEngineProps
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center space-x-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Bot className="h-6 w-6 text-white" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-lg font-bold text-gray-900">Premium Automation Engine</h3>
-              <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs">
+              <h3 className="text-lg font-bold text-foreground font-serif">Premium Automation Engine</h3>
+              <Badge className="bg-secondary text-foreground text-xs">
                 <Crown className="h-3 w-3 mr-1" />
                 Enterprise
               </Badge>
             </div>
-            <p className="text-sm text-gray-600">24/7 automated bill monitoring • Save 20-40 hours/month</p>
+            <p className="text-sm text-muted-foreground">24/7 automated bill monitoring • Save 20-40 hours/month</p>
           </div>
         </div>
 
@@ -205,26 +205,26 @@ export function PremiumAutomationEngine({ onSendMessage }: AutomationEngineProps
         <div className="grid grid-cols-4 gap-3 mb-6">
           <Card className="p-3">
             <div className="text-center">
-              <div className="text-xl font-bold text-emerald-600">{automationRules.filter(r => r.status === 'active').length}</div>
-              <div className="text-xs text-gray-600">Active Rules</div>
+              <div className="text-xl font-bold text-foreground">{automationRules.filter(r => r.status === 'active').length}</div>
+              <div className="text-xs text-muted-foreground">Active Rules</div>
             </div>
           </Card>
           <Card className="p-3">
             <div className="text-center">
-              <div className="text-xl font-bold text-blue-600">${automationRules.reduce((sum, r) => sum + parseFloat(r.savingsGenerated.replace(/[$,]/g, '') || '0'), 0).toLocaleString()}</div>
-              <div className="text-xs text-gray-600">Total Saved</div>
+              <div className="text-xl font-bold text-gold">${automationRules.reduce((sum, r) => sum + parseFloat(r.savingsGenerated.replace(/[$,]/g, '') || '0'), 0).toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">Total Saved</div>
             </div>
           </Card>
           <Card className="p-3">
             <div className="text-center">
-              <div className="text-xl font-bold text-purple-600">{automationRules.reduce((sum, r) => sum + r.totalRuns, 0)}</div>
-              <div className="text-xs text-gray-600">Total Runs</div>
+              <div className="text-xl font-bold text-foreground">{automationRules.reduce((sum, r) => sum + r.totalRuns, 0)}</div>
+              <div className="text-xs text-muted-foreground">Total Runs</div>
             </div>
           </Card>
           <Card className="p-3">
             <div className="text-center">
-              <div className="text-xl font-bold text-orange-600">89%</div>
-              <div className="text-xs text-gray-600">Avg Success</div>
+              <div className="text-xl font-bold text-foreground">89%</div>
+              <div className="text-xs text-muted-foreground">Avg Success</div>
             </div>
           </Card>
         </div>
@@ -357,19 +357,19 @@ This should be a professional-grade automation system that continuously monitors
             <Card 
               key={monitor.id}
               className={`cursor-pointer transition-all hover:shadow-md ${
-                selectedMonitor === monitor.id ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                selectedMonitor === monitor.id ? 'ring-2 ring-[color:var(--gold)] bg-secondary' : ''
               }`}
               onClick={() => setSelectedMonitor(monitor.id)}
             >
               <CardContent className="p-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <Icon className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+                    <Icon className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 mb-1">{monitor.name}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{monitor.description}</p>
-                    <Badge className="bg-emerald-100 text-emerald-700 text-xs">
+                    <h4 className="font-semibold text-foreground mb-1">{monitor.name}</h4>
+                    <p className="text-sm text-muted-foreground mb-2">{monitor.description}</p>
+                    <Badge className="bg-secondary text-foreground text-xs">
                       {monitor.savings}
                     </Badge>
                   </div>
@@ -384,9 +384,9 @@ This should be a professional-grade automation system that continuously monitors
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="border rounded-xl p-4 bg-gray-50"
+          className="border border-border rounded-xl p-4 bg-secondary"
         >
-          <h4 className="font-semibold mb-3">Setup Monitoring Parameters</h4>
+          <h4 className="font-semibold mb-3 text-foreground">Setup Monitoring Parameters</h4>
           <div className="grid grid-cols-2 gap-4">
             <Input
               placeholder="Patient ID or Name"
@@ -419,7 +419,7 @@ This should be a professional-grade automation system that continuously monitors
           </div>
           <Button 
             onClick={setupMonitoring}
-            className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="mt-4 bg-primary text-primary-foreground"
             data-testid="button-setup-monitoring"
           >
             <Play className="h-4 w-4 mr-2" />
@@ -516,23 +516,23 @@ This should be a fully automated system that handles the entire follow-up proces
             <Card 
               key={sequence.id}
               className={`cursor-pointer transition-all hover:shadow-md ${
-                selectedSequence === sequence.id ? 'ring-2 ring-purple-500 bg-purple-50' : ''
+                selectedSequence === sequence.id ? 'ring-2 ring-[color:var(--gold)] bg-secondary' : ''
               }`}
               onClick={() => setSelectedSequence(sequence.id)}
             >
               <CardContent className="p-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-                    <Icon className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+                    <Icon className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 mb-1">{sequence.name}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{sequence.description}</p>
+                    <h4 className="font-semibold text-foreground mb-1">{sequence.name}</h4>
+                    <p className="text-sm text-muted-foreground mb-2">{sequence.description}</p>
                     <div className="flex space-x-2">
-                      <Badge className="bg-green-100 text-green-700 text-xs">
+                      <Badge className="bg-emerald-50 text-emerald-700 text-xs">
                         {sequence.successRate} Success
                       </Badge>
-                      <Badge className="bg-blue-100 text-blue-700 text-xs">
+                      <Badge className="bg-secondary text-muted-foreground text-xs">
                         {sequence.timeframe}
                       </Badge>
                     </div>
@@ -548,9 +548,9 @@ This should be a fully automated system that handles the entire follow-up proces
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="border rounded-xl p-4 bg-gray-50"
+          className="border border-border rounded-xl p-4 bg-secondary"
         >
-          <h4 className="font-semibold mb-3">Configure Automation Sequence</h4>
+          <h4 className="font-semibold mb-3 text-foreground">Configure Automation Sequence</h4>
           <div className="grid grid-cols-2 gap-4">
             <Input
               placeholder="Case Type (e.g., Insurance Denial, Hospital Bill)"
@@ -593,7 +593,7 @@ This should be a fully automated system that handles the entire follow-up proces
           </div>
           <Button 
             onClick={launchSequence}
-            className="mt-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            className="mt-4 bg-primary text-primary-foreground"
             data-testid="button-launch-sequence"
           >
             <Zap className="h-4 w-4 mr-2" />
@@ -690,19 +690,19 @@ This should be a professional-grade report suitable for personal financial plann
             <Card 
               key={report.id}
               className={`cursor-pointer transition-all hover:shadow-md ${
-                selectedReport === report.id ? 'ring-2 ring-emerald-500 bg-emerald-50' : ''
+                selectedReport === report.id ? 'ring-2 ring-[color:var(--gold)] bg-secondary' : ''
               }`}
               onClick={() => setSelectedReport(report.id)}
             >
               <CardContent className="p-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
-                    <Icon className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+                    <Icon className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 mb-1">{report.name}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{report.description}</p>
-                    <Badge className="bg-teal-100 text-teal-700 text-xs">
+                    <h4 className="font-semibold text-foreground mb-1">{report.name}</h4>
+                    <p className="text-sm text-muted-foreground mb-2">{report.description}</p>
+                    <Badge className="bg-secondary text-muted-foreground text-xs">
                       {report.value}
                     </Badge>
                   </div>
@@ -717,9 +717,9 @@ This should be a professional-grade report suitable for personal financial plann
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="border rounded-xl p-4 bg-gray-50"
+          className="border border-border rounded-xl p-4 bg-secondary"
         >
-          <h4 className="font-semibold mb-3">Configure Report Generation</h4>
+          <h4 className="font-semibold mb-3 text-foreground">Configure Report Generation</h4>
           <div className="grid grid-cols-2 gap-4">
             <Select value={reportData.reportPeriod} onValueChange={(value) => setReportData({...reportData, reportPeriod: value})}>
               <SelectTrigger>
@@ -748,12 +748,12 @@ This should be a professional-grade report suitable for personal financial plann
                 checked={reportData.includeFamily} 
                 onCheckedChange={(checked) => setReportData({...reportData, includeFamily: checked})}
               />
-              <label className="text-sm text-gray-700">Include family member data</label>
+              <label className="text-sm text-foreground">Include family member data</label>
             </div>
           </div>
           <Button 
             onClick={generateReport}
-            className="mt-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
+            className="mt-4 bg-primary text-primary-foreground"
             data-testid="button-generate-report"
           >
             <Download className="h-4 w-4 mr-2" />
@@ -783,7 +783,7 @@ function AutomationManagement({ rules, onRuleUpdate }: { rules: AutomationRule[]
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h4 className="font-semibold text-gray-900">Active Automation Rules</h4>
+        <h4 className="font-semibold text-foreground">Active Automation Rules</h4>
         <Button size="sm" variant="outline">
           <PlusCircle className="h-4 w-4 mr-2" />
           Add Rule
@@ -799,18 +799,18 @@ function AutomationManagement({ rules, onRuleUpdate }: { rules: AutomationRule[]
           <Card key={rule.id} className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3 flex-1">
-                <div className="w-10 h-10 bg-gradient-to-br from-gray-400 to-gray-600 rounded-xl flex items-center justify-center">
-                  <TypeIcon className="h-5 w-5 text-white" />
+                <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+                  <TypeIcon className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h5 className="font-semibold text-gray-900">{rule.name}</h5>
+                    <h5 className="font-semibold text-foreground">{rule.name}</h5>
                     <Badge className={getStatusColor(rule.status)}>
                       {rule.status}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-600 mb-1">{rule.action}</p>
-                  <div className="text-xs text-gray-500">
+                  <p className="text-sm text-muted-foreground mb-1">{rule.action}</p>
+                  <div className="text-xs text-muted-foreground">
                     Runs: {rule.totalRuns} • Success: {rule.successRate} • Saved: {rule.savingsGenerated}
                   </div>
                 </div>
@@ -838,9 +838,9 @@ function AutomationManagement({ rules, onRuleUpdate }: { rules: AutomationRule[]
 
 function getStatusColor(status: string) {
   switch (status) {
-    case 'active': return 'text-emerald-600 bg-emerald-100';
-    case 'paused': return 'text-yellow-600 bg-yellow-100';
-    case 'completed': return 'text-blue-600 bg-blue-100';
-    default: return 'text-gray-600 bg-gray-100';
+    case 'active': return 'text-emerald-700 bg-emerald-50';
+    case 'paused': return 'text-amber-700 bg-amber-50';
+    case 'completed': return 'text-muted-foreground bg-secondary';
+    default: return 'text-muted-foreground bg-secondary';
   }
 }

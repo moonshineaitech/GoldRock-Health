@@ -27,36 +27,30 @@ export function AchievementSystem() {
       description: "Completed 10 cardiology cases with 90%+ accuracy",
       icon: Medal,
       date: "2 days ago",
-      gradient: "from-amber-50 to-orange-50",
-      border: "border-amber-200",
-      iconGradient: "from-amber-400 to-orange-500"
+      featured: true
     },
     {
       title: "Speed Demon", 
       description: "Diagnosed 5 cases in under 15 minutes each",
       icon: Clock,
       date: "1 week ago",
-      gradient: "from-emerald-50 to-teal-50",
-      border: "border-emerald-200",
-      iconGradient: "from-emerald-400 to-teal-500"
+      featured: false
     },
     {
       title: "Voice Master",
       description: "Completed 25 cases using voice interactions",
       icon: Mic,
       date: "2 weeks ago", 
-      gradient: "from-purple-50 to-indigo-50",
-      border: "border-purple-200",
-      iconGradient: "from-purple-400 to-indigo-500"
+      featured: false
     }
   ];
 
   return (
-    <section id="progress" className="py-20">
+    <section id="progress" className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">Track Your Progress</h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+          <h2 className="text-4xl font-serif font-bold text-foreground mb-4">Track Your Progress</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Monitor your diagnostic skills development with comprehensive analytics and achievement tracking.
           </p>
         </div>
@@ -64,76 +58,78 @@ export function AchievementSystem() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Progress Analytics */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-md rounded-2xl p-6 border border-white/30 shadow-xl"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="luxury-card rounded-2xl p-6"
           >
-            <h3 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
-              <Target className="text-indigo-600 mr-3 h-5 w-5" />
+            <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center">
+              <Target className="text-gold mr-3 h-5 w-5" />
               Learning Analytics
             </h3>
             
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-slate-600">Overall Accuracy</span>
+                <span className="text-muted-foreground">Overall Accuracy</span>
                 <div className="flex items-center space-x-2">
-                  <div className="w-32 bg-slate-200 rounded-full h-2">
+                  <div className="w-32 bg-secondary rounded-full h-2">
                     <motion.div 
-                      className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full"
+                      className="h-2 rounded-full"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                       initial={{ width: 0 }}
                       animate={{ width: `${analytics.accuracy}%` }}
                       transition={{ duration: 1.5, delay: 0.5 }}
                     />
                   </div>
-                  <span className="font-semibold text-slate-900">{analytics.accuracy}%</span>
+                  <span className="font-semibold text-foreground">{analytics.accuracy}%</span>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
-                <span className="text-slate-600">Speed Improvement</span>
+                <span className="text-muted-foreground">Speed Improvement</span>
                 <div className="flex items-center space-x-2">
-                  <div className="w-32 bg-slate-200 rounded-full h-2">
+                  <div className="w-32 bg-secondary rounded-full h-2">
                     <motion.div 
-                      className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full"
+                      className="bg-foreground h-2 rounded-full"
                       initial={{ width: 0 }}
                       animate={{ width: `${analytics.speed}%` }}
                       transition={{ duration: 1.5, delay: 0.7 }}
                     />
                   </div>
-                  <span className="font-semibold text-slate-900">+{analytics.speed}%</span>
+                  <span className="font-semibold text-foreground">+{analytics.speed}%</span>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
-                <span className="text-slate-600">Case Completion</span>
+                <span className="text-muted-foreground">Case Completion</span>
                 <div className="flex items-center space-x-2">
-                  <div className="w-32 bg-slate-200 rounded-full h-2">
+                  <div className="w-32 bg-secondary rounded-full h-2">
                     <motion.div 
-                      className="bg-gradient-to-r from-amber-500 to-orange-500 h-2 rounded-full"
+                      className="bg-foreground h-2 rounded-full"
                       initial={{ width: 0 }}
                       animate={{ width: `${(analytics.completion / analytics.total) * 100}%` }}
                       transition={{ duration: 1.5, delay: 0.9 }}
                     />
                   </div>
-                  <span className="font-semibold text-slate-900">{analytics.completion}/{analytics.total}</span>
+                  <span className="font-semibold text-foreground">{analytics.completion}/{analytics.total}</span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-slate-200">
-              <h4 className="font-semibold text-slate-900 mb-3">Specialty Strengths</h4>
+            <div className="mt-6 pt-6 border-t border-border">
+              <h4 className="font-semibold text-foreground mb-3">Specialty Strengths</h4>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-lg p-3 border border-emerald-200">
+                <div className="bg-secondary rounded-lg p-3 border border-border">
                   <div className="flex items-center justify-between">
-                    <span className="text-emerald-700 text-sm font-medium">Cardiology</span>
-                    <span className="text-emerald-800 font-bold">94%</span>
+                    <span className="text-muted-foreground text-sm font-medium">Cardiology</span>
+                    <span className="text-foreground font-bold">94%</span>
                   </div>
                 </div>
-                <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg p-3 border border-indigo-200">
+                <div className="bg-secondary rounded-lg p-3 border border-border">
                   <div className="flex items-center justify-between">
-                    <span className="text-indigo-700 text-sm font-medium">Neurology</span>
-                    <span className="text-indigo-800 font-bold">89%</span>
+                    <span className="text-muted-foreground text-sm font-medium">Neurology</span>
+                    <span className="text-foreground font-bold">89%</span>
                   </div>
                 </div>
               </div>
@@ -142,34 +138,39 @@ export function AchievementSystem() {
 
           {/* Achievement Cards */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-slate-900 flex items-center">
-              <Trophy className="text-amber-500 mr-3 h-5 w-5" />
+            <h3 className="text-xl font-semibold text-foreground flex items-center">
+              <Trophy className="text-gold mr-3 h-5 w-5" />
               Recent Achievements
             </h3>
             
             {recentAchievements.map((achievement, index) => (
               <motion.div
                 key={achievement.title}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`bg-gradient-to-r ${achievement.gradient} rounded-2xl p-4 border ${achievement.border} hover:shadow-lg transition-all duration-300`}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -2 }}
+                className="luxury-card rounded-2xl p-4 transition-shadow duration-300 hover:shadow-md"
               >
                 <div className="flex items-center space-x-4">
-                  <div className={`w-12 h-12 bg-gradient-to-r ${achievement.iconGradient} rounded-xl flex items-center justify-center`}>
-                    <achievement.icon className="text-white h-6 w-6" />
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center bg-secondary"
+                    style={achievement.featured ? { background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' } : undefined}
+                  >
+                    <achievement.icon className={`h-6 w-6 ${achievement.featured ? 'text-white' : 'text-muted-foreground'}`} />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-slate-900">{achievement.title}</h4>
-                    <p className="text-slate-600 text-sm">{achievement.description}</p>
+                    <h4 className="font-semibold text-foreground">{achievement.title}</h4>
+                    <p className="text-muted-foreground text-sm">{achievement.description}</p>
                   </div>
-                  <span className="text-slate-500 text-sm font-medium">{achievement.date}</span>
+                  <span className="text-muted-foreground text-sm font-medium">{achievement.date}</span>
                 </div>
               </motion.div>
             ))}
 
             <div className="text-center pt-4">
-              <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-300">
+              <Button className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium hover:shadow-md transition-all duration-300">
                 View All Achievements
               </Button>
             </div>

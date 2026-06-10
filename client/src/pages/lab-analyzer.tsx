@@ -36,10 +36,10 @@ interface LabAnalysisResult {
 }
 
 const PANELS = [
-  { id: 'cbc', name: 'Blood Count', icon: Droplet, color: 'bg-red-500', desc: 'CBC Panel' },
-  { id: 'metabolic', name: 'Metabolic', icon: Activity, color: 'bg-emerald-500', desc: 'CMP Panel' },
-  { id: 'lipid', name: 'Cholesterol', icon: Heart, color: 'bg-orange-500', desc: 'Lipid Panel' },
-  { id: 'thyroid', name: 'Thyroid', icon: Brain, color: 'bg-purple-500', desc: 'TSH, T3, T4' },
+  { id: 'cbc', name: 'Blood Count', icon: Droplet, color: 'bg-secondary', desc: 'CBC Panel' },
+  { id: 'metabolic', name: 'Metabolic', icon: Activity, color: 'bg-secondary', desc: 'CMP Panel' },
+  { id: 'lipid', name: 'Cholesterol', icon: Heart, color: 'bg-secondary', desc: 'Lipid Panel' },
+  { id: 'thyroid', name: 'Thyroid', icon: Brain, color: 'bg-secondary', desc: 'TSH, T3, T4' },
 ];
 
 const PANEL_FIELDS: Record<string, { name: string; label: string; unit: string; hint: string }[]> = {
@@ -109,21 +109,21 @@ export default function LabAnalyzer() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'normal': return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'low': return <TrendingDown className="h-4 w-4 text-blue-500" />;
-      case 'high': return <TrendingUp className="h-4 w-4 text-orange-500" />;
-      case 'critical': return <XCircle className="h-4 w-4 text-red-500" />;
-      default: return <Minus className="h-4 w-4 text-gray-400" />;
+      case 'normal': return <CheckCircle className="h-4 w-4 text-green-500 dark:text-green-400" />;
+      case 'low': return <TrendingDown className="h-4 w-4 text-muted-foreground" />;
+      case 'high': return <TrendingUp className="h-4 w-4 text-orange-500 dark:text-orange-400" />;
+      case 'critical': return <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />;
+      default: return <Minus className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
   const getStatusBg = (status: string) => {
     switch (status) {
-      case 'normal': return 'bg-green-50 border-green-200';
-      case 'low': return 'bg-blue-50 border-blue-200';
-      case 'high': return 'bg-orange-50 border-orange-200';
-      case 'critical': return 'bg-red-50 border-red-200';
-      default: return 'bg-gray-50 border-gray-200';
+      case 'normal': return 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-900';
+      case 'low': return 'bg-secondary border-border';
+      case 'high': return 'bg-orange-50 border-orange-200 dark:bg-orange-950 dark:border-orange-900';
+      case 'critical': return 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-900';
+      default: return 'bg-secondary border-border';
     }
   };
 
@@ -136,7 +136,7 @@ export default function LabAnalyzer() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <SEOHead 
         title="Lab Results Interpreter - AI Blood Test Analysis"
         description="Free AI lab results interpreter. Understand your blood test results, CBC interpretation, metabolic panel explained, cholesterol levels meaning, and thyroid test analysis."
@@ -155,20 +155,20 @@ export default function LabAnalyzer() {
         "What do abnormal lab values mean, when to worry about blood test results"
       ]} />
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 pt-12 pb-6">
+      <div className="bg-card border-b border-border px-4 pt-12 pb-6">
         <div className="max-w-lg mx-auto">
           <Link href="/clinical-command-center">
-            <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-secondary mb-3 -ml-2 h-8 text-sm" data-testid="button-back">
               <ArrowLeft className="h-4 w-4 mr-1" /> Back
             </Button>
           </Link>
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center">
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <FlaskConical className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold" data-testid="heading-lab-analyzer">Lab Reference Guide</h1>
-              <p className="text-white/80 text-xs">Look up lab values and medical terminology</p>
+              <h1 className="text-xl font-bold font-serif text-foreground" data-testid="heading-lab-analyzer">Lab Reference Guide</h1>
+              <p className="text-muted-foreground text-xs">Look up lab values and medical terminology</p>
             </div>
           </div>
         </div>
@@ -176,10 +176,10 @@ export default function LabAnalyzer() {
 
       <div className="max-w-lg mx-auto px-4 py-5 space-y-4">
         {/* Disclaimer */}
-        <Card className="border-amber-200 bg-amber-50/80">
+        <Card className="border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-950/40">
           <CardContent className="p-3 flex items-start gap-2">
-            <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-amber-800">
+            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-800 dark:text-amber-300">
               <strong>Educational only.</strong> Always discuss results with your doctor.
             </p>
           </CardContent>
@@ -188,22 +188,22 @@ export default function LabAnalyzer() {
         {/* No Result Yet - Show Selection */}
         {!result && !selectedPanel && !manualMode && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <h2 className="text-sm font-semibold text-gray-700">Choose a lab panel</h2>
+            <h2 className="text-sm font-semibold text-foreground">Choose a lab panel</h2>
             <div className="grid grid-cols-2 gap-3">
               {PANELS.map((panel) => (
                 <motion.button
                   key={panel.id}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedPanel(panel.id)}
-                  className="bg-white rounded-xl p-4 text-left shadow-sm border border-gray-100 hover:border-indigo-200 transition-colors"
+                  className="bg-card rounded-xl p-4 text-left shadow-sm border border-border hover:border-gold transition-colors"
                   data-testid={`button-panel-${panel.id}`}
                 >
                   <div className={`w-10 h-10 ${panel.color} rounded-lg flex items-center justify-center mb-2`}>
-                    <panel.icon className="h-5 w-5 text-white" />
+                    <panel.icon className="h-5 w-5 text-muted-foreground" />
                   </div>
-                  <h3 className="font-semibold text-gray-900">{panel.name}</h3>
-                  <p className="text-xs text-gray-500">{panel.desc}</p>
+                  <h3 className="font-semibold text-foreground">{panel.name}</h3>
+                  <p className="text-xs text-muted-foreground">{panel.desc}</p>
                 </motion.button>
               ))}
             </div>
@@ -211,7 +211,7 @@ export default function LabAnalyzer() {
             <div className="text-center pt-2">
               <button
                 onClick={() => setManualMode(true)}
-                className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                className="text-sm text-gold hover:opacity-80 font-medium"
                 data-testid="button-manual-entry"
               >
                 Or paste your full lab report
@@ -229,7 +229,7 @@ export default function LabAnalyzer() {
                   <CardTitle className="text-lg">
                     {PANELS.find(p => p.id === selectedPanel)?.name} Panel
                   </CardTitle>
-                  <Button variant="ghost" size="sm" onClick={resetForm} className="text-gray-500 h-8">
+                  <Button variant="ghost" size="sm" onClick={resetForm} className="text-muted-foreground h-8">
                     Change
                   </Button>
                 </div>
@@ -250,14 +250,14 @@ export default function LabAnalyzer() {
                         className="flex-1"
                         data-testid={`input-${field.name.toLowerCase()}`}
                       />
-                      <span className="text-xs text-gray-500 w-14">{field.unit}</span>
+                      <span className="text-xs text-muted-foreground w-14">{field.unit}</span>
                     </div>
                   </div>
                 ))}
                 <Button
                   onClick={handlePanelAnalysis}
                   disabled={analyzeMutation.isPending}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600"
+                  className="w-full bg-primary text-primary-foreground"
                   data-testid="button-analyze"
                 >
                   {analyzeMutation.isPending ? (
@@ -278,7 +278,7 @@ export default function LabAnalyzer() {
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">Paste Lab Results</CardTitle>
-                  <Button variant="ghost" size="sm" onClick={resetForm} className="text-gray-500 h-8">
+                  <Button variant="ghost" size="sm" onClick={resetForm} className="text-muted-foreground h-8">
                     Back
                   </Button>
                 </div>
@@ -301,7 +301,7 @@ Glucose: 95 mg/dL
                 <Button
                   onClick={handleManualAnalysis}
                   disabled={analyzeMutation.isPending}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600"
+                  className="w-full bg-primary text-primary-foreground"
                   data-testid="button-analyze-manual"
                 >
                   {analyzeMutation.isPending ? (
@@ -325,13 +325,13 @@ Glucose: 95 mg/dL
             >
               {/* Summary */}
               <Card className={`border-2 ${
-                result.overallHealth === 'good' ? 'border-green-300 bg-green-50' :
-                result.overallHealth === 'concerning' ? 'border-orange-300 bg-orange-50' :
-                'border-red-300 bg-red-50'
+                result.overallHealth === 'good' ? 'border-green-300 bg-green-50 dark:border-green-900 dark:bg-green-950' :
+                result.overallHealth === 'concerning' ? 'border-orange-300 bg-orange-50 dark:border-orange-900 dark:bg-orange-950' :
+                'border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950'
               }`}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-bold text-gray-900">Summary</span>
+                    <span className="font-bold text-foreground">Summary</span>
                     <Badge className={
                       result.overallHealth === 'good' ? 'bg-green-500' :
                       result.overallHealth === 'concerning' ? 'bg-orange-500' : 'bg-red-500'
@@ -340,7 +340,7 @@ Glucose: 95 mg/dL
                        result.overallHealth === 'concerning' ? 'Some Concerns' : 'Needs Attention'}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-700">{result.summary}</p>
+                  <p className="text-sm text-foreground">{result.summary}</p>
                 </CardContent>
               </Card>
 
@@ -362,7 +362,7 @@ Glucose: 95 mg/dL
                           </div>
                           <div className="text-right">
                             <span className="font-bold text-sm">{v.value} {v.unit}</span>
-                            <div className="text-xs text-gray-500">Normal: {v.normalRange}</div>
+                            <div className="text-xs text-muted-foreground">Normal: {v.normalRange}</div>
                           </div>
                         </div>
                       </div>
@@ -376,14 +376,14 @@ Glucose: 95 mg/dL
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base flex items-center gap-2">
-                      <Brain className="h-4 w-4 text-purple-600" /> What This Means
+                      <Brain className="h-4 w-4 text-muted-foreground" /> What This Means
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
                       {result.insights.map((insight, i) => (
-                        <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                          <span className="text-purple-500 mt-1">-</span>
+                        <li key={i} className="text-sm text-foreground flex items-start gap-2">
+                          <span className="text-muted-foreground mt-1">-</span>
                           {insight}
                         </li>
                       ))}
@@ -397,13 +397,13 @@ Glucose: 95 mg/dL
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" /> Suggestions
+                      <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" /> Suggestions
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
                       {result.recommendations.map((rec, i) => (
-                        <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                        <li key={i} className="text-sm text-foreground flex items-start gap-2">
                           <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                           {rec}
                         </li>

@@ -85,46 +85,47 @@ export default function MedicalDebtReliefOptions() {
         keywords={["medical debt relief", "hospital charity care", "medical bill forgiveness", "healthcare debt help", "medical payment assistance"]}
       />
 
-      <div className="min-h-screen bg-[#0a1628]">
+      <div className="min-h-screen bg-background">
         <div className="max-w-4xl mx-auto px-4 py-12">
           <Link href="/articles">
-            <button className="flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors" data-testid="button-back">
+            <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors" data-testid="button-back">
               <ArrowLeft className="w-4 h-4" />
               Back to Articles
             </button>
           </Link>
 
           <motion.article
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <header className="mb-12">
-              <Badge className="bg-pink-500/20 text-pink-400 border-pink-500/30 mb-4">
+              <Badge className="bg-secondary text-gold border border-border mb-4">
                 Financial Assistance
               </Badge>
-              <h1 className="text-4xl font-bold text-white mb-4">
+              <h1 className="text-4xl font-bold font-serif text-foreground mb-4">
                 Medical Debt Relief: Options You Didn't Know Existed
               </h1>
-              <p className="text-xl text-gray-400 mb-6">
+              <p className="text-xl text-muted-foreground mb-6">
                 Medical debt affects 1 in 3 Americans, but there are more options for relief than 
                 most people realize. From charity care to negotiated settlements, this guide covers 
                 every avenue for reducing or eliminating medical debt.
               </p>
-              <div className="flex items-center gap-4 text-sm text-gray-500">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <span>11 min read</span>
                 <span>•</span>
                 <span>Last updated January 2026</span>
               </div>
             </header>
 
-            <div className="prose prose-invert max-w-none">
-              <Card className="bg-blue-500/10 border-blue-500/30 mb-8">
+            <div className="max-w-none">
+              <Card className="luxury-card mb-8">
                 <CardContent className="py-6">
                   <div className="flex items-start gap-4">
-                    <Heart className="w-8 h-8 text-blue-400 flex-shrink-0" />
+                    <Heart className="w-8 h-8 text-gold flex-shrink-0" />
                     <div>
-                      <h3 className="text-lg font-semibold text-blue-400 mb-2">You Have Options</h3>
-                      <p className="text-gray-300">
+                      <h3 className="text-lg font-semibold text-foreground mb-2">You Have Options</h3>
+                      <p className="text-muted-foreground">
                         <strong>$140 billion</strong> in medical debt burdens American households. But hospitals 
                         provide <strong>$42 billion</strong> in charity care annually—most of it goes unclaimed 
                         because patients don't know to ask. This guide will help you get help.
@@ -134,37 +135,37 @@ export default function MedicalDebtReliefOptions() {
                 </CardContent>
               </Card>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-6">
+              <h2 className="text-2xl font-bold font-serif text-foreground mt-12 mb-6">
                 8 Medical Debt Relief Options
               </h2>
 
               <div className="space-y-6 mb-12">
                 {reliefOptions.map((option, index) => (
-                  <Card key={option.title} className="bg-white/5 border-white/10">
+                  <Card key={option.title} className="bg-card border border-border">
                     <CardHeader>
-                      <CardTitle className="text-white flex items-center gap-3">
-                        <span className="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center text-pink-400 font-bold text-sm">
+                      <CardTitle className="text-foreground flex items-center gap-3">
+                        <span className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-gold font-bold text-sm">
                           {index + 1}
                         </span>
                         {option.title}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <p className="text-gray-300">{option.description}</p>
+                      <p className="text-muted-foreground">{option.description}</p>
                       
                       <div className="grid md:grid-cols-2 gap-4">
-                        <div className="bg-black/20 rounded-lg p-3">
-                          <p className="text-xs text-gray-500 uppercase mb-1">Eligibility</p>
-                          <p className="text-sm text-gray-300">{option.eligibility}</p>
+                        <div className="bg-secondary rounded-lg p-3">
+                          <p className="text-xs text-muted-foreground uppercase mb-1">Eligibility</p>
+                          <p className="text-sm text-foreground">{option.eligibility}</p>
                         </div>
-                        <div className="bg-black/20 rounded-lg p-3">
-                          <p className="text-xs text-gray-500 uppercase mb-1">Potential Savings</p>
-                          <p className="text-sm text-green-400">{option.savings}</p>
+                        <div className="bg-secondary rounded-lg p-3">
+                          <p className="text-xs text-muted-foreground uppercase mb-1">Potential Savings</p>
+                          <p className="text-sm text-emerald-700 dark:text-emerald-500">{option.savings}</p>
                         </div>
                       </div>
                       
-                      <div className="bg-cyan-500/10 rounded-lg p-4 border-l-4 border-cyan-500">
-                        <p className="text-sm text-cyan-300">
+                      <div className="bg-secondary rounded-lg p-4 border-l-4 border-gold">
+                        <p className="text-sm text-foreground">
                           <strong>How to Apply:</strong> {option.howToApply}
                         </p>
                       </div>
@@ -173,17 +174,17 @@ export default function MedicalDebtReliefOptions() {
                 ))}
               </div>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-6">
+              <h2 className="text-2xl font-bold font-serif text-foreground mt-12 mb-6">
                 Important: Protect Yourself from Collections
               </h2>
 
-              <Card className="bg-yellow-500/10 border-yellow-500/30 mb-8">
+              <Card className="bg-card border border-border mb-8">
                 <CardContent className="py-6">
                   <div className="flex items-start gap-4">
-                    <AlertTriangle className="w-8 h-8 text-yellow-400 flex-shrink-0" />
+                    <AlertTriangle className="w-8 h-8 text-amber-600 dark:text-amber-500 flex-shrink-0" />
                     <div>
-                      <h3 className="text-lg font-semibold text-yellow-400 mb-2">New Protections for Medical Debt</h3>
-                      <ul className="text-gray-300 space-y-2">
+                      <h3 className="text-lg font-semibold text-foreground mb-2">New Protections for Medical Debt</h3>
+                      <ul className="text-muted-foreground space-y-2">
                         <li>• Medical debt under $500 can no longer appear on credit reports</li>
                         <li>• Paid medical debt must be removed from credit reports</li>
                         <li>• 1-year waiting period before medical debt can be reported</li>
@@ -194,121 +195,121 @@ export default function MedicalDebtReliefOptions() {
                 </CardContent>
               </Card>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-6">
+              <h2 className="text-2xl font-bold font-serif text-foreground mt-12 mb-6">
                 Steps to Take Right Now
               </h2>
 
-              <ol className="space-y-4 text-gray-300 mb-8">
+              <ol className="space-y-4 text-muted-foreground mb-8">
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">1</span>
                   <div>
-                    <strong className="text-white">Request an itemized bill</strong>
-                    <p className="text-gray-400">Before paying anything, get a detailed breakdown. Errors are common.</p>
+                    <strong className="text-foreground">Request an itemized bill</strong>
+                    <p className="text-muted-foreground">Before paying anything, get a detailed breakdown. Errors are common.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">2</span>
                   <div>
-                    <strong className="text-white">Apply for financial assistance first</strong>
-                    <p className="text-gray-400">Contact the billing department and ask about charity care. Do this before negotiating.</p>
+                    <strong className="text-foreground">Apply for financial assistance first</strong>
+                    <p className="text-muted-foreground">Contact the billing department and ask about charity care. Do this before negotiating.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">3</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">3</span>
                   <div>
-                    <strong className="text-white">Don't ignore the bill</strong>
-                    <p className="text-gray-400">Communicate with providers. They're more willing to work with responsive patients.</p>
+                    <strong className="text-foreground">Don't ignore the bill</strong>
+                    <p className="text-muted-foreground">Communicate with providers. They're more willing to work with responsive patients.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">4</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">4</span>
                   <div>
-                    <strong className="text-white">Get everything in writing</strong>
-                    <p className="text-gray-400">Any agreement—payment plan, settlement, forgiveness—should be documented.</p>
+                    <strong className="text-foreground">Get everything in writing</strong>
+                    <p className="text-muted-foreground">Any agreement—payment plan, settlement, forgiveness—should be documented.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">5</span>
+                  <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">5</span>
                   <div>
-                    <strong className="text-white">Know your rights</strong>
-                    <p className="text-gray-400">Collectors have strict rules. Learn your rights under the FDCPA.</p>
+                    <strong className="text-foreground">Know your rights</strong>
+                    <p className="text-muted-foreground">Collectors have strict rules. Learn your rights under the FDCPA.</p>
                   </div>
                 </li>
               </ol>
 
-              <h2 className="text-2xl font-bold text-white mt-12 mb-6">
+              <h2 className="text-2xl font-bold font-serif text-foreground mt-12 mb-6">
                 Resources for Help
               </h2>
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <Card className="bg-white/5 border-white/10">
+                <Card className="bg-card border border-border">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Users className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <Users className="w-5 h-5 text-gold" />
                       Patient Advocate Foundation
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300 text-sm">
+                  <CardContent className="text-muted-foreground text-sm">
                     Free case management and financial assistance programs for patients with chronic, life-threatening, or debilitating diseases.
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10">
+                <Card className="bg-card border border-border">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Heart className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-gold" />
                       HealthWell Foundation
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300 text-sm">
+                  <CardContent className="text-muted-foreground text-sm">
                     Provides financial assistance for copays, premiums, and other healthcare costs for specific conditions.
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10">
+                <Card className="bg-card border border-border">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Scale className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <Scale className="w-5 h-5 text-gold" />
                       RIP Medical Debt
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300 text-sm">
+                  <CardContent className="text-muted-foreground text-sm">
                     Nonprofit that buys and forgives medical debt. You can't apply directly, but they've eliminated billions in debt.
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10">
+                <Card className="bg-card border border-border">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <Building2 className="w-5 h-5 text-cyan-400" />
+                    <CardTitle className="text-foreground flex items-center gap-2">
+                      <Building2 className="w-5 h-5 text-gold" />
                       NeedyMeds
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-gray-300 text-sm">
+                  <CardContent className="text-muted-foreground text-sm">
                     Database of assistance programs for medications, medical supplies, and healthcare costs.
                   </CardContent>
                 </Card>
               </div>
             </div>
 
-            <Card className="bg-gradient-to-r from-pink-500/20 to-cyan-500/20 border-pink-500/30 mt-12">
+            <Card className="luxury-card mt-12">
               <CardContent className="py-8 text-center">
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <h3 className="text-2xl font-bold font-serif text-foreground mb-4">
                   Get Help With Your Medical Bills
                 </h3>
-                <p className="text-gray-400 mb-6 max-w-xl mx-auto">
+                <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                   Our platform can help you understand your bills, find errors, and identify 
                   savings opportunities. Start with a free bill analysis.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link href="/bill-grader">
-                    <button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-all flex items-center gap-2" data-testid="button-analyze">
+                    <button className="px-6 py-3 bg-primary hover:opacity-90 text-primary-foreground font-semibold rounded-lg transition-all flex items-center gap-2" data-testid="button-analyze">
                       <TrendingDown className="w-5 h-5" />
                       Analyze My Bill
                     </button>
                   </Link>
                   <Link href="/emergency-help">
-                    <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all" data-testid="button-emergency">
+                    <button className="px-6 py-3 border border-border bg-card hover:bg-secondary text-foreground font-semibold rounded-lg transition-all" data-testid="button-emergency">
                       Emergency Bill Help
                     </button>
                   </Link>

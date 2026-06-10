@@ -488,33 +488,33 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
               <Target className="h-10 w-10 text-orange-600" />
             )}
           </motion.div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="text-2xl font-bold text-foreground">
             {diagnosisResult.correct ? "Correct Diagnosis!" : "Keep Learning!"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Final Score: {session.score} points</p>
+          <p className="text-muted-foreground mt-2">Final Score: {session.score} points</p>
         </div>
 
         <Card>
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Feedback</h3>
-            <p className="text-gray-700 dark:text-gray-300">{diagnosisResult.feedback}</p>
+            <h3 className="font-semibold text-foreground mb-2">Feedback</h3>
+            <p className="text-foreground">{diagnosisResult.feedback}</p>
             
             <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                <p className="text-gray-500">Your Diagnosis</p>
-                <p className="font-medium text-gray-900 dark:text-gray-100">{userDiagnosis}</p>
+              <div className="bg-secondary p-3 rounded-lg">
+                <p className="text-muted-foreground">Your Diagnosis</p>
+                <p className="font-medium text-foreground">{userDiagnosis}</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                <p className="text-gray-500">Correct Answer</p>
-                <p className="font-medium text-gray-900 dark:text-gray-100">{diagnosisResult.actualDiagnosis}</p>
+              <div className="bg-secondary p-3 rounded-lg">
+                <p className="text-muted-foreground">Correct Answer</p>
+                <p className="font-medium text-foreground">{diagnosisResult.actualDiagnosis}</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                <p className="text-gray-500">Tests Ordered</p>
-                <p className="font-medium text-gray-900 dark:text-gray-100">{session.requestsMade}</p>
+              <div className="bg-secondary p-3 rounded-lg">
+                <p className="text-muted-foreground">Tests Ordered</p>
+                <p className="font-medium text-foreground">{session.requestsMade}</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                <p className="text-gray-500">Time Taken</p>
-                <p className="font-medium text-gray-900 dark:text-gray-100">{getElapsedTime()}</p>
+              <div className="bg-secondary p-3 rounded-lg">
+                <p className="text-muted-foreground">Time Taken</p>
+                <p className="font-medium text-foreground">{getElapsedTime()}</p>
               </div>
             </div>
           </CardContent>
@@ -535,27 +535,27 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
           <ArrowLeft className="h-4 w-4 mr-1" /> Back
         </Button>
         <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-muted-foreground">
             <Clock className="h-4 w-4 inline mr-1" />
             {getElapsedTime()}
           </span>
-          <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+          <span className="bg-secondary text-foreground px-3 py-1 rounded-full text-sm font-medium">
             Score: {session.score}
           </span>
         </div>
       </div>
 
       {/* Patient Brief */}
-      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200">
+      <Card className="luxury-card">
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-              <User className="h-6 w-6 text-white" />
+            <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
+              <User className="h-6 w-6 text-muted-foreground" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 dark:text-gray-100">{patient.profileName}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{patient.age} yo {patient.gender}</p>
-              <p className="text-sm font-medium text-blue-700 dark:text-blue-300 mt-1">Chief Complaint: {patient.chiefComplaint}</p>
+              <h3 className="font-bold text-foreground">{patient.profileName}</h3>
+              <p className="text-sm text-muted-foreground">{patient.age} yo {patient.gender}</p>
+              <p className="text-sm font-medium text-foreground mt-1">Chief Complaint: {patient.chiefComplaint}</p>
             </div>
           </div>
         </CardContent>
@@ -566,30 +566,30 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
         <Card>
           <CardHeader className="py-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Activity className="h-4 w-4 text-red-500" />
+              <Activity className="h-4 w-4 text-muted-foreground" />
               Vital Signs
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
             <div className="grid grid-cols-5 gap-2 text-center text-xs">
-              <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded">
-                <p className="text-gray-500">BP</p>
+              <div className="bg-secondary p-2 rounded">
+                <p className="text-muted-foreground">BP</p>
                 <p className="font-bold">{patientData.vitals.bp}</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded">
-                <p className="text-gray-500">HR</p>
+              <div className="bg-secondary p-2 rounded">
+                <p className="text-muted-foreground">HR</p>
                 <p className="font-bold">{patientData.vitals.hr}</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded">
-                <p className="text-gray-500">RR</p>
+              <div className="bg-secondary p-2 rounded">
+                <p className="text-muted-foreground">RR</p>
                 <p className="font-bold">{patientData.vitals.rr}</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded">
-                <p className="text-gray-500">Temp</p>
+              <div className="bg-secondary p-2 rounded">
+                <p className="text-muted-foreground">Temp</p>
                 <p className="font-bold">{patientData.vitals.temp}</p>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded">
-                <p className="text-gray-500">SpO2</p>
+              <div className="bg-secondary p-2 rounded">
+                <p className="text-muted-foreground">SpO2</p>
                 <p className="font-bold">{patientData.vitals.o2}</p>
               </div>
             </div>
@@ -604,10 +604,10 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
           <CardHeader className="py-3 cursor-pointer" onClick={() => setSession(prev => ({ ...prev, phase: prev.phase === "history" ? "initial" : "history" }))}>
             <CardTitle className="text-sm flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-purple-500" />
+                <FileText className="h-4 w-4 text-muted-foreground" />
                 Patient History
               </span>
-              <span className="text-xs text-gray-400">{Object.keys(session.revealedInfo).filter(k => k.startsWith("history")).length}/5</span>
+              <span className="text-xs text-muted-foreground">{Object.keys(session.revealedInfo).filter(k => k.startsWith("history")).length}/5</span>
             </CardTitle>
           </CardHeader>
           <AnimatePresence>
@@ -617,13 +617,13 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
                   {historyItems.map(item => {
                     const isRevealed = session.revealedInfo[`history_${item.key}`];
                     return (
-                      <div key={item.key} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div key={item.key} className="flex items-center justify-between p-2 bg-secondary rounded-lg">
                         <div className="flex items-center gap-2">
-                          <item.icon className="h-4 w-4 text-gray-500" />
+                          <item.icon className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm">{item.label}</span>
                         </div>
                         {isRevealed ? (
-                          <p className="text-xs text-gray-600 dark:text-gray-400 max-w-[200px] text-right">
+                          <p className="text-xs text-muted-foreground max-w-[200px] text-right">
                             {patientData?.history?.[item.key] || "No significant history"}
                           </p>
                         ) : (
@@ -645,10 +645,10 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
           <CardHeader className="py-3 cursor-pointer" onClick={() => setSession(prev => ({ ...prev, phase: prev.phase === "exam" ? "initial" : "exam" }))}>
             <CardTitle className="text-sm flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Stethoscope className="h-4 w-4 text-green-500" />
+                <Stethoscope className="h-4 w-4 text-muted-foreground" />
                 Physical Examination
               </span>
-              <span className="text-xs text-gray-400">{Object.keys(session.revealedInfo).filter(k => k.startsWith("exam")).length}/5</span>
+              <span className="text-xs text-muted-foreground">{Object.keys(session.revealedInfo).filter(k => k.startsWith("exam")).length}/5</span>
             </CardTitle>
           </CardHeader>
           <AnimatePresence>
@@ -658,13 +658,13 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
                   {examItems.map(item => {
                     const isRevealed = session.revealedInfo[`exam_${item.key}`];
                     return (
-                      <div key={item.key} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div key={item.key} className="flex items-center justify-between p-2 bg-secondary rounded-lg">
                         <div className="flex items-center gap-2">
-                          <item.icon className="h-4 w-4 text-gray-500" />
+                          <item.icon className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm">{item.label}</span>
                         </div>
                         {isRevealed ? (
-                          <p className="text-xs text-gray-600 dark:text-gray-400 max-w-[200px] text-right">
+                          <p className="text-xs text-muted-foreground max-w-[200px] text-right">
                             {patientData?.physicalExam?.[item.key] || "Within normal limits"}
                           </p>
                         ) : (
@@ -686,10 +686,10 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
           <CardHeader className="py-3 cursor-pointer" onClick={() => setSession(prev => ({ ...prev, phase: prev.phase === "labs" ? "initial" : "labs" }))}>
             <CardTitle className="text-sm flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <TestTube className="h-4 w-4 text-blue-500" />
+                <TestTube className="h-4 w-4 text-muted-foreground" />
                 Laboratory Tests
               </span>
-              <span className="text-xs text-gray-400">{session.orderedTests.filter(t => labTests.some(l => l.key === t)).length} ordered</span>
+              <span className="text-xs text-muted-foreground">{session.orderedTests.filter(t => labTests.some(l => l.key === t)).length} ordered</span>
             </CardTitle>
           </CardHeader>
           <AnimatePresence>
@@ -699,13 +699,13 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
                   {labTests.map(test => {
                     const isOrdered = session.orderedTests.includes(test.key);
                     return (
-                      <div key={test.key} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div key={test.key} className="flex items-center justify-between p-2 bg-secondary rounded-lg">
                         <div>
                           <span className="text-sm">{test.label}</span>
-                          <span className="text-xs text-gray-400 ml-2">{test.cost}</span>
+                          <span className="text-xs text-muted-foreground ml-2">{test.cost}</span>
                         </div>
                         {isOrdered ? (
-                          <p className="text-xs text-gray-600 dark:text-gray-400 max-w-[180px] text-right font-medium">
+                          <p className="text-xs text-muted-foreground max-w-[180px] text-right font-medium">
                             {patientData?.labs?.[test.key] || "Pending"}
                           </p>
                         ) : (
@@ -727,10 +727,10 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
           <CardHeader className="py-3 cursor-pointer" onClick={() => setSession(prev => ({ ...prev, phase: prev.phase === "imaging" ? "initial" : "imaging" }))}>
             <CardTitle className="text-sm flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Eye className="h-4 w-4 text-orange-500" />
+                <Eye className="h-4 w-4 text-muted-foreground" />
                 Imaging Studies
               </span>
-              <span className="text-xs text-gray-400">{session.orderedTests.filter(t => imagingTests.some(i => i.key === t)).length} ordered</span>
+              <span className="text-xs text-muted-foreground">{session.orderedTests.filter(t => imagingTests.some(i => i.key === t)).length} ordered</span>
             </CardTitle>
           </CardHeader>
           <AnimatePresence>
@@ -740,13 +740,13 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
                   {imagingTests.map(test => {
                     const isOrdered = session.orderedTests.includes(test.key);
                     return (
-                      <div key={test.key} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div key={test.key} className="flex items-center justify-between p-2 bg-secondary rounded-lg">
                         <div>
                           <span className="text-sm">{test.label}</span>
-                          <span className="text-xs text-gray-400 ml-2">{test.cost}</span>
+                          <span className="text-xs text-muted-foreground ml-2">{test.cost}</span>
                         </div>
                         {isOrdered ? (
-                          <p className="text-xs text-gray-600 dark:text-gray-400 max-w-[180px] text-right font-medium">
+                          <p className="text-xs text-muted-foreground max-w-[180px] text-right font-medium">
                             {patientData?.imaging?.[test.key] || "Pending"}
                           </p>
                         ) : (
@@ -766,7 +766,7 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
 
       {/* Submit Diagnosis Button */}
       <Button 
-        className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
+        className="w-full bg-primary text-primary-foreground hover:opacity-90"
         onClick={() => setShowDiagnosisModal(true)}
       >
         <Target className="h-4 w-4 mr-2" />
@@ -784,13 +784,13 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
           <motion.div
             initial={{ y: 100 }}
             animate={{ y: 0 }}
-            className="bg-white dark:bg-gray-900 w-full max-w-lg rounded-t-3xl p-6 space-y-4"
+            className="bg-card w-full max-w-lg rounded-t-3xl p-6 space-y-4"
             onClick={e => e.stopPropagation()}
           >
-            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Submit Your Diagnosis</h3>
+            <h3 className="text-xl font-bold text-foreground">Submit Your Diagnosis</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 What is your diagnosis?
               </label>
               <Input
@@ -802,7 +802,7 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Confidence Level: {confidence}/5
               </label>
               <div className="flex gap-2">
@@ -811,8 +811,8 @@ const InteractiveTrainingMode = ({ patient, onClose, isDemo = false }: Interacti
                     key={level}
                     className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
                       confidence === level 
-                        ? "bg-blue-600 text-white" 
-                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                        ? "bg-primary text-primary-foreground" 
+                        : "bg-secondary text-foreground"
                     }`}
                     onClick={() => setConfidence(level)}
                   >
@@ -892,7 +892,7 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Analysis Results</h3>
+          <h3 className="text-xl font-bold text-foreground">Analysis Results</h3>
           <Button onClick={() => setAnalysisResult(null)} variant="outline">New Analysis</Button>
         </div>
         
@@ -902,17 +902,17 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5 text-blue-600" />
+                  <Target className="h-5 w-5 text-muted-foreground" />
                   Differential Diagnoses
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {analysisResult.diagnosticAnalysis.differentialDiagnoses.map((dx, idx) => (
-                    <div key={idx} className="border-l-4 border-blue-500 pl-4 py-2">
+                    <div key={idx} className="border-l-4 border-border pl-4 py-2">
                       <div className="flex justify-between items-start">
-                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">{dx.diagnosis}</h4>
-                        <span className="text-sm font-medium text-blue-600">{dx.probability}%</span>
+                        <h4 className="font-semibold text-foreground">{dx.diagnosis}</h4>
+                        <span className="text-sm font-medium text-foreground">{dx.probability}%</span>
                       </div>
                       <div className="mt-2 space-y-1">
                         <div><strong>Supporting:</strong> {dx.supportingEvidence.join(", ")}</div>
@@ -932,23 +932,23 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <TestTube className="h-5 w-5 text-green-600" />
+                  <TestTube className="h-5 w-5 text-muted-foreground" />
                   Recommended Tests
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-3">
                   {analysisResult.diagnosticAnalysis.recommendedTests.map((test, idx) => (
-                    <div key={idx} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div key={idx} className="flex justify-between items-center p-3 bg-secondary rounded-lg">
                       <div>
-                        <div className="font-medium text-gray-900 dark:text-gray-100">{test.testName}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">{test.rationale}</div>
+                        <div className="font-medium text-foreground">{test.testName}</div>
+                        <div className="text-sm text-muted-foreground">{test.rationale}</div>
                       </div>
                       <div className="text-right">
-                        <div className={`text-sm font-medium ${test.priority === 'stat' ? 'text-red-600' : test.priority === 'urgent' ? 'text-orange-600' : 'text-blue-600'}`}>
+                        <div className={`text-sm font-medium ${test.priority === 'stat' ? 'text-red-600' : test.priority === 'urgent' ? 'text-orange-600' : 'text-muted-foreground'}`}>
                           {test.priority.toUpperCase()}
                         </div>
-                        <div className="text-xs text-gray-500">{test.cost}</div>
+                        <div className="text-xs text-muted-foreground">{test.cost}</div>
                       </div>
                     </div>
                   ))}
@@ -961,7 +961,7 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Lightbulb className="h-5 w-5 text-amber-600" />
+                  <Lightbulb className="h-5 w-5 text-gold" />
                   Learning Insights
                 </CardTitle>
               </CardHeader>
@@ -969,8 +969,8 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
                 <div className="space-y-4">
                   {analysisResult.learningPoints.keyInsights?.length > 0 && (
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Key Insights</h4>
-                      <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                      <h4 className="font-semibold text-foreground mb-2">Key Insights</h4>
+                      <ul className="list-disc list-inside space-y-1 text-foreground">
                         {analysisResult.learningPoints.keyInsights.map((insight, idx) => (
                           <li key={idx}>{insight}</li>
                         ))}
@@ -979,8 +979,8 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
                   )}
                   {analysisResult.learningPoints.clinicalPearls?.length > 0 && (
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Clinical Pearls</h4>
-                      <ul className="list-disc list-inside space-y-1 text-blue-700 dark:text-blue-300">
+                      <h4 className="font-semibold text-foreground mb-2">Clinical Pearls</h4>
+                      <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                         {analysisResult.learningPoints.clinicalPearls.map((pearl, idx) => (
                           <li key={idx}>{pearl}</li>
                         ))}
@@ -999,13 +999,13 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">AI Diagnostic Analysis</h3>
-        <p className="text-gray-600 dark:text-gray-400">Patient: {patient.profileName}</p>
+        <h3 className="text-xl font-bold text-foreground mb-2">AI Diagnostic Analysis</h3>
+        <p className="text-muted-foreground">Patient: {patient.profileName}</p>
       </div>
 
       {/* Analysis Type Selection */}
       <div>
-        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Select Analysis Type</h4>
+        <h4 className="font-semibold text-foreground mb-3">Select Analysis Type</h4>
         <div className="grid grid-cols-2 gap-3">
           {analysisTypes.map((type) => {
             const IconComponent = type.icon;
@@ -1014,14 +1014,14 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
                 key={type.id}
                 className={`cursor-pointer p-4 rounded-xl border-2 transition-all ${
                   selectedAnalysisType === type.id 
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                    ? 'border-gold bg-secondary' 
+                    : 'border-border hover:border-foreground'
                 }`}
                 onClick={() => setSelectedAnalysisType(type.id)}
               >
-                <IconComponent className="h-6 w-6 text-blue-600 mb-2" />
-                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">{type.name}</h5>
-                <p className="text-xs text-gray-600 dark:text-gray-400">{type.desc}</p>
+                <IconComponent className="h-6 w-6 text-muted-foreground mb-2" />
+                <h5 className="font-medium text-foreground mb-1">{type.name}</h5>
+                <p className="text-xs text-muted-foreground">{type.desc}</p>
               </div>
             );
           })}
@@ -1030,15 +1030,15 @@ const DiagnosticAnalysisInterface = ({ patient, onClose }: DiagnosticAnalysisPro
 
       {/* Focus Areas */}
       <div>
-        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Focus Areas (Optional)</h4>
+        <h4 className="font-semibold text-foreground mb-3">Focus Areas (Optional)</h4>
         <div className="flex flex-wrap gap-2">
           {specialties.map((specialty) => (
             <button
               key={specialty}
               className={`px-3 py-1 rounded-full text-sm transition-colors ${
                 focusAreas.includes(specialty)
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary text-foreground hover:bg-muted'
               }`}
               onClick={() => {
                 if (focusAreas.includes(specialty)) {
@@ -1215,44 +1215,40 @@ export default function SyntheticPatientDiagnostics() {
   const dashboardView = (
     <div className="space-y-6">
       {/* Welcome Hub Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 p-6 text-white shadow-2xl">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-xl" />
-        </div>
+      <div className="relative overflow-hidden rounded-3xl bg-card border border-border p-6 shadow-sm">
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                 <Brain className="h-7 w-7 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">Medical Training Hub</h1>
-                <p className="text-white/80 text-sm">Master diagnostic skills</p>
+                <h1 className="text-xl font-bold font-serif text-foreground">Medical Training Hub</h1>
+                <p className="text-muted-foreground text-sm">Master diagnostic skills</p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold">{patients.length}</div>
-              <div className="text-white/70 text-xs">Patients</div>
+              <div className="text-2xl font-bold text-foreground">{patients.length}</div>
+              <div className="text-muted-foreground text-xs">Patients</div>
             </div>
           </div>
           
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-3 mt-4">
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">
-              <Trophy className="h-5 w-5 mx-auto mb-1 text-amber-300" />
-              <div className="text-lg font-bold">6</div>
-              <div className="text-[10px] text-white/70">Demo Cases</div>
+            <div className="bg-secondary rounded-xl p-3 text-center">
+              <Trophy className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
+              <div className="text-lg font-bold text-foreground">6</div>
+              <div className="text-[10px] text-muted-foreground">Demo Cases</div>
             </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">
-              <Zap className="h-5 w-5 mx-auto mb-1 text-yellow-300" />
-              <div className="text-lg font-bold">2</div>
-              <div className="text-[10px] text-white/70">Modes</div>
+            <div className="bg-secondary rounded-xl p-3 text-center">
+              <Zap className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
+              <div className="text-lg font-bold text-foreground">2</div>
+              <div className="text-[10px] text-muted-foreground">Modes</div>
             </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 text-center">
-              <Target className="h-5 w-5 mx-auto mb-1 text-emerald-300" />
-              <div className="text-lg font-bold">AI</div>
-              <div className="text-[10px] text-white/70">Powered</div>
+            <div className="bg-secondary rounded-xl p-3 text-center">
+              <Target className="h-5 w-5 mx-auto mb-1 text-muted-foreground" />
+              <div className="text-lg font-bold text-foreground">AI</div>
+              <div className="text-[10px] text-muted-foreground">Powered</div>
             </div>
           </div>
         </div>
@@ -1260,34 +1256,34 @@ export default function SyntheticPatientDiagnostics() {
 
       {/* Mode Selection Cards */}
       <div>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-          <Stethoscope className="h-5 w-5 text-purple-600" />
+        <h3 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+          <Stethoscope className="h-5 w-5 text-muted-foreground" />
           Choose Your Mode
         </h3>
         <div className="grid grid-cols-1 gap-4">
           {/* Interactive Training Mode */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-700 rounded-2xl p-5 cursor-pointer"
+            className="luxury-card relative overflow-hidden rounded-2xl p-5 cursor-pointer"
             onClick={() => setShowDemoPatients(true)}
           >
-            <div className="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+            <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full font-bold">
               RECOMMENDED
             </div>
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                 <Target className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Interactive Training Mode</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                <h4 className="font-bold text-foreground mb-1">Interactive Training Mode</h4>
+                <p className="text-sm text-muted-foreground mb-2">
                   Step-by-step diagnostic workup. Request history, order labs, and submit your diagnosis like a real case.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded-full">Scoring System</span>
-                  <span className="bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded-full">Learning Points</span>
-                  <span className="bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded-full">Efficiency Tracking</span>
+                  <span className="bg-secondary text-muted-foreground text-xs px-2 py-1 rounded-full">Scoring System</span>
+                  <span className="bg-secondary text-muted-foreground text-xs px-2 py-1 rounded-full">Learning Points</span>
+                  <span className="bg-secondary text-muted-foreground text-xs px-2 py-1 rounded-full">Efficiency Tracking</span>
                 </div>
               </div>
             </div>
@@ -1295,9 +1291,9 @@ export default function SyntheticPatientDiagnostics() {
 
           {/* AI Full Diagnosis Mode */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-2 border-purple-200 dark:border-purple-700 rounded-2xl p-5 cursor-pointer"
+            className="luxury-card relative overflow-hidden rounded-2xl p-5 cursor-pointer"
             onClick={() => {
               if (patients.length > 0) {
                 setSelectedPatient(patients[0]);
@@ -1306,18 +1302,18 @@ export default function SyntheticPatientDiagnostics() {
             }}
           >
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                <Brain className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                <Brain className="h-6 w-6 text-muted-foreground" />
               </div>
               <div className="flex-1">
-                <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-1">AI Full Diagnosis Mode</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                <h4 className="font-bold text-foreground mb-1">AI Full Diagnosis Mode</h4>
+                <p className="text-sm text-muted-foreground mb-2">
                   Get comprehensive AI-powered analysis for custom patient profiles. Complete differential diagnosis and treatment recommendations.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full">Full Analysis</span>
-                  <span className="bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full">Differentials</span>
-                  <span className="bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full">Treatment Plan</span>
+                  <span className="bg-secondary text-muted-foreground text-xs px-2 py-1 rounded-full">Full Analysis</span>
+                  <span className="bg-secondary text-muted-foreground text-xs px-2 py-1 rounded-full">Differentials</span>
+                  <span className="bg-secondary text-muted-foreground text-xs px-2 py-1 rounded-full">Treatment Plan</span>
                 </div>
               </div>
             </div>
@@ -1330,7 +1326,7 @@ export default function SyntheticPatientDiagnostics() {
         <Button 
           onClick={generateAIPatient}
           disabled={isGenerating}
-          className="h-16 flex-col space-y-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl"
+          className="h-16 flex-col space-y-1 bg-primary text-primary-foreground hover:opacity-90 rounded-xl"
         >
           {isGenerating ? (
             <RefreshCw className="h-5 w-5 animate-spin" />
@@ -1345,7 +1341,7 @@ export default function SyntheticPatientDiagnostics() {
           variant="outline"
           className="h-16 flex-col space-y-1 rounded-xl border-2"
         >
-          <UserPlus className="h-5 w-5 text-emerald-600" />
+          <UserPlus className="h-5 w-5 text-muted-foreground" />
           <span className="text-xs font-medium">Create Custom</span>
         </Button>
       </div>
@@ -1353,8 +1349,8 @@ export default function SyntheticPatientDiagnostics() {
       {/* Demo Training Cases */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-            <Trophy className="h-5 w-5 text-amber-500" />
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-gold" />
             Training Cases
           </h3>
           <Button 
@@ -1381,21 +1377,21 @@ export default function SyntheticPatientDiagnostics() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.1 }}
                 >
-                  <Card className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-800 hover:shadow-md transition-shadow">
+                  <Card className="luxury-card hover:shadow-md transition-shadow">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">{patient.profileName}</h4>
-                            <span className="px-2 py-0.5 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 text-xs rounded-full font-medium">
+                            <h4 className="font-semibold text-foreground">{patient.profileName}</h4>
+                            <span className="px-2 py-0.5 bg-secondary text-muted-foreground text-xs rounded-full font-medium">
                               Demo
                             </span>
                           </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{patient.chiefComplaint}</p>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                          <p className="text-sm text-muted-foreground mt-1">{patient.chiefComplaint}</p>
+                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                             <span>{patient.age} yo {patient.gender}</span>
                             <span>Complexity: {patient.complexity}/5</span>
-                            <span className="text-amber-600 dark:text-amber-400 font-medium">{patient.specialty}</span>
+                            <span className="text-foreground font-medium">{patient.specialty}</span>
                           </div>
                         </div>
                         <Button 
@@ -1405,7 +1401,7 @@ export default function SyntheticPatientDiagnostics() {
                             setIsSelectedDemo(true);
                             setActiveView("training");
                           }}
-                          className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                          className="bg-primary text-primary-foreground hover:opacity-90"
                         >
                           <Stethoscope className="h-4 w-4 mr-1" />
                           Train
@@ -1422,18 +1418,18 @@ export default function SyntheticPatientDiagnostics() {
 
       {/* Patient List */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Your Patient Profiles ({patients.length})</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">Your Patient Profiles ({patients.length})</h3>
         
         {loadingPatients ? (
           <div className="flex justify-center py-8">
-            <RefreshCw className="h-6 w-6 animate-spin text-gray-400" />
+            <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         ) : patients.length === 0 ? (
           <Card>
             <CardContent className="text-center py-8">
-              <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400 mb-4">No patient profiles yet</p>
-              <p className="text-sm text-gray-400">Create your first synthetic patient to get started</p>
+              <User className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground mb-4">No patient profiles yet</p>
+              <p className="text-sm text-muted-foreground">Create your first synthetic patient to get started</p>
             </CardContent>
           </Card>
         ) : (
@@ -1443,9 +1439,9 @@ export default function SyntheticPatientDiagnostics() {
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">{patient.profileName}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{patient.chiefComplaint}</p>
-                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                      <h4 className="font-semibold text-foreground">{patient.profileName}</h4>
+                      <p className="text-sm text-muted-foreground mt-1">{patient.chiefComplaint}</p>
+                      <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                         <span>{patient.age} yo {patient.gender}</span>
                         <span>Complexity: {patient.complexity}/5</span>
                         {patient.specialty && <span>{patient.specialty}</span>}
@@ -1471,7 +1467,7 @@ export default function SyntheticPatientDiagnostics() {
                           setIsSelectedDemo(false);
                           setActiveView("analyze");
                         }}
-                        className="bg-gradient-to-r from-emerald-500 to-teal-600"
+                        className="bg-primary text-primary-foreground hover:opacity-90"
                       >
                         <Brain className="h-4 w-4 mr-1" />
                         AI Diagnose
@@ -1498,7 +1494,7 @@ export default function SyntheticPatientDiagnostics() {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Create Custom Patient</h2>
+        <h2 className="text-xl font-bold text-foreground">Create Custom Patient</h2>
       </div>
 
       <div className="space-y-4">
@@ -1510,7 +1506,7 @@ export default function SyntheticPatientDiagnostics() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Patient Name
                 </label>
                 <Input
@@ -1520,7 +1516,7 @@ export default function SyntheticPatientDiagnostics() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Age
                 </label>
                 <Input
@@ -1534,11 +1530,11 @@ export default function SyntheticPatientDiagnostics() {
             
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Gender
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring bg-background text-foreground"
                   value={formData.gender}
                   onChange={(e) => handleInputChange("gender", e.target.value)}
                 >
@@ -1549,7 +1545,7 @@ export default function SyntheticPatientDiagnostics() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Ethnicity
                 </label>
                 <Input
@@ -1569,7 +1565,7 @@ export default function SyntheticPatientDiagnostics() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Chief Complaint
               </label>
               <Input
@@ -1580,11 +1576,11 @@ export default function SyntheticPatientDiagnostics() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Presenting Symptoms
               </label>
               <textarea
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring bg-background text-foreground"
                 rows={3}
                 value={formData.symptoms}
                 onChange={(e) => handleInputChange("symptoms", e.target.value)}
@@ -1593,11 +1589,11 @@ export default function SyntheticPatientDiagnostics() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Medical History
               </label>
               <textarea
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring bg-background text-foreground"
                 rows={3}
                 value={formData.medicalHistory}
                 onChange={(e) => handleInputChange("medicalHistory", e.target.value)}
@@ -1615,11 +1611,11 @@ export default function SyntheticPatientDiagnostics() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Case Complexity (1-5)
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring bg-background text-foreground"
                   value={formData.complexity}
                   onChange={(e) => handleInputChange("complexity", e.target.value)}
                 >
@@ -1631,11 +1627,11 @@ export default function SyntheticPatientDiagnostics() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Primary Specialty
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring bg-background text-foreground"
                   value={formData.specialty}
                   onChange={(e) => handleInputChange("specialty", e.target.value)}
                 >
@@ -1670,7 +1666,7 @@ export default function SyntheticPatientDiagnostics() {
       showBackButton={true}
       showBottomNav={true}
     >
-      <div className="flex flex-col h-full bg-white dark:bg-gray-900">
+      <div className="flex flex-col h-full bg-background">
         <div className="flex-1 overflow-y-auto p-4">
           <AnimatePresence mode="wait">
             {activeView === "dashboard" && (

@@ -96,7 +96,7 @@ export default function Admin() {
     return (
       <MobileLayout title="Admin" showBackButton={true} showBottomNav={true}>
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
         </div>
       </MobileLayout>
     );
@@ -108,11 +108,11 @@ export default function Admin() {
     return (
       <MobileLayout title="Admin" showBackButton={true} showBottomNav={true}>
         <div className="flex flex-col items-center justify-center min-h-[400px] text-center px-4">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-            <AlertTriangle className="h-8 w-8 text-red-600" />
+          <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-4">
+            <AlertTriangle className="h-8 w-8 text-destructive" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Admin Access Required</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-xl font-bold font-serif text-foreground mb-2">Admin Access Required</h2>
+          <p className="text-muted-foreground mb-6">
             {isDesignatedAdmin 
               ? "Your account is designated as admin but hasn't been activated yet."
               : "You don't have permission to access this area."}
@@ -121,7 +121,7 @@ export default function Admin() {
             <Button
               onClick={() => bootstrapMutation.mutate()}
               disabled={bootstrapMutation.isPending}
-              className="bg-indigo-600 hover:bg-indigo-700"
+              className="bg-primary text-primary-foreground hover:bg-primary"
               data-testid="button-bootstrap-admin"
             >
               {bootstrapMutation.isPending ? (
@@ -150,11 +150,11 @@ export default function Admin() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Shield className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600">Platform management and analytics</p>
+          <h1 className="text-2xl font-bold font-serif text-foreground mb-2">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Platform management and analytics</p>
         </motion.div>
 
         <Tabs defaultValue="overview" className="w-full">
@@ -166,43 +166,43 @@ export default function Admin() {
 
           <TabsContent value="overview" className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+              <Card className="luxury-card">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
-                    <Users className="h-6 w-6 opacity-80" />
-                    <span className="text-2xl font-bold">{stats?.totalUsers || 0}</span>
+                    <Users className="h-6 w-6 text-muted-foreground" />
+                    <span className="text-2xl font-bold text-foreground">{stats?.totalUsers || 0}</span>
                   </div>
-                  <p className="text-sm opacity-80 mt-1">Total Users</p>
+                  <p className="text-sm text-muted-foreground mt-1">Total Users</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
+              <Card className="luxury-card">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
-                    <DollarSign className="h-6 w-6 opacity-80" />
-                    <span className="text-2xl font-bold">{stats?.activeSubscribers || 0}</span>
+                    <DollarSign className="h-6 w-6 text-gold" />
+                    <span className="text-2xl font-bold text-foreground">{stats?.activeSubscribers || 0}</span>
                   </div>
-                  <p className="text-sm opacity-80 mt-1">Subscribers</p>
+                  <p className="text-sm text-muted-foreground mt-1">Subscribers</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+              <Card className="luxury-card">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
-                    <TrendingUp className="h-6 w-6 opacity-80" />
-                    <span className="text-2xl font-bold">{stats?.recentSignups || 0}</span>
+                    <TrendingUp className="h-6 w-6 text-muted-foreground" />
+                    <span className="text-2xl font-bold text-foreground">{stats?.recentSignups || 0}</span>
                   </div>
-                  <p className="text-sm opacity-80 mt-1">7-Day Signups</p>
+                  <p className="text-sm text-muted-foreground mt-1">7-Day Signups</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
+              <Card className="luxury-card">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
-                    <UserCheck className="h-6 w-6 opacity-80" />
-                    <span className="text-2xl font-bold">{stats?.usersWithAiTerms || 0}</span>
+                    <UserCheck className="h-6 w-6 text-muted-foreground" />
+                    <span className="text-2xl font-bold text-foreground">{stats?.usersWithAiTerms || 0}</span>
                   </div>
-                  <p className="text-sm opacity-80 mt-1">AI Terms Accepted</p>
+                  <p className="text-sm text-muted-foreground mt-1">AI Terms Accepted</p>
                 </CardContent>
               </Card>
             </div>
@@ -214,16 +214,16 @@ export default function Admin() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Monthly</span>
-                    <span className="font-semibold">{stats?.subscriptionBreakdown?.monthly || 0}</span>
+                    <span className="text-muted-foreground">Monthly</span>
+                    <span className="font-semibold text-foreground">{stats?.subscriptionBreakdown?.monthly || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Annual</span>
-                    <span className="font-semibold">{stats?.subscriptionBreakdown?.annual || 0}</span>
+                    <span className="text-muted-foreground">Annual</span>
+                    <span className="font-semibold text-foreground">{stats?.subscriptionBreakdown?.annual || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Lifetime</span>
-                    <span className="font-semibold">{stats?.subscriptionBreakdown?.lifetime || 0}</span>
+                    <span className="text-muted-foreground">Lifetime</span>
+                    <span className="font-semibold text-foreground">{stats?.subscriptionBreakdown?.lifetime || 0}</span>
                   </div>
                 </div>
               </CardContent>
@@ -246,7 +246,7 @@ export default function Admin() {
                         />
                         <YAxis tick={{ fontSize: 10 }} />
                         <Tooltip />
-                        <Bar dataKey="signups" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="signups" fill="var(--gold)" radius={[4, 4, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -257,7 +257,7 @@ export default function Admin() {
 
           <TabsContent value="users" className="space-y-4">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-semibold text-gray-900">User Management</h3>
+              <h3 className="font-semibold text-foreground">User Management</h3>
               <Button 
                 variant="outline" 
                 size="sm"
@@ -271,46 +271,46 @@ export default function Admin() {
 
             {loadingUsers ? (
               <div className="flex items-center justify-center py-8">
-                <div className="animate-spin w-6 h-6 border-4 border-indigo-600 border-t-transparent rounded-full"></div>
+                <div className="animate-spin w-6 h-6 border-4 border-primary border-t-transparent rounded-full"></div>
               </div>
             ) : (
               <div className="space-y-2 max-h-[500px] overflow-y-auto">
                 {users?.slice(0, 50).map((u) => (
-                  <Card key={u.id} className="bg-white" data-testid={`card-user-${u.id}`}>
+                  <Card key={u.id} className="bg-card" data-testid={`card-user-${u.id}`}>
                     <CardContent className="p-3">
                       <div className="flex items-center justify-between">
                         <div className="min-w-0 flex-1">
-                          <p className="font-medium text-gray-900 truncate">
+                          <p className="font-medium text-foreground truncate">
                             {u.firstName || u.lastName 
                               ? `${u.firstName || ''} ${u.lastName || ''}`.trim()
                               : 'No Name'}
                           </p>
-                          <p className="text-sm text-gray-500 truncate">{u.email || 'No email'}</p>
+                          <p className="text-sm text-muted-foreground truncate">{u.email || 'No email'}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           {u.isAdmin && (
-                            <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
+                            <span className="px-2 py-0.5 bg-secondary text-gold text-xs rounded-full">
                               Admin
                             </span>
                           )}
                           <span className={`px-2 py-0.5 text-xs rounded-full ${
                             u.subscriptionStatus === 'active'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-600'
+                              ? 'bg-secondary text-emerald-700 dark:text-emerald-400'
+                              : 'bg-secondary text-muted-foreground'
                           }`}>
                             {u.subscriptionStatus === 'active' ? 'Premium' : 'Free'}
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                      <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                         <span>Joined: {u.createdAt ? format(new Date(u.createdAt), 'MMM d, yyyy') : 'Unknown'}</span>
-                        {u.acceptedAiTerms && <span className="text-green-600">AI Terms ✓</span>}
+                        {u.acceptedAiTerms && <span className="text-emerald-700 dark:text-emerald-400">AI Terms ✓</span>}
                       </div>
                     </CardContent>
                   </Card>
                 ))}
                 {users && users.length > 50 && (
-                  <p className="text-center text-sm text-gray-500 py-2">
+                  <p className="text-center text-sm text-muted-foreground py-2">
                     Showing first 50 of {users.length} users
                   </p>
                 )}
@@ -325,12 +325,12 @@ export default function Admin() {
                 <CardDescription>Administrative actions for platform management</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <h4 className="font-medium text-yellow-800 mb-2 flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4" />
+                <div className="p-4 bg-secondary border border-border rounded-lg">
+                  <h4 className="font-medium text-foreground mb-2 flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                     Data Cleanup
                   </h4>
-                  <p className="text-sm text-yellow-700 mb-3">
+                  <p className="text-sm text-muted-foreground mb-3">
                     Remove old analytics and session data to improve performance.
                     This will not affect user accounts or subscription data.
                   </p>
@@ -339,7 +339,7 @@ export default function Admin() {
                     size="sm"
                     onClick={() => cleanupMutation.mutate(30)}
                     disabled={cleanupMutation.isPending}
-                    className="border-yellow-300 text-yellow-800 hover:bg-yellow-100"
+                    className="border-border text-foreground hover:bg-muted"
                     data-testid="button-cleanup-data"
                   >
                     {cleanupMutation.isPending ? (
@@ -353,24 +353,24 @@ export default function Admin() {
                   </Button>
                 </div>
 
-                <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
-                    <Activity className="h-4 w-4" />
+                <div className="p-4 bg-secondary border border-border rounded-lg">
+                  <h4 className="font-medium text-foreground mb-2 flex items-center gap-2">
+                    <Activity className="h-4 w-4 text-muted-foreground" />
                     Platform Statistics
                   </h4>
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-2 text-sm text-muted-foreground">
                     <p>Total Cases: {stats?.platformStats?.totalCasesCompleted || 0}</p>
                     <p>Total Bills Analyzed: {stats?.platformStats?.totalBillsAnalyzed || 0}</p>
                     <p>Total Savings Found: ${stats?.platformStats?.totalSavingsFound?.toLocaleString() || 0}</p>
                   </div>
                 </div>
 
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-medium text-blue-800 mb-2 flex items-center gap-2">
-                    <RefreshCw className="h-4 w-4" />
+                <div className="p-4 bg-secondary border border-border rounded-lg">
+                  <h4 className="font-medium text-foreground mb-2 flex items-center gap-2">
+                    <RefreshCw className="h-4 w-4 text-gold" />
                     Refresh Data
                   </h4>
-                  <p className="text-sm text-blue-700 mb-3">
+                  <p className="text-sm text-muted-foreground mb-3">
                     Refresh all dashboard statistics from the database.
                   </p>
                   <Button
@@ -380,7 +380,7 @@ export default function Admin() {
                       refetchStats();
                       refetchUsers();
                     }}
-                    className="border-blue-300 text-blue-800 hover:bg-blue-100"
+                    className="border-border text-foreground hover:bg-muted"
                     data-testid="button-refresh-all"
                   >
                     <RefreshCw className="h-4 w-4 mr-2" />

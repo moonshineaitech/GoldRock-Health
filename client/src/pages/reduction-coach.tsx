@@ -429,38 +429,17 @@ function CoachAvatar({ size = "w-16 h-16", isActive = false }: { size?: string; 
       variants={pulseVariants}
     >
       <motion.div
-        className="relative w-full h-full bg-gradient-to-br from-emerald-500 via-teal-600 to-green-600 rounded-2xl flex items-center justify-center shadow-xl overflow-hidden"
-        whileHover={{
-          boxShadow: "0 20px 40px -12px rgba(16, 185, 129, 0.4)",
-        }}
+        className="relative w-full h-full rounded-2xl flex items-center justify-center shadow-sm overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
       >
-        <div className="absolute inset-0 bg-white/20 rounded-2xl backdrop-blur-sm" />
         <UserCheck className="text-white text-2xl relative z-10" />
-        
-        {/* Orbital rings when active */}
-        {isActive && (
-          <>
-            <motion.div
-              className="absolute inset-0 border-2 border-emerald-400/40 rounded-2xl"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div
-              className="absolute inset-2 border border-teal-400/30 rounded-xl"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-            />
-          </>
-        )}
       </motion.div>
       
       {/* Status indicator */}
       <motion.div
-        className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
-          isActive ? 'bg-green-500' : 'bg-gray-400'
+        className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-card ${
+          isActive ? 'bg-emerald-600' : 'bg-muted-foreground'
         }`}
-        animate={isActive ? { scale: [1, 1.2, 1] } : {}}
-        transition={{ duration: 1.5, repeat: Infinity }}
       />
     </motion.div>
   );
@@ -567,14 +546,14 @@ function PersonalizedAssessment({ onComplete }: { onComplete: (data: any) => voi
         <div className="flex items-center justify-center space-x-3">
           <CoachAvatar size="w-12 h-12" isActive={true} />
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Personal Assessment</h2>
-            <p className="text-sm text-gray-600">Step {currentStep + 1} of {assessmentSteps.length}</p>
+            <h2 className="text-xl font-bold text-foreground">Personal Assessment</h2>
+            <p className="text-sm text-muted-foreground">Step {currentStep + 1} of {assessmentSteps.length}</p>
           </div>
         </div>
         
         <div className="space-y-2">
           <ProgressBar value={progress} className="h-2" />
-          <p className="text-xs text-gray-500">{Math.round(progress)}% Complete</p>
+          <p className="text-xs text-muted-foreground">{Math.round(progress)}% Complete</p>
         </div>
       </motion.div>
 
@@ -587,19 +566,19 @@ function PersonalizedAssessment({ onComplete }: { onComplete: (data: any) => voi
           {assessmentSteps.map((step, index) => (
             <motion.div
               key={index}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-medium ${
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-medium border ${
                 index === currentStep
-                  ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                  ? 'bg-card text-gold border-border font-semibold'
                   : index < currentStep
-                  ? 'bg-green-50 text-green-600'
-                  : 'bg-gray-50 text-gray-500'
+                  ? 'bg-secondary text-emerald-700 border-transparent'
+                  : 'bg-secondary text-muted-foreground border-transparent'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <step.icon className="h-3 w-3" />
               <span className="whitespace-nowrap">{step.title}</span>
-              {index < currentStep && <CheckCircle2 className="h-3 w-3 text-green-500" />}
+              {index < currentStep && <CheckCircle2 className="h-3 w-3 text-emerald-600" />}
             </motion.div>
           ))}
         </div>
@@ -618,13 +597,13 @@ function PersonalizedAssessment({ onComplete }: { onComplete: (data: any) => voi
             <div className="space-y-6">
               <div className="text-center">
                 <motion.div
-                  className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center"
+                  className="w-12 h-12 mx-auto mb-4 bg-secondary rounded-2xl flex items-center justify-center"
                   whileHover={{ rotate: 5, scale: 1.1 }}
                 >
-                  <currentStepData.icon className="h-6 w-6 text-white" />
+                  <currentStepData.icon className="h-6 w-6 text-muted-foreground" />
                 </motion.div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{currentStepData.title}</h3>
-                <p className="text-sm text-gray-600">{currentStepData.description}</p>
+                <h3 className="text-lg font-bold text-foreground mb-2">{currentStepData.title}</h3>
+                <p className="text-sm text-muted-foreground">{currentStepData.description}</p>
               </div>
 
               {/* Step-specific form fields */}
@@ -802,7 +781,7 @@ function PersonalizedAssessment({ onComplete }: { onComplete: (data: any) => voi
                           className="w-full"
                           data-testid="slider-risk-tolerance"
                         />
-                        <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <div className="flex justify-between text-xs text-muted-foreground mt-2">
                           <span>Conservative</span>
                           <span>Balanced</span>
                           <span>Aggressive</span>
@@ -911,7 +890,7 @@ function PersonalizedAssessment({ onComplete }: { onComplete: (data: any) => voi
                 </Button>
                 <Button
                   onClick={nextStep}
-                  className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
+                  className="bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="button-next"
                 >
                   {currentStep === assessmentSteps.length - 1 ? 'Complete Assessment' : 'Next Step'}
@@ -1015,14 +994,14 @@ function InteractiveCoaching({ assessmentData }: { assessmentData: any }) {
         <div className="flex items-center justify-center space-x-3">
           <CoachAvatar size="w-14 h-14" isActive={true} />
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Your Personal Coach</h2>
-            <p className="text-sm text-gray-600">Personalized guidance for your case</p>
+            <h2 className="text-xl font-bold text-foreground">Your Personal Coach</h2>
+            <p className="text-sm text-muted-foreground">Personalized guidance for your case</p>
           </div>
         </div>
         
         <div className="space-y-2">
           <ProgressBar value={coachingProgress} className="h-3" />
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             {completedSteps.length} of {coachingSteps.length} steps completed ({Math.round(coachingProgress)}%)
           </p>
         </div>
@@ -1031,17 +1010,17 @@ function InteractiveCoaching({ assessmentData }: { assessmentData: any }) {
       {/* Steps Overview */}
       <motion.div variants={itemVariants}>
         <MobileCard>
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Your Coaching Plan</h3>
+          <h3 className="text-lg font-bold text-foreground mb-4">Your Coaching Plan</h3>
           <div className="space-y-3">
             {coachingSteps.map((step, index) => (
               <motion.div
                 key={step.id}
-                className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                className={`p-4 rounded-xl border cursor-pointer transition-all ${
                   activeStep === index
-                    ? 'border-emerald-300 bg-emerald-50'
+                    ? 'border-border bg-secondary'
                     : completedSteps.includes(index)
-                    ? 'border-green-200 bg-green-50'
-                    : 'border-gray-200 bg-white hover:border-gray-300'
+                    ? 'border-border bg-secondary'
+                    : 'border-border bg-card hover:bg-secondary'
                 }`}
                 onClick={() => setActiveStep(index)}
                 whileHover={{ scale: 1.02 }}
@@ -1052,10 +1031,10 @@ function InteractiveCoaching({ assessmentData }: { assessmentData: any }) {
                   <div className="flex items-center space-x-3">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                       completedSteps.includes(index)
-                        ? 'bg-green-500'
+                        ? 'bg-emerald-600'
                         : activeStep === index
-                        ? 'bg-emerald-500'
-                        : 'bg-gray-400'
+                        ? 'bg-foreground'
+                        : 'bg-muted-foreground'
                     }`}>
                       {completedSteps.includes(index) ? (
                         <CheckCircle2 className="h-5 w-5 text-white" />
@@ -1064,10 +1043,10 @@ function InteractiveCoaching({ assessmentData }: { assessmentData: any }) {
                       )}
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">{step.title}</h4>
-                      <p className="text-sm text-gray-600">{step.description}</p>
+                      <h4 className="font-semibold text-foreground">{step.title}</h4>
+                      <p className="text-sm text-muted-foreground">{step.description}</p>
                       <div className="flex items-center space-x-4 mt-1">
-                        <span className="text-xs text-gray-500 flex items-center">
+                        <span className="text-xs text-muted-foreground flex items-center">
                           <Timer className="h-3 w-3 mr-1" />
                           {step.estimatedTime}
                         </span>
@@ -1078,7 +1057,7 @@ function InteractiveCoaching({ assessmentData }: { assessmentData: any }) {
                     </div>
                   </div>
                   {activeStep === index && (
-                    <ChevronRight className="h-5 w-5 text-emerald-600" />
+                    <ChevronRight className="h-5 w-5 text-gold" />
                   )}
                 </div>
               </motion.div>
@@ -1100,13 +1079,13 @@ function InteractiveCoaching({ assessmentData }: { assessmentData: any }) {
             <div className="space-y-6">
               <div className="text-center">
                 <motion.div
-                  className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl flex items-center justify-center"
+                  className="w-16 h-16 mx-auto mb-4 bg-secondary rounded-3xl flex items-center justify-center"
                   whileHover={{ rotate: 5, scale: 1.05 }}
                 >
-                  <currentStep.icon className="h-8 w-8 text-white" />
+                  <currentStep.icon className="h-8 w-8 text-muted-foreground" />
                 </motion.div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{currentStep.title}</h3>
-                <p className="text-gray-600">{currentStep.description}</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">{currentStep.title}</h3>
+                <p className="text-muted-foreground">{currentStep.description}</p>
               </div>
 
               {/* Step-specific content */}
@@ -1150,7 +1129,7 @@ function InteractiveCoaching({ assessmentData }: { assessmentData: any }) {
               <Button
                 onClick={() => markStepComplete(activeStep)}
                 disabled={completedSteps.includes(activeStep)}
-                className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
+                className="w-full bg-primary text-primary-foreground hover:opacity-90"
                 data-testid="button-complete-step"
               >
                 {completedSteps.includes(activeStep) ? (
@@ -1182,24 +1161,24 @@ function BillAnalysisReview({ assessmentData }: { assessmentData: any }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-blue-50 p-4 rounded-xl">
+        <div className="bg-secondary border border-border p-4 rounded-xl">
           <div className="text-center">
-            <DollarSign className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-            <p className="text-sm text-blue-600 font-medium">Original Bill</p>
-            <p className="text-lg font-bold text-blue-900">${billAmount.toLocaleString()}</p>
+            <DollarSign className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+            <p className="text-sm text-muted-foreground font-medium">Original Bill</p>
+            <p className="text-lg font-bold text-foreground">${billAmount.toLocaleString()}</p>
           </div>
         </div>
-        <div className="bg-green-50 p-4 rounded-xl">
+        <div className="bg-secondary border border-border p-4 rounded-xl">
           <div className="text-center">
-            <TrendingUp className="h-6 w-6 text-green-600 mx-auto mb-2" />
-            <p className="text-sm text-green-600 font-medium">Potential Savings</p>
-            <p className="text-lg font-bold text-green-900">${potentialSavings.toLocaleString()}</p>
+            <TrendingUp className="h-6 w-6 text-gold mx-auto mb-2" />
+            <p className="text-sm text-muted-foreground font-medium">Potential Savings</p>
+            <p className="text-lg font-bold text-gold">${potentialSavings.toLocaleString()}</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-gray-50 p-4 rounded-xl">
-        <h4 className="font-semibold text-gray-900 mb-3">Your Case Analysis</h4>
+      <div className="bg-secondary p-4 rounded-xl">
+        <h4 className="font-semibold text-foreground mb-3">Your Case Analysis</h4>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span>Treatment Type:</span>
@@ -1217,17 +1196,17 @@ function BillAnalysisReview({ assessmentData }: { assessmentData: any }) {
           </div>
           <div className="flex justify-between">
             <span>Success Probability:</span>
-            <span className="font-medium text-green-600">85%</span>
+            <span className="font-medium text-emerald-700">85%</span>
           </div>
         </div>
       </div>
 
-      <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl">
+      <div className="bg-secondary border border-border p-4 rounded-xl">
         <div className="flex items-start space-x-3">
-          <Lightbulb className="h-5 w-5 text-amber-600 mt-0.5" />
+          <Lightbulb className="h-5 w-5 text-gold mt-0.5" />
           <div>
-            <h5 className="font-medium text-amber-900 mb-1">Coach Recommendation</h5>
-            <p className="text-sm text-amber-800">
+            <h5 className="font-medium text-foreground mb-1">Coach Recommendation</h5>
+            <p className="text-sm text-muted-foreground">
               Based on your assessment, we recommend a {riskLevel.toLowerCase()}-risk approach focusing on 
               {assessmentData.primaryGoal === 'reduction' ? ' maximum bill reduction' : 
                assessmentData.primaryGoal === 'payment-plan' ? ' affordable payment arrangements' :
@@ -1298,10 +1277,10 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
 
   return (
     <div className="space-y-6">
-      <div className="text-center bg-emerald-50 p-4 rounded-xl">
-        <Target className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
-        <h4 className="font-bold text-emerald-900 mb-1">Your Personalized Strategy</h4>
-        <p className="text-sm text-emerald-700">
+      <div className="text-center bg-secondary border border-border p-4 rounded-xl">
+        <Target className="h-8 w-8 text-gold mx-auto mb-2" />
+        <h4 className="font-bold text-foreground mb-1">Your Personalized Strategy</h4>
+        <p className="text-sm text-muted-foreground">
           {assessmentData.communicationStyle === 'diplomatic' ? 'Collaborative and relationship-focused approach' :
            assessmentData.communicationStyle === 'direct' ? 'Direct and business-focused approach' :
            'Assertive and results-driven approach'}
@@ -1309,7 +1288,7 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
       </div>
 
       <div>
-        <h4 className="font-semibold text-gray-900 mb-3">Negotiation Tactics</h4>
+        <h4 className="font-semibold text-foreground mb-3">Negotiation Tactics</h4>
         <div className="grid grid-cols-2 gap-2 mb-4">
           {Object.entries(tactics).map(([key, tactic]) => (
             <Button
@@ -1328,9 +1307,9 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
           ))}
         </div>
 
-        <div className="bg-gray-50 p-4 rounded-xl">
+        <div className="bg-secondary p-4 rounded-xl">
           <div className="flex items-center justify-between mb-2">
-            <h5 className="font-medium text-gray-900">
+            <h5 className="font-medium text-foreground">
               Script: {tactics[selectedTactic as keyof typeof tactics].title}
             </h5>
             <div className="flex gap-2">
@@ -1352,12 +1331,12 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
               </Button>
             </div>
           </div>
-          <p className="text-sm text-gray-700 italic leading-relaxed mb-3">
+          <p className="text-sm text-foreground italic leading-relaxed mb-3">
             {tactics[selectedTactic as keyof typeof tactics].script}
           </p>
-          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
-            <p className="text-xs text-blue-900 font-medium mb-1">💡 Pro Tip:</p>
-            <p className="text-xs text-blue-800">
+          <div className="bg-card border border-border p-3 rounded-lg">
+            <p className="text-xs text-gold font-medium mb-1">💡 Pro Tip:</p>
+            <p className="text-xs text-muted-foreground">
               Download the full script for detailed talking points, questions to ask, and a notes section to track your call.
             </p>
           </div>
@@ -1365,7 +1344,7 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
       </div>
 
       <div className="space-y-3">
-        <h4 className="font-semibold text-gray-900">Key Talking Points</h4>
+        <h4 className="font-semibold text-foreground">Key Talking Points</h4>
         <div className="space-y-2">
           {[
             'Emphasize your willingness to pay',
@@ -1376,7 +1355,7 @@ function NegotiationStrategy({ assessmentData }: { assessmentData: any }) {
           ].map((point, index) => (
             <div key={index} className="flex items-center space-x-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-              <span className="text-sm text-gray-700">{point}</span>
+              <span className="text-sm text-foreground">{point}</span>
             </div>
           ))}
         </div>
@@ -1408,10 +1387,10 @@ function DocumentPreparation({ assessmentData }: { assessmentData: any }) {
 
   return (
     <div className="space-y-6">
-      <div className="text-center bg-blue-50 p-4 rounded-xl">
-        <FileText className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-        <h4 className="font-bold text-blue-900 mb-1">Document Checklist</h4>
-        <p className="text-sm text-blue-700">
+      <div className="text-center bg-secondary border border-border p-4 rounded-xl">
+        <FileText className="h-8 w-8 text-gold mx-auto mb-2" />
+        <h4 className="font-bold text-foreground mb-1">Document Checklist</h4>
+        <p className="text-sm text-muted-foreground">
           Gather these documents to strengthen your negotiation
         </p>
       </div>
@@ -1420,10 +1399,10 @@ function DocumentPreparation({ assessmentData }: { assessmentData: any }) {
         {requiredDocs.map((doc) => (
           <div
             key={doc.id}
-            className={`p-4 rounded-xl border-2 ${
+            className={`p-4 rounded-xl border ${
               checkedDocs.includes(doc.id)
-                ? 'border-green-200 bg-green-50'
-                : 'border-gray-200 bg-white'
+                ? 'border-border bg-secondary'
+                : 'border-border bg-card'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -1434,7 +1413,7 @@ function DocumentPreparation({ assessmentData }: { assessmentData: any }) {
                   data-testid={`doc-${doc.id}`}
                 />
                 <div>
-                  <p className="font-medium text-gray-900">{doc.name}</p>
+                  <p className="font-medium text-foreground">{doc.name}</p>
                   <div className="flex items-center space-x-2">
                     <Badge variant={doc.required ? "destructive" : "secondary"} className="text-xs">
                       {doc.required ? 'Required' : 'Optional'}
@@ -1443,19 +1422,19 @@ function DocumentPreparation({ assessmentData }: { assessmentData: any }) {
                 </div>
               </div>
               {checkedDocs.includes(doc.id) && (
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <CheckCircle2 className="h-5 w-5 text-emerald-700" />
               )}
             </div>
           </div>
         ))}
       </div>
 
-      <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl">
+      <div className="bg-secondary border border-border p-4 rounded-xl">
         <div className="flex items-start space-x-3">
-          <Info className="h-5 w-5 text-amber-600 mt-0.5" />
+          <Info className="h-5 w-5 text-gold mt-0.5" />
           <div>
-            <h5 className="font-medium text-amber-900 mb-1">Pro Tip</h5>
-            <p className="text-sm text-amber-800">
+            <h5 className="font-medium text-foreground mb-1">Pro Tip</h5>
+            <p className="text-sm text-muted-foreground">
               Having all documents ready before your first call shows professionalism and increases your credibility with billing staff.
             </p>
           </div>
@@ -1483,17 +1462,17 @@ function FirstContact({ assessmentData }: { assessmentData: any }) {
 
   return (
     <div className="space-y-6">
-      <div className="text-center bg-green-50 p-4 rounded-xl">
-        <Phone className="h-8 w-8 text-green-600 mx-auto mb-2" />
-        <h4 className="font-bold text-green-900 mb-1">First Contact Strategy</h4>
-        <p className="text-sm text-green-700">
+      <div className="text-center bg-secondary border border-border p-4 rounded-xl">
+        <Phone className="h-8 w-8 text-gold mx-auto mb-2" />
+        <h4 className="font-bold text-foreground mb-1">First Contact Strategy</h4>
+        <p className="text-sm text-muted-foreground">
           Make your first strategic contact with confidence
         </p>
       </div>
 
       <div className="space-y-4">
-        <div className="bg-gray-50 p-4 rounded-xl">
-          <h5 className="font-medium text-gray-900 mb-2">Call Preparation</h5>
+        <div className="bg-secondary p-4 rounded-xl">
+          <h5 className="font-medium text-foreground mb-2">Call Preparation</h5>
           <div className="space-y-2 text-sm">
             <div className="flex items-center space-x-2">
               <CheckCircle2 className="h-4 w-4 text-green-600" />
@@ -1514,9 +1493,9 @@ function FirstContact({ assessmentData }: { assessmentData: any }) {
           </div>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-xl">
-          <h5 className="font-medium text-blue-900 mb-2">What to Say</h5>
-          <p className="text-sm text-blue-800 italic leading-relaxed">
+        <div className="bg-secondary border border-border p-4 rounded-xl">
+          <h5 className="font-medium text-foreground mb-2">What to Say</h5>
+          <p className="text-sm text-muted-foreground italic leading-relaxed">
             "Hello, I'm calling about my medical bill from {assessmentData.hospitalName}. 
             The bill amount is ${assessmentData.billAmount} and I'm hoping to discuss my options 
             for resolving this. I'm committed to paying but need to understand the charges and 
@@ -1524,9 +1503,9 @@ function FirstContact({ assessmentData }: { assessmentData: any }) {
           </p>
         </div>
 
-        <div className="bg-amber-50 p-4 rounded-xl">
-          <h5 className="font-medium text-amber-900 mb-2">Questions to Ask</h5>
-          <div className="space-y-1 text-sm text-amber-800">
+        <div className="bg-secondary border border-border p-4 rounded-xl">
+          <h5 className="font-medium text-foreground mb-2">Questions to Ask</h5>
+          <div className="space-y-1 text-sm text-muted-foreground">
             <p>• Can you provide an itemized breakdown of charges?</p>
             <p>• Are there any charity care or financial assistance programs?</p>
             <p>• What payment plan options are available?</p>
@@ -1538,7 +1517,7 @@ function FirstContact({ assessmentData }: { assessmentData: any }) {
 
       <div className="space-y-3">
         <Button
-          className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+          className="w-full bg-primary text-primary-foreground hover:opacity-90"
           onClick={() => setCallCompleted(true)}
           data-testid="button-start-call"
         >
@@ -1602,45 +1581,45 @@ function FollowUpStrategy({ assessmentData }: { assessmentData: any }) {
 
   return (
     <div className="space-y-6">
-      <div className="text-center bg-purple-50 p-4 rounded-xl">
-        <TrendingUp className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-        <h4 className="font-bold text-purple-900 mb-1">Follow-up & Escalation</h4>
-        <p className="text-sm text-purple-700">
+      <div className="text-center bg-secondary border border-border p-4 rounded-xl">
+        <TrendingUp className="h-8 w-8 text-gold mx-auto mb-2" />
+        <h4 className="font-bold text-foreground mb-1">Follow-up & Escalation</h4>
+        <p className="text-sm text-muted-foreground">
           Strategic follow-up to maximize your success
         </p>
       </div>
 
       <div className="space-y-4">
-        <div className="bg-gray-50 p-4 rounded-xl">
-          <h5 className="font-medium text-gray-900 mb-3">Follow-up Timeline</h5>
+        <div className="bg-secondary p-4 rounded-xl">
+          <h5 className="font-medium text-foreground mb-3">Follow-up Timeline</h5>
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
+              <div className="w-8 h-8 bg-foreground text-background rounded-full flex items-center justify-center text-xs font-bold">1</div>
               <div>
                 <p className="font-medium text-sm">3-5 Days After First Call</p>
-                <p className="text-xs text-gray-600">Send follow-up email with written request</p>
+                <p className="text-xs text-muted-foreground">Send follow-up email with written request</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
+              <div className="w-8 h-8 bg-foreground text-background rounded-full flex items-center justify-center text-xs font-bold">2</div>
               <div>
                 <p className="font-medium text-sm">1 Week Later</p>
-                <p className="text-xs text-gray-600">Second phone call to check status</p>
+                <p className="text-xs text-muted-foreground">Second phone call to check status</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
+              <div className="w-8 h-8 bg-gold text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
               <div>
                 <p className="font-medium text-sm">2 Weeks Total</p>
-                <p className="text-xs text-gray-600">Escalate to supervisor if no progress</p>
+                <p className="text-xs text-muted-foreground">Escalate to supervisor if no progress</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-red-50 border border-red-200 p-4 rounded-xl">
-          <h5 className="font-medium text-red-900 mb-2">Escalation Triggers</h5>
-          <div className="space-y-1 text-sm text-red-800">
+        <div className="bg-secondary border border-border p-4 rounded-xl">
+          <h5 className="font-medium text-destructive mb-2">Escalation Triggers</h5>
+          <div className="space-y-1 text-sm text-muted-foreground">
             <p>• No response after 1 week</p>
             <p>• Unreasonable offers or refusal to negotiate</p>
             <p>• Billing department claims no authority</p>
@@ -1681,8 +1660,8 @@ function FollowUpStrategy({ assessmentData }: { assessmentData: any }) {
           animate={{ opacity: 1, height: 'auto' }}
           className="space-y-4"
         >
-          <div className="bg-white p-4 rounded-xl border-2 border-purple-200">
-            <h5 className="font-medium text-gray-900 mb-3">Select Email Template</h5>
+          <div className="bg-card p-4 rounded-xl border border-border">
+            <h5 className="font-medium text-foreground mb-3">Select Email Template</h5>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {[
                 { key: 'followup', label: 'Follow-up' },
@@ -1714,7 +1693,7 @@ function FollowUpStrategy({ assessmentData }: { assessmentData: any }) {
               </Button>
               <Button
                 onClick={handleDownloadTemplate}
-                className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                className="flex-1 bg-primary text-primary-foreground hover:opacity-90"
                 data-testid="button-download-email"
               >
                 <Download className="h-4 w-4 mr-2" />
@@ -1738,18 +1717,18 @@ function FinalResolution({ assessmentData }: { assessmentData: any }) {
 
   return (
     <div className="space-y-6">
-      <div className="text-center bg-yellow-50 p-4 rounded-xl">
-        <Award className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
-        <h4 className="font-bold text-yellow-900 mb-1">Final Resolution</h4>
-        <p className="text-sm text-yellow-700">
+      <div className="text-center bg-secondary border border-border p-4 rounded-xl">
+        <Award className="h-8 w-8 text-gold mx-auto mb-2" />
+        <h4 className="font-bold text-foreground mb-1">Final Resolution</h4>
+        <p className="text-sm text-muted-foreground">
           Document your success and celebrate your achievement
         </p>
       </div>
 
       {!resolved ? (
         <div className="space-y-4">
-          <div className="bg-gray-50 p-4 rounded-xl">
-            <h5 className="font-medium text-gray-900 mb-3">Resolution Checklist</h5>
+          <div className="bg-secondary p-4 rounded-xl">
+            <h5 className="font-medium text-foreground mb-3">Resolution Checklist</h5>
             <div className="space-y-2">
               {[
                 'Get agreement in writing',
@@ -1759,8 +1738,8 @@ function FinalResolution({ assessmentData }: { assessmentData: any }) {
                 'Schedule payment if applicable'
               ].map((item, index) => (
                 <div key={index} className="flex items-center space-x-2">
-                  <CheckSquare className="h-4 w-4 text-gray-400" />
-                  <span className="text-sm text-gray-700">{item}</span>
+                  <CheckSquare className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">{item}</span>
                 </div>
               ))}
             </div>
@@ -1780,7 +1759,7 @@ function FinalResolution({ assessmentData }: { assessmentData: any }) {
 
           <Button
             onClick={() => setResolved(true)}
-            className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+            className="w-full bg-primary text-primary-foreground hover:opacity-90"
             data-testid="button-mark-resolved"
           >
             <Award className="h-4 w-4 mr-2" />
@@ -1793,29 +1772,31 @@ function FinalResolution({ assessmentData }: { assessmentData: any }) {
           animate={{ opacity: 1, scale: 1 }}
           className="space-y-6"
         >
-          <div className="text-center bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
+          <div className="text-center bg-secondary p-6 rounded-2xl border border-border">
             <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 0.5, repeat: 3 }}
-              className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
             >
               <Award className="h-8 w-8 text-white" />
             </motion.div>
-            <h3 className="text-2xl font-bold text-green-900 mb-2">Congratulations! 🎉</h3>
-            <p className="text-green-700 mb-4">You successfully negotiated your medical bill!</p>
+            <h3 className="text-2xl font-bold font-serif text-foreground mb-2">Congratulations! 🎉</h3>
+            <p className="text-muted-foreground mb-4">You successfully negotiated your medical bill!</p>
             
             <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="bg-white p-4 rounded-xl border border-green-200">
-                <p className="text-sm text-gray-600">Original Bill</p>
-                <p className="text-lg font-bold text-gray-900">${originalAmount.toLocaleString()}</p>
+              <div className="bg-card p-4 rounded-xl border border-border">
+                <p className="text-sm text-muted-foreground">Original Bill</p>
+                <p className="text-lg font-bold text-foreground">${originalAmount.toLocaleString()}</p>
               </div>
-              <div className="bg-white p-4 rounded-xl border border-green-200">
-                <p className="text-sm text-gray-600">Final Amount</p>
-                <p className="text-lg font-bold text-green-900">${parseFloat(finalAmount || '0').toLocaleString()}</p>
+              <div className="bg-card p-4 rounded-xl border border-border">
+                <p className="text-sm text-muted-foreground">Final Amount</p>
+                <p className="text-lg font-bold text-emerald-700">${parseFloat(finalAmount || '0').toLocaleString()}</p>
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-xl">
+            <div className="text-white p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <p className="text-sm opacity-90">Total Savings</p>
               <p className="text-2xl font-bold">${savings.toLocaleString()}</p>
               <p className="text-sm opacity-90">({savingsPercentage.toFixed(1)}% reduction)</p>
@@ -1860,45 +1841,45 @@ function ProgressTracking() {
       <motion.div variants={itemVariants} className="text-center space-y-4">
         <CoachAvatar size="w-14 h-14" isActive={true} />
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Your Progress</h2>
-          <p className="text-sm text-gray-600">Track your coaching journey and success</p>
+          <h2 className="text-xl font-bold text-foreground">Your Progress</h2>
+          <p className="text-sm text-muted-foreground">Track your coaching journey and success</p>
         </div>
       </motion.div>
 
       <motion.div variants={itemVariants}>
         <MobileCard>
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Current Case Status</h3>
+          <h3 className="text-lg font-bold text-foreground mb-4">Current Case Status</h3>
           
           <div className="space-y-4">
-            <div className="bg-blue-50 p-4 rounded-xl">
+            <div className="bg-secondary border border-border p-4 rounded-xl">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-blue-900">Active Case</span>
-                <Badge className="bg-blue-600">In Progress</Badge>
+                <span className="text-sm font-medium text-foreground">Active Case</span>
+                <Badge variant="secondary">In Progress</Badge>
               </div>
-              <p className="font-bold text-blue-900">{mockProgress.currentCase}</p>
+              <p className="font-bold text-foreground">{mockProgress.currentCase}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="text-center bg-gray-50 p-3 rounded-xl">
+              <div className="text-center bg-secondary p-3 rounded-xl">
                 <ProgressBar value={(mockProgress.completedSteps / mockProgress.totalSteps) * 100} className="h-2 mb-2" />
-                <p className="text-sm font-medium text-gray-900">
+                <p className="text-sm font-medium text-foreground">
                   {mockProgress.completedSteps}/{mockProgress.totalSteps} Steps
                 </p>
-                <p className="text-xs text-gray-600">Completed</p>
+                <p className="text-xs text-muted-foreground">Completed</p>
               </div>
-              <div className="text-center bg-green-50 p-3 rounded-xl">
-                <DollarSign className="h-6 w-6 text-green-600 mx-auto mb-1" />
-                <p className="text-sm font-medium text-green-900">${mockProgress.estimatedSavings.toLocaleString()}</p>
-                <p className="text-xs text-green-600">Est. Savings</p>
+              <div className="text-center bg-secondary border border-border p-3 rounded-xl">
+                <DollarSign className="h-6 w-6 text-gold mx-auto mb-1" />
+                <p className="text-sm font-medium text-gold">${mockProgress.estimatedSavings.toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">Est. Savings</p>
               </div>
             </div>
 
-            <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl">
+            <div className="bg-secondary border border-border p-4 rounded-xl">
               <div className="flex items-center space-x-2">
-                <Clock className="h-5 w-5 text-amber-600" />
+                <Clock className="h-5 w-5 text-gold" />
                 <div>
-                  <p className="font-medium text-amber-900">Next Action</p>
-                  <p className="text-sm text-amber-800">{mockProgress.nextAction}</p>
+                  <p className="font-medium text-foreground">Next Action</p>
+                  <p className="text-sm text-muted-foreground">{mockProgress.nextAction}</p>
                 </div>
               </div>
             </div>
@@ -1908,29 +1889,29 @@ function ProgressTracking() {
 
       <motion.div variants={itemVariants}>
         <MobileCard>
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Coaching Analytics</h3>
+          <h3 className="text-lg font-bold text-foreground mb-4">Coaching Analytics</h3>
           
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                <Timer className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-2">
+                <Timer className="h-6 w-6 text-muted-foreground" />
               </div>
-              <p className="text-sm font-medium text-gray-900">{mockProgress.timeInvested}</p>
-              <p className="text-xs text-gray-600">Time Invested</p>
+              <p className="text-sm font-medium text-foreground">{mockProgress.timeInvested}</p>
+              <p className="text-xs text-muted-foreground">Time Invested</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                <Target className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-2">
+                <Target className="h-6 w-6 text-muted-foreground" />
               </div>
-              <p className="text-sm font-medium text-gray-900">{mockProgress.successRate}%</p>
-              <p className="text-xs text-gray-600">Success Rate</p>
+              <p className="text-sm font-medium text-foreground">{mockProgress.successRate}%</p>
+              <p className="text-xs text-muted-foreground">Success Rate</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-2" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                 <Star className="h-6 w-6 text-white" />
               </div>
-              <p className="text-sm font-medium text-gray-900">Expert</p>
-              <p className="text-xs text-gray-600">Coach Level</p>
+              <p className="text-sm font-medium text-foreground">Expert</p>
+              <p className="text-xs text-muted-foreground">Coach Level</p>
             </div>
           </div>
         </MobileCard>
@@ -1938,7 +1919,7 @@ function ProgressTracking() {
 
       <motion.div variants={itemVariants}>
         <MobileCard>
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+          <h3 className="text-lg font-bold text-foreground mb-4">Quick Actions</h3>
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" className="h-16 flex-col" data-testid="button-schedule-session">
               <Calendar className="h-5 w-5 mb-1" />
@@ -2016,12 +1997,12 @@ function ResourcesLibrary() {
       animate="visible"
     >
       <motion.div variants={itemVariants} className="text-center space-y-4">
-        <div className="w-14 h-14 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center">
+        <div className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <BookOpen className="h-7 w-7 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Resource Library</h2>
-          <p className="text-sm text-gray-600">Professional tools and templates for your success</p>
+          <h2 className="text-xl font-bold text-foreground">Resource Library</h2>
+          <p className="text-sm text-muted-foreground">Professional tools and templates for your success</p>
         </div>
       </motion.div>
 
@@ -2030,25 +2011,25 @@ function ResourcesLibrary() {
           <MobileCard>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl flex items-center justify-center">
-                  <resource.icon className="h-5 w-5 text-white" />
+                <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+                  <resource.icon className="h-5 w-5 text-muted-foreground" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">{resource.category}</h3>
+                <h3 className="text-lg font-bold text-foreground">{resource.category}</h3>
               </div>
               
               <div className="space-y-2">
                 {resource.items.map((item, itemIndex) => (
                   <motion.div
                     key={item}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                    className="flex items-center justify-between p-3 bg-secondary rounded-lg hover:bg-muted transition-colors cursor-pointer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     data-testid={`resource-${resource.category.toLowerCase().replace(/\s+/g, '-')}-${itemIndex}`}
                   >
-                    <span className="text-sm font-medium text-gray-900">{item}</span>
+                    <span className="text-sm font-medium text-foreground">{item}</span>
                     <div className="flex items-center space-x-2">
                       <Badge variant="secondary" className="text-xs">Premium</Badge>
-                      <Download className="h-4 w-4 text-gray-400" />
+                      <Download className="h-4 w-4 text-muted-foreground" />
                     </div>
                   </motion.div>
                 ))}
@@ -2059,17 +2040,17 @@ function ResourcesLibrary() {
       ))}
 
       <motion.div variants={itemVariants}>
-        <MobileCard className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
+        <MobileCard>
           <div className="text-center space-y-4">
-            <div className="w-12 h-12 mx-auto bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center">
+            <div className="w-12 h-12 mx-auto rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Headphones className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-emerald-900 mb-2">Expert Support Available</h3>
-              <p className="text-sm text-emerald-700 mb-4">
+              <h3 className="text-lg font-bold text-foreground mb-2">Expert Support Available</h3>
+              <p className="text-sm text-muted-foreground mb-4">
                 Need personalized help? Connect with our bill reduction experts for 1-on-1 guidance.
               </p>
-              <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700" data-testid="button-expert-support">
+              <Button className="bg-primary text-primary-foreground hover:opacity-90" data-testid="button-expert-support">
                 <UserCheck className="h-4 w-4 mr-2" />
                 Contact Expert Coach
               </Button>
@@ -2100,10 +2081,10 @@ export default function ReductionCoach() {
       <MobileLayout title="Personal Coach" showBottomNav={true}>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <UserCheck className="h-6 w-6 text-white" />
             </div>
-            <div className="animate-spin w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full mx-auto"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-gold border-t-transparent rounded-full mx-auto"></div>
           </div>
         </div>
       </MobileLayout>
@@ -2130,32 +2111,33 @@ export default function ReductionCoach() {
       <div className="space-y-6">
         {/* Enhanced Header */}
         <motion.div
-          className="text-center py-6 bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 rounded-2xl border border-emerald-200"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center py-6 rounded-2xl border border-border"
+          style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <CoachAvatar size="w-16 h-16" isActive={true} />
-          <h1 className="text-2xl font-bold text-gray-900 mt-4 mb-2">Personal Bill Reduction Coach</h1>
-          <p className="text-emerald-700 font-medium mb-1">Expert 1-on-1 Guidance</p>
-          <p className="text-sm text-gray-600 max-w-sm mx-auto">
+          <h1 className="text-2xl font-bold font-serif text-foreground mt-4 mb-2">Personal Bill Reduction Coach</h1>
+          <p className="text-gold font-medium mb-1">Expert 1-on-1 Guidance</p>
+          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
             Personalized coaching system that provides step-by-step guidance for your specific case
           </p>
         </motion.div>
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-white border border-gray-200 rounded-xl p-1">
+          <TabsList className="grid w-full grid-cols-4 bg-card border border-border rounded-xl p-1">
             <TabsTrigger 
               value="assessment" 
-              className="text-xs data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
+              className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               data-testid="tab-assessment"
             >
               Assessment
             </TabsTrigger>
             <TabsTrigger 
               value="coaching" 
-              className="text-xs data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
+              className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               disabled={!assessmentData}
               data-testid="tab-coaching"
             >
@@ -2163,14 +2145,14 @@ export default function ReductionCoach() {
             </TabsTrigger>
             <TabsTrigger 
               value="progress" 
-              className="text-xs data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
+              className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               data-testid="tab-progress"
             >
               Progress
             </TabsTrigger>
             <TabsTrigger 
               value="resources" 
-              className="text-xs data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
+              className="text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               data-testid="tab-resources"
             >
               Resources
@@ -2186,14 +2168,14 @@ export default function ReductionCoach() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                   <CheckCircle2 className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Assessment Complete!</h3>
-                <p className="text-gray-600">Your personalized coaching plan has been created.</p>
+                <h3 className="text-xl font-bold font-serif text-foreground">Assessment Complete!</h3>
+                <p className="text-muted-foreground">Your personalized coaching plan has been created.</p>
                 <Button
                   onClick={() => setActiveTab('coaching')}
-                  className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
+                  className="bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="button-start-coaching"
                 >
                   Start Coaching Session
@@ -2208,9 +2190,9 @@ export default function ReductionCoach() {
               <InteractiveCoaching assessmentData={assessmentData} />
             ) : (
               <div className="text-center py-12">
-                <Lock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Complete Assessment First</h3>
-                <p className="text-gray-600 mb-4">Complete your personalized assessment to unlock your coaching plan.</p>
+                <Lock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">Complete Assessment First</h3>
+                <p className="text-muted-foreground mb-4">Complete your personalized assessment to unlock your coaching plan.</p>
                 <Button 
                   onClick={() => setActiveTab('assessment')}
                   variant="outline"

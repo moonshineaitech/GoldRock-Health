@@ -99,27 +99,27 @@ function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-4 text-left">
       <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">Name</Label>
-          <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="bg-white dark:bg-gray-700" data-testid="input-contact-name" />
+          <Label htmlFor="name" className="text-foreground">Name</Label>
+          <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="bg-background" data-testid="input-contact-name" />
         </div>
         <div>
-          <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Email</Label>
-          <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="bg-white dark:bg-gray-700" data-testid="input-contact-email" />
+          <Label htmlFor="email" className="text-foreground">Email</Label>
+          <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="bg-background" data-testid="input-contact-email" />
         </div>
       </div>
       <div>
-        <Label htmlFor="company" className="text-gray-700 dark:text-gray-300">Firm/Company</Label>
-        <Input id="company" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="bg-white dark:bg-gray-700" data-testid="input-contact-company" />
+        <Label htmlFor="company" className="text-foreground">Firm/Company</Label>
+        <Input id="company" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="bg-background" data-testid="input-contact-company" />
       </div>
       <div>
-        <Label htmlFor="message" className="text-gray-700 dark:text-gray-300">Message</Label>
-        <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="I'm interested in learning more about investment opportunities..." required className="bg-white dark:bg-gray-700 min-h-[100px]" data-testid="input-contact-message" />
+        <Label htmlFor="message" className="text-foreground">Message</Label>
+        <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="I'm interested in learning more about investment opportunities..." required className="bg-background min-h-[100px]" data-testid="input-contact-message" />
       </div>
-      <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white" disabled={isSubmitting} data-testid="button-submit-contact">
+      <Button type="submit" className="w-full bg-primary text-primary-foreground hover:opacity-90" disabled={isSubmitting} data-testid="button-submit-contact">
         <Send className="h-4 w-4 mr-2" />
         {isSubmitting ? "Sending..." : "Send Message"}
       </Button>
-      <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Or email us directly at CONTACT@GOLDROCK.ai</p>
+      <p className="text-xs text-muted-foreground text-center">Or email us directly at CONTACT@GOLDROCK.ai</p>
     </form>
   );
 }
@@ -136,11 +136,11 @@ export default function Investors() {
 
       <MobileHeader title="Investors" />
 
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-24">
+      <div className="min-h-screen bg-background pb-24">
         <div className="container mx-auto px-4 py-6">
           <div className="mb-6">
             <Link href="/">
-              <Button variant="ghost" className="text-gray-600 dark:text-gray-300" data-testid="button-back">
+              <Button variant="ghost" className="text-muted-foreground" data-testid="button-back">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
@@ -152,60 +152,60 @@ export default function Investors() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-10"
           >
-            <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300 mb-4">
+            <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300 mb-4">
               Investment Opportunity
             </Badge>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold font-serif text-foreground mb-4">
               Partner With GoldRock Health
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               We're building the infrastructure for healthcare cost transparency and reduction. 
               AI that saves patients money and transforms how America pays for healthcare.
             </p>
           </motion.div>
 
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-10">
+          <Card className="bg-card border-border mb-10">
             <CardHeader>
-              <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <CardTitle className="text-foreground flex items-center gap-2">
+                <Globe className="h-5 w-5 text-muted-foreground" />
                 Market Opportunity
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{marketOpportunity.description}</p>
+              <p className="text-muted-foreground mb-6">{marketOpportunity.description}</p>
               <div className="grid md:grid-cols-3 gap-4">
-                <div className="text-center bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">${marketOpportunity.tam}B</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total Addressable Market</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500">US Healthcare Spending</div>
+                <div className="text-center bg-secondary rounded-lg p-5">
+                  <div className="text-3xl font-bold text-gold">${marketOpportunity.tam}B</div>
+                  <div className="text-sm text-muted-foreground mt-1">Total Addressable Market</div>
+                  <div className="text-xs text-muted-foreground">US Healthcare Spending</div>
                 </div>
-                <div className="text-center bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400">${marketOpportunity.sam}B</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Serviceable Market</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500">Patient Out-of-Pocket Costs</div>
+                <div className="text-center bg-secondary rounded-lg p-5">
+                  <div className="text-3xl font-bold text-foreground">${marketOpportunity.sam}B</div>
+                  <div className="text-sm text-muted-foreground mt-1">Serviceable Market</div>
+                  <div className="text-xs text-muted-foreground">Patient Out-of-Pocket Costs</div>
                 </div>
-                <div className="text-center bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">${marketOpportunity.som}B</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Obtainable Market (5yr)</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500">Our Target Segment</div>
+                <div className="text-center bg-secondary rounded-lg p-5">
+                  <div className="text-3xl font-bold text-foreground">${marketOpportunity.som}B</div>
+                  <div className="text-sm text-muted-foreground mt-1">Obtainable Market (5yr)</div>
+                  <div className="text-xs text-muted-foreground">Our Target Segment</div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Competitive Advantages</h2>
+          <h2 className="text-xl font-bold text-foreground mb-4">Competitive Advantages</h2>
           <div className="grid md:grid-cols-2 gap-4 mb-10">
             {competitiveAdvantages.map((advantage, index) => (
               <motion.div key={advantage.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
-                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 h-full">
+                <Card className="bg-card border-border h-full">
                   <CardContent className="p-5">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <advantage.icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+                        <advantage.icon className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div>
-                        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">{advantage.title}</h3>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm">{advantage.description}</p>
+                        <h3 className="text-base font-semibold text-foreground mb-1">{advantage.title}</h3>
+                        <p className="text-muted-foreground text-sm">{advantage.description}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -214,21 +214,21 @@ export default function Investors() {
             ))}
           </div>
 
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Revenue Model</h2>
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-10">
+          <h2 className="text-xl font-bold text-foreground mb-4">Revenue Model</h2>
+          <Card className="bg-card border-border mb-10">
             <CardContent className="p-5">
               <div className="space-y-5">
                 {revenueStreams.map((stream) => (
                   <div key={stream.stream}>
                     <div className="flex justify-between mb-2">
                       <div>
-                        <span className="text-gray-900 dark:text-white font-medium">{stream.stream}</span>
-                        <span className="text-gray-500 text-sm ml-2">({stream.description})</span>
+                        <span className="text-foreground font-medium">{stream.stream}</span>
+                        <span className="text-muted-foreground text-sm ml-2">({stream.description})</span>
                       </div>
-                      <span className="text-blue-600 dark:text-blue-400 font-bold">{stream.percentage}%</span>
+                      <span className="text-gold font-bold">{stream.percentage}%</span>
                     </div>
-                    <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                      <motion.div className="h-full bg-gradient-to-r from-blue-500 to-purple-500" initial={{ width: 0 }} animate={{ width: `${stream.percentage}%` }} transition={{ delay: 0.5, duration: 0.8 }} />
+                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                      <motion.div className="h-full bg-gold" initial={{ width: 0 }} animate={{ width: `${stream.percentage}%` }} transition={{ delay: 0.5, duration: 0.8 }} />
                     </div>
                   </div>
                 ))}
@@ -237,18 +237,18 @@ export default function Investors() {
           </Card>
 
           <div className="grid md:grid-cols-2 gap-6 mb-10">
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                  <Award className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  <Award className="h-5 w-5 text-muted-foreground" />
                   Team
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
                   {teamHighlights.map((highlight, i) => (
-                    <li key={i} className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
-                      <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                    <li key={i} className="flex items-start gap-2 text-foreground">
+                      <CheckCircle className="h-4 w-4 text-emerald-600 flex-shrink-0 mt-0.5" />
                       {highlight}
                     </li>
                   ))}
@@ -256,10 +256,10 @@ export default function Investors() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5 text-muted-foreground" />
                   Milestones
                 </CardTitle>
               </CardHeader>
@@ -268,11 +268,11 @@ export default function Investors() {
                   {milestones.map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className="w-20 flex-shrink-0">
-                        <Badge className={`${i === milestones.length - 1 ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}`}>
+                        <Badge className={`${i === milestones.length - 1 ? 'bg-secondary text-gold' : 'bg-secondary text-muted-foreground'}`}>
                           {item.date}
                         </Badge>
                       </div>
-                      <div className="text-gray-700 dark:text-gray-300 text-sm">{item.milestone}</div>
+                      <div className="text-foreground text-sm">{item.milestone}</div>
                     </div>
                   ))}
                 </div>
@@ -280,14 +280,14 @@ export default function Investors() {
             </Card>
           </div>
 
-          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <Card className="bg-card border-border">
             <CardContent className="py-10">
               <div className="text-center mb-6">
-                <Briefcase className="h-10 w-10 text-amber-600 dark:text-amber-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                <Briefcase className="h-10 w-10 text-gold mx-auto mb-4" />
+                <h3 className="text-xl font-bold font-serif text-foreground mb-2">
                   Interested in Learning More?
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                <p className="text-muted-foreground max-w-md mx-auto">
                   We're currently raising our Series A round. Request our full investor deck and financial projections.
                 </p>
               </div>

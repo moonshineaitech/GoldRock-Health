@@ -9,13 +9,13 @@ export function LegalConsentFooter({ variant = "default", className = "" }: Lega
   if (variant === "compact") {
     return (
       <div className={`text-center ${className}`}>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           By continuing, you agree to our{" "}
-          <Link href="/terms-of-service" className="text-blue-600 hover:text-blue-700 underline" data-testid="link-terms">
+          <Link href="/terms-of-service" className="text-gold hover:text-foreground underline" data-testid="link-terms">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-700 underline" data-testid="link-privacy">
+          <Link href="/privacy-policy" className="text-gold hover:text-foreground underline" data-testid="link-privacy">
             Privacy Policy
           </Link>
         </p>
@@ -24,20 +24,20 @@ export function LegalConsentFooter({ variant = "default", className = "" }: Lega
   }
 
   return (
-    <div className={`bg-gray-50 border-t border-gray-200 py-4 px-6 ${className}`}>
+    <div className={`bg-secondary border-t border-border py-4 px-6 ${className}`}>
       <div className="max-w-4xl mx-auto">
-        <p className="text-sm text-gray-600 text-center mb-3">
+        <p className="text-sm text-muted-foreground text-center mb-3">
           By continuing, you agree to our{" "}
-          <Link href="/terms-of-service" className="text-blue-600 hover:text-blue-700 font-medium underline" data-testid="link-terms">
+          <Link href="/terms-of-service" className="text-gold hover:text-foreground font-medium underline" data-testid="link-terms">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-700 font-medium underline" data-testid="link-privacy">
+          <Link href="/privacy-policy" className="text-gold hover:text-foreground font-medium underline" data-testid="link-privacy">
             Privacy Policy
           </Link>
         </p>
         
-        <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
+        <div className="flex items-center justify-center space-x-4 text-xs text-muted-foreground">
           <div className="flex items-center space-x-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />

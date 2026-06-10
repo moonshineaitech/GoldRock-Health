@@ -193,24 +193,27 @@ export function DemoChat() {
       className="w-full max-w-md mx-auto mb-3"
       data-testid="demo-chat-container"
     >
-      <div className="relative bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-lg overflow-hidden">
+      <div className="relative bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
         {/* Compact Header */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 bg-gradient-to-r from-emerald-50/50 to-white">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-card">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow">
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center shadow-sm"
+              style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+            >
               <MessageCircle className="h-3.5 w-3.5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-gray-900 text-sm">Ask GoldRock AI</span>
-                <span className="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-semibold">
+                <span className="font-bold text-foreground text-sm">Ask GoldRock AI</span>
+                <span className="text-[9px] bg-secondary text-muted-foreground px-1.5 py-0.5 rounded-full font-semibold">
                   Free
                 </span>
               </div>
-              <div className="flex items-center gap-1 text-[9px] text-gray-500">
+              <div className="flex items-center gap-1 text-[9px] text-muted-foreground">
                 <Lock className="h-2.5 w-2.5" />
                 <span>Private</span>
-                <span className="text-emerald-600 font-medium">• {remaining} left</span>
+                <span className="text-muted-foreground font-medium">• {remaining} left</span>
               </div>
             </div>
           </div>
@@ -226,7 +229,7 @@ export function DemoChat() {
                   <motion.button
                     key={i}
                     onClick={() => handleQuickPrompt(prompt.text)}
-                    className="flex flex-col items-center gap-1 text-center text-[11px] p-2.5 bg-gray-50 border border-gray-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
+                    className="flex flex-col items-center gap-1 text-center text-[11px] p-2.5 bg-secondary border border-border rounded-xl hover:border-gold transition-all text-foreground"
                     whileTap={{ scale: 0.95 }}
                     data-testid={`quick-prompt-${i}`}
                   >
@@ -239,7 +242,7 @@ export function DemoChat() {
               {/* More Options Dropdown */}
               <button
                 onClick={() => setShowMoreOptions(!showMoreOptions)}
-                className="w-full flex items-center justify-center gap-1 text-[10px] text-gray-500 hover:text-emerald-600 py-1 transition-colors"
+                className="w-full flex items-center justify-center gap-1 text-[10px] text-muted-foreground hover:text-gold py-1 transition-colors"
               >
                 <span>More options</span>
                 {showMoreOptions ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
@@ -258,7 +261,7 @@ export function DemoChat() {
                         <motion.button
                           key={i}
                           onClick={() => handleQuickPrompt(prompt.text)}
-                          className="flex flex-col items-center gap-0.5 text-center text-[10px] p-2 bg-gray-50 border border-gray-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-gray-700"
+                          className="flex flex-col items-center gap-0.5 text-center text-[10px] p-2 bg-secondary border border-border rounded-xl hover:border-gold transition-all text-foreground"
                           whileTap={{ scale: 0.95 }}
                         >
                           <span className="text-sm">{prompt.icon}</span>
@@ -286,8 +289,8 @@ export function DemoChat() {
                   <div
                     className={`max-w-[90%] px-3.5 py-3 rounded-2xl text-[13px] leading-[1.5] ${
                       msg.role === "user"
-                        ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white"
-                        : "bg-gray-100 text-gray-800"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary text-foreground"
                     }`}
                   >
                     {formatMessage(msg.content)}
@@ -297,9 +300,9 @@ export function DemoChat() {
 
               {isLoading && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                  <div className="bg-gray-100 px-3.5 py-3 rounded-2xl flex items-center gap-2">
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-600" />
-                    <span className="text-[13px] text-gray-600">Analyzing...</span>
+                  <div className="bg-secondary px-3.5 py-3 rounded-2xl flex items-center gap-2">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-gold" />
+                    <span className="text-[13px] text-muted-foreground">Analyzing...</span>
                   </div>
                 </motion.div>
               )}
@@ -308,22 +311,22 @@ export function DemoChat() {
                 <motion.div 
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-200"
+                  className="mt-3 p-3 bg-secondary rounded-xl border border-border"
                 >
                   <label className="flex items-start gap-2.5 cursor-pointer">
                     <div 
                       onClick={() => handleAgreeToTerms(!hasAgreedToTerms)}
                       className={`flex-shrink-0 w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center transition-colors ${
                         hasAgreedToTerms 
-                          ? 'bg-emerald-600 border-emerald-600' 
-                          : 'border-gray-300 hover:border-emerald-500'
+                          ? 'bg-gold border-gold' 
+                          : 'border-border hover:border-gold'
                       }`}
                     >
                       {hasAgreedToTerms && <Check className="h-3 w-3 text-white" />}
                     </div>
-                    <span className="text-[11px] text-gray-600 leading-relaxed">
+                    <span className="text-[11px] text-muted-foreground leading-relaxed">
                       I agree to the{' '}
-                      <Link href="/terms-of-service" className="text-emerald-600 underline hover:text-emerald-700">
+                      <Link href="/terms-of-service" className="text-gold underline hover:opacity-80">
                         Terms of Service
                       </Link>
                       . GoldRock Health provides bill analysis and educational guidance only - not medical, legal, or financial advice.
@@ -341,7 +344,7 @@ export function DemoChat() {
             {isAuthenticated ? (
               <button
                 onClick={() => navigate(suggestedWorkflow.path)}
-                className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold shadow-md hover:shadow-lg transition-shadow"
+                className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-primary text-primary-foreground rounded-xl text-xs font-semibold shadow-sm hover:shadow-md transition-shadow"
               >
                 <Sparkles className="h-3 w-3" />
                 Try: {suggestedWorkflow.label}
@@ -349,7 +352,7 @@ export function DemoChat() {
               </button>
             ) : (
               <a href={`/api/login?redirect=${encodeURIComponent(suggestedWorkflow.path)}`}>
-                <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl text-xs font-semibold shadow-md hover:shadow-lg transition-shadow">
+                <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-primary text-primary-foreground rounded-xl text-xs font-semibold shadow-sm hover:shadow-md transition-shadow">
                   <Sparkles className="h-3 w-3" />
                   Try: {suggestedWorkflow.label}
                   <ArrowRight className="h-3 w-3" />
@@ -363,7 +366,10 @@ export function DemoChat() {
         {requiresSignup && !isAuthenticated && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-3 pb-3">
             <a href="/api/login">
-              <button className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-xs font-bold shadow-md">
+              <button
+                className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 text-white rounded-xl text-xs font-bold shadow-sm"
+                style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+              >
                 <Sparkles className="h-3 w-3" />
                 Sign Up Free to Continue
                 <ArrowRight className="h-3 w-3" />
@@ -382,7 +388,7 @@ export function DemoChat() {
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isLoading || requiresSignup}
                 placeholder=""
-                className="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:opacity-50"
+                className="w-full h-11 px-4 bg-secondary border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent disabled:opacity-50"
                 style={{ lineHeight: '1' }}
                 data-testid="demo-chat-input"
               />
@@ -393,7 +399,7 @@ export function DemoChat() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 pointer-events-none font-normal"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground pointer-events-none font-normal"
                 >
                   {placeholderPrompts[placeholderIndex]}
                 </motion.span>
@@ -402,7 +408,7 @@ export function DemoChat() {
             <button
               type="submit"
               disabled={!input.trim() || isLoading || requiresSignup}
-              className="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all disabled:opacity-50 shadow"
+              className="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all disabled:opacity-50 shadow-sm"
               data-testid="demo-chat-send"
             >
               <Send className="h-4 w-4" />
@@ -412,7 +418,7 @@ export function DemoChat() {
       </div>
 
       {/* Disclaimer below chat */}
-      <p className="text-[10px] text-gray-400 text-center mt-2 px-4 leading-relaxed">
+      <p className="text-[10px] text-muted-foreground text-center mt-2 px-4 leading-relaxed">
         GoldRock Health provides bill analysis and educational guidance only - not medical, legal, or financial advice.
       </p>
     </motion.div>

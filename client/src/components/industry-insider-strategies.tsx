@@ -164,7 +164,7 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -176,26 +176,26 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Vault className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Charge Master Secrets Decoder</h3>
-            <Badge className="bg-purple-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground">Charge Master Secrets Decoder</h3>
+            <Badge className="bg-secondary text-muted-foreground text-xs">
               <Lock className="h-3 w-3 mr-1" />
               Insider Secrets
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Decode hospital pricing algorithms • Expose markup manipulation • Force reductions</p>
+          <p className="text-sm text-muted-foreground">Decode hospital pricing algorithms • Expose markup manipulation • Force reductions</p>
         </div>
       </div>
 
       {/* Strategy Progress */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">Strategy Progress</span>
-          <span className="text-sm text-gray-500">Step {currentStep} of 4</span>
+          <span className="text-sm font-medium text-foreground">Strategy Progress</span>
+          <span className="text-sm text-muted-foreground">Step {currentStep} of 4</span>
         </div>
         <Progress value={(currentStep / 4) * 100} className="h-2" />
       </div>
@@ -207,19 +207,19 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
             key={step.id}
             className={`p-3 rounded-lg border-2 transition-all ${
               currentStep === step.id 
-                ? 'border-purple-300 bg-purple-50' 
+                ? 'border-border bg-secondary' 
                 : currentStep > step.id 
-                  ? 'border-green-300 bg-green-50' 
-                  : 'border-gray-200 bg-gray-50'
+                  ? 'border-border bg-secondary' 
+                  : 'border-border bg-secondary'
             }`}
           >
             <div className="flex items-center gap-3">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 currentStep === step.id 
-                  ? 'bg-purple-600 text-white' 
+                  ? 'bg-gold text-white' 
                   : currentStep > step.id 
-                    ? 'bg-green-600 text-white' 
-                    : 'bg-gray-300 text-gray-600'
+                    ? 'bg-emerald-600 text-white' 
+                    : 'bg-muted text-muted-foreground'
               }`}>
                 {currentStep > step.id ? (
                   <CheckCircle className="h-4 w-4" />
@@ -228,14 +228,14 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
                 )}
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{step.title}</h4>
-                <p className="text-sm text-gray-600">{step.description}</p>
+                <h4 className="font-semibold text-foreground">{step.title}</h4>
+                <p className="text-sm text-muted-foreground">{step.description}</p>
                 {currentStep === step.id && (
                   <div className="mt-2">
-                    <div className="text-xs text-purple-700 font-medium">Current Actions:</div>
+                    <div className="text-xs text-muted-foreground font-medium">Current Actions:</div>
                     <div className="space-y-1">
                       {step.actions.map((action, index) => (
-                        <div key={index} className="flex items-center gap-2 text-xs text-purple-600">
+                        <div key={index} className="flex items-center gap-2 text-xs text-muted-foreground">
                           <ArrowRight className="h-3 w-3" />
                           <span>{action}</span>
                         </div>
@@ -253,7 +253,7 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Hospital System *
             </label>
             <Input
@@ -264,7 +264,7 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Total Bill Amount *
             </label>
             <Input
@@ -279,7 +279,7 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Service Type
             </label>
             <Select value={strategyData.serviceType} onValueChange={(value) => setStrategyData({...strategyData, serviceType: value})}>
@@ -299,7 +299,7 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Facility Type
             </label>
             <Select value={strategyData.facilityType} onValueChange={(value) => setStrategyData({...strategyData, facilityType: value})}>
@@ -318,7 +318,7 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Most Suspicious Charges
           </label>
           <Textarea
@@ -333,7 +333,7 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
           <Button 
             onClick={executeChargeMasterStrategy} 
             disabled={isAnalyzing} 
-            className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+            className="flex-1 bg-primary text-primary-foreground"
             data-testid="button-execute-chargemaster-strategy"
           >
             {isAnalyzing ? (
@@ -360,12 +360,12 @@ Provide practical, step-by-step guidance with specific scripts, timing recommend
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-purple-50 rounded-lg">
+      <div className="mt-6 p-4 bg-secondary rounded-lg">
         <div className="flex items-center gap-2 mb-2">
-          <Key className="h-4 w-4 text-purple-600" />
-          <span className="text-sm font-semibold text-purple-800">Insider Secrets Revealed</span>
+          <Key className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm font-semibold text-foreground">Insider Secrets Revealed</span>
         </div>
-        <div className="text-xs text-purple-700 space-y-1">
+        <div className="text-xs text-muted-foreground space-y-1">
           <div>• Hospital charge master markup algorithms (400-1000%)</div>
           <div>• Revenue cycle vulnerability pressure points</div>
           <div>• Executive compensation tied to billing revenue</div>
@@ -491,7 +491,7 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -503,26 +503,26 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Target className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Revenue Cycle Vulnerability Exploiter</h3>
-            <Badge className="bg-red-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground">Revenue Cycle Vulnerability Exploiter</h3>
+            <Badge className="bg-secondary text-muted-foreground text-xs">
               <Flame className="h-3 w-3 mr-1" />
               High Impact
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Target billing weaknesses • Exploit pressure points • Force reductions</p>
+          <p className="text-sm text-muted-foreground">Target billing weaknesses • Exploit pressure points • Force reductions</p>
         </div>
       </div>
 
       {/* Exploitation Phase Progress */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">Exploitation Phase</span>
-          <span className="text-sm text-gray-500">Phase {currentPhase} of 3</span>
+          <span className="text-sm font-medium text-foreground">Exploitation Phase</span>
+          <span className="text-sm text-muted-foreground">Phase {currentPhase} of 3</span>
         </div>
         <Progress value={(currentPhase / 3) * 100} className="h-2" />
       </div>
@@ -534,19 +534,19 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
             key={phase.id}
             className={`p-3 rounded-lg border-2 transition-all ${
               currentPhase === phase.id 
-                ? 'border-red-300 bg-red-50' 
+                ? 'border-border bg-secondary' 
                 : currentPhase > phase.id 
-                  ? 'border-green-300 bg-green-50' 
-                  : 'border-gray-200 bg-gray-50'
+                  ? 'border-border bg-secondary' 
+                  : 'border-border bg-secondary'
             }`}
           >
             <div className="flex items-center gap-3">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 currentPhase === phase.id 
-                  ? 'bg-red-600 text-white' 
+                  ? 'bg-gold text-white' 
                   : currentPhase > phase.id 
-                    ? 'bg-green-600 text-white' 
-                    : 'bg-gray-300 text-gray-600'
+                    ? 'bg-emerald-600 text-white' 
+                    : 'bg-muted text-muted-foreground'
               }`}>
                 {currentPhase > phase.id ? (
                   <CheckCircle className="h-4 w-4" />
@@ -555,14 +555,14 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
                 )}
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{phase.title}</h4>
-                <p className="text-sm text-gray-600">{phase.description}</p>
+                <h4 className="font-semibold text-foreground">{phase.title}</h4>
+                <p className="text-sm text-muted-foreground">{phase.description}</p>
                 {currentPhase === phase.id && (
                   <div className="mt-2">
-                    <div className="text-xs text-red-700 font-medium">Target Areas:</div>
+                    <div className="text-xs text-muted-foreground font-medium">Target Areas:</div>
                     <div className="space-y-1">
                       {phase.targets.map((target, index) => (
-                        <div key={index} className="flex items-center gap-2 text-xs text-red-600">
+                        <div key={index} className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Target className="h-3 w-3" />
                           <span>{target}</span>
                         </div>
@@ -580,7 +580,7 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Hospital/Health System *
             </label>
             <Input
@@ -591,7 +591,7 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Total Bill Amount *
             </label>
             <Input
@@ -606,7 +606,7 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Bill Age
             </label>
             <Select value={exploitData.accountAge} onValueChange={(value) => setExploitData({...exploitData, accountAge: value})}>
@@ -623,7 +623,7 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Collection Status
             </label>
             <Select value={exploitData.collectionStatus} onValueChange={(value) => setExploitData({...exploitData, collectionStatus: value})}>
@@ -639,7 +639,7 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Hospital Type
             </label>
             <Select value={exploitData.hospitalType} onValueChange={(value) => setExploitData({...exploitData, hospitalType: value})}>
@@ -661,7 +661,7 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
           <Button 
             onClick={executeRevenueCycleExploit} 
             disabled={isExploiting} 
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+            className="flex-1 bg-primary text-primary-foreground"
             data-testid="button-execute-revenue-exploit"
           >
             {isExploiting ? (
@@ -689,26 +689,26 @@ Provide step-by-step exploitation tactics with specific organizational pressure 
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
-        <div className="p-3 bg-red-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <BarChart3 className="h-3 w-3 text-red-600" />
-            <span className="text-xs font-semibold text-red-800">KPI Targeting</span>
+            <BarChart3 className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">KPI Targeting</span>
           </div>
-          <div className="text-xs text-red-700">Revenue dept. performance pressure</div>
+          <div className="text-xs text-muted-foreground">Revenue dept. performance pressure</div>
         </div>
-        <div className="p-3 bg-orange-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <DollarSign className="h-3 w-3 text-orange-600" />
-            <span className="text-xs font-semibold text-orange-800">Cost Analysis</span>
+            <DollarSign className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Cost Analysis</span>
           </div>
-          <div className="text-xs text-orange-700">Collection break-even thresholds</div>
+          <div className="text-xs text-muted-foreground">Collection break-even thresholds</div>
         </div>
-        <div className="p-3 bg-purple-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Crown className="h-3 w-3 text-purple-600" />
-            <span className="text-xs font-semibold text-purple-800">Executive Impact</span>
+            <Crown className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Executive Impact</span>
           </div>
-          <div className="text-xs text-purple-700">Compensation & performance metrics</div>
+          <div className="text-xs text-muted-foreground">Compensation & performance metrics</div>
         </div>
       </div>
     </motion.div>
@@ -839,7 +839,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-white rounded-2xl p-6 shadow-lg border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -851,26 +851,26 @@ Provide step-by-step board-level pressure tactics with specific governance lever
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-purple-700 to-purple-800 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Crown className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Hospital Board Pressure Tactics</h3>
-            <Badge className="bg-purple-700 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground">Hospital Board Pressure Tactics</h3>
+            <Badge className="bg-secondary text-muted-foreground text-xs">
               <Award className="h-3 w-3 mr-1" />
               Maximum Impact
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Board-level escalation • Executive pressure • Governance accountability</p>
+          <p className="text-sm text-muted-foreground">Board-level escalation • Executive pressure • Governance accountability</p>
         </div>
       </div>
 
       {/* Escalation Level Progress */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">Escalation Level</span>
-          <span className="text-sm text-gray-500">Level {escalationLevel} of 3</span>
+          <span className="text-sm font-medium text-foreground">Escalation Level</span>
+          <span className="text-sm text-muted-foreground">Level {escalationLevel} of 3</span>
         </div>
         <Progress value={(escalationLevel / 3) * 100} className="h-2" />
       </div>
@@ -882,19 +882,19 @@ Provide step-by-step board-level pressure tactics with specific governance lever
             key={level.id}
             className={`p-3 rounded-lg border-2 transition-all ${
               escalationLevel === level.id 
-                ? 'border-purple-300 bg-purple-50' 
+                ? 'border-border bg-secondary' 
                 : escalationLevel > level.id 
-                  ? 'border-green-300 bg-green-50' 
-                  : 'border-gray-200 bg-gray-50'
+                  ? 'border-border bg-secondary' 
+                  : 'border-border bg-secondary'
             }`}
           >
             <div className="flex items-center gap-3">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 escalationLevel === level.id 
-                  ? 'bg-purple-700 text-white' 
+                  ? 'bg-gold text-white' 
                   : escalationLevel > level.id 
-                    ? 'bg-green-600 text-white' 
-                    : 'bg-gray-300 text-gray-600'
+                    ? 'bg-emerald-600 text-white' 
+                    : 'bg-muted text-muted-foreground'
               }`}>
                 {escalationLevel > level.id ? (
                   <CheckCircle className="h-4 w-4" />
@@ -903,14 +903,14 @@ Provide step-by-step board-level pressure tactics with specific governance lever
                 )}
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{level.title}</h4>
-                <p className="text-sm text-gray-600">{level.description}</p>
+                <h4 className="font-semibold text-foreground">{level.title}</h4>
+                <p className="text-sm text-muted-foreground">{level.description}</p>
                 {escalationLevel === level.id && (
                   <div className="mt-2">
-                    <div className="text-xs text-purple-700 font-medium">Pressure Tactics:</div>
+                    <div className="text-xs text-muted-foreground font-medium">Pressure Tactics:</div>
                     <div className="space-y-1">
                       {level.tactics.map((tactic, index) => (
-                        <div key={index} className="flex items-center gap-2 text-xs text-purple-600">
+                        <div key={index} className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Crown className="h-3 w-3" />
                           <span>{tactic}</span>
                         </div>
@@ -928,7 +928,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Hospital System *
             </label>
             <Input
@@ -939,7 +939,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Total Bill Amount *
             </label>
             <Input
@@ -954,7 +954,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Hospital Ownership Type
             </label>
             <Select value={boardData.hospitalOwnership} onValueChange={(value) => setBoardData({...boardData, hospitalOwnership: value})}>
@@ -971,7 +971,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Community Standing
             </label>
             <Select value={boardData.communityStanding} onValueChange={(value) => setBoardData({...boardData, communityStanding: value})}>
@@ -990,7 +990,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Media Story Potential
           </label>
           <Select value={boardData.mediaValue} onValueChange={(value) => setBoardData({...boardData, mediaValue: value})}>
@@ -1007,7 +1007,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Quality of Care Issues
           </label>
           <Textarea
@@ -1022,7 +1022,7 @@ Provide step-by-step board-level pressure tactics with specific governance lever
           <Button 
             onClick={executeHospitalBoardPressure} 
             disabled={isEscalating} 
-            className="flex-1 bg-purple-700 hover:bg-purple-800 text-white"
+            className="flex-1 bg-primary text-primary-foreground"
             data-testid="button-execute-board-pressure"
           >
             {isEscalating ? (
@@ -1050,26 +1050,26 @@ Provide step-by-step board-level pressure tactics with specific governance lever
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
-        <div className="p-3 bg-purple-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Scale className="h-3 w-3 text-purple-600" />
-            <span className="text-xs font-semibold text-purple-800">Fiduciary Duty</span>
+            <Scale className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Fiduciary Duty</span>
           </div>
-          <div className="text-xs text-purple-700">Board accountability & governance</div>
+          <div className="text-xs text-muted-foreground">Board accountability & governance</div>
         </div>
-        <div className="p-3 bg-blue-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Users className="h-3 w-3 text-blue-600" />
-            <span className="text-xs font-semibold text-blue-800">Community Pressure</span>
+            <Users className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Community Pressure</span>
           </div>
-          <div className="text-xs text-blue-700">Stakeholder coalition building</div>
+          <div className="text-xs text-muted-foreground">Stakeholder coalition building</div>
         </div>
-        <div className="p-3 bg-green-50 rounded-lg">
+        <div className="p-3 bg-secondary rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Crown className="h-3 w-3 text-green-600" />
-            <span className="text-xs font-semibold text-green-800">Executive Impact</span>
+            <Crown className="h-3 w-3 text-muted-foreground" />
+            <span className="text-xs font-semibold text-foreground">Executive Impact</span>
           </div>
-          <div className="text-xs text-green-700">Performance & compensation leverage</div>
+          <div className="text-xs text-muted-foreground">Performance & compensation leverage</div>
         </div>
       </div>
     </motion.div>
@@ -1111,18 +1111,18 @@ export function IndustryInsiderStrategies({ onSendMessage }: InsiderStrategyProp
     <div className="space-y-6">
       <div className="text-center space-y-3">
         <div className="flex items-center justify-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-600 via-red-600 to-purple-800 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Key className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Industry Insider Strategies</h2>
-            <Badge className="bg-gradient-to-r from-purple-600 to-red-600 text-white text-xs">
+            <h2 className="text-xl font-bold font-serif text-foreground">Industry Insider Strategies</h2>
+            <Badge className="bg-secondary text-muted-foreground text-xs">
               <Lock className="h-3 w-3 mr-1" />
               Insider Secrets
             </Badge>
           </div>
         </div>
-        <p className="text-sm text-gray-600 max-w-2xl mx-auto">
+        <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
           Hospital industry insider secrets that reveal internal vulnerabilities and force massive bill reductions using professional exploitation strategies.
         </p>
       </div>
@@ -1135,8 +1135,8 @@ export function IndustryInsiderStrategies({ onSendMessage }: InsiderStrategyProp
             onClick={() => setActiveStrategy(strategy.id)}
             className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
               activeStrategy === strategy.id
-                ? 'bg-gradient-to-r from-purple-600 to-red-600 text-white shadow-lg'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'bg-secondary text-foreground hover:bg-muted'
             }`}
             data-testid={`tab-${strategy.id}`}
           >

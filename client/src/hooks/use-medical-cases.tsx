@@ -160,31 +160,10 @@ export function getSpecialtyIcon(specialty: string): string {
   return icons[specialty] || icons.default;
 }
 
-// Utility function to get specialty color
-export function getSpecialtyColor(specialty: string): string {
-  const colors: Record<string, string> = {
-    "Cardiology": "bg-red-100 text-red-700 border-red-200",
-    "Neurology": "bg-purple-100 text-purple-700 border-purple-200",
-    "Emergency Medicine": "bg-red-100 text-red-700 border-red-200",
-    "Endocrinology": "bg-emerald-100 text-emerald-700 border-emerald-200",
-    "Gastroenterology": "bg-orange-100 text-orange-700 border-orange-200",
-    "Pediatrics": "bg-pink-100 text-pink-700 border-pink-200",
-    "Psychiatry": "bg-indigo-100 text-indigo-700 border-indigo-200",
-    "Infectious Disease": "bg-yellow-100 text-yellow-700 border-yellow-200",
-    "Dermatology": "bg-amber-100 text-amber-700 border-amber-200",
-    "Orthopedics": "bg-blue-100 text-blue-700 border-blue-200",
-    "Gynecology": "bg-rose-100 text-rose-700 border-rose-200",
-    "Urology": "bg-cyan-100 text-cyan-700 border-cyan-200",
-    "ENT": "bg-green-100 text-green-700 border-green-200",
-    "Ophthalmology": "bg-violet-100 text-violet-700 border-violet-200",
-    "Pulmonology": "bg-sky-100 text-sky-700 border-sky-200",
-    "Hematology": "bg-red-100 text-red-700 border-red-200",
-    "Rheumatology": "bg-stone-100 text-stone-700 border-stone-200",
-    "Nephrology": "bg-teal-100 text-teal-700 border-teal-200",
-    "Oncology": "bg-purple-100 text-purple-700 border-purple-200",
-    "default": "bg-slate-100 text-slate-700 border-slate-200"
-  };
-  return colors[specialty] || colors.default;
+// Utility function to get specialty color (Atelier: uniform neutral chip; the
+// specialty name text is the differentiator, gold stays the only accent)
+export function getSpecialtyColor(_specialty: string): string {
+  return "bg-secondary text-muted-foreground border-border";
 }
 
 // Utility function to get difficulty color

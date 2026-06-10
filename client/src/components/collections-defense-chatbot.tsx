@@ -37,50 +37,42 @@ const quickPrompts = [
   {
     icon: Heart,
     title: "Childbirth Bill in Collections",
-    prompt: "My hospital bill for childbirth is in collections. It's $30,000+. What are my options? Can I apply for charity care even now? How do I negotiate this down?",
-    color: "from-pink-500 to-rose-600"
+    prompt: "My hospital bill for childbirth is in collections. It's $30,000+. What are my options? Can I apply for charity care even now? How do I negotiate this down?"
   },
   {
     icon: AlertTriangle,
     title: "Lost Insurance - Baby Bill",
-    prompt: "I lost my insurance during pregnancy and now have a massive childbirth bill in collections. Can I get retroactive COBRA or Medicaid? What should I do?",
-    color: "from-red-500 to-rose-600"
+    prompt: "I lost my insurance during pregnancy and now have a massive childbirth bill in collections. Can I get retroactive COBRA or Medicaid? What should I do?"
   },
   {
     icon: Shield,
     title: "Back on Insurance Now",
-    prompt: "I was uninsured when I had my baby but now I have insurance again. The old bill is in collections. Can my new insurance help? What about charity care?",
-    color: "from-teal-500 to-emerald-600"
+    prompt: "I was uninsured when I had my baby but now I have insurance again. The old bill is in collections. Can my new insurance help? What about charity care?"
   },
   {
     icon: FileText,
     title: "Debt Validation Letter",
-    prompt: "Write me a debt validation letter template for my childbirth bill that's in collections. I want to request proof they can legally collect this debt.",
-    color: "from-blue-500 to-indigo-600"
+    prompt: "Write me a debt validation letter template for my childbirth bill that's in collections. I want to request proof they can legally collect this debt."
   },
   {
     icon: DollarSign,
     title: "Negotiate Settlement",
-    prompt: "How do I negotiate a settlement on medical debt in collections? What percentage should I offer and how do I get pay-for-delete in writing?",
-    color: "from-emerald-500 to-teal-600"
+    prompt: "How do I negotiate a settlement on medical debt in collections? What percentage should I offer and how do I get pay-for-delete in writing?"
   },
   {
     icon: Scale,
     title: "Collector Tactics",
-    prompt: "A debt collector keeps calling about my medical bill and threatening to sue. What should I say? What are my rights? How do I stop the harassment?",
-    color: "from-purple-500 to-violet-600"
+    prompt: "A debt collector keeps calling about my medical bill and threatening to sue. What should I say? What are my rights? How do I stop the harassment?"
   },
   {
     icon: Lightbulb,
     title: "Charity Care Application",
-    prompt: "How do I apply for hospital charity care for a bill that's already in collections? Can they recall the debt? What documentation do I need?",
-    color: "from-amber-500 to-orange-600"
+    prompt: "How do I apply for hospital charity care for a bill that's already in collections? Can they recall the debt? What documentation do I need?"
   },
   {
     icon: CreditCard,
     title: "Credit Report Impact",
-    prompt: "Medical debt is on my credit report. I heard the rules changed - does medical debt under $500 still show? How do I get pay-for-delete?",
-    color: "from-violet-500 to-purple-600"
+    prompt: "Medical debt is on my credit report. I heard the rules changed - does medical debt under $500 still show? How do I get pay-for-delete?"
   }
 ];
 
@@ -202,16 +194,16 @@ Contact: CONTACT@GOLDROCK.ai`;
   const formatMessage = (content: string) => {
     let formatted = content
       // Headers
-      .replace(/^## (.+)$/gm, '<h3 class="text-base font-bold text-gray-900 dark:text-white mt-4 mb-2 first:mt-0">$1</h3>')
-      .replace(/^### (.+)$/gm, '<h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mt-3 mb-1">$1</h4>')
+      .replace(/^## (.+)$/gm, '<h3 class="text-base font-bold text-foreground mt-4 mb-2 first:mt-0">$1</h3>')
+      .replace(/^### (.+)$/gm, '<h4 class="text-sm font-semibold text-foreground mt-3 mb-1">$1</h4>')
       // Bold
-      .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-900 dark:text-white">$1</strong>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
       // Italic
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       // Numbered lists
-      .replace(/^(\d+)\.\s+(.+)$/gm, '<div class="flex gap-2 mb-1.5"><span class="flex-shrink-0 w-5 h-5 rounded-full bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold flex items-center justify-center">$1</span><span>$2</span></div>')
+      .replace(/^(\d+)\.\s+(.+)$/gm, '<div class="flex gap-2 mb-1.5"><span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold text-white text-xs font-bold flex items-center justify-center">$1</span><span>$2</span></div>')
       // Bullet points
-      .replace(/^[•\-]\s+(.+)$/gm, '<div class="flex gap-2 mb-1 pl-1"><span class="text-red-500 mt-1">•</span><span>$1</span></div>')
+      .replace(/^[•\-]\s+(.+)$/gm, '<div class="flex gap-2 mb-1 pl-1"><span class="text-gold mt-1">•</span><span>$1</span></div>')
       // Line breaks
       .replace(/\n\n/g, '</p><p class="mt-3">')
       .replace(/\n/g, '<br/>');
@@ -221,16 +213,16 @@ Contact: CONTACT@GOLDROCK.ai`;
 
   return (
     <div className="w-full" data-testid="collections-defense-chatbot">
-      <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 shadow-2xl overflow-hidden">
+      <Card className="bg-card border border-border shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 p-4">
+        <div className="p-4" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center">
                 <Sparkles className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-white text-lg">Collections Defense AI</h3>
+                <h3 className="font-bold font-serif text-white text-lg">Collections Defense AI</h3>
                 <p className="text-white/80 text-sm">Expert guidance for your situation</p>
               </div>
             </div>
@@ -253,8 +245,8 @@ Contact: CONTACT@GOLDROCK.ai`;
           {/* Quick Prompts - Only show when no messages */}
           {messages.length === 0 && (
             <div className="mb-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 flex items-center gap-2">
-                <Lightbulb className="h-4 w-4 text-amber-500" />
+              <p className="text-sm text-muted-foreground mb-3 flex items-center gap-2">
+                <Lightbulb className="h-4 w-4 text-gold" />
                 Tap a topic or type your question below:
               </p>
               <div className="grid grid-cols-2 gap-2">
@@ -262,16 +254,16 @@ Contact: CONTACT@GOLDROCK.ai`;
                   <motion.button
                     key={index}
                     onClick={() => handleQuickPrompt(prompt.prompt)}
-                    className="text-left bg-gray-50 dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700 hover:border-red-200 dark:hover:border-red-700 hover:shadow-lg transition-all group"
+                    className="text-left bg-card rounded-xl p-3 border border-border hover:border-gold hover:shadow-sm transition-all group"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     data-testid={`quick-prompt-${index}`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className={`w-8 h-8 bg-gradient-to-br ${prompt.color} rounded-lg flex items-center justify-center flex-shrink-0 shadow-md`}>
-                        <prompt.icon className="h-4 w-4 text-white" />
+                      <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+                        <prompt.icon className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <span className="font-medium text-gray-800 dark:text-gray-200 text-sm leading-tight group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                      <span className="font-medium text-foreground text-sm leading-tight group-hover:text-gold transition-colors">
                         {prompt.title}
                       </span>
                     </div>
@@ -293,7 +285,7 @@ Contact: CONTACT@GOLDROCK.ai`;
                     className={`flex gap-2.5 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     {message.role === "assistant" && (
-                      <div className="w-7 h-7 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md mt-0.5">
+                      <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                         <Bot className="h-3.5 w-3.5 text-white" />
                       </div>
                     )}
@@ -301,8 +293,8 @@ Contact: CONTACT@GOLDROCK.ai`;
                       <div
                         className={`rounded-2xl px-4 py-3 ${
                           message.role === "user"
-                            ? "bg-gradient-to-br from-gray-800 to-gray-900 text-white ml-auto"
-                            : "bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700"
+                            ? "bg-primary text-primary-foreground ml-auto"
+                            : "bg-secondary text-foreground border border-border"
                         }`}
                       >
                         {message.role === "user" ? (
@@ -318,13 +310,13 @@ Contact: CONTACT@GOLDROCK.ai`;
                         <div className="flex items-center gap-2 mt-1.5 ml-1">
                           <button
                             onClick={() => copyToClipboard(message.content, message.id)}
-                            className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex items-center gap-1 transition-colors"
+                            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
                             data-testid={`copy-message-${message.id}`}
                           >
                             {copiedId === message.id ? (
                               <>
-                                <Check className="h-3 w-3 text-green-500" />
-                                <span className="text-green-500">Copied!</span>
+                                <Check className="h-3 w-3 text-emerald-600" />
+                                <span className="text-emerald-600">Copied!</span>
                               </>
                             ) : (
                               <>
@@ -337,8 +329,8 @@ Contact: CONTACT@GOLDROCK.ai`;
                       )}
                     </div>
                     {message.role === "user" && (
-                      <div className="w-7 h-7 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <User className="h-3.5 w-3.5 text-white" />
+                      <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <User className="h-3.5 w-3.5 text-primary-foreground" />
                       </div>
                     )}
                   </motion.div>
@@ -351,29 +343,29 @@ Contact: CONTACT@GOLDROCK.ai`;
                     animate={{ opacity: 1, y: 0 }}
                     className="flex gap-2.5"
                   >
-                    <div className="w-7 h-7 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                       <Bot className="h-3.5 w-3.5 text-white" />
                     </div>
-                    <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl px-4 py-3 border border-gray-100 dark:border-gray-700">
+                    <div className="bg-secondary rounded-2xl px-4 py-3 border border-border">
                       <div className="flex items-center gap-3">
                         <div className="flex gap-1">
                           <motion.div
-                            className="w-2 h-2 bg-red-500 rounded-full"
+                            className="w-2 h-2 bg-gold rounded-full"
                             animate={{ scale: [1, 1.3, 1] }}
                             transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
                           />
                           <motion.div
-                            className="w-2 h-2 bg-orange-500 rounded-full"
+                            className="w-2 h-2 bg-gold rounded-full"
                             animate={{ scale: [1, 1.3, 1] }}
                             transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
                           />
                           <motion.div
-                            className="w-2 h-2 bg-amber-500 rounded-full"
+                            className="w-2 h-2 bg-gold rounded-full"
                             animate={{ scale: [1, 1.3, 1] }}
                             transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
                           />
                         </div>
-                        <span className="text-sm text-gray-500 dark:text-gray-400">Analyzing your situation...</span>
+                        <span className="text-sm text-muted-foreground">Analyzing your situation...</span>
                       </div>
                     </div>
                   </motion.div>
@@ -390,7 +382,7 @@ Contact: CONTACT@GOLDROCK.ai`;
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Describe your situation... (amount, age of debt, what they said, etc.)"
-              className="min-h-[80px] pr-24 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-xl resize-none text-sm focus:ring-2 focus:ring-red-500/20 focus:border-red-400"
+              className="min-h-[80px] pr-24 bg-card border-border rounded-xl resize-none text-sm focus:ring-1 focus:ring-gold focus:border-gold"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
@@ -402,7 +394,7 @@ Contact: CONTACT@GOLDROCK.ai`;
             <Button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="absolute bottom-3 right-3 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white rounded-lg h-9 px-4 shadow-lg"
+              className="absolute bottom-3 right-3 bg-primary text-primary-foreground hover:opacity-90 rounded-lg h-9 px-4 shadow-sm"
               data-testid="collections-chat-submit"
             >
               {isLoading ? (
@@ -416,7 +408,7 @@ Contact: CONTACT@GOLDROCK.ai`;
           </form>
 
           {/* Disclaimer */}
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">
+          <p className="text-xs text-muted-foreground mt-3 text-center">
             Educational information only, not legal advice. Contact CONTACT@GOLDROCK.ai for help.
           </p>
         </CardContent>

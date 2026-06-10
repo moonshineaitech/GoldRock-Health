@@ -5336,7 +5336,7 @@ export default function CollectionsDefenseGuide() {
           {/* Collections Scenarios Section */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-              <Shield className="h-6 w-6 text-blue-600" />
+              <Shield className="h-6 w-6 text-muted-foreground" />
               Specific Collections Scenarios & Step-by-Step Defense
             </h2>
             
@@ -5364,10 +5364,10 @@ export default function CollectionsDefenseGuide() {
                           <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
                             'featured' in scenario && scenario.featured 
                               ? 'bg-gradient-to-br from-red-500 to-orange-500' 
-                              : 'bg-blue-100 dark:bg-blue-900/30'
+                              : 'bg-secondary'
                           }`}>
                             <IconComponent className={`h-6 w-6 ${
-                              'featured' in scenario && scenario.featured ? 'text-white' : 'text-blue-600 dark:text-blue-400'
+                              'featured' in scenario && scenario.featured ? 'text-white' : 'text-muted-foreground'
                             }`} />
                           </div>
                           <div>
@@ -5411,13 +5411,13 @@ export default function CollectionsDefenseGuide() {
                             {/* Insider Knowledge */}
                             <div>
                               <h4 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                                <Lock className="h-4 w-4 text-purple-500" />
+                                <Lock className="h-4 w-4 text-muted-foreground" />
                                 Insider Knowledge ({scenario.insiderKnowledge.length} insights)
                               </h4>
                               <ul className="space-y-2">
                                 {scenario.insiderKnowledge.map((knowledge, i) => (
                                   <li key={i} className="flex items-start gap-2">
-                                    <CheckCircle className="h-4 w-4 text-purple-500 flex-shrink-0 mt-0.5" />
+                                    <CheckCircle className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
                                     <span className="text-gray-700 dark:text-gray-300 text-sm">{knowledge}</span>
                                   </li>
                                 ))}
@@ -5477,8 +5477,8 @@ export default function CollectionsDefenseGuide() {
 
                             {/* Timeline - for featured scenarios */}
                             {'timeline' in scenario && scenario.timeline && (
-                              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-5 border border-blue-200 dark:border-blue-700">
-                                <h4 className="font-bold text-blue-800 dark:text-blue-300 mb-4 flex items-center gap-2">
+                              <div className="bg-secondary rounded-xl p-5 border border-border">
+                                <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                                   <Calendar className="h-5 w-5" />
                                   {(scenario.timeline as any).title}
                                 </h4>
@@ -5487,14 +5487,14 @@ export default function CollectionsDefenseGuide() {
                                     <div key={i} className={`rounded-lg p-4 border ${
                                       checkpoint.status === 'critical' ? 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700' :
                                       checkpoint.status === 'important' ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700' :
-                                      checkpoint.status === 'strategic' ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700' :
+                                      checkpoint.status === 'strategic' ? 'bg-card border-border' :
                                       'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700'
                                     }`}>
                                       <div className="flex items-center gap-2 mb-2">
                                         <Clock className={`h-4 w-4 ${
                                           checkpoint.status === 'critical' ? 'text-red-600' :
                                           checkpoint.status === 'important' ? 'text-amber-600' :
-                                          checkpoint.status === 'strategic' ? 'text-blue-600' :
+                                          checkpoint.status === 'strategic' ? 'text-muted-foreground' :
                                           'text-green-600'
                                         }`} />
                                         <span className="font-bold text-gray-900 dark:text-white text-sm">{checkpoint.day}</span>
@@ -5561,28 +5561,28 @@ export default function CollectionsDefenseGuide() {
 
                             {/* Negotiation Playbooks - for featured scenarios */}
                             {'negotiationPlaybooks' in scenario && scenario.negotiationPlaybooks && (
-                              <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-5 border border-indigo-200 dark:border-indigo-700">
-                                <h4 className="font-bold text-indigo-800 dark:text-indigo-300 mb-4 flex items-center gap-2">
+                              <div className="bg-secondary rounded-xl p-5 border border-border">
+                                <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                                   <MessageSquare className="h-5 w-5" />
                                   Negotiation Playbooks & Scripts
                                 </h4>
                                 <div className="space-y-4">
                                   {Object.entries(scenario.negotiationPlaybooks as Record<string, any>).map(([key, playbook]: [string, any]) => (
-                                    <div key={key} className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-indigo-100 dark:border-indigo-800">
+                                    <div key={key} className="bg-card rounded-lg p-4 border border-border">
                                       <h5 className="font-bold text-gray-900 dark:text-white text-sm mb-2">{playbook.title}</h5>
                                       {playbook.approach && (
                                         <p className="text-gray-600 dark:text-gray-400 text-xs mb-3 italic">{playbook.approach}</p>
                                       )}
                                       {playbook.script && (
-                                        <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700">
-                                          <p className="text-xs font-medium text-indigo-800 dark:text-indigo-300 mb-1">SCRIPT:</p>
-                                          <p className="text-sm text-indigo-900 dark:text-indigo-200 italic">"{playbook.script}"</p>
+                                        <div className="bg-secondary rounded-lg p-3 border border-border">
+                                          <p className="text-xs font-medium text-muted-foreground mb-1">SCRIPT:</p>
+                                          <p className="text-sm text-foreground italic">"{playbook.script}"</p>
                                         </div>
                                       )}
                                       {playbook.initialScript && (
-                                        <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 border border-indigo-200 dark:border-indigo-700 mb-2">
-                                          <p className="text-xs font-medium text-indigo-800 dark:text-indigo-300 mb-1">INITIAL SCRIPT:</p>
-                                          <p className="text-sm text-indigo-900 dark:text-indigo-200 italic">"{playbook.initialScript}"</p>
+                                        <div className="bg-secondary rounded-lg p-3 border border-border mb-2">
+                                          <p className="text-xs font-medium text-muted-foreground mb-1">INITIAL SCRIPT:</p>
+                                          <p className="text-sm text-foreground italic">"{playbook.initialScript}"</p>
                                         </div>
                                       )}
                                       {playbook.settlementScript && (
@@ -5611,29 +5611,29 @@ export default function CollectionsDefenseGuide() {
 
                             {/* Legal Protections - for featured scenarios */}
                             {'legalProtections' in scenario && scenario.legalProtections && (
-                              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-5 border border-purple-200 dark:border-purple-700">
-                                <h4 className="font-bold text-purple-800 dark:text-purple-300 mb-4 flex items-center gap-2">
+                              <div className="bg-secondary rounded-xl p-5 border border-border">
+                                <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                                   <Scale className="h-5 w-5" />
                                   Legal Protections & Rights
                                 </h4>
                                 <div className="space-y-4">
                                   <div>
-                                    <h5 className="font-semibold text-purple-700 dark:text-purple-400 text-sm mb-2">Federal Laws:</h5>
+                                    <h5 className="font-semibold text-foreground text-sm mb-2">Federal Laws:</h5>
                                     <div className="space-y-2">
                                       {(scenario.legalProtections as any).federal?.map((law: any, i: number) => (
-                                        <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
+                                        <div key={i} className="bg-card rounded-lg p-3 border border-border">
                                           <p className="font-bold text-gray-900 dark:text-white text-sm">{law.law}</p>
                                           <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">{law.protection}</p>
-                                          <p className="text-purple-600 dark:text-purple-400 text-xs mt-1"><strong>Enforce:</strong> {law.enforcement}</p>
+                                          <p className="text-muted-foreground text-xs mt-1"><strong>Enforce:</strong> {law.enforcement}</p>
                                         </div>
                                       ))}
                                     </div>
                                   </div>
                                   <div>
-                                    <h5 className="font-semibold text-purple-700 dark:text-purple-400 text-sm mb-2">State Examples:</h5>
+                                    <h5 className="font-semibold text-foreground text-sm mb-2">State Examples:</h5>
                                     <div className="grid gap-2">
                                       {(scenario.legalProtections as any).stateExamples?.map((state: any, i: number) => (
-                                        <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-purple-100 dark:border-purple-800">
+                                        <div key={i} className="bg-card rounded-lg p-3 border border-border">
                                           <p className="font-bold text-gray-900 dark:text-white text-sm">{state.state}</p>
                                           <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">{state.protection}</p>
                                         </div>
@@ -5646,16 +5646,16 @@ export default function CollectionsDefenseGuide() {
 
                             {/* Letter Templates - for featured scenarios */}
                             {'templates' in scenario && scenario.templates && (
-                              <div className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-5 border border-teal-200 dark:border-teal-700">
-                                <h4 className="font-bold text-teal-800 dark:text-teal-300 mb-4 flex items-center gap-2">
+                              <div className="bg-secondary rounded-xl p-5 border border-border">
+                                <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                                   <FileText className="h-5 w-5" />
                                   Ready-to-Use Letter Templates
                                 </h4>
                                 <div className="space-y-4">
                                   {Object.entries(scenario.templates as Record<string, any>).map(([key, template]: [string, any]) => (
-                                    <div key={key} className="bg-white dark:bg-gray-800 rounded-lg border border-teal-100 dark:border-teal-800 overflow-hidden">
-                                      <div className="bg-teal-100 dark:bg-teal-900/50 px-4 py-2 border-b border-teal-200 dark:border-teal-700">
-                                        <h5 className="font-bold text-teal-800 dark:text-teal-300 text-sm">{template.title}</h5>
+                                    <div key={key} className="bg-card rounded-lg border border-border overflow-hidden">
+                                      <div className="bg-secondary px-4 py-2 border-b border-border">
+                                        <h5 className="font-bold text-foreground text-sm">{template.title}</h5>
                                       </div>
                                       <div className="p-4">
                                         <pre className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap font-mono bg-gray-50 dark:bg-gray-900 rounded-lg p-3 max-h-48 overflow-y-auto">
@@ -5663,7 +5663,7 @@ export default function CollectionsDefenseGuide() {
                                         </pre>
                                         <Button 
                                           size="sm"
-                                          className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white"
+                                          className="w-full mt-3 bg-primary text-primary-foreground hover:opacity-90"
                                           onClick={() => navigator.clipboard.writeText(template.content)}
                                           data-testid={`copy-template-${key}`}
                                         >
@@ -5678,22 +5678,22 @@ export default function CollectionsDefenseGuide() {
 
                             {/* COBRA Analysis - for insurance kickoff scenario */}
                             {'cobraAnalysis' in scenario && scenario.cobraAnalysis && (
-                              <div className="bg-cyan-50 dark:bg-cyan-900/20 rounded-xl p-5 border border-cyan-200 dark:border-cyan-700">
-                                <h4 className="font-bold text-cyan-800 dark:text-cyan-300 mb-4 flex items-center gap-2">
+                              <div className="bg-secondary rounded-xl p-5 border border-border">
+                                <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                                   <Shield className="h-5 w-5" />
                                   {(scenario.cobraAnalysis as any).title}
                                 </h4>
                                 <ul className="space-y-2 mb-4">
                                   {(scenario.cobraAnalysis as any).keyFacts?.map((fact: string, i: number) => (
                                     <li key={i} className="flex items-start gap-2">
-                                      <CheckCircle className="h-4 w-4 text-cyan-500 flex-shrink-0 mt-0.5" />
+                                      <CheckCircle className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
                                       <span className="text-gray-700 dark:text-gray-300 text-sm">{fact}</span>
                                     </li>
                                   ))}
                                 </ul>
                                 {(scenario.cobraAnalysis as any).calculation && (
-                                  <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-4 border border-cyan-200 dark:border-cyan-700 mb-4">
-                                    <h5 className="font-bold text-cyan-800 dark:text-cyan-300 text-sm mb-2">Cost-Benefit Example:</h5>
+                                  <div className="bg-card rounded-lg p-4 border border-border mb-4">
+                                    <h5 className="font-bold text-foreground text-sm mb-2">Cost-Benefit Example:</h5>
                                     <div className="grid grid-cols-2 gap-2 text-sm">
                                       <div className="text-gray-600 dark:text-gray-400">Monthly Premium:</div>
                                       <div className="font-bold text-gray-900 dark:text-white">${(scenario.cobraAnalysis as any).calculation.example.monthlyPremium}</div>
@@ -5710,17 +5710,17 @@ export default function CollectionsDefenseGuide() {
                                 )}
                                 {(scenario.cobraAnalysis as any).scripts && (
                                   <div className="space-y-3">
-                                    <h5 className="font-semibold text-cyan-700 dark:text-cyan-400 text-sm">COBRA Scripts:</h5>
+                                    <h5 className="font-semibold text-foreground text-sm">COBRA Scripts:</h5>
                                     {(scenario.cobraAnalysis as any).scripts.employerCall && (
-                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700" data-testid="script-cobra-employer">
-                                        <p className="text-xs font-medium text-cyan-800 dark:text-cyan-300 mb-1">EMPLOYER CALL SCRIPT:</p>
-                                        <p className="text-sm text-cyan-900 dark:text-cyan-200 italic">"{(scenario.cobraAnalysis as any).scripts.employerCall}"</p>
+                                      <div className="bg-card rounded-lg p-3 border border-border" data-testid="script-cobra-employer">
+                                        <p className="text-xs font-medium text-muted-foreground mb-1">EMPLOYER CALL SCRIPT:</p>
+                                        <p className="text-sm text-foreground italic">"{(scenario.cobraAnalysis as any).scripts.employerCall}"</p>
                                       </div>
                                     )}
                                     {(scenario.cobraAnalysis as any).scripts.insuranceCall && (
-                                      <div className="bg-cyan-100 dark:bg-cyan-900/40 rounded-lg p-3 border border-cyan-200 dark:border-cyan-700" data-testid="script-cobra-insurance">
-                                        <p className="text-xs font-medium text-cyan-800 dark:text-cyan-300 mb-1">INSURANCE CALL SCRIPT:</p>
-                                        <p className="text-sm text-cyan-900 dark:text-cyan-200 italic">"{(scenario.cobraAnalysis as any).scripts.insuranceCall}"</p>
+                                      <div className="bg-card rounded-lg p-3 border border-border" data-testid="script-cobra-insurance">
+                                        <p className="text-xs font-medium text-muted-foreground mb-1">INSURANCE CALL SCRIPT:</p>
+                                        <p className="text-sm text-foreground italic">"{(scenario.cobraAnalysis as any).scripts.insuranceCall}"</p>
                                       </div>
                                     )}
                                   </div>
@@ -5850,8 +5850,8 @@ export default function CollectionsDefenseGuide() {
 
                             {/* Calculators - Charity Care Estimator */}
                             {'calculators' in scenario && scenario.calculators && (
-                              <div className="bg-violet-50 dark:bg-violet-900/20 rounded-xl p-5 border border-violet-200 dark:border-violet-700">
-                                <h4 className="font-bold text-violet-800 dark:text-violet-300 mb-4 flex items-center gap-2">
+                              <div className="bg-secondary rounded-xl p-5 border border-border">
+                                <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                                   <DollarSign className="h-5 w-5" />
                                   Charity Care Eligibility Estimator
                                 </h4>
@@ -5860,22 +5860,22 @@ export default function CollectionsDefenseGuide() {
                                     <p className="text-gray-600 dark:text-gray-400 text-sm">
                                       {(scenario.calculators as any).charityCareLikelihood.description}
                                     </p>
-                                    <div className="bg-violet-100 dark:bg-violet-900/40 rounded-lg p-4 border border-violet-200 dark:border-violet-700">
-                                      <h5 className="font-bold text-violet-800 dark:text-violet-300 text-sm mb-3">2024 Federal Poverty Level (FPL) Guidelines:</h5>
+                                    <div className="bg-card rounded-lg p-4 border border-border">
+                                      <h5 className="font-bold text-foreground text-sm mb-3">2024 Federal Poverty Level (FPL) Guidelines:</h5>
                                       <div className="grid gap-2 text-sm">
                                         {Object.entries((scenario.calculators as any).charityCareLikelihood.fplThresholds2024 || {}).map(([size, amount]) => (
                                           <div key={size} className="flex justify-between items-center bg-white dark:bg-gray-800 rounded-lg p-2">
                                             <span className="text-gray-600 dark:text-gray-400">Family of {size}:</span>
                                             <div className="text-right">
                                               <span className="font-bold text-gray-900 dark:text-white">${(amount as number).toLocaleString()}</span>
-                                              <span className="text-xs text-violet-600 dark:text-violet-400 block">
+                                              <span className="text-xs text-muted-foreground block">
                                                 200% = ${((amount as number) * 2).toLocaleString()}
                                               </span>
                                             </div>
                                           </div>
                                         ))}
                                       </div>
-                                      <p className="text-xs text-violet-700 dark:text-violet-400 mt-3">
+                                      <p className="text-xs text-muted-foreground mt-3">
                                         <strong>Rule of thumb:</strong> If your income is below 200% FPL, you likely qualify for 100% charity care. 
                                         Between 200-400% FPL, expect 50-75% discount.
                                       </p>
@@ -5904,9 +5904,9 @@ export default function CollectionsDefenseGuide() {
                                         <p className="text-gray-700 dark:text-gray-300 text-sm mb-3">{step.details}</p>
                                         
                                         {step.script && (
-                                          <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 border border-blue-200 dark:border-blue-700">
-                                            <p className="text-xs font-medium text-blue-800 dark:text-blue-300 mb-1">SCRIPT TO USE:</p>
-                                            <p className="text-sm text-blue-900 dark:text-blue-200 italic">"{step.script}"</p>
+                                          <div className="bg-secondary rounded-lg p-3 border border-border">
+                                            <p className="text-xs font-medium text-muted-foreground mb-1">SCRIPT TO USE:</p>
+                                            <p className="text-sm text-foreground italic">"{step.script}"</p>
                                           </div>
                                         )}
                                         
@@ -5991,7 +5991,7 @@ export default function CollectionsDefenseGuide() {
                         <ol className="space-y-2">
                           {defense.steps.map((step, i) => (
                             <li key={i} className="flex items-start gap-3">
-                              <span className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                              <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs font-bold flex-shrink-0">
                                 {i + 1}
                               </span>
                               <span className="text-gray-700 dark:text-gray-300 text-sm">{step}</span>
@@ -6021,7 +6021,7 @@ export default function CollectionsDefenseGuide() {
           {/* Letter Templates */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-              <FileText className="h-6 w-6 text-blue-600" />
+              <FileText className="h-6 w-6 text-muted-foreground" />
               Ready-to-Use Letter Templates
             </h2>
 
@@ -6029,7 +6029,7 @@ export default function CollectionsDefenseGuide() {
               <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                    <Mail className="h-5 w-5 text-blue-600" />
+                    <Mail className="h-5 w-5 text-muted-foreground" />
                     Debt Validation Letter
                   </CardTitle>
                 </CardHeader>
@@ -6043,7 +6043,7 @@ export default function CollectionsDefenseGuide() {
                     </pre>
                   </div>
                   <Button 
-                    className="w-full mt-4 bg-blue-600 hover:bg-blue-700"
+                    className="w-full mt-4 bg-primary text-primary-foreground hover:opacity-90"
                     onClick={() => navigator.clipboard.writeText(debtValidationTemplate)}
                     data-testid="button-copy-validation"
                   >
@@ -6117,7 +6117,7 @@ export default function CollectionsDefenseGuide() {
             <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
               <CardHeader>
                 <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                  <Phone className="h-5 w-5 text-blue-600" />
+                  <Phone className="h-5 w-5 text-muted-foreground" />
                   Key Contacts for Help
                 </CardTitle>
               </CardHeader>
@@ -6126,17 +6126,17 @@ export default function CollectionsDefenseGuide() {
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                     <h4 className="font-bold text-gray-900 dark:text-white mb-2">CFPB (Consumer Financial Protection Bureau)</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">File complaints against debt collectors</p>
-                    <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">consumerfinance.gov/complaint</p>
+                    <p className="text-foreground text-sm font-medium">consumerfinance.gov/complaint</p>
                   </div>
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                     <h4 className="font-bold text-gray-900 dark:text-white mb-2">State Insurance Commissioner</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">File complaints about insurance issues</p>
-                    <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">Find at naic.org</p>
+                    <p className="text-foreground text-sm font-medium">Find at naic.org</p>
                   </div>
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                     <h4 className="font-bold text-gray-900 dark:text-white mb-2">State Attorney General</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Consumer protection complaints</p>
-                    <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">Find at naag.org</p>
+                    <p className="text-foreground text-sm font-medium">Find at naag.org</p>
                   </div>
                 </div>
               </CardContent>
@@ -6161,9 +6161,9 @@ export default function CollectionsDefenseGuide() {
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Related Resources</h2>
             <div className="grid md:grid-cols-3 gap-4">
               <Link href="/bill-reduction-guide">
-                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors cursor-pointer">
+                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-gold transition-colors cursor-pointer">
                   <CardContent className="p-5 flex items-center gap-3">
-                    <BookOpen className="h-8 w-8 text-blue-600" />
+                    <BookOpen className="h-8 w-8 text-muted-foreground" />
                     <div>
                       <h3 className="font-bold text-gray-900 dark:text-white">Bill Reduction Guide</h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">General strategies for reducing bills</p>
@@ -6172,7 +6172,7 @@ export default function CollectionsDefenseGuide() {
                 </Card>
               </Link>
               <Link href="/rights-hub">
-                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors cursor-pointer">
+                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-gold transition-colors cursor-pointer">
                   <CardContent className="p-5 flex items-center gap-3">
                     <Shield className="h-8 w-8 text-green-600" />
                     <div>
@@ -6183,7 +6183,7 @@ export default function CollectionsDefenseGuide() {
                 </Card>
               </Link>
               <Link href="/emergency-help">
-                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors cursor-pointer">
+                <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-gold transition-colors cursor-pointer">
                   <CardContent className="p-5 flex items-center gap-3">
                     <Heart className="h-8 w-8 text-red-600" />
                     <div>

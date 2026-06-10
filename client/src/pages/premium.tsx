@@ -106,23 +106,24 @@ const getAvailablePlans = () => {
 // Pre-login Premium Page
 function LoginPrompt() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="pt-8 pb-10 px-4">
         <div className="max-w-lg mx-auto text-center">
           {/* Logo */}
           <motion.div 
-            className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600 flex items-center justify-center shadow-lg"
-            initial={{ scale: 0, opacity: 0 }}
+            className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, type: "spring" }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <Crown className="w-8 h-8 text-white" />
           </motion.div>
 
           <motion.h1 
-            className="text-3xl font-black text-gray-900 mb-3"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-3xl font-serif font-semibold text-foreground mb-3"
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
@@ -130,8 +131,8 @@ function LoginPrompt() {
           </motion.h1>
 
           <motion.p 
-            className="text-gray-600 mb-6 max-w-sm mx-auto"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-muted-foreground mb-6 max-w-sm mx-auto"
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
@@ -140,10 +141,10 @@ function LoginPrompt() {
 
           <motion.a
             href="/api/login"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl shadow-sm hover:shadow-md transition-all"
             data-testid="button-sign-in"
           >
             <LogIn className="w-4 h-4" />
@@ -154,23 +155,24 @@ function LoginPrompt() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-10 px-4 bg-white">
+      <section className="py-10 px-4 bg-card">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-xl font-bold text-center text-gray-900 mb-6">Everything You Get</h2>
+          <h2 className="text-xl font-serif font-semibold text-center text-foreground mb-6">Everything You Get</h2>
           <div className="grid grid-cols-2 gap-3">
             {premiumFeatures.map((feature, i) => (
               <motion.div
                 key={feature.title}
-                className="bg-slate-50 rounded-xl p-4 border border-slate-100"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.05 }}
+                className="luxury-card p-4"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.05 + i * 0.04, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center mb-3">
-                  <feature.icon className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center mb-3">
+                  <feature.icon className="w-5 h-5 text-muted-foreground" />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm mb-1">{feature.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{feature.description}</p>
+                <h3 className="font-semibold text-foreground text-sm mb-1">{feature.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -180,32 +182,34 @@ function LoginPrompt() {
       {/* Pricing Preview */}
       <section className="py-10 px-4">
         <div className="max-w-lg mx-auto">
-          <h2 className="text-xl font-bold text-center text-gray-900 mb-6">Simple Pricing</h2>
+          <h2 className="text-xl font-serif font-semibold text-center text-foreground mb-6">Simple Pricing</h2>
           <div className="space-y-3">
             {getAvailablePlans().map((plan) => (
               <div
                 key={plan.id}
-                className={`relative p-4 rounded-xl border-2 ${
-                  plan.popular 
-                    ? 'border-emerald-500 bg-emerald-50/50' 
-                    : 'border-slate-200 bg-white'
+                className={`relative p-4 rounded-xl border-2 bg-card ${
+                  plan.popular ? '' : 'border-border'
                 }`}
+                style={plan.popular ? { borderColor: 'var(--gold)' } : undefined}
               >
                 {plan.popular && (
-                  <span className="absolute -top-2.5 left-4 px-2 py-0.5 bg-emerald-500 text-white text-xs font-bold rounded-full">
+                  <span
+                    className="absolute -top-2.5 left-4 px-2 py-0.5 text-white text-xs font-bold rounded-full"
+                    style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+                  >
                     Most Popular
                   </span>
                 )}
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-bold text-gray-900">{plan.name}</h3>
+                    <h3 className="font-bold text-foreground">{plan.name}</h3>
                     {plan.savings && (
-                      <span className="text-xs text-emerald-600 font-semibold">{plan.savings}</span>
+                      <span className="text-xs text-gold font-semibold">{plan.savings}</span>
                     )}
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-black text-gray-900">${plan.price}</span>
-                    <span className="text-gray-500 text-sm">/{plan.period === 'one-time' ? 'once' : plan.period}</span>
+                    <span className="text-2xl font-bold text-foreground">${plan.price}</span>
+                    <span className="text-muted-foreground text-sm">/{plan.period === 'one-time' ? 'once' : plan.period}</span>
                   </div>
                 </div>
               </div>
@@ -214,34 +218,34 @@ function LoginPrompt() {
 
           <motion.a
             href="/api/login"
-            className="block mt-6 w-full text-center px-6 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-xl shadow-lg"
-            whileHover={{ scale: 1.02 }}
+            className="block mt-6 w-full text-center px-6 py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-sm"
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
           >
             Sign In to Subscribe
           </motion.a>
 
-          <p className="text-[10px] leading-relaxed text-gray-400 text-center mt-4">
+          <p className="text-[10px] leading-relaxed text-muted-foreground text-center mt-4">
             Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. 
             Your account will be charged for renewal within 24 hours prior to the end of the current period. 
             You can manage and cancel your subscriptions by going to your Account Settings on the App Store after purchase.
             {' '}
-            <Link href="/privacy-policy" className="underline text-gray-500">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="underline text-foreground">Privacy Policy</Link>
             {' · '}
-            <Link href="/terms-of-service" className="underline text-gray-500">Terms of Service</Link>
+            <Link href="/terms-of-service" className="underline text-foreground">Terms of Service</Link>
           </p>
         </div>
       </section>
 
       {/* Trust Section */}
-      <section className="py-8 px-4 bg-slate-50">
+      <section className="py-8 px-4 bg-card">
         <div className="max-w-lg mx-auto flex items-center justify-center gap-6">
           {[
             { icon: Lock, label: "Secure Payments" },
             { icon: ShieldCheck, label: "Cancel Anytime" },
             { icon: Sparkles, label: "Instant Access" },
           ].map((item) => (
-            <div key={item.label} className="flex items-center gap-1.5 text-gray-500">
+            <div key={item.label} className="flex items-center gap-1.5 text-muted-foreground">
               <item.icon className="w-4 h-4" />
               <span className="text-xs font-medium">{item.label}</span>
             </div>
@@ -320,12 +324,12 @@ function SubscriptionForm({ planType }: { planType: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+      <div className="bg-card rounded-2xl p-4 border border-border shadow-sm">
         <PaymentElement options={{ layout: { type: 'tabs', defaultCollapsed: false } }} />
       </div>
       <MobileButton
         type="submit"
-        className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 py-4"
+        className="w-full py-4"
         disabled={!stripe || !elements || isProcessing}
         data-testid="button-complete-payment"
       >
@@ -341,7 +345,7 @@ function SubscriptionForm({ planType }: { planType: string }) {
           </span>
         )}
       </MobileButton>
-      <p className="text-xs text-center text-gray-500">
+      <p className="text-xs text-center text-muted-foreground">
         Secured by Stripe. Cancel anytime.
       </p>
     </form>
@@ -359,36 +363,40 @@ function PlanCard({ plan, isSelected, onSelect, isCurrentPlan }: {
     <motion.button
       onClick={onSelect}
       disabled={isCurrentPlan}
-      className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+      className={`w-full text-left p-4 rounded-xl border-2 transition-all bg-card ${
         isCurrentPlan
-          ? 'border-emerald-500 bg-emerald-50 cursor-default'
+          ? 'cursor-default'
           : isSelected
-          ? 'border-emerald-500 bg-emerald-50/50 shadow-md'
-          : 'border-slate-200 bg-white hover:border-slate-300'
+          ? 'shadow-md'
+          : 'border-border hover:shadow-md'
       }`}
-      whileHover={!isCurrentPlan ? { scale: 1.01 } : {}}
+      style={isCurrentPlan || isSelected ? { borderColor: 'var(--gold)' } : undefined}
+      whileHover={!isCurrentPlan ? { y: -2 } : {}}
       whileTap={!isCurrentPlan ? { scale: 0.99 } : {}}
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="font-bold text-gray-900">{plan.name}</h3>
+            <h3 className="font-bold text-foreground">{plan.name}</h3>
             {plan.popular && (
-              <span className="px-2 py-0.5 bg-emerald-500 text-white text-xs font-bold rounded-full">
+              <span
+                className="px-2 py-0.5 text-white text-xs font-bold rounded-full"
+                style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+              >
                 Popular
               </span>
             )}
             {isCurrentPlan && (
-              <span className="px-2 py-0.5 bg-blue-500 text-white text-xs font-bold rounded-full">
+              <span className="px-2 py-0.5 bg-primary text-primary-foreground text-xs font-bold rounded-full">
                 Current
               </span>
             )}
           </div>
-          {plan.savings && <p className="text-xs text-emerald-600 font-semibold mt-0.5">{plan.savings}</p>}
+          {plan.savings && <p className="text-xs text-gold font-semibold mt-0.5">{plan.savings}</p>}
         </div>
         <div className="text-right">
-          <span className="text-2xl font-black text-gray-900">${plan.price}</span>
-          <span className="text-gray-500 text-sm">/{plan.period === 'one-time' ? 'once' : plan.period}</span>
+          <span className="text-2xl font-bold text-foreground">${plan.price}</span>
+          <span className="text-muted-foreground text-sm">/{plan.period === 'one-time' ? 'once' : plan.period}</span>
         </div>
       </div>
       
@@ -396,12 +404,12 @@ function PlanCard({ plan, isSelected, onSelect, isCurrentPlan }: {
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="mt-4 pt-4 border-t border-slate-200"
+          className="mt-4 pt-4 border-t border-border"
         >
           <ul className="space-y-2">
             {plan.features.map((feature) => (
-              <li key={feature} className="flex items-start gap-2 text-sm text-gray-600">
-                <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <Check className="w-4 h-4 text-gold mt-0.5 flex-shrink-0" />
                 {feature}
               </li>
             ))}
@@ -448,7 +456,7 @@ function RestorePurchasesButton() {
       <button
         onClick={handleRestore}
         disabled={isRestoring}
-        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors disabled:opacity-50"
+        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
       >
         <RotateCcw className={`w-4 h-4 ${isRestoring ? 'animate-spin' : ''}`} />
         {isRestoring ? 'Restoring...' : 'Restore Purchases'}
@@ -517,7 +525,7 @@ function AuthenticatedPremium() {
     return (
       <MobileLayout title="Premium" showBottomNav={true}>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       </MobileLayout>
     );
@@ -530,20 +538,22 @@ function AuthenticatedPremium() {
         <div className="p-4 space-y-6">
           {/* Status Card */}
           <motion.div
-            className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-xl"
-            initial={{ opacity: 0, y: 20 }}
+            className="rounded-2xl p-6 text-white shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                 <Crown className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-xl font-bold">Premium Active</h2>
-                <p className="text-emerald-100 text-sm">Full access to all features</p>
+                <h2 className="text-xl font-serif font-semibold">Premium Active</h2>
+                <p className="text-white/80 text-sm">Full access to all features</p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-sm text-emerald-100">
+            <div className="flex items-center gap-2 text-sm text-white/80">
               <Check className="w-4 h-4" />
               {sub?.planType === 'lifetime' ? 'Lifetime Access' : 
                sub?.planType === 'annual' ? 'Annual Plan' : 'Monthly Plan'}
@@ -552,32 +562,24 @@ function AuthenticatedPremium() {
 
           {/* Quick Access */}
           <div>
-            <h3 className="font-bold text-gray-900 mb-3">Premium Features</h3>
+            <h3 className="font-bold text-foreground mb-3">Premium Features</h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: DollarSign, label: "Bill Analysis", href: "/bill-ai", color: "emerald" },
-                { icon: Brain, label: "AI Training", href: "/patient-diagnostics", color: "blue" },
-                { icon: FileText, label: "Templates", href: "/dispute-arsenal", color: "purple" },
-                { icon: BarChart3, label: "Analytics", href: "/analytics-dashboard", color: "amber" },
+                { icon: DollarSign, label: "Bill Analysis", href: "/bill-ai" },
+                { icon: Brain, label: "AI Training", href: "/patient-diagnostics" },
+                { icon: FileText, label: "Templates", href: "/dispute-arsenal" },
+                { icon: BarChart3, label: "Analytics", href: "/analytics-dashboard" },
               ].map((item) => (
                 <Link key={item.label} href={item.href}>
                   <motion.div
-                    className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
+                    className="luxury-card p-4 hover:shadow-md transition-shadow"
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <div className={`w-10 h-10 rounded-lg mb-2 flex items-center justify-center ${
-                      item.color === 'emerald' ? 'bg-emerald-100' :
-                      item.color === 'blue' ? 'bg-blue-100' :
-                      item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
-                    }`}>
-                      <item.icon className={`w-5 h-5 ${
-                        item.color === 'emerald' ? 'text-emerald-600' :
-                        item.color === 'blue' ? 'text-blue-600' :
-                        item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
-                      }`} />
+                    <div className="w-10 h-10 rounded-lg mb-2 flex items-center justify-center bg-secondary">
+                      <item.icon className="w-5 h-5 text-muted-foreground" />
                     </div>
-                    <span className="font-semibold text-gray-900 text-sm">{item.label}</span>
+                    <span className="font-semibold text-foreground text-sm">{item.label}</span>
                   </motion.div>
                 </Link>
               ))}
@@ -586,16 +588,16 @@ function AuthenticatedPremium() {
 
           {/* All Features List */}
           <div>
-            <h3 className="font-bold text-gray-900 mb-3">All Your Benefits</h3>
-            <div className="bg-slate-50 rounded-xl p-4 space-y-3">
+            <h3 className="font-bold text-foreground mb-3">All Your Benefits</h3>
+            <div className="bg-secondary rounded-xl p-4 space-y-3">
               {premiumFeatures.map((feature) => (
                 <div key={feature.title} className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm flex-shrink-0">
-                    <feature.icon className="w-4 h-4 text-emerald-600" />
+                  <div className="w-8 h-8 rounded-lg bg-card flex items-center justify-center shadow-sm flex-shrink-0">
+                    <feature.icon className="w-4 h-4 text-gold" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 text-sm">{feature.title}</h4>
-                    <p className="text-xs text-gray-500">{feature.description}</p>
+                    <h4 className="font-semibold text-foreground text-sm">{feature.title}</h4>
+                    <p className="text-xs text-muted-foreground">{feature.description}</p>
                   </div>
                 </div>
               ))}
@@ -616,11 +618,14 @@ function AuthenticatedPremium() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center shadow-lg">
+          <div
+            className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+          >
             <Crown className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-2xl font-black text-gray-900 mb-2">Upgrade to Premium</h1>
-          <p className="text-gray-600 text-sm max-w-xs mx-auto">
+          <h1 className="text-2xl font-serif font-semibold text-foreground mb-2">Upgrade to Premium</h1>
+          <p className="text-muted-foreground text-sm max-w-xs mx-auto">
             Unlock professional bill reduction tools and unlimited AI training.
           </p>
         </motion.div>
@@ -660,7 +665,7 @@ function AuthenticatedPremium() {
 
         {isCreatingIntent && (
           <div className="flex items-center justify-center py-8">
-            <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
@@ -670,7 +675,7 @@ function AuthenticatedPremium() {
             { icon: Lock, label: "Secure" },
             { icon: ShieldCheck, label: "Cancel Anytime" },
           ].map((item) => (
-            <div key={item.label} className="flex items-center gap-1.5 text-gray-400">
+            <div key={item.label} className="flex items-center gap-1.5 text-muted-foreground">
               <item.icon className="w-3.5 h-3.5" />
               <span className="text-xs font-medium">{item.label}</span>
             </div>
@@ -682,7 +687,7 @@ function AuthenticatedPremium() {
 
         {/* Apple Required Subscription Disclosure */}
         <div className="pt-2 px-2">
-          <p className="text-[10px] leading-relaxed text-gray-400 text-center">
+          <p className="text-[10px] leading-relaxed text-muted-foreground text-center">
             {Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios' ? (
               <>
                 Payment will be charged to your Apple ID account at confirmation of purchase. 
@@ -697,20 +702,20 @@ function AuthenticatedPremium() {
               </>
             )}
             {' '}
-            <Link href="/privacy-policy" className="underline text-gray-500">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="underline text-foreground">Privacy Policy</Link>
             {' · '}
-            <Link href="/terms-of-service" className="underline text-gray-500">Terms of Service</Link>
+            <Link href="/terms-of-service" className="underline text-foreground">Terms of Service</Link>
           </p>
         </div>
 
         {/* Features Preview */}
         <div className="pt-6">
-          <h3 className="font-bold text-gray-900 mb-3 text-center">What's Included</h3>
+          <h3 className="font-bold text-foreground mb-3 text-center">What's Included</h3>
           <div className="grid grid-cols-2 gap-2">
             {premiumFeatures.slice(0, 4).map((feature) => (
-              <div key={feature.title} className="bg-slate-50 rounded-xl p-3 flex items-center gap-2">
-                <feature.icon className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span className="text-xs font-medium text-gray-700">{feature.title}</span>
+              <div key={feature.title} className="bg-secondary rounded-xl p-3 flex items-center gap-2">
+                <feature.icon className="w-4 h-4 text-gold flex-shrink-0" />
+                <span className="text-xs font-medium text-foreground">{feature.title}</span>
               </div>
             ))}
           </div>
@@ -728,7 +733,7 @@ export default function Premium() {
     return (
       <MobileLayout title="Premium" showBottomNav={false}>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       </MobileLayout>
     );

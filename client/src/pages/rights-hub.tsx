@@ -670,19 +670,19 @@ export default function RightsHub() {
         {/* Header Section */}
         <MobileCard className="text-center">
           <div className="mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Shield className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h1 className="text-2xl font-bold font-serif text-foreground mb-2">
               Know Your Rights Hub
             </h1>
-            <p className="text-gray-600 text-sm">
+            <p className="text-muted-foreground text-sm">
               Comprehensive guide to patient rights and medical billing protections. 
               Free educational resources to help you navigate healthcare billing.
             </p>
           </div>
           
-          <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+          <Badge variant="secondary" className="bg-secondary text-muted-foreground border border-border">
             <CheckCircle className="h-3 w-3 mr-1" />
             100% Free Resource
           </Badge>
@@ -700,26 +700,26 @@ export default function RightsHub() {
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
             <MobileCard>
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
-                <Info className="h-5 w-5 mr-2 text-blue-600" />
+              <h2 className="text-xl font-semibold font-serif mb-4 flex items-center">
+                <Info className="h-5 w-5 mr-2 text-muted-foreground" />
                 What Are Your Patient Rights?
               </h2>
-              <p className="text-gray-700 mb-4">
+              <p className="text-foreground mb-4">
                 As a patient, you have comprehensive legal protections when receiving medical care. 
                 These rights are established by federal and state laws to protect you from surprise billing, 
                 ensure access to care, and provide financial protections.
               </p>
               
               <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="text-center p-4 bg-blue-50 rounded-xl">
-                  <ShieldCheck className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-blue-600">8</div>
-                  <div className="text-sm text-gray-600">Key Rights Categories</div>
+                <div className="text-center p-4 bg-secondary rounded-xl">
+                  <ShieldCheck className="h-8 w-8 text-gold mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gold">8</div>
+                  <div className="text-sm text-muted-foreground">Key Rights Categories</div>
                 </div>
-                <div className="text-center p-4 bg-green-50 rounded-xl">
-                  <Scale className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-green-600">15+</div>
-                  <div className="text-sm text-gray-600">Federal Protections</div>
+                <div className="text-center p-4 bg-secondary rounded-xl">
+                  <Scale className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-foreground">15+</div>
+                  <div className="text-sm text-muted-foreground">Federal Protections</div>
                 </div>
               </div>
             </MobileCard>
@@ -731,11 +731,11 @@ export default function RightsHub() {
                 {patientRightsCategories.slice(0, 4).map((right, index) => {
                   const IconComponent = right.icon;
                   return (
-                    <div key={right.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <IconComponent className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div key={right.id} className="flex items-start space-x-3 p-3 bg-secondary rounded-lg">
+                      <IconComponent className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                       <div>
                         <div className="font-medium text-sm">{right.title}</div>
-                        <div className="text-xs text-gray-600 mt-1">{right.description}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{right.description}</div>
                       </div>
                     </div>
                   );
@@ -769,7 +769,7 @@ export default function RightsHub() {
                   <span className="text-sm">Insurance claim was denied</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Clock className="h-5 w-5 text-blue-500" />
+                  <Clock className="h-5 w-5 text-muted-foreground" />
                   <span className="text-sm">Preparing for medical procedures</span>
                 </div>
               </div>
@@ -782,7 +782,7 @@ export default function RightsHub() {
             <MobileCard>
               <div className="space-y-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Search rights categories..."
                     className="pl-10"
@@ -824,12 +824,12 @@ export default function RightsHub() {
                         {/* Header */}
                         <div className="flex items-start justify-between">
                           <div className="flex items-start space-x-3">
-                            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                              <IconComponent className="h-5 w-5 text-blue-600" />
+                            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0">
+                              <IconComponent className="h-5 w-5 text-muted-foreground" />
                             </div>
                             <div className="flex-1">
-                              <h3 className="font-semibold text-gray-900">{right.title}</h3>
-                              <p className="text-sm text-gray-600 mt-1">{right.description}</p>
+                              <h3 className="font-semibold text-foreground">{right.title}</h3>
+                              <p className="text-sm text-muted-foreground mt-1">{right.description}</p>
                               <Badge variant="outline" className="mt-2 text-xs">
                                 Effective {right.effectiveDate}
                               </Badge>
@@ -861,13 +861,13 @@ export default function RightsHub() {
                             
                             {/* Key Protections */}
                             <div>
-                              <h4 className="font-medium text-sm text-gray-900 mb-2 flex items-center">
+                              <h4 className="font-medium text-sm text-foreground mb-2 flex items-center">
                                 <ShieldCheck className="h-4 w-4 text-green-600 mr-2" />
                                 Key Protections
                               </h4>
                               <ul className="space-y-1">
                                 {right.keyProtections.map((protection, idx) => (
-                                  <li key={idx} className="text-sm text-gray-700 flex items-start">
+                                  <li key={idx} className="text-sm text-foreground flex items-start">
                                     <CheckCircle className="h-3 w-3 text-green-500 mr-2 mt-1 flex-shrink-0" />
                                     {protection}
                                   </li>
@@ -877,13 +877,13 @@ export default function RightsHub() {
 
                             {/* Common Violations */}
                             <div>
-                              <h4 className="font-medium text-sm text-gray-900 mb-2 flex items-center">
+                              <h4 className="font-medium text-sm text-foreground mb-2 flex items-center">
                                 <AlertTriangle className="h-4 w-4 text-amber-500 mr-2" />
                                 Common Violations
                               </h4>
                               <ul className="space-y-1">
                                 {right.commonViolations.map((violation, idx) => (
-                                  <li key={idx} className="text-sm text-gray-700 flex items-start">
+                                  <li key={idx} className="text-sm text-foreground flex items-start">
                                     <X className="h-3 w-3 text-red-500 mr-2 mt-1 flex-shrink-0" />
                                     {violation}
                                   </li>
@@ -893,14 +893,14 @@ export default function RightsHub() {
 
                             {/* Action Steps */}
                             <div>
-                              <h4 className="font-medium text-sm text-gray-900 mb-2 flex items-center">
-                                <Target className="h-4 w-4 text-blue-600 mr-2" />
+                              <h4 className="font-medium text-sm text-foreground mb-2 flex items-center">
+                                <Target className="h-4 w-4 text-muted-foreground mr-2" />
                                 What You Can Do
                               </h4>
                               <ol className="space-y-1">
                                 {right.actionSteps.map((step, idx) => (
-                                  <li key={idx} className="text-sm text-gray-700 flex items-start">
-                                    <span className="bg-blue-100 text-blue-800 text-xs rounded-full w-5 h-5 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
+                                  <li key={idx} className="text-sm text-foreground flex items-start">
+                                    <span className="bg-secondary text-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
                                       {idx + 1}
                                     </span>
                                     {step}
@@ -926,7 +926,7 @@ export default function RightsHub() {
                 <Crosshair className="h-5 w-5 mr-2 text-red-600" />
                 Rights Violation Checker
               </h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Answer a few questions to identify potential violations of your patient rights.
               </p>
               
@@ -946,7 +946,7 @@ export default function RightsHub() {
                     >
                       <div>
                         <div className="font-medium">{scenario.title}</div>
-                        <div className="text-sm text-gray-600 mt-1">{scenario.description}</div>
+                        <div className="text-sm text-muted-foreground mt-1">{scenario.description}</div>
                       </div>
                     </Button>
                   ))}
@@ -961,9 +961,9 @@ export default function RightsHub() {
                     
                     return (
                       <>
-                        <div className="bg-blue-50 p-4 rounded-lg">
-                          <h4 className="font-medium text-blue-900">{scenario.title}</h4>
-                          <p className="text-sm text-blue-700 mt-1">{scenario.description}</p>
+                        <div className="bg-secondary p-4 rounded-lg">
+                          <h4 className="font-medium text-foreground">{scenario.title}</h4>
+                          <p className="text-sm text-muted-foreground mt-1">{scenario.description}</p>
                         </div>
                         
                         <div className="space-y-3">
@@ -1036,7 +1036,7 @@ export default function RightsHub() {
                           <ol className="space-y-2">
                             {scenario.actionItems.map((action, idx) => (
                               <li key={idx} className="text-sm flex items-start">
-                                <span className="bg-blue-100 text-blue-800 text-xs rounded-full w-5 h-5 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
+                                <span className="bg-secondary text-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
                                   {idx + 1}
                                 </span>
                                 {action}
@@ -1071,20 +1071,20 @@ export default function RightsHub() {
             {/* Letter Templates Tool */}
             <MobileCard>
               <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <FileEdit className="h-5 w-5 mr-2 text-blue-600" />
+                <FileEdit className="h-5 w-5 mr-2 text-muted-foreground" />
                 Complaint Letter Templates
               </h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Professional templates for asserting your rights and filing complaints.
               </p>
               
               <div className="space-y-3">
                 {complaintTemplates.map((template) => (
-                  <div key={template.id} className="border border-gray-200 rounded-lg p-4">
+                  <div key={template.id} className="border border-border rounded-lg p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h4 className="font-medium text-sm">{template.title}</h4>
-                        <p className="text-xs text-gray-600">For: {template.recipient}</p>
+                        <p className="text-xs text-muted-foreground">For: {template.recipient}</p>
                         <Badge variant="outline" className="mt-1 text-xs">
                           {template.category}
                         </Badge>
@@ -1099,7 +1099,7 @@ export default function RightsHub() {
                         Copy
                       </Button>
                     </div>
-                    <div className="max-h-32 overflow-y-auto text-xs text-gray-700 bg-gray-50 p-2 rounded mt-2">
+                    <div className="max-h-32 overflow-y-auto text-xs text-foreground bg-secondary p-2 rounded mt-2">
                       <pre className="whitespace-pre-wrap font-mono">{template.template.slice(0, 200)}...</pre>
                     </div>
                   </div>
@@ -1113,7 +1113,7 @@ export default function RightsHub() {
                 <ClipboardList className="h-5 w-5 mr-2 text-green-600" />
                 Documentation Checklist
               </h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Essential documents to gather when asserting your rights.
               </p>
               
@@ -1177,22 +1177,22 @@ export default function RightsHub() {
             {/* Regulatory Contacts */}
             <MobileCard>
               <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <Phone className="h-5 w-5 mr-2 text-blue-600" />
+                <Phone className="h-5 w-5 mr-2 text-muted-foreground" />
                 Regulatory Contact Database
               </h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Key agencies and organizations that can help enforce your rights.
               </p>
               
               <div className="space-y-4">
                 {regulatoryContacts.map((category) => (
                   <div key={category.category}>
-                    <h4 className="font-medium text-sm mb-3 text-gray-900">{category.category}</h4>
+                    <h4 className="font-medium text-sm mb-3 text-foreground">{category.category}</h4>
                     <div className="space-y-3">
                       {category.contacts.map((contact, idx) => (
-                        <div key={idx} className="border border-gray-200 rounded-lg p-3">
+                        <div key={idx} className="border border-border rounded-lg p-3">
                           <div className="flex items-start justify-between mb-2">
-                            <h5 className="font-medium text-sm text-gray-900">{contact.agency}</h5>
+                            <h5 className="font-medium text-sm text-foreground">{contact.agency}</h5>
                             <Button
                               variant="outline"
                               size="sm"
@@ -1202,18 +1202,18 @@ export default function RightsHub() {
                               <Copy className="h-3 w-3" />
                             </Button>
                           </div>
-                          <p className="text-xs text-gray-600 mb-2">{contact.purpose}</p>
+                          <p className="text-xs text-muted-foreground mb-2">{contact.purpose}</p>
                           <div className="space-y-1 text-xs">
                             <div className="flex items-center space-x-2">
-                              <Phone className="h-3 w-3 text-gray-400" />
+                              <Phone className="h-3 w-3 text-muted-foreground" />
                               <span>{contact.phone}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                              <ExternalLink className="h-3 w-3 text-gray-400" />
+                              <ExternalLink className="h-3 w-3 text-muted-foreground" />
                               <span>{contact.website}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                              <Mail className="h-3 w-3 text-gray-400" />
+                              <Mail className="h-3 w-3 text-muted-foreground" />
                               <span>{contact.email}</span>
                             </div>
                           </div>
@@ -1233,56 +1233,56 @@ export default function RightsHub() {
               </h3>
               
               <div className="space-y-3">
-                <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
-                  <ExternalLink className="h-5 w-5 text-blue-600 mt-0.5" />
+                <div className="flex items-start space-x-3 p-3 bg-secondary rounded-lg">
+                  <ExternalLink className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <h4 className="font-medium text-sm">Federal Price Transparency Tools</h4>
-                    <p className="text-xs text-gray-600 mt-1">CMS hospital price comparison tools and databases</p>
-                    <p className="text-xs text-blue-600 mt-1">cms.gov/hospital-price-transparency</p>
+                    <p className="text-xs text-muted-foreground mt-1">CMS hospital price comparison tools and databases</p>
+                    <p className="text-xs text-muted-foreground mt-1">cms.gov/hospital-price-transparency</p>
                   </div>
                 </div>
                 
-                <div className="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
-                  <Heart className="h-5 w-5 text-green-600 mt-0.5" />
+                <div className="flex items-start space-x-3 p-3 bg-secondary rounded-lg">
+                  <Heart className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <h4 className="font-medium text-sm">Charity Care Database</h4>
-                    <p className="text-xs text-gray-600 mt-1">Hospital financial assistance program directory</p>
-                    <p className="text-xs text-green-600 mt-1">dollarfor.org</p>
+                    <p className="text-xs text-muted-foreground mt-1">Hospital financial assistance program directory</p>
+                    <p className="text-xs text-muted-foreground mt-1">dollarfor.org</p>
                   </div>
                 </div>
                 
-                <div className="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg">
-                  <Scale className="h-5 w-5 text-purple-600 mt-0.5" />
+                <div className="flex items-start space-x-3 p-3 bg-secondary rounded-lg">
+                  <Scale className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <h4 className="font-medium text-sm">Legal Aid Resources</h4>
-                    <p className="text-xs text-gray-600 mt-1">Free legal assistance for healthcare billing issues</p>
-                    <p className="text-xs text-purple-600 mt-1">lawhelp.org</p>
+                    <p className="text-xs text-muted-foreground mt-1">Free legal assistance for healthcare billing issues</p>
+                    <p className="text-xs text-muted-foreground mt-1">lawhelp.org</p>
                   </div>
                 </div>
                 
-                <div className="flex items-start space-x-3 p-3 bg-amber-50 rounded-lg">
-                  <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />
+                <div className="flex items-start space-x-3 p-3 bg-secondary rounded-lg">
+                  <AlertTriangle className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
                     <h4 className="font-medium text-sm">State Insurance Departments</h4>
-                    <p className="text-xs text-gray-600 mt-1">Your state's insurance regulatory authority</p>
-                    <p className="text-xs text-amber-600 mt-1">naic.org/state_web_map.htm</p>
+                    <p className="text-xs text-muted-foreground mt-1">Your state's insurance regulatory authority</p>
+                    <p className="text-xs text-muted-foreground mt-1">naic.org/state_web_map.htm</p>
                   </div>
                 </div>
               </div>
             </MobileCard>
 
             {/* Know Your Rights Summary Card */}
-            <MobileCard className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
+            <MobileCard>
               <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                   <Award className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Remember Your Rights</h3>
-                <p className="text-sm text-gray-700 mb-4">
+                <h3 className="text-lg font-semibold font-serif text-foreground mb-2">Remember Your Rights</h3>
+                <p className="text-sm text-foreground mb-4">
                   You have strong legal protections as a patient. Don't let providers ignore these rights. 
                   Use the tools and information in this hub to advocate for yourself effectively.
                 </p>
-                <div className="flex items-center justify-center space-x-2 text-xs text-gray-600">
+                <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
                   <CheckCircle className="h-4 w-4 text-green-500" />
                   <span>Free educational resource</span>
                   <span>•</span>

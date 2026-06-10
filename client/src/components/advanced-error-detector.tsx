@@ -276,11 +276,11 @@ export function AdvancedErrorDetector({
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'low': return 'text-green-600 bg-green-100';
-      case 'medium': return 'text-yellow-600 bg-yellow-100';
-      case 'high': return 'text-orange-600 bg-orange-100';
-      case 'critical': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'low': return 'text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/30';
+      case 'medium': return 'text-yellow-700 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30';
+      case 'high': return 'text-orange-700 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/30';
+      case 'critical': return 'text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30';
+      default: return 'text-muted-foreground bg-secondary';
     }
   };
 
@@ -367,7 +367,7 @@ This analysis represents systematic billing violations that require immediate co
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -379,12 +379,12 @@ This analysis represents systematic billing violations that require immediate co
       )}
 
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Search className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Advanced Error Detection</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <h3 className="text-lg font-bold text-foreground">Advanced Error Detection</h3>
+          <p className="text-sm text-muted-foreground">
             AI-powered billing violation analysis
           </p>
         </div>
@@ -393,13 +393,13 @@ This analysis represents systematic billing violations that require immediate co
       {isAnalyzing ? (
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
-            <Loader2 className="h-5 w-5 animate-spin text-red-600" />
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             <div className="flex-1">
-              <div className="text-sm font-medium text-gray-900 dark:text-white">{currentStage}</div>
+              <div className="text-sm font-medium text-foreground">{currentStage}</div>
               <Progress value={analysisProgress} className="h-2 mt-1" />
             </div>
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             Analyzing bill for compliance violations and billing errors...
           </div>
         </div>
@@ -413,18 +413,18 @@ This analysis represents systematic billing violations that require immediate co
 
           <TabsContent value="overview" className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <Card className="p-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20">
+              <Card className="p-4 bg-red-50 dark:bg-red-900/20">
                 <div className="flex items-center space-x-2">
-                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
                   <div>
                     <div className="text-2xl font-bold text-red-700 dark:text-red-400">{analysis.totalErrors}</div>
                     <div className="text-sm text-red-600 dark:text-red-300">Errors Found</div>
                   </div>
                 </div>
               </Card>
-              <Card className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+              <Card className="p-4 bg-emerald-50 dark:bg-emerald-900/20">
                 <div className="flex items-center space-x-2">
-                  <DollarSign className="h-5 w-5 text-green-600" />
+                  <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
                   <div>
                     <div className="text-2xl font-bold text-green-700 dark:text-green-400">
                       ${Math.round(analysis.totalPotentialSavings).toLocaleString()}
@@ -438,39 +438,39 @@ This analysis represents systematic billing violations that require immediate co
             <div className="grid grid-cols-2 gap-4">
               <Card className="p-4">
                 <div className="flex items-center space-x-2">
-                  <Shield className="h-5 w-5 text-blue-600" />
+                  <Shield className="h-5 w-5 text-muted-foreground" />
                   <div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{analysis.confidenceScore}%</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Confidence Score</div>
+                    <div className="text-2xl font-bold text-foreground">{analysis.confidenceScore}%</div>
+                    <div className="text-sm text-muted-foreground">Confidence Score</div>
                   </div>
                 </div>
               </Card>
               <Card className="p-4">
                 <div className="flex items-center space-x-2">
-                  <AlertTriangle className="h-5 w-5 text-orange-600" />
+                  <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                   <div>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{analysis.criticalErrors}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Critical Issues</div>
+                    <div className="text-2xl font-bold text-foreground">{analysis.criticalErrors}</div>
+                    <div className="text-sm text-muted-foreground">Critical Issues</div>
                   </div>
                 </div>
               </Card>
             </div>
 
             <div className="space-y-2">
-              <h4 className="font-medium text-gray-900 dark:text-white">Error Categories</h4>
+              <h4 className="font-medium text-foreground">Error Categories</h4>
               {['critical', 'high', 'medium', 'low'].map(severity => {
                 const count = analysis.errors.filter(e => e.severity === severity).length;
                 if (count === 0) return null;
                 
                 return (
-                  <div key={severity} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                  <div key={severity} className="flex items-center justify-between p-2 bg-secondary rounded">
                     <div className="flex items-center space-x-2">
                       <Badge className={`text-xs ${getSeverityColor(severity)}`}>
                         {severity.toUpperCase()}
                       </Badge>
-                      <span className="text-sm text-gray-900 dark:text-white">{count} errors</span>
+                      <span className="text-sm text-foreground">{count} errors</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    <span className="text-sm font-medium text-foreground">
                       ${analysis.errors.filter(e => e.severity === severity)
                         .reduce((sum, e) => sum + e.potentialSavings, 0).toLocaleString()}
                     </span>
@@ -481,7 +481,7 @@ This analysis represents systematic billing violations that require immediate co
 
             <Button
               onClick={generateComprehensiveErrorReport}
-              className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+              className="w-full bg-primary text-primary-foreground hover:opacity-90"
             >
               <Sparkles className="h-4 w-4 mr-2" />
               Generate Comprehensive Error Report
@@ -498,14 +498,14 @@ This analysis represents systematic billing violations that require immediate co
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                    className="p-4 border border-border rounded-lg cursor-pointer hover:bg-secondary"
                     onClick={() => setSelectedError(error)}
                   >
                     <div className="flex items-start space-x-3">
-                      <CategoryIcon className="h-5 w-5 text-gray-600 dark:text-gray-400 mt-0.5" />
+                      <CategoryIcon className="h-5 w-5 text-muted-foreground mt-0.5" />
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-medium text-gray-900 dark:text-white">{error.title}</h4>
+                          <h4 className="font-medium text-foreground">{error.title}</h4>
                           <div className="flex items-center space-x-2">
                             <Badge className={`text-xs ${getSeverityColor(error.severity)}`}>
                               {error.severity}
@@ -515,12 +515,12 @@ This analysis represents systematic billing violations that require immediate co
                             </span>
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{error.description}</p>
+                        <p className="text-sm text-muted-foreground mb-2">{error.description}</p>
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-muted-foreground">
                             Confidence: {error.confidence}%
                           </span>
-                          <span className="text-xs text-blue-600 dark:text-blue-400">
+                          <span className="text-xs text-muted-foreground">
                             Click for details →
                           </span>
                         </div>
@@ -534,16 +534,16 @@ This analysis represents systematic billing violations that require immediate co
 
           <TabsContent value="actions" className="space-y-4">
             <div className="space-y-3">
-              <h4 className="font-medium text-gray-900 dark:text-white">Recommended Actions</h4>
+              <h4 className="font-medium text-foreground">Recommended Actions</h4>
               {analysis.recommendations.map((rec, index) => (
-                <div key={index} className="flex items-start space-x-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600 mt-0.5" />
-                  <span className="text-sm text-blue-900 dark:text-blue-100">{rec}</span>
+                <div key={index} className="flex items-start space-x-2 p-3 bg-secondary rounded-lg">
+                  <CheckCircle2 className="h-4 w-4 text-muted-foreground mt-0.5" />
+                  <span className="text-sm text-foreground">{rec}</span>
                 </div>
               ))}
             </div>
 
-            <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+            <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
               <div className="flex items-center space-x-2 mb-2">
                 <Zap className="h-5 w-5 text-amber-600" />
                 <h4 className="font-medium text-amber-900 dark:text-amber-100">Next Steps</h4>
@@ -570,12 +570,12 @@ This analysis represents systematic billing violations that require immediate co
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-gray-900 rounded-xl p-6 max-w-lg w-full max-h-96 overflow-y-auto"
+              className="bg-card rounded-xl p-6 max-w-lg w-full max-h-96 overflow-y-auto"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{selectedError.title}</h3>
+                  <h3 className="text-lg font-bold text-foreground">{selectedError.title}</h3>
                   <div className="flex items-center space-x-2 mt-1">
                     <Badge className={`text-xs ${getSeverityColor(selectedError.severity)}`}>
                       {selectedError.severity.toUpperCase()}
@@ -590,15 +590,15 @@ This analysis represents systematic billing violations that require immediate co
               
               <div className="space-y-4">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Description:</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{selectedError.description}</p>
+                  <h4 className="text-sm font-medium text-foreground mb-2">Description:</h4>
+                  <p className="text-sm text-muted-foreground">{selectedError.description}</p>
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Evidence:</h4>
+                  <h4 className="text-sm font-medium text-foreground mb-2">Evidence:</h4>
                   <ul className="space-y-1">
                     {selectedError.evidence.map((ev, index) => (
-                      <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start">
+                      <li key={index} className="text-sm text-muted-foreground flex items-start">
                         <span className="text-red-500 mr-2">•</span>
                         {ev}
                       </li>
@@ -607,11 +607,11 @@ This analysis represents systematic billing violations that require immediate co
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Correction Steps:</h4>
+                  <h4 className="text-sm font-medium text-foreground mb-2">Correction Steps:</h4>
                   <ol className="space-y-1">
                     {selectedError.correctionSteps.map((step, index) => (
-                      <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start">
-                        <span className="text-blue-500 mr-2 font-medium">{index + 1}.</span>
+                      <li key={index} className="text-sm text-muted-foreground flex items-start">
+                        <span className="text-muted-foreground mr-2 font-medium">{index + 1}.</span>
                         {step}
                       </li>
                     ))}
@@ -625,11 +625,11 @@ This analysis represents systematic billing violations that require immediate co
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <span className="text-sm text-muted-foreground">
                     Confidence: {selectedError.confidence}%
                   </span>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  <span className="text-sm font-medium text-foreground">
                     Category: {selectedError.category}
                   </span>
                 </div>

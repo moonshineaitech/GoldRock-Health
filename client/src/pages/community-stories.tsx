@@ -77,7 +77,7 @@ function ShareStoryForm({ onClose }: { onClose: () => void }) {
         </div>
       </div>
       {savings > 0 && (
-        <div className="bg-emerald-50 rounded-lg p-3 text-center">
+        <div className="bg-secondary border border-border rounded-lg p-3 text-center">
           <p className="text-xs text-emerald-600">You saved</p>
           <p className="text-2xl font-bold text-emerald-700">${savings.toLocaleString()}</p>
         </div>
@@ -97,7 +97,7 @@ function ShareStoryForm({ onClose }: { onClose: () => void }) {
         <Label>Advice for Others</Label>
         <Textarea placeholder="What would you tell someone in the same situation?" value={form.advice} onChange={(e) => setForm({ ...form, advice: e.target.value })} rows={2} />
       </div>
-      <Button className="w-full bg-emerald-600 hover:bg-emerald-700" onClick={() => submitStory.mutate(form)} disabled={submitStory.isPending || !form.story || !form.originalAmount || !form.finalAmount}>
+      <Button className="w-full bg-primary text-primary-foreground" onClick={() => submitStory.mutate(form)} disabled={submitStory.isPending || !form.story || !form.originalAmount || !form.finalAmount}>
         {submitStory.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Heart className="w-4 h-4 mr-2" />}
         Share Your Story
       </Button>
@@ -114,62 +114,62 @@ function StoryCard({ story }: { story: any }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl border border-gray-200 p-4">
+      className="bg-card rounded-xl border border-border p-4">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-            <span className="text-emerald-700 font-bold text-xs">{(story.displayName || "A")[0].toUpperCase()}</span>
+          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+            <span className="text-foreground font-bold text-xs">{(story.displayName || "A")[0].toUpperCase()}</span>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-900">{story.displayName || "Anonymous"}</p>
-            <div className="flex items-center gap-2 text-xs text-gray-500">
+            <p className="text-sm font-medium text-foreground">{story.displayName || "Anonymous"}</p>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               {story.state && <span className="flex items-center gap-0.5"><MapPin className="w-3 h-3" />{story.state}</span>}
               {story.billType && <Badge variant="outline" className="text-[10px]">{story.billType}</Badge>}
             </div>
           </div>
         </div>
-        {story.verified && <Badge className="bg-blue-100 text-blue-700 text-[10px]"><CheckCircle2 className="w-3 h-3 mr-0.5" />Verified</Badge>}
+        {story.verified && <Badge className="bg-secondary text-muted-foreground text-[10px]"><CheckCircle2 className="w-3 h-3 mr-0.5" />Verified</Badge>}
       </div>
 
-      <div className="bg-emerald-50 rounded-xl p-3 mb-3">
+      <div className="bg-secondary border border-border rounded-xl p-3 mb-3">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-gray-500">Original</p>
-            <p className="text-sm font-bold text-gray-900 line-through">${parseFloat(story.originalAmount).toLocaleString()}</p>
+            <p className="text-xs text-muted-foreground">Original</p>
+            <p className="text-sm font-bold text-foreground line-through">${parseFloat(story.originalAmount).toLocaleString()}</p>
           </div>
           <TrendingDown className="w-5 h-5 text-emerald-500" />
           <div>
-            <p className="text-xs text-gray-500">Final</p>
+            <p className="text-xs text-muted-foreground">Final</p>
             <p className="text-sm font-bold text-emerald-700">${parseFloat(story.finalAmount).toLocaleString()}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-gray-500">Saved</p>
+            <p className="text-xs text-muted-foreground">Saved</p>
             <p className="text-lg font-bold text-emerald-600">{story.savingsPercent}%</p>
           </div>
         </div>
       </div>
 
       {story.strategyUsed && (
-        <Badge className="bg-purple-100 text-purple-700 text-xs mb-2">{story.strategyUsed}</Badge>
+        <Badge className="bg-secondary text-muted-foreground text-xs mb-2">{story.strategyUsed}</Badge>
       )}
 
       <div className="relative mb-3">
-        <Quote className="w-4 h-4 text-gray-200 absolute -top-1 -left-1" />
-        <p className="text-sm text-gray-700 pl-4 italic">{story.story}</p>
+        <Quote className="w-4 h-4 text-border absolute -top-1 -left-1" />
+        <p className="text-sm text-foreground pl-4 italic">{story.story}</p>
       </div>
 
       {story.advice && (
-        <div className="bg-blue-50 rounded-lg p-2 mb-3">
-          <p className="text-xs text-blue-600 font-medium mb-0.5">Advice:</p>
-          <p className="text-xs text-blue-700">{story.advice}</p>
+        <div className="bg-secondary rounded-lg p-2 mb-3">
+          <p className="text-xs text-muted-foreground font-medium mb-0.5">Advice:</p>
+          <p className="text-xs text-foreground">{story.advice}</p>
         </div>
       )}
 
       <div className="flex items-center justify-between pt-2 border-t">
-        <Button variant="ghost" size="sm" className="text-xs text-gray-500 hover:text-emerald-600" onClick={() => markHelpful.mutate()}>
+        <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-gold" onClick={() => markHelpful.mutate()}>
           <ThumbsUp className="w-3 h-3 mr-1" />{story.helpfulCount || 0} Helpful
         </Button>
-        <Button variant="ghost" size="sm" className="text-xs text-gray-500" onClick={() => {
+        <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => {
           navigator.clipboard.writeText(`I saved ${story.savingsPercent}% on my medical bill using GoldRock Health! ${story.strategyUsed ? `Strategy: ${story.strategyUsed}` : ''}`);
         }}>
           <Share2 className="w-3 h-3 mr-1" />Share
@@ -197,32 +197,32 @@ export default function CommunityStories() {
   return (
     <MobileLayout title="Success Stories">
       <div className="space-y-6 pb-20">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white">
-          <Award className="w-8 h-8 mb-2 text-emerald-200" />
-          <h2 className="text-xl font-bold mb-1">Real People. Real Savings.</h2>
-          <p className="text-emerald-200 text-sm">See how others have reduced their medical bills. Your story could inspire someone else.</p>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-2xl p-6 border border-border" style={{ background: 'linear-gradient(180deg, var(--background), var(--card))' }}>
+          <Award className="w-8 h-8 mb-2 text-gold" />
+          <h2 className="text-xl font-bold mb-1 font-serif text-foreground">Real People. Real Savings.</h2>
+          <p className="text-muted-foreground text-sm">See how others have reduced their medical bills. Your story could inspire someone else.</p>
         </motion.div>
 
         <div className="grid grid-cols-3 gap-2">
-          <div className="bg-emerald-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500">Total Shared</p>
-            <p className="text-xl font-bold text-emerald-600">{aggregateStats?.totalStories || stories.length}</p>
+          <div className="bg-secondary border border-border rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground">Total Shared</p>
+            <p className="text-xl font-bold text-foreground">{aggregateStats?.totalStories || stories.length}</p>
           </div>
-          <div className="bg-blue-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500">Avg Savings</p>
-            <p className="text-xl font-bold text-blue-600">{aggregateStats?.avgSavingsPercent || 0}%</p>
+          <div className="bg-secondary border border-border rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground">Avg Savings</p>
+            <p className="text-xl font-bold text-foreground">{aggregateStats?.avgSavingsPercent || 0}%</p>
           </div>
-          <div className="bg-purple-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-gray-500">Total Saved</p>
-            <p className="text-xl font-bold text-purple-600">${(aggregateStats?.totalSaved || 0).toLocaleString()}</p>
+          <div className="bg-secondary border border-border rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground">Total Saved</p>
+            <p className="text-xl font-bold text-gold">${(aggregateStats?.totalSaved || 0).toLocaleString()}</p>
           </div>
         </div>
 
         <div className="flex gap-2">
           <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="flex-1 bg-white">
-              <Filter className="w-4 h-4 mr-2 text-gray-400" />
+            <SelectTrigger className="flex-1 bg-card">
+              <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
               <SelectValue placeholder="Filter stories" />
             </SelectTrigger>
             <SelectContent>
@@ -232,11 +232,11 @@ export default function CommunityStories() {
           </Select>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-emerald-600 hover:bg-emerald-700 whitespace-nowrap"><Plus className="w-4 h-4 mr-1" />Share Yours</Button>
+              <Button className="bg-primary text-primary-foreground whitespace-nowrap"><Plus className="w-4 h-4 mr-1" />Share Yours</Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle className="flex items-center gap-2"><Sparkles className="w-5 h-5 text-emerald-600" />Share Your Success Story</DialogTitle>
+                <DialogTitle className="flex items-center gap-2"><Sparkles className="w-5 h-5 text-gold" />Share Your Success Story</DialogTitle>
               </DialogHeader>
               <ShareStoryForm onClose={() => setDialogOpen(false)} />
             </DialogContent>
@@ -245,15 +245,15 @@ export default function CommunityStories() {
 
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-gold" />
           </div>
         ) : filtered.length === 0 ? (
-          <Card className="bg-gray-50 border-dashed">
+          <Card className="bg-secondary border border-dashed border-border">
             <CardContent className="py-12 text-center">
-              <Users className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-              <h3 className="font-semibold text-gray-700 mb-1">Be the first to share</h3>
-              <p className="text-sm text-gray-500 mb-4">Your story can help others who are struggling with medical bills</p>
-              <Button onClick={() => setDialogOpen(true)} className="bg-emerald-600 hover:bg-emerald-700">
+              <Users className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+              <h3 className="font-semibold text-foreground mb-1">Be the first to share</h3>
+              <p className="text-sm text-muted-foreground mb-4">Your story can help others who are struggling with medical bills</p>
+              <Button onClick={() => setDialogOpen(true)} className="bg-primary text-primary-foreground">
                 <Heart className="w-4 h-4 mr-1" />Share Your Story
               </Button>
             </CardContent>

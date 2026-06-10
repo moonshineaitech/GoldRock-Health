@@ -19,10 +19,10 @@ interface PhysicalExamSimulatorProps {
 }
 
 const examSystems = [
-  { id: "cardiovascular", name: "Cardiovascular", icon: Heart, color: "text-red-500" },
-  { id: "pulmonary", name: "Pulmonary", icon: Zap, color: "text-blue-500" },
-  { id: "neurological", name: "Neurological", icon: Brain, color: "text-purple-500" },
-  { id: "abdominal", name: "Abdominal", icon: Activity, color: "text-green-500" },
+  { id: "cardiovascular", name: "Cardiovascular", icon: Heart, color: "text-muted-foreground" },
+  { id: "pulmonary", name: "Pulmonary", icon: Zap, color: "text-muted-foreground" },
+  { id: "neurological", name: "Neurological", icon: Brain, color: "text-muted-foreground" },
+  { id: "abdominal", name: "Abdominal", icon: Activity, color: "text-muted-foreground" },
 ];
 
 export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalExamSimulatorProps) {
@@ -62,7 +62,7 @@ export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalEx
       }}
     >
       <div 
-        className="bg-white rounded-2xl max-w-5xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
+        className="bg-card border border-border rounded-2xl max-w-5xl w-full max-h-[80vh] overflow-y-auto shadow-sm"
         style={{
           WebkitOverflowScrolling: 'touch',
           touchAction: 'pan-y'
@@ -71,13 +71,13 @@ export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalEx
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
-              <Stethoscope className="h-6 w-6 text-indigo-600" />
-              <h2 className="text-2xl font-bold text-slate-800">Physical Examination Simulator</h2>
+              <Stethoscope className="h-6 w-6 text-gold" />
+              <h2 className="text-2xl font-serif font-bold text-foreground">Physical Examination Simulator</h2>
             </div>
             <Button 
               variant="outline" 
               onClick={onClose}
-              className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm"
+              className="sticky top-0 z-10 bg-card border border-border shadow-sm"
               style={{ minHeight: '44px', minWidth: '44px' }}
             >
               Close
@@ -87,7 +87,7 @@ export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalEx
           <div className="grid md:grid-cols-2 gap-6">
             {/* System Selection */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">Select System to Examine</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Select System to Examine</h3>
               <div className="grid grid-cols-2 gap-3">
                 {examSystems.map((system) => {
                   const Icon = system.icon;
@@ -97,18 +97,18 @@ export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalEx
                     <Card 
                       key={system.id}
                       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
-                        selectedSystem === system.id ? 'ring-2 ring-indigo-500' : ''
-                      } ${hasFindings ? 'bg-green-50 border-green-200' : ''}`}
+                        selectedSystem === system.id ? 'ring-2 ring-[var(--gold-deep)]' : ''
+                      } ${hasFindings ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-900' : ''}`}
                       onClick={() => performExam(system.id)}
                     >
                       <CardContent className="p-4">
                         <div className="flex flex-col items-center text-center">
                           {loading === system.id ? (
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mb-2"></div>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--gold-deep)] mb-2"></div>
                           ) : (
                             <Icon className={`h-8 w-8 mb-2 ${system.color}`} />
                           )}
-                          <h4 className="font-semibold text-slate-800">{system.name}</h4>
+                          <h4 className="font-semibold text-foreground">{system.name}</h4>
                           {hasFindings && (
                             <Badge variant="secondary" className="mt-2 text-xs">
                               Examined
@@ -124,25 +124,25 @@ export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalEx
 
             {/* Examination Results */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">Examination Findings</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Examination Findings</h3>
               {selectedSystem && examFindings[selectedSystem] ? (
                 <div className="space-y-4">
                   {examFindings[selectedSystem].map((finding, index) => (
-                    <Card key={index} className="border-l-4 border-l-indigo-500">
+                    <Card key={index} className="border-l-4 border-l-[var(--gold-deep)]">
                       <CardHeader className="pb-2">
-                        <CardTitle className="text-base font-semibold text-slate-800">
+                        <CardTitle className="text-base font-semibold text-foreground">
                           {finding.finding}
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="pt-0">
                         <div className="space-y-3">
                           <div>
-                            <h5 className="font-medium text-slate-700 mb-1">Clinical Significance</h5>
-                            <p className="text-sm text-slate-600">{finding.significance}</p>
+                            <h5 className="font-medium text-foreground mb-1">Clinical Significance</h5>
+                            <p className="text-sm text-muted-foreground">{finding.significance}</p>
                           </div>
                           <div>
-                            <h5 className="font-medium text-slate-700 mb-1">Examination Technique</h5>
-                            <p className="text-sm text-slate-600">{finding.technique}</p>
+                            <h5 className="font-medium text-foreground mb-1">Examination Technique</h5>
+                            <p className="text-sm text-muted-foreground">{finding.technique}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -150,10 +150,10 @@ export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalEx
                   ))}
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-64 border-2 border-dashed border-slate-300 rounded-lg">
+                <div className="flex items-center justify-center h-64 border-2 border-dashed border-border rounded-lg">
                   <div className="text-center">
-                    <Stethoscope className="h-12 w-12 text-slate-400 mx-auto mb-3" />
-                    <p className="text-slate-500">Select a system to begin examination</p>
+                    <Stethoscope className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-muted-foreground">Select a system to begin examination</p>
                   </div>
                 </div>
               )}
@@ -161,8 +161,8 @@ export function PhysicalExamSimulator({ caseId, isVisible, onClose }: PhysicalEx
           </div>
 
           {Object.keys(examFindings).length > 0 && (
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2">Examination Summary</h4>
+            <div className="mt-6 p-4 bg-secondary rounded-lg">
+              <h4 className="font-semibold text-foreground mb-2">Examination Summary</h4>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(examFindings).map(([system, findings]) => (
                   <Badge key={system} variant="secondary" className="text-xs">

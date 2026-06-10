@@ -125,7 +125,7 @@ export default function ImageAnalysisPage() {
       case 1: return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case 2: return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
       case 3: return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-      default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+      default: return "bg-secondary text-muted-foreground";
     }
   };
 
@@ -162,8 +162,8 @@ export default function ImageAnalysisPage() {
       <MobileCard className="mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Brain className="w-5 h-5 text-blue-600" />
-            <span className="font-medium text-gray-900">Radiology Training</span>
+            <Brain className="w-5 h-5 text-gold" />
+            <span className="font-medium text-foreground">Radiology Training</span>
           </div>
           <MobileButton
             variant="outline"
@@ -177,50 +177,50 @@ export default function ImageAnalysisPage() {
       </MobileCard>
       {/* Mobile Stats Grid */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <MobileCard className="p-4 bg-green-50 border-green-200">
+        <MobileCard className="p-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-              <Target className="h-5 w-5 text-green-600" />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
+              <Target className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600">Completed</p>
-              <p className="text-xl font-bold text-gray-900">{completedCount}</p>
+              <p className="text-sm font-medium text-muted-foreground">Completed</p>
+              <p className="text-xl font-bold text-foreground">{completedCount}</p>
             </div>
           </div>
         </MobileCard>
 
-        <MobileCard className="p-4 bg-blue-50 border-blue-200">
+        <MobileCard className="p-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-              <TrendingUp className="h-5 w-5 text-blue-600" />
+            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+              <TrendingUp className="h-5 w-5 text-muted-foreground" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600">Avg Accuracy</p>
-              <p className="text-xl font-bold text-gray-900">{Math.round(averageAccuracy)}%</p>
+              <p className="text-sm font-medium text-muted-foreground">Avg Accuracy</p>
+              <p className="text-xl font-bold text-foreground">{Math.round(averageAccuracy)}%</p>
             </div>
           </div>
         </MobileCard>
 
-        <MobileCard className="p-4 bg-purple-50 border-purple-200">
+        <MobileCard className="p-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
-              <Clock className="h-5 w-5 text-purple-600" />
+            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+              <Clock className="h-5 w-5 text-muted-foreground" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600">Time Spent</p>
-              <p className="text-xl font-bold text-gray-900">{Math.round(totalTimeSpent / 3600)}h</p>
+              <p className="text-sm font-medium text-muted-foreground">Time Spent</p>
+              <p className="text-xl font-bold text-foreground">{Math.round(totalTimeSpent / 3600)}h</p>
             </div>
           </div>
         </MobileCard>
 
-        <MobileCard className="p-4 bg-orange-50 border-orange-200">
+        <MobileCard className="p-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
-              <BarChart3 className="h-5 w-5 text-orange-600" />
+            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
+              <BarChart3 className="h-5 w-5 text-muted-foreground" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600">Available</p>
-              <p className="text-xl font-bold text-gray-900">{images.length}</p>
+              <p className="text-sm font-medium text-muted-foreground">Available</p>
+              <p className="text-xl font-bold text-foreground">{images.length}</p>
             </div>
           </div>
         </MobileCard>
@@ -230,19 +230,19 @@ export default function ImageAnalysisPage() {
       <MobileCard className="mb-4">
         <div className="space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Search by title, body region, or type..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl"
+              className="pl-10 border-border rounded-xl"
               data-testid="input-search"
             />
           </div>
           
           <div className="grid grid-cols-2 gap-3">
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="rounded-xl border-gray-200" data-testid="select-image-type">
+              <SelectTrigger className="rounded-xl border-border" data-testid="select-image-type">
                 <SelectValue placeholder="Image Type" />
               </SelectTrigger>
               <SelectContent>
@@ -255,7 +255,7 @@ export default function ImageAnalysisPage() {
             </Select>
 
             <Select value={filterDifficulty} onValueChange={setFilterDifficulty}>
-              <SelectTrigger className="rounded-xl border-gray-200" data-testid="select-difficulty">
+              <SelectTrigger className="rounded-xl border-border" data-testid="select-difficulty">
                 <SelectValue placeholder="Difficulty" />
               </SelectTrigger>
               <SelectContent>
@@ -275,10 +275,10 @@ export default function ImageAnalysisPage() {
             {[...Array(6)].map((_, i) => (
               <Card key={i} className="overflow-hidden">
                 <div className="animate-pulse">
-                  <div className="h-48 bg-gray-200 dark:bg-gray-700" />
+                  <div className="h-48 bg-muted" />
                   <div className="p-4">
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
+                    <div className="h-4 bg-muted rounded mb-2" />
+                    <div className="h-3 bg-muted rounded w-2/3" />
                   </div>
                 </div>
               </Card>
@@ -357,13 +357,13 @@ export default function ImageAnalysisPage() {
                       </div>
 
                       <div className="p-4">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                           {image.description}
                         </p>
 
                         {/* Progress for completed images */}
                         {isCompleted && imageProgress && (
-                          <div className="space-y-2 text-xs text-gray-600 dark:text-gray-400">
+                          <div className="space-y-2 text-xs text-muted-foreground">
                             <div className="flex justify-between">
                               <span>Accuracy:</span>
                               <span className="font-medium">
@@ -388,7 +388,7 @@ export default function ImageAnalysisPage() {
                         {/* Learning Objectives */}
                         {!isCompleted && (
                           <div className="space-y-2">
-                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                            <p className="text-xs font-medium text-muted-foreground">
                               Learning Objectives:
                             </p>
                             <div className="flex flex-wrap gap-1">
@@ -434,11 +434,11 @@ export default function ImageAnalysisPage() {
 
         {filteredImages.length === 0 && !imagesLoading && !progressLoading && (
           <MobileCard className="p-8 text-center">
-            <Brain className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <Brain className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">
               No images found
             </h3>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Try adjusting your filters or search terms
             </p>
           </MobileCard>

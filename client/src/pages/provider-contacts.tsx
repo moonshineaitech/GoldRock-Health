@@ -409,8 +409,8 @@ export default function ProviderContacts() {
       >
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <Building2 className="w-5 h-5 text-cyan-600" />
-            <h3 className="text-lg font-semibold text-gray-800">{provider.name}</h3>
+            <Building2 className="w-5 h-5 text-gold" />
+            <h3 className="text-lg font-semibold text-foreground">{provider.name}</h3>
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 text-amber-500" />
               <span className="text-sm text-amber-600">{provider.successRate}%</span>
@@ -418,16 +418,16 @@ export default function ProviderContacts() {
           </div>
           
           <div className="flex flex-wrap gap-2 mb-2">
-            <span className="inline-flex items-center px-2 py-1 bg-cyan-100 text-cyan-700 text-xs rounded-lg">
+            <span className="inline-flex items-center px-2 py-1 bg-secondary text-foreground text-xs rounded-lg">
               {provider.type}
             </span>
-            <span className="inline-flex items-center px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-lg">
+            <span className="inline-flex items-center px-2 py-1 bg-secondary text-muted-foreground text-xs rounded-lg">
               <MapPin className="w-3 h-3 mr-1" />
               {provider.locations[0]}{provider.locations.length > 1 && ` +${provider.locations.length - 1}`}
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-sm text-gray-600">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
               {provider.avgResponseTime}
@@ -439,7 +439,7 @@ export default function ProviderContacts() {
           </div>
         </div>
 
-        {expandedProvider === provider.id ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+        {expandedProvider === provider.id ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
       </div>
 
       {expandedProvider === provider.id && (
@@ -448,22 +448,22 @@ export default function ProviderContacts() {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
-          className="space-y-4 pt-4 border-t border-gray-200"
+          className="space-y-4 pt-4 border-t border-border"
         >
           {/* Billing Contacts */}
           {provider.contacts.billing && (
             <div className="space-y-3">
-              <h4 className="flex items-center gap-2 font-semibold text-gray-800">
-                <Phone className="w-4 h-4 text-cyan-600" />
+              <h4 className="flex items-center gap-2 font-semibold text-foreground">
+                <Phone className="w-4 h-4 text-muted-foreground" />
                 Billing Department
               </h4>
-              <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+              <div className="bg-secondary rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{provider.contacts.billing.main}</span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleCall(provider.contacts.billing.main)}
-                      className="flex items-center gap-1 px-3 py-1 bg-cyan-600 text-white rounded-lg text-sm hover:bg-cyan-700 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary transition-colors"
                       data-testid="button-call-billing"
                     >
                       <PhoneCall className="w-3 h-3" />
@@ -471,7 +471,7 @@ export default function ProviderContacts() {
                     </button>
                     <button
                       onClick={() => handleCopy(provider.contacts.billing.main, "Phone number")}
-                      className="flex items-center gap-1 px-3 py-1 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 bg-secondary text-foreground rounded-lg text-sm hover:bg-muted transition-colors"
                       data-testid="button-copy-phone"
                     >
                       <Copy className="w-3 h-3" />
@@ -479,12 +479,12 @@ export default function ProviderContacts() {
                     </button>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600">{provider.contacts.billing.hours}</p>
+                <p className="text-sm text-muted-foreground">{provider.contacts.billing.hours}</p>
                 {provider.contacts.billing.extensions && (
                   <div className="text-sm">
-                    <p className="font-medium text-gray-700 mb-1">Extensions:</p>
+                    <p className="font-medium text-foreground mb-1">Extensions:</p>
                     {Object.entries(provider.contacts.billing.extensions).map(([ext, desc]) => (
-                      <p key={ext} className="text-gray-600">• Press {ext} for {String(desc)}</p>
+                      <p key={ext} className="text-muted-foreground">• Press {ext} for {String(desc)}</p>
                     ))}
                   </div>
                 )}
@@ -495,18 +495,18 @@ export default function ProviderContacts() {
           {/* Patient Advocate Contacts */}
           {provider.contacts.patientAdvocate && (
             <div className="space-y-3">
-              <h4 className="flex items-center gap-2 font-semibold text-gray-800">
-                <Users className="w-4 h-4 text-emerald-600" />
+              <h4 className="flex items-center gap-2 font-semibold text-foreground">
+                <Users className="w-4 h-4 text-muted-foreground" />
                 Patient Advocate
               </h4>
-              <div className="bg-emerald-50 rounded-lg p-3 space-y-2">
+              <div className="bg-secondary rounded-lg p-3 space-y-2">
                 {provider.contacts.patientAdvocate.main && (
                   <div className="flex items-center justify-between">
                     <span className="font-medium">{provider.contacts.patientAdvocate.main}</span>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleCall(provider.contacts.patientAdvocate.main)}
-                        className="flex items-center gap-1 px-3 py-1 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700 transition-colors"
+                        className="flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary transition-colors"
                         data-testid="button-call-advocate"
                       >
                         <PhoneCall className="w-3 h-3" />
@@ -520,7 +520,7 @@ export default function ProviderContacts() {
                     <span className="text-sm">{provider.contacts.patientAdvocate.email}</span>
                     <button
                       onClick={() => handleCopy(provider.contacts.patientAdvocate.email, "Email")}
-                      className="flex items-center gap-1 px-3 py-1 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 bg-secondary text-foreground rounded-lg text-sm hover:bg-muted transition-colors"
                       data-testid="button-copy-email"
                     >
                       <Copy className="w-3 h-3" />
@@ -528,7 +528,7 @@ export default function ProviderContacts() {
                     </button>
                   </div>
                 )}
-                <p className="text-sm text-gray-600">{provider.contacts.patientAdvocate.hours}</p>
+                <p className="text-sm text-muted-foreground">{provider.contacts.patientAdvocate.hours}</p>
               </div>
             </div>
           )}
@@ -536,11 +536,11 @@ export default function ProviderContacts() {
           {/* Executive Contacts */}
           {provider.contacts.executive && (
             <div className="space-y-3">
-              <h4 className="flex items-center gap-2 font-semibold text-gray-800">
-                <Target className="w-4 h-4 text-purple-600" />
+              <h4 className="flex items-center gap-2 font-semibold text-foreground">
+                <Target className="w-4 h-4 text-muted-foreground" />
                 Executive Escalation
               </h4>
-              <div className="bg-purple-50 rounded-lg p-3 space-y-2">
+              <div className="bg-secondary rounded-lg p-3 space-y-2">
                 {provider.contacts.executive.cfo && (
                   <p className="text-sm"><span className="font-medium">CFO:</span> {provider.contacts.executive.cfo}</p>
                 )}
@@ -552,7 +552,7 @@ export default function ProviderContacts() {
                     <span className="text-sm">{provider.contacts.executive.email}</span>
                     <button
                       onClick={() => handleCopy(provider.contacts.executive.email, "Executive email")}
-                      className="flex items-center gap-1 px-3 py-1 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 bg-secondary text-foreground rounded-lg text-sm hover:bg-muted transition-colors"
                       data-testid="button-copy-exec-email"
                     >
                       <Copy className="w-3 h-3" />
@@ -561,7 +561,7 @@ export default function ProviderContacts() {
                   </div>
                 )}
                 {provider.contacts.executive.address && (
-                  <p className="text-sm text-gray-600">{provider.contacts.executive.address}</p>
+                  <p className="text-sm text-muted-foreground">{provider.contacts.executive.address}</p>
                 )}
               </div>
             </div>
@@ -570,17 +570,17 @@ export default function ProviderContacts() {
           {/* Charity Care Contacts */}
           {provider.contacts.charitycare && (
             <div className="space-y-3">
-              <h4 className="flex items-center gap-2 font-semibold text-gray-800">
-                <Heart className="w-4 h-4 text-pink-600" />
+              <h4 className="flex items-center gap-2 font-semibold text-foreground">
+                <Heart className="w-4 h-4 text-muted-foreground" />
                 Financial Assistance
               </h4>
-              <div className="bg-pink-50 rounded-lg p-3 space-y-2">
+              <div className="bg-secondary rounded-lg p-3 space-y-2">
                 {provider.contacts.charitycare.main && (
                   <div className="flex items-center justify-between">
                     <span className="font-medium">{provider.contacts.charitycare.main}</span>
                     <button
                       onClick={() => handleCall(provider.contacts.charitycare.main)}
-                      className="flex items-center gap-1 px-3 py-1 bg-pink-600 text-white rounded-lg text-sm hover:bg-pink-700 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary transition-colors"
                       data-testid="button-call-charity"
                     >
                       <PhoneCall className="w-3 h-3" />
@@ -590,10 +590,10 @@ export default function ProviderContacts() {
                 )}
                 {provider.contacts.charitycare.website && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-blue-600">{provider.contacts.charitycare.website}</span>
+                    <span className="text-sm text-gold">{provider.contacts.charitycare.website}</span>
                     <button
                       onClick={() => window.open(`https://${provider.contacts.charitycare.website}`, '_blank')}
-                      className="flex items-center gap-1 px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary transition-colors"
                       data-testid="button-visit-website"
                     >
                       <ExternalLink className="w-3 h-3" />
@@ -602,7 +602,7 @@ export default function ProviderContacts() {
                   </div>
                 )}
                 {provider.contacts.charitycare.income_limit && (
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     <span className="font-medium">Income Limit:</span> {provider.contacts.charitycare.income_limit}
                   </p>
                 )}
@@ -613,11 +613,11 @@ export default function ProviderContacts() {
           {/* Special Notes */}
           {provider.specialNotes && provider.specialNotes.length > 0 && (
             <div className="space-y-3">
-              <h4 className="flex items-center gap-2 font-semibold text-gray-800">
+              <h4 className="flex items-center gap-2 font-semibold text-foreground">
                 <Info className="w-4 h-4 text-amber-600" />
                 Insider Tips
               </h4>
-              <div className="bg-amber-50 rounded-lg p-3 space-y-1">
+              <div className="bg-secondary rounded-lg p-3 space-y-1">
                 {provider.specialNotes.map((note: string, index: number) => (
                   <p key={index} className="text-sm text-amber-800">• {note}</p>
                 ))}
@@ -632,8 +632,8 @@ export default function ProviderContacts() {
   const renderScripts = () => (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Contact Scripts</h2>
-        <p className="text-gray-600">Professional scripts for effective provider communications</p>
+        <h2 className="text-xl font-bold font-serif text-foreground mb-2">Contact Scripts</h2>
+        <p className="text-muted-foreground">Professional scripts for effective provider communications</p>
       </div>
 
       {Object.entries(contactScripts).map(([key, script]) => (
@@ -643,10 +643,10 @@ export default function ProviderContacts() {
             onClick={() => setSelectedScript(selectedScript === key ? null : key)}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-gray-800">{script.title}</h3>
-              {selectedScript === key ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+              <h3 className="font-semibold text-foreground">{script.title}</h3>
+              {selectedScript === key ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
             </div>
-            <p className="text-sm text-gray-600 mb-3">{script.scenario}</p>
+            <p className="text-sm text-muted-foreground mb-3">{script.scenario}</p>
           </div>
 
           {selectedScript === key && (
@@ -655,14 +655,14 @@ export default function ProviderContacts() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="pt-4 border-t border-gray-200"
+              className="pt-4 border-t border-border"
             >
-              <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <p className="text-sm leading-relaxed text-gray-800">{script.script}</p>
+              <div className="bg-secondary rounded-lg p-4 mb-4">
+                <p className="text-sm leading-relaxed text-foreground">{script.script}</p>
               </div>
               <button
                 onClick={() => handleCopy(script.script, "Script")}
-                className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm hover:bg-cyan-700 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary transition-colors"
                 data-testid={`button-copy-script-${key}`}
               >
                 <Copy className="w-4 h-4" />
@@ -678,8 +678,8 @@ export default function ProviderContacts() {
   const renderTemplates = () => (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Email Templates</h2>
-        <p className="text-gray-600">Professional email templates for formal communications</p>
+        <h2 className="text-xl font-bold font-serif text-foreground mb-2">Email Templates</h2>
+        <p className="text-muted-foreground">Professional email templates for formal communications</p>
       </div>
 
       {Object.entries(emailTemplates).map(([key, template]) => (
@@ -689,8 +689,8 @@ export default function ProviderContacts() {
             onClick={() => setSelectedTemplate(selectedTemplate === key ? null : key)}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-gray-800">{template.title}</h3>
-              {selectedTemplate === key ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+              <h3 className="font-semibold text-foreground">{template.title}</h3>
+              {selectedTemplate === key ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
             </div>
           </div>
 
@@ -700,14 +700,14 @@ export default function ProviderContacts() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="pt-4 border-t border-gray-200"
+              className="pt-4 border-t border-border"
             >
-              <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <pre className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap font-sans">{template.template}</pre>
+              <div className="bg-secondary rounded-lg p-4 mb-4">
+                <pre className="text-sm leading-relaxed text-foreground whitespace-pre-wrap font-sans">{template.template}</pre>
               </div>
               <button
                 onClick={() => handleCopy(template.template, "Template")}
-                className="flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm hover:bg-cyan-700 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary transition-colors"
                 data-testid={`button-copy-template-${key}`}
               >
                 <Copy className="w-4 h-4" />
@@ -723,7 +723,7 @@ export default function ProviderContacts() {
   return (
     <MobileLayout title="Provider Contacts">
       {/* Tab Navigation */}
-      <div className="flex space-x-1 mb-6 bg-white/50 p-1 rounded-xl">
+      <div className="flex space-x-1 mb-6 bg-secondary p-1 rounded-xl">
         {[
           { id: "database", label: "Contact Database", icon: Building2 },
           { id: "scripts", label: "Phone Scripts", icon: MessageCircle },
@@ -734,8 +734,8 @@ export default function ProviderContacts() {
             onClick={() => setActiveTab(id)}
             className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-all ${
               activeTab === id
-                ? "bg-gradient-to-r from-cyan-600 to-emerald-600 text-white shadow-lg"
-                : "text-gray-600 hover:text-gray-800 hover:bg-white/70"
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
             data-testid={`tab-${id}`}
           >
@@ -751,13 +751,13 @@ export default function ProviderContacts() {
           {/* Search and Filters */}
           <MobileCard className="space-y-4 mb-6">
             <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search providers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/70 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                 data-testid="input-search-providers"
               />
             </div>
@@ -766,7 +766,7 @@ export default function ProviderContacts() {
               <select
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                className="px-3 py-2 bg-white/70 border border-white/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="px-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 data-testid="select-location-filter"
               >
                 <option value="">All Locations</option>
@@ -778,7 +778,7 @@ export default function ProviderContacts() {
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="px-3 py-2 bg-white/70 border border-white/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="px-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 data-testid="select-type-filter"
               >
                 <option value="">All Types</option>
@@ -788,10 +788,10 @@ export default function ProviderContacts() {
               </select>
             </div>
 
-            <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
               <span>{filteredProviders.length} providers found</span>
               <span className="flex items-center gap-1">
-                <CheckCircle className="w-4 h-4 text-emerald-500" />
+                <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 Free Resource
               </span>
             </div>
@@ -804,9 +804,9 @@ export default function ProviderContacts() {
 
           {filteredProviders.length === 0 && (
             <MobileCard className="text-center py-8">
-              <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">No providers found</h3>
-              <p className="text-gray-600">Try adjusting your search criteria or filters.</p>
+              <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">No providers found</h3>
+              <p className="text-muted-foreground">Try adjusting your search criteria or filters.</p>
             </MobileCard>
           )}
         </>
@@ -819,12 +819,12 @@ export default function ProviderContacts() {
       {activeTab === "templates" && renderTemplates()}
 
       {/* Free Resource Notice */}
-      <MobileCard className="bg-gradient-to-r from-emerald-50 to-cyan-50 border-emerald-200 mt-8">
+      <MobileCard className="bg-secondary border-border mt-8">
         <div className="flex items-start gap-3">
-          <CheckCircle className="w-6 h-6 text-emerald-600 mt-1" />
+          <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400 mt-1" />
           <div>
-            <h3 className="font-semibold text-emerald-800 mb-1">100% Free Resource</h3>
-            <p className="text-sm text-emerald-700 leading-relaxed">
+            <h3 className="font-semibold text-foreground mb-1">100% Free Resource</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               This comprehensive provider contact database is completely free for all users. 
               Identify potential billing errors by contacting the right people with proven scripts and templates.
             </p>

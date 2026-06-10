@@ -131,10 +131,10 @@ export default function Achievements() {
       <MobileLayout title="Progress & Achievements" showBottomNav={true}>
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Trophy className="h-6 w-6 text-white" />
             </div>
-            <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full mx-auto"></div>
+            <div className="animate-spin w-8 h-8 border-4 border-gold border-t-transparent rounded-full mx-auto"></div>
           </div>
         </div>
       </MobileLayout>
@@ -149,10 +149,11 @@ export default function Achievements() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <MobileCard className="mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+        <MobileCard className="mb-6">
           <div className="text-center mb-4">
             <motion.div 
-              className="w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-3 shadow-xl shadow-indigo-500/25"
+              className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-3 shadow-sm"
+              style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ 
@@ -164,16 +165,16 @@ export default function Achievements() {
             >
               <Trophy className="h-8 w-8 text-white" />
             </motion.div>
-            <h2 className="text-lg font-bold text-indigo-900 mb-1">{processedUserStats.rank}</h2>
-            <p className="text-sm text-indigo-700">{processedUserStats.totalPoints} Total Points</p>
+            <h2 className="text-lg font-bold font-serif text-foreground mb-1">{processedUserStats.rank}</h2>
+            <p className="text-sm text-muted-foreground">{processedUserStats.totalPoints} Total Points</p>
             <div className="mt-2">
-              <div className="flex items-center justify-center space-x-2 text-sm text-indigo-600">
+              <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                 <Crown className="w-4 h-4" />
                 <span>{achievementProgress.earned}/{achievementProgress.total} Achievements ({achievementProgress.percentage}%)</span>
               </div>
-              <div className="w-full bg-indigo-200 rounded-full h-2 mt-1">
+              <div className="w-full bg-secondary rounded-full h-2 mt-1">
                 <motion.div 
-                  className="bg-indigo-600 h-2 rounded-full" 
+                  className="bg-gold h-2 rounded-full" 
                   initial={{ width: 0 }}
                   animate={{ width: `${achievementProgress.percentage}%` }}
                   transition={{ duration: 1, delay: 0.5 }}
@@ -198,9 +199,9 @@ export default function Achievements() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                 >
-                  <IconComponent className="h-5 w-5 text-indigo-600 mx-auto mb-1" />
-                  <div className="text-lg font-bold text-indigo-900">{stat.value}</div>
-                  <div className="text-xs text-indigo-700">{stat.label}</div>
+                  <IconComponent className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
+                  <div className="text-lg font-bold text-foreground">{stat.value}</div>
+                  <div className="text-xs text-muted-foreground">{stat.label}</div>
                 </motion.div>
               );
             })}
@@ -215,7 +216,7 @@ export default function Achievements() {
         transition={{ delay: 0.8, duration: 0.5 }}
         className="mb-6"
       >
-        <div className="flex bg-gray-100 rounded-2xl p-1">
+        <div className="flex bg-secondary rounded-2xl p-1">
           {[
             { id: "overview", label: "Overview" },
             { id: "achievements", label: "Badges" },
@@ -225,8 +226,8 @@ export default function Achievements() {
               key={tab.id}
               className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-colors ${
                 selectedTab === tab.id
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-600"
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground"
               }`}
               onClick={() => setSelectedTab(tab.id)}
               whileTap={{ scale: 0.95 }}
@@ -255,7 +256,7 @@ export default function Achievements() {
           transition={{ duration: 0.4 }}
           className="space-y-4"
         >
-          <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+          <h3 className="text-lg font-semibold text-foreground">Recent Activity</h3>
           {recentActivity.map((activity: any, index: number) => (
             <motion.div
               key={index}
@@ -272,18 +273,18 @@ export default function Achievements() {
                       </div>
                     )}
                     <div className="flex-1">
-                      <p className="text-sm text-gray-900 mb-1">
+                      <p className="text-sm text-foreground mb-1">
                         <span className="font-medium">{activity.action}</span> {activity.case}
                         {activity.isAchievement && <span className="text-yellow-600 ml-1">🏆</span>}
                       </p>
-                      <p className="text-xs text-gray-500">{activity.time}</p>
+                      <p className="text-xs text-muted-foreground">{activity.time}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className={`text-sm font-semibold ${activity.isAchievement ? 'text-yellow-600' : 'text-indigo-600'}`}>
+                    <span className={`text-sm font-semibold ${activity.isAchievement ? 'text-yellow-600' : 'text-muted-foreground'}`}>
                       +{activity.points}
                     </span>
-                    <p className="text-xs text-gray-500">points</p>
+                    <p className="text-xs text-muted-foreground">points</p>
                   </div>
                 </div>
               </MobileCard>
@@ -301,11 +302,11 @@ export default function Achievements() {
         >
           {/* Progress Chart Placeholder */}
           <MobileCard>
-            <h3 className="font-semibold text-gray-900 mb-4">Weekly Progress</h3>
-            <div className="h-32 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center">
+            <h3 className="font-semibold text-foreground mb-4">Weekly Progress</h3>
+            <div className="h-32 bg-secondary rounded-xl flex items-center justify-center">
               <div className="text-center">
-                <TrendingUp className="h-8 w-8 text-indigo-600 mx-auto mb-2" />
-                <p className="text-sm text-indigo-700">Progress Chart</p>
+                <TrendingUp className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">Progress Chart</p>
               </div>
             </div>
           </MobileCard>

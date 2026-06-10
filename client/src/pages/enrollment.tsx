@@ -66,7 +66,6 @@ const programTypes = [
     description: "Covers inpatient hospital stays, skilled nursing facility care, hospice care, and some home health care.",
     qualifies: "65+ years old, or under 65 with certain disabilities or ESRD",
     icon: Building,
-    color: "from-blue-500 to-blue-600",
     emoji: "🏥"
   },
   {
@@ -76,7 +75,6 @@ const programTypes = [
     description: "Covers doctor visits, outpatient care, preventive services, and medical supplies.",
     qualifies: "65+ years old, or under 65 with certain disabilities",
     icon: Stethoscope,
-    color: "from-emerald-500 to-emerald-600",
     emoji: "👨‍⚕️"
   },
   {
@@ -86,7 +84,6 @@ const programTypes = [
     description: "Private insurance plans that combine Part A and Part B benefits, often with prescription drug coverage.",
     qualifies: "Must have Medicare Parts A and B",
     icon: Shield,
-    color: "from-purple-500 to-purple-600",
     emoji: "⭐"
   },
   {
@@ -96,7 +93,6 @@ const programTypes = [
     description: "Helps cover the cost of prescription drugs, including many recommended vaccines.",
     qualifies: "Must have Medicare Part A and/or Part B",
     icon: Pill,
-    color: "from-pink-500 to-pink-600",
     emoji: "💊"
   },
   {
@@ -106,7 +102,6 @@ const programTypes = [
     description: "Free or low-cost health coverage for eligible low-income adults, children, pregnant women, elderly adults, and people with disabilities.",
     qualifies: "Income below certain thresholds (varies by state)",
     icon: Heart,
-    color: "from-rose-500 to-rose-600",
     emoji: "❤️"
   },
   {
@@ -116,7 +111,6 @@ const programTypes = [
     description: "Low-cost health coverage for children in families that earn too much money to qualify for Medicaid.",
     qualifies: "Children under 19 in families with income too high for Medicaid",
     icon: Baby,
-    color: "from-amber-500 to-amber-600",
     emoji: "👶"
   },
   {
@@ -126,7 +120,6 @@ const programTypes = [
     description: "Compare and shop for health plans, potentially with financial help to lower costs.",
     qualifies: "U.S. citizens and legal residents not eligible for Medicare",
     icon: DollarSign,
-    color: "from-teal-500 to-teal-600",
     emoji: "🛒"
   }
 ];
@@ -376,7 +369,7 @@ export default function Enrollment() {
         variant="ghost"
         size="sm"
         onClick={() => handleVoiceInput(fieldName)}
-        className={`ml-2 ${isActiveField ? 'text-red-500 animate-pulse' : 'text-gray-400'}`}
+        className={`ml-2 ${isActiveField ? 'text-red-500 animate-pulse' : 'text-muted-foreground'}`}
         data-testid={`voice-input-${fieldName}`}
       >
         {isActiveField ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
@@ -411,13 +404,13 @@ export default function Enrollment() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+          <div className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Shield className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2" data-testid="page-title">
+          <h1 className="text-2xl font-bold font-serif text-foreground mb-2" data-testid="page-title">
             Medicare & Medicaid Enrollment
           </h1>
-          <p className="text-gray-600 mb-3" data-testid="page-subtitle">
+          <p className="text-muted-foreground mb-3" data-testid="page-subtitle">
             We help you navigate government healthcare programs
           </p>
           <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200" data-testid="disclaimer-badge">
@@ -428,9 +421,9 @@ export default function Enrollment() {
 
         <div className="space-y-3">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Step {currentStep + 1} of {steps.length}</span>
+            <span className="text-muted-foreground">Step {currentStep + 1} of {steps.length}</span>
             <div className="flex items-center gap-2">
-              <Label htmlFor="voice-toggle" className="text-sm text-gray-600">
+              <Label htmlFor="voice-toggle" className="text-sm text-muted-foreground">
                 <Volume2 className="w-4 h-4 inline mr-1" />
                 Voice Input
               </Label>
@@ -448,12 +441,12 @@ export default function Enrollment() {
             {steps.map((step, idx) => (
               <div
                 key={step.id}
-                className={`flex flex-col items-center ${idx <= currentStep ? 'text-emerald-600' : 'text-gray-400'}`}
+                className={`flex flex-col items-center ${idx <= currentStep ? 'text-gold' : 'text-muted-foreground'}`}
               >
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium
-                  ${idx < currentStep ? 'bg-emerald-500 text-white' : 
-                    idx === currentStep ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-500' : 
-                    'bg-gray-100 text-gray-400'}`}
+                  ${idx < currentStep ? 'bg-gold text-white' : 
+                    idx === currentStep ? 'bg-secondary text-gold border-2 border-gold' : 
+                    'bg-secondary text-muted-foreground'}`}
                 >
                   {idx < currentStep ? <Check className="w-4 h-4" /> : idx + 1}
                 </div>
@@ -464,12 +457,12 @@ export default function Enrollment() {
         </div>
 
         {sessions && sessions.length > 0 && currentStep === 0 && !showSessionList && (
-          <Card className="border-blue-200 bg-blue-50">
+          <Card className="border border-border bg-card">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-blue-600" />
-                  <span className="text-sm text-blue-800">
+                  <Clock className="w-5 h-5 text-gold" />
+                  <span className="text-sm text-foreground">
                     You have {sessions.filter(s => s.status === 'in_progress').length} incomplete session(s)
                   </span>
                 </div>
@@ -477,7 +470,6 @@ export default function Enrollment() {
                   variant="outline"
                   size="sm"
                   onClick={() => setShowSessionList(true)}
-                  className="text-blue-600 border-blue-300"
                   data-testid="view-sessions-button"
                 >
                   Resume
@@ -494,7 +486,7 @@ export default function Enrollment() {
             className="space-y-3"
           >
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900">Your Sessions</h3>
+              <h3 className="font-semibold font-serif text-foreground">Your Sessions</h3>
               <Button variant="ghost" size="sm" onClick={() => setShowSessionList(false)}>
                 <ChevronLeft className="w-4 h-4 mr-1" /> Back
               </Button>
@@ -506,8 +498,8 @@ export default function Enrollment() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-gray-900">{program?.title || 'Unknown Program'}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="font-medium text-foreground">{program?.title || 'Unknown Program'}</p>
+                        <p className="text-sm text-muted-foreground">
                           Step {session.currentStep + 1} • {new Date(session.updatedAt).toLocaleDateString()}
                         </p>
                       </div>
@@ -531,10 +523,10 @@ export default function Enrollment() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-4"
             >
-              <h2 className="text-lg font-semibold text-gray-900" data-testid="step-title">
+              <h2 className="text-lg font-semibold font-serif text-foreground" data-testid="step-title">
                 Select a Healthcare Program
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Choose the program you'd like to explore. We'll help determine your eligibility.
               </p>
               
@@ -547,29 +539,29 @@ export default function Enrollment() {
                     transition={{ delay: idx * 0.05 }}
                   >
                     <Card
-                      className={`cursor-pointer transition-all hover:shadow-lg ${
-                        selectedProgram === program.id ? 'ring-2 ring-emerald-500 bg-emerald-50' : ''
+                      className={`cursor-pointer transition-all hover:shadow-md ${
+                        selectedProgram === program.id ? 'ring-2 ring-gold bg-secondary' : ''
                       }`}
                       onClick={() => handleProgramSelect(program.id)}
                       data-testid={`program-card-${program.id}`}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start gap-4">
-                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${program.color} flex items-center justify-center shadow-md flex-shrink-0`}>
+                          <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
                             <span className="text-xl">{program.emoji}</span>
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <h3 className="font-semibold text-gray-900">{program.title}</h3>
+                              <h3 className="font-semibold text-foreground">{program.title}</h3>
                               <Badge variant="outline" className="text-xs">{program.subtitle}</Badge>
                             </div>
-                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">{program.description}</p>
-                            <div className="flex items-center gap-1 mt-2 text-xs text-emerald-600">
+                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{program.description}</p>
+                            <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                               <Info className="w-3 h-3" />
                               <span>{program.qualifies}</span>
                             </div>
                           </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                          <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
                         </div>
                       </CardContent>
                     </Card>
@@ -587,10 +579,10 @@ export default function Enrollment() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-4"
             >
-              <h2 className="text-lg font-semibold text-gray-900" data-testid="step-title">
+              <h2 className="text-lg font-semibold font-serif text-foreground" data-testid="step-title">
                 Personal Information
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Please provide your information. This is kept secure and confidential.
               </p>
 
@@ -785,7 +777,7 @@ export default function Enrollment() {
                 </Button>
                 <Button
                   onClick={handlePersonalNext}
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                  className="flex-1 bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="button-next"
                 >
                   Next <ChevronRight className="w-4 h-4 ml-1" />
@@ -802,10 +794,10 @@ export default function Enrollment() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-4"
             >
-              <h2 className="text-lg font-semibold text-gray-900" data-testid="step-title">
+              <h2 className="text-lg font-semibold font-serif text-foreground" data-testid="step-title">
                 Eligibility Questions
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Answer these questions to help us determine your eligibility.
               </p>
 
@@ -1019,7 +1011,7 @@ export default function Enrollment() {
                 <Button
                   onClick={handleEligibilitySubmit}
                   disabled={eligibilityMutation.isPending}
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                  className="flex-1 bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="button-check-eligibility"
                 >
                   {eligibilityMutation.isPending ? (
@@ -1045,7 +1037,7 @@ export default function Enrollment() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-4"
             >
-              <h2 className="text-lg font-semibold text-gray-900" data-testid="step-title">
+              <h2 className="text-lg font-semibold font-serif text-foreground" data-testid="step-title">
                 AI Eligibility Assessment
               </h2>
 
@@ -1063,31 +1055,31 @@ export default function Enrollment() {
                       <h3 className={`text-xl font-bold ${eligibilityResult.eligible ? 'text-green-800' : 'text-amber-800'}`} data-testid="eligibility-status">
                         {eligibilityResult.eligible ? 'Likely Eligible' : 'May Not Qualify'}
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-muted-foreground">
                         for {programTypes.find(p => p.id === eligibilityResult.programId)?.title}
                       </p>
                     </div>
                   </div>
-                  <p className="text-gray-700" data-testid="eligibility-reasoning">{eligibilityResult.reasoning}</p>
+                  <p className="text-foreground" data-testid="eligibility-reasoning">{eligibilityResult.reasoning}</p>
                 </CardContent>
               </Card>
 
               {eligibilityResult.recommendedPrograms && eligibilityResult.recommendedPrograms.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold text-foreground">
                     <Info className="w-4 h-4 inline mr-1" />
                     Recommended Programs
                   </h3>
                   {eligibilityResult.recommendedPrograms.map((rec, idx) => (
-                    <Card key={idx} className="bg-blue-50 border-blue-200" data-testid={`recommendation-${idx}`}>
+                    <Card key={idx} className="bg-card border border-border" data-testid={`recommendation-${idx}`}>
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-medium text-blue-900">{rec.name}</span>
-                          <Badge className="bg-blue-100 text-blue-700">
+                          <span className="font-medium text-foreground">{rec.name}</span>
+                          <Badge className="bg-secondary text-foreground">
                             {rec.eligibilityScore}% match
                           </Badge>
                         </div>
-                        <p className="text-sm text-blue-700">{rec.reason}</p>
+                        <p className="text-sm text-muted-foreground">{rec.reason}</p>
                       </CardContent>
                     </Card>
                   ))}
@@ -1095,27 +1087,27 @@ export default function Enrollment() {
               )}
 
               <div className="space-y-3">
-                <h3 className="font-semibold text-gray-900">
+                <h3 className="font-semibold text-foreground">
                   <ArrowRight className="w-4 h-4 inline mr-1" />
                   Next Steps
                 </h3>
                 <div className="space-y-2">
                   {eligibilityResult.nextSteps.map((step, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg" data-testid={`next-step-${idx}`}>
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-medium flex-shrink-0">
+                    <div key={idx} className="flex items-start gap-3 p-3 bg-secondary rounded-lg" data-testid={`next-step-${idx}`}>
+                      <div className="w-6 h-6 rounded-full bg-card border border-border text-gold flex items-center justify-center text-sm font-medium flex-shrink-0">
                         {idx + 1}
                       </div>
-                      <p className="text-sm text-gray-700">{step}</p>
+                      <p className="text-sm text-foreground">{step}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               {eligibilityResult.enrollmentDeadline && (
-                <Card className="bg-purple-50 border-purple-200">
+                <Card className="bg-card border border-border">
                   <CardContent className="p-4">
-                    <div className="flex items-center gap-2 text-purple-800">
-                      <Clock className="w-5 h-5" />
+                    <div className="flex items-center gap-2 text-foreground">
+                      <Clock className="w-5 h-5 text-gold" />
                       <span className="font-medium">Enrollment Deadline: {eligibilityResult.enrollmentDeadline}</span>
                     </div>
                   </CardContent>
@@ -1133,7 +1125,7 @@ export default function Enrollment() {
                 </Button>
                 <Button
                   onClick={() => setCurrentStep(4)}
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                  className="flex-1 bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="button-review"
                 >
                   Review & Submit <ChevronRight className="w-4 h-4 ml-1" />
@@ -1150,19 +1142,19 @@ export default function Enrollment() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-4"
             >
-              <h2 className="text-lg font-semibold text-gray-900" data-testid="step-title">
+              <h2 className="text-lg font-semibold font-serif text-foreground" data-testid="step-title">
                 Review Your Information
               </h2>
 
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-emerald-500" />
+                    <Shield className="w-4 h-4 text-gold" />
                     Selected Program
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="font-medium text-gray-900">
+                  <p className="font-medium text-foreground">
                     {programTypes.find(p => p.id === selectedProgram)?.title}
                   </p>
                 </CardContent>
@@ -1171,31 +1163,31 @@ export default function Enrollment() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Users className="w-4 h-4 text-blue-500" />
+                    <Users className="w-4 h-4 text-muted-foreground" />
                     Personal Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <span className="text-gray-500">Name:</span>
+                      <span className="text-muted-foreground">Name:</span>
                       <p className="font-medium">{personalForm.getValues('firstName')} {personalForm.getValues('lastName')}</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">DOB:</span>
+                      <span className="text-muted-foreground">DOB:</span>
                       <p className="font-medium">{personalForm.getValues('dateOfBirth')}</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">Email:</span>
+                      <span className="text-muted-foreground">Email:</span>
                       <p className="font-medium">{personalForm.getValues('email')}</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">Phone:</span>
+                      <span className="text-muted-foreground">Phone:</span>
                       <p className="font-medium">{personalForm.getValues('phone')}</p>
                     </div>
                   </div>
                   <div>
-                    <span className="text-gray-500">Address:</span>
+                    <span className="text-muted-foreground">Address:</span>
                     <p className="font-medium">
                       {personalForm.getValues('address')}, {personalForm.getValues('city')}, {personalForm.getValues('state')} {personalForm.getValues('zipCode')}
                     </p>
@@ -1206,26 +1198,26 @@ export default function Enrollment() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-purple-500" />
+                    <FileText className="w-4 h-4 text-muted-foreground" />
                     Eligibility Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <span className="text-gray-500">Age:</span>
+                      <span className="text-muted-foreground">Age:</span>
                       <p className="font-medium">{eligibilityForm.getValues('age')}</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">Household:</span>
+                      <span className="text-muted-foreground">Household:</span>
                       <p className="font-medium">{eligibilityForm.getValues('householdSize')} person(s)</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">Income:</span>
+                      <span className="text-muted-foreground">Income:</span>
                       <p className="font-medium">{eligibilityForm.getValues('annualIncome')?.replace(/_/g, ' - $')}</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">Employment:</span>
+                      <span className="text-muted-foreground">Employment:</span>
                       <p className="font-medium">{eligibilityForm.getValues('employmentStatus')?.replace(/_/g, ' ')}</p>
                     </div>
                   </div>
@@ -1249,11 +1241,11 @@ export default function Enrollment() {
                 </Card>
               )}
 
-              <Card className="bg-blue-50 border-blue-200">
+              <Card className="bg-card border border-border">
                 <CardContent className="p-4">
                   <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-blue-800">
+                    <Info className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-foreground">
                       <p className="font-medium mb-1">Important Notice</p>
                       <p>
                         This assessment is for educational purposes only. Final eligibility determination 
@@ -1282,7 +1274,7 @@ export default function Enrollment() {
                       description: "Your enrollment information has been saved. Visit official government sites to complete enrollment."
                     });
                   }}
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                  className="flex-1 bg-primary text-primary-foreground hover:opacity-90"
                   data-testid="button-save-complete"
                 >
                   <Check className="w-4 h-4 mr-1" /> Save & Complete
@@ -1296,18 +1288,18 @@ export default function Enrollment() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="fixed bottom-24 left-4 right-4 bg-white rounded-xl shadow-2xl border p-4 z-50"
+            className="fixed bottom-24 left-4 right-4 bg-card rounded-xl shadow-2xl border border-border p-4 z-50"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center animate-pulse">
                 <Mic className="w-5 h-5 text-red-600" />
               </div>
               <div className="flex-1">
-                <p className="font-medium text-gray-900">Listening...</p>
-                <p className="text-sm text-gray-600 truncate">{transcript || 'Speak now'}</p>
+                <p className="font-medium text-foreground">Listening...</p>
+                <p className="text-sm text-muted-foreground truncate">{transcript || 'Speak now'}</p>
               </div>
               <Button variant="ghost" size="sm" onClick={stopListening} data-testid="stop-listening">
-                <XCircle className="w-5 h-5 text-gray-500" />
+                <XCircle className="w-5 h-5 text-muted-foreground" />
               </Button>
             </div>
           </motion.div>

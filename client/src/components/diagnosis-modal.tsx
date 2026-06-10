@@ -32,11 +32,11 @@ export function DiagnosisModal({ onSubmit, isLoading = false }: DiagnosisModalPr
   };
 
   const confidenceLevels = [
-    { value: 1, label: "Very Low", color: "bg-red-100 text-red-800" },
-    { value: 2, label: "Low", color: "bg-orange-100 text-orange-800" },
-    { value: 3, label: "Moderate", color: "bg-yellow-100 text-yellow-800" },
-    { value: 4, label: "High", color: "bg-blue-100 text-blue-800" },
-    { value: 5, label: "Very High", color: "bg-green-100 text-green-800" },
+    { value: 1, label: "Very Low", color: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300" },
+    { value: 2, label: "Low", color: "bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300" },
+    { value: 3, label: "Moderate", color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-950 dark:text-yellow-300" },
+    { value: 4, label: "High", color: "bg-secondary text-foreground" },
+    { value: 5, label: "Very High", color: "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300" },
   ];
 
   const currentConfidenceLevel = confidenceLevels.find(level => level.value === confidence);
@@ -45,7 +45,7 @@ export function DiagnosisModal({ onSubmit, isLoading = false }: DiagnosisModalPr
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button 
-          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2"
+          className="bg-primary text-primary-foreground px-6 py-3 rounded-xl hover:opacity-90 transition-all duration-300 flex items-center space-x-2"
           data-testid="button-diagnose"
         >
           <ClipboardCheck className="h-4 w-4" />
@@ -58,8 +58,8 @@ export function DiagnosisModal({ onSubmit, isLoading = false }: DiagnosisModalPr
         WebkitOverflowScrolling: 'touch'
       }}>
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
-            <Brain className="h-5 w-5 text-indigo-600" />
+          <DialogTitle className="flex items-center space-x-2 font-serif">
+            <Brain className="h-5 w-5 text-gold" />
             <span>Submit Your Diagnosis</span>
           </DialogTitle>
         </DialogHeader>
@@ -133,12 +133,12 @@ export function DiagnosisModal({ onSubmit, isLoading = false }: DiagnosisModalPr
             <Button
               onClick={handleSubmit}
               disabled={!diagnosis.trim() || isLoading}
-              className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+              className="flex-1 bg-primary text-primary-foreground hover:opacity-90"
               data-testid="button-submit"
             >
               {isLoading ? (
                 <div className="flex items-center space-x-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
                   <span>Analyzing...</span>
                 </div>
               ) : (

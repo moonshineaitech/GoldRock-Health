@@ -32,46 +32,46 @@ const rarityConfig = {
     colors: {
       primary: "#6B7280",
       secondary: "#9CA3AF",
-      bg: "from-gray-100 to-gray-200",
-      border: "border-gray-300"
+      bg: "bg-card",
+      border: "border-border"
     },
     confetti: ["#6B7280", "#9CA3AF", "#E5E7EB"]
   },
   Uncommon: {
     colors: {
-      primary: "#059669",
-      secondary: "#10B981",
-      bg: "from-emerald-100 to-green-200",
-      border: "border-emerald-300"
+      primary: "#047857",
+      secondary: "#059669",
+      bg: "bg-card",
+      border: "border-border"
     },
-    confetti: ["#059669", "#10B981", "#6EE7B7"]
+    confetti: ["#047857", "#059669", "#6EE7B7"]
   },
   Rare: {
     colors: {
-      primary: "#2563EB",
-      secondary: "#3B82F6",
-      bg: "from-blue-100 to-blue-200",
-      border: "border-blue-300"
+      primary: "#1D4ED8",
+      secondary: "#2563EB",
+      bg: "bg-card",
+      border: "border-border"
     },
-    confetti: ["#2563EB", "#3B82F6", "#93C5FD"]
+    confetti: ["#1D4ED8", "#2563EB", "#93C5FD"]
   },
   Epic: {
     colors: {
-      primary: "#7C3AED",
-      secondary: "#8B5CF6",
-      bg: "from-purple-100 to-purple-200",
-      border: "border-purple-300"
+      primary: "#6D28D9",
+      secondary: "#7C3AED",
+      bg: "bg-card",
+      border: "border-border"
     },
-    confetti: ["#7C3AED", "#8B5CF6", "#C4B5FD"]
+    confetti: ["#6D28D9", "#7C3AED", "#C4B5FD"]
   },
   Legendary: {
     colors: {
-      primary: "#F59E0B",
-      secondary: "#EAB308",
-      bg: "from-yellow-100 via-amber-100 to-orange-200",
-      border: "border-yellow-400"
+      primary: "#B08D57",
+      secondary: "#C9A227",
+      bg: "bg-card",
+      border: "border-border"
     },
-    confetti: ["#F59E0B", "#EAB308", "#FDE68A", "#FEF3C7"]
+    confetti: ["#B08D57", "#C9A227", "#E8D9A0", "#F3ECCF"]
   }
 };
 
@@ -136,7 +136,7 @@ export function AchievementNotification({
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/50 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -158,9 +158,7 @@ export function AchievementNotification({
           >
             <motion.div
               className={cn(
-                "relative max-w-sm w-full bg-gradient-to-br backdrop-blur-xl rounded-3xl border-2 shadow-2xl overflow-hidden",
-                rarity.colors.bg,
-                rarity.colors.border
+                "relative max-w-sm w-full luxury-card rounded-3xl overflow-hidden"
               )}
               animate={achievement.rarity === "Legendary" ? {
                 boxShadow: [
@@ -194,7 +192,7 @@ export function AchievementNotification({
                         delay: i * 0.2
                       }}
                     >
-                      <Sparkles className="h-4 w-4 text-yellow-500" />
+                      <Sparkles className="h-4 w-4 text-gold" />
                     </motion.div>
                   ))}
                 </div>
@@ -203,7 +201,7 @@ export function AchievementNotification({
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-secondary hover:bg-muted text-muted-foreground transition-colors"
                 data-testid="close-achievement-notification"
               >
                 <X className="h-4 w-4" />
@@ -217,13 +215,13 @@ export function AchievementNotification({
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <h3 className="text-xl font-bold text-gray-800 mb-1">
+                  <h3 className="text-xl font-serif font-bold text-foreground mb-1">
                     Achievement Unlocked!
                   </h3>
-                  <div className={cn(
-                    "inline-block px-3 py-1 rounded-full text-sm font-medium",
-                    rarity.colors.bg
-                  )}>
+                  <div
+                    className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-secondary border border-border"
+                    style={{ color: rarity.colors.primary }}
+                  >
                     {achievement.rarity}
                   </div>
                 </motion.div>
@@ -240,12 +238,7 @@ export function AchievementNotification({
                     delay: 0.3 
                   }}
                 >
-                  <div className={cn(
-                    "p-6 rounded-full bg-gradient-to-br shadow-lg",
-                    rarity.colors.bg,
-                    rarity.colors.border,
-                    "border-2"
-                  )}>
+                  <div className="p-6 rounded-full bg-secondary border border-border shadow-sm">
                     <IconComponent 
                       className="h-16 w-16" 
                       style={{ color: rarity.colors.primary }}
@@ -260,10 +253,10 @@ export function AchievementNotification({
                   transition={{ delay: 0.4 }}
                   className="space-y-2"
                 >
-                  <h4 className="text-xl font-bold text-gray-800">
+                  <h4 className="text-xl font-bold text-foreground">
                     {achievement.title}
                   </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {achievement.description}
                   </p>
                 </motion.div>
@@ -276,12 +269,12 @@ export function AchievementNotification({
                   className="flex items-center justify-between"
                 >
                   <div className="flex items-center space-x-2">
-                    <Star className="h-5 w-5 text-yellow-600" />
-                    <span className="font-semibold text-gray-700">
+                    <Star className="h-5 w-5 text-gold" />
+                    <span className="font-semibold text-foreground">
                       +{achievement.points} Points
                     </span>
                   </div>
-                  <div className="px-3 py-1 bg-white/60 rounded-lg text-sm text-gray-600">
+                  <div className="px-3 py-1 bg-secondary border border-border rounded-lg text-sm text-muted-foreground">
                     {achievement.category}
                   </div>
                 </motion.div>
@@ -293,10 +286,10 @@ export function AchievementNotification({
                   transition={{ delay: 0.6, type: "spring" }}
                   className="text-center"
                 >
-                  <p className="text-lg font-medium text-gray-700">
+                  <p className="text-lg font-medium text-foreground">
                     🎉 Congratulations! 🎉
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Keep up the excellent medical training!
                   </p>
                 </motion.div>
@@ -305,13 +298,14 @@ export function AchievementNotification({
               {/* Animated Border for Legendary */}
               {achievement.rarity === "Legendary" && (
                 <motion.div
-                  className="absolute inset-0 border-2 border-yellow-400 rounded-3xl"
+                  className="absolute inset-0 border-2 rounded-3xl"
+                  style={{ borderColor: "var(--gold)" }}
                   animate={{
                     borderColor: [
-                      "#F59E0B",
-                      "#EAB308",
-                      "#FBBF24",
-                      "#F59E0B"
+                      "#B08D57",
+                      "#C9A227",
+                      "#D4B86A",
+                      "#B08D57"
                     ]
                   }}
                   transition={{ repeat: Infinity, duration: 2 }}

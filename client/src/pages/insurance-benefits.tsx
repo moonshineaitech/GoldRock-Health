@@ -351,13 +351,13 @@ export default function InsuranceBenefits() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="relative mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="relative mx-auto mb-4 w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Shield className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white" data-testid="page-title">
+          <h1 className="text-2xl font-bold font-serif text-foreground" data-testid="page-title">
             Insurance Benefits Explainer
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1" data-testid="page-subtitle">
+          <p className="text-muted-foreground mt-1" data-testid="page-subtitle">
             Understand your coverage in plain English
           </p>
           
@@ -402,7 +402,7 @@ export default function InsuranceBenefits() {
                   <CardContent className="pt-4">
                     <div className="flex flex-col sm:flex-row gap-3">
                       <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input
                           placeholder="Search insurance providers..."
                           value={searchQuery}
@@ -447,8 +447,8 @@ export default function InsuranceBenefits() {
                   ) : filteredProviders.length === 0 ? (
                     <Card>
                       <CardContent className="py-8 text-center">
-                        <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                        <p className="text-gray-500">No providers found matching your search.</p>
+                        <Building2 className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                        <p className="text-muted-foreground">No providers found matching your search.</p>
                       </CardContent>
                     </Card>
                   ) : (
@@ -463,8 +463,8 @@ export default function InsuranceBenefits() {
                         <Card
                           className={`cursor-pointer transition-all ${
                             selectedProvider?.id === provider.id
-                              ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                              : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                              ? "ring-2 ring-gold bg-secondary"
+                              : "hover:bg-muted"
                           }`}
                           onClick={() => {
                             setSelectedProvider(provider);
@@ -475,24 +475,24 @@ export default function InsuranceBenefits() {
                           <CardContent className="p-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                                  <Building2 className="w-6 h-6 text-white" />
+                                <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
+                                  <Building2 className="w-6 h-6 text-muted-foreground" />
                                 </div>
                                 <div>
-                                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                                  <h3 className="font-semibold text-foreground">
                                     {provider.name}
                                   </h3>
                                   <div className="flex items-center gap-2 mt-1">
                                     <Badge variant="secondary" className="text-xs">
                                       {provider.type.replace("_", " ")}
                                     </Badge>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-muted-foreground">
                                       {provider.planCount} plans
                                     </span>
                                   </div>
                                 </div>
                               </div>
-                              <ChevronRight className="w-5 h-5 text-gray-400" />
+                              <ChevronRight className="w-5 h-5 text-muted-foreground" />
                             </div>
                           </CardContent>
                         </Card>
@@ -513,7 +513,7 @@ export default function InsuranceBenefits() {
                       <Card className="mt-4">
                         <CardHeader className="pb-3">
                           <CardTitle className="text-lg flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-blue-600" />
+                            <FileText className="w-5 h-5 text-muted-foreground" />
                             {selectedProvider.name} Plans
                           </CardTitle>
                           <CardDescription>
@@ -528,7 +528,7 @@ export default function InsuranceBenefits() {
                               ))}
                             </div>
                           ) : providerPlans.length === 0 ? (
-                            <p className="text-gray-500 text-center py-4">
+                            <p className="text-muted-foreground text-center py-4">
                               No plans available for this provider.
                             </p>
                           ) : (
@@ -538,14 +538,14 @@ export default function InsuranceBenefits() {
                                   key={plan.id}
                                   className={`p-4 border rounded-lg transition-all ${
                                     selectedPlan?.id === plan.id
-                                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                                      : "border-gray-200 dark:border-gray-700 hover:border-blue-300"
+                                      ? "border-gold bg-secondary"
+                                      : "border-border hover:border-gold"
                                   }`}
                                   data-testid={`card-plan-${plan.id}`}
                                 >
                                   <div className="flex items-start justify-between">
                                     <div className="flex-1">
-                                      <h4 className="font-medium text-gray-900 dark:text-white">
+                                      <h4 className="font-medium text-foreground">
                                         {plan.name}
                                       </h4>
                                       <div className="flex flex-wrap gap-2 mt-2">
@@ -559,20 +559,20 @@ export default function InsuranceBenefits() {
                                       </div>
                                       <div className="grid grid-cols-3 gap-4 mt-3 text-sm">
                                         <div>
-                                          <span className="text-gray-500">Premium</span>
-                                          <p className="font-semibold text-gray-900 dark:text-white">
+                                          <span className="text-muted-foreground">Premium</span>
+                                          <p className="font-semibold text-foreground">
                                             ${plan.premium}/mo
                                           </p>
                                         </div>
                                         <div>
-                                          <span className="text-gray-500">Deductible</span>
-                                          <p className="font-semibold text-gray-900 dark:text-white">
+                                          <span className="text-muted-foreground">Deductible</span>
+                                          <p className="font-semibold text-foreground">
                                             ${plan.deductible.toLocaleString()}
                                           </p>
                                         </div>
                                         <div>
-                                          <span className="text-gray-500">OOP Max</span>
-                                          <p className="font-semibold text-gray-900 dark:text-white">
+                                          <span className="text-muted-foreground">OOP Max</span>
+                                          <p className="font-semibold text-foreground">
                                             ${plan.outOfPocketMax.toLocaleString()}
                                           </p>
                                         </div>
@@ -627,7 +627,7 @@ export default function InsuranceBenefits() {
                             <CardTitle>{selectedPlan.name}</CardTitle>
                             <CardDescription>{selectedPlan.providerName}</CardDescription>
                           </div>
-                          <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                          <Badge className="bg-secondary text-foreground">
                             {selectedPlan.type}
                           </Badge>
                         </div>
@@ -635,24 +635,24 @@ export default function InsuranceBenefits() {
                       <CardContent className="space-y-6">
                         {/* Key Metrics */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                          <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <div className="text-center p-3 bg-secondary rounded-lg">
                             <DollarSign className="w-5 h-5 text-green-600 mx-auto mb-1" />
-                            <p className="text-xs text-gray-500">Premium</p>
+                            <p className="text-xs text-muted-foreground">Premium</p>
                             <p className="font-bold text-lg">${selectedPlan.premium}/mo</p>
                           </div>
-                          <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <Shield className="w-5 h-5 text-blue-600 mx-auto mb-1" />
-                            <p className="text-xs text-gray-500">Deductible</p>
+                          <div className="text-center p-3 bg-secondary rounded-lg">
+                            <Shield className="w-5 h-5 text-muted-foreground mx-auto mb-1" />
+                            <p className="text-xs text-muted-foreground">Deductible</p>
                             <p className="font-bold text-lg">${selectedPlan.deductible.toLocaleString()}</p>
                           </div>
-                          <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <Scale className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-                            <p className="text-xs text-gray-500">OOP Max</p>
+                          <div className="text-center p-3 bg-secondary rounded-lg">
+                            <Scale className="w-5 h-5 text-muted-foreground mx-auto mb-1" />
+                            <p className="text-xs text-muted-foreground">OOP Max</p>
                             <p className="font-bold text-lg">${selectedPlan.outOfPocketMax.toLocaleString()}</p>
                           </div>
-                          <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <Network className="w-5 h-5 text-indigo-600 mx-auto mb-1" />
-                            <p className="text-xs text-gray-500">Network</p>
+                          <div className="text-center p-3 bg-secondary rounded-lg">
+                            <Network className="w-5 h-5 text-muted-foreground mx-auto mb-1" />
+                            <p className="text-xs text-muted-foreground">Network</p>
                             <p className="font-bold text-lg capitalize">{selectedPlan.networkType}</p>
                           </div>
                         </div>
@@ -662,24 +662,24 @@ export default function InsuranceBenefits() {
                         {/* Copays */}
                         <div>
                           <h3 className="font-semibold mb-3 flex items-center gap-2">
-                            <Stethoscope className="w-5 h-5 text-gray-600" />
+                            <Stethoscope className="w-5 h-5 text-muted-foreground" />
                             Copays for Common Services
                           </h3>
                           <div className="grid grid-cols-2 gap-3">
-                            <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Primary Care</span>
+                            <div className="flex justify-between items-center p-3 bg-secondary rounded-lg">
+                              <span className="text-sm text-muted-foreground">Primary Care</span>
                               <span className="font-semibold">${selectedPlan.copays.primaryCare}</span>
                             </div>
-                            <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Specialist</span>
+                            <div className="flex justify-between items-center p-3 bg-secondary rounded-lg">
+                              <span className="text-sm text-muted-foreground">Specialist</span>
                               <span className="font-semibold">${selectedPlan.copays.specialist}</span>
                             </div>
-                            <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Urgent Care</span>
+                            <div className="flex justify-between items-center p-3 bg-secondary rounded-lg">
+                              <span className="text-sm text-muted-foreground">Urgent Care</span>
                               <span className="font-semibold">${selectedPlan.copays.urgentCare}</span>
                             </div>
-                            <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Emergency Room</span>
+                            <div className="flex justify-between items-center p-3 bg-secondary rounded-lg">
+                              <span className="text-sm text-muted-foreground">Emergency Room</span>
                               <span className="font-semibold">${selectedPlan.copays.emergencyRoom}</span>
                             </div>
                           </div>
@@ -690,7 +690,7 @@ export default function InsuranceBenefits() {
                         {/* Prescription Tiers */}
                         <div>
                           <h3 className="font-semibold mb-3 flex items-center gap-2">
-                            <Pill className="w-5 h-5 text-gray-600" />
+                            <Pill className="w-5 h-5 text-muted-foreground" />
                             Prescription Drug Tiers
                           </h3>
                           <Table>
@@ -704,22 +704,22 @@ export default function InsuranceBenefits() {
                             <TableBody>
                               <TableRow>
                                 <TableCell className="font-medium">Tier 1</TableCell>
-                                <TableCell className="text-gray-500">Generic drugs</TableCell>
+                                <TableCell className="text-muted-foreground">Generic drugs</TableCell>
                                 <TableCell className="text-right">${selectedPlan.prescriptionTiers.tier1}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell className="font-medium">Tier 2</TableCell>
-                                <TableCell className="text-gray-500">Preferred brand</TableCell>
+                                <TableCell className="text-muted-foreground">Preferred brand</TableCell>
                                 <TableCell className="text-right">${selectedPlan.prescriptionTiers.tier2}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell className="font-medium">Tier 3</TableCell>
-                                <TableCell className="text-gray-500">Non-preferred brand</TableCell>
+                                <TableCell className="text-muted-foreground">Non-preferred brand</TableCell>
                                 <TableCell className="text-right">${selectedPlan.prescriptionTiers.tier3}</TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell className="font-medium">Tier 4</TableCell>
-                                <TableCell className="text-gray-500">Specialty</TableCell>
+                                <TableCell className="text-muted-foreground">Specialty</TableCell>
                                 <TableCell className="text-right">${selectedPlan.prescriptionTiers.tier4}</TableCell>
                               </TableRow>
                             </TableBody>
@@ -732,7 +732,7 @@ export default function InsuranceBenefits() {
                     <Card>
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                          <BookOpen className="w-5 h-5 text-blue-600" />
+                          <BookOpen className="w-5 h-5 text-muted-foreground" />
                           Benefits Explorer
                         </CardTitle>
                         <CardDescription>
@@ -747,8 +747,8 @@ export default function InsuranceBenefits() {
                               <AccordionItem key={idx} value={category.category} data-testid={`accordion-${category.category.toLowerCase().replace(/\s/g, '-')}`}>
                                 <AccordionTrigger className="hover:no-underline">
                                   <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                                      <IconComponent className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                    <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
+                                      <IconComponent className="w-4 h-4 text-muted-foreground" />
                                     </div>
                                     <span className="font-medium">{category.category}</span>
                                     <Badge variant="secondary" className="ml-2">
@@ -761,15 +761,15 @@ export default function InsuranceBenefits() {
                                     {category.benefits.map((benefit) => (
                                       <div
                                         key={benefit.id}
-                                        className="p-4 border rounded-lg bg-gray-50 dark:bg-gray-800/50"
+                                        className="p-4 border rounded-lg bg-secondary"
                                         data-testid={`benefit-${benefit.id}`}
                                       >
                                         <div className="flex items-start justify-between">
                                           <div className="flex-1">
-                                            <h4 className="font-medium text-gray-900 dark:text-white">
+                                            <h4 className="font-medium text-foreground">
                                               {benefit.name}
                                             </h4>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                            <p className="text-sm text-muted-foreground mt-1">
                                               {benefit.details}
                                             </p>
                                             <div className="flex flex-wrap gap-2 mt-2">
@@ -820,8 +820,8 @@ export default function InsuranceBenefits() {
 
                         {(!selectedPlan.benefits || selectedPlan.benefits.length === 0) && (
                           <div className="text-center py-8">
-                            <Info className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                            <p className="text-gray-500">Benefits information not available for this plan.</p>
+                            <Info className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                            <p className="text-muted-foreground">Benefits information not available for this plan.</p>
                           </div>
                         )}
                       </CardContent>
@@ -832,11 +832,11 @@ export default function InsuranceBenefits() {
                 {!selectedPlan && (
                   <Card>
                     <CardContent className="py-12 text-center">
-                      <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                      <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-foreground mb-2">
                         No Plan Selected
                       </h3>
-                      <p className="text-gray-500 mb-4">
+                      <p className="text-muted-foreground mb-4">
                         Browse providers and select a plan to view its details.
                       </p>
                       <Button onClick={() => setActiveTab("browse")} data-testid="button-browse-plans">
@@ -854,7 +854,7 @@ export default function InsuranceBenefits() {
                     <div className="flex items-center justify-between">
                       <div>
                         <CardTitle className="flex items-center gap-2">
-                          <BarChart3 className="w-5 h-5 text-blue-600" />
+                          <BarChart3 className="w-5 h-5 text-muted-foreground" />
                           Plan Comparison
                         </CardTitle>
                         <CardDescription>
@@ -964,7 +964,7 @@ export default function InsuranceBenefits() {
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
                             <h3 className="font-semibold flex items-center gap-2">
-                              <Sparkles className="w-5 h-5 text-purple-600" />
+                              <Sparkles className="w-5 h-5 text-muted-foreground" />
                               AI Analysis
                             </h3>
                             <Button
@@ -992,8 +992,8 @@ export default function InsuranceBenefits() {
                               animate={{ opacity: 1, y: 0 }}
                               className="space-y-4"
                             >
-                              <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                              <div className="p-4 bg-secondary rounded-lg border border-border">
+                                <p className="text-foreground whitespace-pre-line">
                                   {comparePlansMutation.data.analysis}
                                 </p>
                               </div>
@@ -1011,7 +1011,7 @@ export default function InsuranceBenefits() {
                                         </h5>
                                         <ul className="text-sm space-y-1">
                                           {rec.pros.map((pro: string, idx: number) => (
-                                            <li key={idx} className="text-gray-600 dark:text-gray-400">
+                                            <li key={idx} className="text-muted-foreground">
                                               • {pro}
                                             </li>
                                           ))}
@@ -1024,7 +1024,7 @@ export default function InsuranceBenefits() {
                                         </h5>
                                         <ul className="text-sm space-y-1">
                                           {rec.cons.map((con: string, idx: number) => (
-                                            <li key={idx} className="text-gray-600 dark:text-gray-400">
+                                            <li key={idx} className="text-muted-foreground">
                                               • {con}
                                             </li>
                                           ))}
@@ -1040,11 +1040,11 @@ export default function InsuranceBenefits() {
                       </div>
                     ) : (
                       <div className="text-center py-8">
-                        <BarChart3 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-foreground mb-2">
                           Select Plans to Compare
                         </h3>
-                        <p className="text-gray-500 mb-4">
+                        <p className="text-muted-foreground mb-4">
                           Add 2-5 plans from the Browse tab to compare them side by side.
                         </p>
                         <Button onClick={() => setActiveTab("browse")} data-testid="button-add-plans-compare">
@@ -1167,11 +1167,11 @@ export default function InsuranceBenefits() {
                         </div>
                       ) : userPlans.length === 0 ? (
                         <div className="text-center py-8">
-                          <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                          <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                          <h3 className="text-lg font-medium text-foreground mb-2">
                             No Saved Plans
                           </h3>
-                          <p className="text-gray-500 mb-4">
+                          <p className="text-muted-foreground mb-4">
                             Add your insurance plans to easily access and manage them.
                           </p>
                         </div>
@@ -1183,14 +1183,14 @@ export default function InsuranceBenefits() {
                               className={`p-4 border rounded-lg ${
                                 plan.isPrimary
                                   ? "border-amber-300 bg-amber-50 dark:bg-amber-900/20"
-                                  : "border-gray-200 dark:border-gray-700"
+                                  : "border-border"
                               }`}
                               data-testid={`user-plan-${plan.id}`}
                             >
                               <div className="flex items-start justify-between">
                                 <div>
                                   <div className="flex items-center gap-2">
-                                    <h4 className="font-medium text-gray-900 dark:text-white">
+                                    <h4 className="font-medium text-foreground">
                                       {plan.planName}
                                     </h4>
                                     {plan.isPrimary && (
@@ -1200,8 +1200,8 @@ export default function InsuranceBenefits() {
                                       </Badge>
                                     )}
                                   </div>
-                                  <p className="text-sm text-gray-500 mt-1">{plan.providerName}</p>
-                                  <div className="flex flex-wrap gap-4 mt-2 text-xs text-gray-500">
+                                  <p className="text-sm text-muted-foreground mt-1">{plan.providerName}</p>
+                                  <div className="flex flex-wrap gap-4 mt-2 text-xs text-muted-foreground">
                                     <span>Member: {plan.memberNumber}</span>
                                     <span>Group: {plan.groupNumber}</span>
                                     <span>Effective: {new Date(plan.effectiveDate).toLocaleDateString()}</span>
@@ -1226,11 +1226,11 @@ export default function InsuranceBenefits() {
                 ) : (
                   <Card>
                     <CardContent className="py-12 text-center">
-                      <Shield className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                      <Shield className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-foreground mb-2">
                         Sign In Required
                       </h3>
-                      <p className="text-gray-500 mb-4">
+                      <p className="text-muted-foreground mb-4">
                         Please sign in to save and manage your insurance plans.
                       </p>
                     </CardContent>
@@ -1245,7 +1245,7 @@ export default function InsuranceBenefits() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-blue-600" />
+                  <HelpCircle className="w-5 h-5 text-muted-foreground" />
                   Common Terms
                 </CardTitle>
                 <CardDescription>
@@ -1257,29 +1257,29 @@ export default function InsuranceBenefits() {
                   <Dialog key={term.term}>
                     <DialogTrigger asChild>
                       <button
-                        className="w-full text-left p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="w-full text-left p-3 rounded-lg bg-secondary hover:bg-muted transition-colors"
                         data-testid={`button-term-${term.term.toLowerCase().replace(/\s/g, '-')}`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                            <term.icon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
+                            <term.icon className="w-4 h-4 text-muted-foreground" />
                           </div>
-                          <span className="font-medium text-gray-900 dark:text-white text-sm">
+                          <span className="font-medium text-foreground text-sm">
                             {term.term}
                           </span>
-                          <ChevronRight className="w-4 h-4 text-gray-400 ml-auto" />
+                          <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
                         </div>
                       </button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                          <term.icon className="w-5 h-5 text-blue-600" />
+                          <term.icon className="w-5 h-5 text-muted-foreground" />
                           {term.term}
                         </DialogTitle>
                       </DialogHeader>
                       <div className="py-4">
-                        <p className="text-gray-700 dark:text-gray-300">{term.definition}</p>
+                        <p className="text-foreground">{term.definition}</p>
                       </div>
                     </DialogContent>
                   </Dialog>
@@ -1297,7 +1297,7 @@ export default function InsuranceBenefits() {
                   <div className="space-y-2">
                     {comparisonPlans.map((plan) => (
                       <div key={plan.id} className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400 truncate flex-1">
+                        <span className="text-muted-foreground truncate flex-1">
                           {plan.name}
                         </span>
                         <Button
@@ -1306,7 +1306,7 @@ export default function InsuranceBenefits() {
                           className="h-6 w-6 p-0"
                           onClick={() => togglePlanComparison(plan)}
                         >
-                          <XCircle className="w-4 h-4 text-gray-400" />
+                          <XCircle className="w-4 h-4 text-muted-foreground" />
                         </Button>
                       </div>
                     ))}
@@ -1332,7 +1332,7 @@ export default function InsuranceBenefits() {
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-purple-600" />
+              <Sparkles className="w-5 h-5 text-muted-foreground" />
               {currentBenefit?.name}
             </DialogTitle>
             <DialogDescription>
@@ -1342,12 +1342,12 @@ export default function InsuranceBenefits() {
           <div className="py-4">
             {explainBenefitMutation.isPending ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+                <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
               </div>
             ) : explainBenefitMutation.data ? (
               <div className="space-y-4">
-                <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                <div className="p-4 bg-secondary rounded-lg">
+                  <p className="text-foreground whitespace-pre-line">
                     {explainBenefitMutation.data.explanation}
                   </p>
                 </div>
@@ -1355,13 +1355,13 @@ export default function InsuranceBenefits() {
                 {explainBenefitMutation.data.examples?.length > 0 && (
                   <div>
                     <h4 className="font-medium mb-2 flex items-center gap-2">
-                      <Info className="w-4 h-4 text-blue-600" />
+                      <Info className="w-4 h-4 text-muted-foreground" />
                       Examples
                     </h4>
                     <ul className="space-y-2">
                       {explainBenefitMutation.data.examples.map((example: string, idx: number) => (
-                        <li key={idx} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                          <span className="text-blue-600">•</span>
+                        <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-muted-foreground">•</span>
                           {example}
                         </li>
                       ))}
@@ -1377,7 +1377,7 @@ export default function InsuranceBenefits() {
                     </h4>
                     <ul className="space-y-2">
                       {explainBenefitMutation.data.tips.map((tip: string, idx: number) => (
-                        <li key={idx} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                        <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
                           <span className="text-green-600">✓</span>
                           {tip}
                         </li>
@@ -1387,7 +1387,7 @@ export default function InsuranceBenefits() {
                 )}
               </div>
             ) : (
-              <div className="text-center py-4 text-gray-500">
+              <div className="text-center py-4 text-muted-foreground">
                 Click a benefit's "Explain This" button to get an explanation.
               </div>
             )}

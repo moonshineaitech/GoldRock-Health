@@ -79,8 +79,8 @@ const letterTemplateCategories = [
     id: "initial-dispute",
     name: "Initial Dispute Letters",
     icon: FileText,
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
     description: "Start your dispute with professional, legally-sound letters",
     templates: [
       {
@@ -129,8 +129,8 @@ const letterTemplateCategories = [
     id: "escalation",
     name: "Escalation Letters",
     icon: TrendingUp,
-    color: "text-orange-600",
-    bgColor: "bg-orange-50",
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
     description: "Escalate disputes when initial letters don't get results",
     templates: [
       {
@@ -179,8 +179,8 @@ const letterTemplateCategories = [
     id: "financial-assistance",
     name: "Financial Assistance",
     icon: HandCoins,
-    color: "text-green-600",
-    bgColor: "bg-green-50",
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
     description: "Secure charity care and payment assistance programs",
     templates: [
       {
@@ -229,8 +229,8 @@ const letterTemplateCategories = [
     id: "legal-compliance",
     name: "Legal & Compliance",
     icon: Scale,
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
     description: "Leverage legal requirements and regulatory violations",
     templates: [
       {
@@ -279,8 +279,8 @@ const letterTemplateCategories = [
     id: "insurance-appeals",
     name: "Insurance Appeals",
     icon: Shield,
-    color: "text-indigo-600",
-    bgColor: "bg-indigo-50",
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
     description: "Appeal insurance denials and coverage disputes",
     templates: [
       {
@@ -329,8 +329,8 @@ const letterTemplateCategories = [
     id: "settlement-negotiation",
     name: "Settlement & Negotiation",
     icon: Gavel,
-    color: "text-red-600",
-    bgColor: "bg-red-50",
+    color: "text-muted-foreground",
+    bgColor: "bg-secondary",
     description: "Negotiate final settlements and payment reductions",
     templates: [
       {
@@ -469,9 +469,9 @@ export default function DisputeArsenal() {
     return (
       <MobileLayout title="Professional Dispute Arsenal" showBackButton>
         <div className="text-center py-12">
-          <Lock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+          <Lock className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">Sign In Required</h2>
-          <p className="text-gray-600 mb-6">Please sign in to access the Professional Dispute Arsenal</p>
+          <p className="text-muted-foreground mb-6">Please sign in to access the Professional Dispute Arsenal</p>
           <Link href="/api/login">
             <MobileButton>Sign In</MobileButton>
           </Link>
@@ -500,8 +500,8 @@ export default function DisputeArsenal() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex-1 flex items-center justify-center space-x-2 py-3 px-2 rounded-xl transition-all ${
                   activeTab === tab.id
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                    : "text-gray-600 hover:bg-gray-50"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-secondary"
                 }`}
                 data-testid={`tab-${tab.id}`}
               >
@@ -525,56 +525,56 @@ export default function DisputeArsenal() {
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-2 gap-4"
         >
-          <MobileCard className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 border-emerald-200">
+          <MobileCard className="p-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <DollarSign className="h-5 w-5 text-emerald-600" />
+              <div className="p-2 rounded-lg" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
+                <DollarSign className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-emerald-700 font-medium">Total Saved</p>
-                <p className="text-xl font-bold text-emerald-800" data-testid="text-total-savings">
+                <p className="text-sm text-muted-foreground font-medium">Total Saved</p>
+                <p className="text-xl font-bold text-gold" data-testid="text-total-savings">
                   ${successMetrics.totalSavings.toLocaleString()}
                 </p>
               </div>
             </div>
           </MobileCard>
 
-          <MobileCard className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+          <MobileCard className="p-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Percent className="h-5 w-5 text-blue-600" />
+              <div className="p-2 bg-secondary rounded-lg">
+                <Percent className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-sm text-blue-700 font-medium">Success Rate</p>
-                <p className="text-xl font-bold text-blue-800" data-testid="text-success-rate">
+                <p className="text-sm text-muted-foreground font-medium">Success Rate</p>
+                <p className="text-xl font-bold text-foreground" data-testid="text-success-rate">
                   {successMetrics.successRate}%
                 </p>
               </div>
             </div>
           </MobileCard>
 
-          <MobileCard className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+          <MobileCard className="p-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Target className="h-5 w-5 text-purple-600" />
+              <div className="p-2 bg-secondary rounded-lg">
+                <Target className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-sm text-purple-700 font-medium">Active Cases</p>
-                <p className="text-xl font-bold text-purple-800" data-testid="text-active-cases">
+                <p className="text-sm text-muted-foreground font-medium">Active Cases</p>
+                <p className="text-xl font-bold text-foreground" data-testid="text-active-cases">
                   {successMetrics.activeCases}
                 </p>
               </div>
             </div>
           </MobileCard>
 
-          <MobileCard className="p-4 bg-gradient-to-br from-orange-50 to-red-50 border-orange-200">
+          <MobileCard className="p-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Timer className="h-5 w-5 text-orange-600" />
+              <div className="p-2 bg-secondary rounded-lg">
+                <Timer className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-sm text-orange-700 font-medium">Avg Days</p>
-                <p className="text-xl font-bold text-orange-800" data-testid="text-avg-resolution">
+                <p className="text-sm text-muted-foreground font-medium">Avg Days</p>
+                <p className="text-xl font-bold text-foreground" data-testid="text-avg-resolution">
                   {successMetrics.averageResolutionTime}
                 </p>
               </div>
@@ -585,7 +585,7 @@ export default function DisputeArsenal() {
         {/* Quick Actions */}
         <MobileCard className="p-6">
           <h3 className="text-lg font-bold mb-4 flex items-center space-x-2">
-            <Zap className="h-5 w-5 text-yellow-600" />
+            <Zap className="h-5 w-5 text-gold" />
             <span>Quick Actions</span>
           </h3>
           <div className="grid grid-cols-1 gap-3">
@@ -619,22 +619,22 @@ export default function DisputeArsenal() {
         {/* Recent Activity */}
         <MobileCard className="p-6">
           <h3 className="text-lg font-bold mb-4 flex items-center space-x-2">
-            <Clock className="h-5 w-5 text-blue-600" />
+            <Clock className="h-5 w-5 text-muted-foreground" />
             <span>Recent Activity</span>
           </h3>
           <div className="space-y-3">
             {disputeCases.slice(0, 3).map((dispute) => (
-              <div key={dispute.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={dispute.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
                 <div className="flex-1">
-                  <p className="font-medium text-sm text-gray-900">{dispute.provider}</p>
-                  <p className="text-xs text-gray-600">{dispute.lastAction}</p>
+                  <p className="font-medium text-sm text-foreground">{dispute.provider}</p>
+                  <p className="text-xs text-muted-foreground">{dispute.lastAction}</p>
                 </div>
                 <div className="text-right">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    dispute.status === "resolved" ? "bg-green-100 text-green-800" :
-                    dispute.status === "escalated" ? "bg-red-100 text-red-800" :
-                    dispute.status === "active" ? "bg-blue-100 text-blue-800" :
-                    "bg-yellow-100 text-yellow-800"
+                    dispute.status === "resolved" ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300" :
+                    dispute.status === "escalated" ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300" :
+                    dispute.status === "active" ? "bg-secondary text-foreground" :
+                    "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300"
                   }`}>
                     {dispute.status}
                   </span>
@@ -654,13 +654,13 @@ export default function DisputeArsenal() {
         {/* Search and Filter */}
         <MobileCard className="p-4">
           <div className="relative mb-4">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search templates..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
               data-testid="input-search-templates"
             />
           </div>
@@ -681,7 +681,7 @@ export default function DisputeArsenal() {
               >
                 <MobileCard 
                   className={`p-4 cursor-pointer transition-all ${
-                    isExpanded ? `${category.bgColor} border-2` : ""
+                    isExpanded ? "border-2 border-gold" : ""
                   }`}
                   onClick={() => setSelectedCategory(isExpanded ? null : category.id)}
                 >
@@ -691,12 +691,12 @@ export default function DisputeArsenal() {
                         <IconComponent className={`h-5 w-5 ${category.color}`} />
                       </div>
                       <div>
-                        <h3 className="font-bold text-gray-900">{category.name}</h3>
-                        <p className="text-sm text-gray-600">{category.description}</p>
+                        <h3 className="font-bold text-foreground">{category.name}</h3>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">
+                      <span className="bg-secondary text-muted-foreground text-xs font-semibold px-2 py-1 rounded-full">
                         {category.templates.length}
                       </span>
                       {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -716,7 +716,7 @@ export default function DisputeArsenal() {
                       {category.templates.map((template) => (
                         <MobileCard
                           key={template.id}
-                          className="p-4 border-l-4 border-blue-500 hover:bg-blue-50 cursor-pointer"
+                          className="p-4 border-l-4 border-gold hover:bg-secondary cursor-pointer"
                           onClick={() => {
                             setSelectedTemplate({ ...template, category: category.id });
                             setShowLetterGenerator(true);
@@ -725,17 +725,17 @@ export default function DisputeArsenal() {
                         >
                           <div className="space-y-2">
                             <div className="flex items-start justify-between">
-                              <h4 className="font-bold text-gray-900">{template.title}</h4>
-                              <Star className="h-4 w-4 text-yellow-500" />
+                              <h4 className="font-bold text-foreground">{template.title}</h4>
+                              <Star className="h-4 w-4 text-gold" />
                             </div>
-                            <p className="text-sm text-gray-600">{template.description}</p>
+                            <p className="text-sm text-muted-foreground">{template.description}</p>
                             <div className="flex items-center justify-between text-xs">
-                              <span className="text-gray-500">{template.useCase}</span>
+                              <span className="text-muted-foreground">{template.useCase}</span>
                               <div className="flex space-x-3">
-                                <span className="text-green-600 font-semibold">
+                                <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
                                   {template.successRate}% success
                                 </span>
-                                <span className="text-blue-600 font-semibold">
+                                <span className="text-muted-foreground font-semibold">
                                   {template.avgSavings} avg
                                 </span>
                               </div>
@@ -769,13 +769,13 @@ export default function DisputeArsenal() {
         <MobileCard className="p-4">
           <div className="space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search cases..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                 data-testid="input-search-cases"
               />
             </div>
@@ -787,8 +787,8 @@ export default function DisputeArsenal() {
                   onClick={() => setFilterStatus(status)}
                   className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
                     filterStatus === status
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-muted-foreground hover:bg-secondary"
                   }`}
                   data-testid={`filter-${status}`}
                 >
@@ -807,15 +807,15 @@ export default function DisputeArsenal() {
                 {/* Header */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-bold text-gray-900">{dispute.provider}</h3>
-                    <p className="text-sm text-gray-600">Case #{dispute.id}</p>
+                    <h3 className="font-bold text-foreground">{dispute.provider}</h3>
+                    <p className="text-sm text-muted-foreground">Case #{dispute.id}</p>
                   </div>
                   <div className="text-right">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      dispute.status === "resolved" ? "bg-green-100 text-green-800" :
-                      dispute.status === "escalated" ? "bg-red-100 text-red-800" :
-                      dispute.status === "active" ? "bg-blue-100 text-blue-800" :
-                      "bg-yellow-100 text-yellow-800"
+                      dispute.status === "resolved" ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300" :
+                      dispute.status === "escalated" ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300" :
+                      dispute.status === "active" ? "bg-secondary text-foreground" :
+                      "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300"
                     }`}>
                       {dispute.status}
                     </span>
@@ -825,24 +825,24 @@ export default function DisputeArsenal() {
                 {/* Bill Details */}
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-600">Bill Amount</p>
+                    <p className="text-muted-foreground">Bill Amount</p>
                     <p className="font-semibold">${dispute.billAmount.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Expected Savings</p>
-                    <p className="font-semibold text-green-600">${dispute.expectedSavings.toLocaleString()}</p>
+                    <p className="text-muted-foreground">Expected Savings</p>
+                    <p className="font-semibold text-emerald-700 dark:text-emerald-400">${dispute.expectedSavings.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Letters Sent</p>
+                    <p className="text-muted-foreground">Letters Sent</p>
                     <p className="font-semibold">{dispute.lettersSent}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Priority</p>
+                    <p className="text-muted-foreground">Priority</p>
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full capitalize ${
-                      dispute.priority === "urgent" ? "bg-red-100 text-red-800" :
-                      dispute.priority === "high" ? "bg-orange-100 text-orange-800" :
-                      dispute.priority === "medium" ? "bg-yellow-100 text-yellow-800" :
-                      "bg-gray-100 text-gray-800"
+                      dispute.priority === "urgent" ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300" :
+                      dispute.priority === "high" ? "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300" :
+                      dispute.priority === "medium" ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300" :
+                      "bg-secondary text-foreground"
                     }`}>
                       {dispute.priority}
                     </span>
@@ -851,10 +851,10 @@ export default function DisputeArsenal() {
 
                 {/* Last Action */}
                 <div className="border-t pt-3">
-                  <p className="text-sm text-gray-600">Last Action:</p>
+                  <p className="text-sm text-muted-foreground">Last Action:</p>
                   <p className="text-sm font-medium">{dispute.lastAction}</p>
                   {dispute.nextDeadline && (
-                    <p className="text-xs text-orange-600 mt-1">
+                    <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
                       Next deadline: {new Date(dispute.nextDeadline).toLocaleDateString()}
                     </p>
                   )}
@@ -887,9 +887,9 @@ export default function DisputeArsenal() {
 
         {filteredCases.length === 0 && (
           <MobileCard className="p-8 text-center">
-            <Target className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Cases Found</h3>
-            <p className="text-gray-600 mb-4">No dispute cases match your current filters.</p>
+            <Target className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">No Cases Found</h3>
+            <p className="text-muted-foreground mb-4">No dispute cases match your current filters.</p>
             <MobileButton onClick={() => { setSearchTerm(""); setFilterStatus("all"); }}>
               Clear Filters
             </MobileButton>
@@ -906,38 +906,38 @@ export default function DisputeArsenal() {
         {/* Key Metrics */}
         <MobileCard className="p-6">
           <h3 className="text-lg font-bold mb-4 flex items-center space-x-2">
-            <BarChart3 className="h-5 w-5 text-blue-600" />
+            <BarChart3 className="h-5 w-5 text-muted-foreground" />
             <span>Performance Analytics</span>
           </h3>
           
           <div className="grid grid-cols-1 gap-4">
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+            <div className="bg-secondary p-4 rounded-lg border border-border">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-green-700 font-medium">Average Savings Per Case</p>
-                  <p className="text-2xl font-bold text-green-800">${successMetrics.averageSavings.toLocaleString()}</p>
+                  <p className="text-sm text-muted-foreground font-medium">Average Savings Per Case</p>
+                  <p className="text-2xl font-bold text-gold">${successMetrics.averageSavings.toLocaleString()}</p>
                 </div>
-                <TrendingUp className="h-8 w-8 text-green-600" />
+                <TrendingUp className="h-8 w-8 text-gold" />
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+            <div className="bg-secondary p-4 rounded-lg border border-border">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-blue-700 font-medium">Resolution Success Rate</p>
-                  <p className="text-2xl font-bold text-blue-800">{successMetrics.successRate}%</p>
+                  <p className="text-sm text-muted-foreground font-medium">Resolution Success Rate</p>
+                  <p className="text-2xl font-bold text-foreground">{successMetrics.successRate}%</p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-blue-600" />
+                <CheckCircle className="h-8 w-8 text-muted-foreground" />
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
+            <div className="bg-secondary p-4 rounded-lg border border-border">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-purple-700 font-medium">Total Cases Handled</p>
-                  <p className="text-2xl font-bold text-purple-800">{successMetrics.totalCases}</p>
+                  <p className="text-sm text-muted-foreground font-medium">Total Cases Handled</p>
+                  <p className="text-2xl font-bold text-foreground">{successMetrics.totalCases}</p>
                 </div>
-                <Target className="h-8 w-8 text-purple-600" />
+                <Target className="h-8 w-8 text-muted-foreground" />
               </div>
             </div>
           </div>
@@ -953,11 +953,11 @@ export default function DisputeArsenal() {
                 <div key={category.id} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">{category.name}</span>
-                    <span className="text-sm text-gray-600">{successRate}%</span>
+                    <span className="text-sm text-muted-foreground">{successRate}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-secondary rounded-full h-2">
                     <div 
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-1000"
+                      className="bg-gold h-2 rounded-full transition-all duration-1000"
                       style={{ width: `${successRate}%` }}
                     />
                   </div>
@@ -977,11 +977,11 @@ export default function DisputeArsenal() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm">Fastest Resolution</span>
-              <span className="font-semibold text-green-600">7 days</span>
+              <span className="font-semibold text-emerald-700 dark:text-emerald-400">7 days</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm">Complex Case Average</span>
-              <span className="font-semibold text-orange-600">89 days</span>
+              <span className="font-semibold text-amber-700 dark:text-amber-400">89 days</span>
             </div>
           </div>
         </MobileCard>
@@ -1106,14 +1106,14 @@ Generated by GoldRock Health Dispute Arsenal`;
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="bg-white rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto"
+          className="bg-card border border-border rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">Generate Letter</h2>
             <button 
               onClick={() => setShowLetterGenerator(false)}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              className="p-2 hover:bg-secondary rounded-lg"
             >
               ✕
             </button>
@@ -1121,88 +1121,88 @@ Generated by GoldRock Health Dispute Arsenal`;
 
           <div className="space-y-4">
             <div>
-              <h3 className="font-semibold text-gray-900">{selectedTemplate.title}</h3>
-              <p className="text-sm text-gray-600">{selectedTemplate.description}</p>
+              <h3 className="font-semibold text-foreground">{selectedTemplate.title}</h3>
+              <p className="text-sm text-muted-foreground">{selectedTemplate.description}</p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Patient Name *
                 </label>
                 <input
                   type="text"
                   value={formData.patientName}
                   onChange={(e) => setFormData({ ...formData, patientName: e.target.value })}
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
                   data-testid="input-patient-name"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Account Number *
                 </label>
                 <input
                   type="text"
                   value={formData.accountNumber}
                   onChange={(e) => setFormData({ ...formData, accountNumber: e.target.value })}
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
                   data-testid="input-account-number"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Bill Amount
                   </label>
                   <input
                     type="text"
                     value={formData.billAmount}
                     onChange={(e) => setFormData({ ...formData, billAmount: e.target.value })}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
                     placeholder="$0.00"
                     data-testid="input-bill-amount"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Service Date
                   </label>
                   <input
                     type="date"
                     value={formData.serviceDate}
                     onChange={(e) => setFormData({ ...formData, serviceDate: e.target.value })}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
                     data-testid="input-service-date"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Provider Name *
                 </label>
                 <input
                   type="text"
                   value={formData.providerName}
                   onChange={(e) => setFormData({ ...formData, providerName: e.target.value })}
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
                   data-testid="input-provider-name"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Specific Issue Description
                 </label>
                 <textarea
                   value={formData.specificIssue}
                   onChange={(e) => setFormData({ ...formData, specificIssue: e.target.value })}
                   rows={3}
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
                   placeholder="Describe the specific billing issue or error..."
                   data-testid="input-specific-issue"
                 />
@@ -1220,7 +1220,7 @@ Generated by GoldRock Health Dispute Arsenal`;
                 </MobileButton>
                 <MobileButton
                   onClick={generateLetter}
-                  className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
+                  className="flex-1"
                   data-testid="button-generate-letter"
                 >
                   <FileText className="h-4 w-4 mr-2" />
@@ -1230,22 +1230,22 @@ Generated by GoldRock Health Dispute Arsenal`;
             ) : (
               <div className="space-y-4">
                 {/* Generated Letter Preview */}
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 max-h-96 overflow-y-auto">
+                <div className="bg-secondary border border-border rounded-xl p-4 max-h-96 overflow-y-auto">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-gray-900 flex items-center">
-                      <CheckCircle className="h-4 w-4 text-emerald-600 mr-2" />
+                    <h4 className="font-semibold text-foreground flex items-center">
+                      <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400 mr-2" />
                       Letter Generated
                     </h4>
                     <div className="flex gap-2">
-                      <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">
+                      <span className="text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 px-2 py-1 rounded-full">
                         {selectedTemplate.successRate}% Success
                       </span>
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                      <span className="text-xs bg-secondary text-muted-foreground px-2 py-1 rounded-full">
                         {selectedTemplate.avgSavings} Avg
                       </span>
                     </div>
                   </div>
-                  <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans">
+                  <pre className="text-sm text-muted-foreground whitespace-pre-wrap font-sans">
                     {generatedLetter}
                   </pre>
                 </div>
@@ -1254,7 +1254,6 @@ Generated by GoldRock Health Dispute Arsenal`;
                 <div className="grid grid-cols-2 gap-3">
                   <MobileButton
                     onClick={downloadLetter}
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                     data-testid="button-download-letter"
                   >
                     <Download className="h-4 w-4 mr-2" />
@@ -1263,7 +1262,7 @@ Generated by GoldRock Health Dispute Arsenal`;
                   <MobileButton
                     onClick={copyLetter}
                     variant="secondary"
-                    className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+                    className="border border-border text-foreground hover:bg-secondary"
                     data-testid="button-copy-letter"
                   >
                     <Copy className="h-4 w-4 mr-2" />
@@ -1284,12 +1283,12 @@ Generated by GoldRock Health Dispute Arsenal`;
                 </MobileButton>
 
                 {/* Pro Tip */}
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <div className="bg-card border border-gold rounded-xl p-4">
                   <div className="flex items-start gap-3">
-                    <Lightbulb className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <Lightbulb className="h-5 w-5 text-gold flex-shrink-0 mt-0.5" />
                     <div>
-                      <h5 className="font-semibold text-amber-900 text-sm mb-1">Pro Tip</h5>
-                      <p className="text-xs text-amber-800 leading-relaxed">
+                      <h5 className="font-semibold text-foreground text-sm mb-1">Pro Tip</h5>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         Send this letter via certified mail for proof of delivery. Keep copies of all correspondence. 
                         If no response within 30 days, escalate to the next level template.
                       </p>
@@ -1321,16 +1320,16 @@ Generated by GoldRock Health Dispute Arsenal`;
         className="space-y-6"
       >
         {/* Header */}
-        <MobileCard className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+        <MobileCard className="p-6">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl">
+            <div className="p-3 rounded-2xl" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Scale className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900" data-testid="text-page-title">
+              <h1 className="text-xl font-bold font-serif text-foreground" data-testid="text-page-title">
                 Professional Dispute Arsenal
               </h1>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Advanced tools for medical bill dispute management
               </p>
             </div>

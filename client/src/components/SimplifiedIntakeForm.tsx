@@ -115,17 +115,17 @@ export function SimplifiedIntakeForm({ workflow, onSubmit, onBack }: SimplifiedI
       animate={{ opacity: 1, y: 0 }}
       className="max-w-2xl mx-auto"
     >
-      <Card className="shadow-lg border-0 bg-white dark:bg-gray-900">
+      <Card className="shadow-sm border border-border bg-card">
         <CardHeader className="text-center space-y-4 pb-6">
           <div className="flex items-center justify-center gap-3">
             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${workflow.bgColor}`}>
               <workflow.icon className={`h-6 w-6 ${workflow.color}`} />
             </div>
             <div>
-              <CardTitle className="text-xl text-gray-900 dark:text-white">
+              <CardTitle className="text-xl text-foreground font-serif">
                 {workflow.title}
               </CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
+              <CardDescription className="text-sm text-muted-foreground">
                 {workflow.subtitle}
               </CardDescription>
             </div>
@@ -133,22 +133,22 @@ export function SimplifiedIntakeForm({ workflow, onSubmit, onBack }: SimplifiedI
           
           <div className="flex items-center justify-center gap-4 text-xs">
             <div className="flex items-center gap-1">
-              <Brain className="h-3 w-3 text-emerald-600" />
-              <span className="text-gray-600 dark:text-gray-400">AI Analysis</span>
+              <Brain className="h-3 w-3 text-muted-foreground" />
+              <span className="text-muted-foreground">AI Analysis</span>
             </div>
             <div className="flex items-center gap-1">
-              <Sparkles className="h-3 w-3 text-blue-600" />
-              <span className="text-gray-600 dark:text-gray-400">{workflow.successRate} Success</span>
+              <Sparkles className="h-3 w-3 text-muted-foreground" />
+              <span className="text-muted-foreground">{workflow.successRate} Success</span>
             </div>
             <div className="flex items-center gap-1">
-              <DollarSign className="h-3 w-3 text-green-600" />
-              <span className="text-gray-600 dark:text-gray-400">{workflow.savingsPotential}</span>
+              <DollarSign className="h-3 w-3 text-muted-foreground" />
+              <span className="text-muted-foreground">{workflow.savingsPotential}</span>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-4 rounded-2xl">
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              <span className="font-semibold text-emerald-600 dark:text-emerald-400">Quick Start:</span> 
+          <div className="bg-secondary p-4 rounded-2xl">
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-gold">Quick Start:</span> 
               {' '}Fill out as many fields as possible. Even basic information can reveal significant savings opportunities.
             </p>
           </div>
@@ -166,17 +166,17 @@ export function SimplifiedIntakeForm({ workflow, onSubmit, onBack }: SimplifiedI
                 className="space-y-3"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
-                    <Icon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                  <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center">
+                    <Icon className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
                     <label 
                       htmlFor={question.id}
-                      className="text-sm font-semibold text-gray-900 dark:text-white"
+                      className="text-sm font-semibold text-foreground"
                     >
                       {question.label}
                     </label>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       {question.description}
                     </p>
                   </div>
@@ -188,7 +188,7 @@ export function SimplifiedIntakeForm({ workflow, onSubmit, onBack }: SimplifiedI
                     value={formData[question.id]}
                     onChange={(e) => handleInputChange(question.id, e.target.value)}
                     placeholder={question.placeholder}
-                    className="min-h-[100px] resize-none rounded-2xl border-gray-200 dark:border-gray-700 focus:border-emerald-500 dark:focus:border-emerald-400 focus:ring-emerald-500/20"
+                    className="min-h-[100px] resize-none rounded-2xl border-border"
                     data-testid={`input-${question.id}`}
                   />
                 ) : (
@@ -198,7 +198,7 @@ export function SimplifiedIntakeForm({ workflow, onSubmit, onBack }: SimplifiedI
                     value={formData[question.id]}
                     onChange={(e) => handleInputChange(question.id, e.target.value)}
                     placeholder={question.placeholder}
-                    className="h-12 rounded-2xl border-gray-200 dark:border-gray-700 focus:border-emerald-500 dark:focus:border-emerald-400 focus:ring-emerald-500/20"
+                    className="h-12 rounded-2xl border-border"
                     data-testid={`input-${question.id}`}
                   />
                 )}
@@ -210,7 +210,7 @@ export function SimplifiedIntakeForm({ workflow, onSubmit, onBack }: SimplifiedI
             <Button
               onClick={onBack}
               variant="outline"
-              className="flex-1 h-14 rounded-2xl border-gray-200 dark:border-gray-700"
+              className="flex-1 h-14 rounded-2xl border-border"
               data-testid="button-back"
             >
               Back to Workflows
@@ -218,7 +218,7 @@ export function SimplifiedIntakeForm({ workflow, onSubmit, onBack }: SimplifiedI
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="flex-1 h-14 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl font-semibold"
+              className="flex-1 h-14 bg-primary text-primary-foreground rounded-2xl font-semibold"
               data-testid="button-submit-analysis"
             >
               {isSubmitting ? (

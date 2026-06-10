@@ -86,6 +86,33 @@ export const sampleClinicalDecisionTrees: InsertClinicalDecisionTree[] = [
         content: "Thrombolytic therapy is appropriate when primary PCI is not available within 120 minutes. However, PCI is preferred when available.",
         explanation: "Thrombolytics are indicated for STEMI when PCI cannot be performed within recommended time frames. Consider patient factors and contraindications.",
         isOptimal: false
+      },
+      {
+        id: "enzymes-first",
+        type: "outcome",
+        title: "Suboptimal - Enzymes Before ECG",
+        content: "Ordering cardiac enzymes before obtaining an ECG delays the single most time-sensitive test in chest pain evaluation. Troponin can be normal in the first hours of an evolving STEMI.",
+        explanation: "An ECG should be obtained and interpreted within 10 minutes of arrival for any patient with chest pain. Cardiac biomarkers complement, but never replace, the initial ECG.",
+        isOptimal: false
+      },
+      {
+        id: "continue-workup",
+        type: "outcome",
+        title: "Dangerous - Delaying Reperfusion",
+        content: "Continuing a standard workup after identifying ST elevation wastes critical time. This patient has a STEMI and needs immediate reperfusion.",
+        explanation: "Once STEMI is identified, the priority shifts entirely to reperfusion (primary PCI or thrombolytics). Additional testing should not delay activation of the cath lab.",
+        isOptimal: false
+      },
+      {
+        id: "physical-exam",
+        type: "decision",
+        title: "Focused cardiovascular exam completed",
+        content: "Exam reveals diaphoresis, an S4 gallop, and clear lungs. There are no murmurs or signs of aortic dissection. The patient still has not had an ECG and pain persists at 8/10.",
+        additionalInfo: "Time from arrival is now approaching 15 minutes without an ECG",
+        options: [
+          { text: "Obtain 12-lead ECG immediately", nextNodeId: "delayed-ecg" },
+          { text: "Give nitroglycerin for ongoing pain", nextNodeId: "nitro-first" }
+        ]
       }
     ],
     tags: ["chest pain", "STEMI", "emergency", "cardiology", "ECG"],
@@ -150,6 +177,22 @@ export const sampleClinicalDecisionTrees: InsertClinicalDecisionTree[] = [
         title: "Dangerous - Inadequate Workup",
         content: "Discharging a febrile 2-month-old without any workup is dangerous. This age group has a significant risk of serious bacterial infection.",
         explanation: "Fever in infants <3 months requires thorough evaluation. The risk of serious bacterial infection is approximately 10-15% in this age group.",
+        isOptimal: false
+      },
+      {
+        id: "symptomatic",
+        type: "outcome",
+        title: "Dangerous - Treating Fever Without Evaluation",
+        content: "Giving acetaminophen and simply reassessing is unsafe in a 2-month-old. Response of the fever to antipyretics does not distinguish a serious bacterial infection from a benign viral illness.",
+        explanation: "Antipyretic response should never be used to risk-stratify febrile young infants. Infants under 3 months require a structured sepsis evaluation regardless of how well they appear after acetaminophen.",
+        isOptimal: false
+      },
+      {
+        id: "discharge-followup",
+        type: "outcome",
+        title: "Suboptimal - Premature Discharge",
+        content: "Although cultures were obtained, discharging a febrile infant under 3 months before cultures finalize and without empiric antibiotics risks missing an evolving serious bacterial infection.",
+        explanation: "Current guidance favors admission with empiric antibiotics for febrile infants 28-60 days old while cultures incubate. Discharge may be considered only in carefully selected low-risk older infants with reliable follow-up.",
         isOptimal: false
       }
     ],
@@ -239,6 +282,65 @@ export const sampleClinicalDecisionTrees: InsertClinicalDecisionTree[] = [
         title: "Suboptimal - Delayed Treatment",
         content: "While BP management is important, delaying tPA for mild hypertension may worsen outcomes. BP <185/110 is acceptable for tPA.",
         explanation: "Blood pressure should be <185/110 for tPA administration, but 170/95 doesn't require treatment delay. Time to treatment is critical.",
+        isOptimal: false
+      },
+      {
+        id: "mri-brain",
+        type: "outcome",
+        title: "Suboptimal - Delaying with MRI",
+        content: "MRI with DWI is highly sensitive for early ischemia, but it is slower and less available than non-contrast CT. In a patient within the thrombolytic window, the delay can cost salvageable brain tissue.",
+        explanation: "Non-contrast CT is the recommended first imaging study in acute stroke because it rapidly excludes hemorrhage, allowing timely thrombolysis decisions. MRI is reserved for select diagnostic uncertainty.",
+        isOptimal: false
+      },
+      {
+        id: "heparin",
+        type: "outcome",
+        title: "Dangerous - Anticoagulation Before Imaging",
+        content: "Starting heparin before excluding hemorrhage with imaging could be catastrophic if this is a hemorrhagic stroke.",
+        explanation: "Anticoagulation is contraindicated before imaging in acute stroke and is not part of standard reperfusion therapy. Always exclude hemorrhage first.",
+        isOptimal: false
+      },
+      {
+        id: "neuro-exam",
+        type: "decision",
+        title: "Detailed neurological exam completed",
+        content: "Your exam confirms left hemiparesis, left facial droop, and expressive aphasia consistent with an NIHSS of 12. Valuable minutes have passed and the patient still needs imaging.",
+        additionalInfo: "A detailed exam is useful but should not delay imaging in suspected acute stroke",
+        options: [
+          { text: "Obtain non-contrast CT head now", nextNodeId: "ct-head" },
+          { text: "Proceed directly to MRI", nextNodeId: "mri-brain" }
+        ]
+      },
+      {
+        id: "observation",
+        type: "outcome",
+        title: "Dangerous - Missed Treatment Window",
+        content: "Admitting for observation forgoes reperfusion therapy in a patient who is within the thrombolytic window with a disabling deficit.",
+        explanation: "Eligible patients should receive IV thrombolysis without delay. Observation alone abandons a time-critical opportunity to restore perfusion.",
+        isOptimal: false
+      },
+      {
+        id: "transfer",
+        type: "outcome",
+        title: "Acceptable - Transfer for Higher Level of Care",
+        content: "Transferring to a comprehensive stroke center is reasonable when thrombectomy capability is unavailable, but thrombolysis should be given before or during transfer if the patient is eligible ('drip and ship').",
+        explanation: "When a large vessel occlusion is suspected and local thrombectomy is unavailable, rapid transfer is appropriate—ideally after initiating IV tPA in eligible patients to avoid losing the treatment window.",
+        isOptimal: false
+      },
+      {
+        id: "more-imaging",
+        type: "outcome",
+        title: "Suboptimal - Unnecessary Delay",
+        content: "Obtaining additional imaging when the patient already meets tPA criteria delays definitive treatment without adding actionable information.",
+        explanation: "Once hemorrhage is excluded and eligibility criteria are met, additional imaging should not delay thrombolysis. Time is brain.",
+        isOptimal: false
+      },
+      {
+        id: "thrombectomy-only",
+        type: "outcome",
+        title: "Acceptable - Thrombectomy Without tPA",
+        content: "Mechanical thrombectomy alone is appropriate when the patient is ineligible for IV tPA (e.g., outside the window or with contraindications) but has a large vessel occlusion.",
+        explanation: "For eligible patients, IV tPA followed by thrombectomy yields the best outcomes, but thrombectomy alone is the right choice when thrombolysis is contraindicated.",
         isOptimal: false
       }
     ],
@@ -330,6 +432,86 @@ export const sampleClinicalDecisionTrees: InsertClinicalDecisionTree[] = [
         title: "Good Decision - Early Antibiotics",
         content: "Starting empiric antibiotics within 1 hour of sepsis recognition is crucial. This was a good priority, but don't forget fluid resuscitation.",
         explanation: "Each hour delay in appropriate antibiotic therapy increases mortality by approximately 7.6%. Early antibiotics are a key component of sepsis management.",
+        isOptimal: false
+      },
+      {
+        id: "fluids",
+        type: "decision",
+        title: "IV fluid resuscitation started",
+        content: "You begin 30 mL/kg of balanced crystalloid for the hypotensive patient. While fluids are essential, you have not yet obtained cultures or started antibiotics.",
+        additionalInfo: "Cultures should ideally be drawn before antibiotics when this does not delay therapy",
+        options: [
+          { text: "Draw cultures and start empiric antibiotics", nextNodeId: "sepsis-bundle" },
+          { text: "Reassess after fluids before any antibiotics", nextNodeId: "more-fluids" }
+        ]
+      },
+      {
+        id: "history",
+        type: "outcome",
+        title: "Suboptimal - Delaying Resuscitation",
+        content: "A comprehensive history and exam are valuable, but in a hypotensive, confused, febrile patient they should not delay sepsis recognition and the time-critical bundle.",
+        explanation: "In suspected septic shock, assessment and resuscitation must proceed in parallel. Spending excessive time on history before cultures, fluids, and antibiotics increases mortality.",
+        isOptimal: false
+      },
+      {
+        id: "more-labs",
+        type: "outcome",
+        title: "Suboptimal - Over-testing Before Treatment",
+        content: "Waiting for additional labs before initiating the sepsis bundle delays antibiotics and fluids, both of which improve survival when started early.",
+        explanation: "A high qSOFA with shock warrants immediate bundle implementation. Additional labs can be sent concurrently but must not delay antibiotics or resuscitation.",
+        isOptimal: false
+      },
+      {
+        id: "icu-consult",
+        type: "decision",
+        title: "ICU team consulted",
+        content: "The ICU team is contacted for this patient in septic shock. While awaiting bedside evaluation, the patient remains hypotensive and needs immediate intervention.",
+        options: [
+          { text: "Begin the sepsis bundle now while awaiting ICU", nextNodeId: "sepsis-bundle" },
+          { text: "Wait for ICU before acting", nextNodeId: "more-labs" }
+        ]
+      },
+      {
+        id: "more-fluids",
+        type: "decision",
+        title: "Additional fluids given; persistent hypotension",
+        content: "After repeated boluses the patient has received more than adequate volume but remains hypotensive with a MAP of 55 mmHg and a lactate that has not cleared.",
+        additionalInfo: "Fluid-refractory hypotension defines the need for vasopressors",
+        options: [
+          { text: "Start norepinephrine", nextNodeId: "vasopressors" },
+          { text: "Continue giving more fluids", nextNodeId: "repeat-lactate" }
+        ]
+      },
+      {
+        id: "repeat-lactate",
+        type: "outcome",
+        title: "Suboptimal - Delayed Vasopressors",
+        content: "Repeating the lactate without addressing fluid-refractory hypotension delays the vasopressor support needed to restore perfusion.",
+        explanation: "Lactate trends are useful for monitoring resuscitation, but persistent hypotension after adequate fluids requires vasopressors rather than continued observation.",
+        isOptimal: false
+      },
+      {
+        id: "high-map",
+        type: "outcome",
+        title: "Suboptimal - Excessive MAP Target",
+        content: "Targeting a MAP above 80 mmHg with escalating vasopressors offers no proven benefit and increases the risk of arrhythmias and ischemia.",
+        explanation: "The Surviving Sepsis Campaign recommends an initial MAP target of 65 mmHg. Higher targets have not improved outcomes and may cause harm in most patients.",
+        isOptimal: false
+      },
+      {
+        id: "dobutamine",
+        type: "outcome",
+        title: "Context-Dependent - Inotrope Use",
+        content: "Adding dobutamine is appropriate only when there is evidence of persistent hypoperfusion despite adequate fluids and vasopressors, such as sepsis-induced myocardial dysfunction.",
+        explanation: "Dobutamine is reserved for septic patients with myocardial dysfunction or ongoing hypoperfusion after an adequate MAP is achieved. It is not a routine first step in vasopressor titration.",
+        isOptimal: false
+      },
+      {
+        id: "fluids-after-cultures",
+        type: "outcome",
+        title: "Good Decision - Cultures Then Resuscitation",
+        content: "After drawing cultures you prioritize fluid resuscitation, which is appropriate, but remember that empiric antibiotics must follow promptly within the first hour.",
+        explanation: "Early fluids and antibiotics are both core elements of the sepsis bundle. Cultures before antibiotics are ideal, but antibiotics should not be delayed beyond one hour.",
         isOptimal: false
       }
     ],

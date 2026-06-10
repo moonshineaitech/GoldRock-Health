@@ -58,7 +58,7 @@ function StarRating({ rating, size = 'md' }: { rating: number; size?: 'sm' | 'md
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
           key={star}
-          className={`${sizeClasses[size]} ${star <= rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600'}`}
+          className={`${sizeClasses[size]} ${star <= rating ? 'text-gold fill-current' : 'text-muted-foreground'}`}
         />
       ))}
     </div>
@@ -76,7 +76,7 @@ function RatingInput({
 }) {
   return (
     <div>
-      <Label className="text-gray-300 text-sm">{label}</Label>
+      <Label className="text-muted-foreground text-sm">{label}</Label>
       <div className="flex gap-1 mt-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
@@ -87,7 +87,7 @@ function RatingInput({
           >
             <Star
               className={`h-6 w-6 transition-colors ${
-                star <= value ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600 hover:text-yellow-300'
+                star <= value ? 'text-gold fill-current' : 'text-muted-foreground hover:text-gold'
               }`}
             />
           </button>
@@ -177,7 +177,7 @@ export default function HospitalReviews() {
         canonicalUrl="https://goldrockhealth.com/hospital-reviews"
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-[#0a1628] via-[#0d1d35] to-[#0a1628]">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -185,50 +185,55 @@ export default function HospitalReviews() {
             className="text-center mb-12"
           >
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Building2 className="h-10 w-10 text-cyan-400" />
+              <div
+                className="flex h-16 w-16 items-center justify-center rounded-2xl text-white"
+                style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+              >
+                <Building2 className="h-8 w-8" />
+              </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Hospital Billing <span className="text-cyan-400">Reviews</span>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-4">
+              Hospital Billing <span className="text-gold">Reviews</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Share your experience and help others find hospitals with fair, transparent billing practices.
             </p>
           </motion.div>
 
           <div className="flex flex-col md:flex-row gap-4 mb-8 max-w-4xl mx-auto">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <Input
                 data-testid="input-search-reviews"
                 placeholder="Search hospitals or reviews..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500"
+                className="pl-10 bg-card border-border text-foreground placeholder:text-muted-foreground"
               />
             </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button data-testid="button-write-review" className="bg-cyan-500 hover:bg-cyan-600 text-black">
+                <Button data-testid="button-write-review" className="bg-primary text-primary-foreground hover:opacity-90">
                   <Plus className="h-4 w-4 mr-2" /> Write a Review
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-[#0d1d35] border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="bg-popover border-border text-foreground max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Write a Hospital Billing Review</DialogTitle>
-                  <DialogDescription className="text-gray-400">
+                  <DialogDescription className="text-muted-foreground">
                     Share your experience with a hospital's billing practices to help others.
                   </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                   <div>
-                    <Label htmlFor="hospitalName" className="text-gray-300">Hospital Name *</Label>
+                    <Label htmlFor="hospitalName" className="text-muted-foreground">Hospital Name *</Label>
                     <Input
                       id="hospitalName"
                       data-testid="input-hospital-name"
                       placeholder="Enter hospital name"
                       value={newReview.hospitalName}
                       onChange={(e) => setNewReview({ ...newReview, hospitalName: e.target.value })}
-                      className="mt-1 bg-white/5 border-white/10 text-white"
+                      className="mt-1 bg-card border-border text-foreground"
                     />
                   </div>
 
@@ -239,12 +244,12 @@ export default function HospitalReviews() {
                       label="Overall Rating *"
                     />
                     <div>
-                      <Label className="text-gray-300 text-sm">Procedure Type</Label>
+                      <Label className="text-muted-foreground text-sm">Procedure Type</Label>
                       <Select
                         value={newReview.procedureType}
                         onValueChange={(v) => setNewReview({ ...newReview, procedureType: v })}
                       >
-                        <SelectTrigger className="mt-1 bg-white/5 border-white/10 text-white">
+                        <SelectTrigger className="mt-1 bg-card border-border text-foreground">
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -278,33 +283,33 @@ export default function HospitalReviews() {
                   </div>
 
                   <div>
-                    <Label htmlFor="reviewTitle" className="text-gray-300">Review Title</Label>
+                    <Label htmlFor="reviewTitle" className="text-muted-foreground">Review Title</Label>
                     <Input
                       id="reviewTitle"
                       data-testid="input-review-title"
                       placeholder="Summarize your experience"
                       value={newReview.reviewTitle}
                       onChange={(e) => setNewReview({ ...newReview, reviewTitle: e.target.value })}
-                      className="mt-1 bg-white/5 border-white/10 text-white"
+                      className="mt-1 bg-card border-border text-foreground"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="reviewText" className="text-gray-300">Your Review *</Label>
+                    <Label htmlFor="reviewText" className="text-muted-foreground">Your Review *</Label>
                     <Textarea
                       id="reviewText"
                       data-testid="textarea-review"
                       placeholder="Describe your experience with billing..."
                       value={newReview.reviewText}
                       onChange={(e) => setNewReview({ ...newReview, reviewText: e.target.value })}
-                      className="mt-1 bg-white/5 border-white/10 text-white min-h-[120px]"
+                      className="mt-1 bg-card border-border text-foreground min-h-[120px]"
                     />
                   </div>
 
                   <Button 
                     type="submit"
                     data-testid="button-submit-review"
-                    className="w-full bg-cyan-500 hover:bg-cyan-600 text-black"
+                    className="w-full bg-primary text-primary-foreground hover:opacity-90"
                     disabled={submitMutation.isPending}
                   >
                     {submitMutation.isPending ? 'Submitting...' : 'Submit Review'}
@@ -315,25 +320,25 @@ export default function HospitalReviews() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-4 mb-8 max-w-4xl mx-auto">
-            <Card className="bg-white/5 border-white/10">
+            <Card className="luxury-card">
               <CardContent className="p-4 text-center">
-                <DollarSign className="h-8 w-8 text-green-400 mx-auto mb-2" />
-                <div className="text-white font-medium">Billing Transparency</div>
-                <div className="text-sm text-gray-400">Were charges clear and itemized?</div>
+                <DollarSign className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                <div className="text-foreground font-medium">Billing Transparency</div>
+                <div className="text-sm text-muted-foreground">Were charges clear and itemized?</div>
               </CardContent>
             </Card>
-            <Card className="bg-white/5 border-white/10">
+            <Card className="luxury-card">
               <CardContent className="p-4 text-center">
-                <Phone className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-                <div className="text-white font-medium">Responsiveness</div>
-                <div className="text-sm text-gray-400">Did they answer your questions?</div>
+                <Phone className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                <div className="text-foreground font-medium">Responsiveness</div>
+                <div className="text-sm text-muted-foreground">Did they answer your questions?</div>
               </CardContent>
             </Card>
-            <Card className="bg-white/5 border-white/10">
+            <Card className="luxury-card">
               <CardContent className="p-4 text-center">
-                <Shield className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-                <div className="text-white font-medium">Financial Assistance</div>
-                <div className="text-sm text-gray-400">Did they offer payment options?</div>
+                <Shield className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                <div className="text-foreground font-medium">Financial Assistance</div>
+                <div className="text-sm text-muted-foreground">Did they offer payment options?</div>
               </CardContent>
             </Card>
           </div>
@@ -341,11 +346,11 @@ export default function HospitalReviews() {
           {isLoading ? (
             <div className="space-y-4 max-w-4xl mx-auto">
               {[...Array(3)].map((_, i) => (
-                <Card key={i} className="bg-white/5 border-white/10 animate-pulse">
+                <Card key={i} className="luxury-card animate-pulse">
                   <CardContent className="p-6">
-                    <div className="h-6 bg-white/10 rounded w-1/3 mb-4"></div>
-                    <div className="h-4 bg-white/10 rounded w-1/4 mb-2"></div>
-                    <div className="h-20 bg-white/10 rounded"></div>
+                    <div className="h-6 bg-muted rounded w-1/3 mb-4"></div>
+                    <div className="h-4 bg-muted rounded w-1/4 mb-2"></div>
+                    <div className="h-20 bg-muted rounded"></div>
                   </CardContent>
                 </Card>
               ))}
@@ -358,50 +363,50 @@ export default function HospitalReviews() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  <Card className="bg-white/5 border-white/10">
+                  <Card className="luxury-card">
                     <CardHeader className="pb-2">
                       <div className="flex items-start justify-between">
                         <div>
-                          <CardTitle className="text-white flex items-center gap-2">
-                            <Building2 className="h-5 w-5 text-gray-400" />
+                          <CardTitle className="text-foreground flex items-center gap-2">
+                            <Building2 className="h-5 w-5 text-muted-foreground" />
                             {review.hospitalName}
                           </CardTitle>
                           <div className="flex items-center gap-4 mt-2">
                             <StarRating rating={review.overallRating} />
                             {review.procedureType && (
-                              <Badge variant="outline" className="text-gray-400 border-gray-600">
+                              <Badge variant="outline" className="text-muted-foreground border-border">
                                 {review.procedureType}
                               </Badge>
                             )}
                           </div>
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-muted-foreground">
                           {new Date(review.createdAt).toLocaleDateString()}
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent>
                       {review.reviewTitle && (
-                        <h3 className="text-white font-medium mb-2">{review.reviewTitle}</h3>
+                        <h3 className="text-foreground font-medium mb-2">{review.reviewTitle}</h3>
                       )}
-                      <p className="text-gray-300 mb-4">{review.reviewText}</p>
+                      <p className="text-muted-foreground mb-4">{review.reviewText}</p>
                       
                       <div className="flex flex-wrap gap-4 text-sm">
                         {review.billingTransparency > 0 && (
                           <div className="flex items-center gap-1">
-                            <span className="text-gray-500">Transparency:</span>
+                            <span className="text-muted-foreground">Transparency:</span>
                             <StarRating rating={review.billingTransparency} size="sm" />
                           </div>
                         )}
                         {review.responsiveness > 0 && (
                           <div className="flex items-center gap-1">
-                            <span className="text-gray-500">Responsiveness:</span>
+                            <span className="text-muted-foreground">Responsiveness:</span>
                             <StarRating rating={review.responsiveness} size="sm" />
                           </div>
                         )}
                         {review.financialAssistance > 0 && (
                           <div className="flex items-center gap-1">
-                            <span className="text-gray-500">Financial Help:</span>
+                            <span className="text-muted-foreground">Financial Help:</span>
                             <StarRating rating={review.financialAssistance} size="sm" />
                           </div>
                         )}
@@ -413,12 +418,12 @@ export default function HospitalReviews() {
 
               {filteredReviews.length === 0 && (
                 <div className="text-center py-12">
-                  <MessageSquare className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-xl text-white mb-2">No reviews yet</h3>
-                  <p className="text-gray-400 mb-4">Be the first to share your experience!</p>
+                  <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-xl text-foreground mb-2">No reviews yet</h3>
+                  <p className="text-muted-foreground mb-4">Be the first to share your experience!</p>
                   <Button 
                     onClick={() => setIsDialogOpen(true)}
-                    className="bg-cyan-500 hover:bg-cyan-600 text-black"
+                    className="bg-primary text-primary-foreground hover:opacity-90"
                   >
                     <Plus className="h-4 w-4 mr-2" /> Write a Review
                   </Button>
@@ -434,10 +439,10 @@ export default function HospitalReviews() {
             className="mt-12 bg-amber-500/10 border border-amber-500/30 rounded-xl p-6 max-w-4xl mx-auto"
           >
             <div className="flex items-start gap-4">
-              <AlertCircle className="h-6 w-6 text-amber-400 flex-shrink-0 mt-1" />
+              <AlertCircle className="h-6 w-6 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-white font-semibold mb-2">Review Guidelines</h3>
-                <p className="text-gray-300 text-sm">
+                <h3 className="text-foreground font-semibold mb-2">Review Guidelines</h3>
+                <p className="text-muted-foreground text-sm">
                   Reviews are moderated before publishing. Please focus on your billing experience, 
                   not medical care quality. Avoid sharing personal health information or identifying details 
                   about staff members.

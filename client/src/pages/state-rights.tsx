@@ -32,14 +32,14 @@ const STATE_NAMES: Record<string, string> = {
 };
 
 const CATEGORY_CONFIG: Record<string, { icon: any; color: string; bg: string }> = {
-  surprise_billing: { icon: AlertTriangle, color: "text-red-600", bg: "bg-red-50" },
-  credit_reporting: { icon: FileText, color: "text-blue-600", bg: "bg-blue-50" },
-  collections: { icon: Gavel, color: "text-purple-600", bg: "bg-purple-50" },
-  charity_care: { icon: Heart, color: "text-pink-600", bg: "bg-pink-50" },
-  price_transparency: { icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
-  statute_of_limitations: { icon: Clock, color: "text-amber-600", bg: "bg-amber-50" },
-  patient_rights: { icon: Shield, color: "text-indigo-600", bg: "bg-indigo-50" },
-  insurance_protections: { icon: Building2, color: "text-teal-600", bg: "bg-teal-50" },
+  surprise_billing: { icon: AlertTriangle, color: "text-muted-foreground", bg: "bg-secondary" },
+  credit_reporting: { icon: FileText, color: "text-muted-foreground", bg: "bg-secondary" },
+  collections: { icon: Gavel, color: "text-muted-foreground", bg: "bg-secondary" },
+  charity_care: { icon: Heart, color: "text-muted-foreground", bg: "bg-secondary" },
+  price_transparency: { icon: DollarSign, color: "text-muted-foreground", bg: "bg-secondary" },
+  statute_of_limitations: { icon: Clock, color: "text-muted-foreground", bg: "bg-secondary" },
+  patient_rights: { icon: Shield, color: "text-muted-foreground", bg: "bg-secondary" },
+  insurance_protections: { icon: Building2, color: "text-muted-foreground", bg: "bg-secondary" },
 };
 
 function RightCard({ right }: { right: any }) {
@@ -55,23 +55,23 @@ function RightCard({ right }: { right: any }) {
               <Icon className={`w-4 h-4 ${config.color}`} />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-semibold text-gray-900">{right.title}</h3>
+              <h3 className="text-sm font-semibold text-foreground">{right.title}</h3>
               <div className="flex items-center gap-2 mt-0.5">
                 <Badge variant="outline" className="text-[10px]">{right.category.replace(/_/g, ' ')}</Badge>
-                {right.legalCitation && <span className="text-[10px] text-gray-400">{right.legalCitation}</span>}
+                {right.legalCitation && <span className="text-[10px] text-muted-foreground">{right.legalCitation}</span>}
               </div>
             </div>
           </div>
         </AccordionTrigger>
         <AccordionContent className="px-4 pb-4">
-          <p className="text-sm text-gray-600 mb-3">{right.description}</p>
+          <p className="text-sm text-muted-foreground mb-3">{right.description}</p>
 
           {right.keyProtections?.length > 0 && (
             <div className="mb-3">
-              <h4 className="text-xs font-semibold text-gray-700 mb-1.5 flex items-center gap-1"><Shield className="w-3 h-3" />Key Protections</h4>
+              <h4 className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-1"><Shield className="w-3 h-3" />Key Protections</h4>
               <ul className="space-y-1">
                 {right.keyProtections.map((p: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
+                  <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
                     <CheckCircle2 className="w-3 h-3 text-emerald-500 mt-0.5 flex-shrink-0" />{p}
                   </li>
                 ))}
@@ -81,11 +81,11 @@ function RightCard({ right }: { right: any }) {
 
           {right.actionSteps?.length > 0 && (
             <div className="mb-3">
-              <h4 className="text-xs font-semibold text-gray-700 mb-1.5 flex items-center gap-1"><FileText className="w-3 h-3" />What You Can Do</h4>
+              <h4 className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-1"><FileText className="w-3 h-3" />What You Can Do</h4>
               <ol className="space-y-1">
                 {right.actionSteps.map((s: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
-                    <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">{i+1}</span>{s}
+                  <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                    <span className="w-4 h-4 rounded-full bg-secondary text-foreground flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">{i+1}</span>{s}
                   </li>
                 ))}
               </ol>
@@ -94,13 +94,13 @@ function RightCard({ right }: { right: any }) {
 
           {right.resources?.length > 0 && (
             <div>
-              <h4 className="text-xs font-semibold text-gray-700 mb-1.5 flex items-center gap-1"><BookOpen className="w-3 h-3" />Resources</h4>
+              <h4 className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-1"><BookOpen className="w-3 h-3" />Resources</h4>
               <div className="space-y-1">
                 {right.resources.map((r: any, i: number) => (
                   <div key={i} className="flex items-center gap-2 text-xs">
-                    {r.url && <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1"><ExternalLink className="w-3 h-3" />{r.name}</a>}
-                    {!r.url && <span className="text-gray-600">{r.name}</span>}
-                    {r.phone && <span className="text-gray-400 flex items-center gap-1"><Phone className="w-3 h-3" />{r.phone}</span>}
+                    {r.url && <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-gold hover:underline flex items-center gap-1"><ExternalLink className="w-3 h-3" />{r.name}</a>}
+                    {!r.url && <span className="text-muted-foreground">{r.name}</span>}
+                    {r.phone && <span className="text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" />{r.phone}</span>}
                   </div>
                 ))}
               </div>
@@ -131,17 +131,17 @@ export default function StateRights() {
   return (
     <MobileLayout title="Your Legal Rights" >
       <div className="space-y-6 pb-20">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
-          <Scale className="w-8 h-8 mb-2 text-indigo-200" />
-          <h2 className="text-xl font-bold mb-1">Know Your Rights</h2>
-          <p className="text-indigo-200 text-sm">Every state has different laws protecting you from unfair medical billing. Select your state to see what protections apply to you.</p>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="luxury-card rounded-2xl p-6">
+          <Scale className="w-8 h-8 mb-2 text-gold" />
+          <h2 className="text-xl font-bold font-serif text-foreground mb-1">Know Your Rights</h2>
+          <p className="text-muted-foreground text-sm">Every state has different laws protecting you from unfair medical billing. Select your state to see what protections apply to you.</p>
         </motion.div>
 
         <div className="flex gap-2">
           <Select value={selectedState} onValueChange={setSelectedState}>
-            <SelectTrigger className="flex-1 bg-white">
-              <MapPin className="w-4 h-4 mr-2 text-gray-400" />
+            <SelectTrigger className="flex-1 bg-card">
+              <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
               <SelectValue placeholder="Select your state" />
             </SelectTrigger>
             <SelectContent>
@@ -152,7 +152,7 @@ export default function StateRights() {
           </Select>
           {categories.length > 0 && (
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="w-40 bg-white">
+              <SelectTrigger className="w-40 bg-card">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -166,18 +166,18 @@ export default function StateRights() {
         </div>
 
         {!selectedState ? (
-          <Card className="bg-gray-50 border-dashed">
+          <Card className="bg-secondary border-dashed">
             <CardContent className="py-12 text-center">
-              <MapPin className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-              <h3 className="font-semibold text-gray-700 mb-1">Select Your State</h3>
-              <p className="text-sm text-gray-500">Choose your state above to see the specific medical debt protections that apply to you</p>
+              <MapPin className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+              <h3 className="font-semibold text-foreground mb-1">Select Your State</h3>
+              <p className="text-sm text-muted-foreground">Choose your state above to see the specific medical debt protections that apply to you</p>
             </CardContent>
           </Card>
         ) : (
           <>
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-gray-900">{STATE_NAMES[selectedState]}</h3>
-              <Badge className="bg-indigo-100 text-indigo-700">{filteredRights.length} protections</Badge>
+              <h3 className="text-lg font-bold font-serif text-foreground">{STATE_NAMES[selectedState]}</h3>
+              <Badge className="bg-secondary text-foreground">{filteredRights.length} protections</Badge>
             </div>
 
             {filteredRights.length === 0 ? (
@@ -200,8 +200,8 @@ export default function StateRights() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Shield className="w-5 h-5 text-blue-500" />Federal Protections (Apply Everywhere)
+            <CardTitle className="text-base font-serif flex items-center gap-2">
+              <Shield className="w-5 h-5 text-gold" />Federal Protections (Apply Everywhere)
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -215,11 +215,11 @@ export default function StateRights() {
                 { title: "Good Faith Estimate", desc: "Uninsured patients have the right to receive a cost estimate before scheduled services", icon: Scale },
               ].map((f, i) => (
                 <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.05 }}
-                  className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                  <f.icon className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  className="flex items-start gap-3 p-3 bg-secondary rounded-lg">
+                  <f.icon className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="text-sm font-medium text-gray-900">{f.title}</h4>
-                    <p className="text-xs text-gray-600">{f.desc}</p>
+                    <h4 className="text-sm font-medium text-foreground">{f.title}</h4>
+                    <p className="text-xs text-muted-foreground">{f.desc}</p>
                   </div>
                 </motion.div>
               ))}

@@ -436,12 +436,12 @@ function PremiumGate() {
   
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardContent className="p-6 text-center">
-            <Crown className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+            <Crown className="w-12 h-12 text-gold mx-auto mb-4" />
             <h2 className="text-xl font-bold mb-2">Authentication Required</h2>
-            <p className="text-gray-600 mb-4">Please sign in to access the Billing Code Mastery system.</p>
+            <p className="text-muted-foreground mb-4">Please sign in to access the Billing Code Mastery system.</p>
             <a href="/api/login">
               <Button className="w-full">
                 <ArrowRight className="w-4 h-4 mr-2" />
@@ -548,32 +548,32 @@ export default function CodeMastery() {
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
-            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-blue-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <Code className="h-7 w-7 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Billing Code Mastery</h1>
-              <Badge className="bg-gradient-to-r from-purple-100 to-emerald-100 text-purple-800 mt-1">
+              <h1 className="text-3xl font-bold font-serif text-foreground">Billing Code Mastery</h1>
+              <Badge className="bg-secondary text-foreground mt-1">
                 <Crown className="h-3 w-3 mr-1" />
                 Professional System
               </Badge>
             </div>
           </div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Professional-grade medical coding analysis with comprehensive database, fraud detection, and expert billing dispute tools.
           </p>
           <div className="flex items-center justify-center gap-6 text-sm">
             <div className="flex items-center gap-2">
-              <Database className="h-4 w-4 text-blue-600" />
-              <span className="text-gray-600">15,000+ Codes</span>
+              <Database className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">15,000+ Codes</span>
             </div>
             <div className="flex items-center gap-2">
-              <Brain className="h-4 w-4 text-purple-600" />
-              <span className="text-gray-600">AI Analysis</span>
+              <Brain className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">AI Analysis</span>
             </div>
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-emerald-600" />
-              <span className="text-gray-600">Savings Detection</span>
+              <span className="text-muted-foreground">Savings Detection</span>
             </div>
           </div>
         </div>
@@ -650,7 +650,7 @@ export default function CodeMastery() {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Stethoscope className="h-5 w-5 text-blue-600" />
+                    <Stethoscope className="h-5 w-5 text-muted-foreground" />
                     CPT Codes (Procedures)
                   </div>
                   <Badge variant="secondary">{filteredCPTCodes.length} codes</Badge>
@@ -663,12 +663,12 @@ export default function CodeMastery() {
                       key={code.code}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                      className="border rounded-lg p-4 hover:bg-secondary transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <Badge className="font-mono text-blue-700 bg-blue-100">{code.code}</Badge>
+                            <Badge className="font-mono text-foreground bg-secondary">{code.code}</Badge>
                             <Badge variant="outline" className={
                               code.riskLevel === 'high' ? 'text-red-600 border-red-200' :
                               code.riskLevel === 'medium' ? 'text-orange-600 border-orange-200' :
@@ -679,25 +679,25 @@ export default function CodeMastery() {
                                '🟢 Low Risk'}
                             </Badge>
                           </div>
-                          <h4 className="font-medium text-gray-900 mb-1">{code.description}</h4>
-                          <p className="text-sm text-gray-600 mb-2">{code.category}</p>
+                          <h4 className="font-medium text-foreground mb-1">{code.description}</h4>
+                          <p className="text-sm text-muted-foreground mb-2">{code.category}</p>
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
-                              <span className="text-gray-500">Fair Price:</span>
+                              <span className="text-muted-foreground">Fair Price:</span>
                               <span className="font-semibold text-green-600 ml-2">${code.basePrice}</span>
                             </div>
                             <div>
-                              <span className="text-gray-500">Avg Charged:</span>
+                              <span className="text-muted-foreground">Avg Charged:</span>
                               <span className="font-semibold text-red-600 ml-2">${code.avgCharged}</span>
                             </div>
                             <div>
-                              <span className="text-gray-500">Savings:</span>
-                              <span className="font-semibold text-blue-600 ml-2">{code.savingsPotential}</span>
+                              <span className="text-muted-foreground">Savings:</span>
+                              <span className="font-semibold text-muted-foreground ml-2">{code.savingsPotential}</span>
                             </div>
                           </div>
                           {code.commonIssues && (
                             <div className="mt-3 pt-3 border-t">
-                              <p className="text-sm text-gray-500 mb-1">Common Issues:</p>
+                              <p className="text-sm text-muted-foreground mb-1">Common Issues:</p>
                               <ul className="text-sm text-orange-600 space-y-1">
                                 {code.commonIssues.map((issue, idx) => (
                                   <li key={idx} className="flex items-start gap-2">
@@ -739,7 +739,7 @@ export default function CodeMastery() {
                       key={code.code}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                      className="border rounded-lg p-4 hover:bg-secondary transition-colors"
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <Badge className="font-mono text-red-700 bg-red-100">{code.code}</Badge>
@@ -750,15 +750,15 @@ export default function CodeMastery() {
                           {code.riskLevel === 'medium' ? '🟡 Medium Risk' : '🟢 Low Risk'}
                         </Badge>
                       </div>
-                      <h4 className="font-medium text-gray-900 mb-2">{code.description}</h4>
+                      <h4 className="font-medium text-foreground mb-2">{code.description}</h4>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <span className="text-gray-500">Category:</span>
-                          <span className="ml-2 text-gray-900">{code.category}</span>
+                          <span className="text-muted-foreground">Category:</span>
+                          <span className="ml-2 text-foreground">{code.category}</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Savings Potential:</span>
-                          <span className="font-semibold text-blue-600 ml-2">{code.savingsPotential}</span>
+                          <span className="text-muted-foreground">Savings Potential:</span>
+                          <span className="font-semibold text-muted-foreground ml-2">{code.savingsPotential}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -772,7 +772,7 @@ export default function CodeMastery() {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Pill className="h-5 w-5 text-purple-600" />
+                    <Pill className="h-5 w-5 text-muted-foreground" />
                     HCPCS Codes (Supplies & Drugs)
                   </div>
                   <Badge variant="secondary">{filteredHCPCSCodes.length} codes</Badge>
@@ -785,10 +785,10 @@ export default function CodeMastery() {
                       key={code.code}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                      className="border rounded-lg p-4 hover:bg-secondary transition-colors"
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <Badge className="font-mono text-purple-700 bg-purple-100">{code.code}</Badge>
+                        <Badge className="font-mono text-foreground bg-secondary">{code.code}</Badge>
                         <Badge variant="outline" className={
                           code.riskLevel === 'high' ? 'text-red-600 border-red-200' :
                           code.riskLevel === 'medium' ? 'text-orange-600 border-orange-200' :
@@ -799,19 +799,19 @@ export default function CodeMastery() {
                            '🟢 Low Risk'}
                         </Badge>
                       </div>
-                      <h4 className="font-medium text-gray-900 mb-2">{code.description}</h4>
+                      <h4 className="font-medium text-foreground mb-2">{code.description}</h4>
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <span className="text-gray-500">Fair Price:</span>
+                          <span className="text-muted-foreground">Fair Price:</span>
                           <span className="font-semibold text-green-600 ml-2">${code.basePrice}</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Avg Charged:</span>
+                          <span className="text-muted-foreground">Avg Charged:</span>
                           <span className="font-semibold text-red-600 ml-2">${code.avgCharged}</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Savings:</span>
-                          <span className="font-semibold text-blue-600 ml-2">{code.savingsPotential}</span>
+                          <span className="text-muted-foreground">Savings:</span>
+                          <span className="font-semibold text-muted-foreground ml-2">{code.savingsPotential}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -826,7 +826,7 @@ export default function CodeMastery() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Brain className="h-5 w-5 text-purple-600" />
+                  <Brain className="h-5 w-5 text-muted-foreground" />
                   AI Bill Code Analysis
                 </CardTitle>
                 <CardDescription>
@@ -872,28 +872,28 @@ export default function CodeMastery() {
                   className="space-y-4"
                 >
                   {/* Overall Score Card */}
-                  <Card className="border-l-4 border-l-blue-500">
+                  <Card className="border-l-4 border-l-border">
                     <CardContent className="pt-6">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-xl font-bold">Analysis Complete</h3>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-blue-600">{analysisResult.overallScore}/100</div>
-                          <div className="text-sm text-gray-500">Billing Score</div>
+                          <div className="text-2xl font-bold text-muted-foreground">{analysisResult.overallScore}/100</div>
+                          <div className="text-sm text-muted-foreground">Billing Score</div>
                         </div>
                       </div>
                       <Progress value={analysisResult.overallScore} className="mb-4" />
                       <div className="grid grid-cols-3 gap-4 text-center">
                         <div>
                           <div className="text-2xl font-bold text-emerald-600">{analysisResult.totalSavings}</div>
-                          <div className="text-sm text-gray-600">Potential Savings</div>
+                          <div className="text-sm text-muted-foreground">Potential Savings</div>
                         </div>
                         <div>
                           <div className="text-2xl font-bold text-orange-600">{analysisResult.issuesFound}</div>
-                          <div className="text-sm text-gray-600">Issues Found</div>
+                          <div className="text-sm text-muted-foreground">Issues Found</div>
                         </div>
                         <div>
                           <div className="text-2xl font-bold text-red-600">{analysisResult.majorFlags.length}</div>
-                          <div className="text-sm text-gray-600">Major Flags</div>
+                          <div className="text-sm text-muted-foreground">Major Flags</div>
                         </div>
                       </div>
                     </CardContent>
@@ -932,8 +932,8 @@ export default function CodeMastery() {
                         <CardContent>
                           <ul className="space-y-2">
                             {analysis.findings.map((finding, findingIdx) => (
-                              <li key={findingIdx} className="flex items-start gap-3 p-2 bg-gray-50 rounded-lg">
-                                <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                              <li key={findingIdx} className="flex items-start gap-3 p-2 bg-secondary rounded-lg">
+                                <CheckCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                                 <span className="text-sm">{finding}</span>
                               </li>
                             ))}
@@ -996,7 +996,7 @@ export default function CodeMastery() {
                 <div className="space-y-4">
                   <div className="border-l-4 border-l-red-500 pl-4">
                     <h4 className="font-semibold text-red-800 mb-2">🚨 Emergency Room Level 5 Coding (99285)</h4>
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       Level 5 ER visits should be reserved for life-threatening emergencies requiring immediate intervention.
                     </p>
                     <div className="bg-red-50 p-3 rounded-lg">
@@ -1016,7 +1016,7 @@ export default function CodeMastery() {
 
                   <div className="border-l-4 border-l-orange-500 pl-4">
                     <h4 className="font-semibold text-orange-800 mb-2">⚠️  Critical Care Coding (99291)</h4>
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       Critical care requires unstable vitals and dedicated 1:1 nursing care.
                     </p>
                     <div className="bg-orange-50 p-3 rounded-lg">
@@ -1036,7 +1036,7 @@ export default function CodeMastery() {
 
                   <div className="border-l-4 border-l-yellow-500 pl-4">
                     <h4 className="font-semibold text-yellow-800 mb-2">⚡ Unbundling Violations</h4>
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       Separating procedures that should be billed as a package to increase revenue.
                     </p>
                     <div className="bg-yellow-50 p-3 rounded-lg">
@@ -1067,10 +1067,10 @@ export default function CodeMastery() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button variant="outline" className="h-auto p-4 flex flex-col items-start gap-2">
                     <div className="flex items-center gap-2 w-full">
-                      <Eye className="h-4 w-4 text-blue-600" />
+                      <Eye className="h-4 w-4 text-muted-foreground" />
                       <span className="font-medium">NCCI Edit Checker</span>
                     </div>
-                    <p className="text-sm text-gray-600 text-left">
+                    <p className="text-sm text-muted-foreground text-left">
                       Check for National Correct Coding Initiative violations
                     </p>
                   </Button>
@@ -1080,7 +1080,7 @@ export default function CodeMastery() {
                       <Target className="h-4 w-4 text-red-600" />
                       <span className="font-medium">Upcoding Detector</span>
                     </div>
-                    <p className="text-sm text-gray-600 text-left">
+                    <p className="text-sm text-muted-foreground text-left">
                       Identify codes that exceed medical necessity
                     </p>
                   </Button>
@@ -1090,17 +1090,17 @@ export default function CodeMastery() {
                       <BarChart3 className="h-4 w-4 text-green-600" />
                       <span className="font-medium">Outlier Analysis</span>
                     </div>
-                    <p className="text-sm text-gray-600 text-left">
+                    <p className="text-sm text-muted-foreground text-left">
                       Compare charges against statistical norms
                     </p>
                   </Button>
                   
                   <Button variant="outline" className="h-auto p-4 flex flex-col items-start gap-2">
                     <div className="flex items-center gap-2 w-full">
-                      <Clock className="h-4 w-4 text-purple-600" />
+                      <Clock className="h-4 w-4 text-muted-foreground" />
                       <span className="font-medium">Time Audit Tool</span>
                     </div>
-                    <p className="text-sm text-gray-600 text-left">
+                    <p className="text-sm text-muted-foreground text-left">
                       Verify time-based billing accuracy
                     </p>
                   </Button>
@@ -1114,7 +1114,7 @@ export default function CodeMastery() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-blue-600" />
+                  <BarChart3 className="h-5 w-5 text-muted-foreground" />
                   Healthcare Pricing Intelligence
                 </CardTitle>
                 <CardDescription>
@@ -1135,31 +1135,31 @@ export default function CodeMastery() {
                     <div>
                       <h4 className="font-semibold mb-3">Common Procedures</h4>
                       <div className="space-y-3">
-                        <div className="bg-gray-50 p-3 rounded-lg">
+                        <div className="bg-secondary p-3 rounded-lg">
                           <div className="font-medium">Chest X-Ray (71020)</div>
-                          <div className="text-sm text-gray-600 grid grid-cols-2 gap-2 mt-1">
+                          <div className="text-sm text-muted-foreground grid grid-cols-2 gap-2 mt-1">
                             <span>Medicare: $85</span>
                             <span className="text-red-600">Hospital Avg: $450</span>
                             <span className="text-green-600">Fair Price: $120</span>
-                            <span className="text-blue-600">Savings: $330</span>
+                            <span className="text-muted-foreground">Savings: $330</span>
                           </div>
                         </div>
-                        <div className="bg-gray-50 p-3 rounded-lg">
+                        <div className="bg-secondary p-3 rounded-lg">
                           <div className="font-medium">Blood Work (85025)</div>
-                          <div className="text-sm text-gray-600 grid grid-cols-2 gap-2 mt-1">
+                          <div className="text-sm text-muted-foreground grid grid-cols-2 gap-2 mt-1">
                             <span>Medicare: $45</span>
                             <span className="text-red-600">Hospital Avg: $295</span>
                             <span className="text-green-600">Fair Price: $75</span>
-                            <span className="text-blue-600">Savings: $220</span>
+                            <span className="text-muted-foreground">Savings: $220</span>
                           </div>
                         </div>
-                        <div className="bg-gray-50 p-3 rounded-lg">
+                        <div className="bg-secondary p-3 rounded-lg">
                           <div className="font-medium">ER Visit L4 (99284)</div>
-                          <div className="text-sm text-gray-600 grid grid-cols-2 gap-2 mt-1">
+                          <div className="text-sm text-muted-foreground grid grid-cols-2 gap-2 mt-1">
                             <span>Medicare: $650</span>
                             <span className="text-red-600">Hospital Avg: $2,200</span>
                             <span className="text-green-600">Fair Price: $900</span>
-                            <span className="text-blue-600">Savings: $1,300</span>
+                            <span className="text-muted-foreground">Savings: $1,300</span>
                           </div>
                         </div>
                       </div>
@@ -1170,25 +1170,25 @@ export default function CodeMastery() {
                     <div>
                       <h4 className="font-semibold mb-3">Regional Variations</h4>
                       <div className="space-y-3">
-                        <div className="bg-blue-50 p-3 rounded-lg">
+                        <div className="bg-secondary p-3 rounded-lg">
                           <div className="font-medium">Northeast</div>
-                          <div className="text-sm text-blue-700">140-180% of national avg</div>
-                          <div className="text-xs text-gray-600">High labor costs, market consolidation</div>
+                          <div className="text-sm text-foreground">140-180% of national avg</div>
+                          <div className="text-xs text-muted-foreground">High labor costs, market consolidation</div>
                         </div>
                         <div className="bg-green-50 p-3 rounded-lg">
                           <div className="font-medium">Southeast</div>
                           <div className="text-sm text-green-700">90-110% of national avg</div>
-                          <div className="text-xs text-gray-600">Competitive markets, lower costs</div>
+                          <div className="text-xs text-muted-foreground">Competitive markets, lower costs</div>
                         </div>
-                        <div className="bg-purple-50 p-3 rounded-lg">
+                        <div className="bg-secondary p-3 rounded-lg">
                           <div className="font-medium">West Coast</div>
-                          <div className="text-sm text-purple-700">130-170% of national avg</div>
-                          <div className="text-xs text-gray-600">High real estate, tech industry</div>
+                          <div className="text-sm text-foreground">130-170% of national avg</div>
+                          <div className="text-xs text-muted-foreground">High real estate, tech industry</div>
                         </div>
                         <div className="bg-orange-50 p-3 rounded-lg">
                           <div className="font-medium">Midwest</div>
                           <div className="text-sm text-orange-700">85-105% of national avg</div>
-                          <div className="text-xs text-gray-600">Manufacturing economy</div>
+                          <div className="text-xs text-muted-foreground">Manufacturing economy</div>
                         </div>
                       </div>
                     </div>
@@ -1201,17 +1201,17 @@ export default function CodeMastery() {
                         <div className="bg-emerald-50 p-3 rounded-lg border-l-4 border-l-emerald-500">
                           <div className="font-medium text-emerald-800">Best Case</div>
                           <div className="text-sm text-emerald-700">Medicare + 30%</div>
-                          <div className="text-xs text-gray-600">Self-pay discount programs</div>
+                          <div className="text-xs text-muted-foreground">Self-pay discount programs</div>
                         </div>
                         <div className="bg-yellow-50 p-3 rounded-lg border-l-4 border-l-yellow-500">
                           <div className="font-medium text-yellow-800">Realistic</div>
                           <div className="text-sm text-yellow-700">Medicare + 50%</div>
-                          <div className="text-xs text-gray-600">Standard negotiated rates</div>
+                          <div className="text-xs text-muted-foreground">Standard negotiated rates</div>
                         </div>
                         <div className="bg-red-50 p-3 rounded-lg border-l-4 border-l-red-500">
                           <div className="font-medium text-red-800">Avoid</div>
                           <div className="text-sm text-red-700">Chargemaster rates</div>
-                          <div className="text-xs text-gray-600">300-1000% markup</div>
+                          <div className="text-xs text-muted-foreground">300-1000% markup</div>
                         </div>
                       </div>
                     </div>
@@ -1227,21 +1227,21 @@ export default function CodeMastery() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">300%</div>
-                    <div className="text-sm text-gray-600">Average Hospital Markup</div>
+                  <div className="text-center p-4 bg-secondary rounded-lg">
+                    <div className="text-2xl font-bold text-muted-foreground">300%</div>
+                    <div className="text-sm text-muted-foreground">Average Hospital Markup</div>
                   </div>
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <div className="text-2xl font-bold text-green-600">65%</div>
-                    <div className="text-sm text-gray-600">Bills with Errors</div>
+                    <div className="text-sm text-muted-foreground">Bills with Errors</div>
                   </div>
                   <div className="text-center p-4 bg-orange-50 rounded-lg">
                     <div className="text-2xl font-bold text-orange-600">$8,500</div>
-                    <div className="text-sm text-gray-600">Avg Savings Achieved</div>
+                    <div className="text-sm text-muted-foreground">Avg Savings Achieved</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">89%</div>
-                    <div className="text-sm text-gray-600">Success Rate</div>
+                  <div className="text-center p-4 bg-secondary rounded-lg">
+                    <div className="text-2xl font-bold text-muted-foreground">89%</div>
+                    <div className="text-sm text-muted-foreground">Success Rate</div>
                   </div>
                 </div>
               </CardContent>
@@ -1268,7 +1268,7 @@ export default function CodeMastery() {
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Code className="h-5 w-5 text-blue-600" />
+                      <Code className="h-5 w-5 text-muted-foreground" />
                       CPT Code Fundamentals
                     </div>
                     {expandedSections['cpt-basics'] ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -1286,12 +1286,12 @@ export default function CodeMastery() {
                         <div className="space-y-4">
                           <div>
                             <h4 className="font-semibold mb-2">What are CPT Codes?</h4>
-                            <p className="text-sm text-gray-600 mb-3">
+                            <p className="text-sm text-muted-foreground mb-3">
                               CPT (Current Procedural Terminology) codes are 5-digit numeric codes that describe medical procedures and services.
                             </p>
-                            <div className="bg-blue-50 p-3 rounded-lg">
-                              <h5 className="font-medium text-blue-800 mb-2">Code Categories:</h5>
-                              <ul className="text-sm text-blue-700 space-y-1">
+                            <div className="bg-secondary p-3 rounded-lg">
+                              <h5 className="font-medium text-foreground mb-2">Code Categories:</h5>
+                              <ul className="text-sm text-foreground space-y-1">
                                 <li>• <strong>99201-99499:</strong> Evaluation & Management</li>
                                 <li>• <strong>10000-69999:</strong> Surgery</li>
                                 <li>• <strong>70000-79999:</strong> Radiology</li>
@@ -1346,7 +1346,7 @@ export default function CodeMastery() {
                         <div className="space-y-4">
                           <div>
                             <h4 className="font-semibold mb-2">ICD-10 Structure</h4>
-                            <p className="text-sm text-gray-600 mb-3">
+                            <p className="text-sm text-muted-foreground mb-3">
                               ICD-10 codes are alphanumeric codes up to 7 characters that describe diseases, conditions, and symptoms.
                             </p>
                             <div className="bg-red-50 p-3 rounded-lg">
@@ -1361,7 +1361,7 @@ export default function CodeMastery() {
                           </div>
                           <div>
                             <h4 className="font-semibold mb-2">Billing Impact</h4>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-muted-foreground">
                               ICD-10 codes determine medical necessity and justify the level of care billed. Mismatched diagnosis codes can lead to inappropriate billing levels.
                             </p>
                           </div>
@@ -1428,7 +1428,7 @@ export default function CodeMastery() {
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Target className="h-5 w-5 text-purple-600" />
+                      <Target className="h-5 w-5 text-muted-foreground" />
                       Professional Negotiation Tactics
                     </div>
                     {expandedSections['negotiation-tactics'] ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -1447,15 +1447,15 @@ export default function CodeMastery() {
                           <div>
                             <h4 className="font-semibold mb-2">The 3-Step Professional Approach</h4>
                             <div className="space-y-3">
-                              <div className="bg-purple-50 p-3 rounded-lg border-l-4 border-l-purple-500">
-                                <div className="font-medium text-purple-800">Step 1: Documentation Analysis</div>
-                                <p className="text-sm text-purple-700 mt-1">
+                              <div className="bg-secondary p-3 rounded-lg border-l-4 border-l-border">
+                                <div className="font-medium text-foreground">Step 1: Documentation Analysis</div>
+                                <p className="text-sm text-foreground mt-1">
                                   Request itemized bills, medical records, and coding documentation before any negotiation.
                                 </p>
                               </div>
-                              <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-l-blue-500">
-                                <div className="font-medium text-blue-800">Step 2: Error Identification</div>
-                                <p className="text-sm text-blue-700 mt-1">
+                              <div className="bg-secondary p-3 rounded-lg border-l-4 border-l-border">
+                                <div className="font-medium text-foreground">Step 2: Error Identification</div>
+                                <p className="text-sm text-foreground mt-1">
                                   Use professional coding resources to identify upcoding, unbundling, and phantom billing.
                                 </p>
                               </div>
@@ -1481,7 +1481,7 @@ export default function CodeMastery() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Settings className="h-5 w-5 text-gray-600" />
+                  <Settings className="h-5 w-5 text-muted-foreground" />
                   Professional Billing Tools
                 </CardTitle>
                 <CardDescription>
@@ -1494,19 +1494,19 @@ export default function CodeMastery() {
               <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Eye className="h-5 w-5 text-blue-600" />
+                    <Eye className="h-5 w-5 text-muted-foreground" />
                     NCCI Edit Checker
                   </CardTitle>
                   <CardDescription>Validate bundling rules and detect unbundling violations</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Check code pairs against Medicare's National Correct Coding Initiative edits to identify billing violations.
                     </div>
-                    <div className="bg-blue-50 p-3 rounded-lg">
-                      <div className="font-medium text-blue-800 mb-1">Features:</div>
-                      <ul className="text-sm text-blue-700 space-y-1">
+                    <div className="bg-secondary p-3 rounded-lg">
+                      <div className="font-medium text-foreground mb-1">Features:</div>
+                      <ul className="text-sm text-foreground space-y-1">
                         <li>• Real-time edit validation</li>
                         <li>• Modifier requirement alerts</li>
                         <li>• Bundling violation detection</li>
@@ -1530,7 +1530,7 @@ export default function CodeMastery() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Calculate fair pricing based on Medicare rates, geographic adjustments, and market data.
                     </div>
                     <div className="bg-green-50 p-3 rounded-lg">
@@ -1552,19 +1552,19 @@ export default function CodeMastery() {
               <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <FileText className="h-5 w-5 text-purple-600" />
+                    <FileText className="h-5 w-5 text-muted-foreground" />
                     Dispute Letter Generator
                   </CardTitle>
                   <CardDescription>Create professional billing dispute letters</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Generate legally-compliant dispute letters with specific code references and regulations.
                     </div>
-                    <div className="bg-purple-50 p-3 rounded-lg">
-                      <div className="font-medium text-purple-800 mb-1">Letter Types:</div>
-                      <ul className="text-sm text-purple-700 space-y-1">
+                    <div className="bg-secondary p-3 rounded-lg">
+                      <div className="font-medium text-foreground mb-1">Letter Types:</div>
+                      <ul className="text-sm text-foreground space-y-1">
                         <li>• Coding error disputes</li>
                         <li>• Overcharge challenges</li>
                         <li>• Medical necessity appeals</li>
@@ -1588,7 +1588,7 @@ export default function CodeMastery() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Analyze code patterns to detect systematic upcoding and inappropriate complexity levels.
                     </div>
                     <div className="bg-red-50 p-3 rounded-lg">
@@ -1617,7 +1617,7 @@ export default function CodeMastery() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Cross-reference time-based charges with medical record timestamps and anesthesia records.
                     </div>
                     <div className="bg-orange-50 p-3 rounded-lg">
@@ -1639,19 +1639,19 @@ export default function CodeMastery() {
               <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Database className="h-5 w-5 text-indigo-600" />
+                    <Database className="h-5 w-5 text-muted-foreground" />
                     Code Relationship Map
                   </CardTitle>
                   <CardDescription>Visualize code relationships and bundling rules</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Interactive visualization of code relationships, bundling requirements, and modifier rules.
                     </div>
-                    <div className="bg-indigo-50 p-3 rounded-lg">
-                      <div className="font-medium text-indigo-800 mb-1">Visualizations:</div>
-                      <ul className="text-sm text-indigo-700 space-y-1">
+                    <div className="bg-secondary p-3 rounded-lg">
+                      <div className="font-medium text-foreground mb-1">Visualizations:</div>
+                      <ul className="text-sm text-foreground space-y-1">
                         <li>• Code family trees</li>
                         <li>• Bundling relationships</li>
                         <li>• Exclusion patterns</li>
@@ -1674,21 +1674,21 @@ export default function CodeMastery() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">94%</div>
-                    <div className="text-sm text-gray-600">NCCI Edit Success Rate</div>
+                  <div className="text-center p-4 bg-secondary rounded-lg">
+                    <div className="text-2xl font-bold text-muted-foreground">94%</div>
+                    <div className="text-sm text-muted-foreground">NCCI Edit Success Rate</div>
                   </div>
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <div className="text-2xl font-bold text-green-600">$12K</div>
-                    <div className="text-sm text-gray-600">Avg Upcoding Savings</div>
+                    <div className="text-sm text-muted-foreground">Avg Upcoding Savings</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">89%</div>
-                    <div className="text-sm text-gray-600">Dispute Letter Success</div>
+                  <div className="text-center p-4 bg-secondary rounded-lg">
+                    <div className="text-2xl font-bold text-muted-foreground">89%</div>
+                    <div className="text-sm text-muted-foreground">Dispute Letter Success</div>
                   </div>
                   <div className="text-center p-4 bg-orange-50 rounded-lg">
                     <div className="text-2xl font-bold text-orange-600">76%</div>
-                    <div className="text-sm text-gray-600">Time Audit Accuracy</div>
+                    <div className="text-sm text-muted-foreground">Time Audit Accuracy</div>
                   </div>
                 </div>
               </CardContent>
@@ -1697,16 +1697,16 @@ export default function CodeMastery() {
         </Tabs>
 
         {/* Quick Action Bar */}
-        <Card className="bg-gradient-to-r from-blue-50 to-purple-50">
+        <Card className="bg-secondary">
           <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div>
-                <h3 className="font-semibold text-gray-900">Need Help with Your Bill?</h3>
-                <p className="text-sm text-gray-600">Professional billing analysis and dispute assistance</p>
+                <h3 className="font-semibold text-foreground">Need Help with Your Bill?</h3>
+                <p className="text-sm text-muted-foreground">Professional billing analysis and dispute assistance</p>
               </div>
               <div className="flex gap-3">
                 <Link href="/bill-ai">
-                  <Button className="bg-blue-600 hover:bg-blue-700" data-testid="button-bill-analysis">
+                  <Button className="bg-primary text-primary-foreground hover:opacity-90" data-testid="button-bill-analysis">
                     <Brain className="h-4 w-4 mr-2" />
                     Analyze My Bill
                   </Button>

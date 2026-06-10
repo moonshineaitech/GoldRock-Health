@@ -73,25 +73,25 @@ export default function DataSecurity() {
   const PROTECTION_CARDS = [
     {
       icon: Lock,
-      color: "text-emerald-600",
-      bg: "bg-emerald-50 dark:bg-emerald-950/30",
-      border: "border-emerald-200 dark:border-emerald-800",
+      color: "text-gold",
+      bg: "bg-card",
+      border: "border-border",
       title: "Encryption",
       items: ["AES-256 encryption at rest", "TLS 1.3 in transit", "Zero-knowledge file storage"],
     },
     {
       icon: Eye,
-      color: "text-blue-600",
-      bg: "bg-blue-50 dark:bg-blue-950/30",
-      border: "border-blue-200 dark:border-blue-800",
+      color: "text-gold",
+      bg: "bg-card",
+      border: "border-border",
       title: "Access Control",
       items: ["Only you can access your files", "Private ACL on all uploads", "Session-based authentication"],
     },
     {
       icon: Server,
-      color: "text-purple-600",
-      bg: "bg-purple-50 dark:bg-purple-950/30",
-      border: "border-purple-200 dark:border-purple-800",
+      color: "text-gold",
+      bg: "bg-card",
+      border: "border-border",
       title: "Data Residency",
       items: ["US-only servers", "No international data transfers", "HIPAA-aligned infrastructure"],
     },
@@ -115,12 +115,15 @@ export default function DataSecurity() {
       <div className="p-4 space-y-5 max-w-3xl mx-auto pb-10">
 
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-5 text-white">
+          <div
+            className="rounded-2xl p-5 text-white"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+          >
             <div className="flex items-center gap-3 mb-2">
               <Shield className="w-7 h-7" />
-              <h1 className="text-xl font-bold">Your Data Security</h1>
+              <h1 className="text-xl font-serif font-semibold">Your Data Security</h1>
             </div>
-            <p className="text-indigo-100 text-sm">
+            <p className="text-white/80 text-sm">
               Understand exactly how your medical billing information is protected, processed, and controlled.
             </p>
             <div className="mt-3 flex items-center gap-2">
@@ -132,8 +135,8 @@ export default function DataSecurity() {
 
         {/* Protection Standards */}
         <section>
-          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-            <Lock className="w-4 h-4 text-indigo-600" /> How Your Data Is Protected
+          <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Lock className="w-4 h-4 text-gold" /> How Your Data Is Protected
           </h2>
           <div className="grid gap-3 sm:grid-cols-3">
             {PROTECTION_CARDS.map((card) => {
@@ -143,12 +146,12 @@ export default function DataSecurity() {
                   <CardContent className={`p-4 ${card.bg} h-full`}>
                     <div className="flex items-center gap-2 mb-2">
                       <Icon className={`w-4 h-4 ${card.color}`} />
-                      <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">{card.title}</p>
+                      <p className="font-semibold text-sm text-foreground">{card.title}</p>
                     </div>
                     <ul className="space-y-1">
                       {card.items.map((item) => (
-                        <li key={item} className="flex items-start gap-1.5 text-xs text-gray-600 dark:text-gray-400">
-                          <CheckCircle2 className="w-3 h-3 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        <li key={item} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+                          <CheckCircle2 className="w-3 h-3 text-gold mt-0.5 flex-shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -162,40 +165,40 @@ export default function DataSecurity() {
 
         {/* Data Retention */}
         <section>
-          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-            <Clock className="w-4 h-4 text-indigo-600" /> Data Retention
+          <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Clock className="w-4 h-4 text-gold" /> Data Retention
           </h2>
           <Card>
             <CardContent className="p-4 space-y-3">
               <div className="flex items-start gap-3 p-3 bg-amber-50 dark:bg-amber-950/30 rounded-lg border border-amber-200 dark:border-amber-800">
                 <Clock className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Bill analyses &amp; chat history</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                  <p className="text-sm font-semibold text-foreground">Bill analyses &amp; chat history</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     Automatically deleted 30 days after creation. You do not need to do anything.
                   </p>
                 </div>
-                <Badge className="ml-auto bg-amber-100 text-amber-700 border-0 text-xs flex-shrink-0">30 days</Badge>
+                <Badge className="ml-auto bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400 border-0 text-xs flex-shrink-0">30 days</Badge>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-                <FileText className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="flex items-start gap-3 p-3 bg-secondary rounded-lg border border-border">
+                <FileText className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Uploaded documents</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                  <p className="text-sm font-semibold text-foreground">Uploaded documents</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     Kept until you delete them from your Document Vault or delete your account.
                   </p>
                 </div>
-                <Badge className="ml-auto bg-blue-100 text-blue-700 border-0 text-xs flex-shrink-0">You control</Badge>
+                <Badge className="ml-auto bg-background text-muted-foreground border border-border text-xs flex-shrink-0">You control</Badge>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                <Database className="w-4 h-4 text-gray-600 mt-0.5 flex-shrink-0" />
+              <div className="flex items-start gap-3 p-3 bg-secondary rounded-lg border border-border">
+                <Database className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Account data</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                  <p className="text-sm font-semibold text-foreground">Account data</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     Kept until you delete your account. Includes name, email, and subscription status.
                   </p>
                 </div>
-                <Badge className="ml-auto bg-gray-100 text-gray-700 border-0 text-xs flex-shrink-0">Account lifetime</Badge>
+                <Badge className="ml-auto bg-background text-muted-foreground border border-border text-xs flex-shrink-0">Account lifetime</Badge>
               </div>
             </CardContent>
           </Card>
@@ -203,19 +206,19 @@ export default function DataSecurity() {
 
         {/* AI Processing */}
         <section>
-          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-            <Globe className="w-4 h-4 text-indigo-600" /> AI Processing Disclosure
+          <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-gold" /> AI Processing Disclosure
           </h2>
           <div className="space-y-3">
             {AI_PROVIDERS.map((provider) => (
               <Card key={provider.name}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-1">
-                    <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">{provider.name}</p>
+                    <p className="font-semibold text-sm text-foreground">{provider.name}</p>
                     <Badge className="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400 border-0 text-xs">DPA in place</Badge>
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Used for: {provider.purpose}</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">{provider.protections}</p>
+                  <p className="text-xs text-muted-foreground mb-2">Used for: {provider.purpose}</p>
+                  <p className="text-xs text-muted-foreground">{provider.protections}</p>
                 </CardContent>
               </Card>
             ))}
@@ -224,19 +227,19 @@ export default function DataSecurity() {
 
         {/* HIPAA */}
         <section>
-          <Card className="border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30">
+          <Card className="border-border bg-secondary">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Shield className="w-4 h-4 text-indigo-600" />
-                <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">HIPAA-Aligned Practices</p>
+                <Shield className="w-4 h-4 text-gold" />
+                <p className="font-semibold text-sm text-foreground">HIPAA-Aligned Practices</p>
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
+              <p className="text-xs text-muted-foreground mb-3">
                 GoldRock Health follows HIPAA-aligned data handling practices for medical billing information.
                 Enterprise and insurance customers can request a Business Associate Agreement (BAA).
               </p>
               <a
                 href="mailto:CONTACT@GOLDROCK.ai"
-                className="text-xs text-indigo-600 hover:underline inline-flex items-center gap-1"
+                className="text-xs text-gold hover:underline inline-flex items-center gap-1"
               >
                 <Mail className="w-3 h-3" /> Request a BAA — CONTACT@GOLDROCK.ai
               </a>
@@ -246,17 +249,17 @@ export default function DataSecurity() {
 
         {/* App Security */}
         <section>
-          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-            <Fingerprint className="w-4 h-4 text-indigo-600" /> App Security
+          <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Fingerprint className="w-4 h-4 text-gold" /> App Security
           </h2>
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-start gap-3">
-                  <Fingerprint className="w-5 h-5 text-indigo-600 mt-0.5" />
+                  <Fingerprint className="w-5 h-5 text-gold mt-0.5" />
                   <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Biometric Lock</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-sm font-semibold text-foreground">Biometric Lock</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       Require Face ID or Touch ID to open the app
                     </p>
                   </div>
@@ -265,7 +268,7 @@ export default function DataSecurity() {
                   variant={biometricEnabled ? "default" : "outline"}
                   size="sm"
                   onClick={handleBiometricToggle}
-                  className={biometricEnabled ? "bg-indigo-600 hover:bg-indigo-700" : ""}
+                  className=""
                 >
                   {biometricEnabled ? "Enabled" : "Enable"}
                 </Button>
@@ -277,15 +280,15 @@ export default function DataSecurity() {
         {/* Your Controls */}
         {isAuthenticated && (
           <section>
-            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-              <Database className="w-4 h-4 text-indigo-600" /> Your Controls
+            <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Database className="w-4 h-4 text-gold" /> Your Controls
             </h2>
             <Card>
               <CardContent className="p-4 space-y-3">
-                <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+                <div className="flex items-center justify-between py-2 border-b border-border">
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Export your data</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Download all your data as a JSON file</p>
+                    <p className="text-sm font-medium text-foreground">Export your data</p>
+                    <p className="text-xs text-muted-foreground">Download all your data as a JSON file</p>
                   </div>
                   <Button
                     variant="outline"
@@ -298,10 +301,10 @@ export default function DataSecurity() {
                   </Button>
                 </div>
 
-                <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+                <div className="flex items-center justify-between py-2 border-b border-border">
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Delete health data</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Remove all bill analyses, documents, and chat history</p>
+                    <p className="text-sm font-medium text-foreground">Delete health data</p>
+                    <p className="text-xs text-muted-foreground">Remove all bill analyses, documents, and chat history</p>
                   </div>
                   {confirmDelete ? (
                     <div className="flex gap-2">
@@ -319,7 +322,7 @@ export default function DataSecurity() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="text-rose-600 border-rose-200 hover:bg-rose-50"
+                      className="text-rose-600 border-rose-200 hover:bg-rose-50 dark:text-rose-400 dark:border-rose-900 dark:hover:bg-rose-950"
                       onClick={() => setConfirmDelete(true)}
                     >
                       <Trash2 className="w-3.5 h-3.5 mr-1" />
@@ -330,11 +333,11 @@ export default function DataSecurity() {
 
                 <div className="flex items-center justify-between py-2">
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Delete account</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Permanently remove your account and all data</p>
+                    <p className="text-sm font-medium text-foreground">Delete account</p>
+                    <p className="text-xs text-muted-foreground">Permanently remove your account and all data</p>
                   </div>
                   <Link href="/settings">
-                    <Button variant="ghost" size="sm" className="text-gray-600">
+                    <Button variant="ghost" size="sm" className="text-muted-foreground">
                       <ExternalLink className="w-3.5 h-3.5 mr-1" />
                       Settings
                     </Button>
@@ -346,19 +349,19 @@ export default function DataSecurity() {
         )}
 
         {!isAuthenticated && (
-          <Card className="border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+          <Card className="border-border bg-secondary">
             <CardContent className="p-4 text-center">
-              <Lock className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-600 dark:text-gray-400">Sign in to manage your personal data and security settings.</p>
+              <Lock className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">Sign in to manage your personal data and security settings.</p>
               <Button className="mt-3" onClick={() => window.location.href = "/api/login"}>Sign In</Button>
             </CardContent>
           </Card>
         )}
 
-        <div className="text-center text-xs text-gray-400 dark:text-gray-500 pt-2 space-x-3">
-          <a href="/privacy-policy" className="hover:text-indigo-600">Privacy Policy</a>
+        <div className="text-center text-xs text-muted-foreground pt-2 space-x-3">
+          <a href="/privacy-policy" className="hover:text-gold">Privacy Policy</a>
           <span>·</span>
-          <a href="mailto:CONTACT@GOLDROCK.ai" className="hover:text-indigo-600">CONTACT@GOLDROCK.ai</a>
+          <a href="mailto:CONTACT@GOLDROCK.ai" className="hover:text-gold">CONTACT@GOLDROCK.ai</a>
         </div>
       </div>
     </MobileLayout>

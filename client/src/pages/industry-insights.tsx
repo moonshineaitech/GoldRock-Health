@@ -795,7 +795,8 @@ function PremiumGate() {
         transition={{ duration: 0.6 }}
       >
         <motion.div 
-          className="w-16 h-16 bg-gradient-to-br from-purple-400 via-indigo-500 to-blue-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-purple-500/25"
+          className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, duration: 0.4 }}
@@ -804,7 +805,7 @@ function PremiumGate() {
         </motion.div>
         
         <motion.h1 
-          className="text-2xl font-bold text-gray-900 mb-4"
+          className="text-2xl font-bold font-serif text-foreground mb-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.4 }}
@@ -813,7 +814,7 @@ function PremiumGate() {
         </motion.h1>
         
         <motion.p 
-          className="text-base text-gray-600 mb-8 max-w-sm mx-auto"
+          className="text-base text-muted-foreground mb-8 max-w-sm mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.4 }}
@@ -826,32 +827,32 @@ function PremiumGate() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.4 }}
         >
-          <MobileCard className="bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200 mb-6">
+          <MobileCard className="bg-card border border-border mb-6">
             <div className="text-center">
-              <Lock className="h-8 w-8 text-purple-600 mx-auto mb-3" />
-              <h3 className="font-semibold text-purple-900 mb-2">Premium Industry Intelligence</h3>
-              <p className="text-sm text-purple-700 mb-4 leading-relaxed">
+              <Lock className="h-8 w-8 text-gold mx-auto mb-3" />
+              <h3 className="font-semibold text-foreground mb-2">Premium Industry Intelligence</h3>
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                 Comprehensive insider knowledge from 20+ year industry veterans
               </p>
-              <div className="space-y-2 text-left text-sm text-purple-800">
+              <div className="space-y-2 text-left text-sm text-foreground">
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 mr-2 text-purple-600" />
+                  <CheckCircle className="h-4 w-4 mr-2 text-gold" />
                   <span>Hospital revenue cycle operations and pressure points</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 mr-2 text-purple-600" />
+                  <CheckCircle className="h-4 w-4 mr-2 text-gold" />
                   <span>Chargemaster pricing strategies and markup schemes</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 mr-2 text-purple-600" />
+                  <CheckCircle className="h-4 w-4 mr-2 text-gold" />
                   <span>Insurance denial tactics and counter-strategies</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 mr-2 text-purple-600" />
+                  <CheckCircle className="h-4 w-4 mr-2 text-gold" />
                   <span>Federal regulations and state-level protections</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 mr-2 text-purple-600" />
+                  <CheckCircle className="h-4 w-4 mr-2 text-gold" />
                   <span>Professional negotiation techniques and timing</span>
                 </div>
               </div>
@@ -859,7 +860,7 @@ function PremiumGate() {
           </MobileCard>
 
           <Link href="/premium" data-testid="link-upgrade-premium">
-            <MobileButton size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700" data-testid="button-upgrade-premium">
+            <MobileButton size="lg" className="bg-primary text-primary-foreground" data-testid="button-upgrade-premium">
               <Crown className="h-5 w-5 mr-2" />
               Unlock Industry Secrets
               <ArrowRight className="h-4 w-4 ml-2" />
@@ -880,7 +881,7 @@ export default function IndustryInsights() {
     return (
       <MobileLayout title="Industry Insights" showBottomNav={true}>
         <div className="flex items-center justify-center py-20">
-          <div className="animate-spin w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-gold border-t-transparent rounded-full"></div>
         </div>
       </MobileLayout>
     );
@@ -916,7 +917,8 @@ export default function IndustryInsights() {
           transition={{ duration: 0.6 }}
         >
           <motion.div 
-            className="w-16 h-16 bg-gradient-to-br from-purple-400 via-indigo-500 to-blue-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-purple-500/25"
+            className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-sm"
+            style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, duration: 0.4 }}
@@ -925,7 +927,7 @@ export default function IndustryInsights() {
           </motion.div>
           
           <motion.h1 
-            className="text-2xl font-bold text-gray-900 mb-2"
+            className="text-2xl font-bold font-serif text-foreground mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.4 }}
@@ -934,7 +936,7 @@ export default function IndustryInsights() {
           </motion.h1>
           
           <motion.p 
-            className="text-base text-gray-600 max-w-sm mx-auto"
+            className="text-base text-muted-foreground max-w-sm mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.4 }}
@@ -962,24 +964,24 @@ export default function IndustryInsights() {
                 transition={{ delay: 0.6 + index * 0.1, duration: 0.4 }}
               >
                 <MobileCard 
-                  className="bg-gradient-to-r from-slate-50 to-blue-50 border-slate-200 hover:shadow-lg transition-all cursor-pointer"
+                  className="bg-card border border-border hover:shadow-md transition-all cursor-pointer"
                   onClick={() => setExpandedSection(isExpanded ? null : section.title)}
                   data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <IconComponent className="h-6 w-6 text-blue-600" />
+                    <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0">
+                      <IconComponent className="h-6 w-6 text-muted-foreground" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
-                        <h2 className="text-lg font-bold text-gray-900">{section.title}</h2>
+                        <h2 className="text-lg font-bold font-serif text-foreground">{section.title}</h2>
                         {isExpanded ? (
-                          <ChevronUp className="h-5 w-5 text-gray-400" />
+                          <ChevronUp className="h-5 w-5 text-muted-foreground" />
                         ) : (
-                          <ChevronDown className="h-5 w-5 text-gray-400" />
+                          <ChevronDown className="h-5 w-5 text-muted-foreground" />
                         )}
                       </div>
-                      <p className="text-sm text-gray-600 leading-relaxed">{section.description}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{section.description}</p>
                     </div>
                   </div>
                   
@@ -989,7 +991,7 @@ export default function IndustryInsights() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="border-t border-gray-200 pt-6 mt-6"
+                      className="border-t border-border pt-6 mt-6"
                     >
                       {/* Revenue Cycle Content */}
                       {section.title === "Hospital Revenue Cycle 101" && (
@@ -999,14 +1001,14 @@ export default function IndustryInsights() {
                             return (
                               <div key={subIndex} className="space-y-4">
                                 <div className="flex items-center space-x-3 mb-4">
-                                  <SubIconComponent className="h-5 w-5 text-blue-600" />
-                                  <h3 className="text-lg font-semibold text-gray-900">{subsection.title}</h3>
+                                  <SubIconComponent className="h-5 w-5 text-gold" />
+                                  <h3 className="text-lg font-semibold font-serif text-foreground">{subsection.title}</h3>
                                 </div>
                                 
                                 {subsection.content && subsection.content.map((item, itemIndex) => (
-                                  <div key={itemIndex} className="bg-white/60 rounded-lg p-4 border border-gray-200">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{item.stage}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{item.description}</p>
+                                  <div key={itemIndex} className="bg-card rounded-lg p-4 border border-border">
+                                    <h4 className="font-semibold text-foreground mb-2">{item.stage}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
                                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
                                       <div className="flex items-start space-x-2">
                                         <Lightbulb className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -1029,9 +1031,9 @@ export default function IndustryInsights() {
                                 ))}
 
                                 {subsection.insights && subsection.insights.map((insight, insightIndex) => (
-                                  <div key={insightIndex} className="bg-white/60 rounded-lg p-4 border border-gray-200">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{insight.stage}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
+                                  <div key={insightIndex} className="bg-card rounded-lg p-4 border border-border">
+                                    <h4 className="font-semibold text-foreground mb-2">{insight.stage}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3">{insight.description}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1057,14 +1059,14 @@ export default function IndustryInsights() {
                             return (
                               <div key={subIndex} className="space-y-4">
                                 <div className="flex items-center space-x-3 mb-4">
-                                  <SubIconComponent className="h-5 w-5 text-blue-600" />
-                                  <h3 className="text-lg font-semibold text-gray-900">{subsection.title}</h3>
+                                  <SubIconComponent className="h-5 w-5 text-gold" />
+                                  <h3 className="text-lg font-semibold font-serif text-foreground">{subsection.title}</h3>
                                 </div>
 
                                 {subsection.content && subsection.content.map((item, itemIndex) => (
-                                  <div key={itemIndex} className="bg-white/60 rounded-lg p-4 border border-gray-200">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{item.concept}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{item.explanation}</p>
+                                  <div key={itemIndex} className="bg-card rounded-lg p-4 border border-border">
+                                    <h4 className="font-semibold text-foreground mb-2">{item.concept}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3">{item.explanation}</p>
                                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Lightbulb className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -1080,14 +1082,14 @@ export default function IndustryInsights() {
                                 {subsection.markups && (
                                   <div className="grid gap-4">
                                     {subsection.markups.map((markup, markupIndex) => (
-                                      <div key={markupIndex} className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                      <div key={markupIndex} className="bg-card border border-border rounded-lg p-4">
                                         <div className="flex justify-between items-start mb-3">
-                                          <h4 className="font-semibold text-gray-900">{markup.category}</h4>
+                                          <h4 className="font-semibold text-foreground">{markup.category}</h4>
                                           <span className="text-sm font-bold text-red-700 bg-red-100 px-2 py-1 rounded">
                                             {markup.typicalMarkup}
                                           </span>
                                         </div>
-                                        <p className="text-sm text-gray-700 mb-2"><strong>Example:</strong> {markup.example}</p>
+                                        <p className="text-sm text-muted-foreground mb-2"><strong>Example:</strong> {markup.example}</p>
                                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                           <div className="flex items-start space-x-2">
                                             <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1105,9 +1107,9 @@ export default function IndustryInsights() {
                                 {subsection.loopholes && (
                                   <div className="grid gap-4">
                                     {subsection.loopholes.map((loophole, loopholeIndex) => (
-                                      <div key={loopholeIndex} className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                                        <h4 className="font-semibold text-gray-900 mb-2">{loophole.title}</h4>
-                                        <p className="text-sm text-gray-700 mb-3">{loophole.description}</p>
+                                      <div key={loopholeIndex} className="bg-card border border-border rounded-lg p-4">
+                                        <h4 className="font-semibold text-foreground mb-2">{loophole.title}</h4>
+                                        <p className="text-sm text-muted-foreground mb-3">{loophole.description}</p>
                                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                           <div className="flex items-start space-x-2">
                                             <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1133,29 +1135,29 @@ export default function IndustryInsights() {
                           {overchargeSchemes.schemes.map((scheme, schemeIndex) => {
                             const SchemeIconComponent = scheme.icon;
                             return (
-                              <div key={schemeIndex} className="bg-red-50 border border-red-200 rounded-lg p-4">
+                              <div key={schemeIndex} className="bg-card border border-border rounded-lg p-4">
                                 <div className="flex items-start space-x-3 mb-4">
                                   <SchemeIconComponent className="h-6 w-6 text-red-600 mt-1" />
                                   <div className="flex-1">
                                     <div className="flex justify-between items-start mb-2">
-                                      <h3 className="text-lg font-semibold text-gray-900">{scheme.title}</h3>
+                                      <h3 className="text-lg font-semibold font-serif text-foreground">{scheme.title}</h3>
                                       <span className="text-sm font-bold text-red-700 bg-red-100 px-2 py-1 rounded">
                                         {scheme.avgOvercharge}
                                       </span>
                                     </div>
-                                    <p className="text-sm text-gray-700 mb-4">{scheme.description}</p>
+                                    <p className="text-sm text-muted-foreground mb-4">{scheme.description}</p>
                                   </div>
                                 </div>
 
                                 <div className="grid gap-4 md:grid-cols-2">
                                   <div className="space-y-3">
-                                    <h4 className="font-semibold text-gray-900 flex items-center">
+                                    <h4 className="font-semibold text-foreground flex items-center">
                                       <AlertTriangle className="h-4 w-4 text-orange-600 mr-2" />
                                       Common Methods
                                     </h4>
                                     <ul className="space-y-2">
                                       {scheme.methods.map((method, methodIndex) => (
-                                        <li key={methodIndex} className="text-sm text-gray-700 flex items-start">
+                                        <li key={methodIndex} className="text-sm text-muted-foreground flex items-start">
                                           <span className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
                                           {method}
                                         </li>
@@ -1164,14 +1166,14 @@ export default function IndustryInsights() {
                                   </div>
 
                                   <div className="space-y-3">
-                                    <h4 className="font-semibold text-gray-900 flex items-center">
-                                      <Search className="h-4 w-4 text-blue-600 mr-2" />
+                                    <h4 className="font-semibold text-foreground flex items-center">
+                                      <Search className="h-4 w-4 text-muted-foreground mr-2" />
                                       Detection Tips
                                     </h4>
                                     <ul className="space-y-2">
                                       {scheme.detection.map((tip, tipIndex) => (
-                                        <li key={tipIndex} className="text-sm text-gray-700 flex items-start">
-                                          <span className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                        <li key={tipIndex} className="text-sm text-muted-foreground flex items-start">
+                                          <span className="w-2 h-2 bg-muted-foreground rounded-full mt-2 mr-2 flex-shrink-0"></span>
                                           {tip}
                                         </li>
                                       ))}
@@ -1202,14 +1204,14 @@ export default function IndustryInsights() {
                             return (
                               <div key={subIndex} className="space-y-4">
                                 <div className="flex items-center space-x-3 mb-4">
-                                  <SubIconComponent className="h-5 w-5 text-blue-600" />
-                                  <h3 className="text-lg font-semibold text-gray-900">{subsection.title}</h3>
+                                  <SubIconComponent className="h-5 w-5 text-gold" />
+                                  <h3 className="text-lg font-semibold font-serif text-foreground">{subsection.title}</h3>
                                 </div>
 
                                 {subsection.strategies && subsection.strategies.map((strategy, strategyIndex) => (
-                                  <div key={strategyIndex} className="bg-red-50 border border-red-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{strategy.tactic}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{strategy.description}</p>
+                                  <div key={strategyIndex} className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-2">{strategy.tactic}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3">{strategy.description}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1223,9 +1225,9 @@ export default function IndustryInsights() {
                                 ))}
 
                                 {subsection.tactics && subsection.tactics.map((tactic, tacticIndex) => (
-                                  <div key={tacticIndex} className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{tactic.method}</h4>
-                                    <p className="text-sm text-gray-700 mb-3"><strong>Purpose:</strong> {tactic.purpose}</p>
+                                  <div key={tacticIndex} className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-2">{tactic.method}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3"><strong>Purpose:</strong> {tactic.purpose}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1241,15 +1243,15 @@ export default function IndustryInsights() {
                                 {subsection.levels && (
                                   <div className="grid gap-4">
                                     {subsection.levels.map((level, levelIndex) => (
-                                      <div key={levelIndex} className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                      <div key={levelIndex} className="bg-card border border-border rounded-lg p-4">
                                         <div className="flex justify-between items-start mb-3">
-                                          <h4 className="font-semibold text-gray-900">{level.level}</h4>
+                                          <h4 className="font-semibold text-foreground">{level.level}</h4>
                                           <div className="text-right">
-                                            <div className="text-sm text-blue-700 font-medium">Success Rate: {level.successRate}</div>
-                                            <div className="text-xs text-blue-600">{level.timeline}</div>
+                                            <div className="text-sm text-muted-foreground font-medium">Success Rate: {level.successRate}</div>
+                                            <div className="text-xs text-muted-foreground">{level.timeline}</div>
                                           </div>
                                         </div>
-                                        <p className="text-sm text-gray-700">{level.tips}</p>
+                                        <p className="text-sm text-muted-foreground">{level.tips}</p>
                                       </div>
                                     ))}
                                   </div>
@@ -1268,14 +1270,14 @@ export default function IndustryInsights() {
                             return (
                               <div key={subIndex} className="space-y-4">
                                 <div className="flex items-center space-x-3 mb-4">
-                                  <SubIconComponent className="h-5 w-5 text-blue-600" />
-                                  <h3 className="text-lg font-semibold text-gray-900">{subsection.title}</h3>
+                                  <SubIconComponent className="h-5 w-5 text-gold" />
+                                  <h3 className="text-lg font-semibold font-serif text-foreground">{subsection.title}</h3>
                                 </div>
 
                                 {subsection.protections && subsection.protections.map((protection, protectionIndex) => (
-                                  <div key={protectionIndex} className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{protection.protection}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{protection.detail}</p>
+                                  <div key={protectionIndex} className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-2">{protection.protection}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3">{protection.detail}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1289,9 +1291,9 @@ export default function IndustryInsights() {
                                 ))}
 
                                 {subsection.requirements && subsection.requirements.map((requirement, requirementIndex) => (
-                                  <div key={requirementIndex} className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{requirement.rule}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{requirement.detail}</p>
+                                  <div key={requirementIndex} className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-2">{requirement.rule}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3">{requirement.detail}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1307,10 +1309,10 @@ export default function IndustryInsights() {
                                 {subsection.process && (
                                   <div className="space-y-3">
                                     {subsection.process.map((step, stepIndex) => (
-                                      <div key={stepIndex} className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                                        <h4 className="font-semibold text-gray-900 mb-2">{step.step}</h4>
-                                        <p className="text-sm text-gray-700 mb-2">{step.detail}</p>
-                                        {step.timeline && <p className="text-xs text-purple-600 mb-2"><strong>Timeline:</strong> {step.timeline}</p>}
+                                      <div key={stepIndex} className="bg-card border border-border rounded-lg p-4">
+                                        <h4 className="font-semibold text-foreground mb-2">{step.step}</h4>
+                                        <p className="text-sm text-muted-foreground mb-2">{step.detail}</p>
+                                        {step.timeline && <p className="text-xs text-muted-foreground mb-2"><strong>Timeline:</strong> {step.timeline}</p>}
                                         {step.strategy && (
                                           <div className="bg-amber-50 border border-amber-200 rounded-lg p-2">
                                             <span className="text-sm font-medium text-amber-800">Strategy: </span>
@@ -1341,15 +1343,15 @@ export default function IndustryInsights() {
                             return (
                               <div key={subIndex} className="space-y-4">
                                 <div className="flex items-center space-x-3 mb-4">
-                                  <SubIconComponent className="h-5 w-5 text-blue-600" />
-                                  <h3 className="text-lg font-semibold text-gray-900">{subsection.title}</h3>
+                                  <SubIconComponent className="h-5 w-5 text-gold" />
+                                  <h3 className="text-lg font-semibold font-serif text-foreground">{subsection.title}</h3>
                                 </div>
 
                                 {subsection.benchmarks && (
                                   <div className="grid gap-4">
                                     {subsection.benchmarks.map((benchmark, benchmarkIndex) => (
-                                      <div key={benchmarkIndex} className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                                        <h4 className="font-semibold text-gray-900 mb-3">{benchmark.service}</h4>
+                                      <div key={benchmarkIndex} className="bg-card border border-border rounded-lg p-4">
+                                        <h4 className="font-semibold text-foreground mb-3">{benchmark.service}</h4>
                                         <div className="grid grid-cols-3 gap-3 text-sm">
                                           <div className="text-center p-2 bg-green-100 rounded">
                                             <div className="font-medium text-green-800">Medicare</div>
@@ -1359,9 +1361,9 @@ export default function IndustryInsights() {
                                             <div className="font-medium text-red-800">Typical Charge</div>
                                             <div className="text-red-600">{benchmark.averageCharged}</div>
                                           </div>
-                                          <div className="text-center p-2 bg-blue-100 rounded">
-                                            <div className="font-medium text-blue-800">Fair Target</div>
-                                            <div className="text-blue-600">{benchmark.fairNegotiation}</div>
+                                          <div className="text-center p-2 bg-secondary rounded">
+                                            <div className="font-medium text-foreground">Fair Target</div>
+                                            <div className="text-muted-foreground">{benchmark.fairNegotiation}</div>
                                           </div>
                                         </div>
                                         <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">
@@ -1378,16 +1380,16 @@ export default function IndustryInsights() {
                                 {subsection.regions && (
                                   <div className="grid gap-4">
                                     {subsection.regions.map((region, regionIndex) => (
-                                      <div key={regionIndex} className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                      <div key={regionIndex} className="bg-card border border-border rounded-lg p-4">
                                         <div className="flex justify-between items-start mb-3">
-                                          <h4 className="font-semibold text-gray-900">{region.region}</h4>
+                                          <h4 className="font-semibold text-foreground">{region.region}</h4>
                                           <span className="text-sm font-bold text-orange-700 bg-orange-100 px-2 py-1 rounded">
                                             {region.costIndex}
                                           </span>
                                         </div>
                                         <div className="mb-3">
-                                          <span className="text-sm font-medium text-gray-800">Key Factors: </span>
-                                          <span className="text-sm text-gray-600">{region.factors.join(', ')}</span>
+                                          <span className="text-sm font-medium text-foreground">Key Factors: </span>
+                                          <span className="text-sm text-muted-foreground">{region.factors.join(', ')}</span>
                                         </div>
                                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                           <div className="flex items-start space-x-2">
@@ -1406,9 +1408,9 @@ export default function IndustryInsights() {
                                 {subsection.factors && (
                                   <div className="space-y-3">
                                     {subsection.factors.map((factor, factorIndex) => (
-                                      <div key={factorIndex} className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                                        <h4 className="font-semibold text-gray-900 mb-2">{factor.factor}</h4>
-                                        <p className="text-sm text-gray-700 mb-3"><strong>Impact:</strong> {factor.impact}</p>
+                                      <div key={factorIndex} className="bg-card border border-border rounded-lg p-4">
+                                        <h4 className="font-semibold text-foreground mb-2">{factor.factor}</h4>
+                                        <p className="text-sm text-muted-foreground mb-3"><strong>Impact:</strong> {factor.impact}</p>
                                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                           <div className="flex items-start space-x-2">
                                             <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1436,14 +1438,14 @@ export default function IndustryInsights() {
                             return (
                               <div key={subIndex} className="space-y-4">
                                 <div className="flex items-center space-x-3 mb-4">
-                                  <SubIconComponent className="h-5 w-5 text-blue-600" />
-                                  <h3 className="text-lg font-semibold text-gray-900">{subsection.title}</h3>
+                                  <SubIconComponent className="h-5 w-5 text-gold" />
+                                  <h3 className="text-lg font-semibold font-serif text-foreground">{subsection.title}</h3>
                                 </div>
 
                                 {subsection.states && subsection.states.map((state, stateIndex) => (
-                                  <div key={stateIndex} className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                  <div key={stateIndex} className="bg-card border border-border rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-3">
-                                      <h4 className="font-semibold text-gray-900">{state.state}</h4>
+                                      <h4 className="font-semibold text-foreground">{state.state}</h4>
                                       {state.keyLaw && (
                                         <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded">
                                           {state.keyLaw}
@@ -1453,10 +1455,10 @@ export default function IndustryInsights() {
                                     
                                     <div className="space-y-3">
                                       <div>
-                                        <span className="text-sm font-medium text-gray-800">Protections:</span>
+                                        <span className="text-sm font-medium text-foreground">Protections:</span>
                                         <ul className="mt-2 space-y-1">
                                           {state.protections.map((protection, protectionIndex) => (
-                                            <li key={protectionIndex} className="text-sm text-gray-700 flex items-start">
+                                            <li key={protectionIndex} className="text-sm text-muted-foreground flex items-start">
                                               <CheckCircle className="h-3 w-3 text-green-600 mt-1 mr-2 flex-shrink-0" />
                                               {protection}
                                             </li>
@@ -1492,11 +1494,11 @@ export default function IndustryInsights() {
                                 ))}
 
                                 {subsection.strategies && (
-                                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-3">Limited Protection State Strategies:</h4>
+                                  <div className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-3">Limited Protection State Strategies:</h4>
                                     <ul className="space-y-2">
                                       {subsection.strategies.map((strategy, strategyIndex) => (
-                                        <li key={strategyIndex} className="text-sm text-gray-700 flex items-start">
+                                        <li key={strategyIndex} className="text-sm text-muted-foreground flex items-start">
                                           <Target className="h-3 w-3 text-orange-600 mt-1 mr-2 flex-shrink-0" />
                                           {strategy}
                                         </li>
@@ -1518,14 +1520,14 @@ export default function IndustryInsights() {
                             return (
                               <div key={subIndex} className="space-y-4">
                                 <div className="flex items-center space-x-3 mb-4">
-                                  <SubIconComponent className="h-5 w-5 text-blue-600" />
-                                  <h3 className="text-lg font-semibold text-gray-900">{subsection.title}</h3>
+                                  <SubIconComponent className="h-5 w-5 text-gold" />
+                                  <h3 className="text-lg font-semibold font-serif text-foreground">{subsection.title}</h3>
                                 </div>
 
                                 {subsection.tips && subsection.tips.map((tip, tipIndex) => (
-                                  <div key={tipIndex} className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{tip.insight}</h4>
-                                    <p className="text-sm text-gray-700 mb-3">{tip.detail}</p>
+                                  <div key={tipIndex} className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-2">{tip.insight}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3">{tip.detail}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Lightbulb className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1539,9 +1541,9 @@ export default function IndustryInsights() {
                                 ))}
 
                                 {subsection.tactics && subsection.tactics.map((tactic, tacticIndex) => (
-                                  <div key={tacticIndex} className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{tactic.timing}</h4>
-                                    <p className="text-sm text-gray-700 mb-3"><strong>Rationale:</strong> {tactic.rationale}</p>
+                                  <div key={tacticIndex} className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-2">{tactic.timing}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3"><strong>Rationale:</strong> {tactic.rationale}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <Target className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1556,8 +1558,8 @@ export default function IndustryInsights() {
 
                                 {subsection.strategies && subsection.strategies.map((strategy, strategyIndex) => (
                                   <div key={strategyIndex} className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-2">{strategy.document}</h4>
-                                    <p className="text-sm text-gray-700 mb-3"><strong>Purpose:</strong> {strategy.purpose}</p>
+                                    <h4 className="font-semibold text-foreground mb-2">{strategy.document}</h4>
+                                    <p className="text-sm text-muted-foreground mb-3"><strong>Purpose:</strong> {strategy.purpose}</p>
                                     <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
                                       <div className="flex items-start space-x-2">
                                         <FileCheck className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
@@ -1571,8 +1573,8 @@ export default function IndustryInsights() {
                                 ))}
 
                                 {subsection.techniques && subsection.techniques.map((technique, techniqueIndex) => (
-                                  <div key={techniqueIndex} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                                    <h4 className="font-semibold text-gray-900 mb-3">{technique.approach}</h4>
+                                  <div key={techniqueIndex} className="bg-card border border-border rounded-lg p-4">
+                                    <h4 className="font-semibold text-foreground mb-3">{technique.approach}</h4>
                                     <div className="grid gap-3 md:grid-cols-2">
                                       <div className="bg-red-100 border border-red-200 rounded-lg p-3">
                                         <div className="text-sm font-medium text-red-800 mb-1">❌ Wrong Approach:</div>
@@ -1583,12 +1585,12 @@ export default function IndustryInsights() {
                                         <div className="text-sm text-green-700">"{technique.right}"</div>
                                       </div>
                                     </div>
-                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
+                                    <div className="bg-secondary border border-border rounded-lg p-3 mt-3">
                                       <div className="flex items-start space-x-2">
-                                        <Info className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                        <Info className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                                         <div>
-                                          <span className="text-sm font-medium text-blue-800">Why it works: </span>
-                                          <span className="text-sm text-blue-700">{technique.why}</span>
+                                          <span className="text-sm font-medium text-foreground">Why it works: </span>
+                                          <span className="text-sm text-muted-foreground">{technique.why}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -1609,16 +1611,16 @@ export default function IndustryInsights() {
 
         {/* Call-to-Action Footer */}
         <motion.div
-          className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-6 text-center"
+          className="bg-card border border-border rounded-2xl p-6 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.5 }}
         >
-          <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Award className="h-6 w-6 text-white" />
           </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to Apply This Knowledge?</h3>
-          <p className="text-sm text-gray-600 mb-4">Use our Bill AI tools to analyze your medical bills with this insider intelligence</p>
+          <h3 className="text-lg font-bold font-serif text-foreground mb-2">Ready to Apply This Knowledge?</h3>
+          <p className="text-sm text-muted-foreground mb-4">Use our Bill AI tools to analyze your medical bills with this insider intelligence</p>
           <Link href="/bill-ai" data-testid="link-bill-ai">
             <MobileButton data-testid="button-analyze-bills">
               <Zap className="h-4 w-4 mr-2" />

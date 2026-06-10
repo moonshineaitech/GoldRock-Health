@@ -19,8 +19,8 @@ const FloatingParticle = ({ delay = 0, duration = 20, size = 4 }: { delay?: numb
     style={{
       width: size,
       height: size,
-      background: `radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, rgba(6, 182, 212, 0.2) 50%, transparent 100%)`,
-      boxShadow: `0 0 ${size * 2}px rgba(16, 185, 129, 0.3)`,
+      background: `radial-gradient(circle, rgba(193, 154, 75, 0.4) 0%, rgba(193, 154, 75, 0.12) 50%, transparent 100%)`,
+      boxShadow: `0 0 ${size * 2}px rgba(193, 154, 75, 0.25)`,
     }}
     initial={{ 
       x: `${Math.random() * 100}%`, 
@@ -65,41 +65,12 @@ const GlowingOrb = ({ className, color1, color2, size = 400, blur = 100 }: { cla
 );
 
 const GlassmorphicCard = ({ children, className = "", glowColor = "emerald" }: { children: React.ReactNode; className?: string; glowColor?: string }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
-  const glowColors: Record<string, string> = {
-    emerald: "rgba(16, 185, 129, 0.12)",
-    purple: "rgba(139, 92, 246, 0.12)",
-    blue: "rgba(59, 130, 246, 0.12)",
-    amber: "rgba(245, 158, 11, 0.12)",
-    pink: "rgba(236, 72, 153, 0.12)",
-  };
-  
   return (
     <motion.div
-      className={`relative overflow-hidden ${className}`}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+      className={`luxury-card relative overflow-hidden ${className}`}
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
     >
-      <motion.div
-        className="absolute inset-0 rounded-3xl opacity-0"
-        style={{
-          background: `radial-gradient(600px circle at 50% 50%, ${glowColors[glowColor]}, transparent 40%)`,
-        }}
-        animate={{ opacity: isHovered ? 1 : 0 }}
-      />
-      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/90 via-white/70 to-white/50 backdrop-blur-2xl" />
-      <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-white/95 via-white/80 to-white/60" />
-      <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/60 shadow-xl" />
-      <motion.div
-        className="absolute inset-0 rounded-3xl"
-        style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 50%)",
-        }}
-        animate={{ opacity: isHovered ? 0.9 : 0.5 }}
-      />
       <div className="relative z-10">{children}</div>
     </motion.div>
   );
@@ -155,7 +126,7 @@ const DemoLoginForm = () => {
       animate={{ opacity: 1, height: 'auto' }}
       className="max-w-xs mx-auto mt-3 mb-2"
     >
-      <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-4 space-y-3 shadow-sm">
+      <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-4 space-y-3 shadow-sm">
         <p className="text-xs text-gray-500 text-center font-medium">Demo Account Login</p>
         <input
           type="email"
@@ -193,62 +164,22 @@ const PremiumFeatureCard = ({ icon: Icon, title, description, color, delay = 0 }
   color: string;
   delay?: number;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-      whileHover={{ scale: 1.05, y: -10 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="relative group"
+      transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -2 }}
+      className="relative group h-full"
       data-testid={`card-${title.toLowerCase().replace(/\s+/g, '-')}`}
     >
-      <motion.div
-        className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-500"
-        style={{
-          background: `linear-gradient(135deg, ${color.includes('emerald') ? 'rgba(16,185,129,0.3)' : color.includes('purple') ? 'rgba(139,92,246,0.3)' : color.includes('blue') ? 'rgba(59,130,246,0.3)' : color.includes('orange') ? 'rgba(249,115,22,0.3)' : 'rgba(236,72,153,0.3)'}, transparent)`,
-          filter: "blur(20px)",
-        }}
-      />
-      <div className={`relative bg-gradient-to-br ${color} rounded-3xl p-7 shadow-2xl overflow-hidden`}>
-        <motion.div
-          initial={{ x: "-100%" }}
-          animate={{ x: isHovered ? "200%" : "-100%" }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
-        />
-
-        <motion.div
-          animate={{ opacity: isHovered ? [0.4, 0.7, 0.4] : 0 }}
-          transition={{ duration: 2, repeat: isHovered ? Infinity : 0 }}
-          className="absolute inset-0 bg-white/15 blur-2xl pointer-events-none"
-        />
-
-        <motion.div
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: "linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%)",
-          }}
-        />
-
-        <div className="relative z-10">
-          <motion.div
-            animate={{ 
-              scale: isHovered ? [1, 1.15, 1] : 1,
-              rotate: isHovered ? [0, 5, -5, 0] : 0
-            }}
-            transition={{ duration: 0.5 }}
-            className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5 shadow-xl"
-          >
-            <Icon className="h-8 w-8 text-white drop-shadow-lg" strokeWidth={2.5} />
-          </motion.div>
-          <h3 className="text-xl font-black text-white mb-3 drop-shadow-md">{title}</h3>
-          <p className="text-white/90 font-medium text-sm leading-relaxed">{description}</p>
+      <div className="luxury-card rounded-3xl p-7 h-full">
+        <div className="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center mb-5">
+          <Icon className="h-7 w-7 text-muted-foreground" strokeWidth={2} />
         </div>
+        <h3 className="text-xl font-bold text-foreground mb-3 font-serif">{title}</h3>
+        <p className="text-muted-foreground font-medium text-sm leading-relaxed">{description}</p>
       </div>
     </motion.div>
   );
@@ -284,26 +215,27 @@ export default function AuthLanding() {
           exit={{ opacity: 0 }}
         >
           <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50"
             onClick={() => handleDismissPopup(false)}
           />
           <motion.div 
-            className="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 text-center"
+            className="relative bg-card border border-border rounded-3xl shadow-2xl max-w-lg w-full p-8 text-center"
             initial={{ scale: 0.9, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
               <DollarSign className="h-8 w-8 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to GoldRock Health</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-2xl font-bold text-foreground mb-3 font-serif">Welcome to GoldRock Health</h2>
+            <p className="text-muted-foreground mb-6">
               An AI-powered platform that helps you understand, challenge, and reduce your medical bills. 
               Save money with insider knowledge and expert strategies.
             </p>
             <div className="space-y-3">
               <motion.button
-                className="w-full py-3 px-6 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                className="w-full py-3 px-6 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleDismissPopup(true)}
@@ -312,7 +244,7 @@ export default function AuthLanding() {
                 Learn More About GoldRock Health
               </motion.button>
               <motion.button
-                className="w-full py-3 px-6 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-emerald-300 hover:bg-emerald-50 transition-colors"
+                className="w-full py-3 px-6 border border-border text-foreground font-semibold rounded-xl hover:bg-secondary transition-colors"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleDismissPopup(false)}
@@ -321,7 +253,7 @@ export default function AuthLanding() {
                 <ArrowRight className="inline h-5 w-5 ml-2" />
               </motion.button>
             </div>
-            <p className="text-xs text-gray-400 mt-4">
+            <p className="text-xs text-muted-foreground mt-4">
               You can always find "About GoldRock Health" in the footer.
             </p>
           </motion.div>
@@ -333,29 +265,29 @@ export default function AuthLanding() {
         <div 
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(180deg, rgba(248,250,252,1) 0%, rgba(255,255,255,1) 30%, rgba(240,253,244,0.5) 70%, rgba(236,253,245,0.8) 100%)",
+            background: "linear-gradient(180deg, var(--background), var(--card))",
           }}
         />
         
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <GlowingOrb 
             className="top-0 -left-32" 
-            color1="rgba(16, 185, 129, 0.2)" 
-            color2="rgba(6, 182, 212, 0.08)" 
+            color1="rgba(193, 154, 75, 0.12)" 
+            color2="rgba(193, 154, 75, 0.05)" 
             size={500}
             blur={120}
           />
           <GlowingOrb 
             className="-bottom-32 -right-32" 
-            color1="rgba(139, 92, 246, 0.15)" 
-            color2="rgba(59, 130, 246, 0.06)" 
+            color1="rgba(193, 154, 75, 0.08)" 
+            color2="rgba(193, 154, 75, 0.03)" 
             size={450}
             blur={100}
           />
           <GlowingOrb 
             className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" 
-            color1="rgba(245, 158, 11, 0.1)" 
-            color2="rgba(236, 72, 153, 0.04)" 
+            color1="rgba(193, 154, 75, 0.06)" 
+            color2="rgba(193, 154, 75, 0.02)" 
             size={400}
             blur={90}
           />
@@ -375,7 +307,7 @@ export default function AuthLanding() {
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
           {/* Top Header - Your Healthcare Bill Protector */}
           <motion.p
-            className="text-xs sm:text-sm font-semibold text-emerald-600 tracking-wide uppercase mb-3"
+            className="text-xs sm:text-sm font-semibold text-gold tracking-[0.2em] uppercase mb-3"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -393,7 +325,7 @@ export default function AuthLanding() {
             <motion.div
               className="absolute -inset-6 rounded-full opacity-30"
               style={{
-                background: "radial-gradient(circle, rgba(16, 185, 129, 0.4), transparent 70%)",
+                background: "radial-gradient(circle, rgba(193, 154, 75, 0.35), transparent 70%)",
               }}
               animate={{
                 scale: [1, 1.15, 1],
@@ -407,7 +339,7 @@ export default function AuthLanding() {
             >
               {/* Shield base */}
               <Shield 
-                className="absolute text-emerald-600 h-20 w-20" 
+                className="absolute text-gold h-20 w-20" 
                 strokeWidth={1.5} 
                 fill="url(#shieldGradient)"
               />
@@ -421,9 +353,9 @@ export default function AuthLanding() {
               <svg width="0" height="0">
                 <defs>
                   <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#0d9488" />
-                    <stop offset="50%" stopColor="#10b981" />
-                    <stop offset="100%" stopColor="#059669" />
+                    <stop offset="0%" stopColor="#d8b25e" />
+                    <stop offset="50%" stopColor="#bf9a4b" />
+                    <stop offset="100%" stopColor="#946b22" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -437,31 +369,26 @@ export default function AuthLanding() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <span className="text-gray-800">The Healthcare System</span>
+            <span className="text-foreground">The Healthcare System</span>
             <br />
-            <span className="text-gray-800">Wasn't Built for You.</span>
+            <span className="text-foreground">Wasn't Built for You.</span>
             <br />
             <motion.span 
-              className="inline-block mt-1"
-              style={{
-                background: "linear-gradient(135deg, #0d9488 0%, #10b981 30%, #f59e0b 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+              className="inline-block mt-1 luxury-text-gradient"
             >
               We Are.
             </motion.span>
           </motion.h1>
 
           <motion.p 
-            className="text-sm sm:text-base text-gray-600 mb-5 max-w-md mx-auto leading-relaxed"
+            className="text-sm sm:text-base text-muted-foreground mb-5 max-w-md mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
             Hospitals have teams protecting their revenue.
             <br />
-            <span className="text-emerald-600 font-semibold">Now you have one protecting yours.</span>
+            <span className="text-gold font-semibold">Now you have one protecting yours.</span>
           </motion.p>
 
           {/* CTA Buttons */}
@@ -473,9 +400,10 @@ export default function AuthLanding() {
           >
             <motion.a
               href="/api/login"
-              className="group relative w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 text-white font-bold text-sm rounded-xl overflow-hidden"
+              className="group relative w-full sm:w-auto px-6 py-3.5 text-white font-bold text-sm rounded-xl overflow-hidden"
               style={{
-                boxShadow: "0 12px 24px -8px rgba(16, 185, 129, 0.4)"
+                background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))",
+                boxShadow: "0 12px 24px -8px rgba(148, 107, 34, 0.35)"
               }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -496,11 +424,11 @@ export default function AuthLanding() {
             
             <motion.a
               href="/api/login?redirect=/patient-diagnostics"
-              className="w-full sm:w-auto px-6 py-3.5 bg-white/90 backdrop-blur-xl border border-gray-200 text-gray-800 font-bold text-sm rounded-xl shadow-md hover:shadow-lg hover:border-gray-300 transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3.5 bg-card border border-border text-foreground font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2"
               whileHover={{ scale: 1.01, y: -1 }}
               data-testid="button-explore-features"
             >
-              <Brain className="h-4 w-4 text-blue-600" />
+              <Brain className="h-4 w-4 text-muted-foreground" />
               Explore AI Health Tools
             </motion.a>
           </motion.div>
@@ -522,24 +450,16 @@ export default function AuthLanding() {
             ].map((item, i) => (
               <motion.div 
                 key={item.label}
-                className="bg-white/95 backdrop-blur-xl rounded-xl p-3 border border-gray-100/80 shadow-md"
+                className="bg-card rounded-xl p-3 border border-border shadow-sm"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65 + i * 0.05 }}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-2 ${
-                  item.color === 'emerald' ? 'bg-emerald-100' : 
-                  item.color === 'blue' ? 'bg-blue-100' : 
-                  item.color === 'purple' ? 'bg-purple-100' : 'bg-amber-100'
-                }`}>
-                  <item.icon className={`h-4 w-4 ${
-                    item.color === 'emerald' ? 'text-emerald-600' : 
-                    item.color === 'blue' ? 'text-blue-600' : 
-                    item.color === 'purple' ? 'text-purple-600' : 'text-amber-600'
-                  }`} />
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-2 bg-secondary">
+                  <item.icon className="h-4 w-4 text-muted-foreground" />
                 </div>
-                <h3 className="font-bold text-gray-900 text-xs mb-0.5">{item.label}</h3>
-                <p className="text-[10px] text-gray-500">{item.desc}</p>
+                <h3 className="font-bold text-foreground text-xs mb-0.5">{item.label}</h3>
+                <p className="text-[10px] text-muted-foreground">{item.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -555,7 +475,7 @@ export default function AuthLanding() {
               { icon: Lock, label: "HIPAA Aligned" },
               { icon: Shield, label: "256-bit Encrypted" },
             ].map((badge) => (
-              <div key={badge.label} className="flex items-center gap-1 text-gray-500">
+              <div key={badge.label} className="flex items-center gap-1 text-muted-foreground">
                 <badge.icon className="h-3.5 w-3.5" />
                 <span className="text-[10px] font-medium">{badge.label}</span>
               </div>
@@ -573,7 +493,7 @@ export default function AuthLanding() {
           </motion.div>
 
           <motion.p
-            className="text-[10px] text-gray-400 font-medium"
+            className="text-[10px] text-muted-foreground font-medium"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9 }}
@@ -587,14 +507,14 @@ export default function AuthLanding() {
         <div 
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(180deg, rgba(249,250,251,1) 0%, rgba(255,255,255,1) 50%, rgba(249,250,251,1) 100%)",
+            background: "linear-gradient(180deg, var(--background), var(--card))",
           }}
         />
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
             className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(193, 154, 75, 0.05) 0%, transparent 70%)",
               filter: "blur(80px)",
             }}
           />
@@ -608,16 +528,16 @@ export default function AuthLanding() {
             className="text-center mb-16"
           >
             <motion.span 
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 px-5 py-3 rounded-full font-bold text-sm mb-6 shadow-xl border border-purple-200/50"
+              className="inline-flex items-center gap-2 bg-secondary text-muted-foreground px-5 py-3 rounded-full font-bold text-sm mb-6 border border-border"
               whileHover={{ scale: 1.05 }}
             >
-              <Sparkles className="h-4 w-4" />
+              <Sparkles className="h-4 w-4 text-gold" />
               Complete Health AI Platform
             </motion.span>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-5 font-serif">
               More Than Just Bill Analysis
             </h2>
-            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto">
               Four powerful pillars to transform your healthcare experience
             </p>
           </motion.div>
@@ -629,7 +549,7 @@ export default function AuthLanding() {
                 title: "Financial Defense", 
                 desc: "AI bill analysis, dispute templates, and negotiation strategies to save $2K-$35K+",
                 tags: ["Bill AI", "Templates", "Disputes"],
-                gradient: "from-emerald-500 via-teal-500 to-cyan-500",
+                gradient: "secondary",
                 glow: "rgba(16, 185, 129, 0.25)"
               },
               { 
@@ -637,7 +557,7 @@ export default function AuthLanding() {
                 title: "Clinical Intelligence", 
                 desc: "Health insights, medical knowledge engines, and AI-powered second opinions",
                 tags: ["Health AI", "Insights", "Resources"],
-                gradient: "from-blue-500 via-indigo-500 to-purple-500",
+                gradient: "secondary",
                 glow: "rgba(59, 130, 246, 0.25)"
               },
               { 
@@ -645,7 +565,7 @@ export default function AuthLanding() {
                 title: "Diagnostic Mastery", 
                 desc: "Interactive training with AI patients, step-by-step workups, and full diagnosis mode",
                 tags: ["AI Patients", "Training", "Scoring"],
-                gradient: "from-purple-500 via-violet-500 to-fuchsia-500",
+                gradient: "secondary",
                 glow: "rgba(139, 92, 246, 0.25)"
               },
               { 
@@ -653,7 +573,7 @@ export default function AuthLanding() {
                 title: "Gamified Learning", 
                 desc: "Pixel Doctor game, achievements, XP progression, and skill building",
                 tags: ["Pixel Doctor", "Achievements", "XP System"],
-                gradient: "from-pink-500 via-rose-500 to-red-500",
+                gradient: "secondary",
                 glow: "rgba(236, 72, 153, 0.25)"
               },
             ].map((pillar, index) => (
@@ -663,40 +583,22 @@ export default function AuthLanding() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 + index * 0.1, duration: 0.6 }}
-                whileHover={{ scale: 1.04, y: -10 }}
+                whileHover={{ y: -2 }}
                 className="relative group"
               >
-                <motion.div
-                  className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(135deg, ${pillar.glow}, transparent)`,
-                    filter: "blur(25px)",
-                  }}
-                />
-                <div 
-                  className={`relative bg-gradient-to-br ${pillar.gradient} rounded-3xl p-7 text-white shadow-2xl overflow-hidden h-full`}
-                  style={{
-                    boxShadow: `0 30px 60px -15px ${pillar.glow}`
-                  }}
-                >
-                  <motion.div
-                    className="absolute inset-0 opacity-40"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%)",
-                    }}
-                  />
+                <div className="luxury-card rounded-3xl p-7 overflow-hidden h-full">
                   <div className="relative z-10">
                     <motion.div 
-                      className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5 shadow-xl"
-                      whileHover={{ rotate: 10, scale: 1.1 }}
+                      className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-5"
+                      whileHover={{ rotate: 5, scale: 1.05 }}
                     >
-                      <pillar.icon className="h-8 w-8 text-white drop-shadow-md" />
+                      <pillar.icon className="h-8 w-8 text-muted-foreground" />
                     </motion.div>
-                    <h3 className="text-xl font-black mb-3 drop-shadow-sm">{pillar.title}</h3>
-                    <p className="text-white/90 text-sm mb-5 leading-relaxed font-medium">{pillar.desc}</p>
+                    <h3 className="text-xl font-bold text-foreground mb-3 font-serif">{pillar.title}</h3>
+                    <p className="text-muted-foreground text-sm mb-5 leading-relaxed font-medium">{pillar.desc}</p>
                     <div className="flex flex-wrap gap-2">
                       {pillar.tags.map(tag => (
-                        <span key={tag} className="bg-white/20 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-semibold shadow-sm">
+                        <span key={tag} className="bg-secondary text-muted-foreground text-xs px-3 py-1.5 rounded-full font-semibold">
                           {tag}
                         </span>
                       ))}
@@ -713,7 +615,7 @@ export default function AuthLanding() {
       <section 
         className="py-10 relative overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, rgba(240,253,244,0.6) 0%, rgba(236,253,245,0.8) 50%, rgba(240,249,255,0.6) 100%)",
+          background: "linear-gradient(180deg, var(--background), var(--card))",
         }}
         data-testid="section-quick-access"
       >
@@ -721,14 +623,14 @@ export default function AuthLanding() {
           <motion.div 
             className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(193, 154, 75, 0.06) 0%, transparent 70%)",
               filter: "blur(80px)",
             }}
           />
           <motion.div 
             className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(193, 154, 75, 0.04) 0%, transparent 70%)",
               filter: "blur(60px)",
             }}
           />
@@ -742,49 +644,43 @@ export default function AuthLanding() {
             className="text-center mb-12"
           >
             <motion.span 
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 px-5 py-2.5 rounded-full font-bold text-sm mb-5 border border-emerald-200/50 shadow-sm"
+              className="inline-flex items-center gap-2 bg-secondary text-muted-foreground px-5 py-2.5 rounded-full font-bold text-sm mb-5 border border-border shadow-sm"
               whileHover={{ scale: 1.05 }}
             >
-              <Zap className="h-4 w-4" />
+              <Zap className="h-4 w-4 text-gold" />
               Quick Access
             </motion.span>
-            <h2 className="text-3xl md:text-4xl font-black mb-4">
-              <span className="text-gray-900">Explore All </span>
-              <span 
-                style={{
-                  background: "linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #8b5cf6 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
+            <h2 className="text-3xl md:text-4xl font-black mb-4 font-serif">
+              <span className="text-foreground">Explore All </span>
+              <span className="luxury-text-gradient">
                 Features
               </span>
             </h2>
-            <p className="text-gray-600 font-medium max-w-lg mx-auto">
+            <p className="text-muted-foreground font-medium max-w-lg mx-auto">
               Sign in to unlock powerful AI tools for medical bill analysis, diagnostics, and more
             </p>
           </motion.div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
-              { icon: HomeIcon, label: "Dashboard", href: "/api/login", description: "Your command center", gradient: "from-blue-500 to-indigo-600" },
-              { icon: Brain, label: "Bill AI", href: "/api/login?redirect=/bill-ai", description: "Find overcharges", gradient: "from-emerald-500 to-teal-600" },
-              { icon: Shield, label: "Rights Hub", href: "/api/login?redirect=/rights-hub", description: "Know your rights", gradient: "from-blue-500 to-cyan-600", featured: true },
-              { icon: Heart, label: "Emergency Help", href: "/api/login?redirect=/emergency-help", description: "Crisis assistance", gradient: "from-red-500 to-pink-600" },
-              { icon: Search, label: "Quick Analyzer", href: "/api/login?redirect=/quick-analyzer", description: "Fast bill scan", gradient: "from-purple-500 to-violet-600" },
-              { icon: Phone, label: "Provider Contacts", href: "/api/login?redirect=/provider-contacts", description: "Hospital database", gradient: "from-orange-500 to-amber-600" },
-              { icon: Crown, label: "Premium", href: "/api/login?redirect=/premium", description: "Upgrade account", gradient: "from-amber-500 to-yellow-500" },
-              { icon: Puzzle, label: "Pixel Doctor", href: "/api/login?redirect=/pixel-game", description: "Fun diagnostics", gradient: "from-pink-500 to-rose-600", special: true },
-              { icon: TrendingDown, label: "Reduction Guide", href: "/api/login?redirect=/bill-reduction-guide", description: "Expert strategies", gradient: "from-teal-500 to-green-600" },
-              { icon: CreditCard, label: "Get Bills", href: "/api/login?redirect=/portal-access-guide", description: "Portal access", gradient: "from-slate-500 to-gray-600" },
-              { icon: Database, label: "Resources Hub", href: "/api/login?redirect=/resources-hub", description: "Guides & templates", gradient: "from-indigo-500 to-purple-600" },
-              { icon: Stethoscope, label: "Diagnostics", href: "/api/login?redirect=/patient-diagnostics", description: "AI training", gradient: "from-cyan-500 to-blue-600" },
-              { icon: Dna, label: "LunaFold", href: "/api/login?redirect=/lunafold", description: "Protein analysis", gradient: "from-violet-500 to-purple-600" },
-              { icon: Shield, label: "Collections Defense", href: "/collections-defense-guide", description: "Fight debt collectors", gradient: "from-red-500 to-rose-600", featured: true },
-              { icon: Receipt, label: "Bill Playbook", href: "/hospital-bill-playbook", description: "Reduce bills now", gradient: "from-emerald-500 to-green-600", featured: true },
-              { icon: Target, label: "Industry Secrets", href: "/api/login?redirect=/industry-insights", description: "Insider tactics", gradient: "from-rose-500 to-red-600" },
-              { icon: FileText, label: "Templates", href: "/api/login?redirect=/templates", description: "Dispute letters", gradient: "from-green-500 to-emerald-600" },
-              { icon: Trophy, label: "Progress", href: "/api/login?redirect=/progress", description: "Your progress", gradient: "from-yellow-500 to-orange-600" },
+              { icon: HomeIcon, label: "Dashboard", href: "/api/login", description: "Your command center", gradient: "secondary" },
+              { icon: Brain, label: "Bill AI", href: "/api/login?redirect=/bill-ai", description: "Find overcharges", gradient: "secondary" },
+              { icon: Shield, label: "Rights Hub", href: "/api/login?redirect=/rights-hub", description: "Know your rights", gradient: "secondary", featured: true },
+              { icon: Heart, label: "Emergency Help", href: "/api/login?redirect=/emergency-help", description: "Crisis assistance", gradient: "secondary" },
+              { icon: Search, label: "Quick Analyzer", href: "/api/login?redirect=/quick-analyzer", description: "Fast bill scan", gradient: "secondary" },
+              { icon: Phone, label: "Provider Contacts", href: "/api/login?redirect=/provider-contacts", description: "Hospital database", gradient: "secondary" },
+              { icon: Crown, label: "Premium", href: "/api/login?redirect=/premium", description: "Upgrade account", gradient: "secondary" },
+              { icon: Puzzle, label: "Pixel Doctor", href: "/api/login?redirect=/pixel-game", description: "Fun diagnostics", gradient: "secondary", special: true },
+              { icon: TrendingDown, label: "Reduction Guide", href: "/api/login?redirect=/bill-reduction-guide", description: "Expert strategies", gradient: "secondary" },
+              { icon: CreditCard, label: "Get Bills", href: "/api/login?redirect=/portal-access-guide", description: "Portal access", gradient: "secondary" },
+              { icon: Database, label: "Resources Hub", href: "/api/login?redirect=/resources-hub", description: "Guides & templates", gradient: "secondary" },
+              { icon: Stethoscope, label: "Diagnostics", href: "/api/login?redirect=/patient-diagnostics", description: "AI training", gradient: "secondary" },
+              { icon: Dna, label: "LunaFold", href: "/api/login?redirect=/lunafold", description: "Protein analysis", gradient: "secondary" },
+              { icon: Shield, label: "Collections Defense", href: "/collections-defense-guide", description: "Fight debt collectors", gradient: "secondary", featured: true },
+              { icon: Receipt, label: "Bill Playbook", href: "/hospital-bill-playbook", description: "Reduce bills now", gradient: "secondary", featured: true },
+              { icon: Target, label: "Industry Secrets", href: "/api/login?redirect=/industry-insights", description: "Insider tactics", gradient: "secondary" },
+              { icon: FileText, label: "Templates", href: "/api/login?redirect=/templates", description: "Dispute letters", gradient: "secondary" },
+              { icon: Trophy, label: "Progress", href: "/api/login?redirect=/progress", description: "Your progress", gradient: "secondary" },
             ].map((item, index) => (
               <motion.a
                 key={item.label}
@@ -798,22 +694,15 @@ export default function AuthLanding() {
                 className="group relative"
                 data-testid={`quicklink-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <motion.div
-                  className="absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-300"
-                  style={{
-                    background: `linear-gradient(135deg, ${item.gradient.includes('emerald') ? 'rgba(16,185,129,0.2)' : item.gradient.includes('purple') ? 'rgba(139,92,246,0.2)' : item.gradient.includes('blue') ? 'rgba(59,130,246,0.2)' : 'rgba(245,158,11,0.2)'}, transparent)`,
-                    filter: "blur(8px)",
-                  }}
-                />
-                <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl p-4 border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 h-full">
-                  <div className={`w-10 h-10 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
-                    <item.icon className="h-5 w-5 text-white" />
+                <div className="relative bg-card rounded-2xl p-4 border border-border shadow-sm hover:shadow-md transition-all duration-300 h-full">
+                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <item.icon className="h-5 w-5 text-muted-foreground" />
                   </div>
-                  <h3 className="font-bold text-gray-900 text-sm mb-1 group-hover:text-emerald-600 transition-colors">{item.label}</h3>
-                  <p className="text-xs text-gray-500">{item.description}</p>
+                  <h3 className="font-bold text-foreground text-sm mb-1 group-hover:text-gold transition-colors">{item.label}</h3>
+                  <p className="text-xs text-muted-foreground">{item.description}</p>
                   {(item.featured || item.special) && (
                     <motion.div
-                      className={`absolute top-2 right-2 w-2 h-2 rounded-full ${item.special ? 'bg-pink-500' : 'bg-emerald-500'}`}
+                      className="absolute top-2 right-2 w-2 h-2 rounded-full bg-gold"
                       animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
@@ -832,7 +721,7 @@ export default function AuthLanding() {
           >
             <motion.a
               href="/api/login"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white font-bold rounded-2xl shadow-xl hover:shadow-emerald-500/30 transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
               data-testid="button-signin-quicklinks"
@@ -849,7 +738,7 @@ export default function AuthLanding() {
         <div 
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(180deg, rgba(239,246,255,0.8) 0%, rgba(255,255,255,1) 50%, rgba(240,253,244,0.6) 100%)",
+            background: "linear-gradient(180deg, var(--background), var(--card))",
           }}
         />
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -866,17 +755,17 @@ export default function AuthLanding() {
               viewport={{ once: true }}
             >
               <motion.span 
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 px-5 py-3 rounded-full font-bold text-sm mb-6 shadow-xl border border-emerald-200/50"
+                className="inline-flex items-center gap-2 bg-secondary text-muted-foreground px-5 py-3 rounded-full font-bold text-sm mb-6 border border-border"
                 whileHover={{ scale: 1.05 }}
               >
-                <Zap className="h-4 w-4" />
+                <Zap className="h-4 w-4 text-gold" />
                 Simple 3-Step Process
               </motion.span>
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-5 font-serif">
               How GoldRock Health Works
             </h2>
-            <p className="text-xl text-gray-700 font-semibold max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground font-semibold max-w-2xl mx-auto">
               Professional medical bill analysis in minutes, not hours
             </p>
           </div>
@@ -888,7 +777,7 @@ export default function AuthLanding() {
                 icon: Upload,
                 title: "Upload Your Bill",
                 description: "Photo or PDF of your medical bill from any provider",
-                gradient: "from-blue-600 to-indigo-600",
+                gradient: "secondary",
                 glow: "rgba(59, 130, 246, 0.2)"
               },
               {
@@ -896,7 +785,7 @@ export default function AuthLanding() {
                 icon: Brain,
                 title: "AI Analyzes Everything",
                 description: "Detects billing errors, overcharges, and negotiation opportunities",
-                gradient: "from-purple-600 to-pink-600",
+                gradient: "secondary",
                 glow: "rgba(139, 92, 246, 0.2)"
               },
               {
@@ -904,7 +793,7 @@ export default function AuthLanding() {
                 icon: FileCheck,
                 title: "Get Professional Help",
                 description: "Dispute letters, negotiation scripts, and expert coaching",
-                gradient: "from-emerald-600 to-teal-600",
+                gradient: "secondary",
                 glow: "rgba(16, 185, 129, 0.2)"
               }
             ].map((step, index) => (
@@ -914,33 +803,26 @@ export default function AuthLanding() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.15, duration: 0.6 }}
-                whileHover={{ scale: 1.05, y: -12 }}
+                whileHover={{ y: -2 }}
                 className="relative group"
                 data-testid={`card-step-${step.step}`}
               >
-                <motion.div
-                  className="absolute -inset-2 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(135deg, ${step.glow}, transparent)`,
-                    filter: "blur(25px)",
-                  }}
-                />
                 <GlassmorphicCard className="rounded-3xl h-full">
                   <div className="relative p-8">
-                    <div className="absolute top-6 right-6 w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center shadow-xl">
-                      <span className="text-2xl font-black text-white">{step.step}</span>
+                    <div className="absolute top-6 right-6 w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-md">
+                      <span className="text-2xl font-black text-primary-foreground">{step.step}</span>
                     </div>
 
                     <motion.div 
-                      className={`w-18 h-18 bg-gradient-to-br ${step.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-xl`}
-                      style={{ width: 72, height: 72, boxShadow: `0 15px 30px -5px ${step.glow}` }}
-                      whileHover={{ rotate: 10, scale: 1.1 }}
+                      className="w-18 h-18 bg-secondary rounded-2xl flex items-center justify-center mb-6"
+                      style={{ width: 72, height: 72 }}
+                      whileHover={{ rotate: 5, scale: 1.05 }}
                     >
-                      <step.icon className="h-9 w-9 text-white" strokeWidth={2.5} />
+                      <step.icon className="h-9 w-9 text-muted-foreground" strokeWidth={2.5} />
                     </motion.div>
 
-                    <h3 className="text-2xl font-black text-gray-900 mb-4">{step.title}</h3>
-                    <p className="text-gray-700 font-medium leading-relaxed">{step.description}</p>
+                    <h3 className="text-2xl font-black text-foreground mb-4 font-serif">{step.title}</h3>
+                    <p className="text-muted-foreground font-medium leading-relaxed">{step.description}</p>
                   </div>
                 </GlassmorphicCard>
               </motion.div>
@@ -949,12 +831,12 @@ export default function AuthLanding() {
         </div>
       </section>
 
-      <section className="py-12 bg-white relative overflow-hidden" id="features" data-testid="section-core-features">
+      <section className="py-12 bg-background relative overflow-hidden" id="features" data-testid="section-core-features">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <GlowingOrb 
             className="top-0 right-0" 
-            color1="rgba(139, 92, 246, 0.08)" 
-            color2="rgba(59, 130, 246, 0.03)" 
+            color1="rgba(193, 154, 75, 0.06)" 
+            color2="rgba(193, 154, 75, 0.02)" 
             size={400}
             blur={100}
           />
@@ -962,17 +844,17 @@ export default function AuthLanding() {
         
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-5 font-serif">
               Complete Medical Bill Arsenal
             </h2>
-            <p className="text-xl text-gray-700 font-semibold max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground font-semibold max-w-3xl mx-auto">
               Everything you need to fight medical bills and save thousands
             </p>
           </div>
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-foreground mb-10 font-serif"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -984,21 +866,21 @@ export default function AuthLanding() {
                 icon={Brain}
                 title="Bill-AI Deep Analysis"
                 description="Comprehensive AI analysis with error detection, legal citations, and regulatory violations"
-                color="from-purple-600 via-indigo-600 to-blue-600"
+                color="secondary"
                 delay={0}
               />
               <PremiumFeatureCard
                 icon={Zap}
                 title="Quick Analyzer"
                 description="Instant 5-minute bill scan for fast overcharge detection and immediate insights"
-                color="from-cyan-600 via-teal-600 to-emerald-600"
+                color="secondary"
                 delay={0.1}
               />
               <PremiumFeatureCard
                 icon={Calculator}
                 title="Error Detection Engine"
                 description="Advanced algorithms detect duplicate charges, upcoding, unbundling fraud, and timing discrepancies"
-                color="from-orange-600 via-amber-600 to-yellow-600"
+                color="secondary"
                 delay={0.2}
               />
             </div>
@@ -1006,7 +888,7 @@ export default function AuthLanding() {
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-foreground mb-10 font-serif"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -1018,28 +900,28 @@ export default function AuthLanding() {
                 icon={MessageCircle}
                 title="1-on-1 Reduction Coach"
                 description="Personal expert guidance for complex cases and high-value bills"
-                color="from-emerald-600 to-teal-600"
+                color="secondary"
                 delay={0}
               />
               <PremiumFeatureCard
                 icon={Target}
                 title="Negotiation Coaching"
                 description="Proven scripts, timing strategies, and escalation tactics"
-                color="from-blue-600 to-cyan-600"
+                color="secondary"
                 delay={0.05}
               />
               <PremiumFeatureCard
                 icon={Clock}
                 title="Timing Optimizer"
                 description="Best times to negotiate based on revenue cycle pressure points"
-                color="from-indigo-600 to-purple-600"
+                color="secondary"
                 delay={0.1}
               />
               <PremiumFeatureCard
                 icon={Phone}
                 title="Provider Contact Database"
                 description="Direct billing department contacts for every major hospital system"
-                color="from-pink-600 to-rose-600"
+                color="secondary"
                 delay={0.15}
               />
             </div>
@@ -1047,7 +929,7 @@ export default function AuthLanding() {
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-foreground mb-10 font-serif"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -1059,21 +941,21 @@ export default function AuthLanding() {
                 icon={FileText}
                 title="50+ Dispute Templates"
                 description="Professional legal letters with regulatory citations and case law references"
-                color="from-blue-600 to-indigo-600"
+                color="secondary"
                 delay={0}
               />
               <PremiumFeatureCard
                 icon={Shield}
                 title="Insurance Denials Intelligence"
                 description="Denial codes, reversal strategies, and appeal letter generators"
-                color="from-purple-600 to-pink-600"
+                color="secondary"
                 delay={0.1}
               />
               <PremiumFeatureCard
                 icon={Scale}
                 title="Rights Hub"
                 description="Know your patient rights under No Surprises Act, EMTALA, and state laws"
-                color="from-emerald-600 to-teal-600"
+                color="secondary"
                 delay={0.2}
               />
             </div>
@@ -1081,7 +963,7 @@ export default function AuthLanding() {
 
           <div className="mb-16">
             <motion.h3 
-              className="text-2xl font-black text-gray-900 mb-10"
+              className="text-2xl font-black text-foreground mb-10 font-serif"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -1093,28 +975,28 @@ export default function AuthLanding() {
                 icon={Building}
                 title="Industry Insights"
                 description="Hospital billing vulnerabilities and revenue cycle weak points"
-                color="from-orange-600 to-amber-600"
+                color="secondary"
                 delay={0}
               />
               <PremiumFeatureCard
                 icon={Database}
                 title="Best Practices"
                 description="Field-tested negotiation scripts from successful bill reductions"
-                color="from-teal-600 to-cyan-600"
+                color="secondary"
                 delay={0.05}
               />
               <PremiumFeatureCard
                 icon={Book}
                 title="Complete Guides"
                 description="Comprehensive step-by-step resources for every situation"
-                color="from-violet-600 to-purple-600"
+                color="secondary"
                 delay={0.1}
               />
               <PremiumFeatureCard
                 icon={Activity}
                 title="Analytics Dashboard"
                 description="Track your progress and monitor potential savings across all bills"
-                color="from-rose-600 to-pink-600"
+                color="secondary"
                 delay={0.15}
               />
             </div>
@@ -1126,14 +1008,14 @@ export default function AuthLanding() {
         <div 
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(180deg, rgba(255,251,235,0.95) 0%, rgba(254,243,199,0.9) 50%, rgba(254,215,170,0.85) 100%)",
+            background: "linear-gradient(180deg, var(--background), var(--card))",
           }}
         />
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <GlowingOrb 
             className="top-1/4 -left-20" 
-            color1="rgba(245, 158, 11, 0.2)" 
-            color2="rgba(249, 115, 22, 0.08)" 
+            color1="rgba(193, 154, 75, 0.12)" 
+            color2="rgba(193, 154, 75, 0.04)" 
             size={400}
             blur={100}
           />
@@ -1154,33 +1036,30 @@ export default function AuthLanding() {
               <motion.div
                 className="absolute -inset-4 rounded-3xl opacity-50"
                 style={{
-                  background: "linear-gradient(135deg, rgba(245, 158, 11, 0.4), rgba(239, 68, 68, 0.3))",
+                  background: "linear-gradient(135deg, rgba(193, 154, 75, 0.25), transparent)",
                   filter: "blur(20px)",
                 }}
                 animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.6, 0.4] }}
                 transition={{ duration: 3, repeat: Infinity }}
               />
-              <div className="relative w-24 h-24 bg-gradient-to-br from-amber-500 via-orange-500 to-red-600 rounded-3xl flex items-center justify-center shadow-2xl">
+              <div 
+                className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg"
+                style={{ background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))" }}
+              >
                 <Crown className="h-12 w-12 text-white" strokeWidth={2.5} />
               </div>
             </motion.div>
 
-            <h2 className="text-4xl md:text-5xl font-black mb-6"
-              style={{
-                background: "linear-gradient(135deg, #b45309 0%, #c2410c 50%, #b91c1c 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
+            <h2 className="text-4xl md:text-5xl font-black mb-6 font-serif luxury-text-gradient">
               Premium Access
             </h2>
             
-            <p className="text-xl text-gray-700 font-semibold mb-10 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground font-semibold mb-10 leading-relaxed max-w-2xl mx-auto">
               Full AI analysis, dispute templates, expert coaching & insider tactics
             </p>
 
             <div className="flex justify-center mb-8">
-              <div className="inline-flex bg-white/80 backdrop-blur-xl rounded-2xl p-2 border border-amber-200/50 shadow-xl">
+              <div className="inline-flex bg-card rounded-2xl p-2 border border-border shadow-sm">
                 {[
                   { id: 'monthly' as const, label: 'Monthly' },
                   { id: 'annual' as const, label: 'Annual' },
@@ -1191,8 +1070,8 @@ export default function AuthLanding() {
                     onClick={() => setPricingTab(tab.id)}
                     className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${
                       pricingTab === tab.id
-                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-xl'
-                        : 'text-gray-700 hover:text-gray-900'
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground'
                     }`}
                     whileHover={{ scale: pricingTab !== tab.id ? 1.05 : 1 }}
                     whileTap={{ scale: 0.95 }}
@@ -1213,12 +1092,12 @@ export default function AuthLanding() {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <span className="text-6xl font-black text-gray-900">
+                  <span className="text-6xl font-black text-foreground">
                     {pricingTab === 'monthly' && '$25'}
                     {pricingTab === 'annual' && '$249'}
                     {pricingTab === 'lifetime' && '$747'}
                   </span>
-                  <span className="text-xl text-gray-600 font-semibold">
+                  <span className="text-xl text-muted-foreground font-semibold">
                     {pricingTab === 'monthly' && '/month'}
                     {pricingTab === 'annual' && '/year'}
                     {pricingTab === 'lifetime' && 'one-time'}
@@ -1244,7 +1123,7 @@ export default function AuthLanding() {
                     Unlimited access forever • Best value
                   </motion.div>
                 )}
-                <p className="text-sm text-gray-600 font-medium">
+                <p className="text-sm text-muted-foreground font-medium">
                   Professional medical bill reduction
                 </p>
               </div>
@@ -1267,27 +1146,27 @@ export default function AuthLanding() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div 
+                    className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
+                    style={{ background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))" }}
+                  >
                     <Check className="h-4 w-4 text-white" strokeWidth={3} />
                   </div>
-                  <span className="text-base text-gray-700 font-semibold">{feature}</span>
+                  <span className="text-base text-muted-foreground font-semibold">{feature}</span>
                 </motion.div>
               ))}
             </div>
 
             <Link href="/premium">
               <motion.div
-                className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white font-black text-lg rounded-2xl relative overflow-hidden group cursor-pointer"
+                className="inline-flex items-center gap-3 px-12 py-6 text-white font-black text-lg rounded-2xl relative overflow-hidden group cursor-pointer shadow-lg"
                 style={{
-                  boxShadow: "0 25px 50px -12px rgba(245, 158, 11, 0.4)"
+                  background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))"
                 }}
                 whileHover={{ scale: 1.05, y: -4 }}
                 whileTap={{ scale: 0.95 }}
                 data-testid="button-upgrade-premium-main"
               >
-                <motion.div
-                  className="absolute -inset-1 bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 opacity-0 group-hover:opacity-30 blur-xl transition-opacity"
-                />
                 <motion.div
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "200%" }}
@@ -1300,18 +1179,18 @@ export default function AuthLanding() {
               </motion.div>
             </Link>
 
-            <p className="text-sm text-gray-600 mt-6 font-medium">
+            <p className="text-sm text-muted-foreground mt-6 font-medium">
               Cancel anytime • Full refund within 30 days
             </p>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-12 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden" data-testid="section-faq">
+      <section className="py-12 bg-card relative overflow-hidden" data-testid="section-faq">
         <div className="max-w-3xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <motion.h2 
-              className="text-4xl md:text-5xl font-black text-gray-900 mb-5"
+              className="text-4xl md:text-5xl font-black text-foreground mb-5 font-serif"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -1319,7 +1198,7 @@ export default function AuthLanding() {
               Frequently Asked Questions
             </motion.h2>
             <motion.p
-              className="text-xl text-gray-700 font-medium"
+              className="text-xl text-muted-foreground font-medium"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -1367,16 +1246,16 @@ export default function AuthLanding() {
               >
                 <GlassmorphicCard className="rounded-2xl">
                   <div className="p-7">
-                    <h3 className="font-black text-gray-900 mb-4 flex items-start gap-4 text-lg">
+                    <h3 className="font-black text-foreground mb-4 flex items-start gap-4 text-lg font-serif">
                       <motion.div
                         whileHover={{ rotate: 10, scale: 1.1 }}
-                        className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-lg"
+                        className="flex-shrink-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center shadow-sm"
                       >
-                        <Check className="h-4 w-4 text-white" strokeWidth={3} />
+                        <Check className="h-4 w-4 text-muted-foreground" strokeWidth={3} />
                       </motion.div>
                       <span>{faq.q}</span>
                     </h3>
-                    <p className="text-gray-700 leading-relaxed pl-12 font-medium">{faq.a}</p>
+                    <p className="text-muted-foreground leading-relaxed pl-12 font-medium">{faq.a}</p>
                   </div>
                 </GlassmorphicCard>
               </motion.div>
@@ -1389,7 +1268,7 @@ export default function AuthLanding() {
         <div 
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(180deg, rgba(236, 253, 245, 0.9) 0%, rgba(204, 251, 241, 0.8) 50%, rgba(207, 250, 254, 0.9) 100%)",
+            background: "linear-gradient(180deg, var(--background), var(--card))",
           }}
         />
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -1400,36 +1279,28 @@ export default function AuthLanding() {
         
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.h2 
-            className="text-4xl md:text-5xl font-black mb-6"
-            style={{
-              background: "linear-gradient(135deg, #059669 0%, #0d9488 50%, #0891b2 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
+            className="text-4xl md:text-5xl font-black mb-6 font-serif luxury-text-gradient"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             Ready to Fight Your Bills?
           </motion.h2>
-          <p className="text-xl text-gray-700 font-semibold max-w-xl mx-auto mb-10">
+          <p className="text-xl text-muted-foreground font-semibold max-w-xl mx-auto mb-10">
             Professional AI analysis & expert strategies to help you save thousands
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
             <Link href="/bill-ai">
               <motion.div
-                className="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white font-black text-lg rounded-2xl relative overflow-hidden group cursor-pointer"
+                className="inline-flex items-center gap-3 px-12 py-6 text-white font-black text-lg rounded-2xl relative overflow-hidden group cursor-pointer shadow-lg"
                 style={{
-                  boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4)"
+                  background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))"
                 }}
                 whileHover={{ scale: 1.05, y: -4 }}
                 whileTap={{ scale: 0.95 }}
                 data-testid="button-start-analysis-final"
               >
-                <motion.div
-                  className="absolute -inset-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 opacity-0 group-hover:opacity-30 blur-xl transition-opacity"
-                />
                 <motion.div
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "200%" }}
@@ -1444,11 +1315,11 @@ export default function AuthLanding() {
 
             <Link href="/premium">
               <motion.div
-                className="inline-flex items-center gap-2 px-10 py-6 bg-white/80 backdrop-blur-xl border-2 border-emerald-300 text-emerald-700 font-black text-lg rounded-2xl shadow-xl cursor-pointer"
+                className="inline-flex items-center gap-2 px-10 py-6 bg-card border border-border text-foreground font-black text-lg rounded-2xl shadow-sm cursor-pointer"
                 whileHover={{ scale: 1.03, y: -2 }}
                 data-testid="button-view-premium-final"
               >
-                <Crown className="h-5 w-5" />
+                <Crown className="h-5 w-5 text-gold" />
                 View Premium Plans
                 <ChevronRight className="h-5 w-5" />
               </motion.div>
@@ -1460,7 +1331,7 @@ export default function AuthLanding() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="text-center text-base text-gray-600 mt-10 font-medium"
+            className="text-center text-base text-muted-foreground mt-10 font-medium"
           >
             🔒 Private & Secure • ⚡ AI-Powered • ⚖️ Legal Templates
           </motion.p>
@@ -1472,7 +1343,10 @@ export default function AuthLanding() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-500">
+                <div 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: "linear-gradient(135deg, var(--gold-soft), var(--gold-deep))" }}
+                >
                   <DollarSign className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-lg font-bold text-white">GoldRock Health</span>
@@ -1483,16 +1357,16 @@ export default function AuthLanding() {
             <div>
               <h4 className="text-white font-semibold mb-4">Platform</h4>
               <div className="flex flex-col gap-2 text-sm">
-                <Link href="/about" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-about">
+                <Link href="/about" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-about">
                   About GoldRock Health
                 </Link>
-                <Link href="/platform-stats" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-stats">
+                <Link href="/platform-stats" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-stats">
                   Platform Stats
                 </Link>
-                <Link href="/case-studies" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-case-studies">
+                <Link href="/case-studies" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-case-studies">
                   Case Studies
                 </Link>
-                <Link href="/articles" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-articles">
+                <Link href="/articles" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-articles">
                   Resources
                 </Link>
               </div>
@@ -1501,16 +1375,16 @@ export default function AuthLanding() {
             <div>
               <h4 className="text-white font-semibold mb-4">Partnerships</h4>
               <div className="flex flex-col gap-2 text-sm">
-                <Link href="/for-vcs" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-vcs">
+                <Link href="/for-vcs" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-vcs">
                   For VCs
                 </Link>
-                <Link href="/investors" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-investors">
+                <Link href="/investors" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-investors">
                   For Investors
                 </Link>
-                <Link href="/for-healthcare" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-healthcare">
+                <Link href="/for-healthcare" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-healthcare">
                   For Healthcare Companies
                 </Link>
-                <Link href="/for-insurance" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-insurance">
+                <Link href="/for-insurance" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-insurance">
                   For Insurance Companies
                 </Link>
               </div>
@@ -1519,18 +1393,18 @@ export default function AuthLanding() {
             <div>
               <h4 className="text-white font-semibold mb-4">Legal</h4>
               <div className="flex flex-col gap-2 text-sm">
-                <Link href="/privacy-policy" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-privacy-landing">
+                <Link href="/privacy-policy" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-privacy-landing">
                   Privacy Policy
                 </Link>
-                <Link href="/terms-of-service" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-terms-landing">
+                <Link href="/terms-of-service" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-terms-landing">
                   Terms of Service
                 </Link>
-                <Link href="/support" className="text-gray-400 hover:text-emerald-400 transition-colors" data-testid="footer-link-support-landing">
+                <Link href="/support" className="text-gray-400 hover:text-gold transition-colors" data-testid="footer-link-support-landing">
                   Support
                 </Link>
                 <a 
                   href="mailto:CONTACT@GOLDROCK.ai" 
-                  className="text-gray-400 hover:text-emerald-400 transition-colors"
+                  className="text-gray-400 hover:text-gold transition-colors"
                   data-testid="footer-link-email-landing"
                 >
                   Contact
@@ -1548,10 +1422,10 @@ export default function AuthLanding() {
 
       {/* Pre-Login Bottom Navigation Bar */}
       <motion.div 
-        className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-2xl border-t border-white/20"
+        className="fixed bottom-0 left-0 right-0 z-50 border-t border-border"
         style={{ 
           paddingBottom: 'env(safe-area-inset-bottom)',
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.98) 100%)',
+          background: 'var(--card)',
           boxShadow: '0 -4px 30px rgba(0,0,0,0.08)'
         }}
         initial={{ y: 100, opacity: 0 }}
@@ -1611,7 +1485,8 @@ export default function AuthLanding() {
                   </motion.div>
                   {item.special && (
                     <motion.div
-                      className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-pink-600 text-white rounded-full p-1 shadow-lg"
+                      className="absolute -top-1 -right-1 text-white rounded-full p-1 shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.5, type: "spring", stiffness: 500 }}

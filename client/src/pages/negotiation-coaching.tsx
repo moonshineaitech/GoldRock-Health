@@ -131,7 +131,7 @@ const negotiationScenarios = [
     averageSavings: "$15,000",
     successRate: "87%",
     difficulty: "Advanced",
-    gradient: "from-red-500 to-orange-500",
+    gradient: "bg-secondary",
     scenarios: ["Out-of-network emergency", "Level 5 coding disputes", "Facility vs. physician billing"],
     keyTactics: ["Emergency exception clauses", "Good Samaritan law arguments", "Medical necessity challenges"]
   },
@@ -143,7 +143,7 @@ const negotiationScenarios = [
     averageSavings: "$25,000",
     successRate: "92%", 
     difficulty: "Expert",
-    gradient: "from-blue-500 to-purple-500",
+    gradient: "bg-secondary",
     scenarios: ["OR time overcharges", "Surgical supply markups", "Anesthesia billing errors"],
     keyTactics: ["CPT bundling violations", "Time documentation disputes", "Supply utilization audits"]
   },
@@ -155,7 +155,7 @@ const negotiationScenarios = [
     averageSavings: "$12,000",
     successRate: "89%",
     difficulty: "Intermediate",
-    gradient: "from-emerald-500 to-teal-500",
+    gradient: "bg-secondary",
     scenarios: ["Room rate negotiations", "Daily charges audit", "Discharge timing disputes"],
     keyTactics: ["Medicare rate comparisons", "Length of stay justification", "Service bundling challenges"]
   },
@@ -167,7 +167,7 @@ const negotiationScenarios = [
     averageSavings: "$8,500",
     successRate: "76%",
     difficulty: "Intermediate", 
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "bg-secondary",
     scenarios: ["Prior authorization denials", "Medical necessity appeals", "Out-of-network disputes"],
     keyTactics: ["Medical literature citations", "Peer review requests", "External review processes"]
   },
@@ -179,7 +179,7 @@ const negotiationScenarios = [
     averageSavings: "$18,000",
     successRate: "94%",
     difficulty: "Beginner",
-    gradient: "from-pink-500 to-rose-500",
+    gradient: "bg-secondary",
     scenarios: ["Charity care applications", "Payment plan negotiations", "Financial hardship documentation"],
     keyTactics: ["Income documentation strategy", "Hardship narrative crafting", "Policy compliance requirements"]
   },
@@ -191,7 +191,7 @@ const negotiationScenarios = [
     averageSavings: "$6,800",
     successRate: "91%",
     difficulty: "Beginner",
-    gradient: "from-amber-500 to-yellow-500",
+    gradient: "bg-secondary",
     scenarios: ["Duplicate billing", "Service date errors", "Coding mismatches"],
     keyTactics: ["Documentation comparison", "Medical record correlation", "Billing timeline analysis"]
   }
@@ -423,12 +423,12 @@ function ProfessionalCoaching({ scenario }: { scenario: string }) {
       animate="visible"
     >
       {/* Progress Indicator */}
-      <MobileCard className="bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+      <MobileCard className="border border-border">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-purple-900" data-testid="text-coaching-title">
+          <h3 className="text-lg font-bold font-serif text-foreground" data-testid="text-coaching-title">
             {module.title}
           </h3>
-          <div className="text-sm text-purple-600 font-medium">
+          <div className="text-sm text-muted-foreground font-medium">
             Phase {currentPhase + 1} of {module.phases.length}
           </div>
         </div>
@@ -438,31 +438,31 @@ function ProfessionalCoaching({ scenario }: { scenario: string }) {
             <div
               key={index}
               className={`flex-1 h-2 rounded-full transition-all duration-300 ${
-                index <= currentPhase ? 'bg-purple-500' : 'bg-gray-200'
+                index <= currentPhase ? 'bg-gold' : 'bg-secondary'
               }`}
             />
           ))}
         </div>
         
         <div className="text-center">
-          <div className="text-2xl font-bold text-purple-900 mb-1">
+          <div className="text-2xl font-bold text-foreground mb-1">
             {Math.round(((currentPhase + 1) / module.phases.length) * 100)}%
           </div>
-          <div className="text-sm text-purple-600">Coaching Progress</div>
+          <div className="text-sm text-muted-foreground">Coaching Progress</div>
         </div>
       </MobileCard>
 
       {/* Current Phase */}
       <MobileCard>
         <div className="flex items-center space-x-3 mb-4">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <Brain className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h4 className="font-bold text-gray-900" data-testid={`text-phase-title-${currentPhase}`}>
+            <h4 className="font-bold text-foreground" data-testid={`text-phase-title-${currentPhase}`}>
               {module.phases[currentPhase].title}
             </h4>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Duration: {module.phases[currentPhase].duration}
             </p>
           </div>
@@ -476,10 +476,10 @@ function ProfessionalCoaching({ scenario }: { scenario: string }) {
             return (
               <motion.div
                 key={index}
-                className={`p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer ${
+                className={`p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
                   isCompleted 
                     ? 'bg-emerald-50 border-emerald-200' 
-                    : 'bg-gray-50 border-gray-200 hover:border-blue-300'
+                    : 'bg-secondary border-border hover:border-foreground'
                 }`}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleStepComplete(stepId)}
@@ -487,15 +487,15 @@ function ProfessionalCoaching({ scenario }: { scenario: string }) {
               >
                 <div className="flex items-center space-x-3">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                    isCompleted ? 'bg-emerald-500' : 'bg-gray-300'
+                    isCompleted ? 'bg-emerald-500' : 'bg-muted'
                   }`}>
                     {isCompleted ? (
                       <CheckCircle className="h-4 w-4 text-white" />
                     ) : (
-                      <span className="text-xs font-bold text-white">{index + 1}</span>
+                      <span className="text-xs font-bold text-muted-foreground">{index + 1}</span>
                     )}
                   </div>
-                  <p className={`flex-1 ${isCompleted ? 'text-emerald-700 line-through' : 'text-gray-700'}`}>
+                  <p className={`flex-1 ${isCompleted ? 'text-emerald-700 line-through' : 'text-foreground'}`}>
                     {step}
                   </p>
                 </div>
@@ -529,7 +529,7 @@ function ProfessionalCoaching({ scenario }: { scenario: string }) {
       {/* Negotiation Scripts */}
       <MobileCard>
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-bold text-gray-900">Professional Scripts</h4>
+          <h4 className="font-bold text-foreground">Professional Scripts</h4>
           <MobileButton
             variant="ghost"
             size="sm"
@@ -549,9 +549,9 @@ function ProfessionalCoaching({ scenario }: { scenario: string }) {
               className="space-y-4"
             >
               {/* Opening Script */}
-              <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
+              <div className="p-4 bg-secondary rounded-xl border border-border">
                 <div className="flex items-center justify-between mb-2">
-                  <h5 className="font-semibold text-blue-900">Opening Script</h5>
+                  <h5 className="font-semibold text-foreground">Opening Script</h5>
                   <MobileButton
                     variant="ghost"
                     size="sm"
@@ -561,24 +561,24 @@ function ProfessionalCoaching({ scenario }: { scenario: string }) {
                     <Copy className="h-4 w-4" />
                   </MobileButton>
                 </div>
-                <p className="text-blue-700 text-sm leading-relaxed">
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   {module.scripts.opening}
                 </p>
               </div>
 
               {/* Objection Handlers */}
               <div className="space-y-3">
-                <h5 className="font-semibold text-gray-900">Common Objections & Responses</h5>
+                <h5 className="font-semibold text-foreground">Common Objections & Responses</h5>
                 {module.scripts.objections.map((item, index) => (
-                  <div key={index} className="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                  <div key={index} className="p-4 bg-secondary rounded-xl border border-border">
                     <div className="mb-2">
-                      <span className="font-medium text-amber-900">Objection:</span>
-                      <p className="text-amber-700 text-sm italic">"{item.objection}"</p>
+                      <span className="font-medium text-foreground">Objection:</span>
+                      <p className="text-muted-foreground text-sm italic">"{item.objection}"</p>
                     </div>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <span className="font-medium text-amber-900">Response:</span>
-                        <p className="text-amber-700 text-sm">"{item.response}"</p>
+                        <span className="font-medium text-foreground">Response:</span>
+                        <p className="text-muted-foreground text-sm">"{item.response}"</p>
                       </div>
                       <MobileButton
                         variant="ghost"
@@ -616,10 +616,10 @@ function ScenarioSelector({
       animate="visible"
     >
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2" data-testid="text-scenario-selector-title">
+        <h2 className="text-2xl font-bold font-serif text-foreground mb-2" data-testid="text-scenario-selector-title">
           Choose Your Negotiation Scenario
         </h2>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Select the type of medical bill you need help negotiating
         </p>
       </div>
@@ -638,42 +638,39 @@ function ScenarioSelector({
               <MobileCard
                 className={`relative overflow-hidden cursor-pointer transition-all duration-300 ${
                   isSelected 
-                    ? 'ring-2 ring-blue-500 bg-blue-50' 
-                    : 'hover:bg-gray-50'
+                    ? 'ring-2 ring-[var(--gold)] bg-secondary' 
+                    : 'hover:bg-secondary'
                 }`}
                 onClick={() => onScenarioSelect(scenario.id)}
                 data-testid={`scenario-card-${scenario.id}`}
               >
-                {/* Background Gradient */}
-                <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${scenario.gradient} opacity-10 rounded-bl-3xl`} />
-                
                 <div className="flex items-start space-x-4">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${scenario.gradient} rounded-xl flex items-center justify-center`}>
-                    <Icon className="h-6 w-6 text-white" />
+                  <div className={`w-12 h-12 ${scenario.gradient} border border-border rounded-xl flex items-center justify-center`}>
+                    <Icon className="h-6 w-6 text-muted-foreground" />
                   </div>
                   
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-bold text-gray-900">{scenario.title}</h3>
+                      <h3 className="font-bold text-foreground">{scenario.title}</h3>
                       <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        scenario.difficulty === 'Beginner' ? 'bg-green-100 text-green-700' :
-                        scenario.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-red-100 text-red-700'
+                        scenario.difficulty === 'Beginner' ? 'bg-emerald-100 text-emerald-700' :
+                        scenario.difficulty === 'Intermediate' ? 'bg-amber-100 text-amber-700' :
+                        'bg-secondary text-muted-foreground'
                       }`}>
                         {scenario.difficulty}
                       </div>
                     </div>
                     
-                    <p className="text-gray-600 text-sm mb-3">{scenario.description}</p>
+                    <p className="text-muted-foreground text-sm mb-3">{scenario.description}</p>
                     
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div className="flex items-center space-x-2">
-                        <DollarSign className="h-4 w-4 text-emerald-600" />
-                        <span className="text-gray-700">Avg: {scenario.averageSavings}</span>
+                        <DollarSign className="h-4 w-4 text-gold" />
+                        <span className="text-foreground">Avg: {scenario.averageSavings}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <TrendingUp className="h-4 w-4 text-blue-600" />
-                        <span className="text-gray-700">{scenario.successRate} success</span>
+                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-foreground">{scenario.successRate} success</span>
                       </div>
                     </div>
                   </div>
@@ -681,7 +678,7 @@ function ScenarioSelector({
                 
                 {isSelected && (
                   <div className="absolute top-4 right-4">
-                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
                       <CheckCircle className="h-4 w-4 text-white" />
                     </div>
                   </div>
@@ -698,46 +695,46 @@ function ScenarioSelector({
 // Success tracker component
 function SuccessTracker() {
   return (
-    <MobileCard className="bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200">
+    <MobileCard className="border border-border">
       <div className="text-center mb-6">
-        <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Award className="h-8 w-8 text-white" />
         </div>
-        <h3 className="text-xl font-bold text-emerald-900 mb-2" data-testid="text-success-tracker-title">
+        <h3 className="text-xl font-bold font-serif text-foreground mb-2" data-testid="text-success-tracker-title">
           Your Success Metrics
         </h3>
-        <p className="text-emerald-700 text-sm">
+        <p className="text-muted-foreground text-sm">
           Track your negotiation progress and savings
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="text-center p-4 bg-white/50 rounded-xl">
-          <div className="text-2xl font-bold text-emerald-900 mb-1" data-testid="text-total-saved">
+        <div className="text-center p-4 bg-secondary rounded-xl">
+          <div className="text-2xl font-bold text-foreground mb-1" data-testid="text-total-saved">
             ${successMetrics.totalSaved.toLocaleString()}
           </div>
-          <div className="text-xs text-emerald-600">Total Saved</div>
+          <div className="text-xs text-muted-foreground">Total Saved</div>
         </div>
         
-        <div className="text-center p-4 bg-white/50 rounded-xl">
-          <div className="text-2xl font-bold text-emerald-900 mb-1" data-testid="text-success-rate">
+        <div className="text-center p-4 bg-secondary rounded-xl">
+          <div className="text-2xl font-bold text-foreground mb-1" data-testid="text-success-rate">
             {successMetrics.averageReduction}%
           </div>
-          <div className="text-xs text-emerald-600">Avg Reduction</div>
+          <div className="text-xs text-muted-foreground">Avg Reduction</div>
         </div>
         
-        <div className="text-center p-4 bg-white/50 rounded-xl">
-          <div className="text-2xl font-bold text-emerald-900 mb-1" data-testid="text-successful-negotiations">
+        <div className="text-center p-4 bg-secondary rounded-xl">
+          <div className="text-2xl font-bold text-foreground mb-1" data-testid="text-successful-negotiations">
             {successMetrics.successfulNegotiations}
           </div>
-          <div className="text-xs text-emerald-600">Successful Negotiations</div>
+          <div className="text-xs text-muted-foreground">Successful Negotiations</div>
         </div>
         
-        <div className="text-center p-4 bg-white/50 rounded-xl">
-          <div className="text-2xl font-bold text-emerald-900 mb-1" data-testid="text-avg-resolution-time">
+        <div className="text-center p-4 bg-secondary rounded-xl">
+          <div className="text-2xl font-bold text-foreground mb-1" data-testid="text-avg-resolution-time">
             {successMetrics.timeToResolution} days
           </div>
-          <div className="text-xs text-emerald-600">Avg Resolution</div>
+          <div className="text-xs text-muted-foreground">Avg Resolution</div>
         </div>
       </div>
     </MobileCard>
@@ -776,8 +773,8 @@ export default function NegotiationCoaching() {
     return (
       <MobileLayout title="Expert Negotiation Coaching">
         <div className="text-center py-12">
-          <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your coaching dashboard...</p>
+          <div className="animate-spin w-12 h-12 border-4 border-gold border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your coaching dashboard...</p>
         </div>
       </MobileLayout>
     );
@@ -793,12 +790,12 @@ export default function NegotiationCoaching() {
       >
         {/* Premium Badge */}
         <motion.div variants={itemVariants}>
-          <MobileCard className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+          <MobileCard className="text-white" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
             <div className="flex items-center space-x-3">
               <Crown className="h-6 w-6" />
               <div>
-                <h2 className="font-bold" data-testid="text-premium-badge">Expert Negotiation Coaching</h2>
-                <p className="text-amber-100 text-sm">Professional-grade bill negotiation system</p>
+                <h2 className="font-bold font-serif" data-testid="text-premium-badge">Expert Negotiation Coaching</h2>
+                <p className="text-white/80 text-sm">Professional-grade bill negotiation system</p>
               </div>
             </div>
           </MobileCard>
@@ -806,7 +803,7 @@ export default function NegotiationCoaching() {
 
         {/* Tab Navigation */}
         <motion.div variants={itemVariants}>
-          <div className="flex bg-white/60 backdrop-blur-sm rounded-2xl p-1 border border-white/40">
+          <div className="flex bg-secondary rounded-2xl p-1 border border-border">
             {[
               { id: "scenarios", label: "Scenarios", icon: Target },
               { id: "coaching", label: "Coaching", icon: Brain },
@@ -822,8 +819,8 @@ export default function NegotiationCoaching() {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive 
-                      ? 'bg-white shadow-lg text-blue-600' 
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-card shadow-sm text-gold' 
+                      : 'text-muted-foreground hover:text-foreground'
                   }`}
                   data-testid={`tab-${tab.id}`}
                 >
@@ -864,9 +861,9 @@ export default function NegotiationCoaching() {
                 <ProfessionalCoaching scenario={selectedScenario} />
               ) : (
                 <MobileCard className="text-center py-12">
-                  <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="font-bold text-gray-900 mb-2">Select a Scenario First</h3>
-                  <p className="text-gray-600 mb-4">Choose a negotiation scenario to access personalized coaching</p>
+                  <Brain className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-bold text-foreground mb-2">Select a Scenario First</h3>
+                  <p className="text-muted-foreground mb-4">Choose a negotiation scenario to access personalized coaching</p>
                   <MobileButton onClick={() => setActiveTab("scenarios")} data-testid="button-select-scenario">
                     Choose Scenario
                   </MobileButton>
@@ -884,10 +881,10 @@ export default function NegotiationCoaching() {
               transition={{ duration: 0.3 }}
             >
               <MobileCard className="text-center py-12">
-                <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="font-bold text-gray-900 mb-2">Professional Templates</h3>
-                <p className="text-gray-600 mb-4">Access proven email and letter templates for follow-ups</p>
-                <p className="text-sm text-gray-500">Coming in next update</p>
+                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="font-bold text-foreground mb-2">Professional Templates</h3>
+                <p className="text-muted-foreground mb-4">Access proven email and letter templates for follow-ups</p>
+                <p className="text-sm text-muted-foreground">Coming in next update</p>
               </MobileCard>
             </motion.div>
           )}
@@ -908,7 +905,7 @@ export default function NegotiationCoaching() {
         {/* Quick Actions */}
         <motion.div variants={itemVariants}>
           <MobileCard>
-            <h3 className="font-bold text-gray-900 mb-4" data-testid="text-quick-actions">Quick Actions</h3>
+            <h3 className="font-bold text-foreground mb-4" data-testid="text-quick-actions">Quick Actions</h3>
             <div className="grid grid-cols-2 gap-3">
               <MobileButton
                 variant="secondary"

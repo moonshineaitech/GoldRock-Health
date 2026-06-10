@@ -394,7 +394,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -406,18 +406,18 @@ Include specific dollar amounts, percentage reductions, contact information, tim
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Database className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Hospital Bills Intelligence Database</h3>
-            <Badge className="bg-blue-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground">Hospital Bills Intelligence Database</h3>
+            <Badge className="bg-secondary text-foreground text-xs">
               <Crown className="h-3 w-3 mr-1" />
               500+ Hospital Systems
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Insider intelligence • Vulnerability mapping • Tactical strategies</p>
+          <p className="text-sm text-muted-foreground">Insider intelligence • Vulnerability mapping • Tactical strategies</p>
         </div>
       </div>
 
@@ -432,7 +432,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
         <TabsContent value="search" className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Hospital System *
               </label>
               <Input
@@ -443,7 +443,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Department
               </label>
               <Select value={searchData.department} onValueChange={(value) => setSearchData({...searchData, department: value})}>
@@ -466,7 +466,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Procedure Type
               </label>
               <Input
@@ -477,7 +477,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 State/Region
               </label>
               <Input
@@ -488,7 +488,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Bill Amount
               </label>
               <Input
@@ -504,7 +504,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
           <Button 
             onClick={searchHospitalIntelligence} 
             disabled={isSearching} 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full bg-primary text-primary-foreground hover:opacity-90"
             data-testid="button-search-intelligence"
           >
             {isSearching ? (
@@ -521,26 +521,26 @@ Include specific dollar amounts, percentage reductions, contact information, tim
           </Button>
 
           <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Database className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-800">500+ Systems</span>
+                <Database className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">500+ Systems</span>
               </div>
-              <div className="text-xs text-blue-700">Comprehensive hospital intelligence</div>
+              <div className="text-xs text-muted-foreground">Comprehensive hospital intelligence</div>
             </div>
-            <div className="p-3 bg-green-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-semibold text-green-800">95% Success</span>
+                <Target className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">95% Success</span>
               </div>
-              <div className="text-xs text-green-700">Intelligence-driven negotiations</div>
+              <div className="text-xs text-muted-foreground">Intelligence-driven negotiations</div>
             </div>
-            <div className="p-3 bg-purple-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Crown className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-semibold text-purple-800">$50M+ Saved</span>
+                <Crown className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">$50M+ Saved</span>
               </div>
-              <div className="text-xs text-purple-700">Proven results database</div>
+              <div className="text-xs text-muted-foreground">Proven results database</div>
             </div>
           </div>
         </TabsContent>
@@ -548,7 +548,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
         <TabsContent value="systems" className="space-y-4">
           <div className="space-y-4">
             {hospitalSystems.map((hospital) => (
-              <Card key={hospital.id} className="border-l-4 border-l-blue-500">
+              <Card key={hospital.id} className="border border-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
@@ -560,21 +560,21 @@ Include specific dollar amounts, percentage reductions, contact information, tim
                       </CardDescription>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-green-600">{hospital.avgSavings}</div>
-                      <div className="text-xs text-gray-500">Avg Savings</div>
+                      <div className="text-lg font-bold text-gold">{hospital.avgSavings}</div>
+                      <div className="text-xs text-muted-foreground">Avg Savings</div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Target className="h-4 w-4 text-red-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Target className="h-4 w-4 text-muted-foreground" />
                       Key Vulnerabilities
                     </h4>
                     <div className="space-y-1">
                       {hospital.vulnerabilities.map((vuln, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <AlertTriangle className="h-3 w-3 text-orange-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                          <AlertTriangle className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{vuln}</span>
                         </div>
                       ))}
@@ -582,14 +582,14 @@ Include specific dollar amounts, percentage reductions, contact information, tim
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Key className="h-4 w-4 text-purple-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Key className="h-4 w-4 text-muted-foreground" />
                       Insider Secrets
                     </h4>
                     <div className="space-y-1">
                       {hospital.insiderSecrets.map((secret, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <Lock className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                          <Lock className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{secret}</span>
                         </div>
                       ))}
@@ -598,19 +598,19 @@ Include specific dollar amounts, percentage reductions, contact information, tim
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Success Rates</h4>
+                      <h4 className="text-sm font-semibold text-foreground mb-2">Success Rates</h4>
                       <div className="space-y-1">
                         {Object.entries(hospital.successRates).map(([dept, rate]) => (
                           <div key={dept} className="flex justify-between text-xs">
-                            <span className="text-gray-600">{dept}</span>
-                            <span className="font-semibold text-green-600">{rate}</span>
+                            <span className="text-muted-foreground">{dept}</span>
+                            <span className="font-semibold text-muted-foreground">{rate}</span>
                           </div>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Contact Strategy</h4>
-                      <div className="text-xs text-gray-700">
+                      <h4 className="text-sm font-semibold text-foreground mb-2">Contact Strategy</h4>
+                      <div className="text-xs text-foreground">
                         {hospital.contactStrategy}
                       </div>
                     </div>
@@ -624,7 +624,7 @@ Include specific dollar amounts, percentage reductions, contact information, tim
         <TabsContent value="departments" className="space-y-4">
           <div className="space-y-4">
             {departmentIntelligence.map((dept, index) => (
-              <Card key={index} className="border-l-4 border-l-orange-500">
+              <Card key={index} className="border border-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
@@ -635,21 +635,21 @@ Include specific dollar amounts, percentage reductions, contact information, tim
                       </CardDescription>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-green-600">{dept.avgSavings}</div>
-                      <div className="text-xs text-gray-500">Typical Savings</div>
+                      <div className="text-lg font-bold text-gold">{dept.avgSavings}</div>
+                      <div className="text-xs text-muted-foreground">Typical Savings</div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4 text-red-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                       Common Billing Scams
                     </h4>
                     <div className="space-y-1">
                       {dept.commonScams.map((scam, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <Shield className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                          <Shield className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{scam}</span>
                         </div>
                       ))}
@@ -657,14 +657,14 @@ Include specific dollar amounts, percentage reductions, contact information, tim
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Brain className="h-4 w-4 text-purple-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Brain className="h-4 w-4 text-muted-foreground" />
                       Insider Tactics
                     </h4>
                     <div className="space-y-1">
                       {dept.insiderTactics.map((tactic, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <Lightbulb className="h-3 w-3 text-yellow-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                          <Lightbulb className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{tactic}</span>
                         </div>
                       ))}
@@ -679,12 +679,12 @@ Include specific dollar amounts, percentage reductions, contact information, tim
         <TabsContent value="regional" className="space-y-4">
           <div className="space-y-4">
             {regionalPricing.map((region, index) => (
-              <Card key={index} className="border-l-4 border-l-green-500">
+              <Card key={index} className="border border-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <MapPin className="h-5 w-5 text-green-600" />
+                        <MapPin className="h-5 w-5 text-muted-foreground" />
                         {region.region}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-4">
@@ -694,21 +694,21 @@ Include specific dollar amounts, percentage reductions, contact information, tim
                       </CardDescription>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-green-600">{region.avgSavings}</div>
-                      <div className="text-xs text-gray-500">Avg Regional Savings</div>
+                      <div className="text-lg font-bold text-gold">{region.avgSavings}</div>
+                      <div className="text-xs text-muted-foreground">Avg Regional Savings</div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Scale className="h-4 w-4 text-blue-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Scale className="h-4 w-4 text-muted-foreground" />
                       Key Leverage Points
                     </h4>
                     <div className="space-y-1">
                       {region.keyLeverage.map((leverage, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                          <CheckCircle className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{leverage}</span>
                         </div>
                       ))}
@@ -716,8 +716,8 @@ Include specific dollar amounts, percentage reductions, contact information, tim
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Star className="h-4 w-4 text-yellow-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Star className="h-4 w-4 text-muted-foreground" />
                       Best Strategies
                     </h4>
                     <div className="flex flex-wrap gap-2">

@@ -455,7 +455,7 @@ Include specific success rates, settlement ranges, contact information, timing s
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 relative"
+      className="bg-card rounded-2xl p-6 shadow-sm border border-border relative"
     >
       {!isSubscribed && (
         <PremiumPaywallOverlay
@@ -467,18 +467,18 @@ Include specific success rates, settlement ranges, contact information, timing s
       )}
       
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>
           <Shield className="h-6 w-6 text-white" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-gray-900">Insurance Claims Intelligence Database</h3>
-            <Badge className="bg-indigo-600 text-white text-xs">
+            <h3 className="text-lg font-bold text-foreground">Insurance Claims Intelligence Database</h3>
+            <Badge className="bg-secondary text-foreground text-xs">
               <Crown className="h-3 w-3 mr-1" />
               Major Insurers Covered
             </Badge>
           </div>
-          <p className="text-sm text-gray-600">Denial patterns • Appeal strategies • Regulatory leverage</p>
+          <p className="text-sm text-muted-foreground">Denial patterns • Appeal strategies • Regulatory leverage</p>
         </div>
       </div>
 
@@ -493,7 +493,7 @@ Include specific success rates, settlement ranges, contact information, timing s
         <TabsContent value="search" className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Insurance Company *
               </label>
               <Input
@@ -504,7 +504,7 @@ Include specific success rates, settlement ranges, contact information, timing s
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Claim Type
               </label>
               <Select value={searchData.claimType} onValueChange={(value) => setSearchData({...searchData, claimType: value})}>
@@ -527,7 +527,7 @@ Include specific success rates, settlement ranges, contact information, timing s
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Denial Reason
               </label>
               <Input
@@ -538,7 +538,7 @@ Include specific success rates, settlement ranges, contact information, timing s
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Bill Amount
               </label>
               <Input
@@ -550,7 +550,7 @@ Include specific success rates, settlement ranges, contact information, timing s
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Policy Type
               </label>
               <Select value={searchData.policyType} onValueChange={(value) => setSearchData({...searchData, policyType: value})}>
@@ -571,7 +571,7 @@ Include specific success rates, settlement ranges, contact information, timing s
           <Button 
             onClick={searchInsuranceIntelligence} 
             disabled={isSearching} 
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+            className="w-full bg-primary text-primary-foreground hover:opacity-90"
             data-testid="button-search-insurance-intelligence"
           >
             {isSearching ? (
@@ -588,26 +588,26 @@ Include specific success rates, settlement ranges, contact information, timing s
           </Button>
 
           <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="p-3 bg-indigo-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Shield className="h-4 w-4 text-indigo-600" />
-                <span className="text-sm font-semibold text-indigo-800">Major Insurers</span>
+                <Shield className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">Major Insurers</span>
               </div>
-              <div className="text-xs text-indigo-700">Comprehensive company intelligence</div>
+              <div className="text-xs text-muted-foreground">Comprehensive company intelligence</div>
             </div>
-            <div className="p-3 bg-green-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-semibold text-green-800">73% Appeal Success</span>
+                <Target className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">73% Appeal Success</span>
               </div>
-              <div className="text-xs text-green-700">Intelligence-driven appeals</div>
+              <div className="text-xs text-muted-foreground">Intelligence-driven appeals</div>
             </div>
-            <div className="p-3 bg-purple-50 rounded-lg">
+            <div className="p-3 bg-secondary rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Crown className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-semibold text-purple-800">$25M+ Recovered</span>
+                <Crown className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">$25M+ Recovered</span>
               </div>
-              <div className="text-xs text-purple-700">Proven appeal strategies</div>
+              <div className="text-xs text-muted-foreground">Proven appeal strategies</div>
             </div>
           </div>
         </TabsContent>
@@ -615,33 +615,33 @@ Include specific success rates, settlement ranges, contact information, timing s
         <TabsContent value="companies" className="space-y-4">
           <div className="space-y-4">
             {insuranceCompanies.map((company) => (
-              <Card key={company.id} className="border-l-4 border-l-indigo-500">
+              <Card key={company.id} className="border border-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg">{company.name}</CardTitle>
                       <CardDescription className="flex items-center gap-4">
                         <Badge variant="outline">{company.marketShare} Market Share</Badge>
-                        <Badge variant="outline" className="text-red-600">{company.avgDenialRate} Denial Rate</Badge>
-                        <Badge variant="outline" className="text-green-600">{company.appealSuccessRate} Appeal Success</Badge>
+                        <Badge variant="outline" className="text-muted-foreground">{company.avgDenialRate} Denial Rate</Badge>
+                        <Badge variant="outline" className="text-muted-foreground">{company.appealSuccessRate} Appeal Success</Badge>
                       </CardDescription>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-green-600">{company.avgSavings}</div>
-                      <div className="text-xs text-gray-500">Avg Recovery</div>
+                      <div className="text-lg font-bold text-gold">{company.avgSavings}</div>
+                      <div className="text-xs text-muted-foreground">Avg Recovery</div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Target className="h-4 w-4 text-red-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Target className="h-4 w-4 text-muted-foreground" />
                       Key Vulnerabilities
                     </h4>
                     <div className="space-y-1">
                       {company.vulnerabilities.map((vuln, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <AlertTriangle className="h-3 w-3 text-orange-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                          <AlertTriangle className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{vuln}</span>
                         </div>
                       ))}
@@ -649,14 +649,14 @@ Include specific success rates, settlement ranges, contact information, timing s
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <Key className="h-4 w-4 text-purple-600" />
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                      <Key className="h-4 w-4 text-muted-foreground" />
                       Insider Secrets
                     </h4>
                     <div className="space-y-1">
                       {company.insiderSecrets.map((secret, index) => (
-                        <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                          <Lock className="h-3 w-3 text-purple-500 mt-0.5 flex-shrink-0" />
+                        <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                          <Lock className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <span>{secret}</span>
                         </div>
                       ))}
@@ -665,20 +665,20 @@ Include specific success rates, settlement ranges, contact information, timing s
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Contact Intelligence</h4>
+                      <h4 className="text-sm font-semibold text-foreground mb-2">Contact Intelligence</h4>
                       <div className="space-y-1">
                         {Object.entries(company.contactIntelligence).map(([role, info]) => (
                           <div key={role} className="text-xs">
-                            <span className="font-medium text-gray-700">{role}:</span>
+                            <span className="font-medium text-foreground">{role}:</span>
                             <br />
-                            <span className="text-gray-600">{info}</span>
+                            <span className="text-muted-foreground">{info}</span>
                           </div>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Best Approach</h4>
-                      <div className="text-xs text-gray-700">
+                      <h4 className="text-sm font-semibold text-foreground mb-2">Best Approach</h4>
+                      <div className="text-xs text-foreground">
                         {company.bestApproach}
                       </div>
                     </div>
@@ -692,33 +692,33 @@ Include specific success rates, settlement ranges, contact information, timing s
         <TabsContent value="claims" className="space-y-4">
           <div className="space-y-4">
             {claimTypeIntelligence.map((claim, index) => (
-              <Card key={index} className="border-l-4 border-l-orange-500">
+              <Card key={index} className="border border-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg">{claim.type}</CardTitle>
                       <CardDescription className="flex items-center gap-4">
-                        <Badge variant="outline" className="text-green-600">{claim.successRate} Success Rate</Badge>
+                        <Badge variant="outline" className="text-muted-foreground">{claim.successRate} Success Rate</Badge>
                         <Badge variant="outline">{claim.avgTimeline}</Badge>
                       </CardDescription>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-bold text-blue-600">{claim.keyLeverage}</div>
-                      <div className="text-xs text-gray-500">Primary Leverage</div>
+                      <div className="text-sm font-bold text-muted-foreground">{claim.keyLeverage}</div>
+                      <div className="text-xs text-muted-foreground">Primary Leverage</div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-red-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                         Common Denial Reasons
                       </h4>
                       <div className="space-y-1">
                         {claim.commonReasons.map((reason, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <Shield className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                            <Shield className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{reason}</span>
                           </div>
                         ))}
@@ -726,14 +726,14 @@ Include specific success rates, settlement ranges, contact information, timing s
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Brain className="h-4 w-4 text-purple-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Brain className="h-4 w-4 text-muted-foreground" />
                         Reversal Tactics
                       </h4>
                       <div className="space-y-1">
                         {claim.reversalTactics.map((tactic, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <Lightbulb className="h-3 w-3 text-yellow-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                            <Lightbulb className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{tactic}</span>
                           </div>
                         ))}
@@ -749,36 +749,36 @@ Include specific success rates, settlement ranges, contact information, timing s
         <TabsContent value="regulations" className="space-y-4">
           <div className="space-y-4">
             {stateRegulations.map((state, index) => (
-              <Card key={index} className="border-l-4 border-l-green-500">
+              <Card key={index} className="border border-border">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <MapPin className="h-5 w-5 text-green-600" />
+                        <MapPin className="h-5 w-5 text-muted-foreground" />
                         {state.state}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-4">
                         <Badge variant="outline">{state.regulatoryStrength} Protection</Badge>
-                        <Badge variant="outline" className="text-green-600">{state.avgAppealSuccess} Success Rate</Badge>
+                        <Badge variant="outline" className="text-muted-foreground">{state.avgAppealSuccess} Success Rate</Badge>
                       </CardDescription>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-green-600">{state.avgSavings}</div>
-                      <div className="text-xs text-gray-500">Avg State Recovery</div>
+                      <div className="text-lg font-bold text-gold">{state.avgSavings}</div>
+                      <div className="text-xs text-muted-foreground">Avg State Recovery</div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Scale className="h-4 w-4 text-blue-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Scale className="h-4 w-4 text-muted-foreground" />
                         Key Protections
                       </h4>
                       <div className="space-y-1">
                         {state.keyProtections.map((protection, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                            <CheckCircle className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{protection}</span>
                           </div>
                         ))}
@@ -786,14 +786,14 @@ Include specific success rates, settlement ranges, contact information, timing s
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Star className="h-4 w-4 text-yellow-600" />
+                      <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <Star className="h-4 w-4 text-muted-foreground" />
                         Appeal Advantages
                       </h4>
                       <div className="space-y-1">
                         {state.appealAdvantages.map((advantage, index) => (
-                          <div key={index} className="text-xs text-gray-700 flex items-start gap-2">
-                            <Award className="h-3 w-3 text-yellow-500 mt-0.5 flex-shrink-0" />
+                          <div key={index} className="text-xs text-foreground flex items-start gap-2">
+                            <Award className="h-3 w-3 text-muted-foreground mt-0.5 flex-shrink-0" />
                             <span>{advantage}</span>
                           </div>
                         ))}
@@ -801,9 +801,9 @@ Include specific success rates, settlement ranges, contact information, timing s
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <h4 className="text-sm font-semibold text-blue-800 mb-1">Best Strategy</h4>
-                    <div className="text-xs text-blue-700">{state.bestStrategy}</div>
+                  <div className="bg-secondary p-3 rounded-lg">
+                    <h4 className="text-sm font-semibold text-foreground mb-1">Best Strategy</h4>
+                    <div className="text-xs text-muted-foreground">{state.bestStrategy}</div>
                   </div>
                 </CardContent>
               </Card>

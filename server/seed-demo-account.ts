@@ -92,12 +92,14 @@ export async function seedDemoAccount() {
         extractedData: {
           patientInfo: {
             name: "John Smith",
+            dateOfBirth: "1968-03-22",
             policyNumber: "ABC123456789",
             memberId: "XYZ987654321",
           },
           insuranceInfo: {
-            company: "Blue Cross Blue Shield",
-            groupNumber: "GRP001234",
+            company: "Anthem Blue Cross Blue Shield",
+            groupNumber: "GRP-CA-104782",
+            planType: "PPO",
           },
           diagnosticCodes: [
             { code: "I20.0", description: "Unstable angina", type: "ICD-10" as const },
@@ -133,12 +135,14 @@ export async function seedDemoAccount() {
         extractedData: {
           patientInfo: {
             name: "Jane Doe",
+            dateOfBirth: "1985-11-09",
             policyNumber: "DEF456789012",
             memberId: "UVW123456789",
           },
           insuranceInfo: {
             company: "Aetna",
-            groupNumber: "GRP567890",
+            groupNumber: "AET-0568842",
+            planType: "Choice POS II",
           },
           diagnosticCodes: [
             { code: "M23.9", description: "Internal derangement of knee", type: "ICD-10" as const },
@@ -174,12 +178,14 @@ export async function seedDemoAccount() {
         extractedData: {
           patientInfo: {
             name: "Robert Johnson",
+            dateOfBirth: "1957-06-14",
             policyNumber: "GHI789012345",
             memberId: "RST456789012",
           },
           insuranceInfo: {
-            company: "UnitedHealthcare",
-            groupNumber: "GRP789012",
+            company: "Cigna HealthCare",
+            groupNumber: "CIG-3391045",
+            planType: "Open Access Plus",
           },
           diagnosticCodes: [
             { code: "J18.9", description: "Pneumonia, unspecified organism", type: "ICD-10" as const },

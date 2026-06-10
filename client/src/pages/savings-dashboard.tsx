@@ -14,15 +14,21 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 
-function StatCard({ icon: Icon, label, value, subtext, color, bg }: any) {
+function StatCard({ icon: Icon, label, value, subtext }: any) {
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className={`${bg} rounded-xl p-4`}>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="luxury-card p-4"
+    >
       <div className="flex items-center gap-2 mb-1">
-        <Icon className={`w-4 h-4 ${color}`} />
-        <span className="text-xs text-gray-500">{label}</span>
+        <Icon className="w-4 h-4 text-muted-foreground" />
+        <span className="text-xs text-muted-foreground">{label}</span>
       </div>
-      <p className={`text-2xl font-bold ${color}`}>{value}</p>
-      {subtext && <p className="text-xs text-gray-400 mt-0.5">{subtext}</p>}
+      <p className="text-2xl font-bold text-foreground">{value}</p>
+      {subtext && <p className="text-xs text-muted-foreground mt-0.5">{subtext}</p>}
     </motion.div>
   );
 }
@@ -30,16 +36,16 @@ function StatCard({ icon: Icon, label, value, subtext, color, bg }: any) {
 function SavingsGoalMeter({ current, goal }: { current: number; goal: number }) {
   const pct = Math.min((current / goal) * 100, 100);
   return (
-    <div className="bg-white rounded-xl border p-4">
+    <div className="luxury-card p-4">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <Target className="w-5 h-5 text-emerald-600" />
-          <h3 className="font-semibold text-gray-900">Savings Goal</h3>
+          <Target className="w-5 h-5 text-gold" />
+          <h3 className="font-serif font-semibold text-foreground">Savings Goal</h3>
         </div>
-        <span className="text-sm text-gray-500">{Math.round(pct)}%</span>
+        <span className="text-sm text-muted-foreground">{Math.round(pct)}%</span>
       </div>
       <Progress value={pct} className="h-3 mb-2" />
-      <div className="flex justify-between text-xs text-gray-500">
+      <div className="flex justify-between text-xs text-muted-foreground">
         <span>${current.toLocaleString()} saved</span>
         <span>Goal: ${goal.toLocaleString()}</span>
       </div>
@@ -51,16 +57,16 @@ function MilestoneTimeline({ milestones }: { milestones: any[] }) {
   return (
     <div className="space-y-3">
       {milestones.map((m, i) => (
-        <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
+        <motion.div key={i} initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="flex items-start gap-3">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.completed ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-400'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.completed ? 'bg-secondary text-gold' : 'bg-muted text-muted-foreground'}`}>
             {m.completed ? <CheckCircle2 className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
           </div>
           <div className="flex-1 min-w-0">
-            <p className={`text-sm font-medium ${m.completed ? 'text-gray-900' : 'text-gray-400'}`}>{m.title}</p>
-            <p className="text-xs text-gray-500">{m.description}</p>
+            <p className={`text-sm font-medium ${m.completed ? 'text-foreground' : 'text-muted-foreground'}`}>{m.title}</p>
+            <p className="text-xs text-muted-foreground">{m.description}</p>
           </div>
-          {m.amount && <span className="text-sm font-bold text-emerald-600">${m.amount.toLocaleString()}</span>}
+          {m.amount && <span className="text-sm font-bold text-gold">${m.amount.toLocaleString()}</span>}
         </motion.div>
       ))}
     </div>
@@ -105,27 +111,32 @@ export default function SavingsDashboard() {
   return (
     <MobileLayout title="Savings Dashboard" >
       <div className="space-y-6 pb-20">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white text-center">
-          <Sparkles className="w-8 h-8 mx-auto mb-2 text-emerald-200" />
-          <p className="text-emerald-100 text-sm">Total Savings</p>
-          <p className="text-5xl font-bold tracking-tight">${totalSaved.toLocaleString()}</p>
-          <p className="text-emerald-200 text-sm mt-1">Across {outcomes.length} bills</p>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-2xl p-6 text-white text-center"
+          style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}
+        >
+          <Sparkles className="w-8 h-8 mx-auto mb-2 text-white" />
+          <p className="text-white/80 text-sm">Total Savings</p>
+          <p className="text-5xl font-serif font-bold tracking-tight">${totalSaved.toLocaleString()}</p>
+          <p className="text-white/80 text-sm mt-1">Across {outcomes.length} bills</p>
         </motion.div>
 
         <div className="grid grid-cols-2 gap-3">
-          <StatCard icon={FileText} label="Bills Tracked" value={summary?.totalBills || 0} color="text-blue-600" bg="bg-blue-50" />
-          <StatCard icon={CheckCircle2} label="Bills Resolved" value={billsResolved} color="text-emerald-600" bg="bg-emerald-50" />
-          <StatCard icon={TrendingDown} label="Avg Savings" value={`${avgSavings}%`} subtext="per bill" color="text-purple-600" bg="bg-purple-50" />
-          <StatCard icon={Clock} label="Active" value={activeDisputes} subtext="in progress" color="text-amber-600" bg="bg-amber-50" />
+          <StatCard icon={FileText} label="Bills Tracked" value={summary?.totalBills || 0} />
+          <StatCard icon={CheckCircle2} label="Bills Resolved" value={billsResolved} />
+          <StatCard icon={TrendingDown} label="Avg Savings" value={`${avgSavings}%`} subtext="per bill" />
+          <StatCard icon={Clock} label="Active" value={activeDisputes} subtext="in progress" />
         </div>
 
         <SavingsGoalMeter current={totalSaved} goal={Math.max(totalSaved * 1.5, 1000)} />
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-amber-500" />Savings Milestones
+            <CardTitle className="text-base font-serif flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-gold" />Savings Milestones
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -136,18 +147,18 @@ export default function SavingsDashboard() {
         {strategies.length > 0 && (
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-blue-500" />Savings by Strategy
+              <CardTitle className="text-base font-serif flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-muted-foreground" />Savings by Strategy
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {strategies.map((s) => (
                 <div key={s.name} className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium">{s.name}</p>
-                    <p className="text-xs text-gray-500">{s.count} bills</p>
+                    <p className="text-sm font-medium text-foreground">{s.name}</p>
+                    <p className="text-xs text-muted-foreground">{s.count} bills</p>
                   </div>
-                  <Badge className="bg-emerald-100 text-emerald-700">${s.saved.toLocaleString()}</Badge>
+                  <Badge className="bg-secondary text-gold">${s.saved.toLocaleString()}</Badge>
                 </div>
               ))}
             </CardContent>
@@ -157,19 +168,19 @@ export default function SavingsDashboard() {
         {outcomes.length > 0 && (
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-emerald-500" />Recent Outcomes
+              <CardTitle className="text-base font-serif flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-muted-foreground" />Recent Outcomes
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {outcomes.slice(0, 5).map((o: any) => (
                 <div key={o.id} className="flex items-center justify-between py-2 border-b last:border-0">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{o.providerName || "Medical Bill"}</p>
-                    <p className="text-xs text-gray-500">${parseFloat(o.originalAmount).toLocaleString()} → ${parseFloat(o.finalAmount || o.originalAmount).toLocaleString()}</p>
+                    <p className="text-sm font-medium text-foreground">{o.providerName || "Medical Bill"}</p>
+                    <p className="text-xs text-muted-foreground">${parseFloat(o.originalAmount).toLocaleString()} → ${parseFloat(o.finalAmount || o.originalAmount).toLocaleString()}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-emerald-600">-${parseFloat(o.totalSaved || 0).toLocaleString()}</p>
+                    <p className="text-sm font-bold text-gold">-${parseFloat(o.totalSaved || 0).toLocaleString()}</p>
                     <Badge variant="outline" className="text-xs">{o.status}</Badge>
                   </div>
                 </div>
@@ -179,13 +190,13 @@ export default function SavingsDashboard() {
         )}
 
         {outcomes.length === 0 && (
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="luxury-card">
             <CardContent className="py-6 text-center">
-              <DollarSign className="w-10 h-10 mx-auto text-blue-400 mb-2" />
-              <h3 className="font-semibold text-blue-800 mb-1">Start Tracking Your Savings</h3>
-              <p className="text-sm text-blue-600 mb-4">Upload a bill and let our AI find savings opportunities for you</p>
+              <DollarSign className="w-10 h-10 mx-auto text-muted-foreground mb-2" />
+              <h3 className="font-serif font-semibold text-foreground mb-1">Start Tracking Your Savings</h3>
+              <p className="text-sm text-muted-foreground mb-4">Upload a bill and let our AI find savings opportunities for you</p>
               <Link href="/bill-ai">
-                <Button className="bg-blue-600 hover:bg-blue-700"><ArrowRight className="w-4 h-4 mr-1" />Analyze a Bill</Button>
+                <Button><ArrowRight className="w-4 h-4 mr-1" />Analyze a Bill</Button>
               </Link>
             </CardContent>
           </Card>
@@ -195,16 +206,16 @@ export default function SavingsDashboard() {
           <Link href="/bill-tracker">
             <Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
               <CardContent className="py-4 text-center">
-                <FileText className="w-6 h-6 mx-auto text-blue-500 mb-1" />
-                <p className="text-xs font-medium">Bill Tracker</p>
+                <FileText className="w-6 h-6 mx-auto text-muted-foreground mb-1" />
+                <p className="text-xs font-medium text-foreground">Bill Tracker</p>
               </CardContent>
             </Card>
           </Link>
           <Link href="/dispute-arsenal">
             <Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
               <CardContent className="py-4 text-center">
-                <Shield className="w-6 h-6 mx-auto text-purple-500 mb-1" />
-                <p className="text-xs font-medium">Dispute Tools</p>
+                <Shield className="w-6 h-6 mx-auto text-muted-foreground mb-1" />
+                <p className="text-xs font-medium text-foreground">Dispute Tools</p>
               </CardContent>
             </Card>
           </Link>

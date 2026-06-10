@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 interface SEOHeadProps {
   title: string;
   description: string;
-  keywords?: string[];
+  keywords?: string | string[];
   canonicalPath?: string;
   ogImage?: string;
 }
@@ -24,8 +24,11 @@ export function SEOHead({ title, description, keywords = [], canonicalPath, ogIm
     };
     
     updateMeta('description', description);
-    if (keywords.length > 0) {
-      updateMeta('keywords', keywords.join(', '));
+    const keywordList = Array.isArray(keywords)
+      ? keywords
+      : (typeof keywords === 'string' && keywords ? [keywords] : []);
+    if (keywordList.length > 0) {
+      updateMeta('keywords', keywordList.join(', '));
     }
     
     const fullTitle = `${title} | GoldRock Health`;

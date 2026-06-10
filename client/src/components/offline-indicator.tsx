@@ -43,10 +43,10 @@ export function OfflineIndicator() {
       >
         <div className="max-w-7xl mx-auto px-4 pt-2">
           <motion.div
-            className={`pointer-events-auto rounded-2xl shadow-xl border backdrop-blur-xl ${
+            className={`pointer-events-auto rounded-2xl shadow-xl border ${
               isOnline
-                ? 'bg-blue-500/95 border-blue-400/50'
-                : 'bg-amber-500/95 border-amber-400/50'
+                ? 'bg-emerald-600 border-emerald-500'
+                : 'bg-amber-500 border-amber-400'
             }`}
             whileHover={{ scale: 1.02 }}
             onClick={() => setShowDetails(!showDetails)}
