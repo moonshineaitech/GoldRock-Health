@@ -10,9 +10,9 @@ function getRedirect(): string {
 }
 
 export default function SignInPage() {
-  // Before keys are configured, fall back to the existing landing (demo login).
+  // Before keys are configured, fall back to the demo-login landing.
   if (!clerkEnabled) {
-    return <Redirect to="/" />;
+    return <Redirect to="/welcome" />;
   }
 
   const redirect = getRedirect();

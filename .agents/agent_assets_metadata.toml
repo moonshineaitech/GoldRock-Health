@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "lkavCVc41eSKa3eY7eec1"
+uri = "file://attached_assets/generated_images/atelier_hero.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "6ywy85kJDPHBx_fU6KNNv"
+uri = "file://attached_assets/generated_images/atelier_review.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "CyttdMrIQa4LWUV7Oi1HK"
+uri = "file://attached_assets/generated_images/atelier_trust.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "y_94es_KNUTez7WFcmTzq"
+uri = "file://attached_assets/generated_images/atelier_cta.png"
+type = "image"
+title = "generated_image"
