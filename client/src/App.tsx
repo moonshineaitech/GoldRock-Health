@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useAuth } from "@/hooks/useAuth";
-import AuthLanding from "@/pages/auth-landing";
 import Home from "@/pages/home";
 import SignInPage from "@/pages/sign-in";
 import SignOutPage from "@/pages/sign-out";
@@ -213,7 +212,9 @@ function Router() {
         <Route path="/about" component={AboutGoldRock} />
         <Route path="/sign-in" component={SignInPage} />
         <Route path="/sign-out" component={SignOutPage} />
-        <Route path="/welcome" component={AuthLanding} />
+        <Route path="/welcome">
+          <Redirect to="/" />
+        </Route>
         <Route component={Home} />
       </Switch>
     );

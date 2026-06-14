@@ -17,12 +17,12 @@ import {
 import { Link } from "wouter";
 
 const TYPE_CONFIG: Record<string, { icon: any; color: string; bg: string }> = {
-  deadline: { icon: Clock, color: "text-red-600", bg: "bg-red-50" },
-  savings: { icon: DollarSign, color: "text-emerald-700", bg: "bg-emerald-50" },
+  deadline: { icon: Clock, color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-500/10" },
+  savings: { icon: DollarSign, color: "text-emerald-700 dark:text-emerald-300", bg: "bg-emerald-50 dark:bg-emerald-500/10" },
   update: { icon: FileText, color: "text-muted-foreground", bg: "bg-secondary" },
-  alert: { icon: AlertTriangle, color: "text-amber-700", bg: "bg-amber-50" },
+  alert: { icon: AlertTriangle, color: "text-amber-700 dark:text-amber-300", bg: "bg-amber-50 dark:bg-amber-500/10" },
   program: { icon: Shield, color: "text-muted-foreground", bg: "bg-secondary" },
-  milestone: { icon: CheckCircle2, color: "text-emerald-700", bg: "bg-emerald-50" },
+  milestone: { icon: CheckCircle2, color: "text-emerald-700 dark:text-emerald-300", bg: "bg-emerald-50 dark:bg-emerald-500/10" },
 };
 
 function NotificationCard({ notification, onRead, onDismiss }: { notification: any; onRead: (id: string) => void; onDismiss: (id: string) => void }) {
@@ -50,7 +50,7 @@ function NotificationCard({ notification, onRead, onDismiss }: { notification: a
           </div>
           <div className="flex items-center gap-2 mt-2">
             <span className="text-[10px] text-muted-foreground">{timeAgo}</span>
-            {notification.priority === "urgent" && <Badge className="bg-red-100 text-red-700 text-[10px]">Urgent</Badge>}
+            {notification.priority === "urgent" && <Badge className="bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300 text-[10px]">Urgent</Badge>}
             <div className="flex-1" />
             {!notification.read && (
               <Button size="sm" variant="ghost" className="h-6 text-xs text-muted-foreground hover:text-gold" onClick={() => onRead(notification.id)}>

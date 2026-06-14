@@ -441,9 +441,9 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'high': return 'text-red-600 bg-red-50 border-red-200';
-      case 'medium': return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'low': return 'text-green-600 bg-green-50 border-green-200';
+      case 'high': return 'text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20';
+      case 'medium': return 'text-orange-700 dark:text-orange-300 bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20';
+      case 'low': return 'text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/20';
       default: return 'text-muted-foreground bg-secondary border-border';
     }
   };
@@ -501,7 +501,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
             
             <div className="space-y-3">
               <div className="text-center">
-                <div className={`text-2xl font-bold ${analysis.riskScore > 70 ? 'text-red-600' : analysis.riskScore > 40 ? 'text-orange-600' : 'text-emerald-700'}`}>
+                <div className={`text-2xl font-bold ${analysis.riskScore > 70 ? 'text-red-600 dark:text-red-400' : analysis.riskScore > 40 ? 'text-orange-600 dark:text-orange-400' : 'text-emerald-700 dark:text-emerald-400'}`}>
                   {analysis.riskScore}/100
                 </div>
                 <div className="text-sm text-muted-foreground">Risk Score</div>
@@ -522,7 +522,7 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-orange-600" />
+            <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
             Issues Detected ({analysis.issues.length})
           </CardTitle>
           <CardDescription>
@@ -676,12 +676,12 @@ const AnalysisResults = ({ analysis }: { analysis: BillAnalysisData }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className={`p-3 rounded-lg ${analysis.financialAssistance.eligible ? 'bg-emerald-50' : 'bg-secondary'}`}>
+            <div className={`p-3 rounded-lg ${analysis.financialAssistance.eligible ? 'bg-emerald-50 dark:bg-emerald-500/10' : 'bg-secondary'}`}>
               <div className="flex items-center gap-2 mb-1">
                 {analysis.financialAssistance.eligible ? (
                   <>
-                    <CheckCircle className="h-5 w-5 text-emerald-700" />
-                    <span className="font-bold text-emerald-800">Likely Eligible for Assistance</span>
+                    <CheckCircle className="h-5 w-5 text-emerald-700 dark:text-emerald-300" />
+                    <span className="font-bold text-emerald-800 dark:text-emerald-300">Likely Eligible for Assistance</span>
                   </>
                 ) : (
                   <>

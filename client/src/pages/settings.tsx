@@ -439,12 +439,12 @@ export default function Settings() {
             <div className="flex items-center justify-between py-1">
               <div className="flex items-center space-x-3">
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                  isOnline ? 'bg-green-100' : 'bg-yellow-100'
+                  isOnline ? 'bg-emerald-100 dark:bg-emerald-950' : 'bg-amber-100 dark:bg-amber-950'
                 }`}>
                   {isOnline ? (
-                    <Wifi className="h-4 w-4 text-green-600" />
+                    <Wifi className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                   ) : (
-                    <WifiOff className="h-4 w-4 text-yellow-600" />
+                    <WifiOff className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                   )}
                 </div>
                 <div>
@@ -455,7 +455,7 @@ export default function Settings() {
                 </div>
               </div>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                isOnline ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                isOnline ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400'
               }`}>
                 {isOnline ? 'Connected' : 'Offline'}
               </span>

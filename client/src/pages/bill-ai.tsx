@@ -124,8 +124,6 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
   onClick: () => void;
   variant?: "default" | "premium" | "action";
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
   const variants = {
     default: {
       bg: "bg-primary",
@@ -154,69 +152,17 @@ const SmartSuggestionChip = ({ icon: Icon, label, onClick, variant = "default" }
 
   return (
     <motion.button
-      whileHover={{ scale: 1.12, y: -6 }}
-      whileTap={{ scale: 0.88 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.97 }}
       onClick={onClick}
-      transition={{ type: "spring", stiffness: 500, damping: 20 }}
-      className={`relative flex items-center gap-3 px-6 py-3.5 rounded-full overflow-hidden ${currentVariant.bg} ${currentVariant.shadow} ${currentVariant.glow} transition-all duration-300`}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+      className={`relative flex items-center gap-2.5 px-5 py-3 rounded-full ${currentVariant.bg} ${currentVariant.shadow} ${currentVariant.glow} transition-shadow duration-300`}
       data-testid={`chip-${label.toLowerCase().replace(/\s+/g, '-')}`}
     >
-      {/* Shimmer effect */}
-      <motion.div
-        initial={{ x: "-100%" }}
-        animate={{ x: isHovered ? "200%" : "-100%" }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
-      />
-      
-      {/* Pulsing glow */}
-      <motion.div
-        animate={{ opacity: isHovered ? [0.5, 0.8, 0.5] : 0 }}
-        transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0 }}
-        className="absolute inset-0 bg-white/20 blur-xl pointer-events-none"
-      />
-      
-      {/* Icon with pulse */}
-      <motion.div
-        animate={{ 
-          scale: isHovered ? [1, 1.2, 1] : 1,
-          rotate: isHovered ? [0, 5, -5, 0] : 0
-        }}
-        transition={{ duration: 0.5, type: "spring" }}
-        className="relative z-10"
-      >
-        <Icon className={`h-5 w-5 flex-shrink-0 ${currentVariant.icon} drop-shadow-lg`} />
-      </motion.div>
-      
-      <span className={`text-base font-black whitespace-nowrap relative z-10 ${currentVariant.text} drop-shadow-md tracking-wide`}>
+      <Icon className={`h-5 w-5 flex-shrink-0 ${currentVariant.icon}`} />
+      <span className={`text-base font-semibold whitespace-nowrap ${currentVariant.text} tracking-tight`}>
         {label}
       </span>
-      
-      {/* Particle effect on hover */}
-      {isHovered && (
-        <>
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ 
-                opacity: [0, 1, 0],
-                scale: [0, 1.5, 0],
-                x: [0, (Math.random() - 0.5) * 40],
-                y: [0, (Math.random() - 0.5) * 40]
-              }}
-              transition={{ duration: 0.8, delay: i * 0.1 }}
-              className="absolute w-1.5 h-1.5 bg-card rounded-full pointer-events-none"
-              style={{
-                left: '50%',
-                top: '50%',
-              }}
-            />
-          ))}
-        </>
-      )}
     </motion.button>
   );
 };

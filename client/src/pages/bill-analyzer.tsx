@@ -714,12 +714,12 @@ What aspect of your medical billing situation requires immediate attention?`;
                   <div className="text-base leading-relaxed">{message.content}</div>
                   
                   {message.messageType === "bill_upload" && message.metadata?.billId && (
-                    <div className="mt-3 p-3 bg-emerald-50 rounded-2xl border border-emerald-200">
-                      <div className="flex items-center text-emerald-700 text-sm">
+                    <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl border border-emerald-200 dark:border-emerald-500/20">
+                      <div className="flex items-center text-emerald-700 dark:text-emerald-300 text-sm">
                         <CheckCircle className="mr-2 h-4 w-4" />
                         <span className="font-medium">Bill uploaded successfully!</span>
                       </div>
-                      <p className="text-emerald-700 text-sm mt-1">
+                      <p className="text-emerald-700 dark:text-emerald-300 text-sm mt-1">
                         Analyzing for potential savings opportunities...
                       </p>
                     </div>
@@ -816,8 +816,8 @@ What aspect of your medical billing situation requires immediate attention?`;
           </div>
           
           {/* Compact Disclaimer */}
-          <div className="flex items-center justify-center mt-3 text-sm text-amber-700 bg-amber-50 rounded-xl py-2 px-3">
-            <AlertTriangle className="h-4 w-4 mr-2 text-amber-600" />
+          <div className="flex items-center justify-center mt-3 text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/10 rounded-xl py-2 px-3">
+            <AlertTriangle className="h-4 w-4 mr-2 text-amber-600 dark:text-amber-400" />
             <span className="font-medium">This is Generative AI - consult a professional</span>
           </div>
           

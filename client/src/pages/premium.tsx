@@ -656,8 +656,8 @@ function AuthenticatedPremium() {
         )}
 
         {stripeError && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-center">
-            <p className="text-red-700 text-sm font-medium">
+          <div className="p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-xl text-center">
+            <p className="text-red-700 dark:text-red-400 text-sm font-medium">
               Payment system temporarily unavailable. Please try again later or contact CONTACT@GOLDROCK.ai for assistance.
             </p>
           </div>

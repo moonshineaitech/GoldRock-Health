@@ -143,9 +143,12 @@ export async function setupAuth(app: Express) {
   // Login: hand off to the in-app Clerk sign-in page, preserving the redirect.
   // All existing `/api/login?redirect=...` links continue to work unchanged.
   app.get("/api/login", (req, res) => {
+    const raw = typeof req.query.redirect === "string" ? req.query.redirect : "";
+    // Only allow same-origin, local paths. Reject protocol-relative ("//evil")
+    // and backslash ("/\\evil") values to prevent open-redirect abuse.
     const redirect =
-      typeof req.query.redirect === "string" && req.query.redirect.startsWith("/")
-        ? req.query.redirect
+      raw.startsWith("/") && !raw.startsWith("//") && !raw.startsWith("/\\")
+        ? raw
         : "/";
     res.redirect(`/sign-in?redirect=${encodeURIComponent(redirect)}`);
   });

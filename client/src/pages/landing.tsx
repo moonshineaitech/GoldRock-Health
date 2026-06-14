@@ -56,10 +56,6 @@ import {
 import { motion, useAnimation, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 
-const FloatingParticle = (_props: { delay?: number; duration?: number; size?: number }) => null;
-
-const GlowingOrb = (_props: { className?: string; color1?: string; color2?: string; size?: number; blur?: number }) => null;
-
 const GlassmorphicCard = ({ children, className = "" }: { children: React.ReactNode; className?: string; glowColor?: string }) => (
   <motion.div
     className={`luxury-card ${className}`}
@@ -126,32 +122,6 @@ export default function Landing() {
               opacity: 0.06,
             }}
           />
-          
-          <GlowingOrb 
-            className="-top-32 -left-32" 
-            color1="rgba(16, 185, 129, 0.25)" 
-            color2="rgba(6, 182, 212, 0.1)" 
-            size={400}
-            blur={100}
-          />
-          <GlowingOrb 
-            className="-bottom-32 -right-32" 
-            color1="rgba(245, 158, 11, 0.2)" 
-            color2="rgba(239, 68, 68, 0.08)" 
-            size={350}
-            blur={90}
-          />
-          <GlowingOrb 
-            className="top-1/3 left-1/2 -translate-x-1/2" 
-            color1="rgba(139, 92, 246, 0.15)" 
-            color2="rgba(59, 130, 246, 0.05)" 
-            size={300}
-            blur={80}
-          />
-          
-          {[...Array(12)].map((_, i) => (
-            <FloatingParticle key={i} delay={i * 1.5} duration={15 + Math.random() * 10} size={3 + Math.random() * 4} />
-          ))}
           
           <div 
             className="absolute inset-0 opacity-[0.02]"
@@ -642,12 +612,6 @@ export default function Landing() {
         className="px-4 py-8 relative overflow-hidden bg-background"
         data-testid="section-how-we-help"
       >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(6)].map((_, i) => (
-            <FloatingParticle key={i} delay={i * 2} duration={18} size={2 + Math.random() * 3} />
-          ))}
-        </div>
-        
         <div className="max-w-2xl mx-auto text-center relative z-10">
           <motion.h2 
             className="font-serif text-3xl md:text-4xl font-black text-foreground mb-5"
@@ -1295,7 +1259,7 @@ export default function Landing() {
               </motion.div>
               {pricingTab === 'annual' && (
                 <motion.div 
-                  className="text-sm text-emerald-700 font-bold flex items-center justify-center gap-1 mb-2"
+                  className="text-sm text-emerald-700 dark:text-emerald-400 font-bold flex items-center justify-center gap-1 mb-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
@@ -1305,7 +1269,7 @@ export default function Landing() {
               )}
               {pricingTab === 'lifetime' && (
                 <motion.div 
-                  className="text-sm text-emerald-700 font-bold flex items-center justify-center gap-1 mb-2"
+                  className="text-sm text-emerald-700 dark:text-emerald-400 font-bold flex items-center justify-center gap-1 mb-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
