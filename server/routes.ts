@@ -8,7 +8,7 @@ import { aiProvider } from "./services/aiProvider";
 import { diagnosticEngine } from "./services/diagnosticEngine";
 import { voiceCacheService } from "./services/voiceCache";
 import { aiCaseGenerator, type CaseGenerationRequest } from "./services/aiCaseGenerator";
-import { insertUserProgressSchema, insertPredictionSchema, insertBindingSiteSchema, insertMutationSchema, insertDockingJobSchema, insertCompoundSchema, insertLabNoteSchema } from "@shared/schema";
+import { insertUserProgressSchema, insertPredictionSchema, insertBindingSiteSchema, insertMutationSchema, insertDockingJobSchema, insertCompoundSchema, insertLabNoteSchema, insertEmployerInquirySchema } from "@shared/schema";
 import * as alphafoldService from "./ai/alphafold-service";
 import * as proteinAnalyzer from "./ai/protein-analyzer";
 import * as bindingSiteAnalyzer from "./ai/binding-site-analyzer";
@@ -25,6 +25,12 @@ import { registerObjectStorageRoutes, ObjectStorageService } from "./replit_inte
 let MONTHLY_PRICE_ID: string;
 let ANNUAL_PRICE_ID: string;
 let LIFETIME_PRICE_ID: string;
+let TEAM_MONTHLY_PRICE_ID: string;
+let TEAM_ANNUAL_PRICE_ID: string;
+
+// Self-serve seat range for B2B team plans (larger orgs are routed to the lead form)
+const TEAM_MIN_SEATS = 1;
+const TEAM_MAX_SELF_SERVE_SEATS = 500;
 
 function getBaseUrl(): string {
   if (process.env.REPLIT_DOMAINS) {
@@ -100,14 +106,62 @@ async function setupStripe() {
       });
     }
     
+    // GoldRock for Teams — per-seat (licensed) B2B plans. One shared product, two prices.
+    let teamProductId: string | undefined =
+      (existingPrices.data.find(p => p.metadata?.plan === 'team_monthly' || p.metadata?.plan === 'team_annual')
+        ?.product as string | undefined);
+
+    let teamMonthlyPrice = existingPrices.data.find(
+      price => price.metadata?.plan === 'team_monthly' && price.unit_amount === 899
+    );
+    let teamAnnualPrice = existingPrices.data.find(
+      price => price.metadata?.plan === 'team_annual' && price.unit_amount === 8999
+    );
+
+    if (!teamMonthlyPrice || !teamAnnualPrice) {
+      if (!teamProductId) {
+        const teamProduct = await stripe.products.create({
+          name: 'GoldRock for Teams',
+          description: 'Per-employee medical bill advocacy for HR teams and employers — AI bill analysis, dispute letters, negotiation scripts, and collections defense for your whole organization.',
+        });
+        teamProductId = teamProduct.id;
+      }
+
+      if (!teamMonthlyPrice) {
+        console.log('Creating team monthly per-seat price...');
+        teamMonthlyPrice = await stripe.prices.create({
+          unit_amount: 899,
+          currency: 'usd',
+          recurring: { interval: 'month' },
+          product: teamProductId,
+          metadata: { plan: 'team_monthly' },
+        });
+      }
+
+      if (!teamAnnualPrice) {
+        console.log('Creating team annual per-seat price...');
+        teamAnnualPrice = await stripe.prices.create({
+          unit_amount: 8999,
+          currency: 'usd',
+          recurring: { interval: 'year' },
+          product: teamProductId,
+          metadata: { plan: 'team_annual' },
+        });
+      }
+    }
+
     MONTHLY_PRICE_ID = monthlyPrice.id;
     ANNUAL_PRICE_ID = annualPrice.id;
     LIFETIME_PRICE_ID = lifetimePrice.id;
+    TEAM_MONTHLY_PRICE_ID = teamMonthlyPrice.id;
+    TEAM_ANNUAL_PRICE_ID = teamAnnualPrice.id;
     
     console.log(`Stripe setup complete:
     - Monthly Price ID: ${MONTHLY_PRICE_ID}
     - Annual Price ID: ${ANNUAL_PRICE_ID}
-    - Lifetime Price ID: ${LIFETIME_PRICE_ID}`);
+    - Lifetime Price ID: ${LIFETIME_PRICE_ID}
+    - Team Monthly Price ID: ${TEAM_MONTHLY_PRICE_ID}
+    - Team Annual Price ID: ${TEAM_ANNUAL_PRICE_ID}`);
     
   } catch (error) {
     console.error('Failed to setup Stripe prices:', error);
@@ -940,6 +994,166 @@ RESPONSE RULES - STRICTLY FOLLOW:
         message: 'Failed to verify subscription. Please try again.',
         error: error.message 
       });
+    }
+  });
+
+  // ---- GoldRock for Teams (B2B per-seat) ----
+
+  // Create a hosted Stripe Checkout Session for a per-seat team subscription.
+  app.post('/api/create-team-subscription', isAuthenticated, async (req: any, res) => {
+    try {
+      const stripe = await getUncachableStripeClient();
+      const userId = req.user.claims.sub;
+      const { planType, seats } = req.body || {};
+
+      if (!planType || !['team_monthly', 'team_annual'].includes(planType)) {
+        return res.status(400).json({ message: 'Invalid plan type. Must be "team_monthly" or "team_annual".' });
+      }
+
+      const seatCount = Number(seats);
+      if (!Number.isInteger(seatCount) || seatCount < TEAM_MIN_SEATS) {
+        return res.status(400).json({ message: `Please choose at least ${TEAM_MIN_SEATS} seat.` });
+      }
+      if (seatCount > TEAM_MAX_SELF_SERVE_SEATS) {
+        return res.status(400).json({
+          message: `Orders above ${TEAM_MAX_SELF_SERVE_SEATS} seats are handled by our team. Please contact us for custom volume pricing.`,
+          contactSales: true,
+        });
+      }
+
+      const priceId = planType === 'team_annual' ? TEAM_ANNUAL_PRICE_ID : TEAM_MONTHLY_PRICE_ID;
+      if (!priceId) {
+        return res.status(503).json({ message: 'Team plans are temporarily unavailable. Please try again shortly.' });
+      }
+
+      let user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      let customerId = user.stripeCustomerId;
+      if (!customerId) {
+        const customerEmail = user.email || `user_${userId}@goldrock.health`;
+        const customer = await stripe.customers.create({
+          email: customerEmail,
+          name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || `User ${userId.substring(0, 8)}`,
+          metadata: { userId, platform: 'goldrock_health' },
+        });
+        customerId = customer.id;
+        await storage.upsertUser({ ...user, stripeCustomerId: customerId });
+        user = { ...user, stripeCustomerId: customerId };
+      }
+
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        customer: customerId,
+        payment_method_types: ['card', 'link'],
+        line_items: [{
+          price: priceId,
+          quantity: seatCount,
+          adjustable_quantity: { enabled: true, minimum: TEAM_MIN_SEATS, maximum: TEAM_MAX_SELF_SERVE_SEATS },
+        }],
+        allow_promotion_codes: true,
+        success_url: `${getBaseUrl()}/for-employers?team_success=1&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${getBaseUrl()}/for-employers?team_cancelled=1`,
+        client_reference_id: userId,
+        metadata: { userId, planType, seats: String(seatCount) },
+      });
+
+      return res.json({ sessionId: session.id, url: session.url });
+    } catch (error: any) {
+      console.error('Error creating team subscription:', error);
+      res.status(500).json({ message: 'Failed to start team checkout. Please try again.', error: error.message });
+    }
+  });
+
+  // Confirm a completed team Checkout Session and grant entitlement to the purchasing user.
+  app.post('/api/confirm-team-checkout', isAuthenticated, async (req: any, res) => {
+    try {
+      const stripe = await getUncachableStripeClient();
+      const userId = req.user.claims.sub;
+      const { sessionId } = req.body || {};
+
+      if (!sessionId || typeof sessionId !== 'string') {
+        return res.status(400).json({ message: 'Missing checkout session id' });
+      }
+
+      const session = await stripe.checkout.sessions.retrieve(sessionId, {
+        expand: ['subscription'],
+      });
+
+      // Ownership check: the session must belong to the authenticated user.
+      const sessionUserId = session.metadata?.userId || session.client_reference_id;
+      if (sessionUserId !== userId) {
+        return res.status(403).json({ message: 'This checkout session does not belong to your account.' });
+      }
+
+      if (session.payment_status !== 'paid' && session.status !== 'complete') {
+        return res.status(202).json({ status: session.payment_status || session.status, message: 'Payment not completed yet.' });
+      }
+
+      const planType = session.metadata?.planType === 'team_annual' ? 'team_annual' : 'team_monthly';
+      const subscription = session.subscription as any;
+      // adjustable_quantity is enabled in Checkout, so the buyer may change the seat count.
+      // Prefer the final purchased quantity from Stripe, falling back to the requested count.
+      const seats = subscription?.items?.data?.[0]?.quantity
+        ?? (Number(session.metadata?.seats) || undefined);
+
+      let user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      await storage.upsertUser({
+        ...user,
+        stripeCustomerId: (session.customer as string) || user.stripeCustomerId,
+        stripeSubscriptionId: subscription?.id || user.stripeSubscriptionId,
+        subscriptionStatus: 'active',
+        subscriptionPlan: planType,
+        subscriptionEndsAt: subscription?.current_period_end
+          ? new Date(subscription.current_period_end * 1000)
+          : user.subscriptionEndsAt,
+      });
+
+      return res.json({ status: 'active', planType, seats, message: 'Team plan activated.' });
+    } catch (error: any) {
+      console.error('Error confirming team checkout:', error);
+      res.status(500).json({ message: 'Failed to confirm team checkout. Please try again.', error: error.message });
+    }
+  });
+
+  // Public enterprise / employer lead capture (rate-limited via global limiter).
+  app.post('/api/employer-inquiry', async (req, res) => {
+    try {
+      const schema = insertEmployerInquirySchema.extend({
+        email: z.string().email('A valid email is required').max(200),
+        company: z.string().min(1, 'Company is required').max(200),
+        name: z.string().max(200).optional().nullable(),
+        companySize: z.string().max(50).optional().nullable(),
+        message: z.string().max(2000).optional().nullable(),
+      });
+
+      const parsed = schema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: 'Please check your details.', errors: parsed.error.flatten().fieldErrors });
+      }
+
+      const inquiry = await storage.createEmployerInquiry(parsed.data);
+      return res.json({ success: true, id: inquiry.id });
+    } catch (error: any) {
+      console.error('Error saving employer inquiry:', error);
+      res.status(500).json({ message: 'Failed to submit your request. Please email CONTACT@GOLDROCK.ai directly.' });
+    }
+  });
+
+  // Admin: list employer inquiries
+  app.get('/api/employer-inquiries', isAuthenticated, isAdmin, async (_req: any, res) => {
+    try {
+      const inquiries = await storage.getEmployerInquiries();
+      res.json(inquiries);
+    } catch (error: any) {
+      console.error('Error fetching employer inquiries:', error);
+      res.status(500).json({ message: 'Failed to fetch inquiries' });
     }
   });
 

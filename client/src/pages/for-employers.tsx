@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Building2, Users, DollarSign, TrendingUp, CheckCircle, ArrowRight,
   ArrowLeft, Shield, Zap, Heart, Target, Calculator, Send, Mail,
   Clock, Briefcase, FileText, ChevronDown, ChevronUp, Lightbulb,
   BookOpen, UserCheck, Globe, Upload, Brain, AlertTriangle, X,
-  Phone, HelpCircle, Sparkles, Play
+  Phone, HelpCircle, Sparkles, Play, Minus, Plus, Loader2
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,80 +20,37 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MobileHeader } from "@/components/mobile-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import employersHero from "@assets/images/employers-hero.jpg";
 import familyRelief from "@assets/images/family-relief.jpg";
 
-const pricingTiers = [
-  {
-    name: "Starter",
-    tagline: "For growing companies",
-    employees: "10 - 100 employees",
-    price: "$3",
-    per: "employee/mo",
-    annual: "$2.50/employee/mo billed annually",
-    popular: false,
-    features: [
-      "AI bill analysis (5 per employee/mo)",
-      "Dispute letter templates",
-      "Collections defense playbook",
-      "Hospital bill negotiation guides",
-      "State-specific legal rights",
-      "Email support",
-      "Basic usage reporting",
-    ],
-  },
-  {
-    name: "Professional",
-    tagline: "Best value for mid-market",
-    employees: "100 - 2,000 employees",
-    price: "$6",
-    per: "employee/mo",
-    annual: "$5/employee/mo billed annually",
-    popular: true,
-    features: [
-      "Everything in Starter",
-      "Unlimited AI bill analyses",
-      "Document Vault (secure file storage)",
-      "Insurance denial appeal builder",
-      "Savings tracker dashboard",
-      "Employer admin dashboard & analytics",
-      "Priority support",
-      "Custom company branding",
-      "Quarterly ROI reports",
-      "Bulk employee CSV import",
-      "SSO integration (SAML/OIDC)",
-    ],
-  },
-  {
-    name: "Enterprise",
-    tagline: "For large organizations",
-    employees: "2,000+ employees",
-    price: "Custom",
-    per: "",
-    annual: "Volume discounts available",
-    popular: false,
-    features: [
-      "Everything in Professional",
-      "Partner API access",
-      "HRIS / benefits platform integration",
-      "Dedicated customer success manager",
-      "Custom implementation & training",
-      "Multi-location support",
-      "Advanced analytics & benchmarking",
-      "SLA guarantee",
-      "HIPAA BAA available",
-    ],
-  }
+const SEAT_MONTHLY = 8.99;
+const SEAT_ANNUAL_PER_YEAR = 89.99;
+const SEAT_ANNUAL_PER_MONTH = 7.5; // 89.99 / 12, shown rounded
+const SELF_SERVE_MAX_SEATS = 500;
+const ANNUAL_SAVINGS_PCT = 17; // ~17% cheaper than paying month-to-month
+
+const teamFeatures = [
+  "Unlimited AI bill analysis for every employee",
+  "Dispute letters & insurance appeal generator",
+  "Collections defense playbook (34+ scenarios)",
+  "Secure Document Vault for each employee",
+  "Bill summarizer & medical-jargon translator",
+  "Savings tracker dashboard",
+  "Hospital negotiation guides & phone scripts",
+  "Email support",
 ];
 
-const volumeDiscounts = [
-  { range: "10 - 99", discount: "Standard pricing" },
-  { range: "100 - 499", discount: "10% off" },
-  { range: "500 - 999", discount: "15% off" },
-  { range: "1,000 - 2,499", discount: "20% off" },
-  { range: "2,500 - 4,999", discount: "25% off" },
-  { range: "5,000+", discount: "30%+ custom" },
+const enterpriseFeatures = [
+  "Everything in the Team plan",
+  "Custom volume pricing for 500+ seats",
+  "Dedicated customer success manager",
+  "SSO / SAML provisioning",
+  "HIPAA Business Associate Agreement (BAA)",
+  "HRIS / benefits-platform integration",
+  "Custom onboarding & rollout support",
 ];
 
 const salesChannels = [
@@ -166,10 +123,10 @@ const salesPlaybook = [
   {
     phase: "4. Make It Easy to Say Yes",
     tactics: [
-      "Free 30-day pilot for up to 100 employees. No credit card, no commitment.",
-      "Month-to-month contracts available. Annual billing gets additional discount.",
+      "Start month-to-month and cancel anytime — no long-term contract required.",
+      "Buy seats for one department or the whole company; annual billing saves ~17%.",
       "Implementation takes days, not months. Just send employee invite emails.",
-      "No IT integration required for Starter and Professional tiers.",
+      "No IT integration required to get started — SSO is available for larger rollouts.",
     ]
   }
 ];
@@ -185,7 +142,7 @@ const objectionHandlers = [
   },
   {
     objection: "We don't have the budget for another benefit.",
-    response: "At $3 - $6/employee/month, if even a fraction of employees use it and identify savings on a single bill, the investment pays for itself. Lower financial stress also means fewer sick days and better retention."
+    response: "At $8.99/employee per month — about $7.50 when billed annually — if even a fraction of employees use it and identify savings on a single bill, the investment pays for itself. Lower financial stress also means fewer sick days and better retention."
   },
   {
     objection: "How do we know employees will actually use it?",
@@ -197,27 +154,20 @@ const objectionHandlers = [
   },
   {
     objection: "Can we try it first?",
-    response: "Yes. Free 30-day pilot for up to 100 employees. No credit card required. At the end of the pilot, we'll share a report showing what employees found."
+    response: "Yes. Start month-to-month with as few seats as you like and cancel anytime. Roll it out to a single department first, then expand across the company when you're ready."
   }
 ];
 
 function ROICalculator() {
-  const [employees, setEmployees] = useState(500);
-  const [tier, setTier] = useState("professional");
+  const [employees, setEmployees] = useState(50);
+  const [billing, setBilling] = useState<"monthly" | "annual">("annual");
 
-  const perEmployee = tier === "starter" ? 3 : tier === "professional" ? 6 : 8;
-  const annualCost = employees * perEmployee * 12;
-
-  let discount = 0;
-  if (employees >= 5000) discount = 30;
-  else if (employees >= 2500) discount = 25;
-  else if (employees >= 1000) discount = 20;
-  else if (employees >= 500) discount = 15;
-  else if (employees >= 100) discount = 10;
-
-  const discountedAnnual = Math.round(annualCost * (1 - discount / 100));
-  const costPerEmployeePerYear = Math.round(discountedAnnual / employees);
-  const breakEvenBills = Math.ceil(discountedAnnual / 800);
+  const perSeatMonthly = billing === "annual" ? SEAT_ANNUAL_PER_MONTH : SEAT_MONTHLY;
+  const monthlyCost = Math.round(employees * perSeatMonthly * 100) / 100;
+  const annualCost = billing === "annual"
+    ? Math.round(employees * SEAT_ANNUAL_PER_YEAR * 100) / 100
+    : Math.round(employees * SEAT_MONTHLY * 12 * 100) / 100;
+  const perEmployeePerYear = Math.round((annualCost / Math.max(1, employees)) * 100) / 100;
 
   return (
     <Card className="bg-card border-border shadow-lg">
@@ -226,7 +176,7 @@ function ROICalculator() {
           <Calculator className="w-5 h-5 text-muted-foreground" />
           Cost Estimator
         </CardTitle>
-        <p className="text-sm text-muted-foreground">See what GoldRock would cost for your organization.</p>
+        <p className="text-sm text-muted-foreground">See what GoldRock for Teams would cost your organization.</p>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -235,58 +185,293 @@ function ROICalculator() {
             <Input
               type="number"
               value={employees}
-              onChange={(e) => setEmployees(Math.max(10, parseInt(e.target.value) || 10))}
+              onChange={(e) => setEmployees(Math.max(1, parseInt(e.target.value) || 1))}
               className="mt-1"
+              data-testid="input-roi-employees"
             />
           </div>
           <div>
-            <Label className="text-foreground text-sm">Plan Tier</Label>
-            <Select value={tier} onValueChange={setTier}>
-              <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="starter">Starter ($3/emp/mo)</SelectItem>
-                <SelectItem value="professional">Professional ($6/emp/mo)</SelectItem>
-                <SelectItem value="enterprise">Enterprise (Custom)</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label className="text-foreground text-sm">Billing</Label>
+            <div className="mt-1 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setBilling("monthly")}
+                className={`h-10 rounded-lg border text-sm font-medium transition-colors ${billing === "monthly" ? "bg-primary text-primary-foreground border-transparent" : "bg-card text-foreground border-border hover:bg-secondary"}`}
+                data-testid="button-roi-monthly"
+              >
+                Monthly
+              </button>
+              <button
+                type="button"
+                onClick={() => setBilling("annual")}
+                className={`h-10 rounded-lg border text-xs font-medium transition-colors ${billing === "annual" ? "bg-primary text-primary-foreground border-transparent" : "bg-card text-foreground border-border hover:bg-secondary"}`}
+                data-testid="button-roi-annual"
+              >
+                Annual · save {ANNUAL_SAVINGS_PCT}%
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-secondary rounded-xl p-4 text-center border border-border">
-            <p className="text-2xl font-bold text-foreground">${discountedAnnual.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground mt-1">Annual investment</p>
-            {discount > 0 && <Badge className="mt-1.5 bg-card text-foreground border border-border text-[10px]">{discount}% volume discount</Badge>}
+            <p className="text-2xl font-bold text-foreground">${monthlyCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+            <p className="text-xs text-muted-foreground mt-1">Per month</p>
           </div>
           <div className="bg-secondary rounded-xl p-4 text-center border border-border">
-            <p className="text-2xl font-bold text-foreground">${costPerEmployeePerYear}</p>
+            <p className="text-2xl font-bold text-foreground">${annualCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+            <p className="text-xs text-muted-foreground mt-1">Per year</p>
+          </div>
+          <div className="bg-secondary rounded-xl p-4 text-center border border-border">
+            <p className="text-2xl font-bold text-foreground">${perEmployeePerYear.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
             <p className="text-xs text-muted-foreground mt-1">Per employee / year</p>
-          </div>
-          <div className="bg-secondary rounded-xl p-4 text-center border border-border">
-            <p className="text-2xl font-bold text-foreground">{breakEvenBills}</p>
-            <p className="text-xs text-muted-foreground mt-1">Bills to break even*</p>
           </div>
         </div>
 
         <p className="text-[11px] text-muted-foreground">
-          *Assumes average savings of ~$800 per successfully disputed or negotiated bill. Actual results vary based on bill amounts, procedures, and geography.
+          Pricing is ${SEAT_MONTHLY}/employee per month, or ${SEAT_ANNUAL_PER_YEAR}/employee per year (about ${SEAT_ANNUAL_PER_MONTH.toFixed(2)}/month) when billed annually. A single corrected or negotiated bill often saves an employee far more than a year of access — actual results vary by bill, procedure, and location.
         </p>
       </CardContent>
     </Card>
   );
 }
 
+function TeamPricing() {
+  const { toast } = useToast();
+  const [billing, setBilling] = useState<"monthly" | "annual">("annual");
+  const [seats, setSeats] = useState(10);
+
+  const perSeatMonthly = billing === "annual" ? SEAT_ANNUAL_PER_MONTH : SEAT_MONTHLY;
+  const overCap = seats > SELF_SERVE_MAX_SEATS;
+  const dueToday = billing === "annual" ? seats * SEAT_ANNUAL_PER_YEAR : seats * SEAT_MONTHLY;
+
+  const scrollToContact = () => {
+    document.getElementById("employer-contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const checkout = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest("/api/create-team-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planType: billing === "annual" ? "team_annual" : "team_monthly",
+          seats,
+        }),
+      });
+      return (await res.json()) as { url?: string };
+    },
+    onSuccess: (data) => {
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        toast({ title: "Could not start checkout", description: "Please try again in a moment.", variant: "destructive" });
+      }
+    },
+    onError: (err: any) => {
+      const msg = String(err?.message || "");
+      if (msg.startsWith("401")) {
+        window.location.href = "/api/login";
+        return;
+      }
+      if (msg.includes("contactSales") || msg.toLowerCase().includes("volume")) {
+        scrollToContact();
+        toast({ title: "Let's set up volume pricing", description: `For more than ${SELF_SERVE_MAX_SEATS} seats we'll tailor a quote — drop your details below.` });
+        return;
+      }
+      toast({ title: "Checkout failed", description: "Please try again, or email CONTACT@GOLDROCK.ai.", variant: "destructive" });
+    },
+  });
+
+  return (
+    <div className="space-y-6">
+      {/* Billing toggle */}
+      <div className="flex justify-center">
+        <div className="inline-flex items-center rounded-full border border-border bg-secondary p-1">
+          <button
+            type="button"
+            onClick={() => setBilling("monthly")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${billing === "monthly" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            data-testid="button-billing-monthly"
+          >
+            Monthly
+          </button>
+          <button
+            type="button"
+            onClick={() => setBilling("annual")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2 ${billing === "annual" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+            data-testid="button-billing-annual"
+          >
+            Annual
+            <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full text-white" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>Save {ANNUAL_SAVINGS_PCT}%</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-5">
+        {/* Team plan (featured) */}
+        <Card className="relative h-full border-2 bg-card shadow-md" style={{ borderColor: 'var(--gold)' }}>
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+            <Badge className="text-white px-4 py-1 text-xs shadow-sm border-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>Most popular</Badge>
+          </div>
+          <CardContent className="p-6 md:p-8">
+            <h3 className="text-lg font-semibold text-foreground">GoldRock for Teams</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">Per-seat coverage for a department or your whole company</p>
+
+            <div className="mt-4 flex items-baseline gap-1">
+              <span className="text-4xl font-bold text-foreground" data-testid="text-team-perseat">${perSeatMonthly.toFixed(2)}</span>
+              <span className="text-muted-foreground text-sm">/ employee / mo</span>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              {billing === "annual"
+                ? `Billed annually at $${SEAT_ANNUAL_PER_YEAR.toFixed(2)} per employee / year`
+                : `Billed monthly — switch to annual to save ${ANNUAL_SAVINGS_PCT}%`}
+            </p>
+
+            {/* Seats selector */}
+            <div className="mt-6">
+              <Label className="text-foreground text-sm">Number of seats</Label>
+              <div className="mt-1.5 flex items-center gap-2">
+                <Button type="button" variant="outline" size="icon" className="h-10 w-10 border-border shrink-0" onClick={() => setSeats((s) => Math.max(1, s - 1))} data-testid="button-seats-decrease" aria-label="Decrease seats">
+                  <Minus className="w-4 h-4" />
+                </Button>
+                <Input
+                  type="number"
+                  min={1}
+                  value={seats}
+                  onChange={(e) => setSeats(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="text-center text-base font-semibold"
+                  data-testid="input-team-seats"
+                />
+                <Button type="button" variant="outline" size="icon" className="h-10 w-10 border-border shrink-0" onClick={() => setSeats((s) => s + 1)} data-testid="button-seats-increase" aria-label="Increase seats">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {[10, 25, 50, 100, 250].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setSeats(n)}
+                    className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${seats === n ? "bg-primary text-primary-foreground border-transparent" : "bg-secondary text-muted-foreground border-border hover:text-foreground"}`}
+                    data-testid={`button-seats-preset-${n}`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Live total */}
+            <div className="mt-5 rounded-xl bg-secondary border border-border p-4 flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">
+                {overCap ? `${SELF_SERVE_MAX_SEATS}+ seats` : `${seats} seat${seats > 1 ? "s" : ""} · ${billing === "annual" ? "annual" : "monthly"}`}
+              </span>
+              <span className="text-xl font-bold text-foreground" data-testid="text-team-total">
+                {overCap ? "Custom" : `$${dueToday.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${billing === "annual" ? " /yr" : " /mo"}`}
+              </span>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-4">
+              {overCap ? (
+                <Button className="w-full h-11 bg-primary text-primary-foreground hover:opacity-90" onClick={scrollToContact} data-testid="button-team-contact-sales">
+                  Talk to us about {SELF_SERVE_MAX_SEATS}+ seats <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              ) : (
+                <Button className="w-full h-11 bg-primary text-primary-foreground hover:opacity-90" disabled={checkout.isPending} onClick={() => checkout.mutate()} data-testid="button-team-checkout">
+                  {checkout.isPending ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Starting checkout…</>) : (<>Continue to checkout <ArrowRight className="ml-2 h-4 w-4" /></>)}
+                </Button>
+              )}
+              <p className="text-[11px] text-center text-muted-foreground mt-2">Secure checkout via Stripe · cancel anytime · adjust seats later</p>
+            </div>
+
+            <div className="mt-6 space-y-2.5">
+              {teamFeatures.map((f, j) => (
+                <div key={j} className="flex items-start gap-2 text-sm text-foreground">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span>{f}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Enterprise */}
+        <Card className="h-full border border-border bg-card shadow-sm">
+          <CardContent className="p-6 md:p-8">
+            <h3 className="text-lg font-semibold text-foreground">Enterprise</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">For 500+ seats and organizations with security or integration needs</p>
+
+            <div className="mt-4 flex items-baseline gap-1">
+              <span className="text-4xl font-bold text-foreground">Custom</span>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">Volume pricing tailored to your headcount</p>
+
+            <div className="mt-6">
+              <Button variant="outline" className="w-full h-11 border-border hover:bg-secondary" onClick={scrollToContact} data-testid="button-enterprise-contact">
+                <Mail className="w-4 h-4 mr-2" /> Talk to our team
+              </Button>
+              <p className="text-[11px] text-center text-muted-foreground mt-2">We typically reply within one business day</p>
+            </div>
+
+            <div className="mt-6 space-y-2.5">
+              {enterpriseFeatures.map((f, j) => (
+                <div key={j} className="flex items-start gap-2 text-sm text-foreground">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span>{f}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Rollout note (replaces the misleading volume-discount grid) */}
+      <div className="bg-secondary rounded-2xl p-6 border border-border text-center">
+        <p className="text-sm text-foreground font-medium">Roll out to one department or your whole company.</p>
+        <p className="text-[12px] text-muted-foreground mt-1.5 max-w-2xl mx-auto">
+          Buy any number of seats up to {SELF_SERVE_MAX_SEATS} and assign them across your teams. Need more than {SELF_SERVE_MAX_SEATS}? We'll set up custom volume pricing — just reach out below.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function ContactForm() {
   const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", email: "", company: "", size: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", company: "", companySize: "", message: "" });
+
+  const mutation = useMutation({
+    mutationFn: async (payload: typeof form) => {
+      const res = await apiRequest("/api/employer-inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: payload.name || undefined,
+          email: payload.email,
+          company: payload.company,
+          companySize: payload.companySize || undefined,
+          message: payload.message || undefined,
+        }),
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      toast({ title: "Request received", description: "We'll be in touch within one business day." });
+      setForm({ name: "", email: "", company: "", companySize: "", message: "" });
+    },
+    onError: () => {
+      toast({ title: "Something went wrong", description: "Please try again, or email CONTACT@GOLDROCK.ai directly.", variant: "destructive" });
+    },
+  });
 
   const handleSubmit = () => {
     if (!form.email || !form.company) {
       toast({ title: "Please fill in your email and company name", variant: "destructive" });
       return;
     }
-    toast({ title: "Request received", description: "We'll be in touch within one business day." });
-    setForm({ name: "", email: "", company: "", size: "", message: "" });
+    mutation.mutate(form);
   };
 
   return (
@@ -294,38 +479,38 @@ function ContactForm() {
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Label className="text-muted-foreground text-sm">Your Name</Label>
-          <Input placeholder="Full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <Input placeholder="Full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} data-testid="input-inquiry-name" />
         </div>
         <div>
           <Label className="text-muted-foreground text-sm">Work Email</Label>
-          <Input type="email" placeholder="you@company.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <Input type="email" placeholder="you@company.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} data-testid="input-inquiry-email" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Label className="text-muted-foreground text-sm">Company</Label>
-          <Input placeholder="Company name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} />
+          <Input placeholder="Company name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} data-testid="input-inquiry-company" />
         </div>
         <div>
           <Label className="text-muted-foreground text-sm">Company Size</Label>
-          <Select value={form.size} onValueChange={(v) => setForm({ ...form, size: v })}>
-            <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+          <Select value={form.companySize} onValueChange={(v) => setForm({ ...form, companySize: v })}>
+            <SelectTrigger data-testid="select-inquiry-size"><SelectValue placeholder="Select" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="10-99">10 - 99</SelectItem>
-              <SelectItem value="100-499">100 - 499</SelectItem>
-              <SelectItem value="500-999">500 - 999</SelectItem>
-              <SelectItem value="1000-4999">1,000 - 4,999</SelectItem>
-              <SelectItem value="5000+">5,000+</SelectItem>
+              <SelectItem value="1-50">1 - 50</SelectItem>
+              <SelectItem value="51-200">51 - 200</SelectItem>
+              <SelectItem value="201-500">201 - 500</SelectItem>
+              <SelectItem value="501-1000">501 - 1,000</SelectItem>
+              <SelectItem value="1000+">1,000+</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
       <div>
         <Label className="text-muted-foreground text-sm">What challenges are you trying to solve?</Label>
-        <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={3} />
+        <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={3} data-testid="input-inquiry-message" />
       </div>
-      <Button className="w-full bg-primary text-primary-foreground hover:opacity-90" onClick={handleSubmit}>
-        <Send className="w-4 h-4 mr-2" /> Get a Custom Proposal
+      <Button className="w-full bg-primary text-primary-foreground hover:opacity-90" onClick={handleSubmit} disabled={mutation.isPending} data-testid="button-inquiry-submit">
+        {mutation.isPending ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending…</>) : (<><Send className="w-4 h-4 mr-2" /> Get a Custom Proposal</>)}
       </Button>
       <p className="text-xs text-center text-muted-foreground">Or email directly: CONTACT@GOLDROCK.ai</p>
     </div>
@@ -357,9 +542,9 @@ function ExpandableItem({ title, children }: { title: string; children: React.Re
 }
 
 const floatingPills = [
-  { label: "From $3/emp/mo", delay: 0 },
+  { label: "$8.99 / employee / mo", delay: 0 },
   { label: "34+ Defense Scenarios", delay: 0.15 },
-  { label: "Free 30-Day Pilot", delay: 0.3 },
+  { label: "Save 17% billed annually", delay: 0.3 },
 ];
 
 const howItWorksSteps = [
@@ -371,6 +556,36 @@ const howItWorksSteps = [
 
 export default function ForEmployers() {
   const [activeTab, setActiveTab] = useState("pricing");
+  const { toast } = useToast();
+  const [teamConfirmed, setTeamConfirmed] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("team_cancelled") === "1") {
+      toast({ title: "Checkout canceled", description: "No charge was made — pick up where you left off whenever you're ready." });
+      window.history.replaceState({}, "", "/for-employers");
+      return;
+    }
+    if (params.get("team_success") === "1") {
+      const sessionId = params.get("session_id");
+      window.history.replaceState({}, "", "/for-employers");
+      if (sessionId) {
+        apiRequest("/api/confirm-team-checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+        })
+          .then(() => {
+            setTeamConfirmed(true);
+            toast({ title: "You're all set!", description: "Your GoldRock for Teams plan is active. We'll email rollout steps shortly." });
+          })
+          .catch(() => {
+            toast({ title: "Payment received", description: "We're finalizing your team plan. Email CONTACT@GOLDROCK.ai if you need anything." });
+          });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -452,6 +667,15 @@ export default function ForEmployers() {
         </div>
 
         <div className="max-w-6xl mx-auto px-4 pb-24 space-y-20">
+          {teamConfirmed && (
+            <div className="rounded-2xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/40 p-5 flex items-start gap-3" data-testid="banner-team-confirmed">
+              <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-foreground">Your GoldRock for Teams plan is active.</p>
+                <p className="text-sm text-muted-foreground mt-0.5">Thanks for signing up. We'll email rollout steps to your team. Questions? <a className="text-gold font-medium" href="mailto:CONTACT@GOLDROCK.ai">CONTACT@GOLDROCK.ai</a></p>
+              </div>
+            </div>
+          )}
           {/* Feature Highlight Cards */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -686,57 +910,7 @@ export default function ForEmployers() {
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <div className="grid md:grid-cols-3 gap-5">
-                      {pricingTiers.map((plan, i) => (
-                        <motion.div key={plan.name} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
-                          <Card className={`relative h-full ${plan.popular ? 'border-2 shadow-md' : 'border border-border shadow-sm'} bg-card hover:shadow-md transition-shadow duration-300`} style={plan.popular ? { borderColor: 'var(--gold)' } : undefined}>
-                            {plan.popular && (
-                              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                <Badge className="text-white px-4 py-1 text-xs shadow-sm border-0" style={{ background: 'linear-gradient(135deg, var(--gold-soft), var(--gold-deep))' }}>Recommended</Badge>
-                              </div>
-                            )}
-                            <CardContent className="p-6">
-                              <div className="text-center mb-6">
-                                <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
-                                <p className="text-xs text-muted-foreground">{plan.tagline}</p>
-                                <p className="text-[11px] text-muted-foreground mt-0.5">{plan.employees}</p>
-                                <div className="mt-4">
-                                  <span className="text-4xl font-bold text-foreground">{plan.price}</span>
-                                  {plan.per && <span className="text-muted-foreground text-sm ml-1">/{plan.per}</span>}
-                                </div>
-                                <p className="text-[11px] text-muted-foreground mt-1">{plan.annual}</p>
-                              </div>
-                              <div className="space-y-2.5 mb-6">
-                                {plan.features.map((f, j) => (
-                                  <div key={j} className="flex items-start gap-2 text-sm text-foreground">
-                                    <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                                    <span>{f}</span>
-                                  </div>
-                                ))}
-                              </div>
-                              <Button className="w-full h-11 bg-primary text-primary-foreground hover:opacity-90">
-                                {plan.price === "Custom" ? "Contact Sales" : "Start Free Trial"}
-                              </Button>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    <div className="bg-secondary rounded-2xl p-6 border border-border">
-                      <h4 className="font-semibold text-foreground mb-4 text-sm">Volume Discounts</h4>
-                      <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-                        {volumeDiscounts.map((vd) => (
-                          <div key={vd.range} className="text-center p-3 rounded-xl bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
-                            <p className="font-semibold text-xs text-foreground">{vd.range}</p>
-                            <p className="text-[11px] text-gold font-medium mt-0.5">{vd.discount}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-[11px] text-muted-foreground mt-4">
-                        All plans include a free 30-day pilot. Annual contracts receive additional savings.
-                      </p>
-                    </div>
+                    <TeamPricing />
                   </motion.div>
                 </TabsContent>
 
@@ -948,6 +1122,7 @@ export default function ForEmployers() {
 
           {/* Contact Form */}
           <motion.div
+            id="employer-contact"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -961,7 +1136,7 @@ export default function ForEmployers() {
                   </div>
                   <h3 className="font-serif text-2xl font-bold text-foreground mb-3">Ready to explore this?</h3>
                   <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
-                    Tell us about your organization. We'll put together a proposal specific to your size and needs. Free 30-day pilot available.
+                    Tell us about your organization. Whether it's one department or your whole company, we'll tailor a rollout proposal to your size and needs.
                   </p>
                 </div>
                 <div className="max-w-xl mx-auto">

@@ -643,6 +643,20 @@ function AuthenticatedPremium() {
           ))}
         </div>
 
+        {/* For teams / employers cross-link */}
+        <Link href="/for-employers" className="block rounded-2xl border border-border bg-card p-4 hover:shadow-md transition-shadow" data-testid="link-for-employers">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
+              <UserCheck className="w-5 h-5 text-muted-foreground" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">Buying for your team?</p>
+              <p className="text-xs text-muted-foreground">GoldRock for Teams — per-seat plans for employers</p>
+            </div>
+            <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+          </div>
+        </Link>
+
         {/* Payment Form */}
         {clientSecret && !isCreatingIntent && stripeInstance && (
           <motion.div

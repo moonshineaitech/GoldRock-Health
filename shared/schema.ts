@@ -80,6 +80,26 @@ export const users = pgTable("users", {
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
+// Employer / B2B team plan inquiries (enterprise lead capture)
+export const employerInquiries = pgTable("employer_inquiries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name"),
+  email: varchar("email").notNull(),
+  company: varchar("company").notNull(),
+  companySize: varchar("company_size"), // e.g. "1-50", "51-200", "500+"
+  message: text("message"),
+  status: varchar("status").default("new"), // new, contacted, closed
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertEmployerInquirySchema = createInsertSchema(employerInquiries).omit({
+  id: true,
+  status: true,
+  createdAt: true,
+});
+export type InsertEmployerInquiry = z.infer<typeof insertEmployerInquirySchema>;
+export type EmployerInquiry = typeof employerInquiries.$inferSelect;
+
 // User Statistics Table for Achievement Tracking
 export const userStats = pgTable("user_stats", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),

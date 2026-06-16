@@ -28,6 +28,9 @@ import {
   syntheticPatients,
   diagnosticSessions,
   userSavingsOutcomes,
+  employerInquiries,
+  type EmployerInquiry,
+  type InsertEmployerInquiry,
   type MedicalCase, 
   type InsertMedicalCase,
   type UserProgress,
@@ -145,6 +148,10 @@ export interface IStorage {
   updateUserProfile(userId: string, updates: { firstName?: string; lastName?: string; email?: string }): Promise<User | undefined>;
   setUserAdminStatus(userId: string, isAdmin: boolean): Promise<User | undefined>;
   getAdminUsers(): Promise<User[]>;
+
+  // Employer / B2B inquiries
+  createEmployerInquiry(inquiry: InsertEmployerInquiry): Promise<EmployerInquiry>;
+  getEmployerInquiries(): Promise<EmployerInquiry[]>;
 
   // Medical Cases
   getMedicalCases(filters?: { specialty?: string; difficulty?: number; search?: string }): Promise<MedicalCase[]>;
@@ -399,6 +406,15 @@ export class DatabaseStorage implements IStorage {
 
   async getAdminUsers(): Promise<User[]> {
     return await db.select().from(users).where(eq(users.isAdmin, true));
+  }
+
+  async createEmployerInquiry(inquiry: InsertEmployerInquiry): Promise<EmployerInquiry> {
+    const [created] = await db.insert(employerInquiries).values(inquiry).returning();
+    return created;
+  }
+
+  async getEmployerInquiries(): Promise<EmployerInquiry[]> {
+    return await db.select().from(employerInquiries).orderBy(desc(employerInquiries.createdAt));
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
