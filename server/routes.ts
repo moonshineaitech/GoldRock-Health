@@ -366,11 +366,14 @@ RESPONSE RULES - STRICTLY FOLLOW:
         ? `Previous conversation:\n${formattedHistory}\n\nUser: ${message}\n\nAssistant:`
         : `User: ${message}\n\nAssistant:`;
       
-      const response = await aiProvider.generateText(prompt, systemPrompt, {
+      const { anonymizeBillText, rehydrateResponse } = await import('./utils/pii-anonymizer');
+      const { anonymized: safePrompt, mappings: piiMappings } = anonymizeBillText(prompt);
+      const rawResponse = await aiProvider.generateText(safePrompt, systemPrompt, {
         provider: 'auto',
         maxTokens: 400,
         temperature: 0.7
       });
+      const response = rehydrateResponse(rawResponse || '', piiMappings);
       
       let suggestedWorkflow = null;
       const lowerMessage = message.toLowerCase();
@@ -2882,22 +2885,35 @@ FORMATTING:
 - Do NOT use markdown (no ** or ## or ---)
 - Include blank lines between paragraphs for readability`;
 
+      // Keep the patient's real identity off the wire: send the AI placeholders
+      // and swap the real values back into the finished letter locally.
+      const { rehydrateResponse } = await import('./utils/pii-anonymizer');
+      const letterPii: Record<string, string> = {};
+      const namePlaceholder = '[PATIENT_NAME]';
+      const accountPlaceholder = '[ACCOUNT_NUMBER]';
+      const addressPlaceholder = '[PATIENT_ADDRESS]';
+      if (patientName) letterPii[namePlaceholder] = patientName;
+      if (accountNumber) letterPii[accountPlaceholder] = accountNumber;
+      if (patientAddress) letterPii[addressPlaceholder] = patientAddress;
+
       const userPrompt = `Generate a professional letter requesting an itemized bill with the following details:
 
-Patient Name: ${patientName}
+Patient Name: ${patientName ? namePlaceholder : 'Not provided'}
 Provider/Hospital: ${providerName}
-Account Number: ${accountNumber || 'Not provided'}
+Account Number: ${accountNumber ? accountPlaceholder : 'Not provided'}
 Date of Service: ${serviceDate || 'Not provided'}
-Patient Address: ${patientAddress || 'Not provided'}
+Patient Address: ${patientAddress ? addressPlaceholder : 'Not provided'}
 State: ${state || 'Not provided'}
 
-Create a complete, ready-to-send letter with proper legal citations. If a state is provided, include state-specific legal citations. The letter should be professional, firm, and legally sound.`;
+Use the placeholder tokens (e.g. ${namePlaceholder}, ${accountPlaceholder}, ${addressPlaceholder}) exactly as written wherever that information belongs in the letter, including the signature block. Create a complete, ready-to-send letter with proper legal citations. If a state is provided, include state-specific legal citations. The letter should be professional, firm, and legally sound.`;
 
-      const letterText = await aiProvider.generateText(userPrompt, systemPrompt, {
+      const letterRaw = await aiProvider.generateText(userPrompt, systemPrompt, {
         provider: 'auto',
         maxTokens: 2000,
         temperature: 0.3
       });
+
+      const letterText = rehydrateResponse(letterRaw, letterPii);
 
       res.json({
         letter: letterText.trim(),
@@ -2961,11 +2977,16 @@ RESPONSE RULES - STRICTLY FOLLOW:
           fullPrompt = `Previous conversation:\n${recentHistory}\n\nUser: ${message}\n\nAssistant:`;
         }
 
-        const aiResponse = await aiProvider.generateText(fullPrompt, baseSystemPrompt, {
+        // Strip any PII the user typed before it reaches the AI provider; the
+        // response is rehydrated locally so the user still sees real values.
+        const { anonymizeBillText, rehydrateResponse } = await import('./utils/pii-anonymizer');
+        const { anonymized: safePrompt, mappings: chatPii } = anonymizeBillText(fullPrompt);
+
+        const aiResponse = await aiProvider.generateText(safePrompt, baseSystemPrompt, {
           maxTokens: 500
         });
 
-        res.json({ response: aiResponse || "I'm having trouble right now. Please try again." });
+        res.json({ response: rehydrateResponse(aiResponse || "I'm having trouble right now. Please try again.", chatPii) });
       } catch (aiError) {
         console.error('AI provider error:', aiError);
         res.status(500).json({ message: 'AI service temporarily unavailable. Please try again.' });
@@ -3001,20 +3022,23 @@ RESPONSE RULES - STRICTLY FOLLOW:
 - Never use markdown (no ** or ## or ---)
 - Give one specific action step per response
 - Include a phone script only when directly relevant
-- Ask ONE follow-up question to keep the conversation going
+- Ask ONE follow-up question to keep the conversation going`;
 
-CONVERSATION CONTEXT:
-${conversationHistory && conversationHistory.length > 0 
-  ? 'Previous messages in this conversation:\n' + conversationHistory.slice(-6).map((msg: any) => `${msg.role.toUpperCase()}: ${msg.content}`).join('\n\n')
-  : 'This is the start of the conversation.'}
+        let fullPrompt = message;
+        if (conversationHistory && Array.isArray(conversationHistory) && conversationHistory.length > 0) {
+          const recentHistory = conversationHistory.slice(-6).map((msg: any) => `${msg.role.toUpperCase()}: ${msg.content}`).join('\n\n');
+          fullPrompt = `Previous messages in this conversation:\n${recentHistory}\n\nNow respond to the user's current message:\n${message}`;
+        }
 
-Now respond to the user's current message:`;
+        // Public endpoint — strip any PII before it reaches the AI provider.
+        const { anonymizeBillText, rehydrateResponse } = await import('./utils/pii-anonymizer');
+        const { anonymized: safePrompt, mappings: chatPii } = anonymizeBillText(fullPrompt);
 
-        const aiResponse = await aiProvider.generateText(message, systemPrompt, {
+        const aiResponse = await aiProvider.generateText(safePrompt, systemPrompt, {
           maxTokens: 500
         });
 
-        res.json({ response: aiResponse || "I'm having trouble right now. Please try again." });
+        res.json({ response: rehydrateResponse(aiResponse || "I'm having trouble right now. Please try again.", chatPii) });
       } catch (aiError) {
         console.error('AI provider error:', aiError);
         res.status(500).json({ message: 'AI service temporarily unavailable. Please try again.' });
@@ -3064,8 +3088,9 @@ Now respond to the user's current message:`;
       // Analyze the bill with expert AI prompting (Gemini 2.5 Flash with OpenAI fallback)
       if (billText) {
         try {
-          const { anonymizeBillText: anonymizeBill } = await import('./utils/pii-anonymizer');
-          const { anonymized: anonymizedBill } = anonymizeBill(billText);
+          const { anonymizeBillText: anonymizeBill, knownValuesFromProfile } = await import('./utils/pii-anonymizer');
+          const billOwner = await storage.getUser(userId);
+          const { anonymized: anonymizedBill } = anonymizeBill(billText, knownValuesFromProfile(billOwner));
           
           const analysisPrompt = `You are a medical bill reduction expert with 25+ years of experience. Analyze this bill to find errors and savings.
 
@@ -3217,10 +3242,13 @@ Write everything in a friendly, empowering tone. The reader may be stressed abou
 
       // Comprehensive analysis of all pages together (Gemini 2.5 Flash with OpenAI fallback)
       try {
+        const { anonymizeBillText, knownValuesFromProfile } = await import('./utils/pii-anonymizer');
+        const billOwner = await storage.getUser(userId);
+        const { anonymized: anonymizedCombined } = anonymizeBillText(combinedBillText, knownValuesFromProfile(billOwner));
         const comprehensiveAnalysisPrompt = `Analyze this ${files.length}-page medical bill. Identify cross-page billing errors, duplicates, upcoding, unbundling issues. Provide specific savings amounts, action priorities, phone scripts, and charity care options.
 
 BILL CONTENT (${files.length} PAGES):
-${combinedBillText}
+${anonymizedCombined}
 
 Provide detailed analysis with specific dollar amounts, error categories, and priority actions.`;
 
@@ -3492,6 +3520,8 @@ Provide detailed analysis with specific dollar amounts, error categories, and pr
 
       // Use Gemini 2.5 Flash (via aiProvider) for intelligent medical responses
       try {
+        const { anonymizeBillText, rehydrateResponse } = await import('./utils/pii-anonymizer');
+        const { anonymized: safeMessage, mappings: piiMappings } = anonymizeBillText(message);
         const prompt = `You are a bill reduction expert and medical bill advocate with 20+ years of experience.
 
 EXPERT KNOWLEDGE BASE:
@@ -3523,7 +3553,7 @@ NEGOTIATION APPROACHES:
 5. Request zero-interest payment plans (24-60 months)
 6. Get ALL agreements in writing
 
-USER QUESTION: ${message}
+USER QUESTION: ${safeMessage}
 
 RESPONSE GUIDELINES:
 - Write in plain conversational English
@@ -3536,7 +3566,8 @@ RESPONSE GUIDELINES:
 
         const systemPrompt = 'You are a friendly bill reduction expert. Write in plain, conversational English without any markdown formatting. No asterisks, hashtags, em-dashes, or special symbols. Use simple numbered lists and clear section headers. Be warm, specific, and actionable. Include dollar amounts and phone scripts when helpful.';
         
-        response = await aiProvider.generateText(prompt, systemPrompt, { maxTokens: 1500 });
+        const rawResponse = await aiProvider.generateText(prompt, systemPrompt, { maxTokens: 1500 });
+        response = rehydrateResponse(rawResponse || '', piiMappings);
       } catch (aiError) {
         console.warn('AI API failed, using fallback response:', aiError);
         
@@ -3613,8 +3644,9 @@ What specific insurance issue are you facing? I can provide exact templates and 
       
       const { billText } = validationResult.data;
       
-      const { anonymizeBillText } = await import('./utils/pii-anonymizer');
-      const { anonymized: anonymizedBillText, mappings: piiMappings } = anonymizeBillText(billText);
+      const { anonymizeBillText, knownValuesFromProfile } = await import('./utils/pii-anonymizer');
+      const summarizerOwner = await storage.getUser(userId);
+      const { anonymized: anonymizedBillText, mappings: piiMappings } = anonymizeBillText(billText, knownValuesFromProfile(summarizerOwner));
       
       const prompt = `You are a medical billing expert. Analyze this medical bill and provide a comprehensive summary in JSON format.
 
@@ -4746,10 +4778,13 @@ End each response with an offer to help further or a gentle reminder to consult 
         ? `Previous conversation:\n${conversationContext}\n\nUser: ${message}`
         : message;
 
-      const aiResponse = await aiProvider.generateText(fullPrompt, systemPrompt, {
+      const { anonymizeBillText, rehydrateResponse } = await import('./utils/pii-anonymizer');
+      const { anonymized: safePrompt, mappings: piiMappings } = anonymizeBillText(fullPrompt);
+      const rawResponse = await aiProvider.generateText(safePrompt, systemPrompt, {
         maxTokens: 1000,
         temperature: 0.7
       }) || "I'm here to help. Could you tell me more about what you're experiencing?";
+      const aiResponse = rehydrateResponse(rawResponse, piiMappings);
       
       res.json({ response: aiResponse });
     } catch (error) {
@@ -7327,12 +7362,20 @@ Provide a comprehensive comparison in JSON format:
 
       let appealLetter = "";
       try {
+        const { anonymizeBillText, rehydrateResponse } = await import('./utils/pii-anonymizer');
+        // Random per-request token so a user can't collide with it by typing it themselves.
+        const FIELD_SEP = `\n###FIELDSEP_${Math.random().toString(36).slice(2)}###\n`;
+        const { anonymized: safeFields, mappings: piiMappings } = anonymizeBillText(
+          `${denialReason || ''}${FIELD_SEP}${procedureDescription || procedureCode || 'N/A'}`
+        );
+        const [safeDenialReason, safeProcedure] = safeFields.split(FIELD_SEP);
+
         const prompt = `Generate a professional, compelling insurance appeal letter for the following denial:
 
 Insurance Company: ${insuranceCompany}
 Denial Code: ${denialCode || "N/A"}
-Denial Reason: ${denialReason}
-Procedure: ${procedureDescription || procedureCode || "N/A"}
+Denial Reason: ${safeDenialReason}
+Procedure: ${safeProcedure}
 Claim Amount: $${claimAmount || "N/A"}
 
 Write a formal appeal letter that:
@@ -7345,7 +7388,7 @@ Write a formal appeal letter that:
 Format as a complete letter ready to send.`;
 
         const response = await aiProvider.generateText(prompt);
-        appealLetter = response;
+        appealLetter = rehydrateResponse(response || '', piiMappings);
       } catch (aiError) {
         console.error("AI letter generation failed:", aiError);
         appealLetter = `[Template] Appeal Letter for ${insuranceCompany}\n\nDear Appeals Department,\n\nI am writing to formally appeal the denial of my claim (Denial Code: ${denialCode || "N/A"}).\n\nThe denial reason stated was: ${denialReason}\n\nI believe this denial is incorrect because the procedure (${procedureDescription || procedureCode || "the procedure in question"}) was medically necessary as determined by my treating physician.\n\nUnder the No Surprises Act and applicable state insurance regulations, I request that you conduct a thorough review of this denial.\n\nPlease provide a written response within 30 days.\n\nSincerely,\n[Your Name]`;
