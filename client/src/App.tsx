@@ -57,7 +57,7 @@ import LabAnalyzer from "@/pages/lab-analyzer";
 import DrugInteractions from "@/pages/drug-interactions";
 import SymptomChecker from "@/pages/symptom-checker";
 import HealthMetrics from "@/pages/health-metrics";
-import Enrollment from "@/pages/enrollment";
+import Enrollment from "@/pages/enrollment-concierge";
 import LunaFold from "@/pages/lunafold";
 import LunaFoldLab from "@/pages/lunafold-lab";
 import MedicalConditions from "@/pages/medical-conditions";
