@@ -21,6 +21,13 @@ import { stripeStorage } from "./stripeStorage";
 import { z } from "zod";
 import multer from "multer";
 import { registerObjectStorageRoutes, ObjectStorageService } from "./replit_integrations/object_storage";
+import {
+  auditConversation,
+  buildEnrollmentPacket,
+  ENROLLMENT_QUESTIONS,
+  type EnrollmentAnswerMap,
+} from "@shared/enrollment-workflow";
+import { buildHandoffPlan } from "@shared/enrollment-handoff";
 
 let MONTHLY_PRICE_ID: string;
 let ANNUAL_PRICE_ID: string;
@@ -5407,6 +5414,111 @@ Provide analysis in this JSON format:
   // ============================================================================
   // Medicare/Medicaid Enrollment API Endpoints
   // ============================================================================
+
+  // Short-lived browser credential for OpenAI Realtime. The permanent key never
+  // leaves the server; sensitive identifiers are deliberately excluded from the
+  // voice workflow and collected only during the final local handoff.
+  app.post('/api/enrollment/realtime-token', isAuthenticated, express.json(), async (_req, res) => {
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(503).json({ message: 'Live AI voice is not configured. Use the built-in voice demo instead.' });
+    }
+    try {
+      const model = process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime';
+      const response = await fetch('https://api.openai.com/v1/realtime/client_secrets', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session: {
+            type: 'realtime', model,
+            instructions: `You are Goldie, GoldRock Health's patient, unhurried Medicare enrollment advocate. Ask one concise question at a time. Never assume an answer. Read back dates, dollar amounts, coverage, and deadlines, then explicitly ask for confirmation. If an answer is confused or irrelevant, gently explain the question differently. Do not request SSN, Medicare ID, banking details, passwords, signatures, or full document numbers. Explain that GoldRock is not Medicare or a government agency and does not provide legal or plan-selection advice.`,
+            audio: { input: { transcription: { model: 'gpt-4o-mini-transcribe' }, turn_detection: { type: 'semantic_vad' } }, output: { voice: 'marin' } }
+          }
+        })
+      });
+      if (!response.ok) throw new Error(`OpenAI returned ${response.status}`);
+      const secret = await response.json() as any;
+      res.json({ clientSecret: secret.value, model });
+    } catch (error) {
+      console.error('Failed to create Realtime client secret:', error);
+      res.status(502).json({ message: 'Live AI voice could not start. The local voice workflow is still available.' });
+    }
+  });
+
+  // Deterministic whole-conversation validation. This intentionally runs before
+  // any optional AI review so eligibility and submission safety never depend on
+  // a model returning the expected shape.
+  app.post('/api/enrollment/conversation-audit', isAuthenticated, express.json({ limit: '256kb' }), async (req, res) => {
+    const answers = req.body?.answers as EnrollmentAnswerMap | undefined;
+    if (!answers || typeof answers !== 'object' || Array.isArray(answers)) {
+      return res.status(400).json({ message: 'A keyed answers object is required.' });
+    }
+
+    const allowedQuestionIds = new Set(ENROLLMENT_QUESTIONS.map((question) => question.id));
+    const unknownKeys = Object.keys(answers).filter((key) => !allowedQuestionIds.has(key));
+    if (unknownKeys.length) {
+      return res.status(400).json({
+        message: 'The intake contains unknown question identifiers.',
+        unknownKeys,
+      });
+    }
+
+    for (const [questionId, answer] of Object.entries(answers)) {
+      if (!answer || typeof answer !== 'object') {
+        return res.status(400).json({ message: `Answer ${questionId} is malformed.` });
+      }
+      if (answer.questionId !== questionId || typeof answer.normalizedValue !== 'string') {
+        return res.status(400).json({ message: `Answer ${questionId} has invalid content.` });
+      }
+      if (answer.normalizedValue.length > 4_000) {
+        return res.status(413).json({ message: `Answer ${questionId} exceeds the length limit.` });
+      }
+    }
+
+    res.json(auditConversation(answers));
+  });
+
+  // Builds a portable handoff only after all deterministic blocking checks pass.
+  // It does not attest, sign, select a plan, or submit to a third-party portal.
+  app.post('/api/enrollment/handoff-packet', isAuthenticated, express.json({ limit: '256kb' }), async (req, res) => {
+    const answers = req.body?.answers as EnrollmentAnswerMap | undefined;
+    if (!answers || typeof answers !== 'object' || Array.isArray(answers)) {
+      return res.status(400).json({ message: 'A keyed answers object is required.' });
+    }
+
+    const audit = auditConversation(answers);
+    if (!audit.ready) {
+      return res.status(422).json({
+        message: 'Resolve all blocking validation issues before preparing a handoff.',
+        audit,
+      });
+    }
+
+    const packet = buildEnrollmentPacket(answers);
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Content-Disposition', 'attachment; filename="goldrock-enrollment-handoff.json"');
+    res.json(packet);
+  });
+
+  // Produces a portal-specific transfer plan: destination, mapped fields,
+  // source-document checklist, applicant safety gates, and receipt timeline.
+  // This endpoint never performs a third-party submission.
+  app.post('/api/enrollment/handoff-plan', isAuthenticated, express.json({ limit: '256kb' }), async (req, res) => {
+    const answers = req.body?.answers as EnrollmentAnswerMap | undefined;
+    if (!answers || typeof answers !== 'object' || Array.isArray(answers)) {
+      return res.status(400).json({ message: 'A keyed answers object is required.' });
+    }
+
+    const audit = auditConversation(answers);
+    if (!audit.ready) {
+      return res.status(422).json({
+        message: 'Resolve blocking conversation issues before creating a portal handoff.',
+        audit,
+      });
+    }
+
+    res.setHeader('Cache-Control', 'no-store');
+    res.json(buildHandoffPlan(answers, audit.issues));
+  });
 
   // POST /api/enrollment/sessions - Create new enrollment session
   app.post('/api/enrollment/sessions', isAuthenticated, express.json(), async (req: any, res) => {
