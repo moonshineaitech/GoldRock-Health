@@ -100,6 +100,7 @@ import PartnerApi from "@/pages/partner-api";
 import DocumentVault from "@/pages/document-vault";
 import DataSecurity from "@/pages/data-security";
 import CommandCenter2026 from "@/pages/command-center-2026";
+import TmsCommandCenter from "@/pages/tms-command-center";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { DemoAccountBanner } from "@/components/demo-account-banner";
 import { useEffect } from "react";
@@ -186,6 +187,7 @@ function Router() {
   if (!isAuthenticated) {
     return (
       <Switch>
+        <Route path="/tms" component={TmsCommandCenter} />
         <Route path="/important-disclaimer" component={ImportantDisclaimer} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/terms-of-service" component={TermsOfService} />
@@ -225,6 +227,7 @@ function Router() {
     <>
       <DemoAccountBanner />
       <Switch>
+      <Route path="/tms" component={TmsCommandCenter} />
       <Route path="/sign-in" component={SignInPage} />
       <Route path="/sign-out" component={SignOutPage} />
       <Route path="/ai-agreement" component={AiUsageAgreement} />
