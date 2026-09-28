@@ -1,0 +1,12 @@
+{
+  "name": "goldrock-health",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "start": "node server/main.js",
+    "check": "node --check server/app.js && node --check server/jobs.js && node --check server/provider.js",
+    "test": "node --test tests/*.test.js"
+  }
+}

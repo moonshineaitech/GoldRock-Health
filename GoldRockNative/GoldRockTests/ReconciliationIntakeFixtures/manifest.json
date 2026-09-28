@@ -1,0 +1,76 @@
+{
+  "synthetic": true,
+  "canary": "PRIVATE-INTAKE-CANARY-6821",
+  "purpose": "Local OCR and reviewed reconciliation intake only; no original bytes, metadata, filenames or hidden text should enter a case or network request.",
+  "records": [
+    {
+      "file": "bill.pdf",
+      "sha256": "42015133d042eb97ddd2180dd12ed1777b2f7c8d15cc6dee4b5c1097cd2a31f2",
+      "expected": {
+        "kind": "bill",
+        "statementBalanceCents": 70000,
+        "totalPatientResponsibilityCents": 100000
+      },
+      "visibleCanary": true,
+      "metadataCanary": true
+    },
+    {
+      "file": "eob.pdf",
+      "sha256": "bf8000fcbbd44df39253b042400a185fba5e8b4fd59e65c0c4636661ff8738c9",
+      "expected": {
+        "kind": "eob",
+        "totalPatientResponsibilityCents": 80000
+      },
+      "visibleCanary": true,
+      "metadataCanary": true
+    },
+    {
+      "file": "hidden-eob.pdf",
+      "sha256": "6219338730d0d9e06764a932c58c824bf13c62c097ad1ed8b28141955cff3fc3",
+      "expected": {
+        "kind": "eob",
+        "totalPatientResponsibilityCents": 80000,
+        "hiddenResponsibilityMustNotAppear": 9999999
+      },
+      "visibleCanary": true,
+      "metadataCanary": true
+    },
+    {
+      "file": "mixed.pdf",
+      "sha256": "facaa6d6a9af147d4eac8713eda5b681cc258068f81fbb738b43fba9e7f8643b",
+      "expected": {
+        "kind": null,
+        "withholdScopeDependentAmounts": true
+      },
+      "visibleCanary": true,
+      "metadataCanary": true
+    },
+    {
+      "file": "blank.pdf",
+      "sha256": "0bfd4be7430e5cd909f637ce9d553ffa04692ab27e71e952d6b7f05c06a8402a",
+      "expected": {
+        "manualFallback": true
+      },
+      "visibleCanary": false,
+      "metadataCanary": true
+    },
+    {
+      "file": "estimate.pdf",
+      "sha256": "93bda4154131f1b6bac2545f48d04c25d4e26f3710c73f02929b042908a89d3a",
+      "expected": {
+        "kind": "estimate",
+        "estimateCents": 120000
+      },
+      "visibleCanary": true,
+      "metadataCanary": true
+    },
+    {
+      "file": "locked.pdf",
+      "sha256": "f1b81ea10457d8db689330ab5a27c2355eed6b1883e2ad908eed9e1335574a43",
+      "expected": {
+        "manualFallback": true
+      },
+      "syntheticPassword": "synthetic-test-password-only"
+    }
+  ]
+}
