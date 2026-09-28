@@ -1,7 +1,54 @@
 import XCTest
+import CoreGraphics
 @testable import GoldRock
 
 final class GoldRockTests: XCTestCase {
+    func testDocumentSignaturesMustMatchExtensions() throws {
+        let pdf = Data("%PDF-1.7\n".utf8)
+        let jpeg = Data([0xFF, 0xD8, 0xFF, 0xE0])
+        let png = Data([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A])
+        let heic = Data([0, 0, 0, 24] + Array("ftypmif1".utf8) + [0, 0, 0, 0] + Array("heicmif1".utf8))
+        XCTAssertEqual(try DocumentIntake.fileFormat(extension: "PDF", data: pdf), .pdf)
+        XCTAssertEqual(try DocumentIntake.fileFormat(extension: "jpeg", data: jpeg), .jpeg)
+        XCTAssertEqual(try DocumentIntake.fileFormat(extension: "png", data: png), .png)
+        XCTAssertEqual(try DocumentIntake.fileFormat(extension: "heic", data: heic), .heif)
+        XCTAssertThrowsError(try DocumentIntake.fileFormat(extension: "png", data: pdf))
+        XCTAssertThrowsError(try DocumentIntake.fileFormat(extension: "pdf", data: jpeg))
+        XCTAssertThrowsError(try DocumentIntake.fileFormat(extension: "txt", data: pdf))
+        XCTAssertThrowsError(try DocumentIntake.fileFormat(extension: "heic", data: Data([0, 0, 0, 20] + Array("ftypavif".utf8) + [0, 0, 0, 0] + Array("avif".utf8))))
+    }
+
+    func testImporterRejectsRenamedPDFBeforeOCR() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".png")
+        try Data("%PDF-1.7\nsynthetic test only".utf8).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        do {
+            _ = try await DocumentIntake.importFile(url)
+            XCTFail("A PDF renamed as an image must not enter either decoder")
+        } catch {
+            XCTAssertTrue(error.localizedDescription.contains("file type does not match"))
+        }
+    }
+
+    func testImportedImageDimensionsAndFrameCountAreBoundedBeforeDecode() throws {
+        XCTAssertNoThrow(try DocumentIntake.validateImageDimensions(width: 4_000, height: 3_000, frames: 1))
+        XCTAssertThrowsError(try DocumentIntake.validateImageDimensions(width: 9_000, height: 9_000, frames: 1))
+        XCTAssertThrowsError(try DocumentIntake.validateImageDimensions(width: 20_001, height: 1, frames: 1))
+        XCTAssertThrowsError(try DocumentIntake.validateImageDimensions(width: 1_000, height: 1_000, frames: 2))
+        XCTAssertThrowsError(try DocumentIntake.validateImageDimensions(width: 0, height: 1_000, frames: 1))
+    }
+
+    func testPDFRenderPlanBoundsAbnormalPagesAndPixels() throws {
+        let plan = try DocumentIntake.pdfRenderPlan(for: CGRect(x: 0, y: 0, width: 612, height: 792))
+        XCTAssertGreaterThan(plan.size.width, 0)
+        XCTAssertLessThanOrEqual(plan.size.width * plan.size.height, CGFloat(DocumentIntake.maximumRenderPixels))
+        XCTAssertLessThanOrEqual(max(plan.size.width, plan.size.height), 2_200)
+        XCTAssertThrowsError(try DocumentIntake.pdfRenderPlan(for: CGRect(x: 0, y: 0, width: 100_000, height: 792)))
+        XCTAssertThrowsError(try DocumentIntake.pdfRenderPlan(for: CGRect(x: 0, y: 0, width: 0.01, height: 792)))
+        XCTAssertThrowsError(try DocumentIntake.pdfRenderPlan(for: CGRect(x: 2_000_000, y: 0, width: 612, height: 792)))
+        XCTAssertThrowsError(try DocumentIntake.pdfRenderPlan(for: CGRect(x: 0, y: 0, width: CGFloat.infinity, height: 792)))
+    }
+
     private func conversationFixture() throws -> (CaseConversation, PublicFacts) {
         var facts = PublicFacts(); facts.documentType = .eob; facts.coverage = .private; facts.balanceCents = 10000
         let consent = ConversationConsent(policyVersion: "2026-09-27-v2", approvedFields: facts.approvedFields)

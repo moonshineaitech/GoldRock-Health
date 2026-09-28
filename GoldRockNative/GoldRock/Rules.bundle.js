@@ -4761,7 +4761,7 @@ const scenarioKnowledgeConcepts = scenarioPlaybooks.map(route => ({
   handoffRefs: [{ artifact: 'original-repository', path: route.original.path, lines: route.original.lines, commit: route.original.commit }],
 }));
 
-// knowledge-countermeasures.js: 3fe6af544531c8aa449d191af3d0781c74c4c5b59dca4fe6338ec4ceaccedc3b
+// knowledge-countermeasures.js: 4a67a842fc03a1f89f1286e40ec869a18d6bf70ee76b0b541e212ea1fade4b95
 // Narrow, source-linked countermeasures. Each route requires the member to confirm its applicability.
 const countermeasureSources = [
   {
@@ -4803,6 +4803,33 @@ const countermeasureSources = [
     url:'https://www.cms.gov/medicare/coordination-benefits-recovery/overview/coordination-benefits',
     applicability:'Medicare with other health or drug coverage; a crossover to a secondary insurer may depend on an agreement, and claims processing remains with the appropriate payer or contractor.',
     summary:'Primary and secondary payment responsibilities must be established; secondary claim crossover is not automatic in every arrangement.'
+  },
+  {
+    id:'medicaid-retroactive-eligibility',
+    title:'Medicaid eligibility policy and effective date of coverage',
+    publisher:'Medicaid.gov',
+    url:'https://www.medicaid.gov/medicaid/eligibility-policy',
+    applicability:'Medicaid applicant with care before the application month; the state must determine eligibility for the earlier month and whether retroactive benefits apply to that care.',
+    summary:'Medicaid benefits may cover up to three months before the application month when the person would have been eligible then; approval and service coverage require state confirmation.',
+    reviewedAt:'2026-09-28T00:00:00.000Z'
+  },
+  {
+    id:'hhs-hipaa-billing-record-access',
+    title:'Your medical and billing records under HIPAA',
+    publisher:'HHS Office for Civil Rights',
+    url:'https://www.hhs.gov/hipaa/for-individuals/medical-records/index.html',
+    applicability:'Records held by a HIPAA-covered provider or health plan; access is to existing information in the designated record set, subject to limited exceptions.',
+    summary:'A person may request existing medical and billing records even when a bill is unpaid; the right to access records does not require a provider or plan to create a new analysis.',
+    reviewedAt:'2026-09-28T00:00:00.000Z'
+  },
+  {
+    id:'cfpb-collector-stop-contact',
+    title:'How to ask a debt collector to stop contacting you',
+    publisher:'CFPB',
+    url:'https://www.consumerfinance.gov/ask-cfpb/how-do-i-get-a-debt-collector-to-stop-contacting-me-en-1411/',
+    applicability:'FDCPA-covered debt collector; a stop-contact request is separate from a timely written dispute, debt validity and any lawsuit.',
+    summary:'A written stop-contact request limits later collector communications, with narrow exceptions, but does not cancel a debt or bar other lawful collection action.',
+    reviewedAt:'2026-09-28T00:00:00.000Z'
   }
 ];
 
@@ -4896,6 +4923,67 @@ const countermeasureConcepts = [
     coverage:['medicare'],documentTypes:['bill','eob','denial','unknown'],goals:['understand','check','appeal'],
     tags:['coordination of benefits','primary payer','secondary payer','Medicare','other insurance','BCRC','crossover'],
     handoffRefs:[{artifact:'source-linked-countermeasures-2026-09-27',lines:[23,27]}]
+  },
+  {
+    id:'medicaid-care-before-application',category:'coverage',kind:'program-specific',
+    title:'Ask Medicaid about care before your application',
+    question:'I received a bill for care shortly before I applied for Medicaid. Can the state review that month?',
+    summary:'Ask the state to determine whether retroactive Medicaid coverage applies to the service month before treating the old bill as a final patient balance.',
+    mechanism:'Medicaid may cover benefits for up to three months before the application month if the person would have been eligible then; the state must decide eligibility and service coverage.',
+    actions:[
+      'Write down the application month, each service date, the provider and the coverage decision you already received.',
+      'Ask the state Medicaid agency how to request an eligibility determination for the earlier month and what evidence it needs for that month.',
+      'If the state confirms coverage for the service period, ask the provider how it will submit or correct the claim, then compare the processed claim with the bill.'
+    ],
+    verify:['Was a Medicaid application submitted, and in which month?','Would the person have met the applicable eligibility rules during the earlier service month?','Does the state confirm retroactive coverage and that this service is covered?'],
+    avoid:['Do not assume every bill in the preceding three months is covered or that the state will approve eligibility.','Do not promise that an application or pending determination alone pauses collections or a court deadline.'],
+    evidence:['Application acknowledgement and date','Service dates and provider bills','Earlier-month eligibility evidence requested by the state','State coverage decision and processed claim'],
+    completion:['The state’s written effective date and the provider’s processed claim are compared with the remaining patient balance.'],
+    sourceIds:['medicaid-retroactive-eligibility','medicaid-appeals'],
+    coverage:['medicaid','uninsured','unknown'],documentTypes:['bill','unknown'],goals:['understand','check','afford','plan'],
+    tags:['Medicaid','retroactive coverage','before application','eligibility month','backdated coverage','old bill'],
+    reviewedAt:'2026-09-28T00:00:00.000Z',handoffRefs:[{artifact:'native-countermeasures-2026-09-28',lines:[5,9]}]
+  },
+  {
+    id:'hipaa-existing-billing-records',category:'bill',kind:'procedure',
+    title:'Get the existing records behind a disputed charge',
+    question:'The provider or plan says I must pay before they will show me my billing records. What can I request?',
+    summary:'Request the existing medical, billing or claims records held by a HIPAA-covered provider or plan; an unpaid bill alone is not a reason to withhold a copy.',
+    mechanism:'The HIPAA access right reaches information about the person in covered entities’ designated record sets, including billing and payment records, with limited exceptions.',
+    actions:[
+      'Identify which provider or health plan maintains the record you need, such as the account ledger, payment entries or claim decision data.',
+      'Submit an access request through the covered entity’s stated process, describing the existing records and service period; keep the request and receipt.',
+      'Compare the records you receive with the charge. If an existing record is inaccurate, use the separate amendment process rather than assuming access itself corrects the bill.'
+    ],
+    verify:['Is the recipient a HIPAA-covered provider or health plan?','Are you requesting existing records about yourself, rather than a new explanation or analysis?','What response, access limitation or copying charge did the entity actually state?'],
+    avoid:['Do not claim HIPAA requires a new itemized bill, coding analysis or automatic balance adjustment.','Do not send private records to an unrelated party merely to prove you requested access.'],
+    evidence:['Access request and delivery record','Provider ledger or plan claim record received','Bill and EOB being checked','Any written denial or amendment response'],
+    completion:['The requested existing records or a written access response are retained and compared with the disputed charge.'],
+    sourceIds:['hhs-hipaa-billing-record-access'],
+    coverage:['private','medicare','medicaid','uninsured','self_pay','unknown'],documentTypes:['bill','eob','denial','unknown'],goals:['understand','check','appeal'],
+    tags:['HIPAA','billing records','medical records','claim records','right of access','unpaid bill','ledger'],
+    reviewedAt:'2026-09-28T00:00:00.000Z',handoffRefs:[{artifact:'native-countermeasures-2026-09-28',lines:[11,15]}]
+  },
+  {
+    id:'collector-stop-contact-versus-dispute',category:'collections',kind:'procedure',
+    title:'Separate a stop-contact request from a debt dispute',
+    question:'Can I stop a medical debt collector’s calls while I check whether the amount is right?',
+    summary:'A written stop-contact request can limit an FDCPA-covered collector’s communications, while a timely written debt dispute serves a different purpose and should be considered first when accuracy is in question.',
+    mechanism:'CFPB explains that a collector generally must stop contacting you after receiving a written request, subject to narrow notices about no further contact or lawful action. The debt and possible legal collection remain separate.',
+    actions:[
+      'Identify the collector and read the validation notice, including its dispute date and itemized balance.',
+      'If the debt or amount is wrong, consider a written dispute promptly and keep proof of delivery before choosing to stop contact.',
+      'If you want contact to stop, send a separate written request through the collector’s stated address or accepted electronic channel; keep a copy and receipt.',
+      'Watch for court papers or other lawful action and respond on their own required timeline.'
+    ],
+    verify:['Is this an FDCPA-covered collector rather than the original provider or a court?','Was a validation notice received, and is its dispute period still open?','Did the collector receive the written stop-contact request?'],
+    avoid:['Do not treat silence as proof that the debt was canceled or verified.','Do not assume the request bars a lawsuit, credit reporting or court response date.'],
+    evidence:['Collector identity and validation notice','Dispute letter, if sent','Stop-contact request and delivery proof','Any later legal notice'],
+    completion:['The communication request and any debt dispute are recorded separately; later notices and court dates remain visible.'],
+    sourceIds:['cfpb-collector-stop-contact','cfpb-debt-validation'],
+    coverage:['private','medicare','medicaid','uninsured','self_pay','unknown'],documentTypes:['bill','unknown'],goals:['understand','check','afford','appeal'],
+    tags:['collector calls','stop contact','cease communication','debt dispute','validation notice','FDCPA'],
+    reviewedAt:'2026-09-28T00:00:00.000Z',handoffRefs:[{artifact:'native-countermeasures-2026-09-28',lines:[17,21]}]
   }
 ];
 

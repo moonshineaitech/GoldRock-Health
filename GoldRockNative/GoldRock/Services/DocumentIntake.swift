@@ -22,12 +22,79 @@ enum DocumentIntake {
     static let maximumPages = 20
     static let maximumBytes = 20 * 1024 * 1024
     static let maximumScanPixels = 24_000_000
+    static let maximumSourcePixels = 80_000_000
+    static let maximumSourceSide = 20_000
+    static let maximumPDFPagePoints: CGFloat = 14_400
+    static let maximumRenderPixels = 2_200 * 2_200
+
+    enum FileFormat: Equatable { case pdf, jpeg, png, heif }
+
+    /// File extensions must agree with the container signature.
+    static func fileFormat(extension fileExtension: String, data: Data) throws -> FileFormat {
+        let ext = fileExtension.lowercased()
+        let bytes = [UInt8](data.prefix(256))
+        let format: FileFormat?
+        if bytes.starts(with: Array("%PDF-".utf8)) {
+            format = .pdf
+        } else if bytes.starts(with: [0xFF, 0xD8, 0xFF]) {
+            format = .jpeg
+        } else if bytes.starts(with: [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) {
+            format = .png
+        } else if bytes.count >= 16, Array(bytes[4..<8]) == Array("ftyp".utf8) {
+            let boxLength = bytes.prefix(4).reduce(0) { ($0 << 8) | Int($1) }
+            let supportedBrands: Set<String> = ["heic", "heix", "hevc", "hevx"]
+            var brands: [String] = []
+            if boxLength >= 16, boxLength <= bytes.count, boxLength % 4 == 0 {
+                brands.append(String(decoding: bytes[8..<12], as: UTF8.self))
+                for start in stride(from: 16, to: boxLength, by: 4) {
+                    brands.append(String(decoding: bytes[start..<(start + 4)], as: UTF8.self))
+                }
+            }
+            format = brands.contains(where: supportedBrands.contains) ? .heif : nil
+        } else {
+            format = nil
+        }
+        switch (ext, format) {
+        case ("pdf", .some(.pdf)): return .pdf
+        case ("jpg", .some(.jpeg)), ("jpeg", .some(.jpeg)): return .jpeg
+        case ("png", .some(.png)): return .png
+        case ("heic", .some(.heif)), ("heif", .some(.heif)): return .heif
+        default: throw AppError.invalid("The file type does not match its contents. Choose a PDF, JPEG, PNG or HEIC image, or enter the key facts.")
+        }
+    }
+
+    /// Check image headers before thumbnail decompression.
+    static func validateImageDimensions(width: Int, height: Int, frames: Int) throws {
+        guard frames == 1, width > 0, height > 0,
+              width <= maximumSourceSide, height <= maximumSourceSide,
+              Double(width) * Double(height) <= Double(maximumSourcePixels) else {
+            throw AppError.invalid("This image is too large or contains multiple frames. Export one smaller page or enter the key facts.")
+        }
+    }
+
+    static func pdfRenderPlan(for bounds: CGRect) throws -> (size: CGSize, scale: CGFloat) {
+        guard bounds.minX.isFinite, bounds.minY.isFinite,
+              abs(bounds.minX) <= 1_000_000, abs(bounds.minY) <= 1_000_000,
+              bounds.width.isFinite, bounds.height.isFinite,
+              bounds.width >= 1, bounds.height >= 1,
+              bounds.width <= maximumPDFPagePoints, bounds.height <= maximumPDFPagePoints else {
+            throw AppError.invalid("A PDF page has unsupported dimensions. Export standard-size pages or enter the key facts.")
+        }
+        let scale = min(2_200 / max(bounds.width, bounds.height), 3)
+        let size = CGSize(width: max(1, floor(bounds.width * scale)), height: max(1, floor(bounds.height * scale)))
+        guard size.width.isFinite, size.height.isFinite,
+              size.width * size.height <= CGFloat(maximumRenderPixels) else {
+            throw AppError.invalid("A PDF page is too large to prepare safely.")
+        }
+        return (size, scale)
+    }
 
     /// The scanner releases each full-resolution page after making a bounded copy.
     /// No photo-library save, temporary file or original-image cache is created.
     static func boundedScanImage(_ image: UIImage) throws -> UIImage {
         let size = image.size
         guard size.width.isFinite, size.height.isFinite, size.width > 0, size.height > 0 else { throw AppError.invalid("A scanned page could not be read. Try again or enter the figures.") }
+        if let cg = image.cgImage { try validateImageDimensions(width: cg.width, height: cg.height, frames: 1) }
         let scale = min(2200 / max(size.width, size.height), 1)
         let target = CGSize(width: max(1, floor(size.width * scale)), height: max(1, floor(size.height * scale)))
         let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
@@ -43,10 +110,18 @@ enum DocumentIntake {
             let access = url.startAccessingSecurityScopedResource()
             defer { if access { url.stopAccessingSecurityScopedResource() } }
             let values = try url.resourceValues(forKeys: [.fileSizeKey])
-            guard let size = values.fileSize, size <= maximumBytes else { throw AppError.invalid("Choose a document smaller than 20 MB, or enter its key amounts.") }
-            let data = try Data(contentsOf: url, options: [])
+            if let size = values.fileSize, size > maximumBytes { throw AppError.invalid("Choose a document smaller than 20 MB, or enter its key amounts.") }
+            let handle = try FileHandle(forReadingFrom: url)
+            defer { try? handle.close() }
+            var data = Data()
+            while data.count <= maximumBytes {
+                try Task.checkCancellation()
+                guard let chunk = try handle.read(upToCount: min(1_048_576, maximumBytes + 1 - data.count)), !chunk.isEmpty else { break }
+                data.append(chunk)
+            }
             guard data.count <= maximumBytes else { throw AppError.invalid("This document exceeds the 20 MB preparation limit.") }
-            if url.pathExtension.lowercased() == "pdf" || data.starts(with: Data("%PDF".utf8)) {
+            let detectedFormat = try fileFormat(extension: url.pathExtension, data: data)
+            if detectedFormat == .pdf {
                 guard let pdf = PDFDocument(data: data), !pdf.isLocked else { throw AppError.invalid("This PDF is locked or unreadable. Open an unlocked copy locally, or enter the key facts.") }
                 guard (1...maximumPages).contains(pdf.pageCount) else { throw AppError.invalid("Review up to 20 pages at a time. Split this document locally or enter the key facts.") }
                 var text = ""; var lowConfidence = false
@@ -55,10 +130,10 @@ enum DocumentIntake {
                     guard let page = pdf.page(at: index) else { continue }
                     let result: (String, Bool) = try autoreleasepool {
                         let bounds = page.bounds(for: .mediaBox)
-                        guard bounds.width.isFinite, bounds.height.isFinite, bounds.width > 0, bounds.height > 0 else { throw AppError.invalid("A PDF page has invalid dimensions.") }
-                        let scale = min(2200 / max(bounds.width, bounds.height), 3)
+                        let plan = try pdfRenderPlan(for: bounds)
+                        let scale = plan.scale
                         let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
-                        let size = CGSize(width: bounds.width * scale, height: bounds.height * scale)
+                        let size = plan.size
                         let image = UIGraphicsImageRenderer(size: size, format: format).image { ctx in
                             UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
                             ctx.cgContext.translateBy(x: 0, y: bounds.height * scale)
@@ -73,8 +148,15 @@ enum DocumentIntake {
                 }
                 return result(text: text, pages: pdf.pageCount, lowConfidence: lowConfidence)
             }
-            guard let source = CGImageSourceCreateWithData(data as CFData, nil), CGImageSourceGetCount(source) > 0,
-                  let cg = CGImageSourceCreateThumbnailAtIndex(source, 0, [kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceThumbnailMaxPixelSize: 2200, kCGImageSourceCreateThumbnailWithTransform: true] as CFDictionary) else { throw AppError.invalid("Choose a PDF, JPEG, PNG or HEIC image, or enter the key facts.") }
+            guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+                  let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as NSDictionary?,
+                  let width = (properties[kCGImagePropertyPixelWidth] as? NSNumber)?.intValue,
+                  let height = (properties[kCGImagePropertyPixelHeight] as? NSNumber)?.intValue else {
+                throw AppError.invalid("Choose a readable JPEG, PNG or HEIC image, or enter the key facts.")
+            }
+            try validateImageDimensions(width: width, height: height, frames: CGImageSourceGetCount(source))
+            guard let cg = CGImageSourceCreateThumbnailAtIndex(source, 0, [kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceThumbnailMaxPixelSize: 2200, kCGImageSourceCreateThumbnailWithTransform: true] as CFDictionary) else { throw AppError.invalid("Choose a PDF, JPEG, PNG or HEIC image, or enter the key facts.") }
+            try validateImageDimensions(width: cg.width, height: cg.height, frames: 1)
             let scan = try recognize(UIImage(cgImage: cg))
             return result(text: scan.0, pages: 1, lowConfidence: scan.1)
         }

@@ -17,12 +17,15 @@ struct IntakeView: View {
     @State private var imported: IntakeResult?
     @State private var importing = false
     @State private var scanning = false
+    @State private var replacingPreparation = false
+    @State private var replaceWithScan = false
     @State private var busy = false
     @State private var message: String?
     @State private var problem: String?
     @State private var fieldErrors: Set<String> = []
     @State private var editVersion = UUID()
     @State private var confirmed = false
+    @State private var checkedImportedFacts = false
     @State private var modelSuggestion: DeviceAssistance?
     @State private var task: Task<Void, Never>?
     @State private var workspace: UUID?
@@ -43,8 +46,8 @@ struct IntakeView: View {
                     IntakeJourney(step: imported == nil ? 1 : 2).listRowBackground(Color.clear)
                 }
                 Section {
-                    if VNDocumentCameraViewController.isSupported { Button { scanning = true } label: { EditorialFeatureRow(title: "Scan your pages", detail: "Use your iPhone camera to read a paper bill.", symbol: "doc.viewfinder") }.buttonStyle(.plain).disabled(busy) }
-                    Button { importing = true } label: { EditorialFeatureRow(title: "Choose a document", detail: "Open a PDF or image from your files.", symbol: "folder") }.buttonStyle(.plain).disabled(busy)
+                    if VNDocumentCameraViewController.isSupported { Button { chooseInput(scan: true) } label: { EditorialFeatureRow(title: "Scan your pages", detail: "Use your iPhone camera to read a paper bill.", symbol: "doc.viewfinder") }.buttonStyle(.plain).disabled(busy) }
+                    Button { chooseInput(scan: false) } label: { EditorialFeatureRow(title: "Choose a document", detail: "Open a PDF or image from your files.", symbol: "folder") }.buttonStyle(.plain).disabled(busy)
                     Label("Read on this iPhone. Original files are not uploaded.", systemImage: "iphone.gen3").font(.footnote).foregroundStyle(.secondary)
                     Text("Up to 20 pages or 20 MB. You can enter everything below without importing a file.").font(.footnote).foregroundStyle(.secondary)
                 }
@@ -58,9 +61,17 @@ struct IntakeView: View {
                             HStack { Text(category); Spacer(); Text("\(result.identifiers.filter { $0.category == category }.count)").foregroundStyle(.secondary) }
                         }
                         DisclosureGroup("Review local text with detected spans masked") {
-                            Text(IdentifierDetector.preview(result.text, candidates: result.identifiers)).font(.footnote.monospaced()).textSelection(.enabled)
+                            Text(IdentifierDetector.preview(result.text, candidates: result.identifiers)).font(.footnote.monospaced()).textSelection(.enabled).privacySensitive()
                             Text("This preview can still contain sensitive details. It is never used as the cloud payload.").font(.footnote).foregroundStyle(.secondary)
                         }
+                        DisclosureGroup("Candidate facts from this reading") {
+                            ForEach(Array(result.facts.reviewedRows.enumerated()), id: \.offset) { _, row in
+                                LabeledContent(PublicFacts.label(for: row.key), value: row.value).privacySensitive()
+                            }
+                            Text("These are OCR candidates, not verified facts. Compare every amount, code and document type against the original before saving.").font(.footnote).foregroundStyle(.secondary)
+                        }
+                        Toggle("I compared the extracted facts with the original", isOn: $checkedImportedFacts)
+                        Text("This check is local. GoldRock keeps your reviewed typed facts, never the original or raw reading.").font(.footnote).foregroundStyle(.secondary)
                         ForEach(result.warnings, id: \.self) { Text($0).font(.footnote).foregroundStyle(.secondary) }
                         DisclosureGroup("An extra check, on this iPhone") {
                             Button("Ask the on-device model to check", systemImage: "sparkles") { inspectLocally() }.disabled(busy || !OnDeviceAssistant.isAvailable)
@@ -70,7 +81,7 @@ struct IntakeView: View {
                             Text(suggestion.notice).font(.footnote)
                             Button("Use suggested type: \(suggestion.kind.title)") { facts.documentType = suggestion.kind; confirmed = false }
                         }
-                        Button("Clear imported text", role: .destructive) { imported = nil; modelSuggestion = nil }
+                        Button("Clear imported text", role: .destructive) { imported = nil; modelSuggestion = nil; checkedImportedFacts = false }
                     }
                 }
                 if let message { Section { Text(message).font(.footnote) } }
@@ -90,13 +101,19 @@ struct IntakeView: View {
                 Section {
                     Toggle("I reviewed these facts and left unknown details blank", isOn: $confirmed)
                     ChromeAction(title: questionDraft == nil ? "Find my next step" : "Prepare my AI conversation") { save() }
-                        .disabled(!confirmed || !fieldErrors.isEmpty || busy)
+                        .disabled(!confirmed || (imported != nil && !checkedImportedFacts) || !fieldErrors.isEmpty || busy)
                     Text("No cloud request is made by this button. You can review and approve AI analysis later inside the case.").font(.footnote).foregroundStyle(.secondary)
                 }
             }
             .goldRockScreen()
             .navigationTitle("A new case").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close", systemImage: "xmark") { task?.cancel(); imported = nil; dismiss() } } }
+            .confirmationDialog("Replace this local preparation?", isPresented: $replacingPreparation, titleVisibility: .visible) {
+                Button(replaceWithScan ? "Scan new pages" : "Choose another file") { launchInput() }
+                Button("Keep current preparation", role: .cancel) {}
+            } message: {
+                Text("A successful new reading replaces the candidate facts and edits in this form. Finish and save this case first if you need to compare documents later. Your original file remains in its source app.")
+            }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.pdf, .jpeg, .png, .heic], allowsMultipleSelection: false) { result in
                 switch result { case .success(let urls): if let url = urls.first { prepare { try await DocumentIntake.importFile(url) } }; case .failure: problem = "The file could not be opened. Choose it again or enter the key facts." }
             }
@@ -118,7 +135,7 @@ struct IntakeView: View {
             do {
                 let result = try await operation(); try Task.checkCancellation()
                 guard preparationID == requestID, workspace == owner, store.workspaceIdentity == owner, store.workspaceActive else { return }
-                imported = result; facts = result.facts; facts.goal = goal; showFacts = true; fieldErrors.removeAll(); editVersion = UUID(); modelSuggestion = nil
+                imported = result; facts = result.facts; facts.goal = goal; showFacts = true; fieldErrors.removeAll(); editVersion = UUID(); modelSuggestion = nil; checkedImportedFacts = false
             } catch is CancellationError { return }
             catch { guard preparationID == requestID, store.workspaceIdentity == owner else { return }; problem = error.localizedDescription }
             busy = false
@@ -144,10 +161,17 @@ struct IntakeView: View {
         }
     }
     private func save() {
-        do { guard workspace == store.workspaceIdentity, store.workspaceActive, confirmed else { throw AppError.locked }; let id = try store.createCase(title: title, facts: facts, mode: mode, taskIntake: taskIntake); imported = nil; modelSuggestion = nil; onCreate(id) }
+        do { guard workspace == store.workspaceIdentity, store.workspaceActive, confirmed else { throw AppError.locked }; guard imported == nil || checkedImportedFacts else { throw AppError.invalid("Compare the extracted facts with the original before saving.") }; let id = try store.createCase(title: title, facts: facts, mode: mode, taskIntake: taskIntake); imported = nil; modelSuggestion = nil; onCreate(id) }
         catch { problem = error.localizedDescription }
     }
-    private func resetPreparation() { preparationID = UUID(); task?.cancel(); task = nil; imported = nil; modelSuggestion = nil; busy = false; confirmed = false }
+    private func chooseInput(scan: Bool) {
+        replaceWithScan = scan
+        var empty = PublicFacts(); empty.goal = goal
+        if imported != nil || facts != empty { replacingPreparation = true }
+        else { launchInput() }
+    }
+    private func launchInput() { if replaceWithScan { scanning = true } else { importing = true } }
+    private func resetPreparation() { preparationID = UUID(); task?.cancel(); task = nil; imported = nil; modelSuggestion = nil; busy = false; confirmed = false; checkedImportedFacts = false }
 }
 
 struct ScannerView: UIViewControllerRepresentable {

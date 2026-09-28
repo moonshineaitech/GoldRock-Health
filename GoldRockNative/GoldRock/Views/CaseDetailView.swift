@@ -33,6 +33,10 @@ struct CaseDetailView: View {
                         NavigationLink { CaseReconciliationView(caseID: caseID) } label: { Label("Compare bills, EOBs and payments", systemImage: "doc.on.doc") }
                         NavigationLink { CaseWorkbookView(caseID: caseID) } label: { Label("Track the request and response", systemImage: "list.bullet.clipboard") }
                     }
+                    Section("Prepare your next move") {
+                        NavigationLink { CaseEvidencePrepView(caseID: caseID) } label: { EditorialFeatureRow(title: "Gather the right evidence.", detail: "Check what you have and see what to request next. Originals stay where you keep them.", symbol: "checklist", showsChevron: false) }
+                        NavigationLink { CaseCallPrepView(caseID: caseID) } label: { EditorialFeatureRow(title: "Go into the call prepared.", detail: "Choose the office, request and response; leave with a script you can use.", symbol: "phone.arrow.up.right", showsChevron: false) }
+                    }
                     if let status = item.jobStatus {
                         Section("Cloud analysis") {
                             Label(status.replacingOccurrences(of: "_", with: " ").capitalized, systemImage: status == "succeeded" ? "checkmark.circle" : "arrow.triangle.2.circlepath")
@@ -86,7 +90,7 @@ struct CaseDetailView: View {
                         NavigationLink { CaseMoneyRecoveryView(caseID: caseID) } label: { EditorialFeatureRow(title: "Follow the money back.", detail: "Track provider refunds and insurer reimbursements, from request to actual receipt.", symbol: "arrow.uturn.backward.circle", showsChevron: false) }
                         NavigationLink { CaseReconciliationView(caseID: caseID) } label: { EditorialFeatureRow(title: "Make sense of every version.", detail: "Compare bills, EOBs, payments and refunds by biller and service.", symbol: "doc.on.doc", showsChevron: false) }
                         NavigationLink { CaseWorkbookView(caseID: caseID) } label: { EditorialFeatureRow(title: "Keep the next step moving.", detail: "Track each process, the evidence it needs and what actually happened.", symbol: "list.bullet.clipboard", showsChevron: false) }
-                        Button("Record an action or outcome", systemImage: "pencil.and.list.clipboard") { record = true }
+                        Button("Record a response or outcome", systemImage: "pencil.and.list.clipboard") { record = true }
                         if let date = item.followUp {
                             Label("Follow up \(date.formatted(date: .abbreviated, time: .shortened))", systemImage: "calendar")
                             Button("Clear my follow-up", systemImage: "calendar.badge.minus") {
@@ -119,6 +123,162 @@ struct CaseDetailView: View {
         }.overlay { if busy { ProgressView().padding().background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16)) } }
     }
     private func run(_ action: @escaping () async throws -> Void) { busy = true; Task { do { try await action() } catch { store.error = error.localizedDescription }; busy = false } }
+}
+
+private struct EvidencePrompt: Identifiable {
+    let id: String
+    let title: String
+    let purpose: String
+}
+
+struct CaseEvidencePrepView: View {
+    let caseID: UUID
+    @Environment(AppStore.self) private var store
+    @State private var checked: Set<String> = []
+    private let storageKey = "__evidence_preparation_v1"
+
+    private var prompts: [EvidencePrompt] {
+        guard let facts = store.item(caseID)?.facts else { return [] }
+        var rows: [EvidencePrompt] = []
+        func add(_ id: String, _ title: String, _ purpose: String) {
+            rows.append(EvidencePrompt(id: id, title: title, purpose: purpose))
+        }
+        switch facts.documentType {
+        case .bill:
+            add("bill", "The current bill", "Compare the amount, biller and dates with other records.")
+            add("itemization", "An itemized statement", "Ask the billing office for charge lines if you do not already have them.")
+        case .eob:
+            add("eob", "The insurer's EOB", "Compare the plan's processing with the provider's bill.")
+            add("bill", "The matching provider bill", "Check whether the provider balance matches your responsibility.")
+        case .denial:
+            add("denial", "The written denial", "Find the stated reason and the actual appeal instructions and dates.")
+            add("plan", "The relevant plan language", "Check the reason against your plan documents or ask the insurer for the criterion used.")
+        case .estimate:
+            add("estimate", "The written estimate", "Keep the version and date of the estimate you received.")
+            add("bill", "Any final bill", "Compare only if care has happened and a final bill exists.")
+        case .unknown:
+            add("notice", "The notice you are reviewing", "Keep the version and date so you can identify the exact request.")
+        }
+        if facts.coverage != .uninsured && facts.coverage != .self_pay && facts.documentType != .eob {
+            add("eob", "The matching EOB or claim status", "Ask the insurer whether the claim was processed and how your share was calculated.")
+        }
+        if let paid = facts.paidCents, paid > 0 {
+            add("payment", "Proof of payments already made", "Use receipts or statements to check whether payments were credited.")
+        }
+        if facts.hasEstimate == true && facts.documentType != .estimate {
+            add("estimate", "The earlier written estimate", "Compare what was quoted with what was billed.")
+        }
+        return rows
+    }
+
+    private var missing: [EvidencePrompt] { prompts.filter { !checked.contains($0.id) } }
+    private var requestText: String {
+        let lines = missing.map { "• \($0.title)" }.joined(separator: "\n")
+        return "I am reviewing a medical bill or claim. Please tell me how to obtain copies of the following records, if available:\n\n\(lines)\n\nPlease confirm the request process and where a written response will be sent. I will provide identifying information through your verified channel."
+    }
+
+    var body: some View {
+        List {
+            Section {
+                EditorialListHeader(eyebrow: "Evidence preparation", title: "Know what you have.\nKnow what to ask for.", detail: "These are preparation prompts, not a claim that every item is required. Check the actual notice and plan for any specific requirement.")
+                Text("\(checked.intersection(Set(prompts.map(\.id))).count) of \(prompts.count) marked in hand").font(.subheadline.weight(.semibold))
+            }
+            Section("Records to locate") {
+                ForEach(prompts) { prompt in
+                    Toggle(isOn: Binding(get: { checked.contains(prompt.id) }, set: { hasIt in
+                        if hasIt { checked.insert(prompt.id) } else { checked.remove(prompt.id) }
+                    })) {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(prompt.title).font(.headline)
+                            Text(prompt.purpose).font(.footnote).foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+            Section("Turn the gaps into a request") {
+                if missing.isEmpty {
+                    Text("You marked every suggested record in hand. Check that each copy matches this bill or claim before relying on it.")
+                } else {
+                    Text(missing.map(\.title).joined(separator: " · ")).font(.subheadline)
+                    DisclosureGroup("Read the exact request before sharing") { Text(requestText).textSelection(.enabled) }
+                    ShareLink(item: requestText) { Label("Share this reviewed request", systemImage: "square.and.arrow.up") }
+                    Text("The template uses placeholders and does not include your case facts. Sharing creates a copy outside GoldRock; add identifiers only through a channel you have verified.").font(.footnote).foregroundStyle(.secondary)
+                }
+                Button(store.item(caseID)?.saveMode == .session ? "Keep checklist for this session" : "Save checklist on this iPhone", systemImage: "checkmark") { save() }
+                NavigationLink { CaseWorkbookView(caseID: caseID) } label: { Label("Connect evidence to a process", systemImage: "list.bullet.clipboard") }
+                Text("Only your checked items are saved here, not the files. One-time cases clear at the end of the session. In the workbook, you can record where you keep originals and link references to a specific request.").font(.footnote).foregroundStyle(.secondary)
+            }
+        }
+        .goldRockScreen().navigationTitle("Evidence prep").navigationBarTitleDisplayMode(.inline)
+        .onAppear { load() }
+    }
+
+    private func load() {
+        let saved = store.item(caseID)?.editedDrafts[storageKey] ?? ""
+        checked = Set(saved.split(separator: ",").map(String.init))
+    }
+    private func save() {
+        do {
+            let selected = checked.intersection(Set(prompts.map(\.id))).sorted().joined(separator: ",")
+            try store.update(caseID) { $0.editedDrafts[storageKey] = selected }
+            store.notice = store.item(caseID)?.saveMode == .session ? "Checklist kept for this session." : "Evidence checklist saved with this local case."
+        } catch { store.error = error.localizedDescription }
+    }
+}
+
+struct CaseCallPrepView: View {
+    let caseID: UUID
+    @Environment(AppStore.self) private var store
+    @State private var recipient = "Provider billing office"
+    @State private var request = "An itemized statement"
+    @State private var response = "I have not called yet"
+
+    private let recipients = ["Provider billing office", "Insurer claims team", "Financial assistance office", "Collector"]
+    private let requests = ["An itemized statement", "An explanation of the balance", "A claim or denial review", "Financial assistance information", "A billing or collection hold"]
+    private let responses = ["I have not called yet", "They asked me to pay now", "They said no", "They promised a review"]
+
+    private var script: String {
+        let opening = "Hello. I am calling about a medical bill or claim. Before I share personal details, please confirm that I reached the \(recipient.lowercased()) and tell me the secure way to verify my identity."
+        let ask: String
+        switch request {
+        case "An itemized statement": ask = "I would like an itemized statement showing the services, dates, charges, adjustments and payments for the bill I am reviewing. How can I request it?"
+        case "An explanation of the balance": ask = "Please explain how the current balance was calculated and which payments and insurance adjustments were applied. Can you provide that explanation in writing?"
+        case "A claim or denial review": ask = "Please explain the claim or denial reason, the policy or processing rule used, and the process and dates shown in my actual notice for asking for a review."
+        case "Financial assistance information": ask = "Please tell me what financial assistance or payment options are available, the eligibility criteria, and how to obtain the current application in writing."
+        default: ask = "While I review this bill, can you tell me whether a billing or collection hold is available, its exact scope, who can approve it, and its end date? Please do not treat my request as a confirmed hold."
+        }
+        let followUp: String
+        switch response {
+        case "They asked me to pay now": followUp = "Before deciding on payment, I need the requested records and an explanation of the balance. What happens if I ask for that review, and what dates should I verify from my notice?"
+        case "They said no": followUp = "Please explain the reason for declining, where I can find the applicable policy or process, and whether there is another team that can review my request."
+        case "They promised a review": followUp = "Please confirm what will be reviewed, when I should expect a written response, and whether anything changes while that review is pending."
+        default: followUp = "What do you need from me, how will I receive the response, and when should I check back?"
+        }
+        return "\(opening)\n\n\(ask)\n\n\(followUp)\n\nBefore we end: What is your name or team, the reference number for this conversation, and the best way to get this answer in writing? I will separately check any appeal, dispute or court dates in my own notices."
+    }
+
+    var body: some View {
+        List {
+            Section {
+                EditorialListHeader(eyebrow: "Call preparation", title: "Ask clearly.\nWrite down the answer.", detail: "Select the conversation you are having. The script updates on this iPhone; GoldRock does not place the call.")
+                Text("A request is not approval. A verbal promise is not a confirmed hold or an extended deadline.").font(.footnote).foregroundStyle(.secondary)
+            }
+            Section("Shape your request") {
+                Picker("Office", selection: $recipient) { ForEach(recipients, id: \.self) { Text($0) } }
+                Picker("What I need", selection: $request) { ForEach(requests, id: \.self) { Text($0) } }
+                Picker("What they said", selection: $response) { ForEach(responses, id: \.self) { Text($0) } }
+            }
+            Section("Your call script") {
+                Text(script).textSelection(.enabled)
+                ShareLink(item: script) { Label("Review share options", systemImage: "square.and.arrow.up") }
+                Text("This template contains no case facts or identifiers. If you add personal information in another app, check the recipient before sending.").font(.footnote).foregroundStyle(.secondary)
+            }
+            Section("After the call") {
+                NavigationLink { RecordProgressView(caseID: caseID) } label: { Label("Record the answer and next date", systemImage: "square.and.pencil") }
+                NavigationLink { CaseWorkbookView(caseID: caseID) } label: { Label("Track a formal request or hold", systemImage: "list.bullet.clipboard") }
+            }
+        }.goldRockScreen().navigationTitle("Call prep").navigationBarTitleDisplayMode(.inline)
+    }
 }
 
 struct SourceLinks: View {
@@ -247,6 +407,10 @@ struct RecordProgressView: View {
     @Environment(AppStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var kind = "I contacted the billing office"
+    @State private var organization = ""
+    @State private var reference = ""
+    @State private var responseSummary = ""
+    @State private var nextAction = ""
     @State private var note = ""
     @State private var resolved = false
     @State private var reduction: Int?
@@ -255,14 +419,22 @@ struct RecordProgressView: View {
     @State private var reminder = false
     @State private var date = Date().addingTimeInterval(7 * 86400)
     @State private var busy = false
+    private var canSave: Bool {
+        resolved || followUp || [responseSummary, nextAction, note, reference].contains { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
     var body: some View {
         NavigationStack {
             Form {
                 Section { EditorialListHeader(eyebrow: "One step at a time", title: "What happened next?", detail: "Keep the response, reference and next step together. This is your record of what happened.") }
                 Section("What happened?") {
                     Picker("Action", selection: $kind) { ForEach(["I contacted the billing office", "I contacted my insurer", "I submitted an assistance application", "I submitted an appeal", "I received a written response", "I confirmed a billing hold", "I recorded an outcome"], id: \.self) { Text($0) } }
+                    TextField("Office or team (optional)", text: $organization)
+                    TextField("Reference or confirmation number (optional)", text: $reference)
+                    TextField("What did they actually say?", text: $responseSummary, axis: .vertical).lineLimit(2...5)
+                    TextField("What will you do next?", text: $nextAction, axis: .vertical).lineLimit(2...5)
+                    Text("Private details or exact wording (optional)").font(.footnote).foregroundStyle(.secondary)
                     TextEditor(text: $note).frame(minHeight: 120).accessibilityLabel("Private action notes")
-                    Text("Keep the reference, response and next step here. These notes stay local. A hold should include its confirmed scope and end date.").font(.footnote).foregroundStyle(.secondary)
+                    Text("Record only what occurred. A reference number is not proof of approval. These details stay in the local case; a hold should include its confirmed scope and end date.").font(.footnote).foregroundStyle(.secondary)
                     Toggle("I consider this case resolved", isOn: $resolved)
                     if resolved { AmountField(label: "Confirmed reduction (optional)", key: "reduction", value: $reduction, errors: $errors); Text("Only enter a reduction confirmed by a corrected statement or written decision. This is your record, not a verified savings claim by GoldRock.").font(.footnote).foregroundStyle(.secondary) }
                 }
@@ -286,7 +458,7 @@ struct RecordProgressView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Close", systemImage: "xmark") { dismiss() } }
-                    ToolbarItem(placement: .confirmationAction) { Button("Save progress", systemImage: "checkmark") { save() }.disabled(busy || !errors.isEmpty) }
+                    ToolbarItem(placement: .confirmationAction) { Button("Save progress", systemImage: "checkmark") { save() }.disabled(busy || !errors.isEmpty || !canSave) }
                 }
         }
     }
@@ -294,8 +466,16 @@ struct RecordProgressView: View {
         busy = true
         Task {
             do {
+                let details = [
+                    organization.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : "Office or team: \(organization)",
+                    reference.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : "Reference: \(reference)",
+                    responseSummary.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : "Response: \(responseSummary)",
+                    nextAction.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : "Next action: \(nextAction)",
+                    note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : "Notes: \(note)",
+                    followUp ? "Follow up: \(date.formatted(date: .abbreviated, time: .shortened))" : nil
+                ].compactMap { $0 }.joined(separator: "\n")
                 try store.update(caseID) { item in
-                    item.events.append(CaseEvent(kind: kind, note: String(note.prefix(5000))))
+                    item.events.append(CaseEvent(kind: kind, note: String(details.prefix(5000))))
                     item.resolved = resolved
                     item.confirmedReductionCents = resolved ? reduction : nil
                     item.followUp = followUp ? date : nil
