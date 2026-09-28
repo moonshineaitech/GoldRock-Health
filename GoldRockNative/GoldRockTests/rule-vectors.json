@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "now": "2026-09-27T12:00:00Z",
+  "vectors": [
+    { "id": "exact-reconciliation", "facts": { "documentType": "bill", "goal": "check", "coverage": "private", "billedCents": 100000, "adjustmentCents": 20000, "insurancePaidCents": 30000, "paidCents": 10000, "balanceCents": 50000 }, "requiredFindings": ["balance-mismatch"], "forbiddenFindings": ["balance-reconciles"], "amounts": { "balance-mismatch": 10000 } },
+    { "id": "unknown-is-not-zero", "facts": { "documentType": "bill", "goal": "check", "coverage": "private", "billedCents": 100000, "balanceCents": 50000 }, "requiredFindings": [], "forbiddenFindings": ["balance-mismatch", "balance-reconciles"] },
+    { "id": "eob-not-payable", "facts": { "documentType": "eob", "goal": "afford", "coverage": "private", "balanceCents": 50000 }, "requiredFindings": ["eob-not-bill"], "forbiddenFindings": ["balance-mismatch", "ppdr-check"], "forbiddenActions": ["payment-options"] },
+    { "id": "ppdr-exact-boundary", "facts": { "documentType": "bill", "goal": "check", "coverage": "self_pay", "hasEstimate": true, "billedCents": 140000, "estimateCents": 100000, "daysSinceInitialBill": 120 }, "requiredFindings": ["ppdr-check"], "forbiddenFindings": ["ppdr-window"] },
+    { "id": "ppdr-under-threshold", "facts": { "documentType": "bill", "goal": "check", "coverage": "self_pay", "hasEstimate": true, "billedCents": 139999, "estimateCents": 100000, "daysSinceInitialBill": 120 }, "requiredFindings": [], "forbiddenFindings": ["ppdr-check"] },
+    { "id": "ppdr-too-old", "facts": { "documentType": "bill", "goal": "check", "coverage": "self_pay", "hasEstimate": true, "billedCents": 140000, "estimateCents": 100000, "daysSinceInitialBill": 121 }, "requiredFindings": ["ppdr-window"], "forbiddenFindings": ["ppdr-check"] },
+    { "id": "insured-no-ppdr", "facts": { "documentType": "bill", "goal": "check", "coverage": "private", "hasEstimate": true, "billedCents": 140000, "estimateCents": 100000, "daysSinceInitialBill": 10 }, "requiredFindings": [], "forbiddenFindings": ["ppdr-check", "ppdr-window"] },
+    { "id": "ground-ambulance-distinct", "facts": { "documentType": "bill", "goal": "check", "coverage": "private", "careSetting": "ground_ambulance" }, "requiredFindings": ["ground-ambulance"], "forbiddenFindings": ["surprise-bill-check"] },
+    { "id": "self-pay-not-insurance-denial", "facts": { "documentType": "denial", "goal": "appeal", "coverage": "self_pay" }, "requiredFindings": [], "forbiddenFindings": ["denial-route"], "forbiddenActions": ["prepare-appeal"] }
+  ]
+}
