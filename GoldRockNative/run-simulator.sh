@@ -42,7 +42,7 @@ xcrun simctl bootstatus "$simulator_udid" -b
 open -a Simulator >/dev/null 2>&1 || true
 derived_data="${GOLDROCK_DERIVED_DATA:-$native_root/.build/DerivedData}"
 mkdir -p "$native_root/.build"
-build_args=(-project "$native_root/GoldRock.xcodeproj" -scheme GoldRock -configuration Debug -destination "platform=iOS Simulator,id=$simulator_udid" -derivedDataPath "$derived_data" CODE_SIGNING_ALLOWED=NO)
+build_args=(-project "$native_root/GoldRock.xcodeproj" -scheme GoldRock -configuration Debug -destination "platform=iOS Simulator,id=$simulator_udid" -derivedDataPath "$derived_data" 'CODE_SIGN_IDENTITY=-')
 set -o pipefail
 xcodebuild "${build_args[@]}" build 2>&1 | tee "$native_root/.build/build.log"
 if [[ "${GOLDROCK_RUN_TESTS:-0}" == "1" ]]; then xcodebuild "${build_args[@]}" test 2>&1 | tee "$native_root/.build/test.log"; fi

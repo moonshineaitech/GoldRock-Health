@@ -27,7 +27,7 @@ jobs:
             -scheme GoldRock -configuration Debug \
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$RUNNER_TEMP/GoldRockDerivedData" \
-            CODE_SIGNING_ALLOWED=NO build 2>&1 | tee "$RUNNER_TEMP/goldrock-build.log"
+            CODE_SIGN_IDENTITY='-' build 2>&1 | tee "$RUNNER_TEMP/goldrock-build.log"
       - name: Choose available iPhone Simulator
         id: iphone
         run: |
@@ -47,7 +47,7 @@ jobs:
             -scheme GoldRock -configuration Debug \
             -destination 'platform=iOS Simulator,id=${{ steps.iphone.outputs.udid }}' \
             -derivedDataPath "$RUNNER_TEMP/GoldRockDerivedData" \
-            CODE_SIGNING_ALLOWED=NO test 2>&1 | tee "$RUNNER_TEMP/goldrock-test.log"
+            CODE_SIGN_IDENTITY='-' test 2>&1 | tee "$RUNNER_TEMP/goldrock-test.log"
       - name: Install and launch native app on iPhone Simulator
         run: |
           xcrun simctl boot '${{ steps.iphone.outputs.udid }}' 2>/dev/null || true
