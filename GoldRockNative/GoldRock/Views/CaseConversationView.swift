@@ -506,7 +506,7 @@ struct ConversationComposerView: View {
 
             } catch is CancellationError { if epoch == run { busy = false } }
 
-            catch { if epoch == run, isCurrent { error = "The local review could not be prepared. Shorten the question or use pattern checks alone; nothing was sent."; busy = false } }
+            catch { if epoch == run, isCurrent { self.error = "The local review could not be prepared. Shorten the question or use pattern checks alone; nothing was sent."; busy = false } }
 
         }
 
@@ -532,7 +532,7 @@ struct ConversationComposerView: View {
 
                 catch is CancellationError { }
 
-                catch { if isCurrent { error = "The service did not confirm this turn. Its exact approval is preserved; return to the conversation to check or cancel the same operation." } }
+                catch { if isCurrent { self.error = "The service did not confirm this turn. Its exact approval is preserved; return to the conversation to check or cancel the same operation." } }
 
                 busy = false
 
