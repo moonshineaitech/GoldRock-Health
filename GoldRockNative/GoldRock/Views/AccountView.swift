@@ -31,6 +31,7 @@ struct AccountView: View {
                         ForEach(store.benefits) { benefit in
                             VStack(alignment: .leading, spacing: 6) { Text(benefit.name).font(.headline); Text(benefit.status.capitalized); if let ends = benefit.endsAt { Text("Ends: \(String(ends.prefix(10)))").font(.footnote) }; Button("Unlink \(benefit.name)", role: .destructive) { Task { await store.unlink(benefit.id) } }
                         }
+                        }
                         TextField("Invitation code", text: $invitation).textInputAutocapitalization(.never).autocorrectionDisabled().privacySensitive()
                         Button("Link employer benefit") { Task { await store.redeem(invitation); invitation = "" } }.disabled(invitation.isEmpty || store.busy)
                         Text("An invitation grants access to the benefit. Your employer gets no access to your cases, documents, questions or individual analysis.").font(.footnote).foregroundStyle(.secondary)
