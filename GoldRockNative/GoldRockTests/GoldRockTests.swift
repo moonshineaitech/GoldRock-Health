@@ -49,6 +49,20 @@ final class GoldRockTests: XCTestCase {
         XCTAssertThrowsError(try DocumentIntake.pdfRenderPlan(for: CGRect(x: 0, y: 0, width: CGFloat.infinity, height: 792)))
     }
 
+    func testNewCountermeasureRoutesAreBundledWithSourceExpiry() throws {
+        let current = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-09-28T12:00:00Z"))
+        let expired = try XCTUnwrap(ISO8601DateFormatter().date(from: "2027-01-01T12:00:00Z"))
+        for id in ["medicaid-care-before-application", "hipaa-existing-billing-records", "collector-stop-contact-versus-dispute"] {
+            let answer = try XCTUnwrap(LocalGuidance.knowledgeItem(id, now: current), id)
+            XCTAssertTrue(answer.current, id)
+            XCTAssertFalse(answer.actions.isEmpty, id)
+            XCTAssertFalse(answer.sourceIds.isEmpty, id)
+            let stale = try XCTUnwrap(LocalGuidance.knowledgeItem(id, now: expired), id)
+            XCTAssertFalse(stale.current, id)
+            XCTAssertTrue(stale.actions.isEmpty, id)
+        }
+    }
+
     private func conversationFixture() throws -> (CaseConversation, PublicFacts) {
         var facts = PublicFacts(); facts.documentType = .eob; facts.coverage = .private; facts.balanceCents = 10000
         let consent = ConversationConsent(policyVersion: "2026-09-27-v2", approvedFields: facts.approvedFields)
